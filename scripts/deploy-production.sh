@@ -6,6 +6,7 @@ REPO_DIR="$APP_ROOT/repo"
 RELEASES_DIR="$APP_ROOT/releases"
 CURRENT_LINK="$APP_ROOT/current"
 BACKEND_ENV_FILE="$APP_ROOT/shared/backend.env.production"
+FRONTEND_ENV_FILE="$APP_ROOT/shared/frontend.env.production"
 KEEP_RELEASES="${KEEP_RELEASES:-5}"
 
 BRANCH="${1:-main}"
@@ -47,14 +48,28 @@ run_pm2_with_env() {
   )
 }
 
-reload_pm2_app() {
+recreate_pm2_app() {
+  local env_file="$1"
+  local app_name="$2"
   local pm2_config="$CURRENT_LINK/deploy/pm2/ecosystem.config.cjs"
 
-  if pm2 describe "chatpdm-api" >/dev/null 2>&1; then
-    pm2 delete "chatpdm-api"
+  if pm2 describe "$app_name" >/dev/null 2>&1; then
+    pm2 delete "$app_name"
   fi
 
-  run_pm2_with_env "$BACKEND_ENV_FILE" start "$pm2_config" --only "chatpdm-api" --update-env
+  run_pm2_with_env "$env_file" start "$pm2_config" --only "$app_name" --update-env
+}
+
+reload_pm2_apps() {
+  local pm2_config="$CURRENT_LINK/deploy/pm2/ecosystem.config.cjs"
+
+  if [[ ! -f "$pm2_config" ]]; then
+    printf '[chatpdm deploy] Missing PM2 config: %s\n' "$pm2_config" >&2
+    exit 1
+  fi
+
+  recreate_pm2_app "$BACKEND_ENV_FILE" "chatpdm-api"
+  recreate_pm2_app "$FRONTEND_ENV_FILE" "chatpdm-web"
 }
 
 wait_for_health() {
@@ -116,7 +131,7 @@ rollback_deploy() {
   if (( ROLLBACK_ENABLED )) && [[ -n "$PREVIOUS_TARGET" && -d "$PREVIOUS_TARGET" ]]; then
     log "Deploy failed, rolling back to $PREVIOUS_TARGET"
     ln -sfn "$PREVIOUS_TARGET" "$CURRENT_LINK"
-    reload_pm2_app || true
+    reload_pm2_apps || true
     pm2 save || true
   fi
 
@@ -142,6 +157,7 @@ require_cmd readlink
 require_cmd date
 
 require_env_file "$BACKEND_ENV_FILE"
+require_env_file "$FRONTEND_ENV_FILE"
 
 trap on_error ERR
 
@@ -176,6 +192,7 @@ npm --prefix "$RELEASE_DIR/frontend" run build
 
 log "Validating release artifacts"
 test -f "$RELEASE_DIR/frontend/dist/frontend/browser/index.html"
+test -f "$RELEASE_DIR/frontend/dist/frontend/server/server.mjs"
 test -f "$RELEASE_DIR/backend/src/server.js"
 
 log "Switching current release"
@@ -183,13 +200,16 @@ ln -sfn "$RELEASE_DIR" "$CURRENT_LINK"
 ROLLBACK_ENABLED=1
 
 log "Reloading PM2"
-reload_pm2_app
+reload_pm2_apps
 
 log "Saving PM2 state"
 pm2 save
 
 log "Running backend health check"
 wait_for_health "http://127.0.0.1:4301/health" 30 1
+
+log "Running frontend SSR health check"
+wait_for_health "http://127.0.0.1:4101/" 30 1
 
 ROLLBACK_ENABLED=0
 prune_old_releases "$KEEP_RELEASES"

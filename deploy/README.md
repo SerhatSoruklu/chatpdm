@@ -4,9 +4,9 @@ This folder contains the repo-native deployment skeleton for running ChatPDM on
 the dedicated server under `/srv/chatpdm`.
 
 The deployment model follows the same release discipline as `4kapi`, but adapts
-to ChatPDM's actual runtime shape:
+to ChatPDM's Angular SSR runtime shape:
 
-- frontend: static Angular build served by `nginx`
+- frontend: Angular SSR web process managed by `pm2`
 - backend: Express API process managed by `pm2`
 - backend persistence: MongoDB on localhost
 - deploy style: timestamped releases with a `current` symlink
@@ -20,18 +20,32 @@ to ChatPDM's actual runtime shape:
   current -> /srv/chatpdm/releases/<timestamp>
   shared/
     backend.env.production
+    frontend.env.production
 ```
+
+Expected shared env split:
+
+- `backend.env.production`
+  - `NODE_ENV=production`
+  - `HOST=127.0.0.1`
+  - `PORT=4301`
+  - `MONGODB_URI=...`
+- `frontend.env.production`
+  - `NODE_ENV=production`
+  - `HOST=127.0.0.1`
+  - `PORT=4101`
+  - `API_BASE_URL=http://127.0.0.1:4301`
 
 ## Expected ports
 
+- frontend SSR: `4101`
 - backend API: `4301`
 
-`nginx` should proxy `/api/` and `/health` to the backend on `127.0.0.1:4301`.
-The frontend should be served directly from:
+`nginx` should proxy:
 
-```text
-/srv/chatpdm/current/frontend/dist/frontend/browser
-```
+- `chatpdm.com` and `www.chatpdm.com` to the frontend SSR process on `127.0.0.1:4101`
+- `/api/` and `/health` to the backend on `127.0.0.1:4301`
+- `api.chatpdm.com` directly to the backend on `127.0.0.1:4301`
 
 Recommended public host split:
 
@@ -43,10 +57,10 @@ Recommended public host split:
 1. Update `/srv/chatpdm/repo` to the target branch.
 2. Create a new timestamped release under `/srv/chatpdm/releases`.
 3. Install backend dependencies with production-only modules.
-4. Install frontend dependencies and build the static frontend.
+4. Install frontend dependencies and build browser + server SSR artifacts.
 5. Switch `/srv/chatpdm/current` to the new release.
-6. Reload the backend process through `pm2`.
-7. Run backend health checks.
+6. Reload the frontend SSR and backend processes through `pm2`.
+7. Run backend and frontend health checks.
 8. Keep the release on success, or roll back on failure.
 
 ## GitHub automation model
@@ -65,6 +79,7 @@ This avoids exposing a public SSH deploy path just for automation.
 deploy/
   nginx/
     chatpdm.conf.template
+    chatpdm-api-not-found.html
   pm2/
     ecosystem.config.cjs
 ```

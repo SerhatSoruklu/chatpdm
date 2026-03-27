@@ -43,7 +43,7 @@ The repo is in active beta development.
 
 Current state:
 
-- Angular beta query surface
+- Angular SSR beta query surface
 - Express runtime resolver
 - file-backed canonical concept set
 - response contract and schema validation
@@ -130,6 +130,12 @@ Key areas:
 - [tests](/home/serhat/code/chatpdm/tests): golden fixtures and semantic pressure harness
 - [chatpdm-reference](/home/serhat/code/chatpdm/chatpdm-reference): conceptual grounding stack for authoring discipline
 
+Frontend structure policy:
+
+- new Angular UI work should default to `ts/html/css` component-local files
+- `spec.ts` files are optional for pure presentational components and expected for behavior-bearing ones
+- global [styles.css](/home/serhat/code/chatpdm/frontend/src/styles.css) should stay limited to app-wide foundations, not component-specific styling
+
 ## Local Development
 
 From the repo root:
@@ -153,8 +159,30 @@ Run subprojects directly:
 
 ```bash
 cd frontend && npm start
+cd frontend && npm run serve:ssr:frontend
 cd backend && npm run dev
 ```
+
+SSR production build output:
+
+```text
+frontend/dist/frontend/browser
+frontend/dist/frontend/server
+```
+
+Production runtime split:
+
+- `chatpdm-web`: Angular SSR Node process
+- `chatpdm-api`: Express resolver API
+- `nginx`: public edge for `chatpdm.com` and `api.chatpdm.com`
+
+## Testing Posture
+
+ChatPDM currently uses targeted validation rather than a broad formal test suite.
+
+- Frontend relies mainly on Angular build, TypeScript correctness, SSR compile health, and `*.spec.ts` only where needed.
+- Backend relies mainly on focused verification scripts and lightweight runtime validation.
+- Add tests selectively where regression risk justifies them.
 
 ## Documentation Map
 
@@ -167,6 +195,7 @@ Start here if you want the project model before touching code:
 - [V1 concept scope](/home/serhat/code/chatpdm/docs/architecture/v1-concept-scope.md)
 - [Boundary integrity](/home/serhat/code/chatpdm/docs/boundary-integrity.md)
 - [Conceptual reference stack](/home/serhat/code/chatpdm/docs/conceptual-reference-stack.md)
+- [Git push workflow](/home/serhat/code/chatpdm/docs/git-push-workflow.md)
 
 ## Reference Stack
 

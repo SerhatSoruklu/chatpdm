@@ -4,6 +4,7 @@ Express API for the ChatPDM workspace.
 
 ## Current Scope
 
+- backend API for the Angular SSR frontend and `api.chatpdm.com`
 - deterministic concept resolver
 - feedback capture
 - Mongo-backed backend persistence

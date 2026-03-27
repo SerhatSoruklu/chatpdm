@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>API Endpoint Not Found | ChatPDM</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(180deg, #f7f9fc, #eef4ff);
+      color: #0f172a;
+      font-family: "DM Sans", system-ui, sans-serif;
+      padding: 24px;
+    }
+
+    main {
+      width: min(720px, 100%);
+      padding: 32px;
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.08);
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.05;
+    }
+
+    p {
+      margin: 0 0 14px;
+      color: #475569;
+      line-height: 1.7;
+    }
+
+    code {
+      padding: 0.2rem 0.45rem;
+      border-radius: 999px;
+      background: rgba(37, 99, 235, 0.08);
+      color: #1d4ed8;
+    }
+
+    a {
+      color: #1d4ed8;
+      text-decoration: none;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>That API route does not exist.</h1>
+    <p>
+      <code>api.chatpdm.com</code> is reserved for the ChatPDM runtime API. If you open it directly in a browser,
+      you are outside the main query interface.
+    </p>
+    <p>
+      Use <a href="https://chatpdm.com">chatpdm.com</a> for the product surface, or call a defined
+      <code>/api/*</code> endpoint such as <code>/api/v1/concepts/resolve</code>.
+    </p>
+  </main>
+</body>
+</html>

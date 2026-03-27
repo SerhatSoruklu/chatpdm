@@ -13,7 +13,7 @@ Do not import:
 - 4Kapi visual patterns
 - 4Kapi product assumptions
 
-unless the user explicitly asks for it.
+unless the user explicitly requests it.
 
 ## Main Entry Point
 
@@ -27,11 +27,11 @@ Windows launcher folder:
 
 The application now lives directly in this repo root, with:
 
-- [frontend](/home/serhat/code/chatpdm/frontend)
-- [backend](/home/serhat/code/chatpdm/backend)
-- [docs](/home/serhat/code/chatpdm/docs)
-- [data](/home/serhat/code/chatpdm/data)
-- [tests](/home/serhat/code/chatpdm/tests)
+- [frontend](./frontend)
+- [backend](./backend)
+- [docs](./docs)
+- [data](./data)
+- [tests](./tests)
 
 ## Identity
 
@@ -76,11 +76,36 @@ Rules:
 
 - ChatPDM is light, calm, editorial, and web-first.
 - It is not chatbot-like and should not drift into generic AI SaaS styling.
-- The current visual baseline is [landing-page.component.html](/home/serhat/code/chatpdm/frontend/src/app/pages/landing/landing-page.component.html).
+- The current visual baseline is [landing-page.component.html](./frontend/src/app/pages/landing/landing-page.component.html).
 - Use ChatPDM-specific class naming.
 - No CSS variables. Do not add `:root` token systems.
 - Light theme is the only active theme for now.
 - Future dark mode must be supported structurally, but not fully implemented by default.
+
+### Component Structure Policy
+
+- New Angular UI work should default to component-local files:
+  - `component.ts`
+  - `component.html`
+  - `component.css`
+- Do not move component-specific styling into global [styles.css](./frontend/src/styles.css) unless the rule is truly app-wide.
+- Keep [styles.css](./frontend/src/styles.css) limited to:
+  - reset and base document rules
+  - shared typography and spacing foundations
+  - global layout constraints
+  - deliberately approved cross-app primitives
+- If a styling pattern repeats across multiple components, promote it intentionally. Do not dump one-off page styling into the global stylesheet for convenience.
+
+### Spec Policy
+
+- `spec.ts` files are optional for pure presentational leaf components.
+- Add a `spec.ts` file when a component has:
+  - interaction logic
+  - derived or computed UI state
+  - SSR-sensitive behavior
+  - routing behavior
+  - query/rendering conditions that are likely to regress
+- Treat specs as expected for behavior-bearing components, even if small presentational wrappers may omit them.
 
 ## Backend Guardrails
 
@@ -89,17 +114,64 @@ Rules:
 - Do not add probabilistic matching, LLM behavior, or hidden semantic guessing into the core path.
 - Maintain clear separation between concepts, sources, feedback, and future optional layers.
 
-## Docs Guidance
+## Testing Posture
+
+- ChatPDM uses targeted validation rather than a broad formal test suite.
+- Frontend relies mainly on Angular build, TypeScript correctness, SSR compile health, and `*.spec.ts` only where needed.
+- Backend relies mainly on focused verification scripts and lightweight runtime validation.
+- Add tests selectively where regression risk justifies them.
+
+## Validation and Push Safety
+
+- Do not stage or commit secrets, `.env` files, API keys, tokens, private keys, or credentials.
+- Do not commit local-only artifacts such as logs, dumps, cache files, or temporary files.
+- Do not commit build output (e.g. dist folders) unless explicitly required.
+
+### Validation Severity
+
+Blocking issues (must be fixed before push):
+
+- compile/build failures
+- backend startup safety failure (cannot compile or start without immediate crash in local validation mode)
+- merge conflicts
+- remote divergence requiring merge/rebase decision
+- secrets or sensitive files
+- unrelated dirty changes
+
+Non-blocking by default:
+
+- low-value warnings
+- minor lint/style issues
+- SonarQube noise
+- optional documentation formatting issues
+
+### Scope Discipline
+
+- Do not bundle unrelated fixes into the same commit.
+- If unrelated issues are discovered, surface them separately instead of fixing them during the same task.
+- Keep commits tightly scoped to the original intent.
+
+### Backend Validation Notes
+
+- Backend verification scripts are located in [backend/scripts](./backend/scripts).
+- Use the smallest relevant script for validation when applicable.
+- Do not run all scripts by default unless the change justifies it.
+- Treat `push to git` as: review -> validate -> fix safe blockers -> stage correct files -> commit cleanly -> push safely.
+- Keep pre-push validation lightweight: Angular build first, TypeScript correctness second, runtime safety third, lint only when already configured and low-noise, SonarQube advisory only.
+- For backend changes, include a lightweight startup-safety check before push: compile cleanly, start safely in a local validation mode, and confirm there is no immediate crash or obvious wiring failure.
+
+## Documentation Guidance
 
 - Update docs before broadening implementation scope.
 - Data structures should be documented before runtime behavior is added.
-- Reference [chatpdm-build-path.txt](/home/serhat/code/chatpdm/chatpdm-build-path.txt) when the product direction needs clarification.
+- Reference [chatpdm-build-path.txt](./chatpdm-build-path.txt) when the product direction needs clarification.
+- Follow [git-push-workflow.md](./docs/git-push-workflow.md) for the default meaning of `push to git` and `push ALL`.
 
 ## Responsive Guardrails
 
 The official breakpoint system is documented in:
 
-- [responsive-layout.md](/home/serhat/code/chatpdm/docs/architecture/responsive-layout.md)
+- [responsive-layout.md](./docs/architecture/responsive-layout.md)
 
 Do not invent random breakpoint values per component.
 
