@@ -1,0 +1,43 @@
+{
+  "type": "ambiguous_match",
+  "query": "public power",
+  "normalizedQuery": "public power",
+  "contractVersion": "v1.1",
+  "normalizerVersion": "2026-03-27.v1",
+  "matcherVersion": "2026-03-27.v2",
+  "conceptSetVersion": "20260327.2",
+  "resolution": {
+    "method": "ambiguous_normalized_alias"
+  },
+  "message": "Multiple canonical concepts match this query. Choose one to continue.",
+  "candidates": [
+    {
+      "conceptId": "power",
+      "title": "Power",
+      "shortDefinition": "Power is the capacity to shape outcomes, behavior, or conditions within a relationship or system.",
+      "basis": "normalized_overlap"
+    },
+    {
+      "conceptId": "authority",
+      "title": "Authority",
+      "shortDefinition": "Authority is recognized power to direct, decide, or govern within a defined structure.",
+      "basis": "normalized_overlap"
+    },
+    {
+      "conceptId": "legitimacy",
+      "title": "Legitimacy",
+      "shortDefinition": "Legitimacy is the condition in which power or authority is treated as valid or justified.",
+      "basis": "author_defined_disambiguation"
+    }
+  ],
+  "queryType": "ambiguity_query",
+  "interpretation": {
+    "interpretationType": "ambiguous_selection",
+    "concepts": [
+      "power",
+      "authority",
+      "legitimacy"
+    ],
+    "message": "This query matches multiple authored concepts and requires an explicit choice."
+  }
+}

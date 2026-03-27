@@ -1,0 +1,21 @@
+{
+  "name": "chatpdm-root",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Root orchestration for the ChatPDM repository.",
+  "scripts": {
+    "bootstrap": "npm run install:frontend && npm run install:backend",
+    "install:frontend": "npm install --prefix ./frontend",
+    "install:backend": "npm install --prefix ./backend",
+    "dev": "concurrently -k -n frontend,backend -c cyan,green \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "dev:frontend": "npm --prefix ./frontend run start",
+    "dev:backend": "npm --prefix ./backend run dev",
+    "build": "npm run build:frontend && npm run build:backend",
+    "build:frontend": "npm --prefix ./frontend run build",
+    "build:backend": "npm --prefix ./backend run build",
+    "check": "npm run build:backend"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

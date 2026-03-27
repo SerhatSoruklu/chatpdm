@@ -1,0 +1,36 @@
+{
+  "query": "obligation",
+  "normalizedQuery": "obligation",
+  "contractVersion": "v1.1",
+  "normalizerVersion": "2026-03-27.v1",
+  "matcherVersion": "2026-03-27.v2",
+  "conceptSetVersion": "20260327.2",
+  "queryType": "ambiguity_query",
+  "interpretation": {
+    "interpretationType": "ambiguous_selection",
+    "concepts": [
+      "duty",
+      "responsibility"
+    ],
+    "message": "This query matches multiple authored concepts and requires an explicit choice."
+  },
+  "type": "ambiguous_match",
+  "resolution": {
+    "method": "author_defined_disambiguation"
+  },
+  "message": "Multiple canonical concepts match this query. Choose one to continue.",
+  "candidates": [
+    {
+      "conceptId": "duty",
+      "title": "Duty",
+      "shortDefinition": "Duty is required conduct owed by an actor under a rule, role, or obligation.",
+      "basis": "author_defined_disambiguation"
+    },
+    {
+      "conceptId": "responsibility",
+      "title": "Responsibility",
+      "shortDefinition": "Responsibility is answerable connection between an actor and attributable actions, roles, or outcomes.",
+      "basis": "author_defined_disambiguation"
+    }
+  ]
+}

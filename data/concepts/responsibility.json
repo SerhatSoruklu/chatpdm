@@ -1,0 +1,80 @@
+{
+  "conceptId": "responsibility",
+  "title": "Responsibility",
+  "version": 1,
+  "domain": "core-abstractions",
+  "shortDefinition": "Responsibility is answerable connection between an actor and attributable actions, roles, or outcomes.",
+  "coreMeaning": "Responsibility functions by linking conduct or effects back to an actor as something for which that actor can be called to account. It concerns answerability for what is attributable, not simply obedience to a required rule.",
+  "fullDefinition": "Responsibility is not identical to duty. Duty concerns what must be done under a rule or role; responsibility concerns what an actor can be held answerable for.\n\nIts internal structure joins attribution to answerability. The concept can attach to conduct, omission, stewardship, or resulting state, provided the actor is treated as bearing that connection.\n\nWithin a system, responsibility assigns who must answer for actions, decisions, or conditions. It therefore organizes attribution before judgment, sanction, or repair.",
+  "contexts": [
+    {
+      "label": "causal",
+      "explanation": "Responsibility links an actor to attributable effects or resulting states."
+    },
+    {
+      "label": "role",
+      "explanation": "Responsibility links an actor to an area of charge, stewardship, or assigned answerability."
+    },
+    {
+      "label": "institutional",
+      "explanation": "Responsibility marks who must answer for decisions or failures within an organized structure."
+    }
+  ],
+  "sources": [
+    {
+      "id": "oxford-languages-responsibility",
+      "label": "Oxford Languages",
+      "type": "dictionary",
+      "usedFor": "definition boundary for answerability and assigned charge"
+    },
+    {
+      "id": "hart-punishment-and-responsibility",
+      "label": "H. L. A. Hart, Punishment and Responsibility",
+      "type": "book",
+      "usedFor": "structural grounding for attribution and answerability"
+    }
+  ],
+  "relatedConcepts": [
+    {
+      "conceptId": "duty",
+      "relationType": "contrast"
+    },
+    {
+      "conceptId": "authority",
+      "relationType": "extension"
+    }
+  ],
+  "reviewMetadata": {
+    "what_it_is": [
+      "answerable connection",
+      "attribution to an actor",
+      "charge or stewardship"
+    ],
+    "what_it_is_not": [
+      "required conduct by itself",
+      "mere obedience",
+      "mere role occupancy"
+    ],
+    "must_not_collapse_into": [
+      "duty"
+    ],
+    "related_concepts": [
+      "duty",
+      "authority",
+      "power"
+    ],
+    "contrast_prompts": [
+      "responsibility vs duty",
+      "responsibility without duty",
+      "what makes someone responsible"
+    ]
+  },
+  "aliases": [
+    "responsibility",
+    "what is responsibility",
+    "define responsibility"
+  ],
+  "normalizedAliases": [
+    "responsibility"
+  ]
+}

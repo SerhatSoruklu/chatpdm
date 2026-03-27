@@ -1,0 +1,81 @@
+{
+  "conceptId": "power",
+  "title": "Power",
+  "version": 1,
+  "domain": "relational-structures",
+  "shortDefinition": "Power is effective capacity to shape actions, outcomes, or conditions with or without recognized standing.",
+  "coreMeaning": "Power functions through the ability to produce effects, secure compliance, or alter available conditions. It does not depend on acceptance, justification, or formal office.",
+  "fullDefinition": "Power is not identical to authority or legitimacy. It names effective capacity rather than recognized right or accepted validity.\n\nIts internal composition may rest in resources, coercive capacity, institutional position, coordination, or control over dependencies. The concept therefore concerns what can be made to happen, not whether that capacity is justified.\n\nWithin a system, power explains operative effect. Authority may channel it and legitimacy may justify it, but neither is required for power to exist or to work.",
+  "contexts": [
+    {
+      "label": "political",
+      "explanation": "Power concerns effective capacity to shape collective outcomes, compliance, or distribution within public order."
+    },
+    {
+      "label": "institutional",
+      "explanation": "Power concerns control over decisions, dependencies, or resources inside organized structures."
+    },
+    {
+      "label": "relational",
+      "explanation": "Power concerns the ability to alter another party's options, exposure, or conduct without requiring recognized standing."
+    }
+  ],
+  "sources": [
+    {
+      "id": "oxford-languages-power",
+      "label": "Oxford Languages",
+      "type": "dictionary",
+      "usedFor": "definition boundary for capacity and ability to act or affect"
+    },
+    {
+      "id": "lukes-power-a-radical-view",
+      "label": "Steven Lukes, Power: A Radical View",
+      "type": "book",
+      "usedFor": "structural grounding for power as effective capacity rather than formal right"
+    }
+  ],
+  "relatedConcepts": [
+    {
+      "conceptId": "authority",
+      "relationType": "contrast"
+    },
+    {
+      "conceptId": "legitimacy",
+      "relationType": "contrast"
+    }
+  ],
+  "reviewMetadata": {
+    "what_it_is": [
+      "effective capacity",
+      "ability to secure effects",
+      "operative leverage"
+    ],
+    "what_it_is_not": [
+      "recognized standing",
+      "accepted validity",
+      "formal right by itself"
+    ],
+    "must_not_collapse_into": [
+      "authority",
+      "legitimacy"
+    ],
+    "related_concepts": [
+      "authority",
+      "legitimacy",
+      "responsibility"
+    ],
+    "contrast_prompts": [
+      "power vs authority",
+      "power vs legitimacy",
+      "can power exist without legitimacy"
+    ]
+  },
+  "aliases": [
+    "power",
+    "what is power",
+    "define power"
+  ],
+  "normalizedAliases": [
+    "power"
+  ]
+}

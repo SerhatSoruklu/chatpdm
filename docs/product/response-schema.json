@@ -1,0 +1,514 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chatpdm.local/docs/product/response-schema.json",
+  "title": "ChatPDM v1 Product Response Schema",
+  "description": "Strict JSON Schema for ChatPDM v1 product response payloads. This schema covers product outcomes only and does not include API or system error envelopes.",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/conceptMatchResponse"
+    },
+    {
+      "$ref": "#/$defs/noExactMatchResponse"
+    },
+    {
+      "$ref": "#/$defs/ambiguousMatchResponse"
+    }
+  ],
+  "$defs": {
+    "stringValue": {
+      "type": "string",
+      "minLength": 1
+    },
+    "contractVersionString": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^v\\d+\\.\\d+$"
+    },
+    "datedVersionString": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}\\.v\\d+$"
+    },
+    "conceptSetVersionString": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^\\d{8}\\.\\d+$"
+    },
+    "productQueryType": {
+      "type": "string",
+      "enum": [
+        "exact_concept_query",
+        "canonical_id_query",
+        "ambiguity_query",
+        "broader_topic_query",
+        "subtype_query",
+        "comparison_query",
+        "relation_query",
+        "role_or_actor_query",
+        "unsupported_complex_query"
+      ]
+    },
+    "interpretationObject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "interpretationType",
+        "message"
+      ],
+      "properties": {
+        "interpretationType": {
+          "type": "string",
+          "enum": [
+            "narrower_subtype",
+            "broader_topic",
+            "comparison_not_supported",
+            "relation_not_supported",
+            "role_or_actor_not_supported",
+            "ambiguous_selection",
+            "unsupported_complex",
+            "canonical_lookup_not_found"
+          ]
+        },
+        "message": {
+          "$ref": "#/$defs/stringValue"
+        },
+        "baseConcept": {
+          "$ref": "#/$defs/stringValue"
+        },
+        "modifier": {
+          "$ref": "#/$defs/stringValue"
+        },
+        "concepts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/stringValue"
+          }
+        },
+        "relationTerm": {
+          "$ref": "#/$defs/stringValue"
+        },
+        "actorTerm": {
+          "$ref": "#/$defs/stringValue"
+        },
+        "targetConceptId": {
+          "$ref": "#/$defs/stringValue"
+        }
+      }
+    },
+    "contextObject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "label",
+        "appliesTo"
+      ],
+      "properties": {
+        "label": {
+          "$ref": "#/$defs/stringValue"
+        },
+        "appliesTo": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/stringValue"
+          }
+        }
+      }
+    },
+    "sourceObject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "label",
+        "type",
+        "usedFor"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/stringValue"
+        },
+        "label": {
+          "$ref": "#/$defs/stringValue"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "dictionary",
+            "book",
+            "paper",
+            "law",
+            "article",
+            "internal"
+          ]
+        },
+        "usedFor": {
+          "$ref": "#/$defs/stringValue"
+        }
+      }
+    },
+    "relatedConceptObject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "conceptId",
+        "title",
+        "relationType"
+      ],
+      "properties": {
+        "conceptId": {
+          "$ref": "#/$defs/stringValue"
+        },
+        "title": {
+          "$ref": "#/$defs/stringValue"
+        },
+        "relationType": {
+          "type": "string",
+          "enum": [
+            "see_also",
+            "prerequisite",
+            "extension",
+            "contrast"
+          ]
+        }
+      }
+    },
+    "suggestionObject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "conceptId",
+        "title",
+        "reason"
+      ],
+      "properties": {
+        "conceptId": {
+          "$ref": "#/$defs/stringValue"
+        },
+        "title": {
+          "$ref": "#/$defs/stringValue"
+        },
+        "reason": {
+          "type": "string",
+          "enum": [
+            "similar_term",
+            "broader_topic",
+            "related_concept"
+          ]
+        }
+      }
+    },
+    "candidateObject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "conceptId",
+        "title",
+        "shortDefinition",
+        "basis"
+      ],
+      "properties": {
+        "conceptId": {
+          "$ref": "#/$defs/stringValue"
+        },
+        "title": {
+          "$ref": "#/$defs/stringValue"
+        },
+        "shortDefinition": {
+          "$ref": "#/$defs/stringValue"
+        },
+        "basis": {
+          "type": "string",
+          "enum": [
+            "shared_alias",
+            "normalized_overlap",
+            "author_defined_disambiguation"
+          ]
+        }
+      }
+    },
+    "conceptMatchResolution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "method",
+        "conceptId",
+        "conceptVersion"
+      ],
+      "properties": {
+        "method": {
+          "type": "string",
+          "enum": [
+            "exact_alias",
+            "normalized_alias",
+            "canonical_id"
+          ]
+        },
+        "conceptId": {
+          "$ref": "#/$defs/stringValue"
+        },
+        "conceptVersion": {
+          "type": "integer"
+        }
+      }
+    },
+    "noExactMatchResolution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "method"
+      ],
+      "properties": {
+        "method": {
+          "const": "no_exact_match"
+        }
+      }
+    },
+    "ambiguousMatchResolution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "method"
+      ],
+      "properties": {
+        "method": {
+          "type": "string",
+          "enum": [
+            "ambiguous_alias",
+            "ambiguous_normalized_alias",
+            "author_defined_disambiguation"
+          ]
+        }
+      }
+    },
+    "answerObject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "shortDefinition",
+        "coreMeaning",
+        "fullDefinition",
+        "contexts",
+        "sources",
+        "relatedConcepts"
+      ],
+      "properties": {
+        "title": {
+          "$ref": "#/$defs/stringValue"
+        },
+        "shortDefinition": {
+          "$ref": "#/$defs/stringValue"
+        },
+        "coreMeaning": {
+          "$ref": "#/$defs/stringValue"
+        },
+        "fullDefinition": {
+          "$ref": "#/$defs/stringValue"
+        },
+        "contexts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/contextObject"
+          }
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/sourceObject"
+          }
+        },
+        "relatedConcepts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/relatedConceptObject"
+          }
+        }
+      }
+    },
+    "conceptMatchResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "query",
+        "normalizedQuery",
+        "contractVersion",
+        "normalizerVersion",
+        "matcherVersion",
+        "conceptSetVersion",
+        "queryType",
+        "interpretation",
+        "resolution",
+        "answer"
+      ],
+      "properties": {
+        "type": {
+          "const": "concept_match"
+        },
+        "query": {
+          "$ref": "#/$defs/stringValue"
+        },
+        "normalizedQuery": {
+          "$ref": "#/$defs/stringValue"
+        },
+        "contractVersion": {
+          "$ref": "#/$defs/contractVersionString"
+        },
+        "normalizerVersion": {
+          "$ref": "#/$defs/datedVersionString"
+        },
+        "matcherVersion": {
+          "$ref": "#/$defs/datedVersionString"
+        },
+        "conceptSetVersion": {
+          "$ref": "#/$defs/conceptSetVersionString"
+        },
+        "queryType": {
+          "type": "string",
+          "enum": [
+            "exact_concept_query",
+            "canonical_id_query"
+          ]
+        },
+        "interpretation": {
+          "type": "null"
+        },
+        "resolution": {
+          "$ref": "#/$defs/conceptMatchResolution"
+        },
+        "answer": {
+          "$ref": "#/$defs/answerObject"
+        }
+      }
+    },
+    "noExactMatchResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "query",
+        "normalizedQuery",
+        "contractVersion",
+        "normalizerVersion",
+        "matcherVersion",
+        "conceptSetVersion",
+        "queryType",
+        "interpretation",
+        "resolution",
+        "message",
+        "suggestions"
+      ],
+      "properties": {
+        "type": {
+          "const": "no_exact_match"
+        },
+        "query": {
+          "$ref": "#/$defs/stringValue"
+        },
+        "normalizedQuery": {
+          "$ref": "#/$defs/stringValue"
+        },
+        "contractVersion": {
+          "$ref": "#/$defs/contractVersionString"
+        },
+        "normalizerVersion": {
+          "$ref": "#/$defs/datedVersionString"
+        },
+        "matcherVersion": {
+          "$ref": "#/$defs/datedVersionString"
+        },
+        "conceptSetVersion": {
+          "$ref": "#/$defs/conceptSetVersionString"
+        },
+        "queryType": {
+          "type": "string",
+          "enum": [
+            "canonical_id_query",
+            "broader_topic_query",
+            "subtype_query",
+            "comparison_query",
+            "relation_query",
+            "role_or_actor_query",
+            "unsupported_complex_query"
+          ]
+        },
+        "interpretation": {
+          "$ref": "#/$defs/interpretationObject"
+        },
+        "resolution": {
+          "$ref": "#/$defs/noExactMatchResolution"
+        },
+        "message": {
+          "const": "No exact canonical concept match was found for this query."
+        },
+        "suggestions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/suggestionObject"
+          }
+        }
+      }
+    },
+    "ambiguousMatchResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "query",
+        "normalizedQuery",
+        "contractVersion",
+        "normalizerVersion",
+        "matcherVersion",
+        "conceptSetVersion",
+        "queryType",
+        "interpretation",
+        "resolution",
+        "message",
+        "candidates"
+      ],
+      "properties": {
+        "type": {
+          "const": "ambiguous_match"
+        },
+        "query": {
+          "$ref": "#/$defs/stringValue"
+        },
+        "normalizedQuery": {
+          "$ref": "#/$defs/stringValue"
+        },
+        "contractVersion": {
+          "$ref": "#/$defs/contractVersionString"
+        },
+        "normalizerVersion": {
+          "$ref": "#/$defs/datedVersionString"
+        },
+        "matcherVersion": {
+          "$ref": "#/$defs/datedVersionString"
+        },
+        "conceptSetVersion": {
+          "$ref": "#/$defs/conceptSetVersionString"
+        },
+        "queryType": {
+          "const": "ambiguity_query"
+        },
+        "interpretation": {
+          "$ref": "#/$defs/interpretationObject"
+        },
+        "resolution": {
+          "$ref": "#/$defs/ambiguousMatchResolution"
+        },
+        "message": {
+          "const": "Multiple canonical concepts match this query. Choose one to continue."
+        },
+        "candidates": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "$ref": "#/$defs/candidateObject"
+          }
+        }
+      }
+    }
+  }
+}

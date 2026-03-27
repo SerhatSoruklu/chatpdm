@@ -1,0 +1,16 @@
+name: Deploy ChatPDM
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on:
+      - self-hosted
+      - chatpdm-prod
+    steps:
+      - name: Deploy on dedicated server
+        run: bash /srv/chatpdm/repo/scripts/deploy-production.sh main

@@ -1,0 +1,68 @@
+{
+  "query": "authority",
+  "normalizedQuery": "authority",
+  "contractVersion": "v1.1",
+  "normalizerVersion": "2026-03-27.v1",
+  "matcherVersion": "2026-03-27.v2",
+  "conceptSetVersion": "20260327.2",
+  "queryType": "exact_concept_query",
+  "interpretation": null,
+  "type": "concept_match",
+  "resolution": {
+    "method": "exact_alias",
+    "conceptId": "authority",
+    "conceptVersion": 1
+  },
+  "answer": {
+    "title": "Authority",
+    "shortDefinition": "Authority is recognized standing to direct, decide, or govern within a defined structure.",
+    "coreMeaning": "Authority functions by attaching directive right to a role, office, or position that others treat as operative. It depends on recognized standing rather than on force alone or on the validity of that standing.",
+    "fullDefinition": "Authority is not any ability to produce effects. It is a structured right to issue direction, make decisions, or govern within an accepted role or office.\n\nIts internal composition joins a directive claim to a recognized position. That position may be formal or informal, but the concept requires that the right to direct is treated as attached to the role rather than to mere capacity.\n\nWithin a system, authority organizes who may decide, command, or settle matters. Questions of whether that standing is justified belong to legitimacy, while questions of whether directives can be enforced belong to power.",
+    "contexts": [
+      {
+        "label": "institutional",
+        "appliesTo": [
+          "institutional"
+        ]
+      },
+      {
+        "label": "legal",
+        "appliesTo": [
+          "legal"
+        ]
+      },
+      {
+        "label": "relational",
+        "appliesTo": [
+          "relational"
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "id": "oxford-languages-authority",
+        "label": "Oxford Languages",
+        "type": "dictionary",
+        "usedFor": "definition boundary for recognized right to direct or decide"
+      },
+      {
+        "id": "weber-economy-and-society",
+        "label": "Max Weber, Economy and Society",
+        "type": "book",
+        "usedFor": "structural distinction between recognized rule-bound command and mere power"
+      }
+    ],
+    "relatedConcepts": [
+      {
+        "conceptId": "power",
+        "title": "Power",
+        "relationType": "contrast"
+      },
+      {
+        "conceptId": "legitimacy",
+        "title": "Legitimacy",
+        "relationType": "contrast"
+      }
+    ]
+  }
+}

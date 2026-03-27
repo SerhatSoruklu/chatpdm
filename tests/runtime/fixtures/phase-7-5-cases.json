@@ -1,0 +1,161 @@
+[
+  {
+    "name": "authority_exact",
+    "input": "authority",
+    "expectedNormalizedQuery": "authority",
+    "expectedType": "concept_match",
+    "expectedMethod": "exact_alias",
+    "expectedQueryType": "exact_concept_query",
+    "expectedInterpretation": null,
+    "expectedConceptId": "authority"
+  },
+  {
+    "name": "power_exact",
+    "input": "power",
+    "expectedNormalizedQuery": "power",
+    "expectedType": "concept_match",
+    "expectedMethod": "exact_alias",
+    "expectedQueryType": "exact_concept_query",
+    "expectedInterpretation": null,
+    "expectedConceptId": "power"
+  },
+  {
+    "name": "legitimacy_exact",
+    "input": "legitimacy",
+    "expectedNormalizedQuery": "legitimacy",
+    "expectedType": "concept_match",
+    "expectedMethod": "exact_alias",
+    "expectedQueryType": "exact_concept_query",
+    "expectedInterpretation": null,
+    "expectedConceptId": "legitimacy"
+  },
+  {
+    "name": "responsibility_exact",
+    "input": "responsibility",
+    "expectedNormalizedQuery": "responsibility",
+    "expectedType": "concept_match",
+    "expectedMethod": "exact_alias",
+    "expectedQueryType": "exact_concept_query",
+    "expectedInterpretation": null,
+    "expectedConceptId": "responsibility"
+  },
+  {
+    "name": "duty_exact",
+    "input": "duty",
+    "expectedNormalizedQuery": "duty",
+    "expectedType": "concept_match",
+    "expectedMethod": "exact_alias",
+    "expectedQueryType": "exact_concept_query",
+    "expectedInterpretation": null,
+    "expectedConceptId": "duty"
+  },
+  {
+    "name": "whitespace_only",
+    "input": "   ",
+    "expectedNormalizedQuery": "__empty__",
+    "expectedType": "no_exact_match",
+    "expectedMethod": "no_exact_match",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedInterpretation": {
+      "interpretationType": "unsupported_complex"
+    },
+    "expectedSuggestions": []
+  },
+  {
+    "name": "punctuation_only",
+    "input": "???",
+    "expectedNormalizedQuery": "__empty__",
+    "expectedType": "no_exact_match",
+    "expectedMethod": "no_exact_match",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedInterpretation": {
+      "interpretationType": "unsupported_complex"
+    },
+    "expectedSuggestions": []
+  },
+  {
+    "name": "filler_and_punctuation_only",
+    "input": "what is ???",
+    "expectedNormalizedQuery": "__empty__",
+    "expectedType": "no_exact_match",
+    "expectedMethod": "no_exact_match",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedInterpretation": {
+      "interpretationType": "unsupported_complex"
+    },
+    "expectedSuggestions": []
+  },
+  {
+    "name": "canonical_id_success",
+    "input": "concept:authority",
+    "expectedNormalizedQuery": "conceptauthority",
+    "expectedType": "concept_match",
+    "expectedMethod": "canonical_id",
+    "expectedQueryType": "canonical_id_query",
+    "expectedInterpretation": null,
+    "expectedConceptId": "authority"
+  },
+  {
+    "name": "canonical_id_failure",
+    "input": "concept:missing-id",
+    "expectedNormalizedQuery": "conceptmissing-id",
+    "expectedType": "no_exact_match",
+    "expectedMethod": "no_exact_match",
+    "expectedQueryType": "canonical_id_query",
+    "expectedInterpretation": {
+      "interpretationType": "canonical_lookup_not_found",
+      "targetConceptId": "missing-id"
+    },
+    "expectedSuggestions": []
+  },
+  {
+    "name": "authored_ambiguity_obligation",
+    "input": "obligation",
+    "expectedNormalizedQuery": "obligation",
+    "expectedType": "ambiguous_match",
+    "expectedMethod": "author_defined_disambiguation",
+    "expectedQueryType": "ambiguity_query",
+    "expectedInterpretation": {
+      "interpretationType": "ambiguous_selection",
+      "concepts": [
+        "duty",
+        "responsibility"
+      ]
+    },
+    "expectedCandidates": [
+      "duty",
+      "responsibility"
+    ]
+  },
+  {
+    "name": "authored_suggestion_civic_duty",
+    "input": "civic duty",
+    "expectedNormalizedQuery": "civic duty",
+    "expectedType": "no_exact_match",
+    "expectedMethod": "no_exact_match",
+    "expectedQueryType": "subtype_query",
+    "expectedInterpretation": {
+      "interpretationType": "narrower_subtype",
+      "baseConcept": "duty",
+      "modifier": "civic"
+    },
+    "expectedSuggestions": [
+      {
+        "conceptId": "duty",
+        "reason": "broader_topic"
+      }
+    ]
+  },
+  {
+    "name": "unknown_term",
+    "input": "unknown term",
+    "expectedNormalizedQuery": "unknown term",
+    "expectedType": "no_exact_match",
+    "expectedMethod": "no_exact_match",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedInterpretation": {
+      "interpretationType": "unsupported_complex"
+    },
+    "expectedSuggestions": []
+  }
+]

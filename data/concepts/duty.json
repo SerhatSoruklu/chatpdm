@@ -1,0 +1,80 @@
+{
+  "conceptId": "duty",
+  "title": "Duty",
+  "version": 1,
+  "domain": "governance-structures",
+  "shortDefinition": "Duty is required conduct owed by an actor under a rule, role, or obligation.",
+  "coreMeaning": "Duty functions by attaching a required line of conduct to a position, office, or binding norm. It concerns what must be done or refrained from, not who is answerable for all resulting outcomes.",
+  "fullDefinition": "Duty is not identical to responsibility. Responsibility links an actor to answerability; duty specifies conduct that is owed under a rule, role, office, or obligation.\n\nIts internal structure joins requirement to an actor through a binding source. The concept therefore concerns directive obligation rather than mere preference or capacity.\n\nWithin a system, duty stabilizes expected conduct by marking what is required before action occurs. Whether failure produces broader responsibility is a further question, not the definition of duty itself.",
+  "contexts": [
+    {
+      "label": "legal",
+      "explanation": "Duty marks conduct required under formal rule and enforceable obligation."
+    },
+    {
+      "label": "office",
+      "explanation": "Duty marks conduct required by holding a position, office, or assigned function."
+    },
+    {
+      "label": "normative",
+      "explanation": "Duty marks conduct treated as owed under a binding standard rather than optional choice."
+    }
+  ],
+  "sources": [
+    {
+      "id": "oxford-languages-duty",
+      "label": "Oxford Languages",
+      "type": "dictionary",
+      "usedFor": "definition boundary for required conduct and obligation"
+    },
+    {
+      "id": "hohfeld-fundamental-legal-conceptions",
+      "label": "Wesley Newcomb Hohfeld, Fundamental Legal Conceptions",
+      "type": "book",
+      "usedFor": "structural grounding for duty as owed conduct under a binding relation"
+    }
+  ],
+  "relatedConcepts": [
+    {
+      "conceptId": "responsibility",
+      "relationType": "contrast"
+    },
+    {
+      "conceptId": "authority",
+      "relationType": "extension"
+    }
+  ],
+  "reviewMetadata": {
+    "what_it_is": [
+      "required conduct",
+      "owed action or restraint",
+      "binding role or rule requirement"
+    ],
+    "what_it_is_not": [
+      "generic answerability",
+      "mere preference",
+      "mere capacity"
+    ],
+    "must_not_collapse_into": [
+      "responsibility"
+    ],
+    "related_concepts": [
+      "responsibility",
+      "authority",
+      "law"
+    ],
+    "contrast_prompts": [
+      "duty vs responsibility",
+      "duty without responsibility",
+      "what makes conduct a duty"
+    ]
+  },
+  "aliases": [
+    "duty",
+    "what is duty",
+    "define duty"
+  ],
+  "normalizedAliases": [
+    "duty"
+  ]
+}

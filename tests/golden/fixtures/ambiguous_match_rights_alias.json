@@ -1,0 +1,43 @@
+{
+  "type": "ambiguous_match",
+  "query": "rights",
+  "normalizedQuery": "rights",
+  "contractVersion": "v1.1",
+  "normalizerVersion": "2026-03-27.v1",
+  "matcherVersion": "2026-03-27.v2",
+  "conceptSetVersion": "20260327.2",
+  "resolution": {
+    "method": "ambiguous_alias"
+  },
+  "message": "Multiple canonical concepts match this query. Choose one to continue.",
+  "candidates": [
+    {
+      "conceptId": "rights",
+      "title": "Rights",
+      "shortDefinition": "Rights are recognized claims or entitlements that a person or group may hold.",
+      "basis": "shared_alias"
+    },
+    {
+      "conceptId": "human-rights",
+      "title": "Human Rights",
+      "shortDefinition": "Human rights are basic claims attached to persons by virtue of being human.",
+      "basis": "shared_alias"
+    },
+    {
+      "conceptId": "legal-rights",
+      "title": "Legal Rights",
+      "shortDefinition": "Legal rights are claims or protections recognized within a legal system.",
+      "basis": "author_defined_disambiguation"
+    }
+  ],
+  "queryType": "ambiguity_query",
+  "interpretation": {
+    "interpretationType": "ambiguous_selection",
+    "concepts": [
+      "rights",
+      "human-rights",
+      "legal-rights"
+    ],
+    "message": "This query matches multiple authored concepts and requires an explicit choice."
+  }
+}

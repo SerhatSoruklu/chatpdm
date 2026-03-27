@@ -1,0 +1,43 @@
+{
+  "type": "ambiguous_match",
+  "query": "order",
+  "normalizedQuery": "order",
+  "contractVersion": "v1.1",
+  "normalizerVersion": "2026-03-27.v1",
+  "matcherVersion": "2026-03-27.v2",
+  "conceptSetVersion": "20260327.2",
+  "resolution": {
+    "method": "ambiguous_alias"
+  },
+  "message": "Multiple canonical concepts match this query. Choose one to continue.",
+  "candidates": [
+    {
+      "conceptId": "order",
+      "title": "Order",
+      "shortDefinition": "Order is an arranged condition in which elements are placed, related, or sequenced in a stable way.",
+      "basis": "shared_alias"
+    },
+    {
+      "conceptId": "social-order",
+      "title": "Social Order",
+      "shortDefinition": "Social order is the patterned stability of roles, expectations, and relations inside a society.",
+      "basis": "shared_alias"
+    },
+    {
+      "conceptId": "public-order",
+      "title": "Public Order",
+      "shortDefinition": "Public order is the maintained condition of civic stability, safety, and enforceable peace in public life.",
+      "basis": "author_defined_disambiguation"
+    }
+  ],
+  "queryType": "ambiguity_query",
+  "interpretation": {
+    "interpretationType": "ambiguous_selection",
+    "concepts": [
+      "order",
+      "social-order",
+      "public-order"
+    ],
+    "message": "This query matches multiple authored concepts and requires an explicit choice."
+  }
+}

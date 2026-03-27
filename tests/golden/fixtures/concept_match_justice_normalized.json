@@ -1,0 +1,82 @@
+{
+  "type": "concept_match",
+  "query": "  Define JUSTICE. ",
+  "normalizedQuery": "justice",
+  "contractVersion": "v1.1",
+  "normalizerVersion": "2026-03-27.v1",
+  "matcherVersion": "2026-03-27.v2",
+  "conceptSetVersion": "20260327.2",
+  "resolution": {
+    "method": "normalized_alias",
+    "conceptId": "justice",
+    "conceptVersion": 2
+  },
+  "answer": {
+    "title": "Justice",
+    "shortDefinition": "Justice is the fair ordering of claims, duties, treatment, and consequences within a shared system.",
+    "coreMeaning": "Justice concerns what counts as fair, rightful, and properly balanced in human arrangements.",
+    "fullDefinition": "Justice refers to principles and practices used to judge fairness, right treatment, and the proper distribution of duties, claims, protections, or consequences within a moral, legal, or political order.",
+    "contexts": [
+      {
+        "label": "moral",
+        "appliesTo": [
+          "conduct",
+          "obligation"
+        ]
+      },
+      {
+        "label": "legal",
+        "appliesTo": [
+          "courts",
+          "procedure"
+        ]
+      },
+      {
+        "label": "political",
+        "appliesTo": [
+          "institutions",
+          "distribution"
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "id": "source-oxford-languages",
+        "label": "Oxford Languages",
+        "type": "dictionary",
+        "usedFor": "definition grounding"
+      },
+      {
+        "id": "source-rawls99",
+        "label": "John Rawls, A Theory of Justice",
+        "type": "book",
+        "usedFor": "concept review"
+      },
+      {
+        "id": "source-sandel-justice",
+        "label": "Michael Sandel, Justice: What's the Right Thing to Do?",
+        "type": "book",
+        "usedFor": "context review"
+      }
+    ],
+    "relatedConcepts": [
+      {
+        "conceptId": "fairness",
+        "title": "Fairness",
+        "relationType": "see_also"
+      },
+      {
+        "conceptId": "rights",
+        "title": "Rights",
+        "relationType": "extension"
+      },
+      {
+        "conceptId": "law",
+        "title": "Law",
+        "relationType": "contrast"
+      }
+    ]
+  },
+  "queryType": "exact_concept_query",
+  "interpretation": null
+}

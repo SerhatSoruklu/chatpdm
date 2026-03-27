@@ -1,0 +1,82 @@
+{
+  "conceptId": "legitimacy",
+  "title": "Legitimacy",
+  "version": 1,
+  "domain": "relational-structures",
+  "shortDefinition": "Legitimacy is accepted validity of a claim, rule, office, or standing within a defined order.",
+  "coreMeaning": "Legitimacy functions by marking an exercise of standing or rule as valid rather than merely operative. It concerns justification and acceptance, not the possession of force or the existence of a directive role by itself.",
+  "fullDefinition": "Legitimacy is not the same as authority. Authority is the recognized right or standing to direct; legitimacy concerns whether that standing, rule, or claim counts as valid.\n\nIts internal composition joins acceptance or justification to a rule, office, institution, or order. The concept therefore evaluates standing rather than conferring capacity.\n\nWithin a system, legitimacy stabilizes obedience, trust, and continuity by making power and authority count as valid. Power may operate without it, and authority may exist while its legitimacy is contested.",
+  "contexts": [
+    {
+      "label": "political",
+      "explanation": "Legitimacy concerns whether rule or governing standing is treated as valid within an order."
+    },
+    {
+      "label": "institutional",
+      "explanation": "Legitimacy concerns whether decisions, offices, or procedures are accepted as properly grounded."
+    },
+    {
+      "label": "normative",
+      "explanation": "Legitimacy concerns valid standing under accepted standards rather than mere effectiveness."
+    }
+  ],
+  "sources": [
+    {
+      "id": "oxford-languages-legitimacy",
+      "label": "Oxford Languages",
+      "type": "dictionary",
+      "usedFor": "definition boundary for accepted validity and proper standing"
+    },
+    {
+      "id": "beetham-the-legitimation-of-power",
+      "label": "David Beetham, The Legitimation of Power",
+      "type": "book",
+      "usedFor": "structural distinction between valid standing and mere operative power"
+    }
+  ],
+  "relatedConcepts": [
+    {
+      "conceptId": "authority",
+      "relationType": "contrast"
+    },
+    {
+      "conceptId": "power",
+      "relationType": "contrast"
+    }
+  ],
+  "reviewMetadata": {
+    "what_it_is": [
+      "accepted validity",
+      "justified standing",
+      "proper claim within an order"
+    ],
+    "what_it_is_not": [
+      "recognized office itself",
+      "mere effective capacity",
+      "personal trust alone"
+    ],
+    "must_not_collapse_into": [
+      "authority",
+      "power",
+      "trust"
+    ],
+    "related_concepts": [
+      "authority",
+      "power",
+      "law"
+    ],
+    "contrast_prompts": [
+      "legitimacy vs authority",
+      "legitimacy vs power",
+      "legitimate but no authority"
+    ]
+  },
+  "aliases": [
+    "legitimacy",
+    "what is legitimacy",
+    "define legitimacy"
+  ],
+  "normalizedAliases": [
+    "legitimacy"
+  ]
+}

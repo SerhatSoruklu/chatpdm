@@ -1,0 +1,60 @@
+{
+  "slug": "authority",
+  "title": "Authority",
+  "status": "draft",
+  "version": 1,
+  "domain": "language-concepts",
+  "aliases": [
+    "authority",
+    "what is authority",
+    "authority meaning",
+    "define authority"
+  ],
+  "definition": {
+    "short": "The recognized right to direct, decide, or govern within a defined structure.",
+    "full": "Authority refers to a recognized and accepted right to make decisions, set direction, or govern within a social, legal, institutional, or relational context."
+  },
+  "coreMeaning": "Legitimate decision-making power within a recognized context.",
+  "contexts": [
+    "social",
+    "institutional",
+    "legal",
+    "political"
+  ],
+  "relatedConcepts": [
+    "power",
+    "legitimacy",
+    "responsibility"
+  ],
+  "sourceReferences": [
+    {
+      "id": "source-oxford-languages",
+      "label": "Oxford Languages",
+      "type": "dictionary",
+      "location": "licensed-or-editorial-reference",
+      "usedFor": "definition grounding",
+      "notes": "Reference input only. Runtime output should use internal wording."
+    },
+    {
+      "id": "source-rawls-1999",
+      "label": "John Rawls, A Theory of Justice",
+      "type": "book",
+      "location": "chatpdm-reference/rawls/rawls99.pdf",
+      "usedFor": "perspective grounding",
+      "notes": "Optional layer only."
+    }
+  ],
+  "perspectives": [
+    {
+      "source": "Rawls",
+      "summary": "Authority should remain publicly justifiable through fairness.",
+      "status": "optional",
+      "notes": "Secondary interpretation layer."
+    }
+  ],
+  "meta": {
+    "createdAt": "2026-03-27T00:00:00.000Z",
+    "updatedAt": "2026-03-27T00:00:00.000Z",
+    "reviewState": "editorial-draft"
+  }
+}

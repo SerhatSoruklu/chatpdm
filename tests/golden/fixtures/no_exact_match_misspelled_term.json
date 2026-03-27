@@ -1,0 +1,25 @@
+{
+  "type": "no_exact_match",
+  "query": "autorityyy",
+  "normalizedQuery": "autorityyy",
+  "contractVersion": "v1.1",
+  "normalizerVersion": "2026-03-27.v1",
+  "matcherVersion": "2026-03-27.v2",
+  "conceptSetVersion": "20260327.2",
+  "resolution": {
+    "method": "no_exact_match"
+  },
+  "message": "No exact canonical concept match was found for this query.",
+  "suggestions": [
+    {
+      "conceptId": "authority",
+      "title": "Authority",
+      "reason": "similar_term"
+    }
+  ],
+  "queryType": "unsupported_complex_query",
+  "interpretation": {
+    "interpretationType": "unsupported_complex",
+    "message": "This query does not match a supported concept query form in the current runtime."
+  }
+}

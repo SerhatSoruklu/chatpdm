@@ -1,0 +1,32 @@
+{
+  "name": "@chatpdm/backend",
+  "version": "1.0.0",
+  "description": "Express shell for the ChatPDM workspace.",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "nodemon --watch src --watch scripts --ext js,json src/server.js",
+    "start": "node src/server.js",
+    "build": "npm run check",
+    "check": "node scripts/verify-shell.js && node scripts/verify-resolver.js && node scripts/verify-feedback.js",
+    "pressure:semantic": "node ../tests/runtime/run-query-stress.js",
+    "test": "node scripts/verify-resolver.js && node scripts/verify-feedback.js"
+  },
+  "keywords": [
+    "chatpdm",
+    "express",
+    "deterministic",
+    "api"
+  ],
+  "author": "",
+  "license": "UNLICENSED",
+  "type": "commonjs",
+  "dependencies": {
+    "ajv": "^8.18.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}

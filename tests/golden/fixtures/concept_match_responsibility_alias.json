@@ -1,0 +1,71 @@
+{
+  "type": "concept_match",
+  "query": "meaning of responsibility",
+  "normalizedQuery": "responsibility",
+  "contractVersion": "v1.1",
+  "normalizerVersion": "2026-03-27.v1",
+  "matcherVersion": "2026-03-27.v2",
+  "conceptSetVersion": "20260327.2",
+  "resolution": {
+    "method": "normalized_alias",
+    "conceptId": "responsibility",
+    "conceptVersion": 1
+  },
+  "answer": {
+    "title": "Responsibility",
+    "shortDefinition": "Responsibility is an obligation or answerability attached to a role, action, decision, or relationship.",
+    "coreMeaning": "Responsibility links agency to duty, accountability, and expected response.",
+    "fullDefinition": "Responsibility refers to the duty, obligation, or answerability attached to what a person, office, or institution does, decides, or fails to do within a defined context.",
+    "contexts": [
+      {
+        "label": "moral",
+        "appliesTo": [
+          "conduct",
+          "duty"
+        ]
+      },
+      {
+        "label": "legal",
+        "appliesTo": [
+          "liability",
+          "obligation"
+        ]
+      },
+      {
+        "label": "relational",
+        "appliesTo": [
+          "care",
+          "trust"
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "id": "source-cambridge-usage-note",
+        "label": "Cambridge usage note",
+        "type": "article",
+        "usedFor": "definition grounding"
+      },
+      {
+        "id": "source-chatpdm-editorial-canon",
+        "label": "ChatPDM editorial canon",
+        "type": "internal",
+        "usedFor": "normalization review"
+      }
+    ],
+    "relatedConcepts": [
+      {
+        "conceptId": "duty",
+        "title": "Duty",
+        "relationType": "prerequisite"
+      },
+      {
+        "conceptId": "accountability",
+        "title": "Accountability",
+        "relationType": "extension"
+      }
+    ]
+  },
+  "queryType": "exact_concept_query",
+  "interpretation": null
+}

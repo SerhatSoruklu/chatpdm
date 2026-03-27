@@ -1,0 +1,69 @@
+{
+  "type": "concept_match",
+  "query": "concept:power",
+  "normalizedQuery": "conceptpower",
+  "contractVersion": "v1.1",
+  "normalizerVersion": "2026-03-27.v1",
+  "matcherVersion": "2026-03-27.v2",
+  "conceptSetVersion": "20260327.2",
+  "resolution": {
+    "method": "canonical_id",
+    "conceptId": "power",
+    "conceptVersion": 4
+  },
+  "answer": {
+    "title": "Power",
+    "shortDefinition": "Power is the capacity to shape outcomes, behavior, or conditions within a relationship or system.",
+    "coreMeaning": "Power concerns effective capacity, not necessarily recognized legitimacy.",
+    "fullDefinition": "Power refers to the capacity to influence, direct, constrain, or alter outcomes within a social, political, institutional, or personal setting. It may exist with or without recognized authority.",
+    "contexts": [
+      {
+        "label": "social",
+        "appliesTo": [
+          "groups",
+          "status"
+        ]
+      },
+      {
+        "label": "political",
+        "appliesTo": [
+          "state",
+          "public office"
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "id": "source-oxford-languages",
+        "label": "Oxford Languages",
+        "type": "dictionary",
+        "usedFor": "definition grounding"
+      },
+      {
+        "id": "source-marx-capital",
+        "label": "Karl Marx, Capital Volume I",
+        "type": "book",
+        "usedFor": "context review"
+      }
+    ],
+    "relatedConcepts": [
+      {
+        "conceptId": "authority",
+        "title": "Authority",
+        "relationType": "contrast"
+      },
+      {
+        "conceptId": "control",
+        "title": "Control",
+        "relationType": "extension"
+      },
+      {
+        "conceptId": "legitimacy",
+        "title": "Legitimacy",
+        "relationType": "see_also"
+      }
+    ]
+  },
+  "queryType": "canonical_id_query",
+  "interpretation": null
+}

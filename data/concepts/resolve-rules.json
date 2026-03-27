@@ -1,0 +1,22 @@
+{
+  "authorDefinedDisambiguations": [
+    {
+      "normalizedQuery": "obligation",
+      "candidateConceptIds": [
+        "duty",
+        "responsibility"
+      ]
+    }
+  ],
+  "authorDefinedSuggestions": [
+    {
+      "normalizedQuery": "civic duty",
+      "suggestions": [
+        {
+          "conceptId": "duty",
+          "reason": "broader_topic"
+        }
+      ]
+    }
+  ]
+}

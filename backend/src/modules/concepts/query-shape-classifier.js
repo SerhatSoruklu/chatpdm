@@ -1,0 +1,366 @@
+'use strict';
+
+const { EMPTY_NORMALIZED_QUERY } = require('./constants');
+const { extractCanonicalId, normalizeQuery } = require('./normalizer');
+
+const COMPARISON_KEYWORDS = Object.freeze([
+  ' vs ',
+  ' versus ',
+  ' or ',
+]);
+
+const RELATION_KEYWORDS = Object.freeze([
+  ' without ',
+  ' with no ',
+  ' under ',
+  ' over ',
+  ' against ',
+  ' between ',
+]);
+
+const ROLE_PREFIXES = Object.freeze([
+  'who has ',
+  'who holds ',
+  'who governs ',
+  'who decides ',
+  'who ',
+]);
+
+const NON_SUBTYPE_PREFIXES = Object.freeze([
+  'why ',
+  'how ',
+  'when ',
+  'where ',
+  'which ',
+  'can ',
+  'could ',
+  'should ',
+  'would ',
+  'is ',
+  'are ',
+  'was ',
+  'were ',
+  'do ',
+  'does ',
+  'did ',
+  'tell me ',
+  'explain ',
+  'show me ',
+  'give me ',
+]);
+
+function escapePattern(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function uniqueStrings(values) {
+  return [...new Set(values)];
+}
+
+function buildTermEntries(concepts) {
+  const entries = [];
+
+  for (const concept of concepts) {
+    const terms = new Set([
+      normalizeQuery(concept.conceptId),
+      normalizeQuery(concept.title),
+      ...concept.normalizedAliases.map((alias) => normalizeQuery(alias)),
+    ]);
+
+    for (const term of terms) {
+      if (term !== EMPTY_NORMALIZED_QUERY && term.trim() !== '') {
+        entries.push({
+          conceptId: concept.conceptId,
+          term,
+        });
+      }
+    }
+  }
+
+  return entries.sort((left, right) => right.term.length - left.term.length);
+}
+
+function detectMentionedConcepts(normalizedQuery, termEntries) {
+  const conceptMatches = new Map();
+
+  for (const entry of termEntries) {
+    const pattern = new RegExp(`(^| )${escapePattern(entry.term)}( |$)`);
+    const match = pattern.exec(normalizedQuery);
+
+    if (match) {
+      const position = match.index + match[1].length;
+      const existingPosition = conceptMatches.get(entry.conceptId);
+
+      if (existingPosition === undefined || position < existingPosition) {
+        conceptMatches.set(entry.conceptId, position);
+      }
+    }
+  }
+
+  return [...conceptMatches.entries()]
+    .sort((left, right) => left[1] - right[1] || left[0].localeCompare(right[0]))
+    .map(([conceptId]) => conceptId);
+}
+
+function findConceptById(concepts, conceptId) {
+  return concepts.find((concept) => concept.conceptId === conceptId) || null;
+}
+
+function findSubtypeCandidate(normalizedQuery, concepts, termEntries) {
+  for (const entry of termEntries) {
+    if (
+      normalizedQuery === entry.term
+      || !normalizedQuery.endsWith(` ${entry.term}`)
+    ) {
+      continue;
+    }
+
+    const modifier = normalizedQuery.slice(0, -entry.term.length).trim();
+
+    if (
+      modifier === ''
+      || NON_SUBTYPE_PREFIXES.some((prefix) => modifier.startsWith(prefix.trim()))
+      || COMPARISON_KEYWORDS.some((keyword) => modifier.includes(keyword.trim()))
+      || RELATION_KEYWORDS.some((keyword) => modifier.includes(keyword.trim()))
+      || ROLE_PREFIXES.some((prefix) => modifier.startsWith(prefix.trim()))
+    ) {
+      continue;
+    }
+
+    return {
+      concept: findConceptById(concepts, entry.conceptId),
+      modifier,
+    };
+  }
+
+  return null;
+}
+
+function buildAmbiguityInterpretation(match) {
+  return {
+    interpretationType: 'ambiguous_selection',
+    concepts: match.candidates.map((candidate) => candidate.conceptId),
+    message: 'This query matches multiple authored concepts and requires an explicit choice.',
+  };
+}
+
+function buildSubtypeInterpretation(baseConceptId, modifier) {
+  return {
+    interpretationType: 'narrower_subtype',
+    baseConcept: baseConceptId,
+    modifier,
+    message: `This appears to be a narrower or domain-specific form of "${baseConceptId}" based on the modifier "${modifier}". No authored concept exists yet.`,
+  };
+}
+
+function buildBroaderTopicInterpretation(baseConceptId) {
+  return {
+    interpretationType: 'broader_topic',
+    baseConcept: baseConceptId,
+    message: `This query does not match an authored concept exactly. The current runtime can only point to the broader authored concept "${baseConceptId}".`,
+  };
+}
+
+function buildComparisonInterpretation(concepts) {
+  return {
+    interpretationType: 'comparison_not_supported',
+    concepts,
+    message: 'This query is a comparison between multiple concepts. Comparison output is not yet supported in the current runtime.',
+  };
+}
+
+function buildRelationInterpretation(concepts, relationTerm) {
+  return {
+    interpretationType: 'relation_not_supported',
+    concepts,
+    relationTerm,
+    message: 'This query expresses a relationship between concepts. The current system does not evaluate inter-concept relations yet.',
+  };
+}
+
+function buildRoleInterpretation(baseConcept, actorTerm = 'who') {
+  return {
+    interpretationType: 'role_or_actor_not_supported',
+    baseConcept,
+    actorTerm,
+    message: 'This query refers to actors or holders of a concept. The current system defines concepts, not instances or actors.',
+  };
+}
+
+function buildUnsupportedInterpretation() {
+  return {
+    interpretationType: 'unsupported_complex',
+    message: 'This query does not match a supported concept query form in the current runtime.',
+  };
+}
+
+function buildCanonicalLookupNotFoundInterpretation(targetConceptId) {
+  if (targetConceptId === '') {
+    return {
+      interpretationType: 'canonical_lookup_not_found',
+      message: 'This query uses direct canonical lookup, but no authored concept ID was provided.',
+    };
+  }
+
+  return {
+    interpretationType: 'canonical_lookup_not_found',
+    targetConceptId,
+    message: `This query uses direct canonical lookup, but no authored concept exists for "${targetConceptId}".`,
+  };
+}
+
+function detectComparison(normalizedQuery, mentionedConcepts) {
+  if (mentionedConcepts.length < 2) {
+    return null;
+  }
+
+  const keyword = COMPARISON_KEYWORDS.find((candidate) => normalizedQuery.includes(candidate));
+  if (!keyword) {
+    return null;
+  }
+
+  return {
+    concepts: mentionedConcepts,
+  };
+}
+
+function detectRelation(normalizedQuery, mentionedConcepts) {
+  if (mentionedConcepts.length < 2) {
+    return null;
+  }
+
+  const keyword = RELATION_KEYWORDS.find((candidate) => normalizedQuery.includes(candidate));
+  if (!keyword) {
+    return null;
+  }
+
+  return {
+    concepts: mentionedConcepts,
+    relationTerm: keyword.trim(),
+  };
+}
+
+function detectRoleOrActor(normalizedQuery, mentionedConcepts) {
+  const prefix = ROLE_PREFIXES.find((candidate) => normalizedQuery.startsWith(candidate));
+  if (!prefix || mentionedConcepts.length < 1) {
+    return null;
+  }
+
+  return {
+    baseConcept: mentionedConcepts[mentionedConcepts.length - 1],
+    actorTerm: prefix.trim(),
+  };
+}
+
+function detectBroaderTopicSuggestion(normalizedQuery, resolveRules) {
+  const rule = resolveRules.authorDefinedSuggestions.find(
+    (candidate) => candidate.normalizedQuery === normalizedQuery,
+  );
+
+  if (!rule || rule.suggestions.length === 0) {
+    return null;
+  }
+
+  if (!rule.suggestions.every((suggestion) => suggestion.reason === 'broader_topic')) {
+    return null;
+  }
+
+  return {
+    baseConcept: rule.suggestions[0].conceptId,
+  };
+}
+
+function classifyQueryShape({ rawQuery, normalizedQuery, concepts, resolveRules, match }) {
+  if (typeof rawQuery !== 'string' || rawQuery.length === 0) {
+    return {
+      queryType: 'invalid_input',
+      interpretation: null,
+    };
+  }
+
+  const canonicalId = extractCanonicalId(rawQuery);
+  if (canonicalId !== null) {
+    return {
+      queryType: 'canonical_id_query',
+      interpretation: match.type === 'no_exact_match'
+        ? buildCanonicalLookupNotFoundInterpretation(canonicalId)
+        : null,
+    };
+  }
+
+  if (match.type === 'ambiguous_match') {
+    return {
+      queryType: 'ambiguity_query',
+      interpretation: buildAmbiguityInterpretation(match),
+    };
+  }
+
+  if (match.type === 'concept_match') {
+    return {
+      queryType: 'exact_concept_query',
+      interpretation: null,
+    };
+  }
+
+  const termEntries = buildTermEntries(concepts);
+  const mentionedConcepts = detectMentionedConcepts(normalizedQuery, termEntries);
+
+  const roleQuery = detectRoleOrActor(normalizedQuery, mentionedConcepts);
+  if (roleQuery) {
+    return {
+      queryType: 'role_or_actor_query',
+      interpretation: buildRoleInterpretation(roleQuery.baseConcept, roleQuery.actorTerm),
+    };
+  }
+
+  const comparisonQuery = detectComparison(normalizedQuery, mentionedConcepts);
+  if (comparisonQuery) {
+    return {
+      queryType: 'comparison_query',
+      interpretation: buildComparisonInterpretation(comparisonQuery.concepts),
+    };
+  }
+
+  const relationQuery = detectRelation(normalizedQuery, mentionedConcepts);
+  if (relationQuery) {
+    return {
+      queryType: 'relation_query',
+      interpretation: buildRelationInterpretation(relationQuery.concepts, relationQuery.relationTerm),
+    };
+  }
+
+  const subtypeCandidate = findSubtypeCandidate(normalizedQuery, concepts, termEntries);
+  if (subtypeCandidate?.concept) {
+    return {
+      queryType: 'subtype_query',
+      interpretation: buildSubtypeInterpretation(
+        subtypeCandidate.concept.conceptId,
+        subtypeCandidate.modifier,
+      ),
+    };
+  }
+
+  const broaderTopic = detectBroaderTopicSuggestion(normalizedQuery, resolveRules);
+  if (broaderTopic) {
+    return {
+      queryType: 'broader_topic_query',
+      interpretation: buildBroaderTopicInterpretation(broaderTopic.baseConcept),
+    };
+  }
+
+  if (normalizedQuery === EMPTY_NORMALIZED_QUERY) {
+    return {
+      queryType: 'unsupported_complex_query',
+      interpretation: buildUnsupportedInterpretation(),
+    };
+  }
+
+  return {
+    queryType: 'unsupported_complex_query',
+    interpretation: buildUnsupportedInterpretation(),
+  };
+}
+
+module.exports = {
+  classifyQueryShape,
+};

@@ -1,0 +1,456 @@
+<div class="pdm-beta">
+  <div class="pdm-beta__grain" aria-hidden="true"></div>
+  <div class="pdm-beta__orb pdm-beta__orb--north" aria-hidden="true"></div>
+  <div class="pdm-beta__orb pdm-beta__orb--south" aria-hidden="true"></div>
+  <div class="pdm-beta__rail pdm-beta__rail--left" aria-hidden="true"></div>
+  <div class="pdm-beta__rail pdm-beta__rail--right" aria-hidden="true"></div>
+
+  <main class="pdm-shell pdm-shell--hero pdm-beta__main">
+    <div class="pdm-shell__frame pdm-beta__frame">
+      @if (!hasConversation()) {
+        <section class="pdm-beta__welcome" aria-labelledby="pdm-beta-title">
+          <header class="pdm-beta__welcome-header">
+            <div class="pdm-beta__status-row">
+              <span class="pdm-beta__status-badge">
+                <span class="pdm-beta__status-dot" aria-hidden="true"></span>
+                Beta
+              </span>
+              <span class="pdm-beta__status-line">In beta. Deterministic answers within a bounded concept set.</span>
+            </div>
+
+            <p class="pdm-beta__eyebrow">ChatPDM</p>
+            <h1 class="pdm-beta__title" id="pdm-beta-title">A live query surface for a bounded meaning engine.</h1>
+            <p class="pdm-beta__lead">
+              ChatPDM resolves authored concepts into fixed responses. It stays concept-scoped, returns explicit
+              ambiguity when needed, and does not improvise beyond the current set.
+            </p>
+
+            <div class="pdm-beta__meta">
+              <span>Live runtime: {{ liveConceptCount }} concepts</span>
+              <span>Locked v1 scope: {{ scopedConceptCount }} concepts</span>
+              <span>Deterministic beta surface</span>
+            </div>
+          </header>
+
+          <section class="pdm-beta__welcome-composer">
+            <div class="pdm-beta__composer-card">
+              <div class="pdm-beta__composer-head">
+                <div>
+                  <p class="pdm-beta__panel-label">Start a query</p>
+                  <h2 class="pdm-beta__panel-title">Ask inside the bounded concept set</h2>
+                </div>
+                <p class="pdm-beta__panel-note">
+                  Try a direct concept, an authored ambiguity case, or a deterministic no-match case.
+                </p>
+              </div>
+
+              <form class="pdm-beta__composer" (ngSubmit)="submitDraft()">
+                <label class="pdm-beta__sr-only" for="pdm-query-input">Concept query</label>
+                <textarea
+                  id="pdm-query-input"
+                  class="pdm-beta__input"
+                  name="query"
+                  rows="3"
+                  [ngModel]="queryDraft()"
+                  (ngModelChange)="queryDraft.set($event)"
+                  placeholder="Try authority, define legitimacy, obligation, or civic duty"
+                ></textarea>
+
+                <div class="pdm-beta__composer-actions">
+                  <div class="pdm-beta__examples" aria-label="Suggested beta queries">
+                    @for (example of starterQueries; track example.query) {
+                      <button
+                        class="pdm-beta__example"
+                        type="button"
+                        [disabled]="isSubmitting()"
+                        (click)="submitQuery(example.query)"
+                      >
+                        {{ example.label }}
+                      </button>
+                    }
+                  </div>
+
+                  <button
+                    class="pdm-beta__submit"
+                    type="submit"
+                    [disabled]="isSubmitting() || !queryDraft().trim()"
+                  >
+                    {{ isSubmitting() ? 'Resolving…' : 'Resolve concept' }}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </section>
+
+          <section class="pdm-beta__welcome-scope">
+            <div class="pdm-beta__scope-card">
+              <div class="pdm-beta__scope-intro">
+                <div>
+                  <p class="pdm-beta__panel-label">Visible scope</p>
+                  <h2 class="pdm-beta__panel-title">Bounded, visible, and deliberate</h2>
+                </div>
+                <p class="pdm-beta__scope-note">
+                  Live chips are marked explicitly. The locked v1 scope remains visible so the beta does not overclaim support.
+                </p>
+              </div>
+
+              <ng-container [ngTemplateOutlet]="scopePanel"></ng-container>
+            </div>
+          </section>
+        </section>
+      } @else {
+        <section class="pdm-beta__chat">
+          <header class="pdm-beta__chat-header">
+            <div class="pdm-beta__chat-header-copy">
+              <p class="pdm-beta__chat-kicker">ChatPDM Beta</p>
+              <h1 class="pdm-beta__chat-title">Deterministic concept resolution</h1>
+              <p class="pdm-beta__chat-line">Live runtime: {{ liveConceptCount }} concepts. Locked v1 scope: {{ scopedConceptCount }}.</p>
+            </div>
+
+            <button class="pdm-beta__scope-toggle" type="button" (click)="toggleScopePanel()">
+              {{ scopePanelOpen() ? 'Hide scope' : 'Show scope' }}
+            </button>
+          </header>
+
+          @if (scopePanelOpen()) {
+            <section class="pdm-beta__scope-sheet">
+              <div class="pdm-beta__scope-card">
+                <div class="pdm-beta__scope-intro">
+                  <div>
+                    <p class="pdm-beta__panel-label">Scope</p>
+                    <h2 class="pdm-beta__panel-title">Current concept boundary</h2>
+                  </div>
+                  <p class="pdm-beta__scope-note">Visible for expectation-setting, secondary to the live conversation flow.</p>
+                </div>
+
+                <ng-container [ngTemplateOutlet]="scopePanel"></ng-container>
+              </div>
+            </section>
+          }
+
+          <div class="pdm-beta__chat-grid">
+            <section class="pdm-beta__conversation" aria-label="ChatPDM conversation stream">
+              @for (entry of entries(); track trackByEntry($index, entry)) {
+                <article class="pdm-beta__turn" [class.pdm-beta__turn--history]="isPastEntry(entry)">
+                  <div class="pdm-beta__user-row">
+                    <section class="pdm-beta__query-card">
+                      <p class="pdm-beta__card-label">You asked</p>
+                      <p class="pdm-beta__query-text">{{ entry.submittedQuery }}</p>
+                    </section>
+                  </div>
+
+                  <div class="pdm-beta__system-row">
+                    @if (entry.status === 'loading') {
+                      <section class="pdm-beta__response-card pdm-beta__response-card--loading" aria-live="polite">
+                        <div class="pdm-beta__loading-mark" aria-hidden="true"></div>
+                        <div>
+                          <p class="pdm-beta__card-label">ChatPDM</p>
+                          <p class="pdm-beta__loading-text">Checking the current authored concept set.</p>
+                        </div>
+                      </section>
+                    }
+
+                    @if (entry.status === 'error') {
+                      <section class="pdm-beta__response-card pdm-beta__response-card--error">
+                        <p class="pdm-beta__card-label">System state</p>
+                        <h2 class="pdm-beta__response-title">Resolver unavailable</h2>
+                        <p class="pdm-beta__response-copy">{{ entry.errorMessage }}</p>
+                      </section>
+                    }
+
+                    @if (entry.status === 'success' && entry.response; as response) {
+                      @if (response.type === 'concept_match') {
+                        <section class="pdm-beta__response-card">
+                          <div class="pdm-beta__response-head">
+                            <div>
+                              <p class="pdm-beta__card-label">{{ responseLabel(response) }}</p>
+                              <h2 class="pdm-beta__response-title">{{ asConceptMatch(response).answer.title }}</h2>
+                            </div>
+                          </div>
+
+                          <div class="pdm-beta__definition-stack">
+                            <section class="pdm-beta__definition-block">
+                              <p class="pdm-beta__block-label">Short definition</p>
+                              <p class="pdm-beta__block-copy">{{ asConceptMatch(response).answer.shortDefinition }}</p>
+                            </section>
+
+                            <section class="pdm-beta__definition-block">
+                              <p class="pdm-beta__block-label">Core meaning</p>
+                              <p class="pdm-beta__block-copy">{{ asConceptMatch(response).answer.coreMeaning }}</p>
+                            </section>
+
+                            <section class="pdm-beta__definition-block">
+                              <p class="pdm-beta__block-label">Full definition</p>
+                              @for (paragraph of asConceptMatch(response).answer.fullDefinition.split('\n\n'); track paragraph) {
+                                <p class="pdm-beta__block-copy">{{ paragraph }}</p>
+                              }
+                            </section>
+                          </div>
+
+                          <div class="pdm-beta__detail-grid">
+                            <section class="pdm-beta__detail-card">
+                              <p class="pdm-beta__block-label">Contexts</p>
+
+                              @for (context of asConceptMatch(response).answer.contexts; track context.label) {
+                                <div class="pdm-beta__context-row">
+                                  <span class="pdm-beta__context-label">{{ context.label }}</span>
+                                  @if (contextUsages(context).length > 0) {
+                                    <div class="pdm-beta__context-tags">
+                                      @for (usage of contextUsages(context); track usage) {
+                                        <span class="pdm-beta__mini-chip">{{ usage }}</span>
+                                      }
+                                    </div>
+                                  }
+                                </div>
+                              }
+                            </section>
+
+                            <section class="pdm-beta__detail-card">
+                              <p class="pdm-beta__block-label">Sources</p>
+
+                              @for (source of asConceptMatch(response).answer.sources; track source.id) {
+                                <div class="pdm-beta__source-row">
+                                  <div>
+                                    <p class="pdm-beta__source-label">{{ source.label }}</p>
+                                    <p class="pdm-beta__source-copy">{{ source.usedFor }}</p>
+                                  </div>
+                                  <span class="pdm-beta__source-type">{{ source.type }}</span>
+                                </div>
+                              }
+                            </section>
+                          </div>
+
+                          <section class="pdm-beta__related-card">
+                            <p class="pdm-beta__block-label">Related concepts</p>
+                            <div class="pdm-beta__related-grid">
+                              @for (related of asConceptMatch(response).answer.relatedConcepts; track related.conceptId) {
+                                <button
+                                  class="pdm-beta__related-item"
+                                  type="button"
+                                  [disabled]="isSubmitting()"
+                                  (click)="resolveRelatedConcept(related)"
+                                >
+                                  <span class="pdm-beta__related-title">{{ related.title }}</span>
+                                  <span class="pdm-beta__related-type">{{ relationLabel(related.relationType) }}</span>
+                                </button>
+                              }
+                            </div>
+                          </section>
+
+                          @if (entry.feedback; as feedback) {
+                            <section class="pdm-beta__feedback-card">
+                              <p class="pdm-beta__block-label">Diagnostic feedback</p>
+                              <p class="pdm-beta__feedback-question">{{ feedback.question }}</p>
+
+                              @if (feedback.status === 'submitted') {
+                                <p class="pdm-beta__feedback-state">Recorded: {{ feedbackOptionLabel(feedback) }}</p>
+                              } @else {
+                                <div class="pdm-beta__feedback-actions">
+                                  @for (option of feedback.options; track option.value) {
+                                    <button
+                                      class="pdm-beta__feedback-option"
+                                      type="button"
+                                      [disabled]="feedback.status === 'submitting'"
+                                      (click)="submitFeedback(entry.id, option)"
+                                    >
+                                      {{ option.label }}
+                                    </button>
+                                  }
+                                </div>
+
+                                @if (feedback.status === 'submitting') {
+                                  <p class="pdm-beta__feedback-state">Recording feedback…</p>
+                                }
+
+                                @if (feedback.status === 'error' && feedback.errorMessage) {
+                                  <p class="pdm-beta__feedback-error">{{ feedback.errorMessage }}</p>
+                                }
+                              }
+                            </section>
+                          }
+                        </section>
+                      }
+
+                      @if (response.type === 'ambiguous_match') {
+                        <section class="pdm-beta__response-card">
+                          <div class="pdm-beta__response-head">
+                            <div>
+                              <p class="pdm-beta__card-label">{{ responseLabel(response) }}</p>
+                              <h2 class="pdm-beta__response-title">Choose one authored concept</h2>
+                            </div>
+                          </div>
+
+                          <p class="pdm-beta__response-copy">{{ asAmbiguousMatch(response).message }}</p>
+
+                          <div class="pdm-beta__candidate-grid">
+                            @for (candidate of asAmbiguousMatch(response).candidates; track candidate.conceptId) {
+                              <button
+                                class="pdm-beta__candidate"
+                                type="button"
+                                [disabled]="isSubmitting()"
+                                (click)="resolveAmbiguousCandidate(asAmbiguousMatch(response), candidate)"
+                              >
+                                <span class="pdm-beta__candidate-title">{{ candidate.title }}</span>
+                                <span class="pdm-beta__candidate-copy">{{ candidate.shortDefinition }}</span>
+                              </button>
+                            }
+                          </div>
+                        </section>
+                      }
+
+                      @if (response.type === 'no_exact_match') {
+                        <section class="pdm-beta__response-card">
+                          <div class="pdm-beta__response-head">
+                            <div>
+                              <p class="pdm-beta__card-label">{{ responseLabel(response) }}</p>
+                              <h2 class="pdm-beta__response-title">No canonical concept resolved</h2>
+                            </div>
+                          </div>
+
+                          <p class="pdm-beta__response-copy">{{ asNoExactMatch(response).message }}</p>
+
+                          @if (asNoExactMatch(response).suggestions.length > 0) {
+                            <div class="pdm-beta__suggestion-list">
+                              @for (suggestion of asNoExactMatch(response).suggestions; track suggestion.conceptId) {
+                                <button
+                                  class="pdm-beta__suggestion"
+                                  type="button"
+                                  [disabled]="isSubmitting()"
+                                  (click)="resolveSuggestedConcept(suggestion)"
+                                >
+                                  <span class="pdm-beta__suggestion-title">{{ suggestion.title }}</span>
+                                  <span class="pdm-beta__suggestion-reason">{{ suggestionReason(suggestion.reason) }}</span>
+                                </button>
+                              }
+                            </div>
+                          } @else {
+                            <p class="pdm-beta__bounded-note">
+                              No exact concept exists in the current authored set for this query.
+                            </p>
+                          }
+
+                          @if (entry.feedback; as feedback) {
+                            <section class="pdm-beta__feedback-card">
+                              <p class="pdm-beta__block-label">Diagnostic feedback</p>
+                              <p class="pdm-beta__feedback-question">{{ feedback.question }}</p>
+
+                              @if (feedback.status === 'submitted') {
+                                <p class="pdm-beta__feedback-state">Recorded: {{ feedbackOptionLabel(feedback) }}</p>
+                              } @else {
+                                <div class="pdm-beta__feedback-actions">
+                                  @for (option of feedback.options; track option.value) {
+                                    <button
+                                      class="pdm-beta__feedback-option"
+                                      type="button"
+                                      [disabled]="feedback.status === 'submitting'"
+                                      (click)="submitFeedback(entry.id, option)"
+                                    >
+                                      {{ option.label }}
+                                    </button>
+                                  }
+                                </div>
+
+                                @if (feedback.status === 'submitting') {
+                                  <p class="pdm-beta__feedback-state">Recording feedback…</p>
+                                }
+
+                                @if (feedback.status === 'error' && feedback.errorMessage) {
+                                  <p class="pdm-beta__feedback-error">{{ feedback.errorMessage }}</p>
+                                }
+                              }
+                            </section>
+                          }
+                        </section>
+                      }
+                    }
+                  </div>
+                </article>
+              }
+            </section>
+
+            <aside class="pdm-beta__scope-rail" aria-label="ChatPDM concept scope">
+              <div class="pdm-beta__scope-card pdm-beta__scope-card--rail">
+                <div class="pdm-beta__scope-intro">
+                  <div>
+                    <p class="pdm-beta__panel-label">Scope</p>
+                    <h2 class="pdm-beta__panel-title">Current concept boundary</h2>
+                  </div>
+                  <p class="pdm-beta__scope-note">Visible, but secondary to the conversation flow.</p>
+                </div>
+
+                <ng-container [ngTemplateOutlet]="scopePanel"></ng-container>
+              </div>
+            </aside>
+
+            <section class="pdm-beta__composer-dock" aria-label="Persistent query composer">
+              <div class="pdm-beta__composer-bar">
+                <form class="pdm-beta__composer pdm-beta__composer--dock" (ngSubmit)="submitDraft()">
+                  <label class="pdm-beta__sr-only" for="pdm-query-input-dock">Concept query</label>
+                  <div class="pdm-beta__composer-bar-head">
+                    <p class="pdm-beta__panel-label">Keep querying</p>
+                    <div class="pdm-beta__examples pdm-beta__examples--dock" aria-label="Suggested beta queries">
+                      @for (example of starterQueries; track example.query) {
+                        <button
+                          class="pdm-beta__example"
+                          type="button"
+                          [disabled]="isSubmitting()"
+                          (click)="submitQuery(example.query)"
+                        >
+                          {{ example.label }}
+                        </button>
+                      }
+                    </div>
+                  </div>
+
+                  <div class="pdm-beta__composer-row">
+                    <textarea
+                      id="pdm-query-input-dock"
+                      class="pdm-beta__input pdm-beta__input--dock"
+                      name="queryDock"
+                      rows="2"
+                      [ngModel]="queryDraft()"
+                      (ngModelChange)="queryDraft.set($event)"
+                      placeholder="Ask the current concept set"
+                    ></textarea>
+
+                    <button
+                      class="pdm-beta__submit pdm-beta__submit--dock"
+                      type="submit"
+                      [disabled]="isSubmitting() || !queryDraft().trim()"
+                    >
+                      {{ isSubmitting() ? 'Resolving…' : 'Resolve' }}
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </section>
+          </div>
+        </section>
+      }
+    </div>
+  </main>
+
+  <ng-template #scopePanel>
+    <div class="pdm-beta__scope-groups">
+      @for (group of scopeGroups; track group.id) {
+        <section class="pdm-beta__scope-group">
+          <div class="pdm-beta__scope-group-head">
+            <h3>{{ group.title }}</h3>
+            <span>{{ group.concepts.length }}</span>
+          </div>
+
+          <div class="pdm-beta__scope-chips">
+            @for (concept of group.concepts; track concept) {
+              <span
+                class="pdm-beta__scope-chip"
+                [class.pdm-beta__scope-chip--live]="isLiveConcept(concept)"
+              >
+                {{ concept }}
+              </span>
+            }
+          </div>
+        </section>
+      }
+    </div>
+  </ng-template>
+</div>

@@ -1,0 +1,35 @@
+{
+  "type": "no_exact_match",
+  "query": "rights and power balance",
+  "normalizedQuery": "rights and power balance",
+  "contractVersion": "v1.1",
+  "normalizerVersion": "2026-03-27.v1",
+  "matcherVersion": "2026-03-27.v2",
+  "conceptSetVersion": "20260327.2",
+  "resolution": {
+    "method": "no_exact_match"
+  },
+  "message": "No exact canonical concept match was found for this query.",
+  "suggestions": [
+    {
+      "conceptId": "rights",
+      "title": "Rights",
+      "reason": "related_concept"
+    },
+    {
+      "conceptId": "power",
+      "title": "Power",
+      "reason": "related_concept"
+    },
+    {
+      "conceptId": "legitimacy",
+      "title": "Legitimacy",
+      "reason": "broader_topic"
+    }
+  ],
+  "queryType": "unsupported_complex_query",
+  "interpretation": {
+    "interpretationType": "unsupported_complex",
+    "message": "This query does not match a supported concept query form in the current runtime."
+  }
+}

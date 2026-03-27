@@ -1,0 +1,43 @@
+{
+  "type": "ambiguous_match",
+  "query": "control",
+  "normalizedQuery": "control",
+  "contractVersion": "v1.1",
+  "normalizerVersion": "2026-03-27.v1",
+  "matcherVersion": "2026-03-27.v2",
+  "conceptSetVersion": "20260327.2",
+  "resolution": {
+    "method": "author_defined_disambiguation"
+  },
+  "message": "Multiple canonical concepts match this query. Choose one to continue.",
+  "candidates": [
+    {
+      "conceptId": "control",
+      "title": "Control",
+      "shortDefinition": "Control is the exercised ability to direct conditions, actions, or outcomes toward a chosen end.",
+      "basis": "author_defined_disambiguation"
+    },
+    {
+      "conceptId": "power",
+      "title": "Power",
+      "shortDefinition": "Power is the capacity to shape outcomes, behavior, or conditions within a relationship or system.",
+      "basis": "normalized_overlap"
+    },
+    {
+      "conceptId": "authority",
+      "title": "Authority",
+      "shortDefinition": "Authority is recognized power to direct, decide, or govern within a defined structure.",
+      "basis": "author_defined_disambiguation"
+    }
+  ],
+  "queryType": "ambiguity_query",
+  "interpretation": {
+    "interpretationType": "ambiguous_selection",
+    "concepts": [
+      "control",
+      "power",
+      "authority"
+    ],
+    "message": "This query matches multiple authored concepts and requires an explicit choice."
+  }
+}

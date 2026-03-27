@@ -1,0 +1,64 @@
+{
+  "type": "concept_match",
+  "query": "authority",
+  "normalizedQuery": "authority",
+  "contractVersion": "v1.1",
+  "normalizerVersion": "2026-03-27.v1",
+  "matcherVersion": "2026-03-27.v2",
+  "conceptSetVersion": "20260327.2",
+  "resolution": {
+    "method": "exact_alias",
+    "conceptId": "authority",
+    "conceptVersion": 3
+  },
+  "answer": {
+    "title": "Authority",
+    "shortDefinition": "Authority is recognized power to direct, decide, or govern within a defined structure.",
+    "coreMeaning": "Authority is power treated as legitimate inside a role, institution, or relationship.",
+    "fullDefinition": "Authority refers to power that is accepted as valid within a social, legal, institutional, or relational context. It is not only the ability to act, but the recognized right to do so within a defined structure.",
+    "contexts": [
+      {
+        "label": "social",
+        "appliesTo": [
+          "family",
+          "community"
+        ]
+      },
+      {
+        "label": "legal",
+        "appliesTo": [
+          "courts",
+          "public law"
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "id": "source-oxford-languages",
+        "label": "Oxford Languages",
+        "type": "dictionary",
+        "usedFor": "definition grounding"
+      },
+      {
+        "id": "source-rawls99",
+        "label": "John Rawls, A Theory of Justice",
+        "type": "book",
+        "usedFor": "context review"
+      }
+    ],
+    "relatedConcepts": [
+      {
+        "conceptId": "legitimacy",
+        "title": "Legitimacy",
+        "relationType": "see_also"
+      },
+      {
+        "conceptId": "power",
+        "title": "Power",
+        "relationType": "contrast"
+      }
+    ]
+  },
+  "queryType": "exact_concept_query",
+  "interpretation": null
+}

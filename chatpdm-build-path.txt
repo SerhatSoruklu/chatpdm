@@ -1,0 +1,399 @@
+Core Principles
+Determinism over generation
+Clarity over ambiguity
+Structure over improvisation
+Consistency over stylistic variation
+Verified meaning over conceptual drift
+What ChatPDM Is
+
+ChatPDM is:
+
+a deterministic concept-resolution system
+a structured meaning engine
+a fixed-output answer model
+a source-grounded reference layer
+What ChatPDM Is Not
+
+ChatPDM is not:
+
+a chatbot in the generative AI sense
+a freeform reasoning engine
+a probabilistic model
+a runtime text generator
+a synthetic “assistant personality”
+
+It does not:
+
+improvise answers
+change wording on each run
+simulate reasoning in the core path
+guess beyond its structured knowledge layer
+Example
+Input
+What is authority?
+Output
+Authority
+
+Definition
+The recognized right to make decisions and direct others within a structured system.
+
+Core Meaning
+Legitimate decision-making power within a recognized context.
+
+The same input should always return the same output.
+
+System Architecture
+
+ChatPDM is built around five core layers:
+
+1. Query Layer
+
+Responsible for receiving and preparing user input.
+
+Responsibilities:
+
+input capture
+trimming and cleanup
+punctuation removal
+lowercase normalization
+filler phrase removal
+alias-ready query formatting
+
+Examples:
+
+What is authority? → authority
+define justice → justice
+2. Matching Layer
+
+Responsible for routing normalized input to the correct concept.
+
+Responsibilities:
+
+exact alias matching
+normalized alias matching
+fallback concept suggestions
+ambiguity detection
+
+Possible outcomes:
+
+exact match
+ambiguous match
+no exact match
+3. Concept Layer
+
+Responsible for storing canonical concept definitions.
+
+Each concept contains:
+
+title
+slug
+aliases
+short definition
+full definition
+core meaning
+contexts
+related concepts
+source references
+optional perspectives
+
+This is the heart of the system.
+
+4. Response Layer
+
+Responsible for turning matched concepts into stable structured outputs.
+
+Responsibilities:
+
+fixed block ordering
+deterministic rendering shape
+consistent response schema
+no freeform generation
+
+Typical output sections:
+
+Title
+Definition
+Core Meaning
+Contexts
+Related Concepts
+Sources
+Optional Perspectives
+5. Authoring Layer
+
+Responsible for creating and maintaining structured concepts.
+
+Responsibilities:
+
+concept writing
+source review
+versioning
+content normalization
+perspective separation
+publication workflow
+
+This layer exists so the runtime can remain simple and deterministic.
+
+Content Model
+
+Each answerable concept is a structured node.
+
+Example concept fields:
+
+slug
+title
+aliases
+definition.short
+definition.full
+coreMeaning
+contexts
+relatedConcepts
+sourceReferences
+perspectives
+version
+status
+updatedAt
+Source Policy
+
+ChatPDM is built from verified references, but it does not depend on copying source wording directly.
+
+Definitions should be:
+
+derived from trusted sources
+rewritten into a consistent internal standard
+neutral in tone
+stable across the system
+
+This keeps the product:
+
+legally safer
+more consistent
+easier to maintain
+structurally stronger
+Perspective Policy
+
+ChatPDM may include optional perspective layers from thinkers or frameworks, but these must remain secondary.
+
+Examples:
+
+Plato
+Rawls
+Nozick
+Marx
+
+Rules:
+
+perspectives do not replace the core definition
+perspectives do not alter canonical meaning
+perspectives are optional depth, not base truth
+Roadmap
+
+The roadmap assumes one developer working in monthly phases.
+Each version is designed to produce a usable, testable step forward.
+
+V1 - Deterministic Core MVP
+
+Estimated duration: 1 month
+
+Goal
+
+Build the smallest real version of ChatPDM that can resolve a concept deterministically.
+
+Scope
+basic landing page
+query input
+query normalization
+exact alias matching
+concept retrieval
+fixed response rendering
+no-match state
+10 initial concepts
+file-based or database-backed concept storage
+Deliverables
+/ask or equivalent query page
+concept schema
+normalization utility
+resolver endpoint
+deterministic result card
+initial seed concepts:
+authority
+justice
+power
+identity
+freedom
+equality
+legitimacy
+responsibility
+control
+rights
+Success criteria
+same query always returns same output
+no hallucinated text
+no answer when no match exists
+stable UX for core concept lookups
+V2 - Matching and Coverage Expansion
+
+Estimated duration: 1 month
+
+Goal
+
+Make ChatPDM more usable in real-world input conditions without breaking determinism.
+
+Scope
+improved normalization rules
+alias expansion
+fuzzy-safe suggestion system
+ambiguous match handling
+concept relationship graph
+expanded concept library to 30-50 concepts
+Deliverables
+alias management format
+ambiguous match response type
+“did you mean?” suggestions
+related concept navigation
+improved logging for unmatched queries
+Success criteria
+significantly fewer failed queries
+better routing for natural input variations
+concept coverage broad enough for meaningful testing
+V3 - Structured Source and Perspective Layer
+
+Estimated duration: 1 month
+
+Goal
+
+Deepen answer quality while keeping the core answer neutral and fixed.
+
+Scope
+source reference model
+internal content standards for definitions
+optional perspectives section
+source provenance display
+versioning support for concept revisions
+Deliverables
+source reference schema
+perspective schema
+collapsible “perspectives” UI
+version field and content revision support
+source policy enforcement in authoring flow
+Success criteria
+every concept has traceable source grounding
+optional depth exists without polluting the core definition
+updates can be versioned safely
+V4 - Authoring System and Admin Tools
+
+Estimated duration: 1 month
+
+Goal
+
+Move from manual content handling to a maintainable internal publishing system.
+
+Scope
+admin dashboard for concepts
+create/edit/review/publish workflow
+draft vs published states
+validation rules
+revision history
+concept QA checklist
+Deliverables
+internal concept editor
+publish workflow
+content validation system
+change log per concept
+admin search and filtering
+Success criteria
+new concepts can be added quickly and consistently
+publishing does not require manual file edits
+one developer can scale the knowledge base without chaos
+V5 - Multi-Domain Expansion and Platform Hardening
+
+Estimated duration: 1 month
+
+Goal
+
+Turn ChatPDM from a concept MVP into a durable platform.
+
+Scope
+support for multiple domains
+domain-aware routing
+stronger search layer
+analytics on query behavior
+public API foundation
+performance hardening
+caching and monitoring
+Example domains
+language concepts
+political philosophy
+psychology basics
+technical definitions
+structured internal knowledge bases
+Deliverables
+domain field and domain router
+analytics dashboard
+query failure reporting
+cache layer
+public/internal API schema
+operational hardening
+Success criteria
+platform handles broader knowledge safely
+routing remains deterministic per domain
+usage data informs future expansion
+Version Summary
+Version	Focus	Outcome
+V1	Core deterministic MVP	Working concept resolver
+V2	Better matching and coverage	More usable real-world input handling
+V3	Sources and perspectives	Deeper but controlled answer quality
+V4	Admin and authoring tools	Maintainable content operations
+V5	Multi-domain platform	Scalable deterministic knowledge system
+Technical Direction
+
+Suggested architecture:
+
+Frontend
+Angular
+standalone components
+clean card-based answer rendering
+no chatbot bubbles
+no fake typing states
+Backend
+Node.js
+Express
+Database
+MongoDB or Postgres
+versioned concept records
+indexed aliases/slugs
+Optional future infrastructure
+Redis cache
+admin audit logs
+analytics store
+API rate controls
+UI Direction
+
+ChatPDM should feel like:
+
+a deterministic reference interface
+a structured answer surface
+a clean, calm system for querying meaning
+
+It should not feel like:
+
+a messenger app
+an AI assistant clone
+a chat bubble interface
+a personality-driven agent
+
+The UX can remain input-driven like chat, but the UI should render answer blocks, not simulated conversation.
+
+Long-Term Vision
+
+ChatPDM is not trying to imitate generative AI.
+
+Its long-term purpose is to become a system where:
+
+meaning is structured
+answers are stable
+sources are grounded
+variation is controlled
+knowledge can be extended without losing integrity
+Current Status
+
+Early architecture and foundation phase.

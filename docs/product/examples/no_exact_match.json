@@ -1,0 +1,27 @@
+{
+  "query": "civic duty",
+  "normalizedQuery": "civic duty",
+  "contractVersion": "v1.1",
+  "normalizerVersion": "2026-03-27.v1",
+  "matcherVersion": "2026-03-27.v2",
+  "conceptSetVersion": "20260327.2",
+  "queryType": "subtype_query",
+  "interpretation": {
+    "interpretationType": "narrower_subtype",
+    "baseConcept": "duty",
+    "modifier": "civic",
+    "message": "This appears to be a narrower or domain-specific form of \"duty\" based on the modifier \"civic\". No authored concept exists yet."
+  },
+  "type": "no_exact_match",
+  "resolution": {
+    "method": "no_exact_match"
+  },
+  "message": "No exact canonical concept match was found for this query.",
+  "suggestions": [
+    {
+      "conceptId": "duty",
+      "title": "Duty",
+      "reason": "broader_topic"
+    }
+  ]
+}
