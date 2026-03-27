@@ -13,9 +13,9 @@ router.get('/', (req, res) => {
   });
 });
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   try {
-    const receipt = recordFeedback(req.body);
+    const receipt = await recordFeedback(req.body);
     res.status(201).json(receipt);
   } catch (error) {
     if (error instanceof TypeError) {

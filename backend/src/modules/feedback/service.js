@@ -133,10 +133,10 @@ function normalizeFeedbackPayload(payload) {
   };
 }
 
-function recordFeedback(payload) {
+async function recordFeedback(payload) {
   const normalizedPayload = normalizeFeedbackPayload(payload);
   const createdAt = new Date().toISOString();
-  const feedbackId = insertFeedbackEvent({
+  const feedbackId = await insertFeedbackEvent({
     ...normalizedPayload,
     createdAt,
   });
@@ -151,4 +151,3 @@ function recordFeedback(payload) {
 module.exports = {
   recordFeedback,
 };
-

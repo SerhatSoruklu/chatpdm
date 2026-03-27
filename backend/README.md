@@ -1,14 +1,14 @@
 # ChatPDM Backend
 
-Minimal Express shell for the ChatPDM workspace.
+Express API for the ChatPDM workspace.
 
 ## Current Scope
 
-- health endpoint
-- future API namespace scaffold
-- placeholder routes for concepts, sources, and perspectives
-
-No product logic has been implemented yet.
+- deterministic concept resolver
+- feedback capture
+- Mongo-backed backend persistence
+- health endpoint with Mongo status
+- CORS allowlist for ChatPDM frontend origins
 
 ## Run
 
@@ -16,6 +16,8 @@ No product logic has been implemented yet.
 npm install
 npm run dev
 ```
+
+For local development, provide a reachable MongoDB instance through `MONGODB_URI`.
 
 ## Build Check
 

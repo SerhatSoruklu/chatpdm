@@ -2,19 +2,29 @@
 
 const express = require('express');
 const cors = require('cors');
+const compression = require('compression');
 const helmet = require('helmet');
+const env = require('./config/env');
+const { createCorsOptions } = require('./security/cors');
 const healthRoute = require('./routes/health.route');
 const apiRoutes = require('./routes/api');
 
 const app = express();
 
 app.disable('x-powered-by');
+app.set('trust proxy', env.trustProxy);
 
 app.use(helmet({
+  crossOriginEmbedderPolicy: false,
   contentSecurityPolicy: false,
 }));
-app.use(cors());
-app.use(express.json());
+
+if (env.enableCompression) {
+  app.use(compression({ threshold: 1024 }));
+}
+
+app.use(cors(createCorsOptions(env.frontendOrigins)));
+app.use(express.json({ limit: '64kb' }));
 
 app.get('/', (req, res) => {
   res.json({

@@ -2,9 +2,19 @@
 
 const app = require('./app');
 const env = require('./config/env');
+const { connectMongo } = require('./config/mongoose');
 
-app.listen(env.port, () => {
-  process.stdout.write(
-    `[chatpdm-backend] listening on http://localhost:${env.port} in ${env.nodeEnv}\n`,
-  );
+async function start() {
+  await connectMongo(env.mongoUri);
+
+  app.listen(env.port, env.host, () => {
+    process.stdout.write(
+      `[chatpdm-backend] listening on http://${env.host}:${env.port} in ${env.nodeEnv}\n`,
+    );
+  });
+}
+
+start().catch((error) => {
+  process.stderr.write(`${error.stack || error.message}\n`);
+  process.exitCode = 1;
 });

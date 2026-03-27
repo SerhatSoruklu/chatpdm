@@ -8,6 +8,7 @@ to ChatPDM's actual runtime shape:
 
 - frontend: static Angular build served by `nginx`
 - backend: Express API process managed by `pm2`
+- backend persistence: MongoDB on localhost
 - deploy style: timestamped releases with a `current` symlink
 
 ## Target layout
@@ -31,6 +32,11 @@ The frontend should be served directly from:
 ```text
 /srv/chatpdm/current/frontend/dist/frontend/browser
 ```
+
+Recommended public host split:
+
+- `chatpdm.com` and `www.chatpdm.com` for the frontend
+- `api.chatpdm.com` for direct API access
 
 ## Expected deploy flow
 

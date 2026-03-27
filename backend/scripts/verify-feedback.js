@@ -1,15 +1,11 @@
 'use strict';
 
 const assert = require('node:assert/strict');
-const fs = require('node:fs');
-const os = require('node:os');
-const path = require('node:path');
-
-const tempDbPath = path.join(os.tmpdir(), `chatpdm-feedback-${process.pid}-${Date.now()}.sqlite`);
-process.env.CHATPDM_FEEDBACK_DB_PATH = tempDbPath;
+const { MongoMemoryServer } = require('mongodb-memory-server');
 
 const app = require('../src/app');
-const { closeFeedbackDatabase, listFeedbackEvents } = require('../src/modules/feedback/store');
+const { connectMongo, disconnectMongo } = require('../src/config/mongoose');
+const { clearFeedbackEvents, listFeedbackEvents } = require('../src/modules/feedback/store');
 
 async function postJson(url, payload) {
   const response = await fetch(url, {
@@ -27,6 +23,10 @@ async function postJson(url, payload) {
 }
 
 async function main() {
+  const mongoServer = await MongoMemoryServer.create();
+  process.env.MONGODB_URI = mongoServer.getUri();
+  await connectMongo(process.env.MONGODB_URI);
+
   const server = app.listen(0);
 
   await new Promise((resolve) => {
@@ -102,7 +102,7 @@ async function main() {
     assert.equal(invalidReceipt.status, 400, 'invalid feedback value should be rejected.');
     process.stdout.write('PASS invalid_feedback_rejected\n');
 
-    const events = listFeedbackEvents();
+    const events = await listFeedbackEvents();
     assert.equal(events.length, 3, 'feedback events were not stored in the database.');
     assert.deepEqual(
       events.map((event) => event.feedbackType),
@@ -113,9 +113,19 @@ async function main() {
 
     process.stdout.write('ChatPDM feedback verification passed.\n');
   } finally {
-    server.close();
-    closeFeedbackDatabase();
-    fs.rmSync(tempDbPath, { force: true });
+    await clearFeedbackEvents();
+    await new Promise((resolve, reject) => {
+      server.close((error) => {
+        if (error) {
+          reject(error);
+          return;
+        }
+
+        resolve();
+      });
+    });
+    await disconnectMongo();
+    await mongoServer.stop();
   }
 }
 

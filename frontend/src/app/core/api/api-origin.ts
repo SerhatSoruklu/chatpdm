@@ -21,5 +21,13 @@ export function resolveApiOrigin(document: Document | null | undefined): string 
     return `${location.protocol}//${location.host}`;
   }
 
-  return `${location.protocol}//${location.host}`;
+  if (location.hostname.startsWith('api.')) {
+    return `${location.protocol}//${location.host}`;
+  }
+
+  const baseHostname = location.hostname.startsWith('www.')
+    ? location.hostname.slice(4)
+    : location.hostname;
+
+  return `${location.protocol}//api.${baseHostname}`;
 }
