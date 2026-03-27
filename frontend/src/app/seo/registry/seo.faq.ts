@@ -2,10 +2,10 @@ import type { SeoRegistryFamily } from '../seo.types';
 
 export const seoFaqEntries = {
   'faq.index': {
-    title: 'FAQ',
-    description: 'Frequently asked questions about ChatPDM.',
+    title: 'FAQ - ChatPDM',
+    description: 'Read concise answers about ChatPDM scope, deterministic behavior, and the limits of the current public beta.',
     canonicalPath: '/faq',
-    includeInSitemap: false,
+    includeInSitemap: true,
     sitemapChangeFrequency: 'monthly',
     sitemapPriority: 0.6,
   },

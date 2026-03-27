@@ -8,7 +8,7 @@ export interface CompareSeoInput {
 
 export const seoCompareEntries = {
   'compare.detail': {
-    title: 'Compare',
+    title: 'Compare - ChatPDM',
     description: 'ChatPDM concept comparison page.',
     canonicalPath: null,
     includeInSitemap: false,

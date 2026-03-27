@@ -24,6 +24,8 @@ export const SEO_REGISTRY = {
   ...seoNotFoundEntries,
 } as const satisfies Record<string, SeoPageConfig>;
 
+assertSeoRegistryPolicy(SEO_REGISTRY as Record<string, SeoPageConfig>);
+
 export type SeoRegistryKey = keyof typeof SEO_REGISTRY;
 
 export const SEO_DEFAULT_KEY: SeoRegistryKey = 'static.home';
@@ -42,13 +44,7 @@ export function getSeoEntry(seoKey: string | null | undefined): SeoPageConfig | 
 }
 
 export function buildSeoTitle(page: SeoPageConfig): string {
-  if (!page.title || page.title === SEO_SITE.siteName) {
-    return SEO_SITE.siteName;
-  }
-
-  return page.siteNameFirst
-    ? `${SEO_SITE.siteName} | ${page.title}`
-    : `${page.title} | ${SEO_SITE.siteName}`;
+  return page.title;
 }
 
 export function resolveCanonicalUrl(canonicalPath: string | null): string | null {
@@ -70,4 +66,50 @@ export function getSitemapEntries(): SeoSitemapEntry[] {
       changeFrequency: entry.sitemapChangeFrequency ?? 'monthly',
       priority: entry.sitemapPriority ?? 0.5,
     }));
+}
+
+function assertSeoRegistryPolicy(registry: Record<string, SeoPageConfig>): void {
+  for (const [key, entry] of Object.entries(registry)) {
+    assertSeoTitle(key, entry.title);
+    assertSeoDescription(key, entry.description);
+    assertCanonicalPath(key, entry.canonicalPath);
+  }
+}
+
+function assertSeoTitle(key: string, title: string): void {
+  if (!title.trim()) {
+    throw new Error(`SEO title is empty for registry entry: ${key}`);
+  }
+
+  if (title.length > 60) {
+    throw new Error(`SEO title exceeds 60 characters for registry entry: ${key}`);
+  }
+
+  if (title.includes('|')) {
+    throw new Error(`SEO title may not use "|" for registry entry: ${key}`);
+  }
+}
+
+function assertSeoDescription(key: string, description: string): void {
+  if (!description.trim()) {
+    throw new Error(`SEO description is empty for registry entry: ${key}`);
+  }
+
+  if (description.length > 160) {
+    throw new Error(`SEO description exceeds 160 characters for registry entry: ${key}`);
+  }
+}
+
+function assertCanonicalPath(key: string, canonicalPath: string | null): void {
+  if (canonicalPath === null) {
+    return;
+  }
+
+  if (!canonicalPath.startsWith('/')) {
+    throw new Error(`Canonical path must start with "/" for registry entry: ${key}`);
+  }
+
+  if (canonicalPath.includes('#')) {
+    throw new Error(`Canonical path may not contain "#" for registry entry: ${key}`);
+  }
 }

@@ -2,8 +2,8 @@ import type { SeoRegistryFamily } from '../seo.types';
 
 export const seoApiReferenceEntries = {
   'api.index': {
-    title: 'API Reference',
-    description: 'ChatPDM API reference and endpoint documentation.',
+    title: 'API Reference - ChatPDM',
+    description: 'Reference index for the ChatPDM API surface, including resolver behavior, endpoint scope, and response contracts.',
     canonicalPath: '/api',
     includeInSitemap: false,
     sitemapChangeFrequency: 'monthly',

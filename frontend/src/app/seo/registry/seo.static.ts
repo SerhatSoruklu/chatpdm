@@ -2,13 +2,12 @@ import type { SeoRegistryFamily } from '../seo.types';
 
 export const seoStaticEntries = {
   'static.home': {
-    title: 'Beta',
-    description: 'ChatPDM is a deterministic meaning system for source-grounded, wording-sensitive concept resolution.',
+    title: 'ChatPDM - Deterministic Meaning System',
+    description: 'ChatPDM resolves authored concepts through a deterministic, source-grounded answer model with explicit ambiguity and refusal behavior.',
     canonicalPath: '/',
     includeInSitemap: true,
     sitemapChangeFrequency: 'weekly',
     sitemapPriority: 1,
-    siteNameFirst: true,
     structuredData: {
       '@context': 'https://schema.org',
       '@type': 'WebSite',
@@ -19,23 +18,31 @@ export const seoStaticEntries = {
     },
   },
   'static.about': {
-    title: 'About',
-    description: 'About ChatPDM.',
+    title: 'About ChatPDM - Deterministic Meaning System',
+    description: 'Read the product boundary, deterministic posture, and authored-scope model behind the public ChatPDM system.',
     canonicalPath: '/about',
-    includeInSitemap: false,
+    includeInSitemap: true,
     sitemapChangeFrequency: 'monthly',
     sitemapPriority: 0.7,
   },
   'static.how-it-works': {
-    title: 'How It Works',
-    description: 'How ChatPDM handles deterministic concept resolution.',
+    title: 'How ChatPDM Works - Deterministic Answer Model',
+    description: 'See how ChatPDM normalizes queries, resolves authored concepts, and refuses unsupported compositions honestly.',
     canonicalPath: '/how-it-works',
-    includeInSitemap: false,
+    includeInSitemap: true,
     sitemapChangeFrequency: 'monthly',
     sitemapPriority: 0.7,
   },
+  'static.contact': {
+    title: 'Contact - ChatPDM',
+    description: 'Follow the public contact route for product, research, and implementation questions as the ChatPDM beta expands.',
+    canonicalPath: '/contact',
+    includeInSitemap: true,
+    sitemapChangeFrequency: 'monthly',
+    sitemapPriority: 0.4,
+  },
   'static.sources': {
-    title: 'Sources',
+    title: 'Sources - ChatPDM',
     description: 'ChatPDM reference sources and canonical grounding.',
     canonicalPath: '/sources',
     includeInSitemap: false,
@@ -43,7 +50,7 @@ export const seoStaticEntries = {
     sitemapPriority: 0.5,
   },
   'static.method': {
-    title: 'Method',
+    title: 'Method - ChatPDM',
     description: 'ChatPDM method and authored scope boundaries.',
     canonicalPath: '/method',
     includeInSitemap: false,

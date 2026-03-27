@@ -2,8 +2,8 @@ import type { SeoRegistryFamily } from '../seo.types';
 
 export const seoDeveloperEntries = {
   'developer.index': {
-    title: 'Developers',
-    description: 'Developer-facing ChatPDM integration and architecture guidance.',
+    title: 'Developer Overview - ChatPDM',
+    description: 'Developer-facing guidance for ChatPDM runtime boundaries, integration posture, and system architecture.',
     canonicalPath: '/developers',
     includeInSitemap: false,
     sitemapChangeFrequency: 'monthly',

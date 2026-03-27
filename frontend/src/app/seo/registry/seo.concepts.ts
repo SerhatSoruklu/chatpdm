@@ -8,8 +8,8 @@ export interface ConceptSeoInput {
 
 export const seoConceptEntries = {
   'concepts.detail': {
-    title: 'Concept',
-    description: 'ChatPDM concept page.',
+    title: 'Concept - ChatPDM',
+    description: 'Canonical ChatPDM concept page.',
     canonicalPath: null,
     includeInSitemap: false,
     sitemapChangeFrequency: 'monthly',

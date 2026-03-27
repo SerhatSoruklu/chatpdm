@@ -15,7 +15,6 @@ export interface SeoPageConfig {
   responseStatus?: number;
   openGraphType?: 'website' | 'article';
   twitterCard?: 'summary' | 'summary_large_image';
-  siteNameFirst?: boolean;
   structuredData?: SeoStructuredData | SeoStructuredData[];
 }
 
