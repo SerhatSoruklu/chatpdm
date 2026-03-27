@@ -21,6 +21,7 @@ out
 # Local environment and runtime data
 backend/.env
 backend/.env.local
+backend/.env.production
 backend/data/*.sqlite
 .env
 .env.*

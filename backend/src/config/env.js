@@ -1,5 +1,8 @@
 'use strict';
 
+const path = require('node:path');
+const dotenv = require('dotenv');
+
 function readNumber(value, fallback) {
   const parsed = Number.parseInt(value ?? '', 10);
   return Number.isFinite(parsed) ? parsed : fallback;
@@ -44,6 +47,12 @@ function parseTrustProxy(value, fallbackValue) {
   const parsed = Number.parseInt(normalized, 10);
   return Number.isNaN(parsed) ? fallbackValue : parsed;
 }
+
+const envFileName = process.env.NODE_ENV === 'production' ? '.env.production' : '.env';
+dotenv.config({
+  path: path.resolve(__dirname, '../../', envFileName),
+  quiet: true,
+});
 
 const nodeEnv = process.env.NODE_ENV || 'development';
 const isProduction = nodeEnv === 'production';
