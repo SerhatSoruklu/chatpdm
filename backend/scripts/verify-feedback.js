@@ -5,6 +5,12 @@ const { MongoMemoryServer } = require('mongodb-memory-server');
 
 const app = require('../src/app');
 const { connectMongo, disconnectMongo } = require('../src/config/mongoose');
+const {
+  CONCEPT_SET_VERSION,
+  CONTRACT_VERSION,
+  MATCHER_VERSION,
+  NORMALIZER_VERSION,
+} = require('../src/modules/concepts/constants');
 const { clearFeedbackEvents, listFeedbackEvents } = require('../src/modules/feedback/store');
 
 async function postJson(url, payload) {
@@ -44,10 +50,10 @@ async function main() {
       responseType: 'concept_match',
       feedbackType: 'clear',
       resolvedConceptId: 'authority',
-      contractVersion: 'v1.1',
-      normalizerVersion: '2026-03-27.v1',
-      matcherVersion: '2026-03-27.v2',
-      conceptSetVersion: '20260327.2',
+      contractVersion: CONTRACT_VERSION,
+      normalizerVersion: NORMALIZER_VERSION,
+      matcherVersion: MATCHER_VERSION,
+      conceptSetVersion: CONCEPT_SET_VERSION,
     });
 
     assert.equal(conceptMatchReceipt.status, 201, 'concept_match feedback was not accepted.');
@@ -61,10 +67,10 @@ async function main() {
       feedbackType: 'found_right_one',
       resolvedConceptId: 'duty',
       candidateConceptIds: ['duty', 'responsibility'],
-      contractVersion: 'v1.1',
-      normalizerVersion: '2026-03-27.v1',
-      matcherVersion: '2026-03-27.v2',
-      conceptSetVersion: '20260327.2',
+      contractVersion: CONTRACT_VERSION,
+      normalizerVersion: NORMALIZER_VERSION,
+      matcherVersion: MATCHER_VERSION,
+      conceptSetVersion: CONCEPT_SET_VERSION,
     });
 
     assert.equal(ambiguousReceipt.status, 201, 'ambiguous_match feedback was not accepted.');
@@ -77,10 +83,10 @@ async function main() {
       responseType: 'no_exact_match',
       feedbackType: 'should_exist',
       suggestionConceptIds: ['duty'],
-      contractVersion: 'v1.1',
-      normalizerVersion: '2026-03-27.v1',
-      matcherVersion: '2026-03-27.v2',
-      conceptSetVersion: '20260327.2',
+      contractVersion: CONTRACT_VERSION,
+      normalizerVersion: NORMALIZER_VERSION,
+      matcherVersion: MATCHER_VERSION,
+      conceptSetVersion: CONCEPT_SET_VERSION,
     });
 
     assert.equal(noExactReceipt.status, 201, 'no_exact_match feedback was not accepted.');
@@ -93,10 +99,10 @@ async function main() {
       responseType: 'concept_match',
       feedbackType: 'expected',
       resolvedConceptId: 'authority',
-      contractVersion: 'v1.1',
-      normalizerVersion: '2026-03-27.v1',
-      matcherVersion: '2026-03-27.v2',
-      conceptSetVersion: '20260327.2',
+      contractVersion: CONTRACT_VERSION,
+      normalizerVersion: NORMALIZER_VERSION,
+      matcherVersion: MATCHER_VERSION,
+      conceptSetVersion: CONCEPT_SET_VERSION,
     });
 
     assert.equal(invalidReceipt.status, 400, 'invalid feedback value should be rejected.');
@@ -108,6 +114,35 @@ async function main() {
       events.map((event) => event.feedbackType),
       ['clear', 'found_right_one', 'should_exist'],
       'stored feedback types do not match the accepted submissions.',
+    );
+    assert.deepEqual(
+      events.map((event) => ({
+        contractVersion: event.contractVersion,
+        normalizerVersion: event.normalizerVersion,
+        matcherVersion: event.matcherVersion,
+        conceptSetVersion: event.conceptSetVersion,
+      })),
+      [
+        {
+          contractVersion: CONTRACT_VERSION,
+          normalizerVersion: NORMALIZER_VERSION,
+          matcherVersion: MATCHER_VERSION,
+          conceptSetVersion: CONCEPT_SET_VERSION,
+        },
+        {
+          contractVersion: CONTRACT_VERSION,
+          normalizerVersion: NORMALIZER_VERSION,
+          matcherVersion: MATCHER_VERSION,
+          conceptSetVersion: CONCEPT_SET_VERSION,
+        },
+        {
+          contractVersion: CONTRACT_VERSION,
+          normalizerVersion: NORMALIZER_VERSION,
+          matcherVersion: MATCHER_VERSION,
+          conceptSetVersion: CONCEPT_SET_VERSION,
+        },
+      ],
+      'stored version fields do not match the current runtime contract.',
     );
     process.stdout.write('PASS feedback_events_stored\n');
 

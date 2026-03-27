@@ -1,10 +1,10 @@
 {
   "query": "civic duty",
   "normalizedQuery": "civic duty",
-  "contractVersion": "v1.1",
+  "contractVersion": "v1.2",
   "normalizerVersion": "2026-03-27.v1",
-  "matcherVersion": "2026-03-27.v2",
-  "conceptSetVersion": "20260327.2",
+  "matcherVersion": "2026-03-27.v3",
+  "conceptSetVersion": "20260327.4",
   "queryType": "subtype_query",
   "interpretation": {
     "interpretationType": "narrower_subtype",

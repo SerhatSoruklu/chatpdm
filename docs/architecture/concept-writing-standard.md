@@ -22,7 +22,7 @@ This standard exists to reduce semantic drift across concepts.
 
 Each concept is composed of required fields with non-overlapping roles.
 
-### `conceptId`
+### `conceptId` Rules
 
 Purpose:
 
@@ -35,7 +35,7 @@ Not for:
 - alias experimentation
 - descriptive wording
 
-### `title`
+### `title` Rules
 
 Purpose:
 
@@ -48,7 +48,7 @@ Not for:
 - multi-part headings
 - explanatory phrasing
 
-### `shortDefinition`
+### `shortDefinition` Rules
 
 Purpose:
 
@@ -62,7 +62,7 @@ Not for:
 - narrative expansion
 - secondary nuance already handled by later fields
 
-### `coreMeaning`
+### `coreMeaning` Rules
 
 Purpose:
 
@@ -75,7 +75,7 @@ Not for:
 - domain-specific application
 - examples or illustrations
 
-### `fullDefinition`
+### `fullDefinition` Rules
 
 Purpose:
 
@@ -89,7 +89,7 @@ Not for:
 - conversational explanation
 - filler added for completeness
 
-### `contexts`
+### `contexts` Rules
 
 Purpose:
 
@@ -102,7 +102,7 @@ Not for:
 - duplicate restatements of the full definition
 - weak subheadings with no structural distinction
 
-### `sources`
+### `sources` Rules
 
 Purpose:
 
@@ -115,7 +115,7 @@ Not for:
 - bibliography padding
 - copied source payloads
 
-### `relatedConcepts`
+### `relatedConcepts` Rules
 
 Purpose:
 

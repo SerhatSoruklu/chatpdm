@@ -40,16 +40,16 @@
     ],
     "sources": [
       {
-        "id": "oxford-languages-authority",
-        "label": "Oxford Languages",
-        "type": "dictionary",
-        "usedFor": "definition boundary for recognized right to direct or decide"
-      },
-      {
-        "id": "weber-economy-and-society",
+        "id": "weber",
         "label": "Max Weber, Economy and Society",
         "type": "book",
         "usedFor": "structural distinction between recognized rule-bound command and mere power"
+      },
+      {
+        "id": "oxford",
+        "label": "Oxford Languages",
+        "type": "dictionary",
+        "usedFor": "definition boundary for recognized right to direct or decide"
       }
     ],
     "relatedConcepts": [
