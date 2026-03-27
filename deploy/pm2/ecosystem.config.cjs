@@ -4,6 +4,7 @@ module.exports = {
       name: 'chatpdm-api',
       cwd: '/srv/chatpdm/current/backend',
       script: 'src/server.js',
+      node_args: '--disable-warning=ExperimentalWarning',
       instances: 1,
       exec_mode: 'fork',
       autorestart: true,
