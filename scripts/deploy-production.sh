@@ -191,7 +191,8 @@ log "Building frontend"
 npm --prefix "$RELEASE_DIR/frontend" run build
 
 log "Validating release artifacts"
-test -f "$RELEASE_DIR/frontend/dist/frontend/browser/index.html"
+test -f "$RELEASE_DIR/frontend/dist/frontend/browser/index.csr.html"
+test -f "$RELEASE_DIR/frontend/dist/frontend/server/index.server.html"
 test -f "$RELEASE_DIR/frontend/dist/frontend/server/server.mjs"
 test -f "$RELEASE_DIR/backend/src/server.js"
 
