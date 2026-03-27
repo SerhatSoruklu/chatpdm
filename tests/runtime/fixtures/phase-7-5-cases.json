@@ -50,6 +50,216 @@
     "expectedConceptId": "duty"
   },
   {
+    "name": "authority_non_governance_epistemic_refusal",
+    "input": "epistemic authority",
+    "expectedNormalizedQuery": "epistemic authority",
+    "expectedType": "no_exact_match",
+    "expectedMethod": "out_of_scope",
+    "expectedQueryType": "subtype_query",
+    "expectedInterpretation": {
+      "interpretationType": "out_of_scope",
+      "concept": "authority",
+      "domain": "governance",
+      "message": "This concept is defined within the governance domain in ChatPDM and does not cover the requested usage."
+    },
+    "expectedSuggestions": []
+  },
+  {
+    "name": "authority_non_governance_parental_refusal",
+    "input": "parental authority",
+    "expectedNormalizedQuery": "parental authority",
+    "expectedType": "no_exact_match",
+    "expectedMethod": "out_of_scope",
+    "expectedQueryType": "subtype_query",
+    "expectedInterpretation": {
+      "interpretationType": "out_of_scope",
+      "concept": "authority",
+      "domain": "governance",
+      "message": "This concept is defined within the governance domain in ChatPDM and does not cover the requested usage."
+    },
+    "expectedSuggestions": []
+  },
+  {
+    "name": "authority_non_governance_professional_refusal",
+    "input": "professional authority",
+    "expectedNormalizedQuery": "professional authority",
+    "expectedType": "no_exact_match",
+    "expectedMethod": "out_of_scope",
+    "expectedQueryType": "subtype_query",
+    "expectedInterpretation": {
+      "interpretationType": "out_of_scope",
+      "concept": "authority",
+      "domain": "governance",
+      "message": "This concept is defined within the governance domain in ChatPDM and does not cover the requested usage."
+    },
+    "expectedSuggestions": []
+  },
+  {
+    "name": "authority_non_governance_charismatic_refusal",
+    "input": "charismatic authority",
+    "expectedNormalizedQuery": "charismatic authority",
+    "expectedType": "no_exact_match",
+    "expectedMethod": "out_of_scope",
+    "expectedQueryType": "subtype_query",
+    "expectedInterpretation": {
+      "interpretationType": "out_of_scope",
+      "concept": "authority",
+      "domain": "governance",
+      "message": "This concept is defined within the governance domain in ChatPDM and does not cover the requested usage."
+    },
+    "expectedSuggestions": []
+  },
+  {
+    "name": "authority_non_governance_moral_refusal",
+    "input": "moral authority",
+    "expectedNormalizedQuery": "moral authority",
+    "expectedType": "no_exact_match",
+    "expectedMethod": "out_of_scope",
+    "expectedQueryType": "subtype_query",
+    "expectedInterpretation": {
+      "interpretationType": "out_of_scope",
+      "concept": "authority",
+      "domain": "governance",
+      "message": "This concept is defined within the governance domain in ChatPDM and does not cover the requested usage."
+    },
+    "expectedSuggestions": []
+  },
+  {
+    "name": "power_non_governance_electrical_refusal",
+    "input": "electrical power",
+    "expectedNormalizedQuery": "electrical power",
+    "expectedType": "no_exact_match",
+    "expectedMethod": "out_of_scope",
+    "expectedQueryType": "subtype_query",
+    "expectedInterpretation": {
+      "interpretationType": "out_of_scope",
+      "concept": "power",
+      "domain": "governance",
+      "message": "This concept is defined within the governance domain in ChatPDM and does not cover the requested usage."
+    },
+    "expectedSuggestions": []
+  },
+  {
+    "name": "power_non_governance_statistical_refusal",
+    "input": "statistical power",
+    "expectedNormalizedQuery": "statistical power",
+    "expectedType": "no_exact_match",
+    "expectedMethod": "out_of_scope",
+    "expectedQueryType": "subtype_query",
+    "expectedInterpretation": {
+      "interpretationType": "out_of_scope",
+      "concept": "power",
+      "domain": "governance",
+      "message": "This concept is defined within the governance domain in ChatPDM and does not cover the requested usage."
+    },
+    "expectedSuggestions": []
+  },
+  {
+    "name": "power_non_governance_computing_refusal",
+    "input": "computing power",
+    "expectedNormalizedQuery": "computing power",
+    "expectedType": "no_exact_match",
+    "expectedMethod": "out_of_scope",
+    "expectedQueryType": "subtype_query",
+    "expectedInterpretation": {
+      "interpretationType": "out_of_scope",
+      "concept": "power",
+      "domain": "governance",
+      "message": "This concept is defined within the governance domain in ChatPDM and does not cover the requested usage."
+    },
+    "expectedSuggestions": []
+  },
+  {
+    "name": "power_non_governance_magical_refusal",
+    "input": "magical power",
+    "expectedNormalizedQuery": "magical power",
+    "expectedType": "no_exact_match",
+    "expectedMethod": "out_of_scope",
+    "expectedQueryType": "subtype_query",
+    "expectedInterpretation": {
+      "interpretationType": "out_of_scope",
+      "concept": "power",
+      "domain": "governance",
+      "message": "This concept is defined within the governance domain in ChatPDM and does not cover the requested usage."
+    },
+    "expectedSuggestions": []
+  },
+  {
+    "name": "power_non_governance_physical_refusal",
+    "input": "physical power",
+    "expectedNormalizedQuery": "physical power",
+    "expectedType": "no_exact_match",
+    "expectedMethod": "out_of_scope",
+    "expectedQueryType": "subtype_query",
+    "expectedInterpretation": {
+      "interpretationType": "out_of_scope",
+      "concept": "power",
+      "domain": "governance",
+      "message": "This concept is defined within the governance domain in ChatPDM and does not cover the requested usage."
+    },
+    "expectedSuggestions": []
+  },
+  {
+    "name": "legitimacy_non_governance_artistic_refusal",
+    "input": "artistic legitimacy",
+    "expectedNormalizedQuery": "artistic legitimacy",
+    "expectedType": "no_exact_match",
+    "expectedMethod": "out_of_scope",
+    "expectedQueryType": "subtype_query",
+    "expectedInterpretation": {
+      "interpretationType": "out_of_scope",
+      "concept": "legitimacy",
+      "domain": "governance",
+      "message": "This concept is defined within the governance domain in ChatPDM and does not cover the requested usage."
+    },
+    "expectedSuggestions": []
+  },
+  {
+    "name": "legitimacy_non_governance_religious_refusal",
+    "input": "religious legitimacy",
+    "expectedNormalizedQuery": "religious legitimacy",
+    "expectedType": "no_exact_match",
+    "expectedMethod": "out_of_scope",
+    "expectedQueryType": "subtype_query",
+    "expectedInterpretation": {
+      "interpretationType": "out_of_scope",
+      "concept": "legitimacy",
+      "domain": "governance",
+      "message": "This concept is defined within the governance domain in ChatPDM and does not cover the requested usage."
+    },
+    "expectedSuggestions": []
+  },
+  {
+    "name": "legitimacy_non_governance_social_refusal",
+    "input": "social legitimacy",
+    "expectedNormalizedQuery": "social legitimacy",
+    "expectedType": "no_exact_match",
+    "expectedMethod": "out_of_scope",
+    "expectedQueryType": "subtype_query",
+    "expectedInterpretation": {
+      "interpretationType": "out_of_scope",
+      "concept": "legitimacy",
+      "domain": "governance",
+      "message": "This concept is defined within the governance domain in ChatPDM and does not cover the requested usage."
+    },
+    "expectedSuggestions": []
+  },
+  {
+    "name": "legitimacy_non_governance_moral_refusal",
+    "input": "moral legitimacy",
+    "expectedNormalizedQuery": "moral legitimacy",
+    "expectedType": "no_exact_match",
+    "expectedMethod": "out_of_scope",
+    "expectedQueryType": "subtype_query",
+    "expectedInterpretation": {
+      "interpretationType": "out_of_scope",
+      "concept": "legitimacy",
+      "domain": "governance",
+      "message": "This concept is defined within the governance domain in ChatPDM and does not cover the requested usage."
+    },
+    "expectedSuggestions": []
+  },
+  {
     "name": "whitespace_only",
     "input": "   ",
     "expectedNormalizedQuery": "__empty__",

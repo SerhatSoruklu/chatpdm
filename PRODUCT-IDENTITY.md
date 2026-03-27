@@ -15,7 +15,7 @@ ChatPDM is not:
 - a chatbot clone
 - a freeform AI assistant
 - an anti-AI marketing project
-- a 4Kapi extension
+- a derivative product
 
 ## Positioning Rule
 
@@ -34,7 +34,7 @@ Launcher folder on Windows:
 
 ## Frontend Rule
 
-- Keep ChatPDM visually distinct from 4Kapi.
+- Keep ChatPDM visually calm, editorial, and system-focused.
 - Use the current Angular landing shell as the design baseline.
 - Use unique ChatPDM-specific class names.
 - Keep the landing page minimal, calm, credible, and product-like.

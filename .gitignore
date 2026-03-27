@@ -73,3 +73,8 @@ web_modules/
 
 # Windows metadata artifacts
 *:Zone.Identifier
+
+# Reference source files
+chatpdm-reference/**/*.pdf
+chatpdm-sources/
+*.pdf

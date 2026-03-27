@@ -37,6 +37,36 @@ ChatPDM is not:
 - an inference engine
 - a full ontology platform
 
+## Governance Scope Policy (Phase 12.5)
+
+Certain core concepts are explicitly governance-scoped in ChatPDM v1:
+
+- authority
+- power
+- legitimacy
+
+These are not universal definitions across all domains.
+
+### Rules
+
+- These concepts are defined only within the governance domain
+- They must not be presented as domain-neutral or universally exhaustive
+- Their scope must be preserved in:
+  - canonical outputs
+  - comparison outputs
+  - relation outputs
+  - documentation
+  - UI/API surfaces
+
+### Non-governance handling
+
+Queries implying non-governance usage must result in:
+
+- scoped clarification, or
+- explicit out_of_scope refusal
+
+This policy is enforced at runtime and must not be bypassed.
+
 ## Current Status
 
 The repo is in active beta development.
@@ -59,6 +89,8 @@ Current state:
 
 Current runtime seed concepts:
 
+- `governance-scoped enforcement for authority, power, legitimacy`
+- `source-integrity enforcement via sourcePriority (Phase 12.6)`
 - `authority`
 - `power`
 - `legitimacy`
@@ -163,6 +195,12 @@ cd frontend && npm run serve:ssr:frontend
 cd backend && npm run dev
 ```
 
+## Local Dev Ports
+
+- Backend: `http://127.0.0.1:4301`
+- Frontend: `http://127.0.0.1:4200`
+- These ports are intentionally fixed for deterministic local validation.
+
 SSR production build output:
 
 ```text
@@ -221,9 +259,44 @@ See [conceptual-reference-stack.md](/home/serhat/code/chatpdm/docs/conceptual-re
 
 - deterministic runtime behavior under fixed versions
 - authored concepts over generated meaning
+- enforced source grounding for canonical definitions
+- governance-domain scoping for core structural concepts
 - honest refusal over fake completeness
 - calm, bounded product surfaces over AI theater
 - narrow expansion with validation before scale
+
+## Source Integrity Layer (Phase 12.6)
+
+ChatPDM enforces strict source integrity at the concept level.
+
+Each concept must define a `sourcePriority` array with:
+
+- index 0 → primary canonical source (concept-specific)
+- index 1 → `oxford` (dictionary boundary anchor)
+
+### Source Rules
+
+- Only sources registered in `source-registry.json` are allowed
+- Only `tier: "core"` sources may be used in `sourcePriority`
+- `oxford` is mandatory and must be at index 1
+- The primary source must match the concept binding:
+  - authority → weber
+  - power → lukes
+  - legitimacy → beetham
+  - responsibility → hart
+  - duty → hohfeld
+- `sourcePriority` must exactly match `sources[]` (no extra or missing sources)
+- Duplicate sources are not allowed
+
+### Purpose
+
+This ensures:
+
+- deterministic grounding of definitions
+- no silent source drift
+- no injection of extended or technical references into canonical outputs
+
+This layer does not change runtime behavior. It enforces data integrity at load time only.
 
 ## Roadmap Posture
 

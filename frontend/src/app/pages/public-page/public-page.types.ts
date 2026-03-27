@@ -1,0 +1,32 @@
+export interface PublicPageQuestion {
+  question: string;
+  answer: string;
+}
+
+export interface PublicPageSection {
+  title: string;
+  paragraphs?: readonly string[];
+  bullets?: readonly string[];
+  questions?: readonly PublicPageQuestion[];
+}
+
+export interface PublicPageContent {
+  eyebrow: string;
+  title: string;
+  intro: string;
+  sections: readonly PublicPageSection[];
+}
+
+export type PublicPageKey =
+  | 'about'
+  | 'how-it-works'
+  | 'faq'
+  | 'contact'
+  | 'privacy'
+  | 'terms'
+  | 'cookies'
+  | 'docs'
+  | 'developers'
+  | 'handbooks'
+  | 'api'
+  | 'not-found';

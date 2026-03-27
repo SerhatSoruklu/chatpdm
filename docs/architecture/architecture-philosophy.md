@@ -159,7 +159,7 @@ ChatPDM's interface choices are part of the same philosophy:
 - explicit breakpoint rules before random responsive behavior
 - unique CSS architecture before borrowed visual language
 
-This is why the responsive system is disciplined and the CSS naming is intentionally separate from 4Kapi. The product should feel like its own system from the inside out.
+This is why the responsive system is disciplined and the CSS naming is intentionally product-specific. The product should feel like its own system from the inside out.
 
 The same thinking also supports future mobile work. The goal is not to imitate a phone app in the browser. The goal is to build stable content grouping, readable hierarchy, and predictable interaction zones that can later translate cleanly into iOS or Android surfaces.
 

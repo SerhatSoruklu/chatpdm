@@ -3,8 +3,9 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
+const { assertValidProductResponse } = require('../../backend/src/lib/product-response-validator');
 
-const DEFAULT_BASE_URL = 'http://127.0.0.1:4301';
+const FIXED_BASE_URL = 'http://127.0.0.1:4301';
 const fixturePath = path.resolve(__dirname, 'fixtures/query-stress-pack.v1.json');
 const reportsDirectory = path.resolve(__dirname, 'reports');
 const reportPath = path.join(reportsDirectory, 'query-stress-report.v1.json');
@@ -72,9 +73,25 @@ function actualModeFromAttempt(attempt) {
   return 'unexpected_error';
 }
 
+function actualComparisonFromAttempt(attempt) {
+  if (attempt.status === 200 && attempt.bodyJson?.type === 'comparison') {
+    return attempt.bodyJson.comparison ?? null;
+  }
+
+  return null;
+}
+
 function actualCanonicalFromAttempt(attempt) {
   if (attempt.bodyJson?.type === 'concept_match') {
     return attempt.bodyJson?.resolution?.conceptId ?? null;
+  }
+
+  return null;
+}
+
+function actualResolutionMethodFromAttempt(attempt) {
+  if (attempt.status === 200 && typeof attempt.bodyJson?.resolution?.method === 'string') {
+    return attempt.bodyJson.resolution.method;
   }
 
   return null;
@@ -111,7 +128,8 @@ function matchesSubset(actualValue, expectedValue) {
 
   if (Array.isArray(expectedValue)) {
     return Array.isArray(actualValue)
-      && stableStringify(actualValue) === stableStringify(expectedValue);
+      && actualValue.length === expectedValue.length
+      && expectedValue.every((expectedItem, index) => matchesSubset(actualValue[index], expectedItem));
   }
 
   if (expectedValue && typeof expectedValue === 'object') {
@@ -195,8 +213,10 @@ function evaluateCase(testCase, attempts) {
 
   const actualMode = actualModeFromAttempt(firstAttempt);
   const actualCanonical = actualCanonicalFromAttempt(firstAttempt);
+  const actualMethod = actualResolutionMethodFromAttempt(firstAttempt);
   const actualQueryType = actualQueryTypeFromAttempt(firstAttempt);
   const actualInterpretation = actualInterpretationFromAttempt(firstAttempt);
+  const actualComparison = actualComparisonFromAttempt(firstAttempt);
   const actualCandidates = actualCandidatesFromAttempt(firstAttempt);
   const actualSuggestions = actualSuggestionsFromAttempt(firstAttempt);
 
@@ -234,12 +254,33 @@ function evaluateCase(testCase, attempts) {
   if (
     testCase.expectedMode !== 'invalid_input'
     && firstAttempt.status === 200
+    && typeof testCase.expectedMethod === 'string'
+    && actualMethod !== testCase.expectedMethod
+  ) {
+    labels.push('wrong_match');
+    issues.push(`expected resolution.method "${testCase.expectedMethod}" but received "${actualMethod}"`);
+    score = 0;
+  }
+
+  if (
+    testCase.expectedMode !== 'invalid_input'
+    && firstAttempt.status === 200
     && typeof testCase.expectedQueryType === 'string'
     && actualQueryType !== testCase.expectedQueryType
   ) {
     labels.push('wrong_match');
     issues.push(`expected queryType "${testCase.expectedQueryType}" but received "${actualQueryType}"`);
     score = 0;
+  }
+
+  if (testCase.expectedMode !== 'invalid_input' && firstAttempt.status === 200) {
+    try {
+      assertValidProductResponse(firstAttempt.bodyJson);
+    } catch (error) {
+      labels.push('wrong_match');
+      issues.push(error.message);
+      score = 0;
+    }
   }
 
   if (
@@ -263,6 +304,25 @@ function evaluateCase(testCase, attempts) {
         labels.push('boundary_leak');
       }
       issues.push(`expected concept "${testCase.expectedCanonical}" but received "${actualCanonical}"`);
+      score = 0;
+    }
+  }
+
+  if (testCase.expectedMode === 'comparison' && actualMode === 'comparison') {
+    if (
+      Object.hasOwn(testCase, 'expectedComparison')
+      && !matchesSubset(actualComparison, testCase.expectedComparison)
+    ) {
+      labels.push('wrong_match');
+      issues.push(
+        `expected comparison subset ${stableStringify(testCase.expectedComparison)} but received ${stableStringify(actualComparison)}`,
+      );
+      score = 0;
+    }
+
+    if (!actualComparison || !Array.isArray(actualComparison.axes) || actualComparison.axes.length === 0) {
+      labels.push('wrong_match');
+      issues.push('comparison response did not include authored axes');
       score = 0;
     }
   }
@@ -336,12 +396,14 @@ function evaluateCase(testCase, attempts) {
     expectedCanonical: testCase.expectedCanonical ?? null,
     expectedQueryType: testCase.expectedQueryType ?? null,
     expectedInterpretation: testCase.expectedInterpretation ?? null,
+    expectedComparison: testCase.expectedComparison ?? null,
     expectedCandidates: testCase.expectedCandidates ?? [],
     expectedSuggestions: testCase.expectedSuggestions ?? [],
     actualMode,
     actualCanonical,
     actualQueryType,
     actualInterpretation,
+    actualComparison,
     actualCandidates,
     actualSuggestions,
     statusCode: firstAttempt.status,
@@ -433,7 +495,7 @@ function buildSummary(report) {
 }
 
 async function main() {
-  const baseUrl = process.env.CHATPDM_BASE_URL || DEFAULT_BASE_URL;
+  const baseUrl = FIXED_BASE_URL;
   const fixturePack = loadFixturePack();
   const results = [];
 

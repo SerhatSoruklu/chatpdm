@@ -1,0 +1,118 @@
+:host {
+  display: block;
+  position: relative;
+  z-index: 4;
+}
+
+.pdm-site-header {
+  padding: 16px 18px 0;
+}
+
+.pdm-site-header__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px 20px;
+  width: 100%;
+  max-width: 78rem;
+  margin: 0 auto;
+  padding: 14px 16px;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 22px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.84)),
+    rgba(255, 255, 255, 0.9);
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.03),
+    0 10px 28px rgba(15, 23, 42, 0.06);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.pdm-site-header__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.pdm-site-header__brand-mark {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #0f172a;
+}
+
+.pdm-site-header__brand-state {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 9px;
+  border: 1px solid rgba(37, 99, 235, 0.14);
+  border-radius: 999px;
+  background: rgba(37, 99, 235, 0.07);
+  color: #1d4ed8;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.pdm-site-header__nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.pdm-site-header__link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  padding: 0 12px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: #475569;
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease,
+    color 160ms ease;
+}
+
+.pdm-site-header__link:hover,
+.pdm-site-header__link--active {
+  border-color: rgba(37, 99, 235, 0.16);
+  background: rgba(37, 99, 235, 0.08);
+  color: #0f172a;
+}
+
+@media (min-width: 600px) {
+  .pdm-site-header {
+    padding: 20px 28px 0;
+  }
+
+  .pdm-site-header__inner {
+    padding: 15px 18px;
+  }
+}
+
+@media (min-width: 840px) {
+  .pdm-site-header {
+    padding: 24px 32px 0;
+  }
+}
+
+@media (min-width: 1200px) {
+  .pdm-site-header {
+    padding: 28px 40px 0;
+  }
+}
+
+@media (min-width: 1440px) {
+  .pdm-site-header {
+    padding: 32px 48px 0;
+  }
+}

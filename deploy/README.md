@@ -3,8 +3,8 @@
 This folder contains the repo-native deployment skeleton for running ChatPDM on
 the dedicated server under `/srv/chatpdm`.
 
-The deployment model follows the same release discipline as `4kapi`, but adapts
-to ChatPDM's Angular SSR runtime shape:
+The deployment model follows a structured release discipline adapted to
+ChatPDM's Angular SSR runtime shape:
 
 - frontend: Angular SSR web process managed by `pm2`
 - backend: Express API process managed by `pm2`
@@ -36,6 +36,12 @@ Expected shared env split:
   - `PORT=4101`
   - `API_BASE_URL=http://127.0.0.1:4301`
 
+Deploy contract for shared env files:
+
+- `backend.env.production` and `frontend.env.production` are manual-only, owner-controlled server files
+- deploy reads these files but never creates, overwrites, patches, or infers them
+- missing env files are a hard deploy failure, not something the deploy script repairs
+
 ## Expected ports
 
 - frontend SSR: `4101`
@@ -58,10 +64,18 @@ Recommended public host split:
 2. Create a new timestamped release under `/srv/chatpdm/releases`.
 3. Install backend dependencies with production-only modules.
 4. Install frontend dependencies and build browser + server SSR artifacts.
-5. Switch `/srv/chatpdm/current` to the new release.
-6. Reload the frontend SSR and backend processes through `pm2`.
-7. Run backend and frontend health checks.
-8. Keep the release on success, or roll back on failure.
+5. Validate release artifacts.
+6. Switch `/srv/chatpdm/current` to the new release.
+7. Reload the frontend SSR and backend processes through `pm2`.
+8. Run backend and frontend health checks.
+9. Keep the release on success, or roll back on failure.
+
+The deploy script is safe to run repeatedly:
+
+- repo code and release state are deploy-managed
+- service reloads are deploy-managed
+- env files are not deploy-managed
+- the script may restart services even when the code delta is small, as long as the release and health checks complete safely
 
 ## GitHub automation model
 

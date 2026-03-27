@@ -9,9 +9,16 @@ const fixturePath = path.resolve(
   __dirname,
   '../../tests/runtime/fixtures/phase-7-5-cases.json',
 );
+const comparisonFixturePath = path.resolve(
+  __dirname,
+  '../../tests/runtime/fixtures/phase-11-comparison-cases.json',
+);
 
 function loadCases() {
-  return JSON.parse(fs.readFileSync(fixturePath, 'utf8'));
+  return [
+    ...JSON.parse(fs.readFileSync(fixturePath, 'utf8')),
+    ...JSON.parse(fs.readFileSync(comparisonFixturePath, 'utf8')),
+  ];
 }
 
 function assertSubset(actualValue, expectedValue, context) {
@@ -21,7 +28,16 @@ function assertSubset(actualValue, expectedValue, context) {
     const actualField = actualValue[key];
 
     if (Array.isArray(value)) {
-      assert.deepEqual(actualField, value, `${context}.${key} mismatch.`);
+      assert.ok(Array.isArray(actualField), `${context}.${key} should be an array.`);
+      assert.equal(actualField.length, value.length, `${context}.${key} length mismatch.`);
+      value.forEach((expectedItem, index) => {
+        if (expectedItem && typeof expectedItem === 'object' && !Array.isArray(expectedItem)) {
+          assertSubset(actualField[index], expectedItem, `${context}.${key}[${index}]`);
+          return;
+        }
+
+        assert.deepEqual(actualField[index], expectedItem, `${context}.${key}[${index}] mismatch.`);
+      });
       continue;
     }
 
@@ -44,7 +60,9 @@ function runCase(testCase) {
 
   assert.equal(firstResult.normalizedQuery, testCase.expectedNormalizedQuery, `${testCase.name} normalizedQuery mismatch.`);
   assert.equal(firstResult.type, testCase.expectedType, `${testCase.name} response type mismatch.`);
-  assert.equal(firstResult.resolution.method, testCase.expectedMethod, `${testCase.name} resolution.method mismatch.`);
+  if (typeof testCase.expectedMethod === 'string') {
+    assert.equal(firstResult.resolution.method, testCase.expectedMethod, `${testCase.name} resolution.method mismatch.`);
+  }
 
   if (typeof testCase.expectedQueryType === 'string') {
     assert.equal(firstResult.queryType, testCase.expectedQueryType, `${testCase.name} queryType mismatch.`);
@@ -83,6 +101,10 @@ function runCase(testCase) {
       testCase.expectedSuggestions,
       `${testCase.name} suggestions mismatch.`,
     );
+  }
+
+  if (testCase.expectedType === 'comparison') {
+    assertSubset(firstResult.comparison, testCase.expectedComparison, `${testCase.name} comparison`);
   }
 
   process.stdout.write(`PASS ${testCase.name}\n`);

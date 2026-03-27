@@ -26,11 +26,12 @@ require_cmd() {
   }
 }
 
-require_env_file() {
+require_manual_env_file() {
   local file="$1"
 
   if [[ ! -f "$file" ]]; then
-    printf '[chatpdm deploy] Missing required env file: %s\n' "$file" >&2
+    printf '[chatpdm deploy] Missing required manual env file: %s\n' "$file" >&2
+    printf '[chatpdm deploy] Deploy never creates or rewrites shared env files. Provision this file manually before deploying.\n' >&2
     exit 1
   fi
 }
@@ -156,14 +157,14 @@ require_cmd find
 require_cmd readlink
 require_cmd date
 
-require_env_file "$BACKEND_ENV_FILE"
-require_env_file "$FRONTEND_ENV_FILE"
+require_manual_env_file "$BACKEND_ENV_FILE"
+require_manual_env_file "$FRONTEND_ENV_FILE"
 
 trap on_error ERR
 
 log "Deploying branch $BRANCH"
 
-mkdir -p "$RELEASES_DIR" "$APP_ROOT/shared"
+mkdir -p "$RELEASES_DIR"
 PREVIOUS_TARGET="$(readlink -f "$CURRENT_LINK" 2>/dev/null || true)"
 
 log "Updating repository mirror"

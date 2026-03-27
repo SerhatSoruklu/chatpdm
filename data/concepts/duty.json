@@ -20,18 +20,22 @@
       "explanation": "Duty marks conduct treated as owed under a binding standard rather than optional choice."
     }
   ],
+  "sourcePriority": [
+    "hohfeld",
+    "oxford"
+  ],
   "sources": [
     {
-      "id": "oxford-languages-duty",
-      "label": "Oxford Languages",
-      "type": "dictionary",
-      "usedFor": "definition boundary for required conduct and obligation"
-    },
-    {
-      "id": "hohfeld-fundamental-legal-conceptions",
+      "id": "hohfeld",
       "label": "Wesley Newcomb Hohfeld, Fundamental Legal Conceptions",
       "type": "book",
       "usedFor": "structural grounding for duty as owed conduct under a binding relation"
+    },
+    {
+      "id": "oxford",
+      "label": "Oxford Languages",
+      "type": "dictionary",
+      "usedFor": "definition boundary for required conduct and obligation"
     }
   ],
   "relatedConcepts": [
@@ -44,6 +48,26 @@
       "relationType": "extension"
     }
   ],
+  "comparison": {
+    "responsibility": {
+      "axes": [
+        {
+          "axis": "core_nature",
+          "A": "required conduct owed under a rule, role, or obligation",
+          "B": "answerable connection between an actor and attributable action or outcome"
+        },
+        {
+          "axis": "depends_on",
+          "A": "a binding source that marks what must be done",
+          "B": "attribution that marks who can be called to account"
+        },
+        {
+          "axis": "not_equivalent",
+          "statement": "duty is not responsibility; required conduct does not by itself settle answerability"
+        }
+      ]
+    }
+  },
   "reviewMetadata": {
     "what_it_is": [
       "required conduct",

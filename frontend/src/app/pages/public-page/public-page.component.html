@@ -1,0 +1,44 @@
+<div class="pdm-page">
+  <main class="pdm-page__main pdm-shell" aria-labelledby="pdm-page-title">
+    <div class="pdm-shell__frame pdm-page__frame">
+      <header class="pdm-page__hero">
+        <p class="pdm-page__eyebrow">{{ content().eyebrow }}</p>
+        <h1 class="pdm-page__title" id="pdm-page-title">{{ content().title }}</h1>
+        <p class="pdm-page__intro">{{ content().intro }}</p>
+      </header>
+
+      <div class="pdm-page__sections">
+        @for (section of content().sections; track section.title) {
+          <section class="pdm-page__section">
+            <h2 class="pdm-page__section-title">{{ section.title }}</h2>
+
+            @if (section.paragraphs; as paragraphs) {
+              @for (paragraph of paragraphs; track paragraph) {
+                <p class="pdm-page__copy">{{ paragraph }}</p>
+              }
+            }
+
+            @if (section.bullets; as bullets) {
+              <ul class="pdm-page__list">
+                @for (bullet of bullets; track bullet) {
+                  <li>{{ bullet }}</li>
+                }
+              </ul>
+            }
+
+            @if (section.questions; as questions) {
+              <div class="pdm-page__qa-list">
+                @for (item of questions; track item.question) {
+                  <article class="pdm-page__qa">
+                    <h3 class="pdm-page__qa-question">{{ item.question }}</h3>
+                    <p class="pdm-page__copy">{{ item.answer }}</p>
+                  </article>
+                }
+              </div>
+            }
+          </section>
+        }
+      </div>
+    </div>
+  </main>
+</div>

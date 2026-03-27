@@ -18,6 +18,8 @@ This document covers the content model only.
 
 A concept is the canonical answerable node.
 
+For governance-scoped canonical concepts such as `authority`, `power`, and `legitimacy`, a `scope` block is required so the runtime and documentation do not silently universalize them.
+
 Required fields:
 
 - `slug`
@@ -37,6 +39,7 @@ Optional fields:
 - `contexts`
 - `relatedConcepts`
 - `perspectives`
+- `scope`
 
 ### Alias
 
@@ -114,7 +117,22 @@ Fields:
   "title": "Authority",
   "status": "draft",
   "version": 1,
-  "domain": "language-concepts",
+  "domain": "relational-structures",
+  "scope": {
+    "domain": "governance",
+    "isUniversal": false,
+    "mustPreserveIn": [
+      "canonical_outputs",
+      "comparison_outputs",
+      "relation_outputs",
+      "documentation",
+      "ui_api_surfaces"
+    ],
+    "nonGovernanceHandling": [
+      "scoped_clarification",
+      "out_of_scope_refusal"
+    ]
+  },
   "aliases": [
     "authority",
     "what is authority",
@@ -122,12 +140,12 @@ Fields:
     "define authority"
   ],
   "definition": {
-    "short": "The recognized right to direct, decide, or govern within a defined structure.",
-    "full": "Authority refers to a recognized and accepted right to make decisions, set direction, or govern within a social, legal, institutional, or relational context."
+    "short": "Recognized standing to direct, decide, or govern within a governance order.",
+    "full": "Authority refers to recognized standing to make decisions, set direction, or govern within a governance order. It does not mean mere force, influence, or accepted validity."
   },
-  "coreMeaning": "Legitimate decision-making power within a recognized context.",
+  "coreMeaning": "Who may direct within a governance order, not what can be made to happen or what counts as valid.",
   "contexts": [
-    "social",
+    "governance",
     "institutional",
     "legal",
     "political"
@@ -166,6 +184,7 @@ Fields:
 ## Rules
 
 - Canonical meaning must stay neutral.
+- Governance-scoped canonical concepts must declare that scope explicitly and must not be documented as universal definitions.
 - Perspectives must stay secondary.
 - Source references describe provenance, not raw copied content.
 - One concept should map to one canonical output in the first version.

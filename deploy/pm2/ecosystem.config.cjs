@@ -10,12 +10,6 @@ module.exports = {
       autorestart: true,
       watch: false,
       max_memory_restart: '512M',
-      env: {
-        NODE_ENV: 'production',
-        HOST: '127.0.0.1',
-        PORT: 4101,
-        API_BASE_URL: 'http://127.0.0.1:4301',
-      },
     },
     {
       name: 'chatpdm-api',
@@ -27,10 +21,6 @@ module.exports = {
       autorestart: true,
       watch: false,
       max_memory_restart: '512M',
-      env: {
-        NODE_ENV: 'production',
-        PORT: 4301,
-      },
     },
   ],
 };

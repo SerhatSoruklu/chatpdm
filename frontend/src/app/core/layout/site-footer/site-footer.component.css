@@ -1,0 +1,125 @@
+:host {
+  display: block;
+}
+
+.pdm-site-footer {
+  margin-top: 36px;
+  padding: 0 18px 18px;
+}
+
+.pdm-site-footer__inner {
+  width: 100%;
+  max-width: 78rem;
+  margin: 0 auto;
+  padding: 28px 22px;
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at top right, rgba(37, 99, 235, 0.16), transparent 28%),
+    linear-gradient(180deg, #0f172a, #111827);
+  color: rgba(248, 250, 252, 0.92);
+  box-shadow:
+    0 18px 44px rgba(15, 23, 42, 0.18),
+    0 36px 88px rgba(15, 23, 42, 0.12);
+}
+
+.pdm-site-footer__intro {
+  max-width: 28rem;
+}
+
+.pdm-site-footer__eyebrow {
+  margin: 0 0 10px;
+  color: #93c5fd;
+  font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.pdm-site-footer__title {
+  margin: 0;
+  color: #f8fafc;
+  font-size: clamp(1.5rem, 2vw, 2rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+}
+
+.pdm-site-footer__copy {
+  margin: 14px 0 0;
+  color: rgba(226, 232, 240, 0.82);
+  line-height: 1.7;
+}
+
+.pdm-site-footer__grid {
+  display: grid;
+  gap: 18px;
+  margin-top: 26px;
+}
+
+.pdm-site-footer__column {
+  display: grid;
+  gap: 10px;
+}
+
+.pdm-site-footer__column h3 {
+  margin: 0;
+  color: #f8fafc;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.pdm-site-footer__column a {
+  color: rgba(226, 232, 240, 0.78);
+  text-decoration: none;
+  line-height: 1.5;
+  transition: color 160ms ease;
+}
+
+.pdm-site-footer__column a:hover {
+  color: #ffffff;
+}
+
+@media (min-width: 600px) {
+  .pdm-site-footer {
+    padding: 0 28px 24px;
+  }
+
+  .pdm-site-footer__inner {
+    padding: 32px 28px;
+  }
+}
+
+@media (min-width: 840px) {
+  .pdm-site-footer {
+    padding: 0 32px 28px;
+  }
+
+  .pdm-site-footer__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px 28px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .pdm-site-footer {
+    padding: 0 40px 32px;
+  }
+
+  .pdm-site-footer__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.8fr);
+    gap: 40px;
+    align-items: start;
+  }
+
+  .pdm-site-footer__grid {
+    margin-top: 0;
+  }
+}
+
+@media (min-width: 1440px) {
+  .pdm-site-footer {
+    padding: 0 48px 36px;
+  }
+}

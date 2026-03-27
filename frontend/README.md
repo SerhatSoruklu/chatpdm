@@ -39,8 +39,8 @@ Some families intentionally begin as placeholders so growth stays structured ins
 
 ## Design Rules
 
-- This frontend is not 4Kapi.
-- Do not reuse 4Kapi CSS patterns, utilities, or class naming.
+- This frontend follows ChatPDM-specific UI conventions.
+- Use only ChatPDM-approved CSS patterns, utilities, and class naming.
 - Use ChatPDM-specific semantic class names.
 - Do not use CSS variables or `:root` token systems.
 - Light theme is active by default.

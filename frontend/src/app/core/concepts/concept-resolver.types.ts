@@ -123,7 +123,39 @@ export interface AmbiguousMatchResponse {
   candidates: AmbiguousCandidate[];
 }
 
+export interface ComparisonAxisValue {
+  axis: string;
+  A: string;
+  B: string;
+}
+
+export interface ComparisonAxisStatement {
+  axis: string;
+  statement: string;
+}
+
+export type ComparisonAxis = ComparisonAxisValue | ComparisonAxisStatement;
+
+export interface ComparisonResponse {
+  type: 'comparison';
+  mode: 'comparison';
+  query: string;
+  normalizedQuery: string;
+  contractVersion: string;
+  normalizerVersion: string;
+  matcherVersion: string;
+  conceptSetVersion: string;
+  queryType: 'comparison_query';
+  interpretation: null;
+  comparison: {
+    conceptA: string;
+    conceptB: string;
+    axes: ComparisonAxis[];
+  };
+}
+
 export type ResolveProductResponse =
   | ConceptMatchResponse
   | NoExactMatchResponse
-  | AmbiguousMatchResponse;
+  | AmbiguousMatchResponse
+  | ComparisonResponse;

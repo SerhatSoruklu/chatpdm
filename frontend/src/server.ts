@@ -10,9 +10,18 @@ import { extname, join } from 'node:path';
 
 const browserDistFolder = join(import.meta.dirname, '../browser');
 const apiBaseUrl = process.env['API_BASE_URL'] || 'http://127.0.0.1:4301';
+const allowedHosts = (
+  process.env['NG_ALLOWED_HOSTS']
+    ?.split(',')
+    .map((value) => value.trim())
+    .filter(Boolean)
+  ?? ['localhost', '127.0.0.1', '0.0.0.0', 'chatpdm.com', 'www.chatpdm.com', 'api.chatpdm.com']
+);
 
 const app = express();
-const angularApp = new AngularNodeAppEngine();
+const angularApp = new AngularNodeAppEngine({
+  allowedHosts,
+});
 
 app.get('/health', async (_req: Request, res: ExpressResponse) => {
   try {

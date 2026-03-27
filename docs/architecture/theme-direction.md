@@ -11,8 +11,8 @@ The current landing shell should feel:
 - calm
 - bright
 - precise
-- editorial
-- product-like, not chat-like
+- product-grade
+- web-first, not assistant-like
 
 ## Theme Structure
 
@@ -33,10 +33,33 @@ Current state:
 
 ## Rules
 
-- Do not import 4Kapi tokens or theme conventions.
+- Use only ChatPDM theme conventions and approved design primitives.
 - Do not use generic utility naming as the main styling model.
 - Keep component class names unique to ChatPDM.
 - Prefer explicit component rules over token indirection.
+
+## Public Page Baseline
+
+The homepage visual system is now the baseline for future public pages.
+
+That means:
+
+- one continuous soft background atmosphere
+- one calm product card system
+- one consistent spacing rhythm
+- one restrained serif role limited to hero or rare title moments
+- one product-grade UI/body typography role that dominates the interface
+- one support/technical mono role for labels, microdata, and API accents
+
+Future public pages such as docs, concepts, compare, FAQ, developers, and API surfaces should inherit that same direction.
+
+Do not drift into:
+
+- editorial styling
+- assistant branding
+- chatbot theatrics
+- per-page visual experimentation
+- random new card systems or spacing rules
 
 ## Future Dark Theme Work
 
@@ -46,5 +69,5 @@ When added later:
 
 - preserve the same spacing, typography, and layout structure
 - invert contrast carefully
-- keep the calm editorial feel
+- keep the calm product feel
 - avoid turning the brand into a generic dark AI dashboard

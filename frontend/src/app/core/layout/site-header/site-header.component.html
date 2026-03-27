@@ -1,0 +1,23 @@
+<header class="pdm-site-header">
+  <div class="pdm-site-header__inner">
+    <a class="pdm-site-header__brand" routerLink="/" aria-label="ChatPDM home">
+      <span class="pdm-site-header__brand-mark">ChatPDM</span>
+      <span class="pdm-site-header__brand-state">Beta</span>
+    </a>
+
+    <nav class="pdm-site-header__nav" aria-label="Primary">
+      <a class="pdm-site-header__link" routerLink="/" routerLinkActive="pdm-site-header__link--active" [routerLinkActiveOptions]="{ exact: true }">
+        Home
+      </a>
+      <a class="pdm-site-header__link" routerLink="/about" routerLinkActive="pdm-site-header__link--active">About</a>
+      <a class="pdm-site-header__link" routerLink="/how-it-works" routerLinkActive="pdm-site-header__link--active">How it works</a>
+      <a class="pdm-site-header__link" routerLink="/faq" routerLinkActive="pdm-site-header__link--active">FAQ</a>
+      <a class="pdm-site-header__link" routerLink="/docs" routerLinkActive="pdm-site-header__link--active">Docs</a>
+      <a class="pdm-site-header__link" routerLink="/developers" routerLinkActive="pdm-site-header__link--active">Developers</a>
+      <a class="pdm-site-header__link" routerLink="/api" routerLinkActive="pdm-site-header__link--active" [routerLinkActiveOptions]="{ exact: true }">
+        API
+      </a>
+      <a class="pdm-site-header__link" routerLink="/contact" routerLinkActive="pdm-site-header__link--active">Contact</a>
+    </nav>
+  </div>
+</header>

@@ -13,6 +13,8 @@ const { loadResolveRules } = require('./resolve-rules-loader');
 const { matchQuery } = require('./matcher');
 const { normalizeQuery } = require('./normalizer');
 const { classifyQueryShape } = require('./query-shape-classifier');
+const { resolveComparisonQuery } = require('./comparison-resolver');
+const { detectGovernanceScopeEnforcement } = require('./governance-scope-enforcer');
 const { assertValidProductResponse } = require('../../lib/product-response-validator');
 
 function buildContextPayload(context) {
@@ -82,8 +84,51 @@ function resolveConceptQuery(rawQuery) {
 
   const baseResponse = buildBaseResponse(rawQuery, normalizedQuery, queryClassification);
   let response;
+  const governanceScopeEnforcement = detectGovernanceScopeEnforcement({
+    normalizedQuery,
+    match,
+    queryClassification,
+    conceptIndex,
+  });
 
-  if (match.type === 'concept_match') {
+  if (governanceScopeEnforcement) {
+    response = {
+      ...baseResponse,
+      type: 'no_exact_match',
+      interpretation: governanceScopeEnforcement.interpretation,
+      resolution: {
+        method: governanceScopeEnforcement.resolutionMethod,
+      },
+      message: NO_EXACT_MATCH_MESSAGE,
+      suggestions: [],
+    };
+
+    return assertValidProductResponse(response);
+  }
+
+  if (queryClassification.queryType === 'comparison_query') {
+    const comparison = resolveComparisonQuery(queryClassification.interpretation?.concepts ?? [], conceptIndex);
+
+    if (comparison) {
+      response = {
+        ...baseResponse,
+        type: 'comparison',
+        mode: 'comparison',
+        interpretation: null,
+        comparison,
+      };
+    } else {
+      response = {
+        ...baseResponse,
+        type: 'no_exact_match',
+        resolution: {
+          method: 'no_exact_match',
+        },
+        message: NO_EXACT_MATCH_MESSAGE,
+        suggestions: [],
+      };
+    }
+  } else if (match.type === 'concept_match') {
     response = {
       ...baseResponse,
       type: 'concept_match',

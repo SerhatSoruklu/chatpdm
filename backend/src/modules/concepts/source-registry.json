@@ -1,0 +1,21 @@
+{
+  "weber": { "tier": "core" },
+  "lukes": { "tier": "core" },
+  "beetham": { "tier": "core" },
+  "hart": { "tier": "core" },
+  "hohfeld": { "tier": "core" },
+  "north": { "tier": "core" },
+  "oxford": { "tier": "core" },
+
+  "rawls": { "tier": "extended" },
+  "nozick": { "tier": "extended" },
+  "plato": { "tier": "extended" },
+  "sandel": { "tier": "extended" },
+  "marx": { "tier": "extended" },
+  "soames": { "tier": "extended" },
+
+  "carnap": { "tier": "technical" },
+  "cambridge": { "tier": "technical" },
+  "allemang-hendler-gandon": { "tier": "technical" },
+  "keet": { "tier": "technical" }
+}

@@ -1,0 +1,82 @@
+[
+  {
+    "name": "comparison_authority_power",
+    "input": "authority vs power",
+    "expectedNormalizedQuery": "authority vs power",
+    "expectedType": "comparison",
+    "expectedQueryType": "comparison_query",
+    "expectedInterpretation": null,
+    "expectedComparison": {
+      "conceptA": "authority",
+      "conceptB": "power",
+      "axes": [
+        {
+          "axis": "core_nature"
+        },
+        {
+          "axis": "depends_on"
+        },
+        {
+          "axis": "not_equivalent",
+          "statement": "authority is not power; power does not require authority"
+        }
+      ]
+    }
+  },
+  {
+    "name": "comparison_power_authority_order_flip",
+    "input": "power vs authority",
+    "expectedNormalizedQuery": "power vs authority",
+    "expectedType": "comparison",
+    "expectedQueryType": "comparison_query",
+    "expectedInterpretation": null,
+    "expectedComparison": {
+      "conceptA": "authority",
+      "conceptB": "power"
+    }
+  },
+  {
+    "name": "comparison_authority_same_as_power",
+    "input": "is authority the same as power",
+    "expectedNormalizedQuery": "is authority the same as power",
+    "expectedType": "comparison",
+    "expectedQueryType": "comparison_query",
+    "expectedInterpretation": null,
+    "expectedComparison": {
+      "conceptA": "authority",
+      "conceptB": "power"
+    }
+  },
+  {
+    "name": "comparison_missing_concept_refusal",
+    "input": "authority vs trust",
+    "expectedNormalizedQuery": "authority vs trust",
+    "expectedType": "no_exact_match",
+    "expectedMethod": "no_exact_match",
+    "expectedQueryType": "comparison_query",
+    "expectedInterpretation": {
+      "interpretationType": "comparison_not_supported",
+      "concepts": [
+        "authority"
+      ]
+    },
+    "expectedSuggestions": []
+  },
+  {
+    "name": "comparison_too_many_concepts_refusal",
+    "input": "authority vs power vs legitimacy",
+    "expectedNormalizedQuery": "authority vs power vs legitimacy",
+    "expectedType": "no_exact_match",
+    "expectedMethod": "no_exact_match",
+    "expectedQueryType": "comparison_query",
+    "expectedInterpretation": {
+      "interpretationType": "comparison_not_supported",
+      "concepts": [
+        "authority",
+        "power",
+        "legitimacy"
+      ]
+    },
+    "expectedSuggestions": []
+  }
+]

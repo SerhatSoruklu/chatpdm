@@ -20,18 +20,22 @@
       "explanation": "Responsibility marks who must answer for decisions or failures within an organized structure."
     }
   ],
+  "sourcePriority": [
+    "hart",
+    "oxford"
+  ],
   "sources": [
     {
-      "id": "oxford-languages-responsibility",
-      "label": "Oxford Languages",
-      "type": "dictionary",
-      "usedFor": "definition boundary for answerability and assigned charge"
-    },
-    {
-      "id": "hart-punishment-and-responsibility",
+      "id": "hart",
       "label": "H. L. A. Hart, Punishment and Responsibility",
       "type": "book",
       "usedFor": "structural grounding for attribution and answerability"
+    },
+    {
+      "id": "oxford",
+      "label": "Oxford Languages",
+      "type": "dictionary",
+      "usedFor": "definition boundary for answerability and assigned charge"
     }
   ],
   "relatedConcepts": [
@@ -44,6 +48,7 @@
       "relationType": "extension"
     }
   ],
+  "comparison": {},
   "reviewMetadata": {
     "what_it_is": [
       "answerable connection",

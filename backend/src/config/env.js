@@ -48,6 +48,24 @@ function parseTrustProxy(value, fallbackValue) {
   return Number.isNaN(parsed) ? fallbackValue : parsed;
 }
 
+function resolveLocalPort(portValue) {
+  if (portValue === undefined || portValue === null || String(portValue).trim() === '') {
+    return 4301;
+  }
+
+  const parsed = Number.parseInt(String(portValue), 10);
+
+  if (!Number.isFinite(parsed)) {
+    throw new Error('PORT must be a valid integer when set.');
+  }
+
+  if (parsed !== 4301) {
+    throw new Error(`Local ChatPDM backend must run on port 4301. Received PORT=${parsed}.`);
+  }
+
+  return 4301;
+}
+
 const envFileName = process.env.NODE_ENV === 'production' ? '.env.production' : '.env';
 dotenv.config({
   path: path.resolve(__dirname, '../../', envFileName),
@@ -75,7 +93,7 @@ module.exports = {
   nodeEnv,
   isProduction,
   host: String(process.env.HOST || '127.0.0.1').trim() || '127.0.0.1',
-  port: readNumber(process.env.PORT, 4301),
+  port: isProduction ? readNumber(process.env.PORT, 4301) : resolveLocalPort(process.env.PORT),
   mongoUri: mongodbUri,
   frontendUrl,
   frontendOrigins,

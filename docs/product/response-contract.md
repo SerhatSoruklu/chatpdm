@@ -105,6 +105,7 @@ Rules:
 - `normalized_alias`
 - `canonical_id`
 - `no_exact_match`
+- `out_of_scope`
 - `ambiguous_alias`
 - `ambiguous_normalized_alias`
 - `author_defined_disambiguation`
@@ -124,6 +125,21 @@ This means:
 - transport or debug metadata remains outside canonical equality
 
 This boundary exists so ChatPDM can keep meaning, request echo, query-shape classification, and runtime resolution concerns separate.
+
+## Governance Scope Policy Hook
+
+Some canonical concepts in ChatPDM v1 are domain-scoped rather than universal.
+
+In the current seed set, `authority`, `power`, and `legitimacy` are governance-scoped canonical concepts.
+
+This means:
+
+- they must not be presented as domain-neutral or universally exhaustive across all human uses of those words
+- documentation and UI/API surfaces must preserve their governance-domain scope
+- future comparison and relation outputs must preserve that same scope
+- clearly non-governance uses may return `no_exact_match` with `resolution.method = "out_of_scope"`
+
+This contract currently governs response shape, not full domain-policy enforcement. The governing scope policy lives in the authored concept packets and supporting product documentation.
 
 ## Response Types
 
@@ -265,7 +281,9 @@ Allowed `queryType` values:
 
 `resolution` object:
 
-- `method`: `"no_exact_match"`
+- `method`: closed enum
+  - `"no_exact_match"`
+  - `"out_of_scope"`
 
 `message`:
 
@@ -288,6 +306,8 @@ Interpretation patterns allowed in this response type include:
 - canonical lookup failure
 - broader-topic hint
 - narrower subtype hint
+- governance-scope out-of-scope refusal
+- governance-scope clarification
 - unsupported comparison
 - unsupported inter-concept relation
 - unsupported actor or holder query

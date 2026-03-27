@@ -4,6 +4,20 @@ This matrix defines the minimum boundary distinctions that must survive hostile 
 
 The matrix is a reviewer artifact. It does not change runtime behavior by itself.
 
+## Governance Core Triad Lock
+
+For ChatPDM v1, `authority`, `power`, and `legitimacy` form a non-collapsible governance-core triad.
+
+Their roles are:
+
+- `authority` = structural
+- `power` = operational
+- `legitimacy` = evaluative
+
+These three concepts are governance-scoped canonical concepts. They must not be presented as domain-neutral or universally exhaustive across all human uses of the same words.
+
+Any future definition, relation, or comparison that merges their roles is invalid.
+
 ## Authority vs Power
 
 - Distinction to preserve:

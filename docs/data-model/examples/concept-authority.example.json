@@ -3,7 +3,22 @@
   "title": "Authority",
   "status": "draft",
   "version": 1,
-  "domain": "language-concepts",
+  "domain": "relational-structures",
+  "scope": {
+    "domain": "governance",
+    "isUniversal": false,
+    "mustPreserveIn": [
+      "canonical_outputs",
+      "comparison_outputs",
+      "relation_outputs",
+      "documentation",
+      "ui_api_surfaces"
+    ],
+    "nonGovernanceHandling": [
+      "scoped_clarification",
+      "out_of_scope_refusal"
+    ]
+  },
   "aliases": [
     "authority",
     "what is authority",
@@ -11,12 +26,12 @@
     "define authority"
   ],
   "definition": {
-    "short": "The recognized right to direct, decide, or govern within a defined structure.",
-    "full": "Authority refers to a recognized and accepted right to make decisions, set direction, or govern within a social, legal, institutional, or relational context."
+    "short": "Recognized standing to direct, decide, or govern within a governance order.",
+    "full": "Authority refers to recognized standing to make decisions, set direction, or govern within a governance order. It does not mean mere force, influence, or accepted validity."
   },
-  "coreMeaning": "Legitimate decision-making power within a recognized context.",
+  "coreMeaning": "Who may direct within a governance order, not what can be made to happen or what counts as valid.",
   "contexts": [
-    "social",
+    "governance",
     "institutional",
     "legal",
     "political"

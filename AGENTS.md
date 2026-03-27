@@ -121,6 +121,15 @@ Rules:
 - Backend relies mainly on focused verification scripts and lightweight runtime validation.
 - Add tests selectively where regression risk justifies them.
 
+## Local Port Contract
+
+- Backend local development must run on `4301`.
+- Frontend local development must run on `4200`.
+- Validation and stress targets must use `http://127.0.0.1:4301`.
+- Do not use random free ports.
+- Do not introduce fallback ports.
+- Do not change proxy targets or validation base URLs unless explicitly requested.
+
 ## Validation and Push Safety
 
 - Do not stage or commit secrets, `.env` files, API keys, tokens, private keys, or credentials.

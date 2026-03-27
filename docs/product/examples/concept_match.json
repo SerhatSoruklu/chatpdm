@@ -1,10 +1,10 @@
 {
   "query": "authority",
   "normalizedQuery": "authority",
-  "contractVersion": "v1.1",
+  "contractVersion": "v1.2",
   "normalizerVersion": "2026-03-27.v1",
-  "matcherVersion": "2026-03-27.v2",
-  "conceptSetVersion": "20260327.2",
+  "matcherVersion": "2026-03-27.v3",
+  "conceptSetVersion": "20260327.4",
   "queryType": "exact_concept_query",
   "interpretation": null,
   "type": "concept_match",
@@ -15,14 +15,14 @@
   },
   "answer": {
     "title": "Authority",
-    "shortDefinition": "Authority is recognized standing to direct, decide, or govern within a defined structure.",
-    "coreMeaning": "Authority functions by attaching directive right to a role, office, or position that others treat as operative. It depends on recognized standing rather than on force alone or on the validity of that standing.",
-    "fullDefinition": "Authority is not any ability to produce effects. It is a structured right to issue direction, make decisions, or govern within an accepted role or office.\n\nIts internal composition joins a directive claim to a recognized position. That position may be formal or informal, but the concept requires that the right to direct is treated as attached to the role rather than to mere capacity.\n\nWithin a system, authority organizes who may decide, command, or settle matters. Questions of whether that standing is justified belong to legitimacy, while questions of whether directives can be enforced belong to power.",
+    "shortDefinition": "Authority is recognized standing to direct, decide, or govern within a governance order.",
+    "coreMeaning": "Within the governance domain, authority functions by attaching directive right to a role, office, or position that others treat as operative. It concerns who may direct, not what can be enforced or whether that standing is valid.",
+    "fullDefinition": "Authority is not any ability to produce effects. In ChatPDM v1 it is defined within the governance domain as a structured right to issue direction, make decisions, or govern within a governance order.\n\nIts internal composition joins a directive claim to a recognized role, office, or position. The concept requires that the right to direct is treated as attached to standing rather than to mere capacity.\n\nWithin governance structures, authority organizes who may decide, command, or settle matters. Questions of whether that standing is valid belong to legitimacy, while questions of what outcomes can be produced belong to power.",
     "contexts": [
       {
-        "label": "institutional",
+        "label": "governance",
         "appliesTo": [
-          "institutional"
+          "governance"
         ]
       },
       {
@@ -32,9 +32,9 @@
         ]
       },
       {
-        "label": "relational",
+        "label": "institutional",
         "appliesTo": [
-          "relational"
+          "institutional"
         ]
       }
     ],

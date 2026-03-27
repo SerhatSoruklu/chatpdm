@@ -44,6 +44,12 @@ Domain rules:
 - cross-domain relations may exist later, but domain assignment remains singular
 - domains do not expand concept scope by themselves
 
+Important lock:
+
+- `authority`, `power`, and `legitimacy` remain classified under `relational-structures` for taxonomy
+- their canonical definitions are governance-scoped in ChatPDM v1
+- they must not be treated as universal definitions across all domains
+
 ## 4. V1 Concept Inventory
 
 ChatPDM v1 is locked to 23 concepts.
@@ -58,9 +64,9 @@ This inventory is the current system boundary. It must not exceed 25 concepts in
 | `freedom` | Freedom | `core-abstractions` | Covers constraint and permissible action without collapsing into rights or power. |
 | `equality` | Equality | `core-abstractions` | Captures sameness of status, treatment, or standing across units. |
 | `responsibility` | Responsibility | `core-abstractions` | Links action, role, or decision to answerability for outcomes. |
-| `authority` | Authority | `relational-structures` | Distinguishes recognized right to direct from mere influence or force. |
-| `power` | Power | `relational-structures` | Captures effective capacity to produce effects even without legitimacy. |
-| `legitimacy` | Legitimacy | `relational-structures` | Separates accepted validity from raw force, office, or possession. |
+| `authority` | Authority | `relational-structures` | Governance-scoped concept that distinguishes who may direct from mere force or validity. |
+| `power` | Power | `relational-structures` | Governance-scoped concept that captures operative capacity in relation to governance structure without requiring legitimacy. |
+| `legitimacy` | Legitimacy | `relational-structures` | Governance-scoped concept that separates accepted validity from raw force, office, or possession. |
 | `consent` | Consent | `relational-structures` | Marks authorized acceptance rather than imposed compliance. |
 | `trust` | Trust | `relational-structures` | Captures reliance under uncertainty without reducing it to authority or law. |
 | `recognition` | Recognition | `relational-structures` | Handles acknowledged standing or status within a relation. |
@@ -180,4 +186,3 @@ ChatPDM v1 aims to:
 
 - return correct deterministic answers within the defined concept set
 - return `no_exact_match` when no authored path exists
-

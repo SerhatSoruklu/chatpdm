@@ -3,35 +3,54 @@
   "title": "Authority",
   "version": 1,
   "domain": "relational-structures",
-  "shortDefinition": "Authority is recognized standing to direct, decide, or govern within a defined structure.",
-  "coreMeaning": "Authority functions by attaching directive right to a role, office, or position that others treat as operative. It depends on recognized standing rather than on force alone or on the validity of that standing.",
-  "fullDefinition": "Authority is not any ability to produce effects. It is a structured right to issue direction, make decisions, or govern within an accepted role or office.\n\nIts internal composition joins a directive claim to a recognized position. That position may be formal or informal, but the concept requires that the right to direct is treated as attached to the role rather than to mere capacity.\n\nWithin a system, authority organizes who may decide, command, or settle matters. Questions of whether that standing is justified belong to legitimacy, while questions of whether directives can be enforced belong to power.",
+  "scope": {
+    "domain": "governance",
+    "isUniversal": false,
+    "mustPreserveIn": [
+      "canonical_outputs",
+      "comparison_outputs",
+      "relation_outputs",
+      "documentation",
+      "ui_api_surfaces"
+    ],
+    "nonGovernanceHandling": [
+      "scoped_clarification",
+      "out_of_scope_refusal"
+    ]
+  },
+  "shortDefinition": "Authority is recognized standing to direct, decide, or govern within a governance order.",
+  "coreMeaning": "Within the governance domain, authority functions by attaching directive right to a role, office, or position that others treat as operative. It concerns who may direct, not what can be enforced or whether that standing is valid.",
+  "fullDefinition": "Authority is not any ability to produce effects. In ChatPDM v1 it is defined within the governance domain as a structured right to issue direction, make decisions, or govern within a governance order.\n\nIts internal composition joins a directive claim to a recognized role, office, or position. The concept requires that the right to direct is treated as attached to standing rather than to mere capacity.\n\nWithin governance structures, authority organizes who may decide, command, or settle matters. Questions of whether that standing is valid belong to legitimacy, while questions of what outcomes can be produced belong to power.",
   "contexts": [
     {
-      "label": "institutional",
-      "explanation": "Authority attaches directive standing to an office, rank, or assigned position within an organized structure."
+      "label": "governance",
+      "explanation": "Authority organizes who may direct, decide, or govern within an accepted governing order."
     },
     {
       "label": "legal",
       "explanation": "Authority marks recognized jurisdiction to decide, command, or settle matters under formal rule."
     },
     {
-      "label": "relational",
-      "explanation": "Authority marks accepted right to direct within an ongoing role relation rather than through mere leverage."
+      "label": "institutional",
+      "explanation": "Authority attaches directive standing to an office, rank, or assigned position inside an organized structure."
     }
+  ],
+  "sourcePriority": [
+    "weber",
+    "oxford"
   ],
   "sources": [
     {
-      "id": "oxford-languages-authority",
-      "label": "Oxford Languages",
-      "type": "dictionary",
-      "usedFor": "definition boundary for recognized right to direct or decide"
-    },
-    {
-      "id": "weber-economy-and-society",
+      "id": "weber",
       "label": "Max Weber, Economy and Society",
       "type": "book",
       "usedFor": "structural distinction between recognized rule-bound command and mere power"
+    },
+    {
+      "id": "oxford",
+      "label": "Oxford Languages",
+      "type": "dictionary",
+      "usedFor": "definition boundary for recognized right to direct or decide"
     }
   ],
   "relatedConcepts": [
@@ -44,6 +63,44 @@
       "relationType": "contrast"
     }
   ],
+  "comparison": {
+    "legitimacy": {
+      "axes": [
+        {
+          "axis": "core_nature",
+          "A": "recognized right to direct within a role or office",
+          "B": "accepted validity of a rule, standing, or office"
+        },
+        {
+          "axis": "depends_on",
+          "A": "recognized standing attached to a position",
+          "B": "acceptance or justification within an order"
+        },
+        {
+          "axis": "not_equivalent",
+          "statement": "authority is not legitimacy; a role may have authority while its legitimacy is contested"
+        }
+      ]
+    },
+    "power": {
+      "axes": [
+        {
+          "axis": "core_nature",
+          "A": "recognized right to direct",
+          "B": "effective capacity to produce outcomes"
+        },
+        {
+          "axis": "depends_on",
+          "A": "recognized role or standing",
+          "B": "resources, force, or influence"
+        },
+        {
+          "axis": "not_equivalent",
+          "statement": "authority is not power; power does not require authority"
+        }
+      ]
+    }
+  },
   "reviewMetadata": {
     "what_it_is": [
       "recognized standing",

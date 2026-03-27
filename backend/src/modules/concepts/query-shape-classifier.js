@@ -7,6 +7,7 @@ const COMPARISON_KEYWORDS = Object.freeze([
   ' vs ',
   ' versus ',
   ' or ',
+  ' same as ',
 ]);
 
 const RELATION_KEYWORDS = Object.freeze([
@@ -120,8 +121,8 @@ function findSubtypeCandidate(normalizedQuery, concepts, termEntries) {
     if (
       modifier === ''
       || NON_SUBTYPE_PREFIXES.some((prefix) => modifier.startsWith(prefix.trim()))
-      || COMPARISON_KEYWORDS.some((keyword) => modifier.includes(keyword.trim()))
-      || RELATION_KEYWORDS.some((keyword) => modifier.includes(keyword.trim()))
+      || COMPARISON_KEYWORDS.some((keyword) => ` ${modifier} `.includes(keyword))
+      || RELATION_KEYWORDS.some((keyword) => ` ${modifier} `.includes(keyword))
       || ROLE_PREFIXES.some((prefix) => modifier.startsWith(prefix.trim()))
     ) {
       continue;
@@ -165,7 +166,7 @@ function buildComparisonInterpretation(concepts) {
   return {
     interpretationType: 'comparison_not_supported',
     concepts,
-    message: 'This query is a comparison between multiple concepts. Comparison output is not yet supported in the current runtime.',
+    message: 'This query is a comparison between concepts. Comparison output is only available for authored, allowlisted pairs in the current runtime.',
   };
 }
 
@@ -210,12 +211,17 @@ function buildCanonicalLookupNotFoundInterpretation(targetConceptId) {
 }
 
 function detectComparison(normalizedQuery, mentionedConcepts) {
-  if (mentionedConcepts.length < 2) {
+  const keyword = COMPARISON_KEYWORDS.find((candidate) => normalizedQuery.includes(candidate));
+  if (!keyword) {
     return null;
   }
 
-  const keyword = COMPARISON_KEYWORDS.find((candidate) => normalizedQuery.includes(candidate));
-  if (!keyword) {
+  const segments = normalizedQuery
+    .split(keyword)
+    .map((segment) => segment.trim())
+    .filter((segment) => segment !== '');
+
+  if (segments.length < 2) {
     return null;
   }
 

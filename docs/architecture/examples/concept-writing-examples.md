@@ -25,27 +25,27 @@ Concept: `authority`
 
 Good:
 
-`Authority is recognized power to direct or decide within a defined structure.`
+`Authority is recognized standing to direct or decide within a governance order.`
 
 Why it passes:
 
 - one sentence
 - one atomic relation
 - includes a defining constraint
-- separates authority from power by recognition and structure
+- separates authority from power by standing and governance order
 
 ## 3. Nearby-concept distinction example
 
 `authority`
 
-- recognized power to direct or decide within a defined structure
+- recognized standing to direct or decide within a governance order
 
 `power`
 
-- effective capacity to produce effects with or without recognition
+- effective capacity to produce outcomes in relation to a governance structure
 
 Why the distinction holds:
 
-- `authority` depends on recognition and structural validity
+- `authority` depends on recognized standing within governance order
 - `power` does not require legitimacy or recognized standing
 - the concepts remain comparable without collapsing into each other
