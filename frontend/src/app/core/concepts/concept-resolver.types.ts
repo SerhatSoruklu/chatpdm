@@ -123,7 +123,7 @@ export interface ConceptMatchResponse {
     shortDefinition: string;
     coreMeaning: string;
     fullDefinition: string;
-    derivedExplanationOverlays: DerivedExplanationOverlays;
+    derivedExplanationOverlays?: DerivedExplanationOverlays | null;
     contexts: ConceptContext[];
     sources: ConceptSource[];
     relatedConcepts: RelatedConcept[];

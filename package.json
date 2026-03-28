@@ -17,6 +17,7 @@
     "validate:policy-governance": "node ./scripts/validate-policy-governance.js",
     "validate:policy-lifecycle-contract": "npm --prefix ./frontend run generate:policy-surface",
     "validate:policy-surface-split": "npm --prefix ./frontend run validate:policy-surface-split",
+    "platform:integrity": "node ./scripts/run-platform-integrity.js",
     "lint:md": "markdownlint-cli2 \"*.md\" \"backend/**/*.md\" \"data/**/*.md\" \"deploy/**/*.md\" \"docs/**/*.md\" \"frontend/**/*.md\" \"tests/**/*.md\" \"!node_modules/**\" \"!backend/node_modules/**\" \"!frontend/node_modules/**\" \"!frontend/dist/**\"",
     "lint:md:fix": "markdownlint-cli2 --fix \"*.md\" \"backend/**/*.md\" \"data/**/*.md\" \"deploy/**/*.md\" \"docs/**/*.md\" \"frontend/**/*.md\" \"tests/**/*.md\" \"!node_modules/**\" \"!backend/node_modules/**\" \"!frontend/node_modules/**\" \"!frontend/dist/**\""
   },

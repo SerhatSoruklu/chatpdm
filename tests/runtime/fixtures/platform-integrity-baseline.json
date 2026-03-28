@@ -1,0 +1,160 @@
+{
+  "version": "platform-integrity.v1",
+  "generatedAt": "2026-03-28T17:32:49.981Z",
+  "scoring": {
+    "exactCanonicalResolutionStable": 10,
+    "repeatabilityStable": 4,
+    "refusalStable": 4,
+    "contractShapeStable": 2,
+    "maxPointsPerConcept": 20,
+    "maxPointsTotal": 100
+  },
+  "concepts": [
+    {
+      "conceptId": "authority",
+      "exactQuery": "authority",
+      "probeQuery": "authorities",
+      "expectedExact": {
+        "query": "authority",
+        "hash": "1d250b854de6bc89fc2a78c278858e2e83c3a9483fe01d0f4ba64d695cf03c9a",
+        "responseType": "concept_match",
+        "queryType": "exact_concept_query",
+        "interpretationType": null,
+        "resolutionConceptId": "authority"
+      },
+      "expectedProbe": {
+        "query": "authorities",
+        "hash": "1dacf7c569954aca7cb9ca234bdf064dac16d4ed16a4631fa160a48ce933d380",
+        "responseType": "no_exact_match",
+        "queryType": "unsupported_complex_query",
+        "interpretationType": "unsupported_complex",
+        "resolutionConceptId": null
+      }
+    },
+    {
+      "conceptId": "power",
+      "exactQuery": "power",
+      "probeQuery": "moral power",
+      "expectedExact": {
+        "query": "power",
+        "hash": "f916be1c41e4eedfb9d8c938e5fbefb65d3f8753a0418f157d04c4b814417784",
+        "responseType": "concept_match",
+        "queryType": "exact_concept_query",
+        "interpretationType": null,
+        "resolutionConceptId": "power"
+      },
+      "expectedProbe": {
+        "query": "moral power",
+        "hash": "b5e7b0573874bfab2cc6a8f601b5b45bbbe8a3f28947979bbc2a113fe9d0e9b7",
+        "responseType": "no_exact_match",
+        "queryType": "subtype_query",
+        "interpretationType": "narrower_subtype",
+        "resolutionConceptId": null
+      }
+    },
+    {
+      "conceptId": "legitimacy",
+      "exactQuery": "legitimacy",
+      "probeQuery": "legitimacy of force",
+      "expectedExact": {
+        "query": "legitimacy",
+        "hash": "a497c5709ce8baa59ca6786ec5571dee2ea06d4d6e144bca4daf1584db2f52ac",
+        "responseType": "concept_match",
+        "queryType": "exact_concept_query",
+        "interpretationType": null,
+        "resolutionConceptId": "legitimacy"
+      },
+      "expectedProbe": {
+        "query": "legitimacy of force",
+        "hash": "f933a2c9aeeb1e20673d665b8dffea247c7c6296437bcea9d9116f01aeca1d69",
+        "responseType": "no_exact_match",
+        "queryType": "unsupported_complex_query",
+        "interpretationType": "unsupported_complex",
+        "resolutionConceptId": null
+      }
+    },
+    {
+      "conceptId": "responsibility",
+      "exactQuery": "responsibility",
+      "probeQuery": "duty and responsibility",
+      "expectedExact": {
+        "query": "responsibility",
+        "hash": "d846a2fe4ecf173b39c671670e085ecf8f2ce3036092a5287c2f22ed10dadeea",
+        "responseType": "concept_match",
+        "queryType": "exact_concept_query",
+        "interpretationType": null,
+        "resolutionConceptId": "responsibility"
+      },
+      "expectedProbe": {
+        "query": "duty and responsibility",
+        "hash": "aa8aa191ccbd30e8a6a9643eaecdbc2c2dd3650b830fb35839733cea9a9c7e52",
+        "responseType": "no_exact_match",
+        "queryType": "subtype_query",
+        "interpretationType": "narrower_subtype",
+        "resolutionConceptId": null
+      }
+    },
+    {
+      "conceptId": "duty",
+      "exactQuery": "duty",
+      "probeQuery": "dutie",
+      "expectedExact": {
+        "query": "duty",
+        "hash": "6a37d1db825e472e260c955cc7e909eabef7a145e90e1ef25b2c41e320969521",
+        "responseType": "concept_match",
+        "queryType": "exact_concept_query",
+        "interpretationType": null,
+        "resolutionConceptId": "duty"
+      },
+      "expectedProbe": {
+        "query": "dutie",
+        "hash": "94c53a428f35372eeaaf27e0eac6c2b55b5f6c76aba23850e53a917688639afd",
+        "responseType": "no_exact_match",
+        "queryType": "unsupported_complex_query",
+        "interpretationType": "unsupported_complex",
+        "resolutionConceptId": null
+      }
+    }
+  ],
+  "supplemental": [
+    {
+      "id": "supplemental-refusal-legit",
+      "query": "legit",
+      "expectedType": "no_exact_match",
+      "expectedResponse": {
+        "query": "legit",
+        "hash": "9c68f976a767489a32c3271e3f8eef2d930b54ce8e37bcc424cea16c3e825885",
+        "responseType": "no_exact_match",
+        "queryType": "unsupported_complex_query",
+        "interpretationType": "unsupported_complex",
+        "resolutionConceptId": null
+      }
+    },
+    {
+      "id": "supplemental-refusal-social-authority",
+      "query": "social authority",
+      "expectedType": "no_exact_match",
+      "expectedResponse": {
+        "query": "social authority",
+        "hash": "44beb141da0e642afad4e53c84863b4662f03532f36e49534b390b23cc312b05",
+        "responseType": "no_exact_match",
+        "queryType": "subtype_query",
+        "interpretationType": "narrower_subtype",
+        "resolutionConceptId": null
+      }
+    },
+    {
+      "id": "supplemental-comparison-authority-vs-power",
+      "query": "authority vs power",
+      "expectedType": "comparison",
+      "expectedResponse": {
+        "query": "authority vs power",
+        "hash": "d054c1c6ba45bd565a59d7e1864d6a03f17a8074a5bb02bcccbe13568918ab3b",
+        "responseType": "comparison",
+        "queryType": "comparison_query",
+        "interpretationType": null,
+        "resolutionConceptId": null
+      }
+    }
+  ]
+}

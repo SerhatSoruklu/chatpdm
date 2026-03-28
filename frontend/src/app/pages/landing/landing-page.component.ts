@@ -12,6 +12,7 @@ import {
   ComparisonAxis,
   ComparisonAxisValue,
   ConceptMatchResponse,
+  DerivedExplanationOverlays,
   NoExactMatchResponse,
   RelatedConcept,
   ResolveProductResponse,
@@ -580,13 +581,14 @@ export class LandingPageComponent {
   }
 
   protected readingLensesAvailable(response: ConceptMatchResponse): boolean {
-    return response.answer.derivedExplanationOverlays.status === 'generated';
+    const overlays = this.derivedExplanationOverlays(response);
+    return overlays?.status === 'generated';
   }
 
   protected activeReadingFields(response: ConceptMatchResponse): ActiveReadingFields {
-    const overlays = response.answer.derivedExplanationOverlays;
+    const overlays = this.derivedExplanationOverlays(response);
 
-    if (!this.readingLensesAvailable(response)) {
+    if (!overlays || !this.readingLensesAvailable(response)) {
       return this.canonicalReadingFields(response);
     }
 
@@ -613,7 +615,13 @@ export class LandingPageComponent {
   }
 
   protected canonicalHashShort(response: ConceptMatchResponse): string {
-    return response.answer.derivedExplanationOverlays.canonicalBinding.canonicalHash.slice(
+    const overlays = this.derivedExplanationOverlays(response);
+
+    if (!overlays) {
+      return 'Unavailable';
+    }
+
+    return overlays.canonicalBinding.canonicalHash.slice(
       0,
       CANONICAL_VISUAL_ANCHOR_HASH_LENGTH,
     );
@@ -794,6 +802,20 @@ export class LandingPageComponent {
       coreMeaning: response.answer.coreMeaning,
       fullDefinition: response.answer.fullDefinition,
     };
+  }
+
+  private derivedExplanationOverlays(response: ConceptMatchResponse): DerivedExplanationOverlays | null {
+    const overlays = response.answer.derivedExplanationOverlays;
+
+    if (!overlays || typeof overlays !== 'object' || Array.isArray(overlays)) {
+      return null;
+    }
+
+    if (!overlays.canonicalBinding || !overlays.modes) {
+      return null;
+    }
+
+    return overlays;
   }
 
   private buildHeroRoutingProbe(query: string): HeroRoutingProbe {
