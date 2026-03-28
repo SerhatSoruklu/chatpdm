@@ -1,0 +1,306 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "data/packages/package-concept.schema.json",
+  "title": "ChatPDM Package Concept",
+  "description": "Schema for authored package-local concepts under data/packages/<packageId>/concepts/*.json.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "conceptId",
+    "packageId",
+    "title",
+    "shortDefinition",
+    "fullDefinition",
+    "doctrineType",
+    "authorityBoundary",
+    "coreEquivalent",
+    "canAffectCore",
+    "packageScope",
+    "activationMode",
+    "nonTransitive",
+    "backPropagationPolicy",
+    "corePromotionPath",
+    "contexts",
+    "sources"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "minLength": 1
+    },
+    "conceptId": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:[_-][a-z0-9]+)*$"
+    },
+    "packageId": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "shortDefinition": {
+      "type": "string",
+      "minLength": 1
+    },
+    "fullDefinition": {
+      "type": "string",
+      "minLength": 1
+    },
+    "doctrineType": {
+      "type": "string",
+      "enum": [
+        "package-local-doctrine",
+        "package-local-extension",
+        "package-local-comparison"
+      ]
+    },
+    "authorityBoundary": {
+      "type": "string",
+      "enum": [
+        "package-local"
+      ]
+    },
+    "coreEquivalent": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "canAffectCore": {
+      "const": false
+    },
+    "packageScope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "appliesWithin",
+        "outOfScope",
+        "doesNotApplyOutside",
+        "boundaryNote"
+      ],
+      "properties": {
+        "appliesWithin": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "outOfScope": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "doesNotApplyOutside": {
+          "const": true
+        },
+        "boundaryNote": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "activationMode": {
+      "type": "string",
+      "enum": [
+        "inherit-package-activation",
+        "explicit-package-selection"
+      ]
+    },
+    "nonTransitive": {
+      "const": true
+    },
+    "backPropagationPolicy": {
+      "type": "string",
+      "enum": [
+        "forbidden-without-constitutional-review"
+      ]
+    },
+    "corePromotionPath": {
+      "type": "string",
+      "enum": [
+        "constitutional-review-required"
+      ]
+    },
+    "contexts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "label",
+          "explanation"
+        ],
+        "properties": {
+          "label": {
+            "type": "string",
+            "minLength": 1
+          },
+          "explanation": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "label",
+          "type",
+          "usedFor"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1
+          },
+          "type": {
+            "type": "string",
+            "minLength": 1
+          },
+          "usedFor": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "relatedConcepts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "conceptId",
+          "relationType"
+        ],
+        "properties": {
+          "conceptId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "relationType": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "aliases": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "normalizedAliases": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "reviewMetadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "what_it_is": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "what_it_is_not": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "must_not_collapse_into": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "related_concepts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "contrast_prompts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "authoringNotes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "doctrineType": {
+            "const": "package-local-doctrine"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "coreEquivalent": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "doctrineType": {
+            "enum": [
+              "package-local-extension",
+              "package-local-comparison"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "coreEquivalent": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  ]
+}

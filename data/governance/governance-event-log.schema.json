@@ -1,0 +1,487 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "data/governance/governance-event-log.schema.json",
+  "title": "ChatPDM Governance Event Record",
+  "description": "Schema for one non-empty line in data/governance/governance-event-log.ndjson.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "eventId",
+    "eventType",
+    "objectId",
+    "objectType",
+    "class",
+    "timestamp",
+    "reason",
+    "approvers",
+    "blockingReviewers",
+    "linkedPr",
+    "fromVersion",
+    "toVersion"
+  ],
+  "properties": {
+    "eventId": {
+      "type": "string",
+      "pattern": "^GE-[0-9]{4}-[0-9]{6}$"
+    },
+    "eventType": {
+      "type": "string",
+      "enum": [
+        "PROMOTION_APPROVED",
+        "CLASS_ESCALATED",
+        "REVIEW_BLOCKED",
+        "EXCEPTION_GRANTED",
+        "ROLLBACK_EXECUTED",
+        "FREEZE_ACTIVATED",
+        "DEPRECATION_STARTED",
+        "EMERGENCY_OVERRIDE_EXPIRED",
+        "CLASSIFICATION_DISPUTE_OPENED",
+        "CLASSIFICATION_DISPUTE_RESOLVED",
+        "SOURCE_REOPEN_TRIGGERED",
+        "GRAPH_REVALIDATION_TRIGGERED",
+        "PROMOTION_EXPIRED",
+        "REVIEW_WINDOW_RENEWED",
+        "RETURN_RATIFICATION_COMPLETED"
+      ]
+    },
+    "objectId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "objectType": {
+      "type": "string",
+      "enum": [
+        "concept",
+        "resolve-rule",
+        "contract",
+        "schema",
+        "trust-surface",
+        "governance-doc",
+        "workflow",
+        "continuity-authority",
+        "source-anchor",
+        "source-registry"
+      ],
+      "description": "Bounded governance object vocabulary for the current phase."
+    },
+    "class": {
+      "type": "string",
+      "enum": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ]
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Effective governance action time for this immutable event record."
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1
+    },
+    "approvers": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "blockingReviewers": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "linkedPr": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "fromVersion": {
+      "$ref": "#/$defs/versionValue"
+    },
+    "toVersion": {
+      "$ref": "#/$defs/versionValue"
+    },
+    "linkedConceptSetVersion": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Required when the event records a non-null version transition."
+    },
+    "secondaryObjects": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "linkedExceptionId": {
+      "type": "string",
+      "pattern": "^TE-[0-9]{4}-[0-9]{6}$"
+    },
+    "linkedLifecycleState": {
+      "type": "string",
+      "minLength": 1
+    },
+    "linkedIncidentId": {
+      "type": "string",
+      "pattern": "^EI-[0-9]{4}-[0-9]{6}$"
+    },
+    "linkedChallengeId": {
+      "type": "string",
+      "pattern": "^GC-[0-9]{4}-[0-9]{6}$"
+    },
+    "expiry": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "linkedEvidenceBundle": {
+      "type": "string",
+      "minLength": 1
+    },
+    "proposedClass": {
+      "type": "string",
+      "enum": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ]
+    },
+    "finalClass": {
+      "type": "string",
+      "enum": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ]
+    },
+    "trigger": {
+      "type": "string",
+      "minLength": 1
+    },
+    "disputePresent": {
+      "type": "boolean"
+    },
+    "blockingReviewerRole": {
+      "type": "string",
+      "minLength": 1
+    },
+    "blockReason": {
+      "type": "string",
+      "minLength": 1
+    },
+    "requiredRemedy": {
+      "type": "string",
+      "minLength": 1
+    },
+    "affectedPath": {
+      "type": "string",
+      "minLength": 1
+    },
+    "normalRequiredPath": {
+      "type": "string",
+      "minLength": 1
+    },
+    "exceptionTaken": {
+      "type": "string",
+      "minLength": 1
+    },
+    "rollbackReason": {
+      "type": "string",
+      "minLength": 1
+    },
+    "linkedSafeBoundary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "freezeScope": {
+      "type": "string",
+      "minLength": 1
+    },
+    "freezeReason": {
+      "type": "string",
+      "minLength": 1
+    },
+    "actingAuthority": {
+      "type": "string",
+      "minLength": 1
+    },
+    "deprecationReason": {
+      "type": "string",
+      "minLength": 1
+    },
+    "replacementObjectId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "effectiveBoundary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "expiredAuthority": {
+      "type": "string",
+      "minLength": 1
+    },
+    "followUpState": {
+      "type": "string",
+      "minLength": 1
+    },
+    "ratifiedOrReverted": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "$defs": {
+    "versionValue": {
+      "type": [
+        "string",
+        "number",
+        "null"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "eventType": {
+            "const": "PROMOTION_APPROVED"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "linkedLifecycleState",
+          "fromVersion",
+          "toVersion",
+          "linkedConceptSetVersion",
+          "linkedEvidenceBundle"
+        ],
+        "properties": {
+          "approvers": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "eventType": {
+            "const": "CLASS_ESCALATED"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "proposedClass",
+          "finalClass",
+          "trigger",
+          "disputePresent"
+        ],
+        "properties": {
+          "approvers": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "fromVersion": {
+            "type": [
+              "string",
+              "number"
+            ]
+          }
+        },
+        "required": [
+          "fromVersion"
+        ]
+      },
+      "then": {
+        "required": [
+          "linkedConceptSetVersion"
+        ],
+        "properties": {
+          "linkedConceptSetVersion": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "toVersion": {
+            "type": [
+              "string",
+              "number"
+            ]
+          }
+        },
+        "required": [
+          "toVersion"
+        ]
+      },
+      "then": {
+        "required": [
+          "linkedConceptSetVersion"
+        ],
+        "properties": {
+          "linkedConceptSetVersion": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "eventType": {
+            "const": "REVIEW_BLOCKED"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "blockingReviewerRole",
+          "blockReason",
+          "requiredRemedy",
+          "affectedPath"
+        ],
+        "properties": {
+          "blockingReviewers": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "eventType": {
+            "const": "EXCEPTION_GRANTED"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "linkedExceptionId",
+          "expiry",
+          "normalRequiredPath",
+          "exceptionTaken"
+        ],
+        "properties": {
+          "approvers": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "eventType": {
+            "const": "ROLLBACK_EXECUTED"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "fromVersion",
+          "toVersion",
+          "rollbackReason",
+          "linkedSafeBoundary"
+        ],
+        "properties": {
+          "approvers": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "eventType": {
+            "const": "FREEZE_ACTIVATED"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "freezeScope",
+          "freezeReason",
+          "expiry",
+          "actingAuthority"
+        ],
+        "properties": {
+          "approvers": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "eventType": {
+            "const": "DEPRECATION_STARTED"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "deprecationReason",
+          "replacementObjectId",
+          "effectiveBoundary"
+        ],
+        "properties": {
+          "approvers": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "eventType": {
+            "const": "EMERGENCY_OVERRIDE_EXPIRED"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "expiredAuthority",
+          "followUpState",
+          "ratifiedOrReverted",
+          "linkedIncidentId"
+        ],
+        "properties": {
+          "approvers": {
+            "minItems": 1
+          }
+        }
+      }
+    }
+  ]
+}

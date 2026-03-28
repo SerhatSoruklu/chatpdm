@@ -25,7 +25,7 @@ const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
   },
   'how-it-works': {
     eyebrow: 'How it works',
-    title: 'A bounded answer model with visible constraints.',
+    title: 'A predefined deterministic meaning system with visible constraints.',
     intro:
       'ChatPDM classifies query shape, resolves only authored concepts, and returns explicit ambiguity or refusal when the runtime should not pretend to know more.',
     sections: [
@@ -114,6 +114,42 @@ const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
     action: {
       label: 'View current inspectable privacy page',
       route: '/inspect/privacy',
+    },
+  },
+  terms: {
+    eyebrow: 'Terms of Service',
+    title: 'Human-readable version in preparation.',
+    intro:
+      'A simpler public terms page is being prepared for this route. The current inspectable terms surface remains available in the meantime.',
+    sections: [
+      {
+        title: 'Policy status',
+        paragraphs: [
+          'This top-level route is reserved for the human-readable terms page. Until that version is ready, use the inspectable page for the current system-backed view of usage boundaries and service rules.',
+        ],
+      },
+    ],
+    action: {
+      label: 'View current inspectable terms page',
+      route: '/inspect/terms',
+    },
+  },
+  cookies: {
+    eyebrow: 'Cookie Policy',
+    title: 'Human-readable version in preparation.',
+    intro:
+      'A simpler public cookie page is being prepared for this route. The current inspectable cookie surface remains available in the meantime.',
+    sections: [
+      {
+        title: 'Policy status',
+        paragraphs: [
+          'This top-level route is reserved for the human-readable cookie page. Until that version is ready, use the inspectable page for the current system-backed view of essential browser and SSR cookie behavior.',
+        ],
+      },
+    ],
+    action: {
+      label: 'View current inspectable cookie page',
+      route: '/inspect/cookies',
     },
   },
   docs: {

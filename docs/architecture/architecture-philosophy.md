@@ -187,7 +187,7 @@ Public wording should avoid implying:
 - absolute enforcement
 - perfect determinism
 
-This matters most on human-readable and inspectable trust surfaces such as Privacy, Terms, Cookies, and Inspect. Those surfaces may describe a bounded deterministic model and traceable evidence, but they should not imply that current implementation behavior is the same as universal runtime assurance.
+This matters most on human-readable and inspectable trust surfaces such as Privacy, Terms, Cookies, and Inspect. Those surfaces may describe a bounded deterministic meaning system and traceable evidence, but they should not imply that current implementation behavior is the same as universal runtime assurance.
 
 ## Public Route Tone Architecture
 

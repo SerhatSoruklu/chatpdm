@@ -7,7 +7,7 @@ This note captures the durable product direction for ChatPDM.
 ChatPDM is:
 
 - a deterministic meaning system
-- a fixed-output answer model
+- a predefined deterministic meaning
 - a source-grounded concept-resolution product
 
 ChatPDM is not:

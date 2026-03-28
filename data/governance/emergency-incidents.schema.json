@@ -1,0 +1,381 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "data/governance/emergency-incidents.schema.json",
+  "title": "ChatPDM Emergency Incident Entry",
+  "description": "Schema for one non-empty line in data/governance/emergency-incidents.ndjson.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "entryId",
+    "entryAction",
+    "entryTimestamp",
+    "incidentId",
+    "date",
+    "severity",
+    "trigger",
+    "actingBody",
+    "scope",
+    "actionsTaken",
+    "expiry",
+    "ratificationStatus",
+    "linkedEventIds",
+    "linkedExceptionIds"
+  ],
+  "properties": {
+    "entryId": {
+      "type": "string",
+      "pattern": "^EIE-[0-9]{4}-[0-9]{6}$"
+    },
+    "entryAction": {
+      "type": "string",
+      "enum": [
+        "ACTIVATED",
+        "UPDATED",
+        "RATIFIED",
+        "CLOSED",
+        "EXPIRED",
+        "SUPERSEDED"
+      ]
+    },
+    "entryTimestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Append time for this immutable incident line."
+    },
+    "incidentId": {
+      "type": "string",
+      "pattern": "^EI-[0-9]{4}-[0-9]{6}$"
+    },
+    "date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Original incident activation time. Later lines for the same incidentId keep this value."
+    },
+    "severity": {
+      "type": "string",
+      "enum": [
+        "S1",
+        "S2",
+        "S3"
+      ]
+    },
+    "trigger": {
+      "type": "string",
+      "minLength": 1
+    },
+    "actingBody": {
+      "type": "string",
+      "minLength": 1
+    },
+    "actingDeputy": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "scope": {
+      "type": "string",
+      "minLength": 1
+    },
+    "actionsTaken": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "expiry": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Last valid moment for the current temporary emergency authority."
+    },
+    "ratificationStatus": {
+      "type": "string",
+      "enum": [
+        "PENDING",
+        "RATIFIED",
+        "REVERTED",
+        "SUPERSEDED",
+        "EXPIRED"
+      ]
+    },
+    "linkedEventIds": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^GE-[0-9]{4}-[0-9]{6}$"
+      }
+    },
+    "linkedExceptionIds": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^TE-[0-9]{4}-[0-9]{6}$"
+      }
+    },
+    "linkedChallengeId": {
+      "type": "string",
+      "pattern": "^GC-[0-9]{4}-[0-9]{6}$"
+    },
+    "linkedVersions": {
+      "$ref": "#/$defs/linkedVersions"
+    },
+    "affectedObjects": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "supersedesEntryId": {
+      "type": "string",
+      "pattern": "^EIE-[0-9]{4}-[0-9]{6}$"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "$defs": {
+    "linkedVersions": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "description": "Version scope for the incident. At least one version locator must be present and non-null.",
+      "properties": {
+        "conceptVersion": {
+          "type": [
+            "string",
+            "number",
+            "null"
+          ]
+        },
+        "conceptSetVersion": {
+          "type": [
+            "string",
+            "number",
+            "null"
+          ]
+        },
+        "contractVersion": {
+          "type": [
+            "string",
+            "number",
+            "null"
+          ]
+        },
+        "matcherVersion": {
+          "type": [
+            "string",
+            "number",
+            "null"
+          ]
+        },
+        "normalizerVersion": {
+          "type": [
+            "string",
+            "number",
+            "null"
+          ]
+        },
+        "overlayManifestVersion": {
+          "type": [
+            "string",
+            "number",
+            "null"
+          ]
+        },
+        "storeVersion": {
+          "type": [
+            "string",
+            "number",
+            "null"
+          ]
+        }
+      },
+      "anyOf": [
+        {
+          "required": [
+            "conceptVersion"
+          ],
+          "properties": {
+            "conceptVersion": {
+              "type": [
+                "string",
+                "number"
+              ]
+            }
+          }
+        },
+        {
+          "required": [
+            "conceptSetVersion"
+          ],
+          "properties": {
+            "conceptSetVersion": {
+              "type": [
+                "string",
+                "number"
+              ]
+            }
+          }
+        },
+        {
+          "required": [
+            "contractVersion"
+          ],
+          "properties": {
+            "contractVersion": {
+              "type": [
+                "string",
+                "number"
+              ]
+            }
+          }
+        },
+        {
+          "required": [
+            "matcherVersion"
+          ],
+          "properties": {
+            "matcherVersion": {
+              "type": [
+                "string",
+                "number"
+              ]
+            }
+          }
+        },
+        {
+          "required": [
+            "normalizerVersion"
+          ],
+          "properties": {
+            "normalizerVersion": {
+              "type": [
+                "string",
+                "number"
+              ]
+            }
+          }
+        },
+        {
+          "required": [
+            "overlayManifestVersion"
+          ],
+          "properties": {
+            "overlayManifestVersion": {
+              "type": [
+                "string",
+                "number"
+              ]
+            }
+          }
+        },
+        {
+          "required": [
+            "storeVersion"
+          ],
+          "properties": {
+            "storeVersion": {
+              "type": [
+                "string",
+                "number"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "entryAction": {
+            "enum": [
+              "UPDATED",
+              "RATIFIED",
+              "CLOSED",
+              "EXPIRED",
+              "SUPERSEDED"
+            ]
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "supersedesEntryId"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "entryAction": {
+            "const": "ACTIVATED"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "ratificationStatus": {
+            "const": "PENDING"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "entryAction": {
+            "const": "RATIFIED"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "ratificationStatus": {
+            "const": "RATIFIED"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "entryAction": {
+            "const": "EXPIRED"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "ratificationStatus": {
+            "const": "EXPIRED"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "entryAction": {
+            "const": "SUPERSEDED"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "ratificationStatus": {
+            "const": "SUPERSEDED"
+          }
+        }
+      }
+    }
+  ]
+}

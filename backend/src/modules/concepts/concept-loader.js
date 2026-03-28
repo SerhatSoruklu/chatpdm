@@ -9,6 +9,7 @@ const {
   NON_GOVERNANCE_HANDLING_REQUIRED,
   SEED_CONCEPT_IDS,
 } = require('./constants');
+const { loadPackageRegistry } = require('./package-loader');
 
 const conceptsDirectory = path.resolve(__dirname, '../../../../data/concepts');
 const sourceRegistry = require('./source-registry.json');
@@ -339,7 +340,9 @@ function loadConceptFile(conceptId) {
 }
 
 function loadConceptSet() {
-  return SEED_CONCEPT_IDS.map(loadConceptFile);
+  const coreConcepts = SEED_CONCEPT_IDS.map(loadConceptFile);
+  loadPackageRegistry(coreConcepts.map((concept) => concept.conceptId));
+  return coreConcepts;
 }
 
 module.exports = {

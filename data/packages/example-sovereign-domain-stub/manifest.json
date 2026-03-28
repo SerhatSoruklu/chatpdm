@@ -1,0 +1,50 @@
+{
+  "$schema": "../package-manifest.schema.json",
+  "packageId": "example-sovereign-domain-stub",
+  "title": "Example Sovereign Domain Stub",
+  "status": "stub",
+  "version": "0.1.0",
+  "description": "Minimal example package showing how sovereign domain doctrine can remain package-local without redefining the ChatPDM core.",
+  "domainScope": {
+    "domainId": "example-sovereign-domain",
+    "jurisdiction": "example-jurisdiction",
+    "inScope": [
+      "jurisdiction-specific doctrine terms",
+      "bounded local authority interpretations"
+    ],
+    "outOfScope": [
+      "core constitutional truth law",
+      "adjacent sovereign domains",
+      "global redefinition of authority"
+    ],
+    "adjacentDomainsNotImported": [
+      "healthcare doctrine",
+      "financial regulation doctrine"
+    ]
+  },
+  "sourcePolicyRef": "docs/governance/GOVERNANCE_CONSTITUTION.md#20-package-model-for-future-scale",
+  "constitutionalCompatibility": {
+    "constitutionPath": "docs/governance/GOVERNANCE_CONSTITUTION.md",
+    "changeAuthorityPath": "docs/governance/CHANGE_AUTHORITY_MATRIX.md",
+    "lifecyclePath": "docs/governance/CONCEPT_LIFECYCLE.md",
+    "compatibilityMode": "subordinate-package",
+    "refusalCompatibility": "required",
+    "coreChangePath": "constitutional-review-required"
+  },
+  "ownerRole": "Domain Package Maintainer",
+  "activationBoundary": {
+    "activationMode": "explicit-package-selection",
+    "defaultActive": false,
+    "boundarySummary": "This package is inactive by default and only applies when a lawful deployment or review context explicitly selects it."
+  },
+  "sovereigntyBoundary": {
+    "authorityBoundary": "package-local",
+    "nonTransitive": true,
+    "canAffectCore": false,
+    "kernelOverrideAllowed": false,
+    "backPropagationPolicy": "forbidden-without-constitutional-review",
+    "corePromotionPath": "constitutional-review-required"
+  },
+  "conceptsPath": "concepts/",
+  "exampleOnly": true
+}

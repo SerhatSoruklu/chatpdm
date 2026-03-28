@@ -10,7 +10,7 @@ ChatPDM is:
 
 a deterministic concept-resolution system
 a structured meaning engine
-a fixed-output answer model
+a predefined deterministic meaning
 a source-grounded reference layer
 What ChatPDM Is Not
 

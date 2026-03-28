@@ -1,7 +1,8 @@
 'use strict';
 
-const { resolveConceptQuery } = require('./resolver');
+const { resolveConcept, resolveConceptQuery } = require('./resolver');
 
 module.exports = {
+  resolveConcept,
   resolveConceptQuery,
 };

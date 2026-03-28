@@ -45,7 +45,7 @@ Examples:
 
 - `ChatPDM - Deterministic Meaning System`
 - `About ChatPDM - Deterministic Meaning System`
-- `How ChatPDM Works - Deterministic Answer Model`
+- `How ChatPDM Works - Predefined Deterministic Meaning`
 - `Developer Overview - ChatPDM`
 - `API Reference - ChatPDM`
 

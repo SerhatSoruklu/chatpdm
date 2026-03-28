@@ -1,0 +1,228 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "data/packages/package-manifest.schema.json",
+  "title": "ChatPDM Package Manifest",
+  "description": "Schema for data/packages/<packageId>/manifest.json. Defines package identity, constitutional compatibility, activation boundary, and non-transitive sovereignty.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "packageId",
+    "title",
+    "status",
+    "version",
+    "domainScope",
+    "sourcePolicyRef",
+    "constitutionalCompatibility",
+    "ownerRole",
+    "activationBoundary",
+    "sovereigntyBoundary"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "minLength": 1
+    },
+    "packageId": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "stub",
+        "draft",
+        "review",
+        "approved",
+        "active",
+        "deprecated",
+        "archived"
+      ]
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "domainScope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "domainId",
+        "inScope",
+        "outOfScope",
+        "adjacentDomainsNotImported"
+      ],
+      "properties": {
+        "domainId": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "jurisdiction": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "inScope": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "outOfScope": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "adjacentDomainsNotImported": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "sourcePolicyRef": {
+      "type": "string",
+      "minLength": 1
+    },
+    "constitutionalCompatibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "constitutionPath",
+        "changeAuthorityPath",
+        "lifecyclePath",
+        "compatibilityMode",
+        "refusalCompatibility",
+        "coreChangePath"
+      ],
+      "properties": {
+        "constitutionPath": {
+          "type": "string",
+          "minLength": 1
+        },
+        "changeAuthorityPath": {
+          "type": "string",
+          "minLength": 1
+        },
+        "lifecyclePath": {
+          "type": "string",
+          "minLength": 1
+        },
+        "compatibilityMode": {
+          "type": "string",
+          "enum": [
+            "subordinate-package"
+          ]
+        },
+        "refusalCompatibility": {
+          "type": "string",
+          "enum": [
+            "required"
+          ]
+        },
+        "coreChangePath": {
+          "type": "string",
+          "enum": [
+            "constitutional-review-required"
+          ]
+        }
+      }
+    },
+    "ownerRole": {
+      "type": "string",
+      "minLength": 1
+    },
+    "activationBoundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "activationMode",
+        "defaultActive",
+        "boundarySummary"
+      ],
+      "properties": {
+        "activationMode": {
+          "type": "string",
+          "enum": [
+            "explicit-package-selection",
+            "deployment-pinned-selection"
+          ]
+        },
+        "defaultActive": {
+          "const": false
+        },
+        "boundarySummary": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "sovereigntyBoundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "authorityBoundary",
+        "nonTransitive",
+        "canAffectCore",
+        "kernelOverrideAllowed",
+        "backPropagationPolicy",
+        "corePromotionPath"
+      ],
+      "properties": {
+        "authorityBoundary": {
+          "type": "string",
+          "enum": [
+            "package-local"
+          ]
+        },
+        "nonTransitive": {
+          "const": true
+        },
+        "canAffectCore": {
+          "const": false
+        },
+        "kernelOverrideAllowed": {
+          "const": false
+        },
+        "backPropagationPolicy": {
+          "type": "string",
+          "enum": [
+            "forbidden-without-constitutional-review"
+          ]
+        },
+        "corePromotionPath": {
+          "type": "string",
+          "enum": [
+            "constitutional-review-required"
+          ]
+        }
+      }
+    },
+    "conceptsPath": {
+      "type": "string",
+      "pattern": "^concepts/?$"
+    },
+    "exampleOnly": {
+      "type": "boolean"
+    }
+  }
+}

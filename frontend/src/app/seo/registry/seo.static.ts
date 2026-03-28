@@ -27,7 +27,7 @@ export const seoStaticEntries = {
     sitemapPriority: 0.7,
   },
   'static.how-it-works': {
-    title: 'How ChatPDM Works - Deterministic Answer Model',
+    title: 'How ChatPDM Works - Predefined Deterministic Meaning',
     description: 'See how ChatPDM normalizes queries, resolves authored concepts, and refuses unsupported compositions honestly.',
     canonicalPath: '/how-it-works',
     includeInSitemap: true,

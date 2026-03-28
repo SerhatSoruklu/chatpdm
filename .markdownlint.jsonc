@@ -1,0 +1,11 @@
+{
+  // Keep the repo on one explicit markdownlint baseline instead of relying on
+  // editor defaults. The governance docs were normalized to this rule set.
+  "default": true,
+  "MD013": false,
+  "MD022": {
+    "lines_above": 1,
+    "lines_below": 1
+  },
+  "MD032": true
+}

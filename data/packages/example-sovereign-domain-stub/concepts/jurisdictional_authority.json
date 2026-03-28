@@ -1,0 +1,75 @@
+{
+  "$schema": "../../package-concept.schema.json",
+  "conceptId": "jurisdictional_authority",
+  "packageId": "example-sovereign-domain-stub",
+  "title": "Jurisdictional Authority",
+  "shortDefinition": "A package-local authority concept bounded to the active sovereign-domain package.",
+  "fullDefinition": "Authority as recognized inside the example sovereign domain stub. It extends the application of the core authority concept for this package boundary only and does not redefine the core meaning of authority across ChatPDM.",
+  "doctrineType": "package-local-extension",
+  "authorityBoundary": "package-local",
+  "coreEquivalent": "authority",
+  "canAffectCore": false,
+  "packageScope": {
+    "appliesWithin": [
+      "example sovereign domain doctrine",
+      "jurisdiction-specific package interpretations"
+    ],
+    "outOfScope": [
+      "core governance meaning of authority",
+      "adjacent non-activated packages",
+      "global runtime semantics"
+    ],
+    "doesNotApplyOutside": true,
+    "boundaryNote": "This concept resolves only inside the active package boundary and may not universalize itself by implication."
+  },
+  "activationMode": "inherit-package-activation",
+  "nonTransitive": true,
+  "backPropagationPolicy": "forbidden-without-constitutional-review",
+  "corePromotionPath": "constitutional-review-required",
+  "contexts": [
+    {
+      "label": "package-local doctrine",
+      "explanation": "Used only when the example sovereign domain stub is explicitly selected."
+    }
+  ],
+  "sources": [
+    {
+      "id": "example-sovereign-charter",
+      "label": "Example Sovereign Charter",
+      "type": "local-authority",
+      "usedFor": "bounded package-local doctrine"
+    }
+  ],
+  "relatedConcepts": [
+    {
+      "conceptId": "authority",
+      "relationType": "extends-core-concept"
+    }
+  ],
+  "aliases": [
+    "local authority"
+  ],
+  "normalizedAliases": [
+    "local authority"
+  ],
+  "reviewMetadata": {
+    "what_it_is": [
+      "package-local extension of authority"
+    ],
+    "what_it_is_not": [
+      "core authority redefinition"
+    ],
+    "must_not_collapse_into": [
+      "authority"
+    ],
+    "related_concepts": [
+      "authority"
+    ],
+    "contrast_prompts": [
+      "How does package-local authority differ from the core concept of authority without redefining it?"
+    ]
+  },
+  "authoringNotes": [
+    "Example stub only. Not an active doctrinal package."
+  ]
+}

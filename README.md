@@ -4,6 +4,14 @@ Deterministic concept resolution for a bounded, authored concept system.
 
 ChatPDM is a public development repo for a meaning engine that answers only within a defined concept set. It is designed to return stable, inspectable outputs for authored concepts and to refuse unsupported queries honestly instead of improvising.
 
+## What PDM Means
+
+PDM stands for **Predefined Deterministic Meaning**.
+
+In ChatPDM, meaning is authored before runtime, executed within explicit governance and package boundaries, and fails closed before semantic drift.
+
+This reflects the system's core invariant: the same meaning object must survive phrasing pressure, lifecycle evolution, and institutional execution boundaries.
+
 ## What Problem It Solves
 
 Most concept tools drift into one of two failure modes:
