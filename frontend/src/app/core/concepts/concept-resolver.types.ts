@@ -49,6 +49,60 @@ export interface RelatedConcept {
   relationType: 'see_also' | 'prerequisite' | 'extension' | 'contrast';
 }
 
+export type DerivedExplanationOverlayStatus =
+  | 'absent'
+  | 'pending_generation'
+  | 'generated'
+  | 'invalid';
+
+export interface DerivedExplanationOverlayCanonicalBinding {
+  conceptId: string;
+  conceptVersion: number;
+  canonicalHash: string;
+}
+
+export interface DerivedExplanationOverlayFieldCheck {
+  strategy: 'identity' | 'prefixed_copy';
+  prefix: string;
+  canonicalSuffixMatch: true;
+}
+
+export interface DerivedExplanationEquivalenceCertificate {
+  status: 'certified';
+  certificateVersion: string;
+  templateVersion: string;
+  canonicalHash: string;
+  mode: 'standard' | 'simplified' | 'formal';
+  fieldChecks: {
+    shortDefinition: DerivedExplanationOverlayFieldCheck;
+    coreMeaning: DerivedExplanationOverlayFieldCheck;
+    fullDefinition: DerivedExplanationOverlayFieldCheck;
+  };
+}
+
+export interface DerivedExplanationOverlayFields {
+  shortDefinition: string | null;
+  coreMeaning: string | null;
+  fullDefinition: string | null;
+}
+
+export interface DerivedExplanationOverlayModeShell {
+  status: DerivedExplanationOverlayStatus;
+  fields: DerivedExplanationOverlayFields;
+  equivalenceCertificate: DerivedExplanationEquivalenceCertificate | null;
+}
+
+export interface DerivedExplanationOverlays {
+  readOnly: true;
+  status: DerivedExplanationOverlayStatus;
+  canonicalBinding: DerivedExplanationOverlayCanonicalBinding;
+  modes: {
+    standard: DerivedExplanationOverlayModeShell;
+    simplified: DerivedExplanationOverlayModeShell;
+    formal: DerivedExplanationOverlayModeShell;
+  };
+}
+
 export interface ConceptMatchResponse {
   type: 'concept_match';
   query: string;
@@ -69,6 +123,7 @@ export interface ConceptMatchResponse {
     shortDefinition: string;
     coreMeaning: string;
     fullDefinition: string;
+    derivedExplanationOverlays: DerivedExplanationOverlays;
     contexts: ConceptContext[];
     sources: ConceptSource[];
     relatedConcepts: RelatedConcept[];

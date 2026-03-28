@@ -17,6 +17,13 @@ import {
   ResolveProductResponse,
   Suggestion,
 } from '../../core/concepts/concept-resolver.types';
+import {
+  CANONICAL_VISUAL_ANCHOR_HASH_LENGTH,
+  READING_LENS_FALLBACK_COPY,
+  READING_LENS_OPTIONS,
+  READING_LENS_TRUST_COPY,
+  ReadingLensMode,
+} from '../../core/concepts/derived-explanation-reading-lens-ui.policy';
 import { FeedbackService } from '../../core/feedback/feedback.service';
 import type {
   AmbiguousSelectionOrigin,
@@ -95,6 +102,12 @@ interface QueryAssessment {
   line: string;
   message: string;
   canSubmit: boolean;
+}
+
+interface ActiveReadingFields {
+  shortDefinition: string;
+  coreMeaning: string;
+  fullDefinition: string;
 }
 
 const QUERY_ENTRY_MODES: QueryEntryMode[] = [
@@ -201,12 +214,16 @@ export class LandingPageComponent {
   protected readonly heroSupportFlow = HERO_SUPPORT_FLOW;
   protected readonly homepageSteps = HOMEPAGE_STEPS;
   protected readonly referenceLinks = REFERENCE_LINKS;
+  protected readonly readingLensOptions = READING_LENS_OPTIONS;
+  protected readonly readingLensTrustCopy = READING_LENS_TRUST_COPY;
+  protected readonly readingLensFallbackCopy = READING_LENS_FALLBACK_COPY;
   protected readonly queryAssessment = computed(() => this.classifyQuery(this.queryDraft()));
   protected readonly liveConceptCount = LIVE_RUNTIME_CONCEPTS.size;
   protected readonly scopedConceptCount = SCOPE_GROUPS.reduce(
     (count, group) => count + group.concepts.length,
     0,
   );
+  protected readonly activeReadingLens = signal<ReadingLensMode>('standard');
 
   protected async submitDraft(): Promise<void> {
     if (!this.canSubmitDraft()) {
@@ -225,6 +242,7 @@ export class LandingPageComponent {
 
     const submittedQuery = options.displayQuery ?? query.trim();
 
+    this.activeReadingLens.set('standard');
     this.isSubmitting.set(true);
     this.activeEntry.set({
       submittedQuery,
@@ -502,6 +520,54 @@ export class LandingPageComponent {
     return response as LandingComparisonResponse;
   }
 
+  protected selectReadingLens(mode: ReadingLensMode): void {
+    this.activeReadingLens.set(mode);
+  }
+
+  protected readingLensesAvailable(response: ConceptMatchResponse): boolean {
+    return response.answer.derivedExplanationOverlays.status === 'generated';
+  }
+
+  protected activeReadingFields(response: ConceptMatchResponse): ActiveReadingFields {
+    const overlays = response.answer.derivedExplanationOverlays;
+
+    if (!this.readingLensesAvailable(response)) {
+      return this.canonicalReadingFields(response);
+    }
+
+    const activeMode = overlays.modes[this.activeReadingLens()];
+
+    if (
+      activeMode.status !== 'generated'
+      || !activeMode.fields.shortDefinition
+      || !activeMode.fields.coreMeaning
+      || !activeMode.fields.fullDefinition
+    ) {
+      return this.canonicalReadingFields(response);
+    }
+
+    return {
+      shortDefinition: activeMode.fields.shortDefinition,
+      coreMeaning: activeMode.fields.coreMeaning,
+      fullDefinition: activeMode.fields.fullDefinition,
+    };
+  }
+
+  protected definitionParagraphs(fullDefinition: string): string[] {
+    return fullDefinition.split('\n\n');
+  }
+
+  protected canonicalHashShort(response: ConceptMatchResponse): string {
+    return response.answer.derivedExplanationOverlays.canonicalBinding.canonicalHash.slice(
+      0,
+      CANONICAL_VISUAL_ANCHOR_HASH_LENGTH,
+    );
+  }
+
+  protected sourceAnchor(response: ConceptMatchResponse): string | null {
+    return response.answer.sources[0]?.id ?? null;
+  }
+
   private buildFeedbackState(
     response: ResolveProductResponse,
     feedbackOrigin?: AmbiguousSelectionOrigin,
@@ -665,5 +731,13 @@ export class LandingPageComponent {
 
   private scopeLabelForConcept(conceptId: string): string {
     return RUNTIME_SCOPE_BY_CONCEPT[conceptId] ?? 'Bounded runtime v1';
+  }
+
+  private canonicalReadingFields(response: ConceptMatchResponse): ActiveReadingFields {
+    return {
+      shortDefinition: response.answer.shortDefinition,
+      coreMeaning: response.answer.coreMeaning,
+      fullDefinition: response.answer.fullDefinition,
+    };
   }
 }

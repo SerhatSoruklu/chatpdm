@@ -236,10 +236,75 @@
                       </div>
                     </div>
 
+                    <section class="pdm-home__reading-surface" aria-label="Reading registers">
+                      <div class="pdm-home__reading-trust-zone">
+                        <div class="pdm-home__reading-trust-copy">
+                          <p class="pdm-home__micro-label">Reading register</p>
+                          <p class="pdm-home__reading-trust-line">{{ readingLensTrustCopy }}</p>
+                        </div>
+
+                        <div class="pdm-home__reading-anchor-grid" aria-label="Canonical anchor">
+                          <div class="pdm-home__reading-anchor-item">
+                            <span class="pdm-home__micro-label">Concept</span>
+                            <span class="pdm-home__reading-anchor-value pdm-home__reading-anchor-value--mono">
+                              {{ asConceptMatch(response).resolution.conceptId }}
+                            </span>
+                          </div>
+
+                          <div class="pdm-home__reading-anchor-item">
+                            <span class="pdm-home__micro-label">Version</span>
+                            <span class="pdm-home__reading-anchor-value">
+                              {{ asConceptMatch(response).resolution.conceptVersion }}
+                            </span>
+                          </div>
+
+                          <div class="pdm-home__reading-anchor-item">
+                            <span class="pdm-home__micro-label">Integrity ref</span>
+                            <span class="pdm-home__reading-anchor-value pdm-home__reading-anchor-value--mono">
+                              {{ canonicalHashShort(asConceptMatch(response)) }}
+                            </span>
+                          </div>
+
+                          @if (sourceAnchor(asConceptMatch(response)); as sourceAnchorValue) {
+                            <div class="pdm-home__reading-anchor-item">
+                              <span class="pdm-home__micro-label">Source anchor</span>
+                              <span class="pdm-home__reading-anchor-value pdm-home__reading-anchor-value--mono">
+                                {{ sourceAnchorValue }}
+                              </span>
+                            </div>
+                          }
+                        </div>
+                      </div>
+
+                      <div class="pdm-home__reading-switch-shell">
+                        <p class="pdm-home__micro-label">Active register</p>
+                        <div class="pdm-home__reading-switch" role="group" aria-label="Reading register">
+                          @for (lens of readingLensOptions; track lens.mode) {
+                            <button
+                              class="pdm-home__reading-switch-option"
+                              type="button"
+                              [class.pdm-home__reading-switch-option--active]="activeReadingLens() === lens.mode"
+                              [attr.aria-pressed]="activeReadingLens() === lens.mode"
+                              [disabled]="isSubmitting() || !readingLensesAvailable(asConceptMatch(response))"
+                              (click)="selectReadingLens(lens.mode)"
+                            >
+                              {{ lens.label }}
+                            </button>
+                          }
+                        </div>
+
+                        @if (!readingLensesAvailable(asConceptMatch(response))) {
+                          <p class="pdm-home__support-copy pdm-home__reading-fallback-copy">
+                            {{ readingLensFallbackCopy }}
+                          </p>
+                        }
+                      </div>
+                    </section>
+
                     <section class="pdm-home__definition-lead" aria-label="Primary resolved definition">
                       <p class="pdm-home__micro-label">Short definition</p>
                       <p class="pdm-home__definition-lead-copy">
-                        {{ asConceptMatch(response).answer.shortDefinition }}
+                        {{ activeReadingFields(asConceptMatch(response)).shortDefinition }}
                       </p>
                     </section>
 
@@ -247,13 +312,13 @@
                       <section class="pdm-home__definition-section pdm-home__definition-section--core">
                         <p class="pdm-home__micro-label">Core meaning</p>
                         <p class="pdm-home__body-copy pdm-home__body-copy--secondary">
-                          {{ asConceptMatch(response).answer.coreMeaning }}
+                          {{ activeReadingFields(asConceptMatch(response)).coreMeaning }}
                         </p>
                       </section>
 
                       <section class="pdm-home__definition-section pdm-home__definition-section--full">
                         <p class="pdm-home__micro-label">Full definition</p>
-                        @for (paragraph of asConceptMatch(response).answer.fullDefinition.split('\n\n'); track paragraph) {
+                        @for (paragraph of definitionParagraphs(activeReadingFields(asConceptMatch(response)).fullDefinition); track paragraph) {
                           <p class="pdm-home__body-copy pdm-home__body-copy--tertiary">{{ paragraph }}</p>
                         }
                       </section>

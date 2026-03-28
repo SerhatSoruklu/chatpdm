@@ -749,6 +749,126 @@
   margin-top: 16px;
 }
 
+.pdm-home__reading-surface {
+  display: grid;
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.pdm-home__reading-trust-zone {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 22px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 250, 255, 0.88)),
+    rgba(255, 255, 255, 0.92);
+}
+
+.pdm-home__reading-trust-copy {
+  display: grid;
+  gap: 8px;
+}
+
+.pdm-home__reading-trust-line,
+.pdm-home__reading-anchor-value {
+  margin: 0;
+}
+
+.pdm-home__reading-trust-line {
+  color: #0f172a;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.65;
+}
+
+.pdm-home__reading-anchor-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+}
+
+.pdm-home__reading-anchor-item {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  padding: 12px 14px;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.74);
+}
+
+.pdm-home__reading-anchor-value {
+  color: #0f172a;
+  font-size: 0.96rem;
+  font-weight: 600;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.pdm-home__reading-anchor-value--mono {
+  font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+}
+
+.pdm-home__reading-switch-shell {
+  display: grid;
+  gap: 10px;
+}
+
+.pdm-home__reading-switch {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pdm-home__reading-switch-option {
+  appearance: none;
+  min-height: 42px;
+  padding: 0 16px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 999px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(248, 250, 255, 0.82)),
+    rgba(255, 255, 255, 0.86);
+  color: #475569;
+  font-size: 0.86rem;
+  font-weight: 600;
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease,
+    box-shadow 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.pdm-home__reading-switch-option:hover:not(:disabled) {
+  transform: translateY(-1px);
+  border-color: rgba(37, 99, 235, 0.24);
+  box-shadow: 0 10px 24px rgba(148, 163, 184, 0.14);
+}
+
+.pdm-home__reading-switch-option--active {
+  border-color: rgba(37, 99, 235, 0.24);
+  background:
+    linear-gradient(180deg, rgba(239, 246, 255, 0.98), rgba(219, 234, 254, 0.92)),
+    rgba(219, 234, 254, 0.92);
+  color: #1d4ed8;
+}
+
+.pdm-home__reading-switch-option:disabled {
+  cursor: not-allowed;
+  opacity: 0.68;
+  transform: none;
+  box-shadow: none;
+}
+
+.pdm-home__reading-fallback-copy {
+  max-width: 40rem;
+}
+
 .pdm-home__body-copy,
 .pdm-home__support-copy,
 .pdm-home__context-row,
@@ -1164,6 +1284,10 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .pdm-home__reading-surface {
+    gap: 18px;
+  }
+
   .pdm-home__comparison-values {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -1191,6 +1315,11 @@
   .pdm-home__response-head,
   .pdm-home__section-head {
     grid-template-columns: minmax(0, 1fr) minmax(0, 20rem);
+    align-items: start;
+  }
+
+  .pdm-home__reading-trust-zone {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
     align-items: start;
   }
 
