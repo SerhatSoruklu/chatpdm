@@ -67,8 +67,13 @@ const SUPPLEMENTAL_PROBES = Object.freeze([
 const DEFAULT_PATHS = Object.freeze({
   baselinePath: path.resolve(__dirname, './runtime/fixtures/platform-integrity-baseline.json'),
   resultsPath: path.resolve(__dirname, './runtime/reports/platform-integrity-results.json'),
-  logPath: path.resolve(__dirname, '../docs/PLATFORM_INTEGRITY.md'),
+  ledgerDirPath: path.resolve(__dirname, '../docs/integrity-checks'),
+  ledgerIndexPath: path.resolve(__dirname, '../docs/integrity-checks/README.md'),
 });
+
+const MAX_RUN_BLOCKS_PER_VOLUME = 25;
+const INTEGRITY_VOLUME_PREFIX = 'INTEGRITY_CHECK_';
+const INTEGRITY_VOLUME_SUFFIX = '.md';
 
 function cloneJson(value) {
   return JSON.parse(JSON.stringify(value));
@@ -498,23 +503,26 @@ function formatIntegrityMarkdownBlock(result) {
   return lines.join('\n');
 }
 
-function ensureIntegrityLogExists(logPath = DEFAULT_PATHS.logPath) {
-  if (fs.existsSync(logPath)) {
-    return;
-  }
+function formatIntegrityVolumeNumber(volumeNumber) {
+  return `${volumeNumber}`.padStart(3, '0');
+}
 
-  const initialContent = [
-    '# Platform Integrity',
+function formatIntegrityVolumeFilename(volumeNumber) {
+  return `${INTEGRITY_VOLUME_PREFIX}${formatIntegrityVolumeNumber(volumeNumber)}${INTEGRITY_VOLUME_SUFFIX}`;
+}
+
+function formatIntegrityVolumeHeader(volumeNumber) {
+  const volumeLabel = formatIntegrityVolumeNumber(volumeNumber);
+
+  return [
+    `# Integrity Check ${volumeLabel}`,
     '',
-    'Append-only runtime evidence ledger for executable platform integrity runs.',
+    'Append-only runtime evidence ledger volume for ChatPDM platform integrity runs.',
     '',
-    'This document records deterministic checks for the 5 live ChatPDM runtime concepts.',
-    'It does not define the full trust doctrine. That role belongs to `docs/TRUST_INTEGRITY_STACK.md`.',
-    'This artifact remains a subordinate runtime evidence ledger and shall not be treated as doctrine.',
-    '',
-    '- Baseline: `tests/runtime/fixtures/platform-integrity-baseline.json`',
-    '- Latest results: `tests/runtime/reports/platform-integrity-results.json`',
-    '- Runner: `node scripts/run-platform-integrity.js`',
+    `- Volume: \`${volumeLabel}\``,
+    `- Max run blocks: \`${MAX_RUN_BLOCKS_PER_VOLUME}\``,
+    '- Ledger index: [README.md](./README.md)',
+    '- Role: subordinate runtime evidence, not doctrine',
     '',
     '## Scoring Contract',
     '',
@@ -526,16 +534,141 @@ function ensureIntegrityLogExists(logPath = DEFAULT_PATHS.logPath) {
     '- total across 5 concepts = 100',
     '',
   ].join('\n');
-
-  fs.writeFileSync(logPath, initialContent);
 }
 
-function appendIntegrityLog(result, logPath = DEFAULT_PATHS.logPath) {
-  ensureIntegrityLogExists(logPath);
-  const existing = fs.readFileSync(logPath, 'utf8');
+function countRunBlocks(markdown) {
+  const matches = markdown.match(/^## Run /gm);
+  return matches ? matches.length : 0;
+}
+
+function listIntegrityVolumes(ledgerDirPath) {
+  if (!fs.existsSync(ledgerDirPath)) {
+    return [];
+  }
+
+  return fs.readdirSync(ledgerDirPath)
+    .map((name) => {
+      const match = new RegExp(`^${INTEGRITY_VOLUME_PREFIX}([0-9]{3})\\${INTEGRITY_VOLUME_SUFFIX}$`).exec(name);
+
+      if (!match) {
+        return null;
+      }
+
+      return {
+        name,
+        number: Number.parseInt(match[1], 10),
+      };
+    })
+    .filter(Boolean)
+    .sort((left, right) => left.number - right.number);
+}
+
+function buildIntegrityLedgerReadme(activeVolumeName, volumeNames) {
+  const lines = [
+    '# Integrity Checks',
+    '',
+    'This folder stores the append-only platform integrity evidence ledger for executable ChatPDM runtime checks.',
+    '',
+    'It records measured runtime evidence. It does not define trust doctrine. That role belongs to `docs/TRUST_INTEGRITY_STACK.md`.',
+    '',
+    '## Rotation Rule',
+    '',
+    `- Each integrity volume may contain a maximum of \`${MAX_RUN_BLOCKS_PER_VOLUME}\` run blocks.`,
+    '- After the 25th run block, the next run rotates into the next sequential volume.',
+    '- Closed volumes remain append-closed after rotation.',
+    '- Historical repair requires deliberate explicit tooling or manual correction.',
+    '',
+    '## Naming Contract',
+    '',
+    `- Volume files use the form \`${INTEGRITY_VOLUME_PREFIX}NNN${INTEGRITY_VOLUME_SUFFIX}\`.`,
+    '- Numbering is zero-padded and sequential: `001`, `002`, `003`.',
+    '',
+    '## Active Volume',
+    '',
+    `- Latest active volume: [${activeVolumeName}](./${activeVolumeName})`,
+    '',
+    '## Relationship To Trust Doctrine',
+    '',
+    '- `docs/TRUST_INTEGRITY_STACK.md` defines the constitutional operational law above this ledger.',
+    '- This folder remains subordinate runtime evidence, not doctrine.',
+    '',
+    '## Volumes',
+    '',
+    ...volumeNames.map((name) => `- [${name}](./${name})`),
+    '',
+  ];
+
+  return lines.join('\n');
+}
+
+function ensureIntegrityLedgerStructure(paths = DEFAULT_PATHS) {
+  fs.mkdirSync(paths.ledgerDirPath, { recursive: true });
+
+  const volumes = listIntegrityVolumes(paths.ledgerDirPath);
+
+  if (volumes.length === 0) {
+    const initialVolumeName = formatIntegrityVolumeFilename(1);
+    const initialVolumePath = path.join(paths.ledgerDirPath, initialVolumeName);
+    fs.writeFileSync(initialVolumePath, formatIntegrityVolumeHeader(1));
+    const readme = buildIntegrityLedgerReadme(initialVolumeName, [initialVolumeName]);
+    fs.writeFileSync(paths.ledgerIndexPath, readme);
+
+    return {
+      activeVolumeName: initialVolumeName,
+      activeVolumePath: initialVolumePath,
+      volumeCount: 1,
+    };
+  }
+
+  const activeVolume = volumes[volumes.length - 1];
+  const activeVolumeName = activeVolume.name;
+  const activeVolumePath = path.join(paths.ledgerDirPath, activeVolumeName);
+  const readme = buildIntegrityLedgerReadme(activeVolumeName, volumes.map((volume) => volume.name));
+  fs.writeFileSync(paths.ledgerIndexPath, readme);
+
+  return {
+    activeVolumeName,
+    activeVolumePath,
+    volumeCount: volumes.length,
+  };
+}
+
+function resolveActiveIntegrityVolume(paths = DEFAULT_PATHS) {
+  const currentState = ensureIntegrityLedgerStructure(paths);
+  const currentVolumeContent = fs.readFileSync(currentState.activeVolumePath, 'utf8');
+
+  if (countRunBlocks(currentVolumeContent) < MAX_RUN_BLOCKS_PER_VOLUME) {
+    return currentState;
+  }
+
+  const nextVolumeNumber = currentState.volumeCount + 1;
+  const nextVolumeName = formatIntegrityVolumeFilename(nextVolumeNumber);
+  const nextVolumePath = path.join(paths.ledgerDirPath, nextVolumeName);
+  fs.writeFileSync(nextVolumePath, formatIntegrityVolumeHeader(nextVolumeNumber));
+
+  const volumes = listIntegrityVolumes(paths.ledgerDirPath).map((volume) => volume.name);
+  const readme = buildIntegrityLedgerReadme(nextVolumeName, volumes);
+  fs.writeFileSync(paths.ledgerIndexPath, readme);
+
+  return {
+    activeVolumeName: nextVolumeName,
+    activeVolumePath: nextVolumePath,
+    volumeCount: volumes.length,
+  };
+}
+
+function appendIntegrityLog(result, paths = DEFAULT_PATHS) {
+  const activeVolume = resolveActiveIntegrityVolume(paths);
+  const existing = fs.readFileSync(activeVolume.activeVolumePath, 'utf8');
   const needsSeparator = existing.length > 0 && !existing.endsWith('\n\n');
   const separator = needsSeparator ? '\n' : '';
-  fs.appendFileSync(logPath, `${separator}${formatIntegrityMarkdownBlock(result)}\n`);
+  fs.appendFileSync(activeVolume.activeVolumePath, `${separator}${formatIntegrityMarkdownBlock(result)}\n`);
+
+  return {
+    activeVolumeName: activeVolume.activeVolumeName,
+    activeVolumePath: activeVolume.activeVolumePath,
+    ledgerIndexPath: paths.ledgerIndexPath,
+  };
 }
 
 module.exports = {

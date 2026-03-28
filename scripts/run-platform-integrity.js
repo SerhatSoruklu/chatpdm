@@ -13,7 +13,7 @@ const {
 const refreshBaseline = process.argv.includes('--refresh-baseline');
 const baselinePath = DEFAULT_PATHS.baselinePath;
 const resultsPath = DEFAULT_PATHS.resultsPath;
-const logPath = DEFAULT_PATHS.logPath;
+const ledgerIndexPath = DEFAULT_PATHS.ledgerIndexPath;
 
 function main() {
   if (refreshBaseline) {
@@ -28,13 +28,14 @@ function main() {
   });
 
   writeJson(resultsPath, result);
-  appendIntegrityLog(result, logPath);
+  const ledgerWrite = appendIntegrityLog(result);
 
   process.stdout.write(`Platform integrity score: ${result.score.total}/${result.score.max}\n`);
   process.stdout.write(`Status: ${result.status}\n`);
   process.stdout.write(`Baseline: ${path.relative(process.cwd(), baselinePath)}\n`);
   process.stdout.write(`Results: ${path.relative(process.cwd(), resultsPath)}\n`);
-  process.stdout.write(`Log: ${path.relative(process.cwd(), logPath)}\n`);
+  process.stdout.write(`Ledger index: ${path.relative(process.cwd(), ledgerIndexPath)}\n`);
+  process.stdout.write(`Active volume: ${path.relative(process.cwd(), ledgerWrite.activeVolumePath)}\n`);
 
   if (result.status === 'FAIL') {
     process.exitCode = 1;

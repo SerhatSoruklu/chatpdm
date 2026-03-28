@@ -154,7 +154,8 @@ The subordinate platform integrity surfaces are:
 - `scripts/run-platform-integrity.js`
 - `tests/runtime/fixtures/platform-integrity-baseline.json`
 - `tests/runtime/reports/platform-integrity-results.json`
-- `docs/PLATFORM_INTEGRITY.md`
+- `docs/integrity-checks/README.md`
+- `docs/integrity-checks/INTEGRITY_CHECK_001.md` and subsequent sequential volumes
 
 ## 9. Non-Goals
 
