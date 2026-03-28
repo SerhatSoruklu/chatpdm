@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ChatPdmLogoComponent } from '../../brand/chatpdm-logo/chatpdm-logo.component';
+import { SITE_SUPPORT_EMAIL } from '../site-navigation.data';
 
 interface FooterLink {
   label: string;
@@ -22,6 +23,7 @@ interface FooterColumn {
   styleUrl: './site-footer.component.css',
 })
 export class SiteFooterComponent {
+  protected readonly supportEmail = SITE_SUPPORT_EMAIL;
   protected readonly footerColumns: FooterColumn[] = [
     {
       title: 'Runtime',

@@ -31,6 +31,9 @@ const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
     sections: [
       {
         title: 'Runtime path',
+        paragraphs: [
+          '“This system only answers when it can map input to a defined concept. Otherwise it refuses”',
+        ],
         bullets: [
           'normalize the incoming query',
           'match against the authored concept boundary',

@@ -15,7 +15,6 @@
 .pdm-policy-page__frame {
   display: grid;
   gap: 16px;
-  max-width: 82rem;
 }
 
 .pdm-policy-page__sr-only {

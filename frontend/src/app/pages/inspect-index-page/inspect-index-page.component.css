@@ -67,6 +67,15 @@
   text-transform: uppercase;
 }
 
+.pdm-inspect-page__quote {
+  max-width: 40rem;
+  margin: 14px 0 0;
+  color: #334155;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.7;
+}
+
 .pdm-inspect-page__grid {
   display: grid;
   gap: 14px;

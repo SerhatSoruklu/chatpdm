@@ -6,18 +6,66 @@
     </a>
 
     <nav class="pdm-site-header__nav" aria-label="Primary">
-      <a class="pdm-site-header__link" routerLink="/" routerLinkActive="pdm-site-header__link--active" [routerLinkActiveOptions]="{ exact: true }">
-        Home
-      </a>
-      <a class="pdm-site-header__link" routerLink="/about" routerLinkActive="pdm-site-header__link--active">About</a>
-      <a class="pdm-site-header__link" routerLink="/how-it-works" routerLinkActive="pdm-site-header__link--active">How it works</a>
-      <a class="pdm-site-header__link" routerLink="/faq" routerLinkActive="pdm-site-header__link--active">FAQ</a>
-      <a class="pdm-site-header__link" routerLink="/docs" routerLinkActive="pdm-site-header__link--active">Docs</a>
-      <a class="pdm-site-header__link" routerLink="/developers" routerLinkActive="pdm-site-header__link--active">Developers</a>
-      <a class="pdm-site-header__link" routerLink="/api" routerLinkActive="pdm-site-header__link--active" [routerLinkActiveOptions]="{ exact: true }">
-        API
-      </a>
-      <a class="pdm-site-header__link" routerLink="/contact" routerLinkActive="pdm-site-header__link--active">Contact</a>
+      @for (item of navItems; track item.route) {
+        <a
+          class="pdm-site-header__link"
+          [routerLink]="item.route"
+          routerLinkActive="pdm-site-header__link--active"
+          [routerLinkActiveOptions]="{ exact: item.exact ?? false }"
+        >
+          {{ item.label }}
+        </a>
+      }
     </nav>
+
+    <button
+      class="pdm-site-header__menu-trigger"
+      type="button"
+      aria-label="Open navigation"
+      [attr.aria-expanded]="isMobileNavOpen()"
+      aria-controls="pdm-mobile-nav-sheet"
+      (click)="openMobileNav()"
+    >
+      <span class="pdm-site-header__menu-trigger-line" aria-hidden="true"></span>
+      <span class="pdm-site-header__menu-trigger-line" aria-hidden="true"></span>
+    </button>
   </div>
+
+  @if (isMobileNavOpen()) {
+    <div class="pdm-site-header__sheet-shell" aria-label="Mobile navigation">
+      <button class="pdm-site-header__sheet-backdrop" type="button" aria-label="Close navigation" (click)="closeMobileNav()"></button>
+
+      <section class="pdm-site-header__sheet" id="pdm-mobile-nav-sheet" aria-modal="true" role="dialog">
+        <div class="pdm-site-header__sheet-top">
+          <a class="pdm-site-header__sheet-brand" routerLink="/" aria-label="ChatPDM home" (click)="closeMobileNav()">
+            <app-chatpdm-logo class="pdm-site-header__sheet-logo" />
+          </a>
+
+          <button class="pdm-site-header__sheet-close" type="button" aria-label="Close navigation" (click)="closeMobileNav()">
+            <span aria-hidden="true">Close</span>
+          </button>
+        </div>
+
+        <nav class="pdm-site-header__sheet-nav" aria-label="Mobile primary">
+          @for (item of navItems; track item.route) {
+            <a
+              class="pdm-site-header__sheet-link"
+              [routerLink]="item.route"
+              routerLinkActive="pdm-site-header__sheet-link--active"
+              [routerLinkActiveOptions]="{ exact: item.exact ?? false }"
+              (click)="closeMobileNav()"
+            >
+              {{ item.label }}
+            </a>
+          }
+        </nav>
+
+        <section class="pdm-site-header__sheet-support" aria-label="Support">
+          <p class="pdm-site-header__sheet-support-label pdm-mono">Support</p>
+          <a class="pdm-site-header__sheet-support-email" [href]="'mailto:' + supportEmail">{{ supportEmail }}</a>
+          <p class="pdm-site-header__sheet-support-copy">Direct support for product and route questions</p>
+        </section>
+      </section>
+    </div>
+  }
 </header>
