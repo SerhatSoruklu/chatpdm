@@ -3,6 +3,11 @@ export interface PublicPageQuestion {
   answer: string;
 }
 
+export interface PublicPageAction {
+  label: string;
+  route: string;
+}
+
 export interface PublicPageSection {
   title: string;
   paragraphs?: readonly string[];
@@ -15,6 +20,7 @@ export interface PublicPageContent {
   title: string;
   intro: string;
   sections: readonly PublicPageSection[];
+  action?: PublicPageAction;
 }
 
 export type PublicPageKey =
@@ -23,8 +29,6 @@ export type PublicPageKey =
   | 'faq'
   | 'contact'
   | 'privacy'
-  | 'terms'
-  | 'cookies'
   | 'docs'
   | 'developers'
   | 'handbooks'

@@ -1,0 +1,172 @@
+:host {
+  display: block;
+}
+
+.pdm-policy-claim {
+  overflow: hidden;
+  border: 1px solid rgba(120, 113, 108, 0.16);
+  border-radius: 22px;
+  background: rgba(255, 252, 247, 0.96);
+  box-shadow:
+    0 1px 2px rgba(41, 37, 36, 0.04),
+    0 10px 24px rgba(41, 37, 36, 0.05);
+}
+
+.pdm-policy-claim__main {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+}
+
+.pdm-policy-claim__header {
+  display: grid;
+  gap: 12px;
+}
+
+.pdm-policy-claim__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.pdm-policy-claim__section,
+.pdm-policy-claim__flag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 10px;
+  border: 1px solid rgba(120, 113, 108, 0.16);
+  border-radius: 999px;
+  color: #78716c;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.pdm-policy-claim__class {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: lowercase;
+}
+
+.pdm-policy-claim__class[data-claim-class='stores'] {
+  background: rgba(219, 234, 254, 0.9);
+  color: #1d4ed8;
+}
+
+.pdm-policy-claim__class[data-claim-class='shares'],
+.pdm-policy-claim__class[data-claim-class='does-not-share'] {
+  background: rgba(224, 231, 255, 0.9);
+  color: #4338ca;
+}
+
+.pdm-policy-claim__class[data-claim-class='enforces'],
+.pdm-policy-claim__class[data-claim-class='allows'] {
+  background: rgba(220, 252, 231, 0.9);
+  color: #047857;
+}
+
+.pdm-policy-claim__class[data-claim-class='refuses'],
+.pdm-policy-claim__class[data-claim-class='does-not-allow'] {
+  background: rgba(254, 243, 199, 0.92);
+  color: #b45309;
+}
+
+.pdm-policy-claim__toggle {
+  justify-self: start;
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid rgba(120, 113, 108, 0.16);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.88);
+  color: #1f2937;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.pdm-policy-claim__sentence {
+  margin: 0;
+  color: #111827;
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.pdm-policy-claim__sentence code {
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: rgba(231, 229, 228, 0.78);
+  color: #1f2937;
+}
+
+.pdm-policy-claim__evidence {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid rgba(120, 113, 108, 0.14);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.84);
+}
+
+.pdm-policy-claim__evidence-label {
+  margin: 0;
+  color: #78716c;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.pdm-policy-claim__evidence-title {
+  margin: 0;
+  color: #1f2937;
+  font-size: 0.96rem;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.pdm-policy-claim__evidence-grid {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+}
+
+.pdm-policy-claim__evidence-item {
+  display: grid;
+  gap: 4px;
+}
+
+.pdm-policy-claim__evidence-item-label {
+  margin: 0;
+  color: #78716c;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.pdm-policy-claim__evidence-item-value {
+  margin: 0;
+  color: #292524;
+  line-height: 1.55;
+}
+
+@media (min-width: 840px) {
+  .pdm-policy-claim__header {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+  }
+
+  .pdm-policy-claim__toggle {
+    justify-self: end;
+  }
+
+  .pdm-policy-claim__evidence-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

@@ -32,12 +32,6 @@ export interface HomepageStep {
   copy: string;
 }
 
-export interface TrustPillar {
-  id: string;
-  title: string;
-  copy: string;
-}
-
 export interface LinkAction {
   label: string;
   route: string;

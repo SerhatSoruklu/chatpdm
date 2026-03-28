@@ -1,0 +1,49 @@
+<article class="pdm-policy-claim">
+  <div class="pdm-policy-claim__main">
+    <header class="pdm-policy-claim__header">
+      <div class="pdm-policy-claim__meta">
+        <span class="pdm-policy-claim__section pdm-mono">{{ claim().section }}</span>
+        <span class="pdm-policy-claim__class" [attr.data-claim-class]="claimClassName()">
+          {{ claimClassLabel() }}
+        </span>
+        @if (claim().hasInternalTransportNote) {
+          <span class="pdm-policy-claim__flag pdm-mono">internal SSR</span>
+        }
+      </div>
+
+      <button type="button" class="pdm-policy-claim__toggle" (click)="toggleExpanded()">
+        {{ expanded() ? 'Hide trace' : 'Show trace' }}
+      </button>
+    </header>
+
+    <p class="pdm-policy-claim__sentence">
+      @for (segment of sentenceSegments(); track $index) {
+        @if (segment.isCode) {
+          <code>{{ segment.text }}</code>
+        } @else {
+          <span>{{ segment.text }}</span>
+        }
+      }
+    </p>
+
+    @if (lifecycleEvidence(); as evidence) {
+      <section class="pdm-policy-claim__evidence" aria-label="Lifecycle evidence">
+        <p class="pdm-policy-claim__evidence-label pdm-mono">{{ evidence.evidenceLabel }}</p>
+        <p class="pdm-policy-claim__evidence-title">{{ evidence.title }}</p>
+
+        <dl class="pdm-policy-claim__evidence-grid">
+          @for (item of evidence.items; track item.label) {
+            <div class="pdm-policy-claim__evidence-item">
+              <dt class="pdm-policy-claim__evidence-item-label pdm-mono">{{ item.label }}</dt>
+              <dd class="pdm-policy-claim__evidence-item-value">{{ item.value }}</dd>
+            </div>
+          }
+        </dl>
+      </section>
+    }
+  </div>
+
+  @if (expanded()) {
+    <app-policy-trace-panel [claim]="claim()" />
+  }
+</article>

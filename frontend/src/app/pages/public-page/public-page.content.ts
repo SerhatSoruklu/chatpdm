@@ -96,46 +96,22 @@ const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
     ],
   },
   privacy: {
-    eyebrow: 'Privacy',
-    title: 'Privacy posture for the public beta surface.',
+    eyebrow: 'Privacy Policy',
+    title: 'Human-readable version in preparation.',
     intro:
-      'ChatPDM keeps the public runtime narrow and intends to keep data handling equally narrow, explicit, and product-bound.',
+      'A simpler public privacy page is being prepared for this route. The current inspectable privacy surface remains available in the meantime.',
     sections: [
       {
         title: 'Policy status',
         paragraphs: [
-          'The production privacy policy will be published here as the public product surface broadens. Until then, this route defines the intended ownership of that policy.',
+          'This top-level route is reserved for the human-readable privacy page. Until that version is ready, use the inspectable page for the current system-backed view of privacy behavior.',
         ],
       },
     ],
-  },
-  terms: {
-    eyebrow: 'Terms',
-    title: 'Usage terms for the published ChatPDM surface.',
-    intro:
-      'This route will hold the public usage terms for ChatPDM as the beta moves toward a broader published contract.',
-    sections: [
-      {
-        title: 'Intended role',
-        paragraphs: [
-          'The terms page will describe access, usage boundaries, and the product-layer expectations attached to the public system surface.',
-        ],
-      },
-    ],
-  },
-  cookies: {
-    eyebrow: 'Cookies',
-    title: 'Cookie and client-storage policy surface.',
-    intro:
-      'ChatPDM will publish any cookie or client-storage policy here once those behaviors need a formal public statement.',
-    sections: [
-      {
-        title: 'Current posture',
-        paragraphs: [
-          'This route exists so the public policy structure is visible early. Cookie handling should stay narrow, necessary, and documented when activated.',
-        ],
-      },
-    ],
+    action: {
+      label: 'View current inspectable privacy page',
+      route: '/inspect/privacy',
+    },
   },
   docs: {
     eyebrow: 'Docs',

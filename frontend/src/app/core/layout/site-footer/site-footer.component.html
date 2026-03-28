@@ -2,36 +2,27 @@
   <div class="pdm-site-footer__inner">
     <section class="pdm-site-footer__intro">
       <p class="pdm-site-footer__eyebrow">ChatPDM</p>
-      <p class="pdm-site-footer__title">Deterministic meaning under authored scope.</p>
+      <p class="pdm-site-footer__title">Deterministic concept resolution inside a bounded runtime.</p>
       <p class="pdm-site-footer__copy">
-        ChatPDM keeps wording, source grounding, and explicit boundary conditions visible in the public product surface.
+        Canonical lookup, controlled comparison, and explicit refusal are fixed parts of the public runtime.
+      </p>
+      <p class="pdm-site-footer__support">
+        Authored scope, source-bounded outputs, and refusal visibility remain inspectable across runtime and reference surfaces.
       </p>
     </section>
 
-    <nav class="pdm-site-footer__grid" aria-label="Footer">
-      <section class="pdm-site-footer__column">
-        <h3>Explore</h3>
-        <a routerLink="/">Home</a>
-        <a routerLink="/about">About</a>
-        <a routerLink="/how-it-works">How it works</a>
-        <a routerLink="/faq">FAQ</a>
-        <a routerLink="/contact">Contact</a>
-      </section>
-
-      <section class="pdm-site-footer__column">
-        <h3>Product</h3>
-        <a routerLink="/docs">Docs</a>
-        <a routerLink="/developers">Developers</a>
-        <a routerLink="/handbooks">Handbooks</a>
-        <a routerLink="/api">API</a>
-      </section>
-
-      <section class="pdm-site-footer__column">
-        <h3>Legal</h3>
-        <a routerLink="/privacy">Privacy</a>
-        <a routerLink="/terms">Terms</a>
-        <a routerLink="/cookies">Cookies</a>
-      </section>
+    <nav class="pdm-site-footer__grid" aria-label="System footer">
+      @for (column of footerColumns; track column.title) {
+        <section
+          class="pdm-site-footer__column"
+          [class.pdm-site-footer__column--secondary]="column.tone === 'secondary'"
+        >
+          <h3>{{ column.title }}</h3>
+          @for (link of column.links; track link.route + link.label) {
+            <a [routerLink]="link.route" [fragment]="link.fragment">{{ link.label }}</a>
+          }
+        </section>
+      }
     </nav>
   </div>
 </footer>

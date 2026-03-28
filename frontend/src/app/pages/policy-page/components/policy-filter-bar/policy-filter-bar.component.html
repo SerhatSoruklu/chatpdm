@@ -1,0 +1,55 @@
+<section class="pdm-policy-filter">
+  <div class="pdm-policy-filter__grid">
+    <label class="pdm-policy-filter__field pdm-policy-filter__field--search">
+      <span class="pdm-policy-filter__label pdm-mono">Search claims</span>
+      <input
+        type="search"
+        class="pdm-policy-filter__input"
+        [value]="search()"
+        placeholder="Search sentence, canonical claim, file path"
+        (input)="onSearchInput($event)"
+      >
+    </label>
+
+    <label class="pdm-policy-filter__field">
+      <span class="pdm-policy-filter__label pdm-mono">Claim class</span>
+      <select class="pdm-policy-filter__select" [value]="activeClaimClass()" (change)="onClaimClassInput($event)">
+        <option value="">All classes</option>
+        @for (claimClass of claimClasses(); track claimClass) {
+          <option [value]="claimClass">{{ claimClass.replaceAll('_', ' ') }}</option>
+        }
+      </select>
+    </label>
+
+    <label class="pdm-policy-filter__field">
+      <span class="pdm-policy-filter__label pdm-mono">Section</span>
+      <select class="pdm-policy-filter__select" [value]="activeSection()" (change)="onSectionInput($event)">
+        <option value="">All sections</option>
+        @for (section of sections(); track section) {
+          <option [value]="section">{{ section }}</option>
+        }
+      </select>
+    </label>
+  </div>
+
+  <div class="pdm-policy-filter__meta">
+    <label class="pdm-policy-filter__toggle">
+      <input
+        type="checkbox"
+        [checked]="internalTransportOnly()"
+        (change)="onInternalToggle($event)"
+      >
+      <span>Internal SSR transport only</span>
+    </label>
+
+    <p class="pdm-policy-filter__count pdm-mono">
+      {{ visibleClaimCount() }} / {{ totalClaimCount() }} claims visible
+    </p>
+
+    @if (hasActiveFilters()) {
+      <button type="button" class="pdm-policy-filter__clear" (click)="clearFilters.emit()">
+        Clear filters
+      </button>
+    }
+  </div>
+</section>

@@ -6,7 +6,7 @@ Most modern AI systems optimize for breadth, flexibility, and fluent response ge
 
 ChatPDM is built for the second case.
 
-It is designed for situations where wording matters, definitions matter, and small shifts in phrasing can change what a system is actually saying. In those cases, fluency is not enough. A system must be structurally constrained, source-grounded, and inspectable.
+It is designed for situations where wording matters, definitions matter, and small shifts in phrasing can change what a system is actually saying. In those cases, fluency is not enough. A system must be structurally constrained, source-bounded, and inspectable.
 
 ChatPDM does not try to sound intelligent. It tries to remain structurally correct.
 
@@ -47,6 +47,46 @@ This means:
 Same input, same output is not a slogan here. It is an architectural choice.
 
 The system's trust comes from constraint, not fluency.
+
+## Truth Architecture
+
+ChatPDM does not train a model or define truth in general.
+
+It authors canonical, source-bounded resolution within a declared scope.
+
+That distinction matters because ChatPDM is not trying to produce plausible meaning. It is trying to preserve reviewed meaning under explicit runtime constraints.
+
+Within ChatPDM, "truth" is operational and bounded:
+
+- scope truth: what domain the system is allowed to speak within
+- source truth: which declared source wins when sources conflict
+- structural truth: what a concept is, what it is not, and which relations are allowed
+- execution truth: whether a query can be resolved deterministically within scope or must be refused
+
+ChatPDM can also be understood as a constrained meaning language.
+
+Like a programming language, it defines the space of valid expression and execution inside a formal boundary. The difference is that the boundary is semantic rather than syntactic.
+
+That means:
+
+- a declared scope defines what meaning is valid to express and resolve
+- out-of-scope requests fail at the language boundary
+- in-scope but unclear requests fail at resolution, not at scope
+- in-scope and structurally clear requests are resolvable
+
+This means truth in ChatPDM is not universal, metaphysical, or free-floating. It is:
+
+- declared within system scope
+- ordered by source priority
+- bounded by concept structure
+- enforced by deterministic runtime behavior
+- independent of evaluation or enforcement
+
+Evaluation does not change truth; it determines whether the system acts on it.
+
+That is why authoring is a better word than training for this project. Concepts are written, bounded, grounded, validated, and then promoted into runtime only when the execution path is safe.
+
+For a governance-specific execution example, see [governance/execution-analogy.md](./governance/execution-analogy.md).
 
 ## Why Constraint Matters
 
@@ -128,6 +168,26 @@ The UI should reflect what the system actually is.
 ChatPDM is not a simulated conversation partner, so the interface should not pretend otherwise. No chat bubbles, no fake typing, no theatrical "thinking" states. The system resolves and presents structured answers in a calm reading surface.
 
 That discipline matters because interface language teaches users how to interpret a system. If the interface behaves like a chatbot, users will expect chatbot behavior. ChatPDM is deliberately building a different contract.
+
+## Public Trust Wording
+
+ChatPDM's public surfaces should sound authoritative without overstating certainty.
+
+The safe mental model is:
+
+- current implementation behavior
+- modeled behavior
+- bounded system scope
+- observable evidence
+
+Public wording should avoid implying:
+
+- guarantees
+- infallibility
+- absolute enforcement
+- perfect determinism
+
+This matters most on human-readable and inspectable trust surfaces such as Privacy, Terms, Cookies, and Inspect. Those surfaces may describe a bounded deterministic model and traceable evidence, but they should not imply that current implementation behavior is the same as universal runtime assurance.
 
 ## Why The Stack Is Simple On Purpose
 

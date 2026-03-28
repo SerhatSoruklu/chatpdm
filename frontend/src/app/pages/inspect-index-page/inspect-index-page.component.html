@@ -1,0 +1,25 @@
+<div class="pdm-inspect-page">
+  <main class="pdm-inspect-page__main pdm-shell" aria-labelledby="pdm-inspect-title">
+    <div class="pdm-shell__frame pdm-inspect-page__frame">
+      <header class="pdm-inspect-page__hero">
+        <p class="pdm-inspect-page__eyebrow pdm-mono">Inspect</p>
+        <h1 class="pdm-inspect-page__title" id="pdm-inspect-title">Inspectable behavior surfaces.</h1>
+        <p class="pdm-inspect-page__intro">
+          This route is the raw inspect entry for current traceable evidence surfaces. It remains separate from the human-readable legal pages.
+        </p>
+        <p class="pdm-inspect-page__traceability pdm-mono">TRACEABILITY SNAPSHOT — NOT RUNTIME ASSURANCE</p>
+      </header>
+
+      <section class="pdm-inspect-page__grid" aria-label="Inspect surfaces">
+        @for (surface of surfaces; track surface.route) {
+          <article class="pdm-inspect-page__card">
+            <p class="pdm-inspect-page__card-label pdm-mono">{{ surface.title }}</p>
+            <p class="pdm-inspect-page__card-subtitle">{{ surface.subtitle }}</p>
+            <p class="pdm-inspect-page__card-detail">{{ surface.detail }}</p>
+            <a class="pdm-inspect-page__card-link" [routerLink]="surface.route">Open inspect surface</a>
+          </article>
+        }
+      </section>
+    </div>
+  </main>
+</div>

@@ -1,0 +1,12 @@
+@if (claims().length === 0) {
+  <section class="pdm-policy-claim-list__empty">
+    <p class="pdm-policy-claim-list__empty-title">No claims match the current controls.</p>
+    <p class="pdm-policy-claim-list__empty-copy">Adjust the search, section, or class filters to inspect a different slice of the contract surface.</p>
+  </section>
+} @else {
+  <div class="pdm-policy-claim-list">
+    @for (claim of claims(); track claim.id) {
+      <app-policy-claim-card [claim]="claim" />
+    }
+  </div>
+}

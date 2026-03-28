@@ -1,7 +1,20 @@
 'use strict';
 
 const { FEEDBACK_OPTIONS_BY_RESPONSE_TYPE, RESPONSE_TYPES } = require('./constants');
-const { insertFeedbackEvent } = require('./store');
+const {
+  buildFeedbackEventExpiresAt,
+  hashFeedbackSessionIdForAudit,
+  minimizeNormalizedQuery,
+  minimizeRawQuery,
+} = require('./lifecycle-contract');
+const {
+  deleteFeedbackEventsBySessionId,
+  insertFeedbackControlAudit,
+  insertFeedbackEvent,
+  listFeedbackEventsBySessionId,
+} = require('./store');
+
+const FEEDBACK_SESSION_CONTROL_CONTEXT = 'feedback_session_control_api';
 
 function assertNonEmptyString(value, fieldName) {
   if (typeof value !== 'string' || value.length === 0) {
@@ -136,9 +149,15 @@ function normalizeFeedbackPayload(payload) {
 async function recordFeedback(payload) {
   const normalizedPayload = normalizeFeedbackPayload(payload);
   const createdAt = new Date().toISOString();
+  const minimizedRawQuery = minimizeRawQuery(normalizedPayload.rawQuery);
+  const minimizedNormalizedQuery = minimizeNormalizedQuery(normalizedPayload.normalizedQuery);
+  const expiresAt = buildFeedbackEventExpiresAt(createdAt);
   const feedbackId = await insertFeedbackEvent({
     ...normalizedPayload,
+    rawQuery: minimizedRawQuery,
+    normalizedQuery: minimizedNormalizedQuery,
     createdAt,
+    expiresAt,
   });
 
   return {
@@ -148,6 +167,68 @@ async function recordFeedback(payload) {
   };
 }
 
+async function exportFeedbackBySessionId(sessionId) {
+  const normalizedSessionId = normalizeSessionControlSessionId(sessionId);
+  const requestedAt = new Date();
+  const records = await listFeedbackEventsBySessionId(normalizedSessionId);
+  const outcome = records.length > 0 ? 'exported' : 'no_records';
+
+  await insertFeedbackControlAudit({
+    actionType: 'export',
+    sessionIdHash: hashFeedbackSessionIdForAudit(normalizedSessionId),
+    requestedAt,
+    affectedCount: records.length,
+    outcome,
+    context: FEEDBACK_SESSION_CONTROL_CONTEXT,
+  });
+
+  return {
+    sessionId: normalizedSessionId,
+    exportedAt: requestedAt.toISOString(),
+    recordCount: records.length,
+    records,
+  };
+}
+
+async function deleteFeedbackBySessionId(sessionId) {
+  const normalizedSessionId = normalizeSessionControlSessionId(sessionId);
+  const requestedAt = new Date();
+  const deletedCount = await deleteFeedbackEventsBySessionId(normalizedSessionId);
+  const status = deletedCount > 0 ? 'deleted' : 'no_records';
+
+  await insertFeedbackControlAudit({
+    actionType: 'delete',
+    sessionIdHash: hashFeedbackSessionIdForAudit(normalizedSessionId),
+    requestedAt,
+    affectedCount: deletedCount,
+    outcome: status,
+    context: FEEDBACK_SESSION_CONTROL_CONTEXT,
+  });
+
+  return {
+    sessionId: normalizedSessionId,
+    deletedCount,
+    status,
+    requestedAt: requestedAt.toISOString(),
+  };
+}
+
+function normalizeSessionControlSessionId(sessionId) {
+  if (typeof sessionId !== 'string') {
+    throw new TypeError('sessionId must be a string.');
+  }
+
+  const normalizedSessionId = sessionId.trim();
+
+  if (normalizedSessionId.length === 0) {
+    throw new TypeError('sessionId must be a non-empty string.');
+  }
+
+  return normalizedSessionId;
+}
+
 module.exports = {
+  deleteFeedbackBySessionId,
+  exportFeedbackBySessionId,
   recordFeedback,
 };

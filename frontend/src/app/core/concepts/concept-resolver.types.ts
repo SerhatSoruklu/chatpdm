@@ -23,6 +23,8 @@ export interface QueryInterpretation {
     | 'relation_not_supported'
     | 'role_or_actor_not_supported'
     | 'ambiguous_selection'
+    | 'scoped_clarification'
+    | 'out_of_scope'
     | 'unsupported_complex'
     | 'canonical_lookup_not_found';
   message: string;
