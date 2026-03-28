@@ -189,6 +189,97 @@ Public wording should avoid implying:
 
 This matters most on human-readable and inspectable trust surfaces such as Privacy, Terms, Cookies, and Inspect. Those surfaces may describe a bounded deterministic model and traceable evidence, but they should not imply that current implementation behavior is the same as universal runtime assurance.
 
+## Public Route Tone Architecture
+
+ChatPDM should not use one tone globally across all trust surfaces. Tone should follow route depth.
+
+Recommended split:
+
+- top-level human-readable routes such as `/privacy`, `/terms`, and `/cookies` should use Plain-English Determinism
+- inspect routes such as `/inspect/privacy`, `/inspect/terms`, and `/inspect/cookies` should use Precise Operational Contract
+
+Top-level routes are the claim layer. They should answer human trust questions in direct, plain language while staying bounded and mechanism-backed.
+
+Inspect routes are the evidence layer. They should stay dense, mechanism-first, and traceability-oriented.
+
+## Precise Operational Contract Tone
+
+ChatPDM's recommended inspect-route voice for Privacy, Terms, and Cookies is a precise operational contract.
+
+This means public legal surfaces should read as mechanism-first system documentation rather than:
+
+- traditional legal boilerplate
+- conversational reassurance
+- marketing-style trust language
+
+The writing rhythm should be:
+
+- mechanism
+- boundary
+- lifecycle
+- limitation
+
+Example shape:
+
+- mechanism: what the platform does
+- boundary: when, where, or why the behavior applies
+- lifecycle: how long the behavior or storage state persists
+- limitation: what the platform does not do
+
+This tone should stay:
+
+- objective
+- declarative
+- mechanism-focused
+- bounded
+- inspectable
+
+It should avoid:
+
+- emotional trust language
+- vague intention language
+- absolute promises
+- words that imply universal runtime assurance
+
+Per-surface emphasis should stay distinct:
+
+- Privacy: storage, retention, deletion, audit boundaries, and data lifecycle
+- Terms: accepted input scope, refusal boundaries, runtime limitations, and service boundaries
+- Cookies: state and transport behavior, SSR handling, omission boundaries, and persistent-tracking limits
+
+Example tones:
+
+- Inspect-route example:
+  `ChatPDM explicitly bounds the retention of feedback-event query records. When feedback is recorded, the platform stores hash-only query forms together with the sessionId in short-lived feedback event documents. These records are deleted automatically through a 30-day TTL (Time-To-Live) expiry and remain available for export or deletion by sessionId within that window.`
+
+- Top-level privacy-route example:
+  `We do not keep your query history indefinitely. When feedback is recorded for a query, ChatPDM temporarily stores a minimized record of that query together with a session identifier so system behavior can be audited. That record is removed automatically after 30 days through a database TTL expiry, without requiring a manual cleanup step.`
+
+## Plain-English Determinism Tone
+
+ChatPDM's recommended top-level human-readable voice for Privacy, Terms, and Cookies is Plain-English Determinism.
+
+This means:
+
+- outcome first
+- mechanism second
+- short, direct sentences
+- bounded explanations without legal boilerplate or emotional reassurance
+
+This tone should help non-technical readers understand what the system does without diluting the underlying mechanism or drifting into vague promises.
+
+## Self-Hosted Runner Safety
+
+ChatPDM may use a self-hosted runner for controlled deployment work, but that runner must remain deploy-only infrastructure.
+
+Do not ever attach `self-hosted` runners to:
+
+- `pull_request`
+- `pull_request_target`
+- any workflow that executes untrusted fork code
+
+Public-repo pull request validation should stay on GitHub-hosted runners. Self-hosted runners should be reserved for trusted deployment paths such as reviewed pushes to protected branches or explicitly approved manual deploy flows.
+
 ## Why The Stack Is Simple On Purpose
 
 ChatPDM is not avoiding complexity because the product is small. It is avoiding complexity because complexity in the wrong place weakens the product.

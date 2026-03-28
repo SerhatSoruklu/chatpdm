@@ -5,9 +5,9 @@ export const SEO_SITE: SeoSiteConfig = {
   siteUrl: 'https://chatpdm.com',
   locale: 'en_US',
   author: 'Serhat Soruklu',
-  defaultOgImagePath: '/og/chatpdm-default.png',
+  defaultOgImagePath: '/og/chatpdm-og-logo.png',
   defaultOgImageType: 'image/png',
-  defaultOgImageWidth: '1200',
-  defaultOgImageHeight: '630',
+  defaultOgImageWidth: '696',
+  defaultOgImageHeight: '283',
   defaultTwitterCard: 'summary_large_image',
 };

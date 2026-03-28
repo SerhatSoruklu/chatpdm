@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { ChatPdmLogoComponent } from '../../brand/chatpdm-logo/chatpdm-logo.component';
 
 interface FooterLink {
   label: string;
@@ -16,7 +17,7 @@ interface FooterColumn {
 @Component({
   selector: 'app-site-footer',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, ChatPdmLogoComponent],
   templateUrl: './site-footer.component.html',
   styleUrl: './site-footer.component.css',
 })

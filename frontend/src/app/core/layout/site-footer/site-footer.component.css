@@ -27,14 +27,15 @@
   max-width: 32rem;
 }
 
-.pdm-site-footer__eyebrow {
-  margin: 0 0 10px;
-  color: #93c5fd;
-  font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+.pdm-site-footer__brand {
+  display: inline-flex;
+  align-items: center;
+  margin: 0 0 14px;
+  text-decoration: none;
+}
+
+.pdm-site-footer__logo {
+  flex: 0 0 auto;
 }
 
 .pdm-site-footer__title {

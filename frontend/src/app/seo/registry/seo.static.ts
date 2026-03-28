@@ -2,8 +2,9 @@ import type { SeoRegistryFamily } from '../seo.types';
 
 export const seoStaticEntries = {
   'static.home': {
-    title: 'ChatPDM - Deterministic Meaning System',
-    description: 'ChatPDM resolves authored concepts through a deterministic, source-bounded answer model with explicit ambiguity and refusal behavior.',
+    title: 'ChatPDM | Deterministic, Source-Bounded Concept Resolution',
+    description:
+      'ChatPDM resolves authored concepts through a deterministic, source-bounded runtime with explicit ambiguity handling, refusal behavior, and inspectable limits.',
     canonicalPath: '/',
     includeInSitemap: true,
     sitemapChangeFrequency: 'weekly',
@@ -14,7 +15,7 @@ export const seoStaticEntries = {
       name: 'ChatPDM',
       url: 'https://chatpdm.com/',
       description:
-        'ChatPDM is a deterministic meaning system for source-bounded, wording-sensitive concept resolution.',
+        'ChatPDM resolves authored concepts through a deterministic, source-bounded runtime with explicit ambiguity handling, refusal behavior, and inspectable limits.',
     },
   },
   'static.about': {

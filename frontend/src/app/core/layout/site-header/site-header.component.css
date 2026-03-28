@@ -34,14 +34,13 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
+  min-width: 0;
   text-decoration: none;
 }
 
-.pdm-site-header__brand-mark {
-  font-size: 1rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: #0f172a;
+.pdm-site-header__logo {
+  flex: 0 1 auto;
+  min-width: 0;
 }
 
 .pdm-site-header__brand-state {
@@ -97,6 +96,16 @@
 
   .pdm-site-header__inner {
     padding: 15px 18px;
+  }
+}
+
+@media (max-width: 599px) {
+  .pdm-site-header__brand {
+    gap: 8px;
+  }
+
+  .pdm-site-header__brand-state {
+    padding: 4px 8px;
   }
 }
 

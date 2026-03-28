@@ -1,0 +1,18 @@
+@if (renderMode() === 'svg') {
+  <img
+    class="pdm-logo__svg"
+    [ngSrc]="assetPath()"
+    [alt]="altText()"
+    width="192"
+    height="32"
+  >
+} @else {
+  <span class="pdm-logo__mark" aria-hidden="true">
+    <span class="pdm-logo__circle"></span>
+    <span class="pdm-logo__line"></span>
+    <span class="pdm-logo__square"></span>
+  </span>
+  <span class="pdm-logo__wordmark" [attr.aria-label]="wordmark()">
+    <span class="pdm-logo__chat">Chat</span><span class="pdm-logo__pdm">PDM</span>
+  </span>
+}
