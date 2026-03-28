@@ -16,4 +16,3 @@ It captures one explicit feedback event per submitted response review. The store
 - creation timestamp
 
 This module is intentionally narrow. It is not an analytics layer, admin system, or public reaction system.
-

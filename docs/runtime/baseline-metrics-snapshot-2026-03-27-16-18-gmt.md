@@ -162,7 +162,7 @@ Future metrics can become stronger if explicitly added later:
 
 - broader messy-query classification coverage
 - more pairwise concept stress testing
-- contradiction or conflict review across source-grounded concept packets
+- contradiction or conflict review across source-bounded concept packets
 - human-reviewed semantic boundary scoring with explicit criteria
 
 Those do not exist as proven percentages in this snapshot yet.

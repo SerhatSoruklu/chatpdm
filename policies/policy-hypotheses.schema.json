@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chatpdm.local/policies/policy-hypotheses.schema.json",
+  "title": "ChatPDM Policy Hypotheses",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "hypotheses"
+  ],
+  "properties": {
+    "hypotheses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "claim_id",
+          "status",
+          "opened_at",
+          "expires_after_days",
+          "description"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^H-\\d{4}-\\d{2}-[a-z0-9-]+$"
+          },
+          "claim_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "unverified",
+              "verified",
+              "closed"
+            ]
+          },
+          "linked_pr": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1
+          },
+          "opened_at": {
+            "type": "string",
+            "format": "date"
+          },
+          "expires_after_days": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "closed"
+                }
+              },
+              "required": [
+                "status"
+              ]
+            },
+            "then": {
+              "required": [
+                "linked_pr"
+              ],
+              "properties": {
+                "linked_pr": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

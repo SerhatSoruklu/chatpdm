@@ -1,0 +1,97 @@
+<div class="pdm-cookies-page">
+  <main class="pdm-cookies-page__main pdm-shell" aria-labelledby="pdm-cookies-title">
+    <div class="pdm-shell__frame pdm-cookies-page__frame">
+      <header class="pdm-cookies-page__hero">
+        <p class="pdm-cookies-page__eyebrow pdm-mono">Cookie Policy</p>
+        <h1 class="pdm-cookies-page__title" id="pdm-cookies-title">{{ viewModel().title }}</h1>
+        <p class="pdm-cookies-page__intro">{{ viewModel().intro }}</p>
+
+        <div class="pdm-cookies-page__badge-list" aria-label="Current cookie posture">
+          @for (badge of viewModel().badges; track badge.label) {
+            <article class="pdm-cookies-page__badge">
+              <p class="pdm-cookies-page__badge-label pdm-mono">{{ badge.label }}</p>
+              <p class="pdm-cookies-page__badge-value">{{ badge.value }}</p>
+            </article>
+          }
+        </div>
+
+        <div class="pdm-cookies-page__actions">
+          <a class="pdm-cookies-page__inspect-link" [routerLink]="viewModel().inspectRoute">
+            Open inspect surface
+          </a>
+        </div>
+      </header>
+
+      <section class="pdm-cookies-page__section">
+        <h2 class="pdm-cookies-page__section-title">Request transport</h2>
+        <div class="pdm-cookies-page__table-wrap">
+          <table class="pdm-cookies-page__table">
+            <thead>
+              <tr>
+                <th>Mechanism</th>
+                <th>Behavior</th>
+                <th>Status</th>
+                <th>SSR</th>
+                <th>Browser</th>
+                <th>Evidence</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (row of viewModel().requestRows; track row.claimId) {
+                <tr>
+                  <td>{{ row.mechanism }}</td>
+                  <td>{{ row.behavior }}</td>
+                  <td>{{ row.essentiality }}</td>
+                  <td>{{ row.ssr }}</td>
+                  <td>{{ row.browser }}</td>
+                  <td class="pdm-cookies-page__evidence pdm-mono">{{ row.evidence }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="pdm-cookies-page__section">
+        <h2 class="pdm-cookies-page__section-title">Response transport</h2>
+        <div class="pdm-cookies-page__table-wrap">
+          <table class="pdm-cookies-page__table">
+            <thead>
+              <tr>
+                <th>Mechanism</th>
+                <th>Behavior</th>
+                <th>Status</th>
+                <th>SSR</th>
+                <th>Browser</th>
+                <th>Evidence</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (row of viewModel().responseRows; track row.claimId) {
+                <tr>
+                  <td>{{ row.mechanism }}</td>
+                  <td>{{ row.behavior }}</td>
+                  <td>{{ row.essentiality }}</td>
+                  <td>{{ row.ssr }}</td>
+                  <td>{{ row.browser }}</td>
+                  <td class="pdm-cookies-page__evidence pdm-mono">{{ row.evidence }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      @if (viewModel().browserNotes.length > 0) {
+        <section class="pdm-cookies-page__section">
+          <h2 class="pdm-cookies-page__section-title">Browser context</h2>
+          <ul class="pdm-cookies-page__note-list">
+            @for (note of viewModel().browserNotes; track note) {
+              <li>{{ note }}</li>
+            }
+          </ul>
+        </section>
+      }
+    </div>
+  </main>
+</div>

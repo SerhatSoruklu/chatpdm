@@ -1,11 +1,23 @@
 import { Routes } from '@angular/router';
+import { CookiesPageComponent } from './pages/cookies-page/cookies-page.component';
+import { InspectIndexPageComponent } from './pages/inspect-index-page/inspect-index-page.component';
 import { LandingPageComponent } from './pages/landing/landing-page.component';
+import { PolicyPageComponent } from './pages/policy-page/policy-page.component';
 import { PublicPageComponent } from './pages/public-page/public-page.component';
+import { TermsPageComponent } from './pages/terms-page/terms-page.component';
+import type { PolicySurfaceKey } from './policies/policy-surface.types';
 import { type SeoRegistryKey, seoRouteData } from './seo/seo.registry';
 
 function pageRouteData(pageKey: string, seoKey: SeoRegistryKey) {
   return {
     pageKey,
+    ...seoRouteData(seoKey),
+  };
+}
+
+function policyRouteData(policyKey: PolicySurfaceKey, seoKey: SeoRegistryKey) {
+  return {
+    policyKey,
     ...seoRouteData(seoKey),
   };
 }
@@ -42,14 +54,49 @@ export const routes: Routes = [
     data: pageRouteData('privacy', 'legal.privacy'),
   },
   {
+    path: 'privacy/inspect',
+    redirectTo: 'inspect/privacy',
+    pathMatch: 'full',
+  },
+  {
     path: 'terms',
-    component: PublicPageComponent,
-    data: pageRouteData('terms', 'legal.terms'),
+    component: TermsPageComponent,
+    data: seoRouteData('legal.terms'),
+  },
+  {
+    path: 'terms/inspect',
+    redirectTo: 'inspect/terms',
+    pathMatch: 'full',
   },
   {
     path: 'cookies',
-    component: PublicPageComponent,
-    data: pageRouteData('cookies', 'legal.cookies'),
+    component: CookiesPageComponent,
+    data: seoRouteData('legal.cookies'),
+  },
+  {
+    path: 'cookies/inspect',
+    redirectTo: 'inspect/cookies',
+    pathMatch: 'full',
+  },
+  {
+    path: 'inspect/privacy',
+    component: PolicyPageComponent,
+    data: policyRouteData('privacy', 'legal.privacy.inspect'),
+  },
+  {
+    path: 'inspect/terms',
+    component: PolicyPageComponent,
+    data: policyRouteData('terms', 'legal.terms.inspect'),
+  },
+  {
+    path: 'inspect/cookies',
+    component: PolicyPageComponent,
+    data: policyRouteData('cookies', 'legal.cookies.inspect'),
+  },
+  {
+    path: 'inspect',
+    component: InspectIndexPageComponent,
+    data: seoRouteData('legal.inspect'),
   },
   {
     path: 'docs',

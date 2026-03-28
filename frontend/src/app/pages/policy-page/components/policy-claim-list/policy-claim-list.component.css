@@ -1,0 +1,35 @@
+:host {
+  display: block;
+}
+
+.pdm-policy-claim-list {
+  display: grid;
+  gap: 14px;
+}
+
+.pdm-policy-claim-list__empty {
+  padding: 26px 20px;
+  border: 1px dashed rgba(120, 113, 108, 0.22);
+  border-radius: 22px;
+  background: rgba(255, 251, 245, 0.88);
+}
+
+.pdm-policy-claim-list__empty-title {
+  margin: 0;
+  color: #111827;
+  font-size: 1.04rem;
+  font-weight: 700;
+}
+
+.pdm-policy-claim-list__empty-copy {
+  margin: 10px 0 0;
+  color: #57534e;
+  line-height: 1.7;
+}
+
+@media (min-width: 1200px) {
+  .pdm-policy-claim-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+}

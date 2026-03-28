@@ -55,7 +55,7 @@ Architecture and contract phases:
 Concept authoring and validation phases:
 
 - references actively support boundary-setting
-- references support source-grounded canonical definitions
+- references support source-bounded canonical definitions
 - references support pairwise contrast and refinement discipline
 
 Runtime and pressure-testing phases:

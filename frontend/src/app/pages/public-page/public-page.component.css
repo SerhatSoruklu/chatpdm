@@ -37,18 +37,19 @@
 .pdm-page__eyebrow {
   margin: 0 0 10px;
   color: #2563eb;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
+  font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .pdm-page__title {
   margin: 0;
   max-width: 40rem;
-  font-family: 'Instrument Serif', 'Iowan Old Style', 'Times New Roman', serif;
-  font-size: 2.5rem;
-  font-weight: 400;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: clamp(2.35rem, 5vw, 3.2rem);
+  font-weight: 700;
   line-height: 0.98;
   letter-spacing: -0.05em;
   color: #0f172a;
@@ -58,12 +59,44 @@
 .pdm-page__copy,
 .pdm-page__list {
   color: #475569;
+  font-weight: 400;
   line-height: 1.72;
 }
 
 .pdm-page__intro {
   max-width: 42rem;
   margin: 16px 0 0;
+}
+
+.pdm-page__actions {
+  margin-top: 18px;
+}
+
+.pdm-page__action-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: 0.72rem 1rem;
+  border: 1px solid rgba(37, 99, 235, 0.22);
+  border-radius: 999px;
+  color: #0f172a;
+  background: rgba(255, 255, 255, 0.72);
+  font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  transition:
+    border-color 140ms ease,
+    background-color 140ms ease,
+    transform 140ms ease;
+}
+
+.pdm-page__action-link:hover {
+  border-color: rgba(37, 99, 235, 0.38);
+  background: rgba(255, 255, 255, 0.94);
+  transform: translateY(-1px);
 }
 
 .pdm-page__sections {
@@ -83,6 +116,7 @@
   font-size: 1.1rem;
   font-weight: 700;
   line-height: 1.3;
+  letter-spacing: -0.02em;
 }
 
 .pdm-page__copy {
@@ -118,10 +152,6 @@
 @media (min-width: 840px) {
   .pdm-page__main {
     padding: 44px 32px 88px;
-  }
-
-  .pdm-page__title {
-    font-size: 3rem;
   }
 }
 

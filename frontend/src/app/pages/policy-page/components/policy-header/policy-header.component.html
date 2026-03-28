@@ -1,0 +1,27 @@
+<header class="pdm-policy-header">
+  <div class="pdm-policy-header__copy">
+    <p class="pdm-policy-header__eyebrow pdm-mono">{{ surface().sourceTitle }}</p>
+    <h1 class="pdm-policy-header__title">{{ surface().title }}</h1>
+    <p class="pdm-policy-header__subtitle">{{ surface().subtitle }}</p>
+    <p class="pdm-policy-header__intro">{{ surface().intro }}</p>
+    <p class="pdm-policy-header__traceability pdm-mono">TRACEABILITY SNAPSHOT — NOT RUNTIME ASSURANCE</p>
+  </div>
+
+  <div class="pdm-policy-header__stats" aria-label="Policy summary">
+    @for (stat of stats(); track stat.label) {
+      <article class="pdm-policy-header__stat">
+        <p class="pdm-policy-header__stat-label pdm-mono">{{ stat.label }}</p>
+        <p class="pdm-policy-header__stat-value">{{ stat.value }}</p>
+        <p class="pdm-policy-header__stat-detail">{{ stat.detail }}</p>
+      </article>
+    }
+  </div>
+
+  @if (surface().scopeBullets.length > 0) {
+    <div class="pdm-policy-header__scope" aria-label="Policy scope">
+      @for (item of surface().scopeBullets; track item) {
+        <span class="pdm-policy-header__scope-chip pdm-mono">{{ item }}</span>
+      }
+    </div>
+  }
+</header>

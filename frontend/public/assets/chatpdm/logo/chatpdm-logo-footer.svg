@@ -1,0 +1,7 @@
+<svg width="192" height="32" viewBox="0 0 192 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="10" cy="16" r="8" stroke="#E2E8F0" stroke-width="2.4"/>
+  <path d="M18 16H45" stroke="#E2E8F0" stroke-width="2.4" stroke-linecap="square"/>
+  <rect x="51" y="12.5" width="7" height="7" rx="0.8" fill="#E2E8F0"/>
+  <text x="71" y="22.2" fill="#F8FAFC" font-family="Inter, Arial, sans-serif" font-size="19" font-weight="600" letter-spacing="-0.9">Chat</text>
+  <text x="112" y="22.2" fill="#60A5FA" font-family="Inter, Arial, sans-serif" font-size="19" font-weight="600" letter-spacing="-0.9">PDM</text>
+</svg>

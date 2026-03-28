@@ -1,0 +1,48 @@
+{
+  "phase": "12.8C.0",
+  "modeLabels": [
+    "standard",
+    "simplified",
+    "formal"
+  ],
+  "trustCopy": {
+    "primaryLine": "Same canonical meaning. Different reading register.",
+    "forbiddenPhrases": [
+      "rewrite",
+      "regenerate",
+      "ask simply",
+      "explain again",
+      "alternate answer",
+      "new answer"
+    ]
+  },
+  "canonicalVisualAnchor": {
+    "requiredStaticFields": [
+      "conceptId",
+      "canonicalHashShort",
+      "conceptVersion"
+    ],
+    "optionalStaticFields": [
+      "sourceAnchor"
+    ],
+    "canonicalHashLength": 12,
+    "sourceAnchorStrategy": "primary_source_priority_id_if_present"
+  },
+  "semanticParityAudit": {
+    "conceptIds": [
+      "authority",
+      "power",
+      "legitimacy",
+      "responsibility",
+      "duty"
+    ],
+    "ambiguityQueries": [
+      "obligation"
+    ],
+    "refusalQueries": [
+      "moral authority",
+      "electrical power",
+      "religious legitimacy"
+    ]
+  }
+}

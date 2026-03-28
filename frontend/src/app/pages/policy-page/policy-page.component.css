@@ -1,0 +1,54 @@
+:host {
+  display: block;
+}
+
+.pdm-policy-page {
+  position: relative;
+  min-height: 100%;
+}
+
+.pdm-policy-page__main {
+  justify-content: center;
+  padding: 26px 18px 56px;
+}
+
+.pdm-policy-page__frame {
+  display: grid;
+  gap: 16px;
+}
+
+.pdm-policy-page__sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (min-width: 600px) {
+  .pdm-policy-page__main {
+    padding: 34px 28px 72px;
+  }
+}
+
+@media (min-width: 840px) {
+  .pdm-policy-page__main {
+    padding: 42px 32px 88px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .pdm-policy-page__main {
+    padding: 48px 40px 96px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .pdm-policy-page__main {
+    padding: 56px 48px 104px;
+  }
+}

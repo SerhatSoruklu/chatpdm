@@ -4,6 +4,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const { resolveConceptQuery } = require('../src/modules/concepts');
+const { validateConceptShape } = require('../src/modules/concepts/concept-loader');
 
 const fixturePath = path.resolve(
   __dirname,
@@ -19,6 +20,68 @@ function loadCases() {
     ...JSON.parse(fs.readFileSync(fixturePath, 'utf8')),
     ...JSON.parse(fs.readFileSync(comparisonFixturePath, 'utf8')),
   ];
+}
+
+function loadConceptFixture(conceptId) {
+  return JSON.parse(
+    fs.readFileSync(path.resolve(__dirname, `../../data/concepts/${conceptId}.json`), 'utf8'),
+  );
+}
+
+function assertDerivedExplanationOverlayShell(contract, expectedConceptId, expectedConceptVersion, context) {
+  assert.notEqual(contract, null, `${context} is missing.`);
+  assert.equal(contract.readOnly, true, `${context}.readOnly mismatch.`);
+  assert.equal(contract.status, 'generated', `${context}.status mismatch.`);
+  assert.equal(contract.canonicalBinding.conceptId, expectedConceptId, `${context}.canonicalBinding.conceptId mismatch.`);
+  assert.equal(
+    contract.canonicalBinding.conceptVersion,
+    expectedConceptVersion,
+    `${context}.canonicalBinding.conceptVersion mismatch.`,
+  );
+  assert.match(contract.canonicalBinding.canonicalHash, /^[a-f0-9]{64}$/, `${context}.canonicalBinding.canonicalHash mismatch.`);
+
+  for (const modeName of ['standard', 'simplified', 'formal']) {
+    const mode = contract.modes[modeName];
+
+    assert.notEqual(mode, null, `${context}.modes.${modeName} is missing.`);
+    assert.equal(mode.status, 'generated', `${context}.modes.${modeName}.status mismatch.`);
+    assert.equal(typeof mode.fields.shortDefinition, 'string', `${context}.modes.${modeName}.fields.shortDefinition mismatch.`);
+    assert.equal(typeof mode.fields.coreMeaning, 'string', `${context}.modes.${modeName}.fields.coreMeaning mismatch.`);
+    assert.equal(typeof mode.fields.fullDefinition, 'string', `${context}.modes.${modeName}.fields.fullDefinition mismatch.`);
+    assert.notEqual(mode.equivalenceCertificate, null, `${context}.modes.${modeName}.equivalenceCertificate mismatch.`);
+    assert.equal(mode.equivalenceCertificate.status, 'certified', `${context}.modes.${modeName}.equivalenceCertificate.status mismatch.`);
+    assert.equal(
+      mode.equivalenceCertificate.canonicalHash,
+      contract.canonicalBinding.canonicalHash,
+      `${context}.modes.${modeName}.equivalenceCertificate.canonicalHash mismatch.`,
+    );
+  }
+}
+
+function verifyReservedOverlayFieldsAreRejected() {
+  const authority = loadConceptFixture('authority');
+  const withDerivedExplanationOverlays = {
+    ...authority,
+    derivedExplanationOverlays: {},
+  };
+  const withDerivedExplanationOverlayContract = {
+    ...authority,
+    derivedExplanationOverlayContract: {},
+  };
+
+  assert.throws(
+    () => validateConceptShape(withDerivedExplanationOverlays, authority.conceptId),
+    /must not declare "derivedExplanationOverlays"/,
+    'authored packets must reject derivedExplanationOverlays.',
+  );
+
+  assert.throws(
+    () => validateConceptShape(withDerivedExplanationOverlayContract, authority.conceptId),
+    /must not declare "derivedExplanationOverlayContract"/,
+    'authored packets must reject derivedExplanationOverlayContract.',
+  );
+
+  process.stdout.write('PASS overlay_authored_fields_rejected\n');
 }
 
 function assertSubset(actualValue, expectedValue, context) {
@@ -80,6 +143,12 @@ function runCase(testCase) {
       testCase.expectedConceptId,
       `${testCase.name} conceptId mismatch.`,
     );
+    assertDerivedExplanationOverlayShell(
+      firstResult.answer.derivedExplanationOverlays,
+      testCase.expectedConceptId,
+      firstResult.resolution.conceptVersion,
+      `${testCase.name} derivedExplanationOverlays`,
+    );
   }
 
   if (testCase.expectedType === 'ambiguous_match') {
@@ -117,6 +186,8 @@ function main() {
     'empty string input should be rejected before product response generation.',
   );
   process.stdout.write('PASS empty_string_invalid_input\n');
+
+  verifyReservedOverlayFieldsAreRejected();
 
   const cases = loadCases();
   cases.forEach(runCase);

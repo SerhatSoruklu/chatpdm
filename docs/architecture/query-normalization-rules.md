@@ -74,12 +74,12 @@ The v1 normalizer is a strict ordered pipeline. The order is part of the system 
    - `"`
    - `'`
 6. Strip one leading filler phrase only, if present, using exact prefix match against this closed list:
-   - `what is `
-   - `what are `
-   - `define `
-   - `meaning of `
-   - `explain `
-   - `tell me about `
+   - <code>what is </code>
+   - <code>what are </code>
+   - <code>define </code>
+   - <code>meaning of </code>
+   - <code>explain </code>
+   - <code>tell me about </code>
 7. Trim again after filler stripping.
 8. The final result is `normalizedQuery`.
 

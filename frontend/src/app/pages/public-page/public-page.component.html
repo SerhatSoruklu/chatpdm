@@ -5,6 +5,12 @@
         <p class="pdm-page__eyebrow">{{ content().eyebrow }}</p>
         <h1 class="pdm-page__title" id="pdm-page-title">{{ content().title }}</h1>
         <p class="pdm-page__intro">{{ content().intro }}</p>
+
+        @if (content().action; as action) {
+          <div class="pdm-page__actions">
+            <a class="pdm-page__action-link" [routerLink]="action.route">{{ action.label }}</a>
+          </div>
+        }
       </header>
 
       <div class="pdm-page__sections">

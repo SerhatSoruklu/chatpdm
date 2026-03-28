@@ -1,0 +1,60 @@
+:host {
+  display: block;
+}
+
+.pdm-policy-trace {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+  border-top: 1px solid rgba(120, 113, 108, 0.14);
+  background: rgba(255, 255, 255, 0.74);
+}
+
+.pdm-policy-trace__block {
+  display: grid;
+  gap: 8px;
+}
+
+.pdm-policy-trace__label {
+  margin: 0;
+  color: #78716c;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.pdm-policy-trace__sentence,
+.pdm-policy-trace__lines,
+.pdm-policy-trace__note-list {
+  margin: 0;
+  color: #44403c;
+  line-height: 1.68;
+}
+
+.pdm-policy-trace__sentence code {
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: rgba(231, 229, 228, 0.8);
+  color: #1f2937;
+}
+
+.pdm-policy-trace__mapping-list,
+.pdm-policy-trace__note-list {
+  display: grid;
+  gap: 10px;
+  padding-left: 18px;
+}
+
+.pdm-policy-trace__mapping {
+  display: grid;
+  gap: 4px;
+}
+
+.pdm-policy-trace__path {
+  margin: 0;
+  color: #1f2937;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  word-break: break-word;
+}

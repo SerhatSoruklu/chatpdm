@@ -185,6 +185,212 @@
         }
       }
     },
+    "derivedExplanationOverlayStatus": {
+      "type": "string",
+      "enum": [
+        "absent",
+        "pending_generation",
+        "generated",
+        "invalid"
+      ]
+    },
+    "derivedExplanationOverlayCanonicalBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "conceptId",
+        "conceptVersion",
+        "canonicalHash"
+      ],
+      "properties": {
+        "conceptId": {
+          "$ref": "#/$defs/stringValue"
+        },
+        "conceptVersion": {
+          "type": "integer"
+        },
+        "canonicalHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "derivedExplanationOverlayFields": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "shortDefinition",
+        "coreMeaning",
+        "fullDefinition"
+      ],
+      "properties": {
+        "shortDefinition": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "coreMeaning": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "fullDefinition": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "derivedExplanationOverlayFieldCheck": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "strategy",
+        "prefix",
+        "canonicalSuffixMatch"
+      ],
+      "properties": {
+        "strategy": {
+          "type": "string",
+          "enum": [
+            "identity",
+            "prefixed_copy"
+          ]
+        },
+        "prefix": {
+          "type": "string"
+        },
+        "canonicalSuffixMatch": {
+          "const": true
+        }
+      }
+    },
+    "derivedExplanationEquivalenceCertificate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "certificateVersion",
+        "templateVersion",
+        "canonicalHash",
+        "mode",
+        "fieldChecks"
+      ],
+      "properties": {
+        "status": {
+          "const": "certified"
+        },
+        "certificateVersion": {
+          "$ref": "#/$defs/stringValue"
+        },
+        "templateVersion": {
+          "$ref": "#/$defs/stringValue"
+        },
+        "canonicalHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "standard",
+            "simplified",
+            "formal"
+          ]
+        },
+        "fieldChecks": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "shortDefinition",
+            "coreMeaning",
+            "fullDefinition"
+          ],
+          "properties": {
+            "shortDefinition": {
+              "$ref": "#/$defs/derivedExplanationOverlayFieldCheck"
+            },
+            "coreMeaning": {
+              "$ref": "#/$defs/derivedExplanationOverlayFieldCheck"
+            },
+            "fullDefinition": {
+              "$ref": "#/$defs/derivedExplanationOverlayFieldCheck"
+            }
+          }
+        }
+      }
+    },
+    "derivedExplanationOverlayModeObject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "fields",
+        "equivalenceCertificate"
+      ],
+      "properties": {
+        "status": {
+          "$ref": "#/$defs/derivedExplanationOverlayStatus"
+        },
+        "fields": {
+          "$ref": "#/$defs/derivedExplanationOverlayFields"
+        },
+        "equivalenceCertificate": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/derivedExplanationEquivalenceCertificate"
+            }
+          ]
+        }
+      }
+    },
+    "derivedExplanationOverlaysObject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "readOnly",
+        "status",
+        "canonicalBinding",
+        "modes"
+      ],
+      "properties": {
+        "readOnly": {
+          "const": true
+        },
+        "status": {
+          "$ref": "#/$defs/derivedExplanationOverlayStatus"
+        },
+        "canonicalBinding": {
+          "$ref": "#/$defs/derivedExplanationOverlayCanonicalBinding"
+        },
+        "modes": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "standard",
+            "simplified",
+            "formal"
+          ],
+          "properties": {
+            "standard": {
+              "$ref": "#/$defs/derivedExplanationOverlayModeObject"
+            },
+            "simplified": {
+              "$ref": "#/$defs/derivedExplanationOverlayModeObject"
+            },
+            "formal": {
+              "$ref": "#/$defs/derivedExplanationOverlayModeObject"
+            }
+          }
+        }
+      }
+    },
     "suggestionObject": {
       "type": "object",
       "additionalProperties": false,
@@ -305,6 +511,7 @@
         "shortDefinition",
         "coreMeaning",
         "fullDefinition",
+        "derivedExplanationOverlays",
         "contexts",
         "sources",
         "relatedConcepts"
@@ -321,6 +528,9 @@
         },
         "fullDefinition": {
           "$ref": "#/$defs/stringValue"
+        },
+        "derivedExplanationOverlays": {
+          "$ref": "#/$defs/derivedExplanationOverlaysObject"
         },
         "contexts": {
           "type": "array",

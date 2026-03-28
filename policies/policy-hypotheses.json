@@ -1,0 +1,13 @@
+{
+  "hypotheses": [
+    {
+      "id": "H-2026-03-rawquery-minimization-gap",
+      "claim_id": "privacy-2",
+      "status": "unverified",
+      "linked_pr": null,
+      "opened_at": "2026-03-28",
+      "expires_after_days": 60,
+      "description": "The rawQuery storage claim may require minimization enforcement before later lifecycle phases land."
+    }
+  ]
+}

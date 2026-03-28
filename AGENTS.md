@@ -33,6 +33,16 @@ The application now lives directly in this repo root, with:
 - [data](./data)
 - [tests](./tests)
 
+## Shell context precedence
+
+Treat the user's active shell path as the primary repo target when it is shown explicitly.
+
+- If the user shows a shell prompt such as `serhat@CoupynPC:~/code/chatpdm$`, treat that path and repo as the active target.
+- When the shell path conflicts with previously loaded repo context, the explicit shell path wins unless the user says otherwise.
+- Strong product-specific cues also matter. If the user is talking about `ChatPDM` concepts such as deterministic contract behavior, rule-based resolution, governance-scoped concepts, concept packets, resolver contracts, or similar ChatPDM-native terminology, treat that as a strong signal to stay in the ChatPDM repo unless the user explicitly redirects elsewhere.
+- Do not drift into another repo because of an earlier `cwd`, a previously loaded `AGENTS.md`, or earlier conversation context if the user has shown a current shell path.
+- If the shell path is not shown and repo target is ambiguous, audit before changing files.
+
 ## Identity
 
 ChatPDM is a deterministic meaning system.
@@ -129,6 +139,18 @@ Rules:
 - Do not use random free ports.
 - Do not introduce fallback ports.
 - Do not change proxy targets or validation base URLs unless explicitly requested.
+
+## Git publish policy
+
+Assume `main` is protected and publish work through a branch-first workflow.
+
+- When the user says `commit`, create a local commit only.
+- When the user says `push to git`, do not push directly to `main`.
+- Use a feature branch for publication. If work started on `main`, create a branch before pushing.
+- Push the feature branch to `origin` and keep `main` untouched unless the user explicitly requests otherwise and the rules allow it.
+- If the user wants merge-ready publication, open a pull request instead of attempting a direct push to `main`.
+- Do not force-push unless the user explicitly requests it and branch protections allow it.
+- Prefer linear-history-compatible workflows. Avoid merge commits when rebasing or squashing is the protected-branch expectation.
 
 ## Validation and Push Safety
 

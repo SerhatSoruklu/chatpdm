@@ -1,5 +1,6 @@
 'use strict';
 
+const crypto = require('node:crypto');
 const fs = require('node:fs');
 const path = require('node:path');
 const {
@@ -11,6 +12,14 @@ const {
 
 const conceptsDirectory = path.resolve(__dirname, '../../../../data/concepts');
 const sourceRegistry = require('./source-registry.json');
+
+const RESERVED_AUTHORED_OVERLAY_FIELDS = Object.freeze([
+  'derivedExplanationOverlays',
+  'derivedExplanationOverlayContract',
+]);
+const DERIVED_OVERLAY_MODES = Object.freeze(['standard', 'simplified', 'formal']);
+const DERIVED_OVERLAY_FIELDS = Object.freeze(['shortDefinition', 'coreMeaning', 'fullDefinition']);
+const DERIVED_OVERLAY_STATUS_ABSENT = 'absent';
 
 const PRIMARY_SOURCE_BY_CONCEPT = Object.freeze({
   authority: 'weber',
@@ -42,6 +51,59 @@ function assertArrayOfNonEmptyStrings(value, fieldName, conceptId, minimumLength
   value.forEach((entry, index) => {
     assertNonEmptyString(entry, `${fieldName}[${index}]`, conceptId);
   });
+}
+
+function stableStringify(value) {
+  if (Array.isArray(value)) {
+    return `[${value.map((entry) => stableStringify(entry)).join(',')}]`;
+  }
+
+  if (value && typeof value === 'object') {
+    const keys = Object.keys(value).sort();
+    return `{${keys.map((key) => `${JSON.stringify(key)}:${stableStringify(value[key])}`).join(',')}}`;
+  }
+
+  return JSON.stringify(value);
+}
+
+function computeCanonicalConceptHash(concept, algorithm = 'sha256') {
+  return crypto
+    .createHash(algorithm)
+    .update(stableStringify(concept))
+    .digest('hex');
+}
+
+function buildDerivedExplanationModeShell() {
+  const fields = {};
+
+  for (const fieldName of DERIVED_OVERLAY_FIELDS) {
+    fields[fieldName] = null;
+  }
+
+  return {
+    status: DERIVED_OVERLAY_STATUS_ABSENT,
+    fields,
+    equivalenceCertificate: null,
+  };
+}
+
+function buildDerivedExplanationOverlayContract(concept) {
+  const modes = {};
+
+  for (const mode of DERIVED_OVERLAY_MODES) {
+    modes[mode] = buildDerivedExplanationModeShell();
+  }
+
+  return {
+    readOnly: true,
+    status: DERIVED_OVERLAY_STATUS_ABSENT,
+    canonicalBinding: {
+      conceptId: concept.conceptId,
+      conceptVersion: concept.version,
+      canonicalHash: computeCanonicalConceptHash(concept),
+    },
+    modes,
+  };
 }
 
 function validateComparisonAxis(axis, conceptId, relatedConceptId, axisIndex) {
@@ -224,6 +286,16 @@ function validateSourceIntegrity(concept, conceptId) {
   });
 }
 
+function assertNoReservedAuthoredOverlayFields(concept, conceptId) {
+  for (const fieldName of RESERVED_AUTHORED_OVERLAY_FIELDS) {
+    if (Object.hasOwn(concept, fieldName)) {
+      throw new Error(
+        `Concept "${conceptId}" must not declare "${fieldName}" in authored packets; derived explanation overlays are read-only contract data.`,
+      );
+    }
+  }
+}
+
 function validateConceptShape(concept, expectedConceptId) {
   if (!concept || typeof concept !== 'object' || Array.isArray(concept)) {
     throw new Error(`Concept "${expectedConceptId}" must be a JSON object.`);
@@ -239,6 +311,7 @@ function validateConceptShape(concept, expectedConceptId) {
   assertNonEmptyString(concept.shortDefinition, 'shortDefinition', expectedConceptId);
   assertNonEmptyString(concept.coreMeaning, 'coreMeaning', expectedConceptId);
   assertNonEmptyString(concept.fullDefinition, 'fullDefinition', expectedConceptId);
+  assertNoReservedAuthoredOverlayFields(concept, expectedConceptId);
 
   if (!Number.isInteger(concept.version)) {
     throw new Error(`Concept "${expectedConceptId}" must include an integer version.`);
@@ -270,6 +343,8 @@ function loadConceptSet() {
 }
 
 module.exports = {
+  buildDerivedExplanationOverlayContract,
+  computeCanonicalConceptHash,
   loadConceptSet,
   validateConceptShape,
 };

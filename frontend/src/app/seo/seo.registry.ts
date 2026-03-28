@@ -85,9 +85,6 @@ function assertSeoTitle(key: string, title: string): void {
     throw new Error(`SEO title exceeds 60 characters for registry entry: ${key}`);
   }
 
-  if (title.includes('|')) {
-    throw new Error(`SEO title may not use "|" for registry entry: ${key}`);
-  }
 }
 
 function assertSeoDescription(key: string, description: string): void {

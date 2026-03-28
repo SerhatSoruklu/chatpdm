@@ -1,0 +1,29 @@
+<div class="pdm-policy-page">
+  <main class="pdm-policy-page__main pdm-shell" aria-labelledby="pdm-policy-page-title">
+    <div class="pdm-shell__frame pdm-policy-page__frame">
+      <app-policy-header [surface]="surface()" />
+
+      <section class="pdm-policy-page__controls" aria-labelledby="pdm-policy-page-title">
+        <h2 class="pdm-policy-page__sr-only" id="pdm-policy-page-title">{{ surface().title }}</h2>
+
+        <app-policy-filter-bar
+          [search]="searchQuery()"
+          [activeClaimClass]="activeClaimClass()"
+          [activeSection]="activeSection()"
+          [internalTransportOnly]="internalTransportOnly()"
+          [claimClasses]="claimClasses()"
+          [sections]="sections()"
+          [visibleClaimCount]="filteredClaims().length"
+          [totalClaimCount]="surface().summary.totalClaims"
+          (searchChange)="updateSearch($event)"
+          (claimClassChange)="updateClaimClass($event)"
+          (sectionChange)="updateSection($event)"
+          (internalTransportChange)="updateInternalTransportOnly($event)"
+          (clearFilters)="clearFilters()"
+        />
+      </section>
+
+      <app-policy-claim-list [claims]="filteredClaims()" />
+    </div>
+  </main>
+</div>

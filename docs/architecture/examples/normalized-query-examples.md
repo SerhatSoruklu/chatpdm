@@ -25,6 +25,6 @@ For the `canonical_id` rows below, the match path comes from raw-query prefix de
 | `concept:authority` | `conceptauthority` | `concept_match` | `canonical_id`; raw query exact prefix triggers directed canonical lookup before alias stages |
 | `concept:missing-id` | `conceptmissing-id` | `no_exact_match` | `canonical_id`; directed lookup fails and does not fall through to alias matching |
 | `what is what is authority` | `what is authority` | `no_exact_match` | one filler strip only; no second pass |
-| ` concept:authority` | `conceptauthority` | `no_exact_match` | raw query does not start with exact `concept:` prefix because of leading whitespace |
+| <code> concept:authority</code> | `conceptauthority` | `no_exact_match` | raw query does not start with exact `concept:` prefix because of leading whitespace |
 | `Explain   HUMAN RIGHTS!!!` | `human rights` | `concept_match` | `exact_alias`; whitespace collapse, lowercase, punctuation removal, filler strip |
 | `what are rights` | `rights` | `ambiguous_match` | `ambiguous_alias`; filler stripped once, alias remains shared |

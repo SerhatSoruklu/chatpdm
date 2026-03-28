@@ -1,0 +1,40 @@
+<div class="pdm-policy-trace" aria-label="Trace evidence">
+  <section class="pdm-policy-trace__block">
+    <p class="pdm-policy-trace__label pdm-mono">Canonical claim</p>
+    <p class="pdm-policy-trace__sentence">
+      @for (segment of canonicalSegments(); track $index) {
+        @if (segment.isCode) {
+          <code>{{ segment.text }}</code>
+        } @else {
+          <span>{{ segment.text }}</span>
+        }
+      }
+    </p>
+  </section>
+
+  <section class="pdm-policy-trace__block">
+    <p class="pdm-policy-trace__label pdm-mono">Implementation evidence</p>
+
+    <ul class="pdm-policy-trace__mapping-list">
+      @for (trace of claim().traces; track trace.source) {
+        <li class="pdm-policy-trace__mapping">
+          <p class="pdm-policy-trace__path pdm-mono">{{ trace.path }}</p>
+          @if (trace.lines) {
+            <p class="pdm-policy-trace__lines">Lines {{ trace.lines }}</p>
+          }
+        </li>
+      }
+    </ul>
+  </section>
+
+  @if (claim().specialNotes.length > 0) {
+    <section class="pdm-policy-trace__block">
+      <p class="pdm-policy-trace__label pdm-mono">Notes</p>
+      <ul class="pdm-policy-trace__note-list">
+        @for (note of claim().specialNotes; track note) {
+          <li>{{ note }}</li>
+        }
+      </ul>
+    </section>
+  }
+</div>

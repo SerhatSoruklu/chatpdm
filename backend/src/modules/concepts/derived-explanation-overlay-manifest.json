@@ -1,0 +1,34 @@
+{
+  "manifestVersion": "12.8B.1.overlay-manifest.v1",
+  "storeVersion": "12.8B.1.overlay-store.v1",
+  "templateVersion": "12.8B.1.overlay-template.v1",
+  "certificateVersion": "12.8B.1.overlay-certificate.v1",
+  "hashAlgorithm": "sha256",
+  "maxSemanticLagMs": 604800000,
+  "modes": {
+    "standard": {
+      "templateId": "identity-copy.v1",
+      "fieldPrefixes": {
+        "shortDefinition": "",
+        "coreMeaning": "",
+        "fullDefinition": ""
+      }
+    },
+    "simplified": {
+      "templateId": "simplified-prefixed-copy.v1",
+      "fieldPrefixes": {
+        "shortDefinition": "Simplified explanation: ",
+        "coreMeaning": "Simplified explanation: ",
+        "fullDefinition": "Simplified explanation: "
+      }
+    },
+    "formal": {
+      "templateId": "formal-prefixed-copy.v1",
+      "fieldPrefixes": {
+        "shortDefinition": "Formal framing: ",
+        "coreMeaning": "Formal framing: ",
+        "fullDefinition": "Formal framing: "
+      }
+    }
+  }
+}

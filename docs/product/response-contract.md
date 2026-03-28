@@ -10,6 +10,12 @@ This document defines the only allowed product response shapes for ChatPDM v1. I
 
 This is a product response contract, not an API failure contract. Internal failures, malformed requests, dependency outages, and transport concerns are handled separately and are outside the scope of this document.
 
+Current runtime declarations for this contract:
+
+- `contractVersion = "v1.2"`
+- `matcherVersion = "2026-03-27.v3"`
+- `normalizerVersion = "2026-03-27.v1"`
+
 ## Determinism Contract
 
 ChatPDM v1 guarantees the following:
@@ -26,7 +32,7 @@ Deterministic equality also includes deterministic array ordering. Ordered array
 
 ## Top-Level Response Shape
 
-Every product response in ChatPDM v1 must include the same top-level contract fields:
+Every product response in ChatPDM v1 must include the same shared top-level contract fields:
 
 - `type`
 - `query`
@@ -37,7 +43,6 @@ Every product response in ChatPDM v1 must include the same top-level contract fi
 - `conceptSetVersion`
 - `queryType`
 - `interpretation`
-- `resolution`
 
 Shared top-level skeleton:
 
@@ -46,19 +51,18 @@ Shared top-level skeleton:
   "type": "concept_match",
   "query": "what is authority",
   "normalizedQuery": "authority",
-  "contractVersion": "v1.1",
+  "contractVersion": "v1.2",
   "normalizerVersion": "2026-03-27.v1",
-  "matcherVersion": "2026-03-27.v2",
-  "conceptSetVersion": "20260327.2",
+  "matcherVersion": "2026-03-27.v3",
+  "conceptSetVersion": "20260327.4",
   "queryType": "exact_concept_query",
-  "interpretation": null,
-  "resolution": {}
+  "interpretation": null
 }
 ```
 
 ### Field meanings
 
-- `type`: product outcome type. Only the three documented values are allowed.
+- `type`: product outcome type. Only the documented values are allowed.
 - `query`: original user input as received by the product surface. It must be preserved exactly as received and must not be cleaned, trimmed, or rewritten in the response body.
 - `normalizedQuery`: deterministic normalized form of `query` under the declared `normalizerVersion`.
 - `contractVersion`: version of this response contract and its field semantics.
@@ -67,7 +71,8 @@ Shared top-level skeleton:
 - `conceptSetVersion`: immutable published snapshot of canonical concepts, aliases, related-concept relations, and source metadata used by the runtime.
 - `queryType`: deterministic query-shape classification for the current resolver pass.
 - `interpretation`: structured, bounded interpretation metadata for the classified query shape. This is not reasoning output. It may be `null` when no interpretation block is needed.
-- `resolution`: typed resolution metadata specific to the response type.
+- `resolution`: typed resolution metadata for response types that include a `resolution` object.
+- `mode`: fixed top-level mode field used by the `comparison` response shape.
 
 ### Shared `queryType` vocabulary
 
@@ -143,9 +148,10 @@ This contract currently governs response shape, not full domain-policy enforceme
 
 ## Response Types
 
-Only these three product response types are allowed in ChatPDM v1:
+ChatPDM v1 currently allows these four product response types:
 
 - `concept_match`
+- `comparison`
 - `no_exact_match`
 - `ambiguous_match`
 
@@ -153,13 +159,13 @@ No other product outcome types are valid in this phase.
 
 ### 1. concept_match
 
-**Purpose**
+#### Purpose (concept_match)
 
 Return one resolved authored canonical concept.
 
 This is the only response type that returns authoritative canonical meaning.
 
-**Required fields**
+#### Required fields (concept_match)
 
 Top-level:
 
@@ -239,15 +245,66 @@ Allowed `relationType` values:
 - `extension`
 - `contrast`
 
-### 2. no_exact_match
+### 2. comparison
 
-**Purpose**
+#### Purpose (comparison)
+
+Return a deterministic authored comparison for an allowlisted pair of canonical concepts.
+
+This is a bounded comparison surface. It is not freeform comparative reasoning and it must not synthesize new meaning beyond authored axes.
+
+#### Required fields (comparison)
+
+Top-level:
+
+- `type`: `"comparison"`
+- `mode`: `"comparison"`
+- `query`
+- `normalizedQuery`
+- `contractVersion`
+- `normalizerVersion`
+- `matcherVersion`
+- `conceptSetVersion`
+- `queryType`
+- `interpretation`
+- `comparison`
+
+Allowed `queryType` values:
+
+- `comparison_query`
+
+`interpretation`:
+
+- must be `null`
+
+`comparison` object:
+
+- `conceptA`: first concept in the normalized authored pair
+- `conceptB`: second concept in the normalized authored pair
+- `axes`: deterministic ordered comparison axes
+
+`comparison.axes` object fields:
+
+- `axis`
+- `A`
+- `B`
+
+For statement-only axes:
+
+- `axis`
+- `statement`
+
+The `comparison` object is the canonical payload boundary for this response type.
+
+### 3. no_exact_match
+
+#### Purpose (no_exact_match)
 
 Return an honest non-match when no canonical concept exists for the normalized query.
 
 This type exists to preserve product honesty. It must not be turned into a best-effort answer surface.
 
-**Required fields**
+#### Required fields (no_exact_match)
 
 Top-level:
 
@@ -313,13 +370,13 @@ Interpretation patterns allowed in this response type include:
 - unsupported actor or holder query
 - unsupported complex query shape
 
-### 3. ambiguous_match
+### 4. ambiguous_match
 
-**Purpose**
+#### Purpose (ambiguous_match)
 
 Return a disambiguation surface when multiple nearby canonical concepts are plausible and the user must choose explicitly.
 
-**Required fields**
+#### Required fields (ambiguous_match)
 
 Top-level:
 
@@ -378,16 +435,18 @@ The frontend must follow these rules exactly:
 3. Do not merge blocks or invent missing meaning.
 4. Do not reorder the canonical `concept_match` answer blocks.
 5. Treat all canonical text fields as plain text in v1.
-6. Render `ambiguous_match` as explicit user choice, never as an already-resolved answer.
-7. Render `no_exact_match` honestly even when `suggestions` is empty.
-8. Do not re-sort `contexts`, `sources`, `relatedConcepts`, `suggestions`, `candidates`, or `interpretation.concepts` in the UI.
-9. Present `interpretation` as bounded system guidance, not as a generated answer.
-10. Cache product responses using at least:
-   - `normalizedQuery`
-   - `contractVersion`
-   - `normalizerVersion`
-   - `matcherVersion`
-   - `conceptSetVersion`
+6. Render `comparison` as a structured authored comparison, never as generated prose.
+7. Render `ambiguous_match` as explicit user choice, never as an already-resolved answer.
+8. Render `no_exact_match` honestly even when `suggestions` is empty.
+9. Do not re-sort `contexts`, `sources`, `relatedConcepts`, `suggestions`, `candidates`, `comparison.axes`, or `interpretation.concepts` in the UI.
+10. Present `interpretation` as bounded system guidance, not as a generated answer.
+11. Cache product responses using at least:
+
+    - `normalizedQuery`
+    - `contractVersion`
+    - `normalizerVersion`
+    - `matcherVersion`
+    - `conceptSetVersion`
 
 The frontend must not treat the response as chatbot output. It is a structured resolution surface with deterministic query-shape metadata.
 
@@ -405,8 +464,10 @@ The backend must enforce these rules:
 - matcher behavior must be deterministic under the declared `matcherVersion`
 - `conceptSetVersion` must refer to an immutable published snapshot, not an informal label
 - `concept_match` must only return published canonical concepts
+- `comparison` must only return authored allowlisted comparison pairs
 - `no_exact_match` suggestions must be deterministic and must reference published canonical concepts only
 - `ambiguous_match` candidate ordering must be deterministic
+- `comparison` axis ordering must be deterministic
 - all ordered arrays must remain deterministic and version-stable
 
 Schema validation, versioning discipline, and golden tests are not optional if ChatPDM wants to claim deterministic behavior.
@@ -424,19 +485,20 @@ ChatPDM v1 product responses do not include:
 - best-effort fallback prose
 - confidence or probability theater
 - rich formatting assumptions inside canonical text fields
-- comparison synthesis
 - relation evaluation
 - actor or instance resolution
 
 ## Implementation Summary
 
-ChatPDM v1 defines exactly three product response types because the product only needs three canonical product outcomes in this phase:
+ChatPDM v1 currently defines four product response types:
 
 - one resolved concept
+- one deterministic authored comparison
 - one honest non-match
 - one explicit disambiguation state
 
 Phase 10 adds deterministic query-shape classification on top of those outcomes.
+Phase 11 adds deterministic comparison output for authored allowlisted pairs.
 
 This means ChatPDM can now say:
 
@@ -459,4 +521,5 @@ The following contract decisions are locked for Phase 10:
 - `concept_match` keeps `interpretation: null`
 - `no_exact_match` and `ambiguous_match` must keep deterministic interpretation objects
 - query-shape classification must not invent new canonical concepts
-- comparison, relation, and actor queries remain refusal-first in the current runtime
+- allowlisted comparison queries may return deterministic comparison output
+- relation and actor queries remain refusal-first in the current runtime

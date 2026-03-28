@@ -11,10 +11,11 @@
   width: 100%;
   max-width: 78rem;
   margin: 0 auto;
-  padding: 28px 22px;
+  padding: 30px 22px 24px;
   border-radius: 28px;
   background:
     radial-gradient(circle at top right, rgba(37, 99, 235, 0.16), transparent 28%),
+    radial-gradient(circle at 18% 20%, rgba(96, 165, 250, 0.08), transparent 24%),
     linear-gradient(180deg, #0f172a, #111827);
   color: rgba(248, 250, 252, 0.92);
   box-shadow:
@@ -23,23 +24,24 @@
 }
 
 .pdm-site-footer__intro {
-  max-width: 28rem;
+  max-width: 32rem;
 }
 
-.pdm-site-footer__eyebrow {
-  margin: 0 0 10px;
-  color: #93c5fd;
-  font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+.pdm-site-footer__brand {
+  display: inline-flex;
+  align-items: center;
+  margin: 0 0 14px;
+  text-decoration: none;
+}
+
+.pdm-site-footer__logo {
+  flex: 0 0 auto;
 }
 
 .pdm-site-footer__title {
   margin: 0;
   color: #f8fafc;
-  font-size: clamp(1.5rem, 2vw, 2rem);
+  font-size: clamp(1.55rem, 2vw, 2.05rem);
   font-weight: 700;
   line-height: 1.08;
   letter-spacing: -0.03em;
@@ -51,33 +53,104 @@
   line-height: 1.7;
 }
 
+.pdm-site-footer__support {
+  max-width: 30rem;
+  margin: 10px 0 0;
+  color: rgba(203, 213, 225, 0.7);
+  line-height: 1.65;
+}
+
+.pdm-site-footer__contact {
+  display: grid;
+  gap: 8px;
+  max-width: 22rem;
+  margin-top: 18px;
+  padding: 14px 16px;
+  border: 1px solid rgba(96, 165, 250, 0.16);
+  border-radius: 18px;
+  background: rgba(15, 23, 42, 0.28);
+}
+
+.pdm-site-footer__contact-label {
+  margin: 0;
+  color: rgba(147, 197, 253, 0.76);
+  font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.pdm-site-footer__contact-link {
+  color: #f8fafc;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.4;
+  text-decoration: none;
+}
+
+.pdm-site-footer__contact-link:hover,
+.pdm-site-footer__contact-link:focus-visible {
+  color: #bfdbfe;
+  text-decoration: underline;
+}
+
 .pdm-site-footer__grid {
   display: grid;
   gap: 18px;
-  margin-top: 26px;
+  margin-top: 28px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(148, 163, 184, 0.14);
 }
 
 .pdm-site-footer__column {
   display: grid;
-  gap: 10px;
+  gap: 6px;
 }
 
 .pdm-site-footer__column h3 {
   margin: 0;
-  color: #f8fafc;
-  font-size: 0.9rem;
-  font-weight: 700;
+  margin-bottom: 8px;
+  color: rgba(203, 213, 225, 0.58);
+  font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: default;
 }
 
 .pdm-site-footer__column a {
-  color: rgba(226, 232, 240, 0.78);
+  color: rgba(241, 245, 249, 0.9);
+  cursor: pointer;
   text-decoration: none;
   line-height: 1.5;
-  transition: color 160ms ease;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
+  transition:
+    color 160ms ease,
+    text-decoration-color 160ms ease,
+    transform 160ms ease;
 }
 
-.pdm-site-footer__column a:hover {
+.pdm-site-footer__column a:hover,
+.pdm-site-footer__column a:focus-visible {
   color: #ffffff;
+  text-decoration: underline;
+  transform: translateX(1px);
+}
+
+.pdm-site-footer__column--secondary h3 {
+  color: rgba(148, 163, 184, 0.56);
+}
+
+.pdm-site-footer__column--secondary a {
+  color: rgba(226, 232, 240, 0.76);
+}
+
+.pdm-site-footer__column--secondary a:hover,
+.pdm-site-footer__column--secondary a:focus-visible {
+  color: rgba(248, 250, 252, 0.94);
 }
 
 @media (min-width: 600px) {
@@ -86,7 +159,7 @@
   }
 
   .pdm-site-footer__inner {
-    padding: 32px 28px;
+    padding: 34px 28px 26px;
   }
 }
 
@@ -96,8 +169,8 @@
   }
 
   .pdm-site-footer__grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 20px 28px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 32px;
   }
 }
 
@@ -108,13 +181,16 @@
 
   .pdm-site-footer__inner {
     display: grid;
-    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.8fr);
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1.85fr);
     gap: 40px;
     align-items: start;
   }
 
   .pdm-site-footer__grid {
     margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 

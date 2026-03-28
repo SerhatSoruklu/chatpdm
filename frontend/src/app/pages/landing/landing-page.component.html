@@ -7,55 +7,135 @@
     <div class="pdm-shell__frame pdm-home__frame">
       <section class="pdm-home__hero" aria-labelledby="pdm-home-title">
         <div class="pdm-home__hero-structure" aria-hidden="true"></div>
-        <div class="pdm-home__hero-copy">
-          <div class="pdm-home__status">
-            <span class="pdm-home__status-pill">
-              <span class="pdm-home__status-dot" aria-hidden="true"></span>
-              Live beta
-            </span>
-            <span class="pdm-home__status-line">Deterministic concept resolution inside a visible authored scope.</span>
+        <div class="pdm-home__hero-grid">
+          <div class="pdm-home__hero-copy">
+            <div class="pdm-home__status">
+              <span class="pdm-home__status-pill">
+                <span class="pdm-home__status-dot" aria-hidden="true"></span>
+                Live runtime
+              </span>
+            </div>
+
+            <p class="pdm-home__eyebrow">Deterministic concept runtime</p>
+            <h1 class="pdm-home__title" id="pdm-home-title">
+              Deterministic concept resolution inside a bounded runtime.
+            </h1>
+            <p class="pdm-home__support-line">“Deterministic truth infrastructure should be accessible where correctness matters most”</p>
+            <p class="pdm-home__lead">
+              ChatPDM resolves authored concepts and controlled comparisons through a fixed response contract.
+              Supported scope stays visible. Unsupported meaning is refused.
+            </p>
+
+            <div class="pdm-home__signal-row" aria-label="Homepage proof signals">
+              @for (signal of heroSignals; track signal.label) {
+                <span class="pdm-home__signal-chip pdm-site-chip">{{ signal.label }}</span>
+              }
+            </div>
           </div>
 
-          <p class="pdm-home__eyebrow">ChatPDM</p>
-          <h1 class="pdm-home__title" id="pdm-home-title">
-            Deterministic concept resolution for meaning that must stay precise.
-          </h1>
-          <p class="pdm-home__lead">
-            ChatPDM resolves authored concepts and controlled comparisons into fixed, source-grounded outputs. It shows
-            its scope, refuses unsupported queries, and keeps boundaries visible.
-          </p>
+          <aside class="pdm-home__hero-support pdm-site-surface pdm-site-panel" aria-label="Runtime state machine">
+            <div class="pdm-home__hero-support-grid" aria-hidden="true"></div>
+            <div class="pdm-home__hero-support-head">
+              <div>
+                <p class="pdm-home__micro-label">System state</p>
+                <p class="pdm-home__hero-support-title">Input is normalized, routing is classified, output resolves or refuses.</p>
+              </div>
+              <span class="pdm-home__hero-support-pill pdm-site-chip">public runtime</span>
+            </div>
 
-          <div class="pdm-home__signal-row" aria-label="Homepage proof signals">
-            @for (signal of heroSignals; track signal.label) {
-              <span class="pdm-home__signal-chip pdm-site-chip">{{ signal.label }}</span>
-            }
-          </div>
+            <div class="pdm-home__hero-support-stack">
+              <div class="pdm-home__hero-support-group" aria-label="Runtime flow">
+                @for (item of heroSupportFlow; track item.label) {
+                  <div class="pdm-home__hero-support-row">
+                    <span class="pdm-home__hero-support-key">{{ item.label }}</span>
+                    <span class="pdm-home__hero-support-text">{{ item.value }}</span>
+                  </div>
+                }
+              </div>
+
+              <div class="pdm-home__hero-support-group pdm-home__hero-support-group--state" aria-label="Runtime state">
+                @for (state of heroSystemStates; track state.label) {
+                  <div class="pdm-home__hero-support-row">
+                    <span class="pdm-home__hero-support-key">{{ state.label }}</span>
+                    <span class="pdm-home__hero-support-text pdm-home__hero-support-text--strong">{{ state.value }}</span>
+                  </div>
+                }
+              </div>
+            </div>
+          </aside>
         </div>
       </section>
 
-      <section class="pdm-home__query-section" aria-labelledby="pdm-query-title">
+      <section class="pdm-home__query-section" id="runtime" aria-labelledby="pdm-query-title">
         <div class="pdm-home__query-card pdm-site-surface pdm-site-panel">
           <div class="pdm-home__section-head pdm-home__section-head--query">
             <div>
-              <p class="pdm-home__section-label">Query strip</p>
-              <h2 class="pdm-home__section-title" id="pdm-query-title">Try the bounded runtime</h2>
+              <p class="pdm-home__section-label">Runtime query</p>
+              <h2 class="pdm-home__section-title" id="pdm-query-title">Query the bounded runtime</h2>
             </div>
             <p class="pdm-home__section-copy">
-              Use a direct concept, a canonical lookup, or an authored comparison query inside the current runtime.
+              Enter a concept, canonical lookup, or controlled comparison.
             </p>
           </div>
 
           <form class="pdm-home__query-form" (ngSubmit)="submitDraft()">
-            <label class="pdm-home__sr-only" for="pdm-home-query">Concept query</label>
-            <textarea
-              id="pdm-home-query"
-              class="pdm-home__input"
-              name="query"
-              rows="3"
-              [ngModel]="queryDraft()"
-              (ngModelChange)="queryDraft.set($event)"
-              placeholder="Try authority, define legitimacy, authority vs power, or civic duty"
-            ></textarea>
+            <div
+              class="pdm-home__input-shell"
+              [class.pdm-home__input-shell--valid]="queryAssessment().status === 'valid'"
+              [class.pdm-home__input-shell--invalid]="queryAssessment().status === 'invalid'"
+            >
+              <div class="pdm-home__input-head">
+                <div>
+                  <p class="pdm-home__micro-label">Controlled entry</p>
+                  <p class="pdm-home__input-copy">
+                    Only authored concepts enter execution. Unsupported compositions are refused.
+                  </p>
+                </div>
+                <span class="pdm-home__mini-chip pdm-site-chip">runtime v1</span>
+              </div>
+
+              <label class="pdm-home__sr-only" for="pdm-home-query">Concept query</label>
+              <textarea
+                id="pdm-home-query"
+                class="pdm-home__input"
+                name="query"
+                rows="3"
+                [ngModel]="queryDraft()"
+                (ngModelChange)="queryDraft.set($event)"
+                spellcheck="false"
+                autocapitalize="off"
+                autocomplete="off"
+                placeholder="Try authority, define legitimacy, authority vs power, or civic duty"
+              ></textarea>
+
+              <div class="pdm-home__input-detail">
+                <p
+                  class="pdm-home__query-status"
+                  [class.pdm-home__query-status--valid]="queryAssessment().status === 'valid'"
+                  [class.pdm-home__query-status--invalid]="queryAssessment().status === 'invalid'"
+                  aria-live="polite"
+                >
+                  {{ queryAssessment().line }}
+                </p>
+
+                <p
+                  class="pdm-home__query-message"
+                  [class.pdm-home__query-message--invalid]="queryAssessment().status === 'invalid'"
+                >
+                  {{ queryAssessment().message }}
+                </p>
+              </div>
+
+              <div class="pdm-home__accepted-types" aria-label="Accepted input types">
+                <p class="pdm-home__micro-label">Accepted input types</p>
+
+                <div class="pdm-home__accepted-types-strip">
+                  @for (mode of queryEntryModes; track mode.label) {
+                    <span class="pdm-home__mini-chip pdm-site-chip">{{ mode.label }} · {{ mode.example }}</span>
+                  }
+                </div>
+              </div>
+            </div>
 
             <div class="pdm-home__query-actions">
               <div class="pdm-home__examples" aria-label="Suggested queries">
@@ -64,7 +144,7 @@
                     class="pdm-home__example pdm-site-chip"
                     type="button"
                     [disabled]="isSubmitting()"
-                    (click)="submitQuery(example.query)"
+                    (click)="fillStarterQuery(example.query)"
                   >
                     {{ example.label }}
                   </button>
@@ -74,9 +154,25 @@
               <button
                 class="pdm-home__submit pdm-site-button"
                 type="submit"
-                [disabled]="isSubmitting() || !queryDraft().trim()"
+                [disabled]="!canSubmitDraft()"
+                [attr.title]="submitButtonTitle()"
               >
-                {{ isSubmitting() ? 'Resolving…' : 'Resolve concept' }}
+                <span>{{ isSubmitting() ? 'Resolving…' : 'Resolve concept' }}</span>
+                <svg
+                  class="pdm-home__submit-icon"
+                  aria-hidden="true"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M4.16666 10H15.8333M15.8333 10L10.8333 5M15.8333 10L10.8333 15"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
               </button>
             </div>
           </form>
@@ -112,6 +208,21 @@
                 @if (entry.response; as response) {
                 @if (response.type === 'concept_match') {
                   <section class="pdm-home__response-card pdm-site-surface">
+                    <div class="pdm-home__resolution-strip" aria-label="Resolution status">
+                      <div class="pdm-home__resolution-item">
+                        <span class="pdm-home__resolution-label">Resolution</span>
+                        <span class="pdm-home__resolution-value">{{ resolutionTypeLabel(response) }}</span>
+                      </div>
+                      <div class="pdm-home__resolution-item">
+                        <span class="pdm-home__resolution-label">Scope</span>
+                        <span class="pdm-home__resolution-value">{{ runtimeScopeLabel(response) }}</span>
+                      </div>
+                      <div class="pdm-home__resolution-item">
+                        <span class="pdm-home__resolution-label">Execution</span>
+                        <span class="pdm-home__resolution-value">{{ executionStateLabel(response) }}</span>
+                      </div>
+                    </div>
+
                     <div class="pdm-home__response-head">
                       <div>
                         <p class="pdm-home__micro-label">{{ responseLabel(response) }}</p>
@@ -125,31 +236,96 @@
                       </div>
                     </div>
 
-                    <div class="pdm-home__response-stack">
-                      <section class="pdm-home__response-block pdm-home__response-block--primary pdm-site-surface">
-                        <p class="pdm-home__micro-label">Short definition</p>
-                        <p class="pdm-home__body-copy pdm-home__body-copy--primary">
-                          {{ asConceptMatch(response).answer.shortDefinition }}
-                        </p>
-                      </section>
+                    <section class="pdm-home__reading-surface" aria-label="Reading registers">
+                      <div class="pdm-home__reading-trust-zone">
+                        <div class="pdm-home__reading-trust-copy">
+                          <p class="pdm-home__micro-label">Reading register</p>
+                          <p class="pdm-home__reading-trust-line">{{ readingLensTrustCopy }}</p>
+                        </div>
 
-                      <section class="pdm-home__response-block pdm-home__response-block--secondary pdm-site-surface">
+                        <div class="pdm-home__reading-anchor-grid" aria-label="Canonical anchor">
+                          <div class="pdm-home__reading-anchor-item">
+                            <span class="pdm-home__micro-label">Concept</span>
+                            <span class="pdm-home__reading-anchor-value pdm-home__reading-anchor-value--mono">
+                              {{ asConceptMatch(response).resolution.conceptId }}
+                            </span>
+                          </div>
+
+                          <div class="pdm-home__reading-anchor-item">
+                            <span class="pdm-home__micro-label">Version</span>
+                            <span class="pdm-home__reading-anchor-value">
+                              {{ asConceptMatch(response).resolution.conceptVersion }}
+                            </span>
+                          </div>
+
+                          <div class="pdm-home__reading-anchor-item">
+                            <span class="pdm-home__micro-label">Integrity ref</span>
+                            <span class="pdm-home__reading-anchor-value pdm-home__reading-anchor-value--mono">
+                              {{ canonicalHashShort(asConceptMatch(response)) }}
+                            </span>
+                          </div>
+
+                          @if (sourceAnchor(asConceptMatch(response)); as sourceAnchorValue) {
+                            <div class="pdm-home__reading-anchor-item">
+                              <span class="pdm-home__micro-label">Source anchor</span>
+                              <span class="pdm-home__reading-anchor-value pdm-home__reading-anchor-value--mono">
+                                {{ sourceAnchorValue }}
+                              </span>
+                            </div>
+                          }
+                        </div>
+                      </div>
+
+                      <div class="pdm-home__reading-switch-shell">
+                        <p class="pdm-home__micro-label">Active register</p>
+                        <div class="pdm-home__reading-switch" role="group" aria-label="Reading register">
+                          @for (lens of readingLensOptions; track lens.mode) {
+                            <button
+                              class="pdm-home__reading-switch-option"
+                              type="button"
+                              [class.pdm-home__reading-switch-option--active]="activeReadingLens() === lens.mode"
+                              [attr.aria-pressed]="activeReadingLens() === lens.mode"
+                              [disabled]="isSubmitting() || !readingLensesAvailable(asConceptMatch(response))"
+                              (click)="selectReadingLens(lens.mode)"
+                            >
+                              {{ lens.label }}
+                            </button>
+                          }
+                        </div>
+
+                        @if (!readingLensesAvailable(asConceptMatch(response))) {
+                          <p class="pdm-home__support-copy pdm-home__reading-fallback-copy">
+                            {{ readingLensFallbackCopy }}
+                          </p>
+                        }
+                      </div>
+                    </section>
+
+                    <section class="pdm-home__definition-lead" aria-label="Primary resolved definition">
+                      <p class="pdm-home__micro-label">Short definition</p>
+                      <p class="pdm-home__definition-lead-copy">
+                        {{ activeReadingFields(asConceptMatch(response)).shortDefinition }}
+                      </p>
+                    </section>
+
+                    <div class="pdm-home__definition-sections">
+                      <section class="pdm-home__definition-section pdm-home__definition-section--core">
                         <p class="pdm-home__micro-label">Core meaning</p>
                         <p class="pdm-home__body-copy pdm-home__body-copy--secondary">
-                          {{ asConceptMatch(response).answer.coreMeaning }}
+                          {{ activeReadingFields(asConceptMatch(response)).coreMeaning }}
                         </p>
                       </section>
 
-                      <section class="pdm-home__response-block pdm-home__response-block--tertiary pdm-site-surface">
+                      <section class="pdm-home__definition-section pdm-home__definition-section--full">
                         <p class="pdm-home__micro-label">Full definition</p>
-                        @for (paragraph of asConceptMatch(response).answer.fullDefinition.split('\n\n'); track paragraph) {
+                        @for (paragraph of definitionParagraphs(activeReadingFields(asConceptMatch(response)).fullDefinition); track paragraph) {
                           <p class="pdm-home__body-copy pdm-home__body-copy--tertiary">{{ paragraph }}</p>
                         }
                       </section>
                     </div>
 
                     <div class="pdm-home__response-grid">
-                      <section class="pdm-home__response-block pdm-site-surface">
+                      <section class="pdm-home__response-section pdm-home__response-section--flat">
                         <p class="pdm-home__micro-label">Contexts</p>
 
                         @for (context of asConceptMatch(response).answer.contexts; track context.label) {
@@ -167,12 +343,13 @@
                         }
                       </section>
 
-                      <section class="pdm-home__response-block pdm-site-surface">
+                      <section class="pdm-home__response-section pdm-home__response-section--sources pdm-site-surface">
                         <p class="pdm-home__micro-label">Sources</p>
 
-                        @for (source of asConceptMatch(response).answer.sources; track source.id) {
+                        @for (source of asConceptMatch(response).answer.sources; track source.id; let sourceIndex = $index) {
                           <div class="pdm-home__source-row">
                             <div>
+                              <p class="pdm-home__source-rank">{{ sourceRankLabel(sourceIndex) }}</p>
                               <p class="pdm-home__source-label">{{ source.label }}</p>
                               <p class="pdm-home__support-copy">{{ source.usedFor }}</p>
                             </div>
@@ -182,25 +359,30 @@
                       </section>
                     </div>
 
-                    <section class="pdm-home__response-block pdm-site-surface">
+                    <section class="pdm-home__relationship-surface">
                       <p class="pdm-home__micro-label">Related concepts</p>
-                      <div class="pdm-home__action-grid">
+                      <div class="pdm-home__relationship-list">
                         @for (related of asConceptMatch(response).answer.relatedConcepts; track related.conceptId) {
                           <button
-                            class="pdm-home__action-card pdm-site-surface"
+                            class="pdm-home__relationship-row"
                             type="button"
                             [disabled]="isSubmitting()"
                             (click)="resolveRelatedConcept(related)"
                           >
-                            <span class="pdm-home__action-title">{{ related.title }}</span>
-                            <span class="pdm-home__action-copy">{{ relationLabel(related.relationType) }}</span>
+                            <span class="pdm-home__relationship-tag">{{ relationLabel(related.relationType) }}</span>
+                            <span>
+                              <span class="pdm-home__action-title">{{ related.title }}</span>
+                              <span class="pdm-home__relationship-line">
+                                {{ asConceptMatch(response).answer.title }} -> {{ relationLabel(related.relationType) }} -> {{ related.title }}
+                              </span>
+                            </span>
                           </button>
                         }
                       </div>
                     </section>
 
                     @if (entry.feedback; as feedback) {
-                      <section class="pdm-home__feedback-card pdm-site-surface">
+                      <section class="pdm-home__feedback-inline">
                         <p class="pdm-home__micro-label">Diagnostic feedback</p>
                         <p class="pdm-home__support-copy">{{ feedback.question }}</p>
 
@@ -235,6 +417,21 @@
 
                 @if (response.type === 'comparison') {
                   <section class="pdm-home__response-card pdm-site-surface">
+                    <div class="pdm-home__resolution-strip" aria-label="Resolution status">
+                      <div class="pdm-home__resolution-item">
+                        <span class="pdm-home__resolution-label">Resolution</span>
+                        <span class="pdm-home__resolution-value">{{ resolutionTypeLabel(response) }}</span>
+                      </div>
+                      <div class="pdm-home__resolution-item">
+                        <span class="pdm-home__resolution-label">Scope</span>
+                        <span class="pdm-home__resolution-value">{{ runtimeScopeLabel(response) }}</span>
+                      </div>
+                      <div class="pdm-home__resolution-item">
+                        <span class="pdm-home__resolution-label">Execution</span>
+                        <span class="pdm-home__resolution-value">{{ executionStateLabel(response) }}</span>
+                      </div>
+                    </div>
+
                     <div class="pdm-home__response-head">
                       <div>
                         <p class="pdm-home__micro-label">{{ responseLabel(response) }}</p>
@@ -287,6 +484,21 @@
 
                 @if (response.type === 'ambiguous_match') {
                   <section class="pdm-home__response-card pdm-site-surface">
+                    <div class="pdm-home__resolution-strip" aria-label="Resolution status">
+                      <div class="pdm-home__resolution-item">
+                        <span class="pdm-home__resolution-label">Resolution</span>
+                        <span class="pdm-home__resolution-value">{{ resolutionTypeLabel(response) }}</span>
+                      </div>
+                      <div class="pdm-home__resolution-item">
+                        <span class="pdm-home__resolution-label">Scope</span>
+                        <span class="pdm-home__resolution-value">{{ runtimeScopeLabel(response) }}</span>
+                      </div>
+                      <div class="pdm-home__resolution-item">
+                        <span class="pdm-home__resolution-label">Execution</span>
+                        <span class="pdm-home__resolution-value">{{ executionStateLabel(response) }}</span>
+                      </div>
+                    </div>
+
                     <div class="pdm-home__response-head">
                       <div>
                         <p class="pdm-home__micro-label">{{ responseLabel(response) }}</p>
@@ -320,6 +532,21 @@
 
                 @if (response.type === 'no_exact_match') {
                   <section class="pdm-home__response-card pdm-site-surface">
+                    <div class="pdm-home__resolution-strip" aria-label="Resolution status">
+                      <div class="pdm-home__resolution-item">
+                        <span class="pdm-home__resolution-label">Resolution</span>
+                        <span class="pdm-home__resolution-value">{{ resolutionTypeLabel(response) }}</span>
+                      </div>
+                      <div class="pdm-home__resolution-item">
+                        <span class="pdm-home__resolution-label">Scope</span>
+                        <span class="pdm-home__resolution-value">{{ runtimeScopeLabel(response) }}</span>
+                      </div>
+                      <div class="pdm-home__resolution-item">
+                        <span class="pdm-home__resolution-label">Execution</span>
+                        <span class="pdm-home__resolution-value">{{ executionStateLabel(response) }}</span>
+                      </div>
+                    </div>
+
                     <div class="pdm-home__response-head">
                       <div>
                         <p class="pdm-home__micro-label">{{ responseLabel(response) }}</p>
@@ -356,7 +583,7 @@
                     }
 
                     @if (entry.feedback; as feedback) {
-                      <section class="pdm-home__feedback-card pdm-site-surface">
+                      <section class="pdm-home__feedback-inline">
                         <p class="pdm-home__micro-label">Diagnostic feedback</p>
                         <p class="pdm-home__support-copy">{{ feedback.question }}</p>
 
@@ -395,7 +622,7 @@
                 <div>
                   <p class="pdm-home__micro-label">Live runtime</p>
                   <p class="pdm-home__state-copy">
-                    Resolve a concept or authored comparison to inspect the deterministic response contract.
+                    Enter a query to inspect the live response contract.
                   </p>
                 </div>
               </section>
@@ -404,16 +631,20 @@
         </div>
       </section>
 
-      <section class="pdm-home__scope-section" aria-labelledby="pdm-scope-title">
+      <section class="pdm-home__scope-section" id="scope" aria-labelledby="pdm-scope-title">
         <div class="pdm-home__scope-shell pdm-site-surface pdm-site-panel">
           <div class="pdm-home__section-head">
             <div>
               <p class="pdm-home__section-label">Visible scope</p>
-              <h2 class="pdm-home__section-title" id="pdm-scope-title">Bounded, visible, and deliberate</h2>
+              <h2 class="pdm-home__section-title" id="pdm-scope-title">Current runtime boundary</h2>
             </div>
             <p class="pdm-home__section-copy">
-              Live concepts are marked explicitly. The broader v1 boundary stays visible so the homepage never overclaims support.
+              Only live concepts resolve in the public runtime. The wider v1 boundary stays visible so coverage is explicit.
             </p>
+          </div>
+
+          <div class="pdm-home__boundary-strip">
+            <p>Only these concepts are resolvable in the current runtime. All other inputs are refused.</p>
           </div>
 
           <div class="pdm-home__scope-summary">
@@ -438,7 +669,7 @@
                 <p class="pdm-home__scope-value">{{ scopedConceptCount }}</p>
                 <span class="pdm-home__scope-unit">concepts</span>
               </div>
-              <p class="pdm-home__support-copy">Visible concept coverage used to keep expectations bounded and honest.</p>
+              <p class="pdm-home__support-copy">Visible concept coverage keeps public scope explicit instead of implied.</p>
             </article>
           </div>
 
@@ -472,14 +703,14 @@
         </div>
       </section>
 
-      <section class="pdm-home__steps-section" aria-labelledby="pdm-steps-title">
+      <section class="pdm-home__steps-section" id="mechanism" aria-labelledby="pdm-steps-title">
         <div class="pdm-home__section-head">
           <div>
-            <p class="pdm-home__section-label">How it works</p>
-            <h2 class="pdm-home__section-title" id="pdm-steps-title">Minimal runtime, visible boundaries</h2>
+            <p class="pdm-home__section-label">Mechanism</p>
+            <h2 class="pdm-home__section-title" id="pdm-steps-title">Normalization, routing, output</h2>
           </div>
           <p class="pdm-home__section-copy">
-            The homepage explains the path without turning the engine into a long architecture wall.
+            The runtime normalizes the query, classifies its shape, then resolves or refuses.
           </p>
         </div>
 
@@ -497,30 +728,20 @@
         </div>
       </section>
 
-      <section class="pdm-home__trust-section" aria-labelledby="pdm-trust-title">
+      <section class="pdm-home__trust-section" id="reference" aria-labelledby="pdm-trust-title">
         <div class="pdm-home__trust-shell pdm-site-surface pdm-site-panel">
           <div class="pdm-home__section-head">
             <div>
-              <p class="pdm-home__section-label">Trust, docs, and API</p>
-              <h2 class="pdm-home__section-title" id="pdm-trust-title">Built for clarity, boundaries, and reuse</h2>
+              <p class="pdm-home__section-label">Reference surfaces</p>
+              <h2 class="pdm-home__section-title" id="pdm-trust-title">Docs and API</h2>
             </div>
             <p class="pdm-home__section-copy">
-              ChatPDM stays open, deterministic, and scoped. The public surface routes deeper into docs, developers, and API paths without homepage bloat.
+              Access response contracts, scope notes, and system references.
             </p>
           </div>
 
-          <div class="pdm-home__trust-grid">
-            @for (pillar of trustPillars; track pillar.id) {
-              <article class="pdm-home__trust-card pdm-site-surface">
-                <p class="pdm-home__micro-label">{{ pillar.id }}</p>
-                <h3>{{ pillar.title }}</h3>
-                <p>{{ pillar.copy }}</p>
-              </article>
-            }
-          </div>
-
-          <nav class="pdm-home__link-strip" aria-label="Product links">
-            @for (link of trustLinks; track link.route) {
+          <nav class="pdm-home__link-strip" aria-label="Reference links">
+            @for (link of referenceLinks; track link.route) {
               <a class="pdm-home__link-action pdm-site-link-pill" [routerLink]="link.route">
                 {{ link.label }}
               </a>
