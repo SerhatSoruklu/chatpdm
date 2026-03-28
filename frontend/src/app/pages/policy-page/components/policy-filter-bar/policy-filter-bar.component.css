@@ -31,14 +31,7 @@
 
 .pdm-policy-filter__input,
 .pdm-policy-filter__select {
-  appearance: none;
   width: 100%;
-  min-height: 48px;
-  padding: 0 14px;
-  border: 1px solid rgba(120, 113, 108, 0.18);
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.92);
-  color: #111827;
 }
 
 .pdm-policy-filter__input::placeholder {
@@ -52,17 +45,8 @@
 }
 
 .pdm-policy-filter__toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
   color: #44403c;
   font-size: 0.94rem;
-}
-
-.pdm-policy-filter__toggle input {
-  width: 16px;
-  height: 16px;
-  margin: 0;
 }
 
 .pdm-policy-filter__count {

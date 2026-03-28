@@ -4,7 +4,7 @@
       <span class="pdm-policy-filter__label pdm-mono">Search claims</span>
       <input
         type="search"
-        class="pdm-policy-filter__input"
+        class="pdm-policy-filter__input pdm-form-control"
         [value]="search()"
         placeholder="Search sentence, canonical claim, file path"
         (input)="onSearchInput($event)"
@@ -13,33 +13,49 @@
 
     <label class="pdm-policy-filter__field">
       <span class="pdm-policy-filter__label pdm-mono">Claim class</span>
-      <select class="pdm-policy-filter__select" [value]="activeClaimClass()" (change)="onClaimClassInput($event)">
-        <option value="">All classes</option>
-        @for (claimClass of claimClasses(); track claimClass) {
-          <option [value]="claimClass">{{ claimClass.replaceAll('_', ' ') }}</option>
-        }
-      </select>
+      <span class="pdm-select-wrap">
+        <select
+          class="pdm-policy-filter__select pdm-form-control pdm-select-wrap__control"
+          [value]="activeClaimClass()"
+          (change)="onClaimClassInput($event)"
+        >
+          <option value="">All classes</option>
+          @for (claimClass of claimClasses(); track claimClass) {
+            <option [value]="claimClass">{{ claimClass.replaceAll('_', ' ') }}</option>
+          }
+        </select>
+        <span class="pdm-select-wrap__icon" aria-hidden="true"></span>
+      </span>
     </label>
 
     <label class="pdm-policy-filter__field">
       <span class="pdm-policy-filter__label pdm-mono">Section</span>
-      <select class="pdm-policy-filter__select" [value]="activeSection()" (change)="onSectionInput($event)">
-        <option value="">All sections</option>
-        @for (section of sections(); track section) {
-          <option [value]="section">{{ section }}</option>
-        }
-      </select>
+      <span class="pdm-select-wrap">
+        <select
+          class="pdm-policy-filter__select pdm-form-control pdm-select-wrap__control"
+          [value]="activeSection()"
+          (change)="onSectionInput($event)"
+        >
+          <option value="">All sections</option>
+          @for (section of sections(); track section) {
+            <option [value]="section">{{ section }}</option>
+          }
+        </select>
+        <span class="pdm-select-wrap__icon" aria-hidden="true"></span>
+      </span>
     </label>
   </div>
 
   <div class="pdm-policy-filter__meta">
-    <label class="pdm-policy-filter__toggle">
+    <label class="pdm-policy-filter__toggle pdm-checkbox">
       <input
         type="checkbox"
+        class="pdm-checkbox__input"
         [checked]="internalTransportOnly()"
         (change)="onInternalToggle($event)"
       >
-      <span>Internal SSR transport only</span>
+      <span class="pdm-checkbox__box" aria-hidden="true"></span>
+      <span class="pdm-checkbox__label">Internal SSR transport only</span>
     </label>
 
     <p class="pdm-policy-filter__count pdm-mono">

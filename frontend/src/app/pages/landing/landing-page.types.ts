@@ -21,7 +21,11 @@ export interface StarterQuery {
 }
 
 export interface HomepageSignal {
+  id: string;
   label: string;
+  definition: string;
+  targetId: string;
+  targetLabel: string;
 }
 
 export interface HomepageStep {

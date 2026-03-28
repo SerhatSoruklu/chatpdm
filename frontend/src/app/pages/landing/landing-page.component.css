@@ -258,6 +258,47 @@
 .pdm-home__signal-chip {
   font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
   letter-spacing: 0.02em;
+  appearance: none;
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    background-color 160ms ease,
+    color 160ms ease;
+}
+
+.pdm-home__signal-chip:hover,
+.pdm-home__signal-chip:focus-visible {
+  transform: translateY(-1px);
+  border-color: rgba(37, 99, 235, 0.24);
+  box-shadow: 0 10px 24px rgba(148, 163, 184, 0.14);
+}
+
+.pdm-home__signal-chip--active {
+  border-color: rgba(37, 99, 235, 0.3);
+  background:
+    linear-gradient(180deg, rgba(239, 246, 255, 0.96), rgba(219, 234, 254, 0.9)),
+    rgba(219, 234, 254, 0.92);
+  color: #1d4ed8;
+}
+
+.pdm-home__signal-proof {
+  display: grid;
+  gap: 14px;
+  margin-top: 14px;
+  padding: 16px 18px;
+  border-radius: 22px;
+}
+
+.pdm-home__signal-proof-copy {
+  margin: 8px 0 0;
+  color: #334155;
+  line-height: 1.72;
+}
+
+.pdm-home__signal-proof-link {
+  justify-self: start;
 }
 
 .pdm-home__hero-support {
@@ -300,14 +341,36 @@
   z-index: 1;
 }
 
+.pdm-home__hero-support-field,
+.pdm-home__hero-support-stack,
+.pdm-home__hero-support-group {
+  display: grid;
+  gap: 10px;
+}
+
+.pdm-home__hero-support-field {
+  margin-top: 4px;
+}
+
+.pdm-home__hero-support-input {
+  min-height: 50px;
+}
+
+.pdm-home__hero-support-note {
+  margin: 0;
+  color: #526277;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
 .pdm-home__hero-support-head,
 .pdm-home__hero-support-row {
-  display: flex;
-  align-items: center;
+  display: grid;
 }
 
 .pdm-home__hero-support-head {
-  justify-content: space-between;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
   gap: 14px;
 }
 
@@ -338,12 +401,6 @@
     rgba(37, 99, 235, 0.08);
 }
 
-.pdm-home__hero-support-stack,
-.pdm-home__hero-support-group {
-  display: grid;
-  gap: 10px;
-}
-
 .pdm-home__hero-support-group {
   padding-top: 14px;
   border-top: 1px solid rgba(148, 163, 184, 0.14);
@@ -362,14 +419,28 @@
   color: #0f172a;
   font-size: 0.88rem;
   line-height: 1.5;
+  text-align: left;
 }
 
 .pdm-home__hero-support-text--strong {
   font-weight: 700;
 }
 
+.pdm-home__hero-support-text--idle {
+  color: #475569;
+}
+
+.pdm-home__hero-support-text--executable {
+  color: #0f172a;
+}
+
+.pdm-home__hero-support-text--blocked {
+  color: #b91c1c;
+}
+
 .pdm-home__hero-support-row {
-  justify-content: space-between;
+  grid-template-columns: minmax(84px, 96px) minmax(0, 1fr);
+  align-items: start;
   gap: 16px;
   padding: 6px 0;
 }
@@ -553,6 +624,20 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+}
+
+.pdm-home__section--highlighted .pdm-home__query-card,
+.pdm-home__section--highlighted .pdm-home__scope-shell,
+.pdm-home__section--highlighted .pdm-home__trust-shell,
+.pdm-home__section--highlighted .pdm-home__step-card {
+  box-shadow:
+    0 0 0 1px rgba(37, 99, 235, 0.18),
+    0 18px 36px rgba(96, 165, 250, 0.12);
+}
+
+.pdm-home__section--highlighted .pdm-home__section-label,
+.pdm-home__section--highlighted .pdm-home__section-title {
+  color: #1d4ed8;
 }
 
 .pdm-home__examples,
