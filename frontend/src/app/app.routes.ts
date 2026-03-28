@@ -1,8 +1,10 @@
 import { Routes } from '@angular/router';
+import { CookiesPageComponent } from './pages/cookies-page/cookies-page.component';
 import { InspectIndexPageComponent } from './pages/inspect-index-page/inspect-index-page.component';
 import { LandingPageComponent } from './pages/landing/landing-page.component';
 import { PolicyPageComponent } from './pages/policy-page/policy-page.component';
 import { PublicPageComponent } from './pages/public-page/public-page.component';
+import { TermsPageComponent } from './pages/terms-page/terms-page.component';
 import type { PolicySurfaceKey } from './policies/policy-surface.types';
 import { type SeoRegistryKey, seoRouteData } from './seo/seo.registry';
 
@@ -58,8 +60,8 @@ export const routes: Routes = [
   },
   {
     path: 'terms',
-    component: PublicPageComponent,
-    data: pageRouteData('terms', 'legal.terms'),
+    component: TermsPageComponent,
+    data: seoRouteData('legal.terms'),
   },
   {
     path: 'terms/inspect',
@@ -68,8 +70,8 @@ export const routes: Routes = [
   },
   {
     path: 'cookies',
-    component: PublicPageComponent,
-    data: pageRouteData('cookies', 'legal.cookies'),
+    component: CookiesPageComponent,
+    data: seoRouteData('legal.cookies'),
   },
   {
     path: 'cookies/inspect',

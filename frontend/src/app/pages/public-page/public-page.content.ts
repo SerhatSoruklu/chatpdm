@@ -116,42 +116,6 @@ const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
       route: '/inspect/privacy',
     },
   },
-  terms: {
-    eyebrow: 'Terms of Service',
-    title: 'Human-readable version in preparation.',
-    intro:
-      'A simpler public terms page is being prepared for this route. The current inspectable terms surface remains available in the meantime.',
-    sections: [
-      {
-        title: 'Policy status',
-        paragraphs: [
-          'This top-level route is reserved for the human-readable terms page. Until that version is ready, use the inspectable page for the current system-backed view of usage boundaries and service rules.',
-        ],
-      },
-    ],
-    action: {
-      label: 'View current inspectable terms page',
-      route: '/inspect/terms',
-    },
-  },
-  cookies: {
-    eyebrow: 'Cookie Policy',
-    title: 'Human-readable version in preparation.',
-    intro:
-      'A simpler public cookie page is being prepared for this route. The current inspectable cookie surface remains available in the meantime.',
-    sections: [
-      {
-        title: 'Policy status',
-        paragraphs: [
-          'This top-level route is reserved for the human-readable cookie page. Until that version is ready, use the inspectable page for the current system-backed view of essential browser and SSR cookie behavior.',
-        ],
-      },
-    ],
-    action: {
-      label: 'View current inspectable cookie page',
-      route: '/inspect/cookies',
-    },
-  },
   docs: {
     eyebrow: 'Docs',
     title: 'Product and architecture documentation index.',
