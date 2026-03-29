@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
 import { RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 
@@ -28,12 +27,10 @@ import {
   ReadingLensMode,
 } from '../../core/concepts/derived-explanation-reading-lens-ui.policy';
 import { FeedbackService } from '../../core/feedback/feedback.service';
-import { InstitutionalAccessDialogComponent } from './components/institutional-access-dialog/institutional-access-dialog.component';
 import type {
   AmbiguousSelectionOrigin,
   EntryFeedbackState,
   FeedbackOption,
-  HomepageSignal,
   HomepageStep,
   LandingComparisonResponse,
   LinkAction,
@@ -114,52 +111,10 @@ interface ActiveReadingFields {
   fullDefinition: string;
 }
 
-interface HeroRoutingProbe {
-  input: string;
-  routing: string;
-  output: string;
-  state: string;
-  mode: string;
-  scope: string;
-  status: 'idle' | 'executable' | 'blocked';
-  guidance: string;
-}
-
 const QUERY_ENTRY_MODES: QueryEntryMode[] = [
   { label: 'Direct concept', example: 'authority' },
   { label: 'Canonical lookup', example: 'define legitimacy' },
   { label: 'Controlled comparison', example: 'authority vs power' },
-];
-
-const HOMEPAGE_SIGNALS: HomepageSignal[] = [
-  {
-    id: 'visible-scope',
-    label: 'Visible scope',
-    definition: 'Only authored live concepts resolve in the public runtime. Inputs outside that boundary are refused instead of being inferred.',
-    targetId: 'scope',
-    targetLabel: 'runtime boundary',
-  },
-  {
-    id: 'controlled-comparison',
-    label: 'Controlled comparison',
-    definition: 'Comparisons execute only in the authored A vs B form inside the bounded runtime. Freeform synthesis does not enter the contract.',
-    targetId: 'runtime',
-    targetLabel: 'runtime query surface',
-  },
-  {
-    id: 'source-bounded output',
-    label: 'Source-bounded output',
-    definition: 'Resolved concept output stays tied to named sources inside the response contract instead of drifting into freeform explanation.',
-    targetId: 'runtime',
-    targetLabel: 'resolved output surface',
-  },
-  {
-    id: 'explicit-refusal',
-    label: 'Explicit refusal',
-    definition: 'Unsupported meaning is surfaced as refusal, not patched over with fluent text. The contract stays honest about what the runtime cannot resolve.',
-    targetId: 'runtime',
-    targetLabel: 'refusal path',
-  },
 ];
 
 const RUNTIME_SCOPE_BY_CONCEPT = Object.freeze<Record<string, string>>({
@@ -225,35 +180,17 @@ const NO_EXACT_MATCH_FEEDBACK_OPTIONS: FeedbackOption[] = [
 export class LandingPageComponent {
   private readonly resolver = inject(ConceptResolverService);
   private readonly feedbackService = inject(FeedbackService);
-  private readonly dialog = inject(MatDialog);
   private readonly directConceptPattern = /^[a-z]+(?:[ -][a-z]+){0,3}$/i;
   private readonly canonicalLookupPattern = /^define\s+[a-z]+(?:[ -][a-z]+){0,3}$/i;
   private readonly controlledComparisonPattern =
     /^[a-z]+(?:[ -][a-z]+){0,3}\s+vs\s+[a-z]+(?:[ -][a-z]+){0,3}$/i;
 
   protected readonly queryDraft = signal('');
-  protected readonly heroProbeQuery = signal('authority');
   protected readonly activeEntry = signal<ResolverEntry | null>(null);
   protected readonly isSubmitting = signal(false);
-  protected readonly activeHeroSignalId = signal<string | null>(null);
   protected readonly scopeGroups = SCOPE_GROUPS;
   protected readonly starterQueries = STARTER_QUERIES;
   protected readonly queryEntryModes = QUERY_ENTRY_MODES;
-  protected readonly heroSignals = HOMEPAGE_SIGNALS;
-  protected readonly activeHeroSignal = computed(
-    () => this.heroSignals.find((signal) => signal.id === this.activeHeroSignalId()) ?? null,
-  );
-  protected readonly heroRoutingProbe = computed(() => this.buildHeroRoutingProbe(this.heroProbeQuery()));
-  protected readonly heroSupportFlow = computed(() => [
-    { label: 'Input', value: this.heroRoutingProbe().input },
-    { label: 'Routing', value: this.heroRoutingProbe().routing },
-    { label: 'Output', value: this.heroRoutingProbe().output },
-  ]);
-  protected readonly heroSystemStates = computed(() => [
-    { label: 'State', value: this.heroRoutingProbe().state },
-    { label: 'Mode', value: this.heroRoutingProbe().mode },
-    { label: 'Scope', value: this.heroRoutingProbe().scope },
-  ]);
   protected readonly homepageSteps = HOMEPAGE_STEPS;
   protected readonly referenceLinks = REFERENCE_LINKS;
   protected readonly readingLensOptions = READING_LENS_OPTIONS;
@@ -318,34 +255,8 @@ export class LandingPageComponent {
     this.queryDraft.set(query);
   }
 
-  protected setHeroProbeQuery(query: string): void {
-    this.heroProbeQuery.set(query);
-  }
-
-  protected toggleHeroSignal(signalId: string): void {
-    this.activeHeroSignalId.update((activeSignalId) => (
-      activeSignalId === signalId ? null : signalId
-    ));
-  }
-
-  protected openInstitutionalAccessDialog(): void {
-    this.dialog.open(InstitutionalAccessDialogComponent, {
-      autoFocus: false,
-      restoreFocus: true,
-      width: 'calc(100vw - 24px)',
-      maxWidth: '960px',
-      maxHeight: 'calc(100vh - 24px)',
-      panelClass: 'pdm-managed-access-dialog-panel',
-      backdropClass: 'pdm-managed-access-dialog-backdrop',
-    });
-  }
-
-  protected signalTargetHref(targetId: string): string {
-    return `#${targetId}`;
-  }
-
-  protected isSignalTarget(targetId: string): boolean {
-    return this.activeHeroSignal()?.targetId === targetId;
+  protected isSignalTarget(_targetId: string): boolean {
+    return false;
   }
 
   protected canSubmitDraft(): boolean {
@@ -870,127 +781,5 @@ export class LandingPageComponent {
     }
 
     return overlays;
-  }
-
-  private buildHeroRoutingProbe(query: string): HeroRoutingProbe {
-    const normalizedInput = query.trim().toLowerCase().replaceAll(/\s+/g, ' ');
-
-    if (!normalizedInput) {
-      return {
-        input: 'awaiting input',
-        routing: 'Awaiting classification',
-        output: 'enter a supported concept or structured query',
-        state: 'Idle',
-        mode: 'Deterministic contract',
-        scope: 'Locked v1',
-        status: 'idle',
-        guidance: 'Try authority, define legitimacy, authority vs power, or politics.',
-      };
-    }
-
-    const assessment = this.classifyQuery(normalizedInput);
-
-    switch (assessment.classification) {
-      case 'direct_concept':
-        return this.buildDirectConceptProbe(normalizedInput);
-      case 'canonical_lookup':
-        return this.buildLookupProbe(normalizedInput.replace(/^define\s+/, ''));
-      case 'controlled_comparison':
-        return this.buildComparisonProbe(normalizedInput);
-      default:
-        return {
-          input: normalizedInput,
-          routing: 'Refusal',
-          output: 'explicit refusal',
-          state: 'Blocked',
-          mode: 'Deterministic contract',
-          scope: 'Locked v1',
-          status: 'blocked',
-          guidance: 'Unsupported compositions do not enter execution.',
-        };
-    }
-  }
-
-  private buildDirectConceptProbe(conceptId: string): HeroRoutingProbe {
-    if (LIVE_RUNTIME_CONCEPTS.has(conceptId)) {
-      return {
-        input: conceptId,
-        routing: 'Concept route',
-        output: 'canonical concept result',
-        state: 'Executable',
-        mode: 'Deterministic contract',
-        scope: this.scopeLabelForConcept(conceptId),
-        status: 'executable',
-        guidance: 'Supported authored concepts resolve inside the live runtime.',
-      };
-    }
-
-    return {
-      input: conceptId,
-      routing: 'Refusal',
-      output: 'explicit refusal',
-      state: 'Blocked',
-      mode: 'Deterministic contract',
-      scope: 'Locked v1',
-      status: 'blocked',
-      guidance: 'Out-of-scope concepts are refused instead of being inferred.',
-    };
-  }
-
-  private buildLookupProbe(conceptId: string): HeroRoutingProbe {
-    if (LIVE_RUNTIME_CONCEPTS.has(conceptId)) {
-      return {
-        input: `define ${conceptId}`,
-        routing: 'Canonical lookup',
-        output: 'canonical concept result',
-        state: 'Executable',
-        mode: 'Deterministic contract',
-        scope: this.scopeLabelForConcept(conceptId),
-        status: 'executable',
-        guidance: 'Canonical lookup stays inside the authored concept boundary.',
-      };
-    }
-
-    return {
-      input: `define ${conceptId}`,
-      routing: 'Refusal',
-      output: 'explicit refusal',
-      state: 'Blocked',
-      mode: 'Deterministic contract',
-      scope: 'Locked v1',
-      status: 'blocked',
-      guidance: 'Unsupported lookup targets are refused instead of completed heuristically.',
-    };
-  }
-
-  private buildComparisonProbe(normalizedInput: string): HeroRoutingProbe {
-    const [leftConcept = '', rightConcept = ''] = normalizedInput
-      .split(/\s+vs\s+/i)
-      .map((segment) => segment.trim());
-    const bothResolvable = LIVE_RUNTIME_CONCEPTS.has(leftConcept) && LIVE_RUNTIME_CONCEPTS.has(rightConcept);
-
-    if (bothResolvable) {
-      return {
-        input: normalizedInput,
-        routing: 'Controlled comparison',
-        output: 'bounded comparison output',
-        state: 'Executable',
-        mode: 'Deterministic contract',
-        scope: 'Bounded runtime v1',
-        status: 'executable',
-        guidance: 'Only authored concept pairs enter comparison mode.',
-      };
-    }
-
-    return {
-      input: normalizedInput,
-      routing: 'Refusal',
-      output: 'explicit refusal',
-      state: 'Blocked',
-      mode: 'Deterministic contract',
-      scope: 'Locked v1',
-      status: 'blocked',
-      guidance: 'Unsupported comparison pairs do not enter execution.',
-    };
   }
 }

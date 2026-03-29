@@ -23,6 +23,7 @@ PDM stands for **Predefined Deterministic Meaning**.
 In ChatPDM, meaning is authored before runtime, executed within explicit governance and package boundaries, and fails closed before semantic drift.
 
 This reflects the system's core invariant: the same meaning object must survive phrasing pressure, lifecycle evolution, and institutional execution boundaries.
+
 ## What Problem It Solves
 
 Most concept tools drift into one of two failure modes:
