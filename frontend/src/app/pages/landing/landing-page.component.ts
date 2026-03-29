@@ -255,10 +255,6 @@ export class LandingPageComponent {
     this.queryDraft.set(query);
   }
 
-  protected isSignalTarget(_targetId: string): boolean {
-    return false;
-  }
-
   protected canSubmitDraft(): boolean {
     return this.queryAssessment().canSubmit && !this.isSubmitting();
   }
