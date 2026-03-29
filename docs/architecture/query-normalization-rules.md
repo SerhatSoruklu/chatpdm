@@ -208,6 +208,22 @@ Order rule for v1:
 - if an authored disambiguation rule provides an explicit candidate order, use that order
 - otherwise use the stable published candidate order from the current `conceptSetVersion`
 
+### Ambiguous term rule
+
+If a key term admits multiple valid interpretations and no definition has been fixed, the system must not classify as though one interpretation were already settled.
+
+Rule:
+
+- if a key term admits multiple valid interpretations
+- and no explicit definition or scope has been fixed
+- then the system must either:
+  - request clarification
+  - or explicitly declare the interpretation chosen before classification
+
+Internal analytical label:
+
+- `Definition Scope Ambiguity` = a condition where a key term has multiple valid interpretations and no explicit scope has been fixed prior to classification
+
 ## 6. No-Exact-Match Rules
 
 `no_exact_match` is the honest product outcome when no canonical concept is resolved.
