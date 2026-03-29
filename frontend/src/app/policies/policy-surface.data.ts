@@ -2760,5 +2760,444 @@ export const POLICY_SURFACE_DATA = {
       ],
       "internalTransportNoteCount": 4
     }
+  },
+  "data-retention": {
+    "key": "data-retention",
+    "route": "/inspect/data-retention",
+    "title": "Data Retention / Data Usage",
+    "subtitle": "Lifecycle, storage, and expiry evidence",
+    "intro": "Current rendered policy claims covering feedback persistence lifecycle and expiry, browser session continuity for feedback controls, request-bound SSR transport evidence, and session-bound export and delete controls.",
+    "sourceTitle": "Data Retention / Data Usage",
+    "scopeBullets": [
+      "feedback persistence lifecycle and expiry",
+      "browser session continuity for feedback controls",
+      "request-bound SSR transport evidence",
+      "session-bound export and delete controls"
+    ],
+    "claims": [
+      {
+        "id": "data-retention-1",
+        "policyFile": "data-retention.md",
+        "section": "Runtime Snapshot",
+        "policySentence": "The platform derives `expiresAt` before feedback event persistence.",
+        "canonicalClaim": "The platform derives `expiresAt` before feedback event persistence.",
+        "claimClass": "derives",
+        "systemMapping": "`backend/src/modules/feedback/lifecycle-contract.js:105-116`; `backend/src/modules/feedback/service.js:149-160`",
+        "status": "mapped",
+        "notes": "",
+        "specialNotes": [],
+        "hasInternalTransportNote": false,
+        "lifecycle": {
+          "lifecycleClass": "not_applicable",
+          "deletionTrigger": "not_stored",
+          "enforcementStatus": "declared_only"
+        },
+        "traces": [
+          {
+            "source": "backend/src/modules/feedback/lifecycle-contract.js:105-116",
+            "path": "backend/src/modules/feedback/lifecycle-contract.js",
+            "lines": "105-116"
+          },
+          {
+            "source": "backend/src/modules/feedback/service.js:149-160",
+            "path": "backend/src/modules/feedback/service.js",
+            "lines": "149-160"
+          }
+        ]
+      },
+      {
+        "id": "data-retention-2",
+        "policyFile": "data-retention.md",
+        "section": "Runtime Snapshot",
+        "policySentence": "The platform stores `expiresAt` in feedback event documents.",
+        "canonicalClaim": "The platform stores `expiresAt` in feedback event documents.",
+        "claimClass": "stores",
+        "systemMapping": "`backend/src/modules/feedback/feedback-event.model.js:74-82`; `backend/src/modules/feedback/store.js:47-66,174-191`",
+        "status": "mapped",
+        "notes": "",
+        "specialNotes": [],
+        "hasInternalTransportNote": false,
+        "lifecycle": {
+          "lifecycleClass": "short_lived",
+          "ttlDays": 30,
+          "retentionReason": "Declared short-lived retention window for feedback event review and contract calibration.",
+          "deletionTrigger": "ttl_expiry",
+          "enforcementStatus": "declared_only",
+          "storageForm": "plaintext",
+          "controls": {
+            "exportBy": "sessionId",
+            "deleteBy": "sessionId",
+            "auditTrail": "whitelist_only_operational_metadata"
+          }
+        },
+        "traces": [
+          {
+            "source": "backend/src/modules/feedback/feedback-event.model.js:74-82",
+            "path": "backend/src/modules/feedback/feedback-event.model.js",
+            "lines": "74-82"
+          },
+          {
+            "source": "backend/src/modules/feedback/store.js:47-66,174-191",
+            "path": "backend/src/modules/feedback/store.js",
+            "lines": "47-66,174-191"
+          }
+        ]
+      },
+      {
+        "id": "data-retention-3",
+        "policyFile": "data-retention.md",
+        "section": "Runtime Snapshot",
+        "policySentence": "The platform exposes feedback export and delete controls by `sessionId`.",
+        "canonicalClaim": "The platform exposes feedback export and delete controls by `sessionId`.",
+        "claimClass": "allows",
+        "systemMapping": "`backend/src/routes/api/v1/feedback.route.js:12-17,45-93`",
+        "status": "mapped",
+        "notes": "",
+        "specialNotes": [],
+        "hasInternalTransportNote": false,
+        "lifecycle": {
+          "lifecycleClass": "not_applicable",
+          "deletionTrigger": "not_stored",
+          "enforcementStatus": "declared_only"
+        },
+        "traces": [
+          {
+            "source": "backend/src/routes/api/v1/feedback.route.js:12-17,45-93",
+            "path": "backend/src/routes/api/v1/feedback.route.js",
+            "lines": "12-17,45-93"
+          }
+        ]
+      },
+      {
+        "id": "data-retention-4",
+        "policyFile": "data-retention.md",
+        "section": "Lifecycle Bands — Short-lived persistence",
+        "policySentence": "The platform stores `rawQuery` in feedback event documents as a `sha256` digest.",
+        "canonicalClaim": "The platform stores `rawQuery` in feedback event documents as a `sha256` digest.",
+        "claimClass": "stores",
+        "systemMapping": "`backend/src/modules/feedback/lifecycle-contract.js:73-79,89-145`; `backend/src/modules/feedback/feedback-event.model.js:13-21`; `backend/src/modules/feedback/service.js:149-158`",
+        "status": "mapped",
+        "notes": "",
+        "specialNotes": [],
+        "hasInternalTransportNote": false,
+        "lifecycle": {
+          "lifecycleClass": "short_lived",
+          "ttlDays": 30,
+          "retentionReason": "Declared short-lived retention window for feedback event review and contract calibration.",
+          "deletionTrigger": "ttl_expiry",
+          "enforcementStatus": "declared_only",
+          "storageForm": "sha256",
+          "controls": {
+            "exportBy": "sessionId",
+            "deleteBy": "sessionId",
+            "auditTrail": "whitelist_only_operational_metadata"
+          }
+        },
+        "traces": [
+          {
+            "source": "backend/src/modules/feedback/lifecycle-contract.js:73-79,89-145",
+            "path": "backend/src/modules/feedback/lifecycle-contract.js",
+            "lines": "73-79,89-145"
+          },
+          {
+            "source": "backend/src/modules/feedback/feedback-event.model.js:13-21",
+            "path": "backend/src/modules/feedback/feedback-event.model.js",
+            "lines": "13-21"
+          },
+          {
+            "source": "backend/src/modules/feedback/service.js:149-158",
+            "path": "backend/src/modules/feedback/service.js",
+            "lines": "149-158"
+          }
+        ]
+      },
+      {
+        "id": "data-retention-5",
+        "policyFile": "data-retention.md",
+        "section": "Lifecycle Bands — Short-lived persistence",
+        "policySentence": "The platform stores `normalizedQuery` in feedback event documents as a `sha256` digest.",
+        "canonicalClaim": "The platform stores `normalizedQuery` in feedback event documents as a `sha256` digest.",
+        "claimClass": "stores",
+        "systemMapping": "`backend/src/modules/feedback/lifecycle-contract.js:73-79,93-145`; `backend/src/modules/feedback/feedback-event.model.js:22-30`; `backend/src/modules/feedback/service.js:149-160`",
+        "status": "mapped",
+        "notes": "",
+        "specialNotes": [],
+        "hasInternalTransportNote": false,
+        "lifecycle": {
+          "lifecycleClass": "short_lived",
+          "ttlDays": 30,
+          "retentionReason": "Declared short-lived retention window for feedback event review and contract calibration.",
+          "deletionTrigger": "ttl_expiry",
+          "enforcementStatus": "declared_only",
+          "storageForm": "sha256",
+          "controls": {
+            "exportBy": "sessionId",
+            "deleteBy": "sessionId",
+            "auditTrail": "whitelist_only_operational_metadata"
+          }
+        },
+        "traces": [
+          {
+            "source": "backend/src/modules/feedback/lifecycle-contract.js:73-79,93-145",
+            "path": "backend/src/modules/feedback/lifecycle-contract.js",
+            "lines": "73-79,93-145"
+          },
+          {
+            "source": "backend/src/modules/feedback/feedback-event.model.js:22-30",
+            "path": "backend/src/modules/feedback/feedback-event.model.js",
+            "lines": "22-30"
+          },
+          {
+            "source": "backend/src/modules/feedback/service.js:149-160",
+            "path": "backend/src/modules/feedback/service.js",
+            "lines": "149-160"
+          }
+        ]
+      },
+      {
+        "id": "data-retention-6",
+        "policyFile": "data-retention.md",
+        "section": "Lifecycle Bands — Short-lived persistence",
+        "policySentence": "The platform deletes feedback event documents through a TTL index on `expiresAt`.",
+        "canonicalClaim": "The platform deletes feedback event documents through a TTL index on `expiresAt`.",
+        "claimClass": "deletes",
+        "systemMapping": "`backend/src/modules/feedback/feedback-event.model.js:89-95`",
+        "status": "mapped",
+        "notes": "",
+        "specialNotes": [],
+        "hasInternalTransportNote": false,
+        "lifecycle": {
+          "lifecycleClass": "not_applicable",
+          "deletionTrigger": "not_stored",
+          "enforcementStatus": "declared_only"
+        },
+        "traces": [
+          {
+            "source": "backend/src/modules/feedback/feedback-event.model.js:89-95",
+            "path": "backend/src/modules/feedback/feedback-event.model.js",
+            "lines": "89-95"
+          }
+        ]
+      },
+      {
+        "id": "data-retention-7",
+        "policyFile": "data-retention.md",
+        "section": "Lifecycle Bands — Session-bound continuity",
+        "policySentence": "The platform stores a feedback session identifier in browser local storage under `chatpdm-beta-session-id`.",
+        "canonicalClaim": "The platform stores a feedback session identifier in browser local storage under `chatpdm-beta-session-id`.",
+        "claimClass": "stores",
+        "systemMapping": "`frontend/src/app/core/feedback/feedback-session.service.ts:4-33`",
+        "status": "mapped",
+        "notes": "",
+        "specialNotes": [],
+        "hasInternalTransportNote": false,
+        "lifecycle": {
+          "lifecycleClass": "session_bound",
+          "retentionReason": "Declared browser-scoped session continuity for the feedback flow.",
+          "deletionTrigger": "browser_clear",
+          "enforcementStatus": "declared_only",
+          "storageForm": "plaintext"
+        },
+        "traces": [
+          {
+            "source": "frontend/src/app/core/feedback/feedback-session.service.ts:4-33",
+            "path": "frontend/src/app/core/feedback/feedback-session.service.ts",
+            "lines": "4-33"
+          }
+        ]
+      },
+      {
+        "id": "data-retention-8",
+        "policyFile": "data-retention.md",
+        "section": "Lifecycle Bands — Transport-only flow",
+        "policySentence": "The platform shares incoming `x-forwarded-for` headers with the API proxy target through the SSR layer.",
+        "canonicalClaim": "The platform shares incoming `x-forwarded-for` headers with the API proxy target through the SSR layer.",
+        "claimClass": "shares",
+        "systemMapping": "`frontend/src/server.ts:123-145`",
+        "status": "mapped",
+        "notes": "internal SSR transport only",
+        "specialNotes": [
+          "internal SSR transport only",
+          "not third-party disclosure"
+        ],
+        "hasInternalTransportNote": true,
+        "lifecycle": {
+          "lifecycleClass": "transport_only",
+          "retentionReason": "Declared request-bound SSR transport within the product boundary.",
+          "deletionTrigger": "request_complete",
+          "enforcementStatus": "declared_only"
+        },
+        "traces": [
+          {
+            "source": "frontend/src/server.ts:123-145",
+            "path": "frontend/src/server.ts",
+            "lines": "123-145"
+          }
+        ]
+      },
+      {
+        "id": "data-retention-9",
+        "policyFile": "data-retention.md",
+        "section": "Retention Path",
+        "policySentence": "The platform minimizes `rawQuery` before persistence.",
+        "canonicalClaim": "The platform minimizes `rawQuery` before persistence.",
+        "claimClass": "minimizes",
+        "systemMapping": "`backend/src/modules/feedback/lifecycle-contract.js:89-145`; `backend/src/modules/feedback/service.js:149-158`",
+        "status": "mapped",
+        "notes": "",
+        "specialNotes": [],
+        "hasInternalTransportNote": false,
+        "lifecycle": {
+          "lifecycleClass": "not_applicable",
+          "deletionTrigger": "not_stored",
+          "enforcementStatus": "declared_only"
+        },
+        "traces": [
+          {
+            "source": "backend/src/modules/feedback/lifecycle-contract.js:89-145",
+            "path": "backend/src/modules/feedback/lifecycle-contract.js",
+            "lines": "89-145"
+          },
+          {
+            "source": "backend/src/modules/feedback/service.js:149-158",
+            "path": "backend/src/modules/feedback/service.js",
+            "lines": "149-158"
+          }
+        ]
+      },
+      {
+        "id": "data-retention-10",
+        "policyFile": "data-retention.md",
+        "section": "Retention Path",
+        "policySentence": "The platform minimizes `normalizedQuery` before persistence.",
+        "canonicalClaim": "The platform minimizes `normalizedQuery` before persistence.",
+        "claimClass": "minimizes",
+        "systemMapping": "`backend/src/modules/feedback/lifecycle-contract.js:93-145`; `backend/src/modules/feedback/service.js:149-160`",
+        "status": "mapped",
+        "notes": "",
+        "specialNotes": [],
+        "hasInternalTransportNote": false,
+        "lifecycle": {
+          "lifecycleClass": "not_applicable",
+          "deletionTrigger": "not_stored",
+          "enforcementStatus": "declared_only"
+        },
+        "traces": [
+          {
+            "source": "backend/src/modules/feedback/lifecycle-contract.js:93-145",
+            "path": "backend/src/modules/feedback/lifecycle-contract.js",
+            "lines": "93-145"
+          },
+          {
+            "source": "backend/src/modules/feedback/service.js:149-160",
+            "path": "backend/src/modules/feedback/service.js",
+            "lines": "149-160"
+          }
+        ]
+      },
+      {
+        "id": "data-retention-11",
+        "policyFile": "data-retention.md",
+        "section": "Retention Path",
+        "policySentence": "The platform derives `expiresAt` from `createdAt` using the live feedback lifecycle contract before persistence.",
+        "canonicalClaim": "The platform derives `expiresAt` from `createdAt` using the live feedback lifecycle contract before persistence.",
+        "claimClass": "derives",
+        "systemMapping": "`backend/src/modules/feedback/lifecycle-contract.js:12-117`; `backend/src/modules/feedback/service.js:149-160`",
+        "status": "mapped",
+        "notes": "",
+        "specialNotes": [],
+        "hasInternalTransportNote": false,
+        "lifecycle": {
+          "lifecycleClass": "not_applicable",
+          "deletionTrigger": "not_stored",
+          "enforcementStatus": "declared_only"
+        },
+        "traces": [
+          {
+            "source": "backend/src/modules/feedback/lifecycle-contract.js:12-117",
+            "path": "backend/src/modules/feedback/lifecycle-contract.js",
+            "lines": "12-117"
+          },
+          {
+            "source": "backend/src/modules/feedback/service.js:149-160",
+            "path": "backend/src/modules/feedback/service.js",
+            "lines": "149-160"
+          }
+        ]
+      },
+      {
+        "id": "data-retention-12",
+        "policyFile": "data-retention.md",
+        "section": "Controls",
+        "policySentence": "The platform allows feedback export by `sessionId`.",
+        "canonicalClaim": "The platform allows feedback export by `sessionId`.",
+        "claimClass": "allows",
+        "systemMapping": "`backend/src/routes/api/v1/feedback.route.js:45-68`; `backend/src/modules/feedback/service.js:170-190`",
+        "status": "mapped",
+        "notes": "",
+        "specialNotes": [],
+        "hasInternalTransportNote": false,
+        "lifecycle": {
+          "lifecycleClass": "not_applicable",
+          "deletionTrigger": "not_stored",
+          "enforcementStatus": "declared_only"
+        },
+        "traces": [
+          {
+            "source": "backend/src/routes/api/v1/feedback.route.js:45-68",
+            "path": "backend/src/routes/api/v1/feedback.route.js",
+            "lines": "45-68"
+          },
+          {
+            "source": "backend/src/modules/feedback/service.js:170-190",
+            "path": "backend/src/modules/feedback/service.js",
+            "lines": "170-190"
+          }
+        ]
+      },
+      {
+        "id": "data-retention-13",
+        "policyFile": "data-retention.md",
+        "section": "Controls",
+        "policySentence": "The platform allows feedback deletion by `sessionId`.",
+        "canonicalClaim": "The platform allows feedback deletion by `sessionId`.",
+        "claimClass": "allows",
+        "systemMapping": "`backend/src/routes/api/v1/feedback.route.js:70-93`; `backend/src/modules/feedback/service.js:193-213`",
+        "status": "mapped",
+        "notes": "",
+        "specialNotes": [],
+        "hasInternalTransportNote": false,
+        "lifecycle": {
+          "lifecycleClass": "not_applicable",
+          "deletionTrigger": "not_stored",
+          "enforcementStatus": "declared_only"
+        },
+        "traces": [
+          {
+            "source": "backend/src/routes/api/v1/feedback.route.js:70-93",
+            "path": "backend/src/routes/api/v1/feedback.route.js",
+            "lines": "70-93"
+          },
+          {
+            "source": "backend/src/modules/feedback/service.js:193-213",
+            "path": "backend/src/modules/feedback/service.js",
+            "lines": "193-213"
+          }
+        ]
+      }
+    ],
+    "summary": {
+      "totalClaims": 13,
+      "mappedClaims": 13,
+      "claimClasses": [
+        "derives",
+        "stores",
+        "allows",
+        "deletes",
+        "shares",
+        "minimizes"
+      ],
+      "internalTransportNoteCount": 1
+    }
   }
 } satisfies PolicySurfaceRegistry;

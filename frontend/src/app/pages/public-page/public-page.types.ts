@@ -29,6 +29,7 @@ export type PublicPageKey =
   | 'faq'
   | 'contact'
   | 'privacy'
+  | 'data-retention'
   | 'docs'
   | 'developers'
   | 'handbooks'

@@ -26,6 +26,11 @@
     <priority>0.3</priority>
   </url>
   <url>
+    <loc>https://chatpdm.com/data-retention</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
     <loc>https://chatpdm.com/terms</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>

@@ -7,6 +7,7 @@ Inputs:
 - `policies/privacy.md`
 - `policies/terms.md`
 - `policies/cookies.md`
+- `policies/data-retention.md`
 - `policies/POLICY_AUDIT_PHASE_B.md`
 
 ## 1. Phase D Notes
@@ -113,13 +114,31 @@ Inputs:
 |`cookies.md`|`Boundaries — Conditional forwarding`|The platform does not allow SSR forwarding of cookie headers when the incoming request omits them.|The platform does not allow SSR forwarding of cookie headers when the incoming request omits them.|`does_not_share`|`frontend/src/server.ts:123-135`|`mapped`|internal SSR transport only|
 |`cookies.md`|`Boundaries — Conditional forwarding`|The platform does not allow SSR forwarding of upstream set-cookie headers when upstream responses omit them.|The platform does not allow SSR forwarding of upstream set-cookie headers when upstream responses omit them.|`does_not_share`|`frontend/src/server.ts:114-119`|`mapped`|internal SSR transport only|
 
-## 5. Phase D Summary
+## 5. Data Retention Policy Traceability
 
-- claim sentences traced: `75`
-- `mapped`: `75`
+|Policy File|Section|Policy Sentence|Canonical Claim|Claim Class|System Mapping|Status|Notes|
+|---|---|---|---|---|---|---|---|
+|`data-retention.md`|`Runtime Snapshot`|The platform derives `expiresAt` before feedback event persistence.|The platform derives `expiresAt` before feedback event persistence.|`derives`|`backend/src/modules/feedback/lifecycle-contract.js:105-116`; `backend/src/modules/feedback/service.js:149-160`|`mapped`||
+|`data-retention.md`|`Runtime Snapshot`|The platform stores `expiresAt` in feedback event documents.|The platform stores `expiresAt` in feedback event documents.|`stores`|`backend/src/modules/feedback/feedback-event.model.js:74-82`; `backend/src/modules/feedback/store.js:47-66,174-191`|`mapped`||
+|`data-retention.md`|`Runtime Snapshot`|The platform exposes feedback export and delete controls by `sessionId`.|The platform exposes feedback export and delete controls by `sessionId`.|`allows`|`backend/src/routes/api/v1/feedback.route.js:12-17,45-93`|`mapped`||
+|`data-retention.md`|`Lifecycle Bands — Short-lived persistence`|The platform stores `rawQuery` in feedback event documents as a `sha256` digest.|The platform stores `rawQuery` in feedback event documents as a `sha256` digest.|`stores`|`backend/src/modules/feedback/lifecycle-contract.js:73-79,89-145`; `backend/src/modules/feedback/feedback-event.model.js:13-21`; `backend/src/modules/feedback/service.js:149-158`|`mapped`||
+|`data-retention.md`|`Lifecycle Bands — Short-lived persistence`|The platform stores `normalizedQuery` in feedback event documents as a `sha256` digest.|The platform stores `normalizedQuery` in feedback event documents as a `sha256` digest.|`stores`|`backend/src/modules/feedback/lifecycle-contract.js:73-79,93-145`; `backend/src/modules/feedback/feedback-event.model.js:22-30`; `backend/src/modules/feedback/service.js:149-160`|`mapped`||
+|`data-retention.md`|`Lifecycle Bands — Short-lived persistence`|The platform deletes feedback event documents through a TTL index on `expiresAt`.|The platform deletes feedback event documents through a TTL index on `expiresAt`.|`deletes`|`backend/src/modules/feedback/feedback-event.model.js:89-95`|`mapped`||
+|`data-retention.md`|`Lifecycle Bands — Session-bound continuity`|The platform stores a feedback session identifier in browser local storage under `chatpdm-beta-session-id`.|The platform stores a feedback session identifier in browser local storage under `chatpdm-beta-session-id`.|`stores`|`frontend/src/app/core/feedback/feedback-session.service.ts:4-33`|`mapped`||
+|`data-retention.md`|`Lifecycle Bands — Transport-only flow`|The platform shares incoming `x-forwarded-for` headers with the API proxy target through the SSR layer.|The platform shares incoming `x-forwarded-for` headers with the API proxy target through the SSR layer.|`shares`|`frontend/src/server.ts:123-145`|`mapped`|internal SSR transport only|
+|`data-retention.md`|`Retention Path`|The platform minimizes `rawQuery` before persistence.|The platform minimizes `rawQuery` before persistence.|`minimizes`|`backend/src/modules/feedback/lifecycle-contract.js:89-145`; `backend/src/modules/feedback/service.js:149-158`|`mapped`||
+|`data-retention.md`|`Retention Path`|The platform minimizes `normalizedQuery` before persistence.|The platform minimizes `normalizedQuery` before persistence.|`minimizes`|`backend/src/modules/feedback/lifecycle-contract.js:93-145`; `backend/src/modules/feedback/service.js:149-160`|`mapped`||
+|`data-retention.md`|`Retention Path`|The platform derives `expiresAt` from `createdAt` using the live feedback lifecycle contract before persistence.|The platform derives `expiresAt` from `createdAt` using the live feedback lifecycle contract before persistence.|`derives`|`backend/src/modules/feedback/lifecycle-contract.js:12-117`; `backend/src/modules/feedback/service.js:149-160`|`mapped`||
+|`data-retention.md`|`Controls`|The platform allows feedback export by `sessionId`.|The platform allows feedback export by `sessionId`.|`allows`|`backend/src/routes/api/v1/feedback.route.js:45-68`; `backend/src/modules/feedback/service.js:170-190`|`mapped`||
+|`data-retention.md`|`Controls`|The platform allows feedback deletion by `sessionId`.|The platform allows feedback deletion by `sessionId`.|`allows`|`backend/src/routes/api/v1/feedback.route.js:70-93`; `backend/src/modules/feedback/service.js:193-213`|`mapped`||
+
+## 6. Phase D Summary
+
+- claim sentences traced: `88`
+- `mapped`: `88`
 - `unmapped`: `0`
 - `unclear`: `0`
 - `conflicts_with_system`: `0`
-- excluded non-claim scope bullets: `13`
-- excluded non-claim SSR annotation fragments: `4`
-- Phase B canonical claim total referenced: `75`
+- excluded non-claim scope bullets: `17`
+- excluded non-claim SSR annotation fragments: `6`
+- Phase B canonical claim total referenced: `88`

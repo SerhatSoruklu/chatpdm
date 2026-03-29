@@ -116,6 +116,34 @@ const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
       route: '/inspect/privacy',
     },
   },
+  'data-retention': {
+    eyebrow: 'Data Retention / Data Usage',
+    title: 'Current lifecycle, storage, and expiry behavior.',
+    intro:
+      'This page stays limited to current implementation-backed retention declarations for feedback persistence, browser session continuity, and request-bound SSR transport.',
+    sections: [
+      {
+        title: 'Current scope',
+        bullets: [
+          'feedback event persistence with derived expiresAt and TTL deletion',
+          'browser local storage used for feedback session continuity',
+          'request-bound SSR header transport shown separately from persisted storage',
+        ],
+      },
+      {
+        title: 'Current controls',
+        bullets: [
+          'feedback export by sessionId',
+          'feedback deletion by sessionId',
+          'inspect route for current trace anchors and lifecycle evidence',
+        ],
+      },
+    ],
+    action: {
+      label: 'View current inspectable data-retention page',
+      route: '/inspect/data-retention',
+    },
+  },
   docs: {
     eyebrow: 'Docs',
     title: 'Product and architecture documentation index.',
