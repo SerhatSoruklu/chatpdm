@@ -119,7 +119,41 @@ The following must also remain out of scope:
 
 Out-of-scope queries must not be forced into concepts.
 
-## 7. Anti-Bloat Rules
+## 7. Domain Expansion Policy
+
+Domains with all of the following properties are not allowed in early system phases:
+
+- high ambiguity
+- high overlap
+- high real-world consequence
+
+The medical and psychiatric domain is excluded from the core system.
+
+If such a domain is opened in the future:
+
+- it must be isolated as a bounded domain
+- it must not affect core concepts
+
+## 8. Medical Domain Rules (Future, Not Now)
+
+If a medical or psychiatric domain is ever opened later, the allowed query surface must remain narrow.
+
+Allowed:
+
+- definition queries
+- distinction queries
+
+Refused:
+
+- diagnosis
+- treatment recommendations
+- symptom to condition inference
+
+Invariant:
+
+- diagnosis is defined by symptom pattern, not medication
+
+## 9. Anti-Bloat Rules
 
 The v1 concept set is protected by the following rules:
 
@@ -132,7 +166,7 @@ The v1 concept set is protected by the following rules:
 
 Expansion pressure is not a justification.
 
-## 8. Concept Addition Policy
+## 10. Concept Addition Policy
 
 Adding a concept to v1 requires all of the following:
 
@@ -145,7 +179,7 @@ Adding a concept to v1 requires all of the following:
 
 No concept is admitted through query pressure alone.
 
-## 9. Determinism Enforcement
+## 11. Determinism Enforcement
 
 The matcher resolves only within the published v1 concept set.
 
@@ -159,7 +193,7 @@ Rules:
 
 If a query does not resolve within the v1 concept set, the correct product outcome is `no_exact_match`.
 
-## 10. Relationship to System
+## 12. Relationship to System
 
 Phase separation is strict:
 
@@ -171,7 +205,7 @@ This phase defines the system boundary.
 
 It does not authorize new concepts, new query behaviors, or broader coverage. It constrains them.
 
-## 11. Non-Goals
+## 13. Non-Goals
 
 ChatPDM v1 does not aim to:
 

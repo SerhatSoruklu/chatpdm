@@ -12,6 +12,8 @@ import {
   ComparisonAxis,
   ComparisonAxisValue,
   ConceptMatchResponse,
+  ConceptSource,
+  DerivedExplanationOverlays,
   NoExactMatchResponse,
   RelatedConcept,
   ResolveProductResponse,
@@ -29,7 +31,6 @@ import type {
   AmbiguousSelectionOrigin,
   EntryFeedbackState,
   FeedbackOption,
-  HomepageSignal,
   HomepageStep,
   LandingComparisonResponse,
   LinkAction,
@@ -78,8 +79,8 @@ const SCOPE_GROUPS: ScopeGroup[] = [
 
 const STARTER_QUERIES: StarterQuery[] = [
   { label: 'authority', query: 'authority' },
-  { label: 'define legitimacy', query: 'define legitimacy' },
-  { label: 'authority vs power', query: 'authority vs power' },
+  { label: 'What is authority vs power?', query: 'authority vs power' },
+  { label: 'legitimacy', query: 'legitimacy' },
   { label: 'civic duty', query: 'civic duty' },
 ];
 
@@ -114,25 +115,6 @@ const QUERY_ENTRY_MODES: QueryEntryMode[] = [
   { label: 'Direct concept', example: 'authority' },
   { label: 'Canonical lookup', example: 'define legitimacy' },
   { label: 'Controlled comparison', example: 'authority vs power' },
-];
-
-const HOMEPAGE_SIGNALS: HomepageSignal[] = [
-  { label: 'Visible scope' },
-  { label: 'Controlled comparison' },
-  { label: 'Source-bounded output' },
-  { label: 'Explicit refusal' },
-];
-
-const HERO_SYSTEM_STATES = [
-  { label: 'State', value: 'Executable' },
-  { label: 'Mode', value: 'Deterministic contract' },
-  { label: 'Scope', value: 'Locked v1' },
-];
-
-const HERO_SUPPORT_FLOW = [
-  { label: 'Input', value: 'normalized' },
-  { label: 'Routing', value: 'classified (concept / comparison / refusal)' },
-  { label: 'Output', value: 'canonical result or explicit refusal' },
 ];
 
 const RUNTIME_SCOPE_BY_CONCEPT = Object.freeze<Record<string, string>>({
@@ -209,9 +191,6 @@ export class LandingPageComponent {
   protected readonly scopeGroups = SCOPE_GROUPS;
   protected readonly starterQueries = STARTER_QUERIES;
   protected readonly queryEntryModes = QUERY_ENTRY_MODES;
-  protected readonly heroSignals = HOMEPAGE_SIGNALS;
-  protected readonly heroSystemStates = HERO_SYSTEM_STATES;
-  protected readonly heroSupportFlow = HERO_SUPPORT_FLOW;
   protected readonly homepageSteps = HOMEPAGE_STEPS;
   protected readonly referenceLinks = REFERENCE_LINKS;
   protected readonly readingLensOptions = READING_LENS_OPTIONS;
@@ -421,6 +400,44 @@ export class LandingPageComponent {
     return index === 0 ? 'Primary source' : 'Reference source';
   }
 
+  protected sourceTypeLabel(type: ConceptSource['type']): string {
+    switch (type) {
+      case 'dictionary':
+        return 'Dictionary';
+      case 'book':
+        return 'Book';
+      case 'paper':
+        return 'Paper';
+      case 'law':
+        return 'Law';
+      case 'article':
+        return 'Article';
+      case 'internal':
+        return 'Internal';
+      default:
+        return type;
+    }
+  }
+
+  protected sourceTypeCode(type: ConceptSource['type']): string {
+    switch (type) {
+      case 'dictionary':
+        return 'D';
+      case 'book':
+        return 'B';
+      case 'paper':
+        return 'P';
+      case 'law':
+        return 'L';
+      case 'article':
+        return 'A';
+      case 'internal':
+        return 'I';
+      default:
+        return '?';
+    }
+  }
+
   protected responseLabel(response: ResolveProductResponse): string {
     switch (response.type) {
       case 'comparison':
@@ -525,13 +542,14 @@ export class LandingPageComponent {
   }
 
   protected readingLensesAvailable(response: ConceptMatchResponse): boolean {
-    return response.answer.derivedExplanationOverlays.status === 'generated';
+    const overlays = this.derivedExplanationOverlays(response);
+    return overlays?.status === 'generated';
   }
 
   protected activeReadingFields(response: ConceptMatchResponse): ActiveReadingFields {
-    const overlays = response.answer.derivedExplanationOverlays;
+    const overlays = this.derivedExplanationOverlays(response);
 
-    if (!this.readingLensesAvailable(response)) {
+    if (!overlays || !this.readingLensesAvailable(response)) {
       return this.canonicalReadingFields(response);
     }
 
@@ -558,7 +576,13 @@ export class LandingPageComponent {
   }
 
   protected canonicalHashShort(response: ConceptMatchResponse): string {
-    return response.answer.derivedExplanationOverlays.canonicalBinding.canonicalHash.slice(
+    const overlays = this.derivedExplanationOverlays(response);
+
+    if (!overlays) {
+      return 'Unavailable';
+    }
+
+    return overlays.canonicalBinding.canonicalHash.slice(
       0,
       CANONICAL_VISUAL_ANCHOR_HASH_LENGTH,
     );
@@ -739,5 +763,19 @@ export class LandingPageComponent {
       coreMeaning: response.answer.coreMeaning,
       fullDefinition: response.answer.fullDefinition,
     };
+  }
+
+  private derivedExplanationOverlays(response: ConceptMatchResponse): DerivedExplanationOverlays | null {
+    const overlays = response.answer.derivedExplanationOverlays;
+
+    if (!overlays || typeof overlays !== 'object' || Array.isArray(overlays)) {
+      return null;
+    }
+
+    if (!overlays.canonicalBinding || !overlays.modes) {
+      return null;
+    }
+
+    return overlays;
   }
 }

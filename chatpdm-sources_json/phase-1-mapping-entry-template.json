@@ -1,0 +1,17 @@
+{
+  "source": "",
+  "source_type": "",
+  "full_text_status": "",
+  "reliability_tier": "",
+  "chunk_id": "",
+  "page": null,
+  "normalized_claim": "",
+  "maps_to_primary": "",
+  "maps_to_secondary": null,
+  "evidence_type": "",
+  "confidence": 0.0,
+  "conflict_status": "",
+  "conflict_note": "",
+  "admission_decision": "",
+  "admission_reason": ""
+}

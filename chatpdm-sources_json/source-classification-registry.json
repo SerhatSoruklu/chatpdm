@@ -1,0 +1,212 @@
+{
+  "generated_at": "2026-03-29",
+  "rule": "Sources do not enter doctrine by presence. They enter only through classification, mapping, and conflict review.",
+  "tier_meaning": {
+    "A": "Primary/full-text sources that are currently usable for doctrine extraction with high trust.",
+    "B": "Usable sources with bounded trust: secondary fit, translation or OCR caveats, or technical references that must not control doctrine by themselves.",
+    "C": "Do not trust for doctrine extraction yet: summary/review material, extraction failure, or sources that require replacement or reprocessing first."
+  },
+  "phase_plan": {
+    "1": [
+      "popper-logic-scientific-discovery.json",
+      "thinking_like_a_lawyer.json",
+      "1947-Meaning-and-Necessity-Carnap.json",
+      "rawls99.json",
+      "an-introduction-to-ontology-engineering.json"
+    ],
+    "2": [
+      "Michael_Sandel-_Justice-_What_s_the_Right_Thing_to_Do.json",
+      "Plato-Republic-Jowett.json",
+      "priest_non_classical_logic.json",
+      "8. Institutions__Institutional_Change_and_Economic_Performance.json",
+      "anarchy-state-utopia.json"
+    ],
+    "3": [
+      "Capital-Volume-I.json",
+      "MESNEVI-I_SERIF_1.cilt.json",
+      "fihimafih.json",
+      "nutuk.json",
+      "standard1-quran-arabic.json",
+      "SemanticWeb_inRDFSandOWL.json",
+      "The Description Logic Handbook - Theory, Implementation and Applications (2003).json",
+      "The Checklist Manifesto.json",
+      "Precis_of_The_World_Philosophy_Made.json"
+    ]
+  },
+  "sources": [
+    {
+      "source": "1947-Meaning-and-Necessity-Carnap.json",
+      "source_type": "primary",
+      "full_text_status": "full_text_with_minor_ocr_noise",
+      "reliability_tier": "A",
+      "doctrine_fit": "canonical_concepts",
+      "phase_recommendation": 1,
+      "justification": "Primary canonical source with usable extraction after noisy opening pages."
+    },
+    {
+      "source": "8. Institutions__Institutional_Change_and_Economic_Performance.json",
+      "source_type": "primary",
+      "full_text_status": "full_text",
+      "reliability_tier": "B",
+      "doctrine_fit": "secondary_governance_support",
+      "phase_recommendation": 2,
+      "justification": "High-quality full text, but institutional-economics framing should support governance work rather than define the core layer."
+    },
+    {
+      "source": "Capital-Volume-I.json",
+      "source_type": "primary",
+      "full_text_status": "full_text",
+      "reliability_tier": "B",
+      "doctrine_fit": "secondary_perspective",
+      "phase_recommendation": 3,
+      "justification": "Strong source quality, but doctrine fit is perspective-level and should not control canonical definitions."
+    },
+    {
+      "source": "MESNEVI-I_SERIF_1.cilt.json",
+      "source_type": "primary",
+      "full_text_status": "full_text_translation",
+      "reliability_tier": "B",
+      "doctrine_fit": "secondary_perspective",
+      "phase_recommendation": 3,
+      "justification": "Usable as a bounded secondary perspective source, not as a core doctrine source."
+    },
+    {
+      "source": "Michael_Sandel-_Justice-_What_s_the_Right_Thing_to_Do.json",
+      "source_type": "primary",
+      "full_text_status": "full_text",
+      "reliability_tier": "A",
+      "doctrine_fit": "canonical_concepts",
+      "phase_recommendation": 2,
+      "justification": "Primary canonical source with good extraction quality, but overlaps enough with Rawls that it can follow the initial rule/core pass."
+    },
+    {
+      "source": "Plato-Republic-Jowett.json",
+      "source_type": "primary",
+      "full_text_status": "full_text_with_ocr_noise",
+      "reliability_tier": "B",
+      "doctrine_fit": "canonical_concepts",
+      "phase_recommendation": 2,
+      "justification": "Important canonical source, but OCR noise and older translation quality justify a second-pass position."
+    },
+    {
+      "source": "Precis_of_The_World_Philosophy_Made.json",
+      "source_type": "review",
+      "full_text_status": "review_only",
+      "reliability_tier": "C",
+      "doctrine_fit": "challenge_input_only",
+      "phase_recommendation": 3,
+      "justification": "A book review/precis is not a doctrine source; use only as a pointer to stronger primary material."
+    },
+    {
+      "source": "SemanticWeb_inRDFSandOWL.json",
+      "source_type": "primary",
+      "full_text_status": "full_text",
+      "reliability_tier": "B",
+      "doctrine_fit": "technical_reference",
+      "phase_recommendation": 3,
+      "justification": "Useful technical reference for structured knowledge modeling, but it must not drive broad architecture or ontology drift."
+    },
+    {
+      "source": "The Checklist Manifesto.json",
+      "source_type": "summary",
+      "full_text_status": "summary_only",
+      "reliability_tier": "C",
+      "doctrine_fit": "operations_support",
+      "phase_recommendation": 3,
+      "action_required": "replace_with_primary_or_full_text",
+      "justification": "Operationally relevant, but the current extracted source is summary-style rather than a trusted primary/full-text edition."
+    },
+    {
+      "source": "The Description Logic Handbook - Theory, Implementation and Applications (2003).json",
+      "source_type": "edited_handbook",
+      "full_text_status": "full_text",
+      "reliability_tier": "B",
+      "doctrine_fit": "technical_reference",
+      "phase_recommendation": 3,
+      "justification": "High-value technical reference, but it should remain bounded as a technical aid rather than a doctrine driver."
+    },
+    {
+      "source": "an-introduction-to-ontology-engineering.json",
+      "source_type": "primary",
+      "full_text_status": "full_text",
+      "reliability_tier": "A",
+      "doctrine_fit": "canonical_concepts",
+      "phase_recommendation": 1,
+      "justification": "Primary canonical source with strong structural value for concept discipline when kept within current bounded scope."
+    },
+    {
+      "source": "anarchy-state-utopia.json",
+      "source_type": "primary",
+      "full_text_status": "extraction_failed",
+      "reliability_tier": "C",
+      "doctrine_fit": "canonical_concepts",
+      "phase_recommendation": 2,
+      "action_required": "repair_or_replace_extraction_before_use",
+      "justification": "Canonical author priority is high, but the current JSON has no usable extracted text."
+    },
+    {
+      "source": "fihimafih.json",
+      "source_type": "primary",
+      "full_text_status": "full_text_translation",
+      "reliability_tier": "B",
+      "doctrine_fit": "secondary_perspective",
+      "phase_recommendation": 3,
+      "justification": "Secondary perspective source with usable extraction, but not part of the controlling doctrine layer."
+    },
+    {
+      "source": "nutuk.json",
+      "source_type": "primary",
+      "full_text_status": "full_text",
+      "reliability_tier": "B",
+      "doctrine_fit": "secondary_perspective",
+      "phase_recommendation": 3,
+      "justification": "Usable bounded perspective source; keep out of canonical definition control."
+    },
+    {
+      "source": "popper-logic-scientific-discovery.json",
+      "source_type": "primary",
+      "full_text_status": "full_text",
+      "reliability_tier": "A",
+      "doctrine_fit": "integrity_rules",
+      "phase_recommendation": 1,
+      "justification": "Best current source for falsifiability, refusal discipline, and failure clarity."
+    },
+    {
+      "source": "priest_non_classical_logic.json",
+      "source_type": "primary",
+      "full_text_status": "full_text",
+      "reliability_tier": "B",
+      "doctrine_fit": "secondary_logic_support",
+      "phase_recommendation": 2,
+      "justification": "Useful logic support source, but not needed before the core integrity rules are stable."
+    },
+    {
+      "source": "rawls99.json",
+      "source_type": "primary",
+      "full_text_status": "full_text",
+      "reliability_tier": "A",
+      "doctrine_fit": "canonical_concepts",
+      "phase_recommendation": 1,
+      "justification": "Primary canonical source with high extraction quality and direct relevance to governance concepts."
+    },
+    {
+      "source": "standard1-quran-arabic.json",
+      "source_type": "primary",
+      "full_text_status": "extraction_failed",
+      "reliability_tier": "C",
+      "doctrine_fit": "secondary_perspective",
+      "phase_recommendation": 3,
+      "action_required": "repair_or_replace_extraction_before_use",
+      "justification": "Secondary perspective source with no usable extracted text in the current JSON."
+    },
+    {
+      "source": "thinking_like_a_lawyer.json",
+      "source_type": "primary",
+      "full_text_status": "full_text",
+      "reliability_tier": "A",
+      "doctrine_fit": "integrity_rules",
+      "phase_recommendation": 1,
+      "justification": "Strong current-phase source for consistent rule application, edge-case handling, and bounded enforcement."
+    }
+  ]
+}
