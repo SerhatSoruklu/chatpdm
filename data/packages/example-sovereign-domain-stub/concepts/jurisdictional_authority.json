@@ -36,7 +36,7 @@
     {
       "id": "example-sovereign-charter",
       "label": "Example Sovereign Charter",
-      "type": "local-authority",
+      "type": "law",
       "usedFor": "bounded package-local doctrine"
     }
   ],

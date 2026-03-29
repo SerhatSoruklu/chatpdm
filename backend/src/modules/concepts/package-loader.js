@@ -3,7 +3,14 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const Ajv2020 = require('ajv/dist/2020');
-const { SEED_CONCEPT_IDS } = require('./constants');
+const {
+  CANONICAL_GOVERNANCE_REFERENCE_PATHS,
+  CANONICAL_GOVERNANCE_ROLES,
+  CLOSED_WORLD_REFUSAL_REASONS,
+  PACKAGE_ALLOWED_RELATION_TYPES,
+  RESPONSE_ALLOWED_SOURCE_TYPES,
+  SEED_CONCEPT_IDS,
+} = require('./constants');
 
 const coreConceptsDirectory = path.resolve(__dirname, '../../../../data/concepts');
 const packagesDirectory = path.resolve(__dirname, '../../../../data/packages');
@@ -14,6 +21,10 @@ const defaultConceptsPath = 'concepts';
 const PACKAGE_AUTHORITY_BOUNDARY = 'package-local';
 const PACKAGE_BACK_PROPAGATION_POLICY = 'forbidden-without-constitutional-review';
 const PACKAGE_CORE_PROMOTION_PATH = 'constitutional-review-required';
+const CLOSED_WORLD_REFUSAL_REASON_SET = new Set(CLOSED_WORLD_REFUSAL_REASONS);
+const CANONICAL_GOVERNANCE_ROLE_SET = new Set(CANONICAL_GOVERNANCE_ROLES);
+const PACKAGE_ALLOWED_SOURCE_TYPE_SET = new Set(RESPONSE_ALLOWED_SOURCE_TYPES);
+const PACKAGE_ALLOWED_RELATION_TYPE_SET = new Set(PACKAGE_ALLOWED_RELATION_TYPES);
 
 const ajv = new Ajv2020({
   allErrors: true,
@@ -51,11 +62,87 @@ function formatSchemaErrors(errors) {
     .join('; ');
 }
 
+function buildStructuredRefusal(reason, details = {}) {
+  if (!CLOSED_WORLD_REFUSAL_REASON_SET.has(reason)) {
+    throw new Error(`Unknown refusal reason "${reason}" in package closed-world enforcement.`);
+  }
+
+  return Object.freeze({
+    status: 'refused',
+    reason,
+    ...details,
+  });
+}
+
+function buildResolvedValue(value) {
+  return Object.freeze({
+    status: 'resolved',
+    value,
+  });
+}
+
+function assertResolved(result, buildMessage) {
+  if (result.status === 'refused') {
+    throw new Error(buildMessage(result));
+  }
+}
+
+function resolveGovernanceRole(ownerRole) {
+  if (typeof ownerRole !== 'string' || ownerRole.trim() === '') {
+    return buildStructuredRefusal('unknown_role', { ownerRole });
+  }
+
+  if (!CANONICAL_GOVERNANCE_ROLE_SET.has(ownerRole)) {
+    return buildStructuredRefusal('unknown_role', { ownerRole });
+  }
+
+  return buildResolvedValue(ownerRole);
+}
+
+function resolveCanonicalGovernanceReferencePath(fieldName, candidatePath) {
+  const expectedPath = CANONICAL_GOVERNANCE_REFERENCE_PATHS[fieldName];
+
+  if (!expectedPath) {
+    return buildStructuredRefusal('undefined_in_system', {
+      fieldName,
+      candidatePath,
+    });
+  }
+
+  if (candidatePath !== expectedPath) {
+    return buildStructuredRefusal('not_defined_in_constitution', {
+      fieldName,
+      candidatePath,
+    });
+  }
+
+  return buildResolvedValue(candidatePath);
+}
+
 function loadJsonFile(filePath, label) {
   try {
     return JSON.parse(fs.readFileSync(filePath, 'utf8'));
   } catch (error) {
     throw new Error(`${label} at "${filePath}" could not be parsed: ${error.message}`);
+  }
+}
+
+function validatePackageManifestClosedWorldFields(manifest, packageId) {
+  const ownerRoleResolution = resolveGovernanceRole(manifest.ownerRole);
+  assertResolved(
+    ownerRoleResolution,
+    (result) => `Package "${packageId}" refused closed-world ownerRole resolution: ${result.reason}; ownerRole "${result.ownerRole}" is not part of the canonical governance role registry.`,
+  );
+
+  for (const fieldName of Object.keys(CANONICAL_GOVERNANCE_REFERENCE_PATHS)) {
+    const pathResolution = resolveCanonicalGovernanceReferencePath(
+      fieldName,
+      manifest.constitutionalCompatibility?.[fieldName],
+    );
+    assertResolved(
+      pathResolution,
+      (result) => `Package "${packageId}" refused constitutional compatibility path "${fieldName}": ${result.reason}; received "${result.candidatePath}".`,
+    );
   }
 }
 
@@ -175,6 +262,8 @@ function validatePackageManifest(packageDirectory) {
     throw new Error(`Package manifest "${folderName}" failed schema validation: ${detail}`);
   }
 
+  validatePackageManifestClosedWorldFields(manifest, manifest.packageId || folderName);
+
   const resolvedConceptsPath = resolvePackageConceptsDirectory(manifest, packageDirectory);
 
   return {
@@ -182,6 +271,20 @@ function validatePackageManifest(packageDirectory) {
     manifestPath,
     resolvedConceptsPath,
   };
+}
+
+function validatePackageConceptClosedWorldFields(concept, conceptId) {
+  concept.sources.forEach((source, index) => {
+    if (!PACKAGE_ALLOWED_SOURCE_TYPE_SET.has(source.type)) {
+      throw new Error(`Package concept "${conceptId}" refused source type resolution: undefined_in_system; sources[${index}].type "${source.type}" is not part of the closed-world source registry.`);
+    }
+  });
+
+  (concept.relatedConcepts || []).forEach((relatedConcept, index) => {
+    if (!PACKAGE_ALLOWED_RELATION_TYPE_SET.has(relatedConcept.relationType)) {
+      throw new Error(`Package concept "${conceptId}" refused relationType resolution: undefined_in_system; relatedConcepts[${index}].relationType "${relatedConcept.relationType}" is not part of the closed-world relation registry.`);
+    }
+  });
 }
 
 function assertValidDoctrineTypePairing(concept, conceptId) {
@@ -277,6 +380,8 @@ function validatePackageConceptFile(conceptFilePath, manifest, packageDirectory,
     const detail = formatSchemaErrors(validatePackageConceptSchema.errors);
     throw new Error(`Package concept "${concept.conceptId}" failed schema validation: ${detail}`);
   }
+
+  validatePackageConceptClosedWorldFields(concept, concept.conceptId);
 
   if (coreConceptIdSet.has(concept.conceptId)) {
     throw new Error(`Package concept "${concept.conceptId}" must not reuse core conceptId "${concept.conceptId}".`);

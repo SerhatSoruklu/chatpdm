@@ -7,6 +7,8 @@ const {
   MATCHER_VERSION,
   NORMALIZER_VERSION,
   NO_EXACT_MATCH_MESSAGE,
+  RESPONSE_ALLOWED_RELATION_TYPES,
+  RESPONSE_ALLOWED_SOURCE_TYPES,
 } = require('./constants');
 const {
   buildDerivedExplanationOverlayContract,
@@ -22,21 +24,8 @@ const { resolveComparisonQuery } = require('./comparison-resolver');
 const { detectGovernanceScopeEnforcement } = require('./governance-scope-enforcer');
 const { assertValidProductResponse } = require('../../lib/product-response-validator');
 
-const RESPONSE_SOURCE_TYPE_FALLBACK = 'internal';
-const RESPONSE_ALLOWED_SOURCE_TYPES = new Set([
-  'dictionary',
-  'book',
-  'paper',
-  'law',
-  'article',
-  'internal',
-]);
-const RESPONSE_ALLOWED_RELATION_TYPES = new Set([
-  'see_also',
-  'prerequisite',
-  'extension',
-  'contrast',
-]);
+const RESPONSE_ALLOWED_SOURCE_TYPE_SET = new Set(RESPONSE_ALLOWED_SOURCE_TYPES);
+const RESPONSE_ALLOWED_RELATION_TYPE_SET = new Set(RESPONSE_ALLOWED_RELATION_TYPES);
 const PACKAGE_RELATION_TYPE_MAP = Object.freeze({
   'extends-core-concept': 'extension',
 });
@@ -55,7 +44,7 @@ function buildContextPayload(context) {
 }
 
 function normalizePackageRelationType(relationType, relatedConceptId) {
-  if (RESPONSE_ALLOWED_RELATION_TYPES.has(relationType)) {
+  if (RESPONSE_ALLOWED_RELATION_TYPE_SET.has(relationType)) {
     return relationType;
   }
 
@@ -83,11 +72,11 @@ function buildRelatedConceptPayload(relatedConcept, conceptIndex) {
 }
 
 function normalizePackageSourceType(sourceType) {
-  if (RESPONSE_ALLOWED_SOURCE_TYPES.has(sourceType)) {
+  if (RESPONSE_ALLOWED_SOURCE_TYPE_SET.has(sourceType)) {
     return sourceType;
   }
 
-  return RESPONSE_SOURCE_TYPE_FALLBACK;
+  throw new Error(`Unsupported package source type "${sourceType}" in active package boundary.`);
 }
 
 function buildPackageConceptVersion(versionString) {
@@ -258,7 +247,7 @@ function resolveActiveConceptSet(packageContext) {
   const packageRecord = packageRegistry.packagesById[packageContext];
 
   if (!packageRecord) {
-    throw new Error(`Unknown packageContext "${packageContext}".`);
+    throw new Error(`Unknown packageContext "${packageContext}". Refusal reason: undefined_in_system.`);
   }
 
   activeConcepts.push(...packageRecord.concepts);

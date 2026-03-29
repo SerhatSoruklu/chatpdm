@@ -200,7 +200,7 @@ function verifyUnknownPackageContextFailsLoud() {
       query: 'authority',
       packageContext: 'missing-package-context',
     }),
-    /Unknown packageContext/,
+    /Unknown packageContext .*undefined_in_system/,
     'unknown packageContext should fail loudly.',
   );
   process.stdout.write('PASS unknown_package_context_fails_loud\n');

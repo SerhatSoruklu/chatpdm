@@ -316,6 +316,82 @@ function verifyConceptPackageIdMismatchFails() {
   }
 }
 
+function verifyUnknownOwnerRoleFails() {
+  const packageRoot = createTempPackageRoot();
+
+  try {
+    const { manifest, concept } = buildValidFixtures();
+    manifest.packageId = 'unknown-owner-role';
+    manifest.ownerRole = 'Founder Supreme';
+    concept.packageId = 'unknown-owner-role';
+    writePackageFixture(packageRoot, 'unknown-owner-role', manifest, concept);
+    assertPackageLoadFails(
+      'unknown_owner_role_rejected',
+      /unknown_role/,
+      packageRoot,
+    );
+  } finally {
+    fs.rmSync(packageRoot, { recursive: true, force: true });
+  }
+}
+
+function verifyUnknownConstitutionPathFails() {
+  const packageRoot = createTempPackageRoot();
+
+  try {
+    const { manifest, concept } = buildValidFixtures();
+    manifest.packageId = 'unknown-constitution-path';
+    manifest.constitutionalCompatibility.constitutionPath = 'docs/governance/ALT_CONSTITUTION.md';
+    concept.packageId = 'unknown-constitution-path';
+    writePackageFixture(packageRoot, 'unknown-constitution-path', manifest, concept);
+    assertPackageLoadFails(
+      'unknown_constitution_path_rejected',
+      /not_defined_in_constitution/,
+      packageRoot,
+    );
+  } finally {
+    fs.rmSync(packageRoot, { recursive: true, force: true });
+  }
+}
+
+function verifyUnknownPackageSourceTypeFails() {
+  const packageRoot = createTempPackageRoot();
+
+  try {
+    const { manifest, concept } = buildValidFixtures();
+    manifest.packageId = 'unknown-package-source-type';
+    concept.packageId = 'unknown-package-source-type';
+    concept.sources[0].type = 'local-authority';
+    writePackageFixture(packageRoot, 'unknown-package-source-type', manifest, concept);
+    assertPackageLoadFails(
+      'unknown_package_source_type_rejected',
+      /undefined_in_system/,
+      packageRoot,
+    );
+  } finally {
+    fs.rmSync(packageRoot, { recursive: true, force: true });
+  }
+}
+
+function verifyUnknownPackageRelationTypeFails() {
+  const packageRoot = createTempPackageRoot();
+
+  try {
+    const { manifest, concept } = buildValidFixtures();
+    manifest.packageId = 'unknown-package-relation-type';
+    concept.packageId = 'unknown-package-relation-type';
+    concept.relatedConcepts[0].relationType = 'inherits-moral-standing';
+    writePackageFixture(packageRoot, 'unknown-package-relation-type', manifest, concept);
+    assertPackageLoadFails(
+      'unknown_package_relation_type_rejected',
+      /undefined_in_system/,
+      packageRoot,
+    );
+  } finally {
+    fs.rmSync(packageRoot, { recursive: true, force: true });
+  }
+}
+
 function main() {
   verifyValidRegistryLoads();
   verifyDeepFreezePreventsMutation();
@@ -327,6 +403,10 @@ function main() {
   verifyCrossPackageDuplicateConceptIdFails();
   verifyForbiddenCoreMutationFails();
   verifyConceptPackageIdMismatchFails();
+  verifyUnknownOwnerRoleFails();
+  verifyUnknownConstitutionPathFails();
+  verifyUnknownPackageSourceTypeFails();
+  verifyUnknownPackageRelationTypeFails();
   process.stdout.write('ChatPDM package loader enforcement proof passed.\n');
 }
 

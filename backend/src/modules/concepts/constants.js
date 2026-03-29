@@ -33,6 +33,50 @@ const NON_GOVERNANCE_HANDLING_REQUIRED = Object.freeze([
   'out_of_scope_refusal',
 ]);
 
+const CANONICAL_GOVERNANCE_ROLES = Object.freeze([
+  'Founding Canonical Steward',
+  'Core Maintainer',
+  'Domain Package Maintainer',
+  'Source Integrity Reviewer',
+  'Contrast Reviewer',
+  'Release Manager',
+  'Institutional Partner',
+]);
+
+const CANONICAL_GOVERNANCE_REFERENCE_PATHS = Object.freeze({
+  constitutionPath: 'docs/governance/GOVERNANCE_CONSTITUTION.md',
+  changeAuthorityPath: 'docs/governance/CHANGE_AUTHORITY_MATRIX.md',
+  lifecyclePath: 'docs/governance/CONCEPT_LIFECYCLE.md',
+});
+
+const RESPONSE_ALLOWED_SOURCE_TYPES = Object.freeze([
+  'dictionary',
+  'book',
+  'paper',
+  'law',
+  'article',
+  'internal',
+]);
+
+const RESPONSE_ALLOWED_RELATION_TYPES = Object.freeze([
+  'see_also',
+  'prerequisite',
+  'extension',
+  'contrast',
+]);
+
+const PACKAGE_ALLOWED_RELATION_TYPES = Object.freeze([
+  ...RESPONSE_ALLOWED_RELATION_TYPES,
+  'extends-core-concept',
+]);
+
+const CLOSED_WORLD_REFUSAL_REASONS = Object.freeze([
+  'undefined_in_system',
+  'unknown_role',
+  'not_defined_in_constitution',
+  'out_of_scope',
+]);
+
 const PUNCTUATION_CHARACTERS = Object.freeze([
   '.',
   '!',
@@ -64,8 +108,11 @@ const AMBIGUOUS_MATCH_MESSAGE = 'Multiple canonical concepts match this query. C
 
 module.exports = {
   AMBIGUOUS_MATCH_MESSAGE,
+  CANONICAL_GOVERNANCE_REFERENCE_PATHS,
+  CANONICAL_GOVERNANCE_ROLES,
   CONCEPT_SET_VERSION,
   CONTRACT_VERSION,
+  CLOSED_WORLD_REFUSAL_REASONS,
   EMPTY_NORMALIZED_QUERY,
   GOVERNANCE_CORE_TRIAD,
   GOVERNANCE_SCOPE_MUST_PRESERVE_IN,
@@ -74,6 +121,9 @@ module.exports = {
   NORMALIZER_VERSION,
   NON_GOVERNANCE_HANDLING_REQUIRED,
   NO_EXACT_MATCH_MESSAGE,
+  PACKAGE_ALLOWED_RELATION_TYPES,
   PUNCTUATION_CHARACTERS,
+  RESPONSE_ALLOWED_RELATION_TYPES,
+  RESPONSE_ALLOWED_SOURCE_TYPES,
   SEED_CONCEPT_IDS,
 };
