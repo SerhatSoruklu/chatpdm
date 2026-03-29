@@ -13,6 +13,65 @@ Not a branding narrative.
 
 It records a structural shift in how systems are approached, evaluated, and trusted.
 
+If this feels unnecessary to read, that is exactly when you should read it.
+
+---
+
+## Decision Check (read before changing system behavior)
+
+- Am I expanding the system or tightening it?
+- Am I adding clarity or hiding uncertainty?
+- Would this still hold under contradiction?
+- Am I making the system more honest or more convenient?
+
+### What "holds under contradiction" means
+
+A claim fails this check if:
+
+- a direct counterexample can be constructed
+- an exception must be introduced to preserve it
+- its meaning changes depending on interpretation
+
+If any of the above occur, the claim does not hold.
+
+### Decision Check Proof (required before doctrine changes)
+
+Record before commit:
+
+- Expansion vs tightening: [answer]
+- Clarity vs uncertainty: [answer]
+- Holds under contradiction: [yes/no + 1 sentence why]
+- Honest vs convenient: [answer]
+
+If any answer is unclear or cannot be stated concretely in one sentence, do not proceed.
+
+---
+
+## Workflow Use
+
+Open this file before:
+
+- committing doctrine changes
+- adding new entries
+- modifying rules
+
+Even if it is only for 20 seconds.
+
+The purpose is not motivation.
+
+It is to interrupt bad decisions before they enter the system.
+
+### Operational Definitions
+
+Structural validity:
+A claim is structurally valid if it can be applied without reinterpretation and produces consistent outcomes.
+
+Logical collapse:
+A claim collapses if it requires exceptions, reinterpretation, or conflicting application to remain valid.
+
+Pressure testing:
+Evaluating a claim against edge cases, counterexamples, and misuse scenarios to check whether it remains stable.
+
 ---
 
 ## Phase 1: Execution Dominance (Coupyn)
@@ -221,3 +280,9 @@ But they are not the same.
 
 > This is not a loss of confidence.  
 > This is the cost of building something that must remain true.
+
+---
+
+## Closing Truth
+
+> Discipline is not remembering what is right. It is checking yourself when you are about to do something slightly wrong.
