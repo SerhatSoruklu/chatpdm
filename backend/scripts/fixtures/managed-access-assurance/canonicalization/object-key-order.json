@@ -1,0 +1,103 @@
+{
+  "description": "Nested object keys sort lexicographically regardless of source insertion order.",
+  "cases": [
+    {
+      "label": "order_a",
+      "input": {
+        "hashVersion": 1,
+        "requestId": "67e6f9e4d4d1b2f2dbe89c10",
+        "sequence": 4,
+        "eventType": "deployment_assignment_recorded",
+        "actorIdentity": "operator@chatpdm.com",
+        "recordedAt": {
+          "$date": "2026-03-28T11:24:00.000Z"
+        },
+        "payload": {
+          "metadata": {
+            "zeta": "z",
+            "alpha": "a",
+            "inner": {
+              "second": 2,
+              "first": 1
+            }
+          },
+          "packageVersion": "core-2026.03"
+        },
+        "previousHash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      },
+      "expectedEnvelope": {
+        "hashVersion": 1,
+        "requestId": "67e6f9e4d4d1b2f2dbe89c10",
+        "sequence": 4,
+        "eventType": "deployment_assignment_recorded",
+        "actorIdentity": "operator@chatpdm.com",
+        "recordedAt": "2026-03-28T11:24:00.000Z",
+        "payload": {
+          "metadata": {
+            "alpha": "a",
+            "inner": {
+              "first": 1,
+              "second": 2
+            },
+            "zeta": "z"
+          },
+          "packageVersion": "core-2026.03"
+        },
+        "previousHash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      },
+      "expectedCanonical": "{\"hashVersion\":1,\"requestId\":\"67e6f9e4d4d1b2f2dbe89c10\",\"sequence\":4,\"eventType\":\"deployment_assignment_recorded\",\"actorIdentity\":\"operator@chatpdm.com\",\"recordedAt\":\"2026-03-28T11:24:00.000Z\",\"payload\":{\"metadata\":{\"alpha\":\"a\",\"inner\":{\"first\":1,\"second\":2},\"zeta\":\"z\"},\"packageVersion\":\"core-2026.03\"},\"previousHash\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\"}"
+    },
+    {
+      "label": "order_b",
+      "input": {
+        "hashVersion": 1,
+        "requestId": "67e6f9e4d4d1b2f2dbe89c10",
+        "sequence": 4,
+        "eventType": "deployment_assignment_recorded",
+        "actorIdentity": "operator@chatpdm.com",
+        "recordedAt": {
+          "$date": "2026-03-28T11:24:00.000Z"
+        },
+        "payload": {
+          "packageVersion": "core-2026.03",
+          "metadata": {
+            "inner": {
+              "first": 1,
+              "second": 2
+            },
+            "alpha": "a",
+            "zeta": "z"
+          }
+        },
+        "previousHash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      },
+      "expectedEnvelope": {
+        "hashVersion": 1,
+        "requestId": "67e6f9e4d4d1b2f2dbe89c10",
+        "sequence": 4,
+        "eventType": "deployment_assignment_recorded",
+        "actorIdentity": "operator@chatpdm.com",
+        "recordedAt": "2026-03-28T11:24:00.000Z",
+        "payload": {
+          "metadata": {
+            "alpha": "a",
+            "inner": {
+              "first": 1,
+              "second": 2
+            },
+            "zeta": "z"
+          },
+          "packageVersion": "core-2026.03"
+        },
+        "previousHash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      },
+      "expectedCanonical": "{\"hashVersion\":1,\"requestId\":\"67e6f9e4d4d1b2f2dbe89c10\",\"sequence\":4,\"eventType\":\"deployment_assignment_recorded\",\"actorIdentity\":\"operator@chatpdm.com\",\"recordedAt\":\"2026-03-28T11:24:00.000Z\",\"payload\":{\"metadata\":{\"alpha\":\"a\",\"inner\":{\"first\":1,\"second\":2},\"zeta\":\"z\"},\"packageVersion\":\"core-2026.03\"},\"previousHash\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\"}"
+    }
+  ],
+  "assertEqual": [
+    [
+      "order_a",
+      "order_b"
+    ]
+  ]
+}

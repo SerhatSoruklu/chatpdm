@@ -1,0 +1,71 @@
+{
+  "description": "Unicode-equivalent strings normalize to the same NFC canonical output.",
+  "cases": [
+    {
+      "label": "precomposed",
+      "input": {
+        "hashVersion": 1,
+        "requestId": "67e6f9e4d4d1b2f2dbe89c10",
+        "sequence": 3,
+        "eventType": "review_decision_recorded",
+        "actorIdentity": "operator@chatpdm.com",
+        "recordedAt": {
+          "$date": "2026-03-28T11:23:00.000Z"
+        },
+        "payload": {
+          "note": "Café ready"
+        },
+        "previousHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "expectedEnvelope": {
+        "hashVersion": 1,
+        "requestId": "67e6f9e4d4d1b2f2dbe89c10",
+        "sequence": 3,
+        "eventType": "review_decision_recorded",
+        "actorIdentity": "operator@chatpdm.com",
+        "recordedAt": "2026-03-28T11:23:00.000Z",
+        "payload": {
+          "note": "Café ready"
+        },
+        "previousHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "expectedCanonical": "{\"hashVersion\":1,\"requestId\":\"67e6f9e4d4d1b2f2dbe89c10\",\"sequence\":3,\"eventType\":\"review_decision_recorded\",\"actorIdentity\":\"operator@chatpdm.com\",\"recordedAt\":\"2026-03-28T11:23:00.000Z\",\"payload\":{\"note\":\"Café ready\"},\"previousHash\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"}"
+    },
+    {
+      "label": "decomposed",
+      "input": {
+        "hashVersion": 1,
+        "requestId": "67e6f9e4d4d1b2f2dbe89c10",
+        "sequence": 3,
+        "eventType": "review_decision_recorded",
+        "actorIdentity": "operator@chatpdm.com",
+        "recordedAt": {
+          "$date": "2026-03-28T11:23:00.000Z"
+        },
+        "payload": {
+          "note": "Cafe\u0301 ready"
+        },
+        "previousHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "expectedEnvelope": {
+        "hashVersion": 1,
+        "requestId": "67e6f9e4d4d1b2f2dbe89c10",
+        "sequence": 3,
+        "eventType": "review_decision_recorded",
+        "actorIdentity": "operator@chatpdm.com",
+        "recordedAt": "2026-03-28T11:23:00.000Z",
+        "payload": {
+          "note": "Café ready"
+        },
+        "previousHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "expectedCanonical": "{\"hashVersion\":1,\"requestId\":\"67e6f9e4d4d1b2f2dbe89c10\",\"sequence\":3,\"eventType\":\"review_decision_recorded\",\"actorIdentity\":\"operator@chatpdm.com\",\"recordedAt\":\"2026-03-28T11:23:00.000Z\",\"payload\":{\"note\":\"Café ready\"},\"previousHash\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"}"
+    }
+  ],
+  "assertEqual": [
+    [
+      "precomposed",
+      "decomposed"
+    ]
+  ]
+}

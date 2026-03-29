@@ -7,10 +7,10 @@
     "dev": "nodemon --watch src --watch scripts --ext js,json src/server.js",
     "start": "node src/server.js",
     "build": "npm run check",
-    "check": "node scripts/verify-shell.js && node scripts/verify-package-loader.js && node scripts/verify-resolver.js && node scripts/verify-derived-explanation-overlays.js && node scripts/verify-feedback.js",
+    "check": "node scripts/verify-shell.js && node scripts/verify-package-loader.js && node scripts/verify-resolver.js && node scripts/verify-derived-explanation-overlays.js && node scripts/verify-feedback.js && node scripts/verify-managed-access.js && node scripts/verify-managed-access-phase-e.js",
     "regenerate:derived-overlays": "node scripts/regenerate-derived-explanation-overlays.js",
     "pressure:semantic": "node ../tests/runtime/run-query-stress.js",
-    "test": "node scripts/verify-package-loader.js && node scripts/verify-resolver.js && node scripts/verify-derived-explanation-overlays.js && node scripts/verify-feedback.js"
+    "test": "node scripts/verify-package-loader.js && node scripts/verify-resolver.js && node scripts/verify-derived-explanation-overlays.js && node scripts/verify-feedback.js && node scripts/verify-managed-access.js && node scripts/verify-managed-access-phase-e.js"
   },
   "keywords": [
     "chatpdm",
@@ -28,7 +28,8 @@
     "dotenv": "^17.3.1",
     "express": "^5.1.0",
     "helmet": "^8.1.0",
-    "mongoose": "^9.3.3"
+    "mongoose": "^9.3.3",
+    "nodemailer": "^8.0.4"
   },
   "devDependencies": {
     "mongodb-memory-server": "^10.4.1",

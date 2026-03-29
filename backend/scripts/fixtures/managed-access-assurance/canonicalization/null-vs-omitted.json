@@ -1,0 +1,73 @@
+{
+  "description": "Null and omitted values remain distinct in canonical output.",
+  "cases": [
+    {
+      "label": "with_null",
+      "input": {
+        "hashVersion": 1,
+        "requestId": "67e6f9e4d4d1b2f2dbe89c10",
+        "sequence": 2,
+        "eventType": "deployment_assignment_recorded",
+        "actorIdentity": "operator@chatpdm.com",
+        "recordedAt": {
+          "$date": "2026-03-28T11:22:00.000Z"
+        },
+        "payload": {
+          "packageVersion": null,
+          "tenantSubdomain": "northbridgehealth.chatpdm.com"
+        },
+        "previousHash": null
+      },
+      "expectedEnvelope": {
+        "hashVersion": 1,
+        "requestId": "67e6f9e4d4d1b2f2dbe89c10",
+        "sequence": 2,
+        "eventType": "deployment_assignment_recorded",
+        "actorIdentity": "operator@chatpdm.com",
+        "recordedAt": "2026-03-28T11:22:00.000Z",
+        "payload": {
+          "packageVersion": null,
+          "tenantSubdomain": "northbridgehealth.chatpdm.com"
+        },
+        "previousHash": null
+      },
+      "expectedCanonical": "{\"hashVersion\":1,\"requestId\":\"67e6f9e4d4d1b2f2dbe89c10\",\"sequence\":2,\"eventType\":\"deployment_assignment_recorded\",\"actorIdentity\":\"operator@chatpdm.com\",\"recordedAt\":\"2026-03-28T11:22:00.000Z\",\"payload\":{\"packageVersion\":null,\"tenantSubdomain\":\"northbridgehealth.chatpdm.com\"},\"previousHash\":null}"
+    },
+    {
+      "label": "omitted",
+      "input": {
+        "hashVersion": 1,
+        "requestId": "67e6f9e4d4d1b2f2dbe89c10",
+        "sequence": 2,
+        "eventType": "deployment_assignment_recorded",
+        "actorIdentity": "operator@chatpdm.com",
+        "recordedAt": {
+          "$date": "2026-03-28T11:22:00.000Z"
+        },
+        "payload": {
+          "tenantSubdomain": "northbridgehealth.chatpdm.com"
+        },
+        "previousHash": null
+      },
+      "expectedEnvelope": {
+        "hashVersion": 1,
+        "requestId": "67e6f9e4d4d1b2f2dbe89c10",
+        "sequence": 2,
+        "eventType": "deployment_assignment_recorded",
+        "actorIdentity": "operator@chatpdm.com",
+        "recordedAt": "2026-03-28T11:22:00.000Z",
+        "payload": {
+          "tenantSubdomain": "northbridgehealth.chatpdm.com"
+        },
+        "previousHash": null
+      },
+      "expectedCanonical": "{\"hashVersion\":1,\"requestId\":\"67e6f9e4d4d1b2f2dbe89c10\",\"sequence\":2,\"eventType\":\"deployment_assignment_recorded\",\"actorIdentity\":\"operator@chatpdm.com\",\"recordedAt\":\"2026-03-28T11:22:00.000Z\",\"payload\":{\"tenantSubdomain\":\"northbridgehealth.chatpdm.com\"},\"previousHash\":null}"
+    }
+  ],
+  "assertDistinct": [
+    [
+      "with_null",
+      "omitted"
+    ]
+  ]
+}

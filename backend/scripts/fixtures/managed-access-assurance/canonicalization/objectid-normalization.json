@@ -1,0 +1,95 @@
+{
+  "description": "ObjectId instances and canonicalizable ObjectId strings serialize identically.",
+  "cases": [
+    {
+      "label": "object_id_instance",
+      "input": {
+        "hashVersion": 1,
+        "requestId": {
+          "$objectId": "67e6f9e4d4d1b2f2dbe89c10"
+        },
+        "sequence": 5,
+        "eventType": "workspace_handoff_recorded",
+        "actorIdentity": "operator@chatpdm.com",
+        "recordedAt": {
+          "$date": "2026-03-28T11:25:00.000Z"
+        },
+        "payload": {
+          "relatedId": {
+            "$objectId": "507f1f77bcf86cd799439011"
+          }
+        },
+        "previousHash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+      },
+      "expectedEnvelope": {
+        "hashVersion": 1,
+        "requestId": "67e6f9e4d4d1b2f2dbe89c10",
+        "sequence": 5,
+        "eventType": "workspace_handoff_recorded",
+        "actorIdentity": "operator@chatpdm.com",
+        "recordedAt": "2026-03-28T11:25:00.000Z",
+        "payload": {
+          "relatedId": "507f1f77bcf86cd799439011"
+        },
+        "previousHash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+      },
+      "expectedCanonical": "{\"hashVersion\":1,\"requestId\":\"67e6f9e4d4d1b2f2dbe89c10\",\"sequence\":5,\"eventType\":\"workspace_handoff_recorded\",\"actorIdentity\":\"operator@chatpdm.com\",\"recordedAt\":\"2026-03-28T11:25:00.000Z\",\"payload\":{\"relatedId\":\"507f1f77bcf86cd799439011\"},\"previousHash\":\"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\"}"
+    },
+    {
+      "label": "exact_string",
+      "input": {
+        "hashVersion": 1,
+        "requestId": "67E6F9E4D4D1B2F2DBE89C10",
+        "sequence": 5,
+        "eventType": "workspace_handoff_recorded",
+        "actorIdentity": "operator@chatpdm.com",
+        "recordedAt": {
+          "$date": "2026-03-28T11:25:00.000Z"
+        },
+        "payload": {
+          "relatedId": "507F1F77BCF86CD799439011"
+        },
+        "previousHash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+      },
+      "expectedEnvelope": {
+        "hashVersion": 1,
+        "requestId": "67e6f9e4d4d1b2f2dbe89c10",
+        "sequence": 5,
+        "eventType": "workspace_handoff_recorded",
+        "actorIdentity": "operator@chatpdm.com",
+        "recordedAt": "2026-03-28T11:25:00.000Z",
+        "payload": {
+          "relatedId": "507f1f77bcf86cd799439011"
+        },
+        "previousHash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+      },
+      "expectedCanonical": "{\"hashVersion\":1,\"requestId\":\"67e6f9e4d4d1b2f2dbe89c10\",\"sequence\":5,\"eventType\":\"workspace_handoff_recorded\",\"actorIdentity\":\"operator@chatpdm.com\",\"recordedAt\":\"2026-03-28T11:25:00.000Z\",\"payload\":{\"relatedId\":\"507f1f77bcf86cd799439011\"},\"previousHash\":\"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\"}"
+    }
+    ,
+    {
+      "label": "whitespace_padded_failure",
+      "input": {
+        "hashVersion": 1,
+        "requestId": " 67E6F9E4D4D1B2F2DBE89C10 ",
+        "sequence": 5,
+        "eventType": "workspace_handoff_recorded",
+        "actorIdentity": "operator@chatpdm.com",
+        "recordedAt": {
+          "$date": "2026-03-28T11:25:00.000Z"
+        },
+        "payload": {
+          "relatedId": "507F1F77BCF86CD799439011"
+        },
+        "previousHash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+      },
+      "expectedErrorCode": "canonicalization_contract_violation",
+      "expectedErrorPattern": "requestId must be a canonical ObjectId value"
+    }
+  ],
+  "assertEqual": [
+    [
+      "object_id_instance",
+      "exact_string"
+    ]
+  ]
+}

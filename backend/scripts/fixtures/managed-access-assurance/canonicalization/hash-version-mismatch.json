@@ -1,0 +1,24 @@
+{
+  "description": "Hash version mismatches fail explicitly.",
+  "cases": [
+    {
+      "label": "hash_version_mismatch",
+      "input": {
+        "hashVersion": 2,
+        "requestId": "67e6f9e4d4d1b2f2dbe89c10",
+        "sequence": 8,
+        "eventType": "review_decision_recorded",
+        "actorIdentity": "operator@chatpdm.com",
+        "recordedAt": {
+          "$date": "2026-03-28T11:28:00.000Z"
+        },
+        "payload": {
+          "note": "version mismatch"
+        },
+        "previousHash": null
+      },
+      "expectedErrorCode": "canonicalization_contract_violation",
+      "expectedErrorPattern": "hashVersion must equal 1"
+    }
+  ]
+}

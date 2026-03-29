@@ -1,0 +1,55 @@
+{
+  "description": "Canonical valid envelope v1.",
+  "cases": [
+    {
+      "label": "valid_envelope_v1",
+      "input": {
+        "hashVersion": 1,
+        "requestId": {
+          "$objectId": "67e6f9e4d4d1b2f2dbe89c10"
+        },
+        "sequence": 1,
+        "eventType": "workspace_activation_recorded",
+        "actorIdentity": "operator@chatpdm.com",
+        "recordedAt": {
+          "$date": "2026-03-28T11:21:00.000Z"
+        },
+        "payload": {
+          "tenantSubdomain": "northbridgehealth.chatpdm.com",
+          "deploymentMode": "shared_hosted_kernel",
+          "healthCheckResult": "passing",
+          "activationTimestamp": {
+            "$date": "2026-03-28T11:20:00.000Z"
+          },
+          "nested": {
+            "z": "last",
+            "a": "first",
+            "nullish": null
+          }
+        },
+        "previousHash": null
+      },
+      "expectedEnvelope": {
+        "hashVersion": 1,
+        "requestId": "67e6f9e4d4d1b2f2dbe89c10",
+        "sequence": 1,
+        "eventType": "workspace_activation_recorded",
+        "actorIdentity": "operator@chatpdm.com",
+        "recordedAt": "2026-03-28T11:21:00.000Z",
+        "payload": {
+          "activationTimestamp": "2026-03-28T11:20:00.000Z",
+          "deploymentMode": "shared_hosted_kernel",
+          "healthCheckResult": "passing",
+          "nested": {
+            "a": "first",
+            "nullish": null,
+            "z": "last"
+          },
+          "tenantSubdomain": "northbridgehealth.chatpdm.com"
+        },
+        "previousHash": null
+      },
+      "expectedCanonical": "{\"hashVersion\":1,\"requestId\":\"67e6f9e4d4d1b2f2dbe89c10\",\"sequence\":1,\"eventType\":\"workspace_activation_recorded\",\"actorIdentity\":\"operator@chatpdm.com\",\"recordedAt\":\"2026-03-28T11:21:00.000Z\",\"payload\":{\"activationTimestamp\":\"2026-03-28T11:20:00.000Z\",\"deploymentMode\":\"shared_hosted_kernel\",\"healthCheckResult\":\"passing\",\"nested\":{\"a\":\"first\",\"nullish\":null,\"z\":\"last\"},\"tenantSubdomain\":\"northbridgehealth.chatpdm.com\"},\"previousHash\":null}"
+    }
+  ]
+}
