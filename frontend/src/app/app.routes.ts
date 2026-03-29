@@ -59,6 +59,11 @@ export const routes: Routes = [
     data: pageRouteData('data-retention', 'legal.data-retention'),
   },
   {
+    path: 'acceptable-use',
+    component: PublicPageComponent,
+    data: pageRouteData('acceptable-use', 'legal.acceptable-use'),
+  },
+  {
     path: 'privacy/inspect',
     redirectTo: 'inspect/privacy',
     pathMatch: 'full',
@@ -66,6 +71,11 @@ export const routes: Routes = [
   {
     path: 'data-retention/inspect',
     redirectTo: 'inspect/data-retention',
+    pathMatch: 'full',
+  },
+  {
+    path: 'acceptable-use/inspect',
+    redirectTo: 'inspect/acceptable-use',
     pathMatch: 'full',
   },
   {
@@ -97,6 +107,11 @@ export const routes: Routes = [
     path: 'inspect/data-retention',
     component: PolicyPageComponent,
     data: policyRouteData('data-retention', 'legal.data-retention.inspect'),
+  },
+  {
+    path: 'inspect/acceptable-use',
+    component: PolicyPageComponent,
+    data: policyRouteData('acceptable-use', 'legal.acceptable-use.inspect'),
   },
   {
     path: 'inspect/terms',

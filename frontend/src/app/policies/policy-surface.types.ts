@@ -1,4 +1,4 @@
-export type PolicySurfaceKey = 'privacy' | 'terms' | 'cookies' | 'data-retention';
+export type PolicySurfaceKey = 'privacy' | 'terms' | 'cookies' | 'data-retention' | 'acceptable-use';
 
 export type PolicyTraceStatus = 'mapped' | 'unmapped' | 'unclear' | 'conflicts_with_system';
 
