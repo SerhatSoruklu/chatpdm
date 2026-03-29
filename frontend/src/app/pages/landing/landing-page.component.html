@@ -414,12 +414,23 @@
 
                         @for (source of asConceptMatch(response).answer.sources; track source.id; let sourceIndex = $index) {
                           <div class="pdm-home__source-row">
-                            <div>
+                            <div class="pdm-home__source-meta">
+                              <span
+                                class="pdm-home__source-icon pdm-mono"
+                                [attr.data-source-type]="source.type"
+                                [attr.aria-label]="sourceTypeLabel(source.type)"
+                                [attr.title]="sourceTypeLabel(source.type)"
+                              >
+                                {{ sourceTypeCode(source.type) }}
+                              </span>
+
+                              <div>
                               <p class="pdm-home__source-rank">{{ sourceRankLabel(sourceIndex) }}</p>
                               <p class="pdm-home__source-label">{{ source.label }}</p>
                               <p class="pdm-home__support-copy">{{ source.usedFor }}</p>
+                              </div>
                             </div>
-                            <span class="pdm-home__mini-chip pdm-site-chip">{{ source.type }}</span>
+                            <span class="pdm-home__mini-chip pdm-site-chip">{{ sourceTypeLabel(source.type) }}</span>
                           </div>
                         }
                       </section>

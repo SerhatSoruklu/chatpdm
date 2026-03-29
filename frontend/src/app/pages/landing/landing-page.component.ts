@@ -13,6 +13,7 @@ import {
   ComparisonAxis,
   ComparisonAxisValue,
   ConceptMatchResponse,
+  ConceptSource,
   DerivedExplanationOverlays,
   NoExactMatchResponse,
   RelatedConcept,
@@ -490,6 +491,44 @@ export class LandingPageComponent {
 
   protected sourceRankLabel(index: number): string {
     return index === 0 ? 'Primary source' : 'Reference source';
+  }
+
+  protected sourceTypeLabel(type: ConceptSource['type']): string {
+    switch (type) {
+      case 'dictionary':
+        return 'Dictionary';
+      case 'book':
+        return 'Book';
+      case 'paper':
+        return 'Paper';
+      case 'law':
+        return 'Law';
+      case 'article':
+        return 'Article';
+      case 'internal':
+        return 'Internal';
+      default:
+        return type;
+    }
+  }
+
+  protected sourceTypeCode(type: ConceptSource['type']): string {
+    switch (type) {
+      case 'dictionary':
+        return 'D';
+      case 'book':
+        return 'B';
+      case 'paper':
+        return 'P';
+      case 'law':
+        return 'L';
+      case 'article':
+        return 'A';
+      case 'internal':
+        return 'I';
+      default:
+        return '?';
+    }
   }
 
   protected responseLabel(response: ResolveProductResponse): string {
