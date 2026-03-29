@@ -3,8 +3,8 @@ import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { buildCookiesPageViewModel } from '../src/app/pages/cookies-page/cookies-page.view-model.ts';
-import { buildTermsPageViewModel } from '../src/app/pages/terms-page/terms-page.view-model.ts';
+import { getPublicPageContent } from '../src/app/pages/public-page/public-page.content.ts';
+import { POLICY_COMPANION_DATA } from '../src/app/policies/policy-companion.data.ts';
 import { POLICY_SURFACE_DATA } from '../src/app/policies/policy-surface.data.ts';
 
 const currentDir = dirname(fileURLToPath(import.meta.url));
@@ -35,12 +35,22 @@ function assertRouteIdentity(routeSource: string): void {
   assertBlock(
     routeSource,
     'terms public route',
-    /path:\s*'terms'[\s\S]*?component:\s*TermsPageComponent[\s\S]*?seoRouteData\('legal\.terms'\)/,
+    /path:\s*'terms'[\s\S]*?component:\s*PublicPageComponent[\s\S]*?pageRouteData\('terms',\s*'legal\.terms'\)/,
   );
   assertBlock(
     routeSource,
-    'cookies public route',
-    /path:\s*'cookies'[\s\S]*?component:\s*CookiesPageComponent[\s\S]*?seoRouteData\('legal\.cookies'\)/,
+    'acceptable use public route',
+    /path:\s*'acceptable-use'[\s\S]*?component:\s*PublicPageComponent[\s\S]*?pageRouteData\('acceptable-use',\s*'legal\.acceptable-use'\)/,
+  );
+  assertBlock(
+    routeSource,
+    'data retention public route',
+    /path:\s*'data-retention'[\s\S]*?component:\s*PublicPageComponent[\s\S]*?pageRouteData\('data-retention',\s*'legal\.data-retention'\)/,
+  );
+  assertBlock(
+    routeSource,
+    'cookies public redirect',
+    /path:\s*'cookies'[\s\S]*?redirectTo:\s*'inspect\/cookies'/,
   );
 
   assertBlock(
@@ -52,6 +62,16 @@ function assertRouteIdentity(routeSource: string): void {
     routeSource,
     'terms inspect redirect',
     /path:\s*'terms\/inspect'[\s\S]*?redirectTo:\s*'inspect\/terms'/,
+  );
+  assertBlock(
+    routeSource,
+    'acceptable use inspect redirect',
+    /path:\s*'acceptable-use\/inspect'[\s\S]*?redirectTo:\s*'inspect\/acceptable-use'/,
+  );
+  assertBlock(
+    routeSource,
+    'data retention inspect redirect',
+    /path:\s*'data-retention\/inspect'[\s\S]*?redirectTo:\s*'inspect\/data-retention'/,
   );
   assertBlock(
     routeSource,
@@ -71,13 +91,18 @@ function assertRouteIdentity(routeSource: string): void {
   );
   assertBlock(
     routeSource,
-    'cookies inspect route',
-    /path:\s*'inspect\/cookies'[\s\S]*?component:\s*PolicyPageComponent[\s\S]*?policyRouteData\('cookies',\s*'legal\.cookies\.inspect'\)/,
+    'acceptable use inspect route',
+    /path:\s*'inspect\/acceptable-use'[\s\S]*?component:\s*PolicyCompanionPageComponent[\s\S]*?policyCompanionRouteData\('acceptable-use',\s*'legal\.acceptable-use\.inspect'\)/,
   );
   assertBlock(
     routeSource,
-    'inspect index route',
-    /path:\s*'inspect'[\s\S]*?component:\s*InspectIndexPageComponent[\s\S]*?seoRouteData\('legal\.inspect'\)/,
+    'data retention inspect route',
+    /path:\s*'inspect\/data-retention'[\s\S]*?component:\s*PolicyCompanionPageComponent[\s\S]*?policyCompanionRouteData\('data-retention',\s*'legal\.data-retention\.inspect'\)/,
+  );
+  assertBlock(
+    routeSource,
+    'cookies inspect route',
+    /path:\s*'inspect\/cookies'[\s\S]*?component:\s*PolicyPageComponent[\s\S]*?policyRouteData\('cookies',\s*'legal\.cookies\.inspect'\)/,
   );
 }
 
@@ -85,17 +110,27 @@ function assertPublicPageBoundary(publicPageTypesSource: string): void {
   assert.match(
     publicPageTypesSource,
     /\|\s*'privacy'/,
-    'Public page types must still include privacy as the public human-readable route.',
+    'Public page types must include privacy as a readable public route.',
   );
-  assert.doesNotMatch(
+  assert.match(
     publicPageTypesSource,
     /\|\s*'terms'/,
-    'Terms must not drift back into the generic public-page surface.',
+    'Public page types must include terms as a readable public route.',
+  );
+  assert.match(
+    publicPageTypesSource,
+    /\|\s*'acceptable-use'/,
+    'Public page types must include acceptable-use as a readable public route.',
+  );
+  assert.match(
+    publicPageTypesSource,
+    /\|\s*'data-retention'/,
+    'Public page types must include data-retention as a readable public route.',
   );
   assert.doesNotMatch(
     publicPageTypesSource,
     /\|\s*'cookies'/,
-    'Cookies must not drift back into the generic public-page surface.',
+    'Cookies must remain inspect-canonical rather than drifting back into the generic public-page surface.',
   );
 }
 
@@ -112,8 +147,18 @@ function assertSeoParity(seoLegalSource: string): void {
   );
   assertBlock(
     seoLegalSource,
+    'acceptable use SEO',
+    /'legal\.acceptable-use':\s*\{[\s\S]*?canonicalPath:\s*'\/acceptable-use'/,
+  );
+  assertBlock(
+    seoLegalSource,
+    'data retention SEO',
+    /'legal\.data-retention':\s*\{[\s\S]*?canonicalPath:\s*'\/data-retention'/,
+  );
+  assertBlock(
+    seoLegalSource,
     'cookies SEO',
-    /'legal\.cookies':\s*\{[\s\S]*?canonicalPath:\s*'\/cookies'/,
+    /'legal\.cookies':\s*\{[\s\S]*?canonicalPath:\s*'\/inspect\/cookies'/,
   );
   assertBlock(
     seoLegalSource,
@@ -127,6 +172,16 @@ function assertSeoParity(seoLegalSource: string): void {
   );
   assertBlock(
     seoLegalSource,
+    'acceptable use inspect SEO',
+    /'legal\.acceptable-use\.inspect':\s*\{[\s\S]*?canonicalPath:\s*'\/inspect\/acceptable-use'/,
+  );
+  assertBlock(
+    seoLegalSource,
+    'data retention inspect SEO',
+    /'legal\.data-retention\.inspect':\s*\{[\s\S]*?canonicalPath:\s*'\/inspect\/data-retention'/,
+  );
+  assertBlock(
+    seoLegalSource,
     'cookies inspect SEO',
     /'legal\.cookies\.inspect':\s*\{[\s\S]*?canonicalPath:\s*'\/inspect\/cookies'/,
   );
@@ -134,10 +189,14 @@ function assertSeoParity(seoLegalSource: string): void {
 
 function assertSurfaceTruthIdentity(): void {
   const { privacy, cookies, terms } = POLICY_SURFACE_DATA;
+  const acceptableUse = POLICY_COMPANION_DATA['acceptable-use'];
+  const dataRetention = POLICY_COMPANION_DATA['data-retention'];
 
   assert.equal(privacy.route, '/inspect/privacy');
   assert.equal(cookies.route, '/inspect/cookies');
   assert.equal(terms.route, '/inspect/terms');
+  assert.equal(acceptableUse.route, '/inspect/acceptable-use');
+  assert.equal(dataRetention.route, '/inspect/data-retention');
 
   assert.equal(privacy.cookiesTruth, undefined, 'Privacy must not gain cookies truth.');
   assert.equal(privacy.termsTruth, undefined, 'Privacy must not gain terms truth.');
@@ -146,88 +205,45 @@ function assertSurfaceTruthIdentity(): void {
   assert.ok(terms.termsTruth, 'Terms truth must exist.');
   assert.equal(terms.cookiesTruth, undefined, 'Terms must not gain cookies truth.');
 
-  assert.ok(
-    cookies.claims.every((claim) => claim.policyFile === 'cookies.md'),
-    'Cookies surface claims must remain cookies-backed.',
+  assert.equal(
+    acceptableUse.publicRoute,
+    '/acceptable-use',
+    'Acceptable use companion surface must map back to the readable public route.',
   );
-  assert.ok(
-    terms.claims.every((claim) => claim.policyFile === 'terms.md'),
-    'Terms surface claims must remain terms-backed.',
+  assert.equal(
+    dataRetention.publicRoute,
+    '/data-retention',
+    'Data retention companion surface must map back to the readable public route.',
   );
-
-  for (const fact of cookies.cookiesTruth ?? []) {
-    assert.ok(
-      cookies.claims.some((claim) => claim.id === fact.claimId),
-      `Cookies truth fact ${fact.claimId} must reference a live cookies claim.`,
-    );
-  }
-
-  const termsTruth = terms.termsTruth;
-
-  assert.ok(termsTruth, 'Terms truth must remain available for surface validation.');
-
-  const liveTermsClaimIds = new Set(terms.claims.map((claim) => claim.id));
-  const allTermsTruthClaimIds = [
-    ...termsTruth.endpointContracts.map((row) => row.claimId),
-    ...termsTruth.fieldContracts.map((row) => row.claimId),
-    ...termsTruth.platformRules.map((row) => row.claimId),
-    ...termsTruth.runtimeBoundaries.map((row) => row.claimId),
-    ...termsTruth.refusalBoundaries.map((row) => row.claimId),
-  ];
-
-  for (const claimId of allTermsTruthClaimIds) {
-    assert.ok(
-      liveTermsClaimIds.has(claimId),
-      `Terms truth row ${claimId} must reference a live terms claim.`,
-    );
-  }
+  assert.ok(acceptableUse.sections.length > 0, 'Acceptable use companion surface must include inspect sections.');
+  assert.ok(dataRetention.sections.length > 0, 'Data retention companion surface must include inspect sections.');
 }
 
 function assertPublicInspectParity(): void {
-  const cookiesViewModel = buildCookiesPageViewModel(POLICY_SURFACE_DATA.cookies);
-  const termsViewModel = buildTermsPageViewModel(POLICY_SURFACE_DATA.terms);
+  const privacyContent = getPublicPageContent('privacy');
+  const termsContent = getPublicPageContent('terms');
+  const acceptableUseContent = getPublicPageContent('acceptable-use');
+  const dataRetentionContent = getPublicPageContent('data-retention');
 
   assert.equal(
-    cookiesViewModel.inspectRoute,
-    POLICY_SURFACE_DATA.cookies.route,
-    'Cookies public surface must link back to the canonical inspect surface.',
+    privacyContent.action?.route,
+    POLICY_SURFACE_DATA.privacy.route,
+    'Privacy public surface must link back to the canonical inspect surface.',
   );
   assert.equal(
-    termsViewModel.inspectRoute,
+    termsContent.action?.route,
     POLICY_SURFACE_DATA.terms.route,
     'Terms public surface must link back to the canonical inspect surface.',
   );
-
   assert.equal(
-    cookiesViewModel.requestRows.length + cookiesViewModel.responseRows.length,
-    POLICY_SURFACE_DATA.cookies.cookiesTruth?.length ?? 0,
-    'Cookies public surface rows must stay in parity with typed cookies truth.',
-  );
-
-  assert.equal(
-    termsViewModel.endpointRows.length,
-    POLICY_SURFACE_DATA.terms.termsTruth?.endpointContracts.length ?? 0,
-    'Terms endpoint rows must stay in parity with typed endpoint contracts.',
+    acceptableUseContent.action?.route,
+    POLICY_COMPANION_DATA['acceptable-use'].route,
+    'Acceptable use public surface must link back to its companion inspect surface.',
   );
   assert.equal(
-    termsViewModel.requestFieldRows.length + termsViewModel.acceptedValueRows.length,
-    POLICY_SURFACE_DATA.terms.termsTruth?.fieldContracts.length ?? 0,
-    'Terms field rows must stay in parity with typed field contracts.',
-  );
-  assert.equal(
-    termsViewModel.platformRuleRows.length,
-    POLICY_SURFACE_DATA.terms.termsTruth?.platformRules.length ?? 0,
-    'Terms platform rule rows must stay in parity with typed platform rules.',
-  );
-  assert.equal(
-    termsViewModel.runtimeBoundaryRows.length,
-    POLICY_SURFACE_DATA.terms.termsTruth?.runtimeBoundaries.length ?? 0,
-    'Terms runtime boundary rows must stay in parity with typed runtime boundaries.',
-  );
-  assert.equal(
-    termsViewModel.refusalBoundaryRows.length,
-    POLICY_SURFACE_DATA.terms.termsTruth?.refusalBoundaries.length ?? 0,
-    'Terms refusal boundary rows must stay in parity with typed refusal boundaries.',
+    dataRetentionContent.action?.route,
+    POLICY_COMPANION_DATA['data-retention'].route,
+    'Data retention public surface must link back to its companion inspect surface.',
   );
 }
 

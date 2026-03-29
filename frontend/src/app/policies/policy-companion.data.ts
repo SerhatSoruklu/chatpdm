@@ -1,6 +1,6 @@
-import { POLICY_SURFACE_DATA } from './policy-surface.data';
-import type { PolicyClaimLifecycleClass, PolicySurfaceDefinition } from './policy-surface.types';
-import type { PolicyCompanionRegistry } from './policy-companion.types';
+import { POLICY_SURFACE_DATA } from './policy-surface.data.ts';
+import type { PolicyClaimLifecycleClass, PolicySurfaceDefinition } from './policy-surface.types.ts';
+import type { PolicyCompanionRegistry } from './policy-companion.types.ts';
 
 function countClaimsByLifecycleClass(
   surface: PolicySurfaceDefinition,
