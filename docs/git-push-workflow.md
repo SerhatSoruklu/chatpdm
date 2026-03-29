@@ -18,6 +18,8 @@ If the user says `push to git`, Codex should:
 - stage the relevant ChatPDM changes
 - create a clean commit with a clear commit message
 - push the current branch to the configured remote
+- if the branch is merge-ready, tell the user to use **Squash and merge** on GitHub
+- wait for the user to confirm the merge is complete before doing branch cleanup
 
 The default meaning is:
 
@@ -34,6 +36,30 @@ The intended workflow is:
 - stage
 - commit
 - push safely
+- ask the user to squash-merge
+- after merge, sync `main` and delete the merged branch locally and on `origin`
+
+## Merge and Cleanup Rule
+
+The default merge style for a merge-ready ChatPDM branch is:
+
+- **Squash and merge**
+
+Why:
+
+- keeps history clean
+- fits cohesive task-shaped change sets
+- matches the repo preference for linear, low-drift history
+
+After the user confirms the squash merge is complete, Codex should run:
+
+1. `git checkout main`
+2. `git pull origin main`
+3. `git branch -d <merged-branch>`  
+   If squash-merge ancestry prevents `-d`, confirm the branch was merged and use `-D`.
+4. `git push origin --delete <merged-branch>`
+
+Do not delete the feature branch before the user confirms the merge has landed.
 
 ## Scope Review
 

@@ -149,6 +149,12 @@ Assume `main` is protected and publish work through a branch-first workflow.
 - Use a feature branch for publication. If work started on `main`, create a branch before pushing.
 - Push the feature branch to `origin` and keep `main` untouched unless the user explicitly requests otherwise and the rules allow it.
 - If the user wants merge-ready publication, open a pull request instead of attempting a direct push to `main`.
+- The default publish finish is: Codex prepares and pushes a merge-ready feature branch, tells the user to use **Squash and merge**, and stops there until the user confirms the merge is complete.
+- After the user confirms the squash merge is complete, Codex should:
+  - `git checkout main`
+  - `git pull origin main`
+  - delete the merged feature branch locally
+  - delete the merged feature branch on `origin`
 - Do not force-push unless the user explicitly requests it and branch protections allow it.
 - Prefer linear-history-compatible workflows. Avoid merge commits when rebasing or squashing is the protected-branch expectation.
 
@@ -188,6 +194,8 @@ Non-blocking by default:
 - Use the smallest relevant script for validation when applicable.
 - Do not run all scripts by default unless the change justifies it.
 - Treat `push to git` as: review -> validate -> fix safe blockers -> stage correct files -> commit cleanly -> push safely.
+- After `push to git`, if the branch is merge-ready, tell the user to use **Squash and merge** on GitHub rather than merging locally.
+- After the user merges, Codex should perform the local cleanup flow: update `main`, delete the merged local branch, and delete the merged remote branch.
 - Keep pre-push validation lightweight: Angular build first, TypeScript correctness second, runtime safety third, lint only when already configured and low-noise, SonarQube advisory only.
 - For backend changes, include a lightweight startup-safety check before push: compile cleanly, start safely in a local validation mode, and confirm there is no immediate crash or obvious wiring failure.
 
