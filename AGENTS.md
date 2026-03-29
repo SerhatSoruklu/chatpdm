@@ -196,6 +196,8 @@ Non-blocking by default:
 - Update docs before broadening implementation scope.
 - Data structures should be documented before runtime behavior is added.
 - Reference [chatpdm-build-path.txt](./chatpdm-build-path.txt) when the product direction needs clarification.
+- Public-facing wording should follow [LANGUAGE_CONTRACT.md](./docs/LANGUAGE_CONTRACT.md), and public docs should live under [docs/public](./docs/public) when they are split from internal or experimental notes.
+- For bounded implementation framing, use [anti-drift-prompt-template.md](./docs/architecture/anti-drift-prompt-template.md) before expanding scope.
 - Follow [git-push-workflow.md](./docs/git-push-workflow.md) for the default meaning of `push to git` and `push ALL`.
 
 ## Responsive Guardrails

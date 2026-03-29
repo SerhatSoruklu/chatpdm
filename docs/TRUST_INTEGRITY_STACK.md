@@ -110,6 +110,9 @@ Perception integrity requires:
 - public descriptions of maturity, safety, or determinism to remain bounded by current proof
 - trust-facing documentation to preserve explicit limits and failure conditions
 
+The canonical authoring guide for policy and trust wording is [architecture/policy-writing-tone-guide.md](./architecture/policy-writing-tone-guide.md).
+The canonical architecture guide for signal placement is [architecture/signal-placement-laws.md](./architecture/signal-placement-laws.md).
+
 Perception integrity is invalid when:
 
 - public claims outrun runtime evidence
@@ -150,6 +153,7 @@ No artifact may change semantic role without an explicit surface-boundary decisi
 A runtime evidence artifact shall not be repurposed into doctrine by drift or convenience.
 A doctrine artifact shall not be repurposed into runtime evidence by drift or convenience.
 If a semantic role change is required, the boundary decision must be explicit, documented, and reflected in artifact naming and surrounding references.
+See [CANONICAL_LAYER_RULE.md](./CANONICAL_LAYER_RULE.md) for the canonical rule governing surface projection and response-semantics boundaries.
 
 The subordinate platform integrity surfaces are:
 

@@ -195,16 +195,20 @@ ChatPDM should not use one tone globally across all trust surfaces. Tone should 
 
 Recommended split:
 
-- top-level human-readable routes such as `/privacy`, `/terms`, and `/cookies` should use Plain-English Determinism
-- inspect routes such as `/inspect/privacy`, `/inspect/terms`, and `/inspect/cookies` should use Precise Operational Contract
+- top-level human-readable routes such as `/privacy`, `/terms`, and `/cookies` should lead with Translation / Explanation Tone and use Boundary / Limitation Tone where needed
+- inspect routes such as `/inspect/privacy`, `/inspect/terms`, and `/inspect/cookies` should lead with System Truth Tone and use Constraint / Enforcement Tone where needed
 
 Top-level routes are the claim layer. They should answer human trust questions in direct, plain language while staying bounded and mechanism-backed.
 
 Inspect routes are the evidence layer. They should stay dense, mechanism-first, and traceability-oriented.
 
-## Precise Operational Contract Tone
+For the canonical policy-writing framework, see:
 
-ChatPDM's recommended inspect-route voice for Privacy, Terms, and Cookies is a precise operational contract.
+- [policy-writing-tone-guide.md](./policy-writing-tone-guide.md)
+
+## Inspect Route Writing Posture
+
+ChatPDM's recommended inspect-route voice for Privacy, Terms, and Cookies is System Truth Tone with Constraint / Enforcement Tone as support.
 
 This means public legal surfaces should read as mechanism-first system documentation rather than:
 
@@ -255,9 +259,9 @@ Example tones:
 - Top-level privacy-route example:
   `We do not keep your query history indefinitely. When feedback is recorded for a query, ChatPDM temporarily stores a minimized record of that query together with a session identifier so system behavior can be audited. That record is removed automatically after 30 days through a database TTL expiry, without requiring a manual cleanup step.`
 
-## Plain-English Determinism Tone
+## Public Route Writing Posture
 
-ChatPDM's recommended top-level human-readable voice for Privacy, Terms, and Cookies is Plain-English Determinism.
+ChatPDM's recommended top-level human-readable voice for Privacy, Terms, and Cookies is Translation / Explanation Tone with Boundary / Limitation Tone as support.
 
 This means:
 
@@ -297,6 +301,19 @@ This is not "AI first" architecture. It is meaning-first architecture.
 The system does not need a language model in the core path to be legitimate. It needs a stable content model, clear resolution rules, and a runtime that does not overstep its authority.
 
 Optional future AI assistance can exist at an outer layer. It may help with discovery, paraphrase, onboarding, or editorial tooling. It must not become the authority core.
+
+If ChatPDM ever integrates AI assistance, the safe analogy is:
+
+- ChatPDM = the legal system `rules, statutes, enforcement`
+- LLM = the lawyer `interprets, explains, argues`
+
+That distinction matters because a lawyer can help a reader navigate a system, but the lawyer is not the law itself.
+
+In the same way, an LLM may later help users read, explain, compare, or navigate ChatPDM. It must not replace the canonical system, redefine the source-bounded answer, or become the enforcement authority.
+
+The interpreter must not override the legal system.
+
+If ChatPDM cannot resolve a concept, the LLM must defer or refuse rather than fabricate an answer.
 
 ## Why UI And Layout Also Belong To The Philosophy
 
@@ -449,6 +466,35 @@ ChatPDM is not trying to be:
 - an anti-AI statement disguised as a product
 
 It is also not trying to hide uncertainty behind persuasive wording. If the system does not have a clean authored path to an answer, the correct response is constraint, not improvisation.
+
+## Philosophy, Law, and Discipline
+
+The safe pattern is:
+
+- Philosophy `bounded`
+  defines direction without claiming perfection
+- Law `strict`
+  enforces what is actually implemented
+- Discipline `practical`
+  enforces behavior under real conditions
+
+Stable order:
+
+- philosophy prevents arbitrariness
+- law prevents drift
+- discipline prevents theater
+
+Structural metaphor:
+
+- Philosophy = heart `purpose`
+- Law = brain `logic`
+- Discipline = spine `stability`
+
+Failure modes:
+
+- if philosophy weakens, decisions become arbitrary
+- if law weakens, the system drifts silently
+- if discipline weakens, rules exist but are not followed
 
 ## The Closing Principle
 
