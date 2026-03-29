@@ -87,6 +87,13 @@ const {
   writeProvisioningEvidenceSignedCheckpointFile,
 } = require('../src/modules/managed-access/provisioning-evidence-checkpoint.service');
 const {
+  PROVISIONING_EVIDENCE_BUNDLE_METADATA_SOURCE,
+  PROVISIONING_EVIDENCE_BUNDLE_SCHEMA_VERSION,
+  PROVISIONING_EVIDENCE_BUNDLE_TYPE,
+  buildProvisioningEvidenceBundle,
+  inspectProvisioningEvidenceBundle,
+} = require('../src/modules/managed-access/provisioning-evidence-bundle.service');
+const {
   verifyProvisioningEvidenceChain,
 } = require('../src/modules/managed-access/provisioning-evidence-chain-verifier');
 const DeploymentAssignment = require('../src/modules/managed-access/deployment-assignment.model');
@@ -382,6 +389,29 @@ function buildExpectedSignedCheckpoint({
   return {
     payload,
     signature: signingResult.signature,
+  };
+}
+
+function buildExpectedProvisioningEvidenceBundle({
+  requestId,
+  sequence,
+  chainHeadHash,
+}) {
+  const checkpoint = buildExpectedSignedCheckpoint({
+    requestId,
+    sequence,
+    chainHeadHash,
+  });
+
+  return {
+    bundleSchemaVersion: PROVISIONING_EVIDENCE_BUNDLE_SCHEMA_VERSION,
+    bundleType: PROVISIONING_EVIDENCE_BUNDLE_TYPE,
+    payload: checkpoint.payload,
+    checkpoint,
+    metadata: {
+      source: PROVISIONING_EVIDENCE_BUNDLE_METADATA_SOURCE,
+      exportedAt: null,
+    },
   };
 }
 
@@ -966,6 +996,42 @@ async function main() {
     );
     process.stdout.write('PASS managed_access_phase_e_signed_checkpoint_valid_signature\n');
 
+    const expectedBundle = buildExpectedProvisioningEvidenceBundle({
+      requestId: managedAccessRequest._id.toHexString(),
+      sequence: 2,
+      chainHeadHash: secondProvisioningEvidenceEvent.eventHash,
+    });
+    const bundleBuildResult = await buildProvisioningEvidenceBundle(managedAccessRequest._id);
+    assert.deepEqual(
+      bundleBuildResult,
+      {
+        status: 'valid',
+        reason: 'bundle_created',
+        requestId: managedAccessRequest._id.toHexString(),
+        bundle: expectedBundle,
+        verificationResult: validVerificationResult,
+        checkpointPath: expectedCheckpointPath,
+        checkpoint: expectedSignedCheckpoint,
+      },
+    );
+    process.stdout.write('PASS managed_access_phase_e_bundle_creation\n');
+
+    const bundleInspectionResult = await inspectProvisioningEvidenceBundle(
+      managedAccessRequest._id,
+      expectedBundle,
+    );
+    assert.deepEqual(
+      bundleInspectionResult,
+      {
+        status: 'valid',
+        reason: 'bundle_valid',
+        requestId: managedAccessRequest._id.toHexString(),
+        bundle: expectedBundle,
+        verificationResult: validVerificationResult,
+      },
+    );
+    process.stdout.write('PASS managed_access_phase_e_bundle_valid\n');
+
     await assert.rejects(
       async () => ProvisioningEvidenceEvent.create({
         requestId: managedAccessRequest._id,
@@ -1232,6 +1298,23 @@ async function main() {
     );
     process.stdout.write('PASS managed_access_phase_e_signed_checkpoint_missing_is_nonfatal\n');
 
+    const missingCheckpointBundleResult = await buildProvisioningEvidenceBundle(
+      missingCheckpointScenario.managedAccessRequest._id,
+    );
+    assert.deepEqual(
+      missingCheckpointBundleResult,
+      {
+        status: 'missing',
+        reason: 'bundle_checkpoint_missing',
+        requestId: missingCheckpointScenario.managedAccessRequest._id.toHexString(),
+        bundle: null,
+        verificationResult: missingCheckpointVerificationResult,
+        checkpointPath: null,
+        checkpoint: null,
+      },
+    );
+    process.stdout.write('PASS managed_access_phase_e_bundle_missing_checkpoint\n');
+
     const malformedSnapshotScenario = await createVerifierScenarioChain(
       'snapshot-malformed',
       {
@@ -1323,6 +1406,22 @@ async function main() {
       },
     );
     process.stdout.write('PASS managed_access_phase_e_signed_checkpoint_malformed_is_rejected\n');
+
+    const malformedBundleInspectionResult = await inspectProvisioningEvidenceBundle(
+      malformedCheckpointScenario.managedAccessRequest._id,
+      null,
+    );
+    assert.deepEqual(
+      malformedBundleInspectionResult,
+      {
+        status: 'invalid',
+        reason: 'bundle_malformed',
+        requestId: malformedCheckpointScenario.managedAccessRequest._id.toHexString(),
+        bundle: null,
+        verificationResult: malformedCheckpointVerificationResult,
+      },
+    );
+    process.stdout.write('PASS managed_access_phase_e_bundle_malformed\n');
 
     const staleSnapshotScenario = await createVerifierScenarioChain(
       'snapshot-replay-mismatch',
@@ -1452,6 +1551,39 @@ async function main() {
     );
     process.stdout.write('PASS managed_access_phase_e_signed_checkpoint_tampered_payload_detected\n');
 
+    const bundlePayloadMismatchScenario = await createVerifierScenarioChain(
+      'bundle-payload-mismatch',
+      {
+        eventCount: 2,
+        baseTime: new Date('2026-03-28T14:02:00.000Z'),
+      },
+    );
+    await rebuildProvisioningEvidenceSignedCheckpoint(bundlePayloadMismatchScenario.managedAccessRequest._id);
+    const bundlePayloadMismatchReplayResult = await verifyProvisioningEvidenceChain(
+      bundlePayloadMismatchScenario.managedAccessRequest._id,
+    );
+    const bundlePayloadBuildResult = await buildProvisioningEvidenceBundle(
+      bundlePayloadMismatchScenario.managedAccessRequest._id,
+    );
+    assert.equal(bundlePayloadBuildResult.status, 'valid');
+    const tamperedBundlePayload = JSON.parse(JSON.stringify(bundlePayloadBuildResult.bundle));
+    tamperedBundlePayload.payload.chainHeadHash = '0'.repeat(64);
+    const bundlePayloadMismatchInspectionResult = await inspectProvisioningEvidenceBundle(
+      bundlePayloadMismatchScenario.managedAccessRequest._id,
+      tamperedBundlePayload,
+    );
+    assert.deepEqual(
+      bundlePayloadMismatchInspectionResult,
+      {
+        status: 'invalid',
+        reason: 'bundle_payload_mismatch',
+        requestId: bundlePayloadMismatchScenario.managedAccessRequest._id.toHexString(),
+        bundle: tamperedBundlePayload,
+        verificationResult: bundlePayloadMismatchReplayResult,
+      },
+    );
+    process.stdout.write('PASS managed_access_phase_e_bundle_payload_mismatch\n');
+
     const tamperedCheckpointSignatureScenario = await createVerifierScenarioChain(
       'checkpoint-signature-invalid',
       {
@@ -1490,6 +1622,42 @@ async function main() {
       },
     );
     process.stdout.write('PASS managed_access_phase_e_signed_checkpoint_tampered_signature_detected\n');
+
+    const bundleSignatureInvalidScenario = await createVerifierScenarioChain(
+      'bundle-signature-invalid',
+      {
+        eventCount: 2,
+        baseTime: new Date('2026-03-28T14:07:00.000Z'),
+      },
+    );
+    await rebuildProvisioningEvidenceSignedCheckpoint(bundleSignatureInvalidScenario.managedAccessRequest._id);
+    const bundleSignatureInvalidReplayResult = await verifyProvisioningEvidenceChain(
+      bundleSignatureInvalidScenario.managedAccessRequest._id,
+    );
+    const bundleSignatureBuildResult = await buildProvisioningEvidenceBundle(
+      bundleSignatureInvalidScenario.managedAccessRequest._id,
+    );
+    assert.equal(bundleSignatureBuildResult.status, 'valid');
+    const tamperedBundleSignature = JSON.parse(JSON.stringify(bundleSignatureBuildResult.bundle));
+    tamperedBundleSignature.checkpoint.signature.signature = `${
+      tamperedBundleSignature.checkpoint.signature.signature.startsWith('A') ? 'B' : 'A'
+    }${tamperedBundleSignature.checkpoint.signature.signature.slice(1)}`;
+    const bundleSignatureInvalidInspectionResult = await inspectProvisioningEvidenceBundle(
+      bundleSignatureInvalidScenario.managedAccessRequest._id,
+      tamperedBundleSignature,
+    );
+    assert.deepEqual(
+      bundleSignatureInvalidInspectionResult,
+      {
+        status: 'invalid',
+        reason: 'bundle_signature_invalid',
+        requestId: bundleSignatureInvalidScenario.managedAccessRequest._id.toHexString(),
+        bundle: tamperedBundleSignature,
+        verificationResult: bundleSignatureInvalidReplayResult,
+        checkpointReason: 'checkpoint_signature_invalid',
+      },
+    );
+    process.stdout.write('PASS managed_access_phase_e_bundle_signature_invalid\n');
 
     const unknownCheckpointKeyScenario = await createVerifierScenarioChain(
       'checkpoint-key-unknown',
@@ -1667,7 +1835,20 @@ async function main() {
       await verifyProvisioningEvidenceChain(tamperedCheckpointSignatureScenario.managedAccessRequest._id),
       tamperedCheckpointSignatureVerificationResult,
     );
+    assert.deepEqual(
+      await verifyProvisioningEvidenceChain(missingCheckpointScenario.managedAccessRequest._id),
+      missingCheckpointVerificationResult,
+    );
+    assert.deepEqual(
+      await verifyProvisioningEvidenceChain(bundlePayloadMismatchScenario.managedAccessRequest._id),
+      bundlePayloadMismatchReplayResult,
+    );
+    assert.deepEqual(
+      await verifyProvisioningEvidenceChain(bundleSignatureInvalidScenario.managedAccessRequest._id),
+      bundleSignatureInvalidReplayResult,
+    );
     process.stdout.write('PASS managed_access_phase_e_signed_checkpoint_failure_does_not_override_replay\n');
+    process.stdout.write('PASS managed_access_phase_e_bundle_does_not_override_replay\n');
 
     const sequenceGapScenario = await createVerifierScenarioChain(
       'sequence-gap',
