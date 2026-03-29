@@ -36,5 +36,17 @@ export class InspectIndexPageComponent {
       route: '/inspect/terms',
       detail: 'Current inspectable terms surface for modeled behavior and mapped refusal boundaries.',
     },
+    {
+      title: 'Acceptable use inspect',
+      subtitle: 'verification rules, review gates, and non-claims',
+      route: '/inspect/acceptable-use',
+      detail: 'Current inspectable acceptable-use surface grounded in managed-access verification boundaries and the under_trust_review gate.',
+    },
+    {
+      title: 'Data retention inspect',
+      subtitle: 'lifecycle bands, storage classes, and expiry paths',
+      route: '/inspect/data-retention',
+      detail: 'Current inspectable retention surface grounded in feedback lifecycle handling, TTL expiry, and verification challenge expiry.',
+    },
   ];
 }

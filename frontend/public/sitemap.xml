@@ -31,9 +31,14 @@
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://chatpdm.com/cookies</loc>
+    <loc>https://chatpdm.com/acceptable-use</loc>
     <changefreq>yearly</changefreq>
-    <priority>0.2</priority>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://chatpdm.com/data-retention</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
   </url>
   <url>
     <loc>https://chatpdm.com/faq</loc>

@@ -1,0 +1,135 @@
+<div class="pdm-policy-companion-page">
+  <main class="pdm-policy-companion-page__main pdm-shell" aria-labelledby="pdm-policy-companion-title">
+    <div class="pdm-shell__frame pdm-policy-companion-page__frame">
+      <header class="pdm-policy-companion-page__hero">
+        <div class="pdm-policy-companion-page__hero-copy">
+          <p class="pdm-policy-companion-page__eyebrow pdm-mono">Inspect</p>
+          <h1 class="pdm-policy-companion-page__title" id="pdm-policy-companion-title">
+            {{ surface().title }}
+          </h1>
+          <p class="pdm-policy-companion-page__subtitle">{{ surface().subtitle }}</p>
+          <p class="pdm-policy-companion-page__intro">{{ surface().intro }}</p>
+          <p class="pdm-policy-companion-page__traceability pdm-mono">{{ surface().traceabilityLabel }}</p>
+          <p class="pdm-policy-companion-page__state-note">{{ surface().stateNote }}</p>
+
+          <div class="pdm-policy-companion-page__actions">
+            <a class="pdm-policy-companion-page__action-link" [routerLink]="surface().publicRoute">
+              Open public route
+            </a>
+          </div>
+
+          @if (surface().scopeBullets.length > 0) {
+            <div class="pdm-policy-companion-page__scope" aria-label="Inspect scope">
+              @for (item of surface().scopeBullets; track item) {
+                <span class="pdm-policy-companion-page__scope-chip pdm-mono">{{ item }}</span>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="pdm-policy-companion-page__stats" aria-label="Inspect summary">
+          @for (stat of surface().stats; track stat.label) {
+            <article class="pdm-policy-companion-page__stat">
+              <p class="pdm-policy-companion-page__stat-label pdm-mono">{{ stat.label }}</p>
+              <p class="pdm-policy-companion-page__stat-value">{{ stat.value }}</p>
+              <p class="pdm-policy-companion-page__stat-detail">{{ stat.detail }}</p>
+            </article>
+          }
+        </div>
+      </header>
+
+      @for (section of surface().sections; track section.title) {
+        <section class="pdm-policy-companion-page__section">
+          <div class="pdm-policy-companion-page__section-head">
+            <h2 class="pdm-policy-companion-page__section-title">{{ section.title }}</h2>
+            @if (section.intro; as intro) {
+              <p class="pdm-policy-companion-page__section-intro">{{ intro }}</p>
+            }
+          </div>
+
+          @if (section.kind === 'cards') {
+            <div
+              class="pdm-policy-companion-page__card-grid"
+              [class.pdm-policy-companion-page__card-grid--three]="usesThreeColumnCards(section)"
+            >
+              @for (card of sectionCards(section); track card.title) {
+                <article class="pdm-policy-companion-page__card" [attr.data-tone]="card.tone || 'slate'">
+                  @if (card.eyebrow) {
+                    <p class="pdm-policy-companion-page__card-eyebrow pdm-mono">{{ card.eyebrow }}</p>
+                  }
+
+                  <h3 class="pdm-policy-companion-page__card-title">{{ card.title }}</h3>
+                  <p class="pdm-policy-companion-page__card-detail">{{ card.detail }}</p>
+
+                  @if (card.bullets; as bullets) {
+                    <ul class="pdm-policy-companion-page__card-list">
+                      @for (bullet of bullets; track bullet) {
+                        <li>{{ bullet }}</li>
+                      }
+                    </ul>
+                  }
+                </article>
+              }
+            </div>
+          }
+
+          @if (section.kind === 'lanes') {
+            <div class="pdm-policy-companion-page__lane-stack">
+              @for (lane of sectionLanes(section); track lane.title) {
+                <article class="pdm-policy-companion-page__lane" [attr.data-tone]="lane.tone || 'slate'">
+                  <div class="pdm-policy-companion-page__lane-badge pdm-mono">{{ lane.label }}</div>
+                  <div class="pdm-policy-companion-page__lane-body">
+                    <h3 class="pdm-policy-companion-page__lane-title">{{ lane.title }}</h3>
+                    <p class="pdm-policy-companion-page__lane-detail">{{ lane.detail }}</p>
+
+                    @if (lane.bullets; as bullets) {
+                      <ul class="pdm-policy-companion-page__lane-list">
+                        @for (bullet of bullets; track bullet) {
+                          <li>{{ bullet }}</li>
+                        }
+                      </ul>
+                    }
+                  </div>
+                </article>
+              }
+            </div>
+          }
+
+          @if (section.kind === 'timeline') {
+            <div class="pdm-policy-companion-page__timeline">
+              @for (step of sectionSteps(section); track step.title) {
+                <article class="pdm-policy-companion-page__timeline-step" [attr.data-tone]="step.tone || 'slate'">
+                  <div class="pdm-policy-companion-page__timeline-marker">
+                    <span class="pdm-policy-companion-page__timeline-label pdm-mono">{{ step.label }}</span>
+                  </div>
+
+                  <div class="pdm-policy-companion-page__timeline-body">
+                    <h3 class="pdm-policy-companion-page__timeline-title">{{ step.title }}</h3>
+                    <p class="pdm-policy-companion-page__timeline-detail">{{ step.detail }}</p>
+
+                    @if (step.outcome) {
+                      <p class="pdm-policy-companion-page__timeline-outcome">{{ step.outcome }}</p>
+                    }
+                  </div>
+                </article>
+              }
+            </div>
+          }
+
+          @if (section.kind === 'traces') {
+            <div class="pdm-policy-companion-page__trace-grid">
+              @for (trace of sectionTraces(section); track trace.label) {
+                <article class="pdm-policy-companion-page__trace">
+                  <p class="pdm-policy-companion-page__trace-label pdm-mono">{{ trace.label }}</p>
+                  <p class="pdm-policy-companion-page__trace-path pdm-mono">{{ trace.path }}</p>
+                  <p class="pdm-policy-companion-page__trace-lines pdm-mono">Lines {{ trace.lines }}</p>
+                  <p class="pdm-policy-companion-page__trace-reason">{{ trace.reason }}</p>
+                </article>
+              }
+            </div>
+          }
+        </section>
+      }
+    </div>
+  </main>
+</div>

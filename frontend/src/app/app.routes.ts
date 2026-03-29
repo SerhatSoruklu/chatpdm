@@ -1,11 +1,11 @@
 import { Routes } from '@angular/router';
-import { CookiesPageComponent } from './pages/cookies-page/cookies-page.component';
 import { InspectIndexPageComponent } from './pages/inspect-index-page/inspect-index-page.component';
 import { LandingPageComponent } from './pages/landing/landing-page.component';
+import { PolicyCompanionPageComponent } from './pages/policy-companion-page/policy-companion-page.component';
 import { ManagedAccessVerificationResultComponent } from './pages/managed-access-verification-result/managed-access-verification-result.component';
 import { PolicyPageComponent } from './pages/policy-page/policy-page.component';
 import { PublicPageComponent } from './pages/public-page/public-page.component';
-import { TermsPageComponent } from './pages/terms-page/terms-page.component';
+import type { PolicyCompanionKey } from './policies/policy-companion.types';
 import type { PolicySurfaceKey } from './policies/policy-surface.types';
 import { type SeoRegistryKey, seoRouteData } from './seo/seo.registry';
 
@@ -19,6 +19,13 @@ function pageRouteData(pageKey: string, seoKey: SeoRegistryKey) {
 function policyRouteData(policyKey: PolicySurfaceKey, seoKey: SeoRegistryKey) {
   return {
     policyKey,
+    ...seoRouteData(seoKey),
+  };
+}
+
+function policyCompanionRouteData(policyCompanionKey: PolicyCompanionKey, seoKey: SeoRegistryKey) {
+  return {
+    policyCompanionKey,
     ...seoRouteData(seoKey),
   };
 }
@@ -66,8 +73,8 @@ export const routes: Routes = [
   },
   {
     path: 'terms',
-    component: TermsPageComponent,
-    data: seoRouteData('legal.terms'),
+    component: PublicPageComponent,
+    data: pageRouteData('terms', 'legal.terms'),
   },
   {
     path: 'terms/inspect',
@@ -75,9 +82,39 @@ export const routes: Routes = [
     pathMatch: 'full',
   },
   {
+    path: 'acceptable-use',
+    component: PublicPageComponent,
+    data: pageRouteData('acceptable-use', 'legal.acceptable-use'),
+  },
+  {
+    path: 'acceptable-use/inspect',
+    redirectTo: 'inspect/acceptable-use',
+    pathMatch: 'full',
+  },
+  {
+    path: 'data-retention',
+    component: PublicPageComponent,
+    data: pageRouteData('data-retention', 'legal.data-retention'),
+  },
+  {
+    path: 'data-retention/inspect',
+    redirectTo: 'inspect/data-retention',
+    pathMatch: 'full',
+  },
+  {
+    path: 'data-usage',
+    redirectTo: 'data-retention',
+    pathMatch: 'full',
+  },
+  {
+    path: 'data-usage/inspect',
+    redirectTo: 'inspect/data-retention',
+    pathMatch: 'full',
+  },
+  {
     path: 'cookies',
-    component: CookiesPageComponent,
-    data: seoRouteData('legal.cookies'),
+    redirectTo: 'inspect/cookies',
+    pathMatch: 'full',
   },
   {
     path: 'cookies/inspect',
@@ -93,6 +130,16 @@ export const routes: Routes = [
     path: 'inspect/terms',
     component: PolicyPageComponent,
     data: policyRouteData('terms', 'legal.terms.inspect'),
+  },
+  {
+    path: 'inspect/acceptable-use',
+    component: PolicyCompanionPageComponent,
+    data: policyCompanionRouteData('acceptable-use', 'legal.acceptable-use.inspect'),
+  },
+  {
+    path: 'inspect/data-retention',
+    component: PolicyCompanionPageComponent,
+    data: policyCompanionRouteData('data-retention', 'legal.data-retention.inspect'),
   },
   {
     path: 'inspect/cookies',
