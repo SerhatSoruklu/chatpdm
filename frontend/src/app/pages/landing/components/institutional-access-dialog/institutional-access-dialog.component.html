@@ -1,0 +1,439 @@
+<div class="pdm-managed-access" aria-labelledby="pdm-managed-access-title">
+  <header class="pdm-managed-access__header">
+    <div class="pdm-managed-access__header-copy">
+      <p class="pdm-managed-access__eyebrow">Managed institutional onboarding</p>
+      <h2 class="pdm-managed-access__title" id="pdm-managed-access-title">Institutional Access Request</h2>
+      <p class="pdm-managed-access__subtitle">
+        Verify organizational control and submit a managed access request for your institution.
+      </p>
+    </div>
+
+    <button
+      class="pdm-managed-access__close"
+      type="button"
+      aria-label="Close institutional access request dialog"
+      [disabled]="isActionPending()"
+      (click)="close()"
+    >
+      <span aria-hidden="true">×</span>
+    </button>
+  </header>
+
+  <nav class="pdm-managed-access__stepper" aria-label="Institutional access sections">
+    @for (section of sections; track section.id; let index = $index) {
+      <button
+        class="pdm-managed-access__step"
+        type="button"
+        [class.pdm-managed-access__step--active]="activeSectionIndex() === index"
+        [class.pdm-managed-access__step--locked]="index === 2 && !validation().institutionStepComplete"
+        [attr.aria-current]="activeSectionIndex() === index ? 'step' : null"
+        [disabled]="(index === 2 && !validation().institutionStepComplete) || isRequestEditingLocked()"
+        (click)="selectSection(index)"
+      >
+        <span class="pdm-managed-access__step-sequence">{{ section.sequence }}</span>
+        <span class="pdm-managed-access__step-copy">
+          <span class="pdm-managed-access__step-label">{{ section.label }}</span>
+          <span class="pdm-managed-access__step-summary">{{ section.eyebrow }}</span>
+        </span>
+      </button>
+    }
+  </nav>
+
+  <section class="pdm-managed-access__surface pdm-site-surface">
+    <div class="pdm-managed-access__section-head">
+      <div>
+        <p class="pdm-managed-access__section-eyebrow">{{ activeSection().eyebrow }}</p>
+        <h3 class="pdm-managed-access__section-title">{{ activeSection().title }}</h3>
+      </div>
+      <p class="pdm-managed-access__section-summary">{{ activeSection().summary }}</p>
+    </div>
+
+    @switch (activeSection().id) {
+      @case ('verification') {
+        <div class="pdm-managed-access__card-grid">
+          @for (method of verificationMethods; track method.id) {
+            <button
+              class="pdm-managed-access__method-card"
+              type="button"
+              [class.pdm-managed-access__method-card--active]="selectedVerificationMethod() === method.id"
+              [class.pdm-managed-access__method-card--stronger]="method.availability === 'stronger'"
+              [attr.aria-pressed]="selectedVerificationMethod() === method.id"
+              [disabled]="isRequestEditingLocked()"
+              (click)="selectVerificationMethod(method)"
+            >
+              <span class="pdm-managed-access__method-head">
+                <span class="pdm-managed-access__card-label">{{ method.label }}</span>
+                <span
+                  class="pdm-managed-access__availability"
+                  [class.pdm-managed-access__availability--stronger]="method.availability === 'stronger'"
+                >
+                  {{ method.availabilityLabel }}
+                </span>
+              </span>
+              <span class="pdm-managed-access__card-title">{{ method.title }}</span>
+              <span class="pdm-managed-access__card-copy">{{ method.copy }}</span>
+            </button>
+          }
+        </div>
+
+        @if (selectedMethodBoundaryNotice(); as selectedMethodBoundaryNoticeText) {
+          <aside class="pdm-managed-access__notice">
+            <p class="pdm-managed-access__card-label">Stronger proof boundary</p>
+            <p class="pdm-managed-access__notice-copy">{{ selectedMethodBoundaryNoticeText }}</p>
+          </aside>
+        }
+      }
+
+      @case ('institution') {
+        <form class="pdm-managed-access__form" novalidate>
+          <div class="pdm-managed-access__field-grid">
+            <label class="pdm-managed-access__field">
+              <span class="pdm-managed-access__field-label">
+                Institution name
+                <span class="pdm-managed-access__field-required">Required</span>
+              </span>
+              <input
+                type="text"
+                class="pdm-managed-access__field-control pdm-form-control"
+                [class.pdm-managed-access__field-control--invalid]="fieldInvalid('institutionName')"
+                [ngModel]="institutionName()"
+                (ngModelChange)="updateInstitutionName($event)"
+                name="institutionName"
+                autocomplete="organization"
+                placeholder="Example: Northbridge Health"
+                [disabled]="isRequestEditingLocked()"
+              >
+              @if (showRequiredState('institutionName')) {
+                <span class="pdm-managed-access__field-note pdm-managed-access__field-note--required">
+                  Institution name is required.
+                </span>
+              }
+            </label>
+
+            <label class="pdm-managed-access__field">
+              <span class="pdm-managed-access__field-label">
+                Company domain
+                <span class="pdm-managed-access__field-required">Required</span>
+              </span>
+              <input
+                type="text"
+                class="pdm-managed-access__field-control pdm-form-control"
+                [class.pdm-managed-access__field-control--invalid]="fieldInvalid('companyDomain')"
+                [ngModel]="companyDomain()"
+                (ngModelChange)="updateCompanyDomain($event)"
+                name="companyDomain"
+                autocapitalize="off"
+                spellcheck="false"
+                autocomplete="off"
+                placeholder="example.org"
+                [disabled]="isRequestEditingLocked()"
+              >
+              @if (showRequiredState('companyDomain')) {
+                <span class="pdm-managed-access__field-note pdm-managed-access__field-note--required">
+                  Company domain is required.
+                </span>
+              } @else if (fieldInvalid('companyDomain')) {
+                <span class="pdm-managed-access__field-note pdm-managed-access__field-note--invalid">
+                  Enter a reasonable domain-style value such as <code>example.org</code>.
+                </span>
+              }
+            </label>
+
+            <label class="pdm-managed-access__field">
+              <span class="pdm-managed-access__field-label">
+                Industry
+                <span class="pdm-managed-access__field-required">Required</span>
+              </span>
+              <span class="pdm-select-wrap">
+                <select
+                  class="pdm-managed-access__field-control pdm-form-control pdm-select-wrap__control"
+                  [ngModel]="industry()"
+                  (ngModelChange)="updateIndustry($event)"
+                  name="industry"
+                  [disabled]="isRequestEditingLocked()"
+                >
+                  <option value="">Select industry</option>
+                  @for (option of industryOptions; track option.value) {
+                    <option [value]="option.value">{{ option.label }}</option>
+                  }
+                </select>
+                <span class="pdm-select-wrap__icon" aria-hidden="true"></span>
+              </span>
+              @if (showRequiredState('industry')) {
+                <span class="pdm-managed-access__field-note pdm-managed-access__field-note--required">
+                  Industry is required.
+                </span>
+              }
+            </label>
+
+            <label class="pdm-managed-access__field">
+              <span class="pdm-managed-access__field-label">
+                Deployment preference
+                <span class="pdm-managed-access__field-required">Required</span>
+              </span>
+              <span class="pdm-select-wrap">
+                <select
+                  class="pdm-managed-access__field-control pdm-form-control pdm-select-wrap__control"
+                  [ngModel]="deploymentPreference()"
+                  (ngModelChange)="updateDeploymentPreference($event)"
+                  name="deploymentPreference"
+                  [disabled]="isRequestEditingLocked()"
+                >
+                  <option value="">Select deployment preference</option>
+                  @for (option of deploymentPreferenceOptions; track option.value) {
+                    <option [value]="option.value">{{ option.label }}</option>
+                  }
+                </select>
+                <span class="pdm-select-wrap__icon" aria-hidden="true"></span>
+              </span>
+              @if (showRequiredState('deploymentPreference')) {
+                <span class="pdm-managed-access__field-note pdm-managed-access__field-note--required">
+                  Deployment preference is required.
+                </span>
+              }
+            </label>
+
+            <label class="pdm-managed-access__field pdm-managed-access__field--full">
+              <span class="pdm-managed-access__field-label">
+                {{ workEmailFieldLabel() }}
+                <span class="pdm-managed-access__field-required">Required</span>
+              </span>
+              <input
+                type="email"
+                class="pdm-managed-access__field-control pdm-form-control"
+                [class.pdm-managed-access__field-control--invalid]="fieldInvalid('workEmail')"
+                [ngModel]="workEmail()"
+                (ngModelChange)="updateWorkEmail($event)"
+                name="workEmail"
+                autocomplete="email"
+                autocapitalize="off"
+                spellcheck="false"
+                placeholder="name@institution.org"
+                [disabled]="isRequestEditingLocked()"
+              >
+              @if (showRequiredState('workEmail')) {
+                <span class="pdm-managed-access__field-note pdm-managed-access__field-note--required">
+                  Work email is required.
+                </span>
+              } @else if (fieldInvalid('workEmail')) {
+                <span class="pdm-managed-access__field-note pdm-managed-access__field-note--invalid">
+                  Enter a reasonable email-style value such as <code>name@institution.org</code>.
+                </span>
+              } @else if (isStrongerProofPath()) {
+                <span class="pdm-managed-access__field-note">
+                  Work email is stored as the institutional contact address. Stronger proof is verified through the
+                  selected DNS or website challenge.
+                </span>
+              }
+            </label>
+          </div>
+        </form>
+      }
+
+      @case ('review') {
+        <div class="pdm-managed-access__review-grid">
+          <article class="pdm-managed-access__review-card">
+            <p class="pdm-managed-access__card-label">Current state</p>
+            <p class="pdm-managed-access__review-value">{{ reviewStateLabel() }}</p>
+          </article>
+
+          @for (row of reviewRows(); track row.label) {
+            <article class="pdm-managed-access__review-card">
+              <p class="pdm-managed-access__card-label">{{ row.label }}</p>
+              <p class="pdm-managed-access__review-value">{{ row.value }}</p>
+            </article>
+          }
+        </div>
+
+        <aside class="pdm-managed-access__notice">
+          <p class="pdm-managed-access__card-label">Phase handoff</p>
+          <p class="pdm-managed-access__notice-copy">{{ reviewPhaseNote() }}</p>
+        </aside>
+
+        @if (requestReceipt(); as receipt) {
+          @if (receipt.verificationMethod === 'work_email') {
+            <aside class="pdm-managed-access__notice pdm-managed-access__notice--success">
+              <p class="pdm-managed-access__card-label">Verification email sent</p>
+              <p class="pdm-managed-access__notice-copy">
+                Verification email sent to <strong>{{ receipt.workEmail }}</strong>. Work email verification is required
+                before this request can enter trust review.
+              </p>
+            </aside>
+          }
+        }
+
+        @if (dnsTxtChallenge(); as challenge) {
+          <section class="pdm-managed-access__challenge-surface">
+            <div class="pdm-managed-access__challenge-grid">
+              <article class="pdm-managed-access__review-card">
+                <p class="pdm-managed-access__card-label">TXT host</p>
+                <p class="pdm-managed-access__review-value">{{ challenge.host }}</p>
+                <button
+                  class="pdm-managed-access__inline-action"
+                  type="button"
+                  (click)="copyText(challenge.host, 'DNS TXT host copied.')"
+                >
+                  Copy host
+                </button>
+              </article>
+
+              <article class="pdm-managed-access__review-card">
+                <p class="pdm-managed-access__card-label">Challenge expiry</p>
+                <p class="pdm-managed-access__review-value">{{ challenge.expiresAt | date : 'medium' }}</p>
+                @if (requestReceipt()?.challengeLastCheckedAt) {
+                  <p class="pdm-managed-access__field-note">
+                    Last checked {{ requestReceipt()?.challengeLastCheckedAt | date : 'medium' }}.
+                  </p>
+                }
+              </article>
+            </div>
+
+            <div class="pdm-managed-access__challenge-block">
+              <div class="pdm-managed-access__challenge-block-head">
+                <p class="pdm-managed-access__card-label">TXT value</p>
+                <button
+                  class="pdm-managed-access__inline-action"
+                  type="button"
+                  (click)="copyText(challenge.value, 'DNS TXT value copied.')"
+                >
+                  Copy value
+                </button>
+              </div>
+              <pre class="pdm-managed-access__challenge-code"><code>{{ challenge.value }}</code></pre>
+            </div>
+
+            <p class="pdm-managed-access__notice-copy">{{ challenge.instructions }}</p>
+          </section>
+        }
+
+        @if (websiteFileChallenge(); as challenge) {
+          <section class="pdm-managed-access__challenge-surface">
+            <div class="pdm-managed-access__challenge-grid">
+              <article class="pdm-managed-access__review-card">
+                <p class="pdm-managed-access__card-label">Verification file</p>
+                <p class="pdm-managed-access__review-value">{{ challenge.filePath }}</p>
+                <button
+                  class="pdm-managed-access__inline-action"
+                  type="button"
+                  (click)="copyText(challenge.filePath, 'Website file path copied.')"
+                >
+                  Copy path
+                </button>
+              </article>
+
+              <article class="pdm-managed-access__review-card">
+                <p class="pdm-managed-access__card-label">Verification URL</p>
+                <p class="pdm-managed-access__review-value">{{ challenge.url }}</p>
+                <button
+                  class="pdm-managed-access__inline-action"
+                  type="button"
+                  (click)="copyText(challenge.url, 'Website verification URL copied.')"
+                >
+                  Copy URL
+                </button>
+              </article>
+            </div>
+
+            <div class="pdm-managed-access__challenge-actions">
+              <a
+                class="pdm-managed-access__download pdm-site-button"
+                [attr.href]="websiteFileDownloadHref()"
+                [attr.download]="challenge.fileName"
+              >
+                Download verification file
+              </a>
+            </div>
+
+            <div class="pdm-managed-access__challenge-block">
+              <div class="pdm-managed-access__challenge-block-head">
+                <p class="pdm-managed-access__card-label">Verification content</p>
+                <button
+                  class="pdm-managed-access__inline-action"
+                  type="button"
+                  (click)="copyText(challenge.content, 'Website file content copied.')"
+                >
+                  Copy content
+                </button>
+              </div>
+              <pre class="pdm-managed-access__challenge-code"><code>{{ challenge.content }}</code></pre>
+            </div>
+
+            <p class="pdm-managed-access__notice-copy">{{ challenge.instructions }}</p>
+            @if (requestReceipt()?.challengeLastCheckedAt) {
+              <p class="pdm-managed-access__field-note">
+                Last checked {{ requestReceipt()?.challengeLastCheckedAt | date : 'medium' }}.
+              </p>
+            }
+          </section>
+        }
+
+        @if (requestReceipt()?.verificationMethod !== 'work_email' && requestReceipt()?.verificationState === 'verified') {
+          <aside class="pdm-managed-access__notice pdm-managed-access__notice--success">
+            <p class="pdm-managed-access__card-label">Stronger proof verified</p>
+            <p class="pdm-managed-access__notice-copy">
+              Stronger organization proof is verified. This institutional trust record is now stronger before any later
+              private deployment pilot.
+            </p>
+          </aside>
+        }
+
+        @if (requestReceipt()?.verificationMethod !== 'work_email') {
+          @if (challengeFailureMessage(); as challengeFailureText) {
+            <aside class="pdm-managed-access__notice pdm-managed-access__notice--error">
+              <p class="pdm-managed-access__card-label">Verification status</p>
+              <p class="pdm-managed-access__notice-copy">{{ challengeFailureText }}</p>
+            </aside>
+          }
+        }
+
+        @if (verificationRefreshError(); as verificationRefreshErrorText) {
+          <aside class="pdm-managed-access__notice pdm-managed-access__notice--error">
+            <p class="pdm-managed-access__card-label">Refresh error</p>
+            <p class="pdm-managed-access__notice-copy">{{ verificationRefreshErrorText }}</p>
+          </aside>
+        }
+
+        @if (requestSubmissionState() === 'error') {
+          @if (requestSubmissionError(); as requestSubmissionErrorText) {
+            <aside class="pdm-managed-access__notice pdm-managed-access__notice--error">
+              <p class="pdm-managed-access__card-label">Request error</p>
+              <p class="pdm-managed-access__notice-copy">{{ requestSubmissionErrorText }}</p>
+            </aside>
+          }
+        }
+
+        @if (clipboardFeedback(); as clipboardFeedbackText) {
+          <aside class="pdm-managed-access__notice pdm-managed-access__notice--success">
+            <p class="pdm-managed-access__card-label">Clipboard</p>
+            <p class="pdm-managed-access__notice-copy">{{ clipboardFeedbackText }}</p>
+          </aside>
+        }
+      }
+    }
+  </section>
+
+  <footer class="pdm-managed-access__footer">
+    <p class="pdm-managed-access__footer-note">
+      Hosted and operated by ChatPDM until your institution is ready for a private trust boundary.
+    </p>
+
+    <div class="pdm-managed-access__actions">
+      <button
+        class="pdm-managed-access__back"
+        type="button"
+        [disabled]="isActionPending() || (!isRequestCreated() && isFirstSection())"
+        (click)="handleSecondaryAction()"
+      >
+        {{ secondaryActionLabel() }}
+      </button>
+      <button
+        class="pdm-managed-access__next pdm-site-button"
+        type="button"
+        [disabled]="(!isReviewStep() && !canAdvance()) || (isReviewStep() && isActionPending())"
+        (click)="handlePrimaryAction()"
+      >
+        {{ primaryActionLabel() }}
+      </button>
+    </div>
+  </footer>
+</div>

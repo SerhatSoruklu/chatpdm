@@ -23,6 +23,7 @@ It records measured runtime evidence. It does not define trust doctrine. That ro
 ## Relationship To Trust Doctrine
 
 - `docs/TRUST_INTEGRITY_STACK.md` defines the constitutional operational law above this ledger.
+- `docs/INTERGRITY_RUNTIME_LAWS.md` defines the binding runtime-law constraints for deterministic truth, refusal boundaries, contract shape, and integrity recording.
 - This folder remains subordinate runtime evidence, not doctrine.
 
 ## Volumes

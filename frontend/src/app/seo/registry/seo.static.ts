@@ -42,6 +42,13 @@ export const seoStaticEntries = {
     sitemapChangeFrequency: 'monthly',
     sitemapPriority: 0.4,
   },
+  'static.managed-access-verification-result': {
+    title: 'Managed Access Verification - ChatPDM',
+    description: 'Verification result surface for ChatPDM managed institutional access requests.',
+    canonicalPath: null,
+    includeInSitemap: false,
+    robots: 'noindex, nofollow',
+  },
   'static.sources': {
     title: 'Sources - ChatPDM',
     description: 'ChatPDM reference sources and canonical grounding.',

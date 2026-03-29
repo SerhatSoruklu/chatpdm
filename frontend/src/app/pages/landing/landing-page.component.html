@@ -26,6 +26,20 @@
               Supported scope stays visible. Unsupported meaning is refused.
             </p>
 
+            <div class="pdm-home__managed-access">
+              <button
+                class="pdm-home__managed-access-button pdm-site-button"
+                type="button"
+                aria-describedby="pdm-home-managed-access-tagline"
+                (click)="openInstitutionalAccessDialog()"
+              >
+                Apply for Managed Access
+              </button>
+              <p class="pdm-home__managed-access-tagline" id="pdm-home-managed-access-tagline">
+                Hosted and operated by ChatPDM until your institution is ready for a private trust boundary.
+              </p>
+            </div>
+
             <div class="pdm-home__signal-row" aria-label="Homepage proof signals">
               @for (signal of heroSignals; track signal.id) {
                 <button

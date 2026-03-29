@@ -7,6 +7,7 @@
 process.env.NODE_ENV = 'test';
 
 const assert = require('node:assert/strict');
+const crypto = require('node:crypto');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
@@ -17,6 +18,31 @@ const MANAGED_ACCESS_ASSURANCE_ANCHOR_DIRECTORY = fs.mkdtempSync(
   path.join(os.tmpdir(), 'chatpdm-managed-access-anchor-'),
 );
 process.env.MANAGED_ACCESS_ASSURANCE_ANCHOR_DIRECTORY = MANAGED_ACCESS_ASSURANCE_ANCHOR_DIRECTORY;
+const MANAGED_ACCESS_ASSURANCE_CHECKPOINT_DIRECTORY = fs.mkdtempSync(
+  path.join(os.tmpdir(), 'chatpdm-managed-access-checkpoint-'),
+);
+process.env.MANAGED_ACCESS_ASSURANCE_CHECKPOINT_DIRECTORY = MANAGED_ACCESS_ASSURANCE_CHECKPOINT_DIRECTORY;
+const {
+  privateKey: managedAccessCheckpointPrivateKey,
+  publicKey: managedAccessCheckpointPublicKey,
+} = crypto.generateKeyPairSync('ed25519');
+const MANAGED_ACCESS_ASSURANCE_CONFIG_MODULE_PATH = require.resolve(
+  '../src/modules/managed-access/config/managed-access-assurance.config',
+);
+const MANAGED_ACCESS_ASSURANCE_CHECKPOINT_SIGNING_KEY_ID = 'managed-access-test-key';
+process.env.MANAGED_ACCESS_ASSURANCE_CHECKPOINT_SIGNING_KEY_ID =
+  MANAGED_ACCESS_ASSURANCE_CHECKPOINT_SIGNING_KEY_ID;
+process.env.MANAGED_ACCESS_ASSURANCE_CHECKPOINT_SIGNING_PRIVATE_KEY_PEM =
+  managedAccessCheckpointPrivateKey.export({
+    type: 'pkcs8',
+    format: 'pem',
+  });
+process.env.MANAGED_ACCESS_ASSURANCE_CHECKPOINT_PUBLIC_KEYS_JSON = JSON.stringify({
+  [MANAGED_ACCESS_ASSURANCE_CHECKPOINT_SIGNING_KEY_ID]: managedAccessCheckpointPublicKey.export({
+    type: 'spki',
+    format: 'pem',
+  }),
+});
 
 const { connectMongo, disconnectMongo } = require('../src/config/mongoose');
 const {
@@ -25,6 +51,9 @@ const {
 const {
   MANAGED_ACCESS_ASSURANCE_ANCHOR_SNAPSHOT_SCHEMA_VERSION,
   MANAGED_ACCESS_ASSURANCE_CANONICALIZATION_VERSION,
+  MANAGED_ACCESS_ASSURANCE_CHECKPOINT_PAYLOAD_SCHEMA_VERSION,
+  MANAGED_ACCESS_ASSURANCE_CHECKPOINT_SIGNATURE_ALGORITHM,
+  MANAGED_ACCESS_ASSURANCE_CHECKPOINT_SIGNATURE_SCHEMA_VERSION,
   MANAGED_ACCESS_ASSURANCE_HASH_VERSION,
 } = require('../src/modules/managed-access/config/managed-access-assurance.config');
 const {
@@ -47,6 +76,16 @@ const {
   readLatestProvisioningEvidenceAnchorSnapshot,
   rebuildProvisioningEvidenceAnchorSnapshot,
 } = require('../src/modules/managed-access/provisioning-evidence-anchor.service');
+const {
+  PROVISIONING_EVIDENCE_CHECKPOINT_TYPE,
+  buildProvisioningEvidenceCheckpointPayload,
+  buildProvisioningEvidenceCheckpointPath,
+  inspectProvisioningEvidenceSignedCheckpoint,
+  readLatestProvisioningEvidenceSignedCheckpoint,
+  rebuildProvisioningEvidenceSignedCheckpoint,
+  signProvisioningEvidenceCheckpointPayload,
+  writeProvisioningEvidenceSignedCheckpointFile,
+} = require('../src/modules/managed-access/provisioning-evidence-checkpoint.service');
 const {
   verifyProvisioningEvidenceChain,
 } = require('../src/modules/managed-access/provisioning-evidence-chain-verifier');
@@ -321,6 +360,56 @@ function buildExpectedAnchorSnapshot({
     canonicalizationVersion: MANAGED_ACCESS_ASSURANCE_CANONICALIZATION_VERSION,
     createdAt,
   };
+}
+
+function buildExpectedSignedCheckpoint({
+  requestId,
+  sequence,
+  chainHeadHash,
+}) {
+  const payload = {
+    checkpointPayloadSchemaVersion: MANAGED_ACCESS_ASSURANCE_CHECKPOINT_PAYLOAD_SCHEMA_VERSION,
+    checkpointType: PROVISIONING_EVIDENCE_CHECKPOINT_TYPE,
+    requestId,
+    chainHeadSequence: sequence,
+    chainHeadHash,
+    hashVersion: MANAGED_ACCESS_ASSURANCE_HASH_VERSION,
+    canonicalizationVersion: MANAGED_ACCESS_ASSURANCE_CANONICALIZATION_VERSION,
+  };
+  const signingResult = signProvisioningEvidenceCheckpointPayload(payload);
+  assert.equal(signingResult.ok, true);
+
+  return {
+    payload,
+    signature: signingResult.signature,
+  };
+}
+
+function loadManagedAccessAssuranceConfigWithCheckpointPublicKeysJson(publicKeysJson) {
+  const previousPublicKeysJson = process.env.MANAGED_ACCESS_ASSURANCE_CHECKPOINT_PUBLIC_KEYS_JSON;
+  let loadedConfig;
+
+  delete require.cache[MANAGED_ACCESS_ASSURANCE_CONFIG_MODULE_PATH];
+
+  if (publicKeysJson === undefined) {
+    delete process.env.MANAGED_ACCESS_ASSURANCE_CHECKPOINT_PUBLIC_KEYS_JSON;
+  } else {
+    process.env.MANAGED_ACCESS_ASSURANCE_CHECKPOINT_PUBLIC_KEYS_JSON = publicKeysJson;
+  }
+
+  try {
+    loadedConfig = require('../src/modules/managed-access/config/managed-access-assurance.config');
+  } finally {
+    delete require.cache[MANAGED_ACCESS_ASSURANCE_CONFIG_MODULE_PATH];
+
+    if (previousPublicKeysJson === undefined) {
+      delete process.env.MANAGED_ACCESS_ASSURANCE_CHECKPOINT_PUBLIC_KEYS_JSON;
+    } else {
+      process.env.MANAGED_ACCESS_ASSURANCE_CHECKPOINT_PUBLIC_KEYS_JSON = previousPublicKeysJson;
+    }
+  }
+
+  return loadedConfig;
 }
 
 async function assertIndexNames(model, expectedNames) {
@@ -821,6 +910,62 @@ async function main() {
     );
     process.stdout.write('PASS managed_access_phase_e_anchor_snapshot_read_success\n');
 
+    const expectedCheckpointPath = path.join(
+      MANAGED_ACCESS_ASSURANCE_CHECKPOINT_DIRECTORY,
+      managedAccessRequest._id.toHexString(),
+      'sequence-2.checkpoint.json',
+    );
+    const expectedSignedCheckpoint = buildExpectedSignedCheckpoint({
+      requestId: managedAccessRequest._id.toHexString(),
+      sequence: 2,
+      chainHeadHash: secondProvisioningEvidenceEvent.eventHash,
+    });
+    const checkpointWriteResult = await rebuildProvisioningEvidenceSignedCheckpoint(
+      managedAccessRequest._id,
+    );
+    assert.deepEqual(
+      checkpointWriteResult,
+      {
+        status: 'written',
+        reason: 'checkpoint_written',
+        requestId: managedAccessRequest._id.toHexString(),
+        checkpointPath: expectedCheckpointPath,
+        checkpoint: expectedSignedCheckpoint,
+        verificationResult: validVerificationResult,
+      },
+    );
+    assert.equal(fs.existsSync(expectedCheckpointPath), true);
+    process.stdout.write('PASS managed_access_phase_e_signed_checkpoint_creation\n');
+
+    const checkpointReadResult = await readLatestProvisioningEvidenceSignedCheckpoint(
+      managedAccessRequest._id,
+    );
+    assert.deepEqual(
+      checkpointReadResult,
+      {
+        status: 'valid',
+        reason: 'checkpoint_readable',
+        requestId: managedAccessRequest._id.toHexString(),
+        checkpointPath: expectedCheckpointPath,
+        checkpoint: expectedSignedCheckpoint,
+      },
+    );
+    const checkpointInspectionResult = await inspectProvisioningEvidenceSignedCheckpoint(
+      managedAccessRequest._id,
+    );
+    assert.deepEqual(
+      checkpointInspectionResult,
+      {
+        status: 'valid',
+        reason: 'checkpoint_valid',
+        requestId: managedAccessRequest._id.toHexString(),
+        checkpointPath: expectedCheckpointPath,
+        checkpoint: expectedSignedCheckpoint,
+        verificationResult: validVerificationResult,
+      },
+    );
+    process.stdout.write('PASS managed_access_phase_e_signed_checkpoint_valid_signature\n');
+
     await assert.rejects(
       async () => ProvisioningEvidenceEvent.create({
         requestId: managedAccessRequest._id,
@@ -1061,6 +1206,32 @@ async function main() {
     );
     process.stdout.write('PASS managed_access_phase_e_anchor_snapshot_missing_is_nonfatal\n');
 
+    const missingCheckpointScenario = await createVerifierScenarioChain(
+      'checkpoint-missing',
+      {
+        eventCount: 2,
+        baseTime: new Date('2026-03-28T13:35:00.000Z'),
+      },
+    );
+    const missingCheckpointVerificationResult = await verifyProvisioningEvidenceChain(
+      missingCheckpointScenario.managedAccessRequest._id,
+    );
+    const missingCheckpointInspectionResult = await inspectProvisioningEvidenceSignedCheckpoint(
+      missingCheckpointScenario.managedAccessRequest._id,
+    );
+    assert.deepEqual(
+      missingCheckpointInspectionResult,
+      {
+        status: 'missing',
+        reason: 'checkpoint_missing',
+        requestId: missingCheckpointScenario.managedAccessRequest._id.toHexString(),
+        checkpointPath: null,
+        checkpoint: null,
+        verificationResult: missingCheckpointVerificationResult,
+      },
+    );
+    process.stdout.write('PASS managed_access_phase_e_signed_checkpoint_missing_is_nonfatal\n');
+
     const malformedSnapshotScenario = await createVerifierScenarioChain(
       'snapshot-malformed',
       {
@@ -1109,6 +1280,49 @@ async function main() {
       malformedSnapshotVerificationResult,
     );
     process.stdout.write('PASS managed_access_phase_e_anchor_snapshot_corruption_does_not_override_replay\n');
+
+    const malformedCheckpointScenario = await createVerifierScenarioChain(
+      'checkpoint-malformed',
+      {
+        eventCount: 2,
+        baseTime: new Date('2026-03-28T13:45:00.000Z'),
+      },
+    );
+    const malformedCheckpointWriteResult = await rebuildProvisioningEvidenceSignedCheckpoint(
+      malformedCheckpointScenario.managedAccessRequest._id,
+    );
+    fs.writeFileSync(malformedCheckpointWriteResult.checkpointPath, '{"broken":', 'utf8');
+    const malformedCheckpointReadResult = await readLatestProvisioningEvidenceSignedCheckpoint(
+      malformedCheckpointScenario.managedAccessRequest._id,
+    );
+    assert.deepEqual(
+      malformedCheckpointReadResult,
+      {
+        status: 'invalid',
+        reason: 'checkpoint_malformed',
+        requestId: malformedCheckpointScenario.managedAccessRequest._id.toHexString(),
+        checkpointPath: malformedCheckpointWriteResult.checkpointPath,
+        checkpoint: null,
+      },
+    );
+    const malformedCheckpointVerificationResult = await verifyProvisioningEvidenceChain(
+      malformedCheckpointScenario.managedAccessRequest._id,
+    );
+    const malformedCheckpointInspectionResult = await inspectProvisioningEvidenceSignedCheckpoint(
+      malformedCheckpointScenario.managedAccessRequest._id,
+    );
+    assert.deepEqual(
+      malformedCheckpointInspectionResult,
+      {
+        status: 'invalid',
+        reason: 'checkpoint_malformed',
+        requestId: malformedCheckpointScenario.managedAccessRequest._id.toHexString(),
+        checkpointPath: malformedCheckpointWriteResult.checkpointPath,
+        checkpoint: null,
+        verificationResult: malformedCheckpointVerificationResult,
+      },
+    );
+    process.stdout.write('PASS managed_access_phase_e_signed_checkpoint_malformed_is_rejected\n');
 
     const staleSnapshotScenario = await createVerifierScenarioChain(
       'snapshot-replay-mismatch',
@@ -1194,6 +1408,266 @@ async function main() {
       },
     );
     process.stdout.write('PASS managed_access_phase_e_anchor_snapshot_rebuild_restores_current_head\n');
+
+    const tamperedCheckpointPayloadScenario = await createVerifierScenarioChain(
+      'checkpoint-payload-mismatch',
+      {
+        eventCount: 2,
+        baseTime: new Date('2026-03-28T13:55:00.000Z'),
+      },
+    );
+    const tamperedCheckpointPayloadVerificationResult = await verifyProvisioningEvidenceChain(
+      tamperedCheckpointPayloadScenario.managedAccessRequest._id,
+    );
+    const tamperedCheckpointPayload = buildProvisioningEvidenceCheckpointPayload({
+      requestId: tamperedCheckpointPayloadScenario.managedAccessRequest._id.toHexString(),
+      verificationResult: tamperedCheckpointPayloadVerificationResult,
+    });
+    tamperedCheckpointPayload.chainHeadHash = 'a'.repeat(64);
+    const tamperedCheckpointPayloadEnvelope = {
+      payload: tamperedCheckpointPayload,
+      signature: signProvisioningEvidenceCheckpointPayload(tamperedCheckpointPayload).signature,
+    };
+    const tamperedCheckpointPayloadPath = buildProvisioningEvidenceCheckpointPath(
+      tamperedCheckpointPayloadScenario.managedAccessRequest._id,
+      tamperedCheckpointPayload.chainHeadSequence,
+    );
+    await writeProvisioningEvidenceSignedCheckpointFile(
+      tamperedCheckpointPayloadPath,
+      tamperedCheckpointPayloadEnvelope,
+    );
+    const tamperedCheckpointPayloadInspectionResult = await inspectProvisioningEvidenceSignedCheckpoint(
+      tamperedCheckpointPayloadScenario.managedAccessRequest._id,
+    );
+    assert.deepEqual(
+      tamperedCheckpointPayloadInspectionResult,
+      {
+        status: 'invalid',
+        reason: 'checkpoint_payload_mismatch',
+        requestId: tamperedCheckpointPayloadScenario.managedAccessRequest._id.toHexString(),
+        checkpointPath: tamperedCheckpointPayloadPath,
+        checkpoint: tamperedCheckpointPayloadEnvelope,
+        verificationResult: tamperedCheckpointPayloadVerificationResult,
+      },
+    );
+    process.stdout.write('PASS managed_access_phase_e_signed_checkpoint_tampered_payload_detected\n');
+
+    const tamperedCheckpointSignatureScenario = await createVerifierScenarioChain(
+      'checkpoint-signature-invalid',
+      {
+        eventCount: 2,
+        baseTime: new Date('2026-03-28T14:05:00.000Z'),
+      },
+    );
+    const tamperedCheckpointSignatureWriteResult = await rebuildProvisioningEvidenceSignedCheckpoint(
+      tamperedCheckpointSignatureScenario.managedAccessRequest._id,
+    );
+    const tamperedCheckpointSignature = JSON.parse(
+      JSON.stringify(tamperedCheckpointSignatureWriteResult.checkpoint),
+    );
+    tamperedCheckpointSignature.signature.signature = `${
+      tamperedCheckpointSignature.signature.signature.startsWith('A') ? 'B' : 'A'
+    }${tamperedCheckpointSignature.signature.signature.slice(1)}`;
+    await writeProvisioningEvidenceSignedCheckpointFile(
+      tamperedCheckpointSignatureWriteResult.checkpointPath,
+      tamperedCheckpointSignature,
+    );
+    const tamperedCheckpointSignatureVerificationResult = await verifyProvisioningEvidenceChain(
+      tamperedCheckpointSignatureScenario.managedAccessRequest._id,
+    );
+    const tamperedCheckpointSignatureInspectionResult = await inspectProvisioningEvidenceSignedCheckpoint(
+      tamperedCheckpointSignatureScenario.managedAccessRequest._id,
+    );
+    assert.deepEqual(
+      tamperedCheckpointSignatureInspectionResult,
+      {
+        status: 'invalid',
+        reason: 'checkpoint_signature_invalid',
+        requestId: tamperedCheckpointSignatureScenario.managedAccessRequest._id.toHexString(),
+        checkpointPath: tamperedCheckpointSignatureWriteResult.checkpointPath,
+        checkpoint: tamperedCheckpointSignature,
+        verificationResult: tamperedCheckpointSignatureVerificationResult,
+      },
+    );
+    process.stdout.write('PASS managed_access_phase_e_signed_checkpoint_tampered_signature_detected\n');
+
+    const unknownCheckpointKeyScenario = await createVerifierScenarioChain(
+      'checkpoint-key-unknown',
+      {
+        eventCount: 2,
+        baseTime: new Date('2026-03-28T14:15:00.000Z'),
+      },
+    );
+    const unknownCheckpointKeyVerificationResult = await verifyProvisioningEvidenceChain(
+      unknownCheckpointKeyScenario.managedAccessRequest._id,
+    );
+    const unknownCheckpointKeyPayload = buildProvisioningEvidenceCheckpointPayload({
+      requestId: unknownCheckpointKeyScenario.managedAccessRequest._id.toHexString(),
+      verificationResult: unknownCheckpointKeyVerificationResult,
+    });
+    const unknownCheckpointKeyEnvelope = {
+      payload: unknownCheckpointKeyPayload,
+      signature: signProvisioningEvidenceCheckpointPayload(unknownCheckpointKeyPayload, {
+        keyId: 'managed-access-unknown-key',
+        privateKeyPem: process.env.MANAGED_ACCESS_ASSURANCE_CHECKPOINT_SIGNING_PRIVATE_KEY_PEM,
+      }).signature,
+    };
+    const unknownCheckpointKeyPath = buildProvisioningEvidenceCheckpointPath(
+      unknownCheckpointKeyScenario.managedAccessRequest._id,
+      unknownCheckpointKeyPayload.chainHeadSequence,
+    );
+    await writeProvisioningEvidenceSignedCheckpointFile(
+      unknownCheckpointKeyPath,
+      unknownCheckpointKeyEnvelope,
+    );
+    const unknownCheckpointKeyInspectionResult = await inspectProvisioningEvidenceSignedCheckpoint(
+      unknownCheckpointKeyScenario.managedAccessRequest._id,
+    );
+    assert.deepEqual(
+      unknownCheckpointKeyInspectionResult,
+      {
+        status: 'invalid',
+        reason: 'checkpoint_key_unknown',
+        requestId: unknownCheckpointKeyScenario.managedAccessRequest._id.toHexString(),
+        checkpointPath: unknownCheckpointKeyPath,
+        checkpoint: unknownCheckpointKeyEnvelope,
+        verificationResult: unknownCheckpointKeyVerificationResult,
+      },
+    );
+    process.stdout.write('PASS managed_access_phase_e_signed_checkpoint_unknown_key_is_rejected\n');
+
+    const invalidSigningKeyScenario = await createVerifierScenarioChain(
+      'checkpoint-signing-key-invalid',
+      {
+        eventCount: 2,
+        baseTime: new Date('2026-03-28T14:25:00.000Z'),
+      },
+    );
+    const invalidSigningKeyVerificationResult = await verifyProvisioningEvidenceChain(
+      invalidSigningKeyScenario.managedAccessRequest._id,
+    );
+    const invalidSigningKeyWriteResult = await rebuildProvisioningEvidenceSignedCheckpoint(
+      invalidSigningKeyScenario.managedAccessRequest._id,
+      {
+        keyId: MANAGED_ACCESS_ASSURANCE_CHECKPOINT_SIGNING_KEY_ID,
+        privateKeyPem: 'bad-pem',
+      },
+    );
+    assert.deepEqual(
+      invalidSigningKeyWriteResult,
+      {
+        status: 'skipped',
+        reason: 'checkpoint_signing_key_invalid',
+        requestId: invalidSigningKeyScenario.managedAccessRequest._id.toHexString(),
+        checkpointPath: null,
+        checkpoint: null,
+        verificationResult: invalidSigningKeyVerificationResult,
+      },
+    );
+    assert.deepEqual(
+      await verifyProvisioningEvidenceChain(invalidSigningKeyScenario.managedAccessRequest._id),
+      invalidSigningKeyVerificationResult,
+    );
+    process.stdout.write('PASS managed_access_phase_e_signed_checkpoint_invalid_signing_key_is_contained\n');
+
+    const invalidVerificationKeyScenario = await createVerifierScenarioChain(
+      'checkpoint-verification-key-invalid',
+      {
+        eventCount: 2,
+        baseTime: new Date('2026-03-28T14:35:00.000Z'),
+      },
+    );
+    const invalidVerificationKeyWriteResult = await rebuildProvisioningEvidenceSignedCheckpoint(
+      invalidVerificationKeyScenario.managedAccessRequest._id,
+    );
+    const invalidVerificationKeyReplayResult = await verifyProvisioningEvidenceChain(
+      invalidVerificationKeyScenario.managedAccessRequest._id,
+    );
+    const invalidVerificationKeyInspectionResult = await inspectProvisioningEvidenceSignedCheckpoint(
+      invalidVerificationKeyScenario.managedAccessRequest._id,
+      {
+        publicKeys: {
+          [MANAGED_ACCESS_ASSURANCE_CHECKPOINT_SIGNING_KEY_ID]: 'bad-pem',
+        },
+        publicKeysStatus: 'valid',
+      },
+    );
+    assert.deepEqual(
+      invalidVerificationKeyInspectionResult,
+      {
+        status: 'invalid',
+        reason: 'checkpoint_verification_key_invalid',
+        requestId: invalidVerificationKeyScenario.managedAccessRequest._id.toHexString(),
+        checkpointPath: invalidVerificationKeyWriteResult.checkpointPath,
+        checkpoint: invalidVerificationKeyWriteResult.checkpoint,
+        verificationResult: invalidVerificationKeyReplayResult,
+      },
+    );
+    assert.deepEqual(
+      await verifyProvisioningEvidenceChain(invalidVerificationKeyScenario.managedAccessRequest._id),
+      invalidVerificationKeyReplayResult,
+    );
+    process.stdout.write('PASS managed_access_phase_e_signed_checkpoint_invalid_verification_key_is_contained\n');
+
+    const invalidKeyRegistryScenario = await createVerifierScenarioChain(
+      'checkpoint-key-registry-invalid',
+      {
+        eventCount: 2,
+        baseTime: new Date('2026-03-28T14:45:00.000Z'),
+      },
+    );
+    const invalidKeyRegistryWriteResult = await rebuildProvisioningEvidenceSignedCheckpoint(
+      invalidKeyRegistryScenario.managedAccessRequest._id,
+    );
+    const invalidKeyRegistryReplayResult = await verifyProvisioningEvidenceChain(
+      invalidKeyRegistryScenario.managedAccessRequest._id,
+    );
+    const invalidKeyRegistryInspectionResult = await inspectProvisioningEvidenceSignedCheckpoint(
+      invalidKeyRegistryScenario.managedAccessRequest._id,
+      {
+        publicKeysStatus: 'invalid',
+        publicKeysReason: 'checkpoint_key_registry_config_invalid',
+      },
+    );
+    assert.deepEqual(
+      invalidKeyRegistryInspectionResult,
+      {
+        status: 'invalid',
+        reason: 'checkpoint_key_registry_config_invalid',
+        requestId: invalidKeyRegistryScenario.managedAccessRequest._id.toHexString(),
+        checkpointPath: invalidKeyRegistryWriteResult.checkpointPath,
+        checkpoint: invalidKeyRegistryWriteResult.checkpoint,
+        verificationResult: invalidKeyRegistryReplayResult,
+      },
+    );
+    assert.deepEqual(
+      await verifyProvisioningEvidenceChain(invalidKeyRegistryScenario.managedAccessRequest._id),
+      invalidKeyRegistryReplayResult,
+    );
+    process.stdout.write('PASS managed_access_phase_e_signed_checkpoint_invalid_key_registry_is_contained\n');
+
+    const invalidKeyRegistryConfigLoad = loadManagedAccessAssuranceConfigWithCheckpointPublicKeysJson(
+      '{bad',
+    );
+    assert.equal(
+      invalidKeyRegistryConfigLoad.MANAGED_ACCESS_ASSURANCE_CHECKPOINT_PUBLIC_KEYS_STATUS,
+      'invalid',
+    );
+    assert.equal(
+      invalidKeyRegistryConfigLoad.MANAGED_ACCESS_ASSURANCE_CHECKPOINT_PUBLIC_KEYS_REASON,
+      'checkpoint_key_registry_config_invalid',
+    );
+    assert.deepEqual(
+      invalidKeyRegistryConfigLoad.MANAGED_ACCESS_ASSURANCE_CHECKPOINT_PUBLIC_KEYS,
+      {},
+    );
+    process.stdout.write('PASS managed_access_phase_e_signed_checkpoint_invalid_key_registry_config_load_is_contained\n');
+
+    assert.deepEqual(
+      await verifyProvisioningEvidenceChain(tamperedCheckpointSignatureScenario.managedAccessRequest._id),
+      tamperedCheckpointSignatureVerificationResult,
+    );
+    process.stdout.write('PASS managed_access_phase_e_signed_checkpoint_failure_does_not_override_replay\n');
 
     const sequenceGapScenario = await createVerifierScenarioChain(
       'sequence-gap',
@@ -1488,6 +1962,7 @@ async function main() {
     await disconnectMongo();
     await mongoServer.stop();
     fs.rmSync(MANAGED_ACCESS_ASSURANCE_ANCHOR_DIRECTORY, { recursive: true, force: true });
+    fs.rmSync(MANAGED_ACCESS_ASSURANCE_CHECKPOINT_DIRECTORY, { recursive: true, force: true });
   }
 }
 

@@ -1,0 +1,30 @@
+<section class="pdm-managed-access-result">
+  <div class="pdm-managed-access-result__inner">
+    <p class="pdm-managed-access-result__eyebrow">{{ viewModel().eyebrow }}</p>
+    <h1 class="pdm-managed-access-result__title">{{ viewModel().title }}</h1>
+    <p class="pdm-managed-access-result__lead">{{ viewModel().lead }}</p>
+
+    <section class="pdm-managed-access-result__surface pdm-site-surface" aria-label="Verification result">
+      <div class="pdm-managed-access-result__grid">
+        <article class="pdm-managed-access-result__card">
+          <p class="pdm-managed-access-result__label">{{ viewModel().statusLabel }}</p>
+          <p class="pdm-managed-access-result__value">{{ viewModel().statusValue }}</p>
+        </article>
+
+        <article class="pdm-managed-access-result__card">
+          <p class="pdm-managed-access-result__label">Boundary</p>
+          <p class="pdm-managed-access-result__value">Work email verification only</p>
+        </article>
+      </div>
+
+      <p class="pdm-managed-access-result__detail">{{ viewModel().detail }}</p>
+
+      <div class="pdm-managed-access-result__actions">
+        <a class="pdm-site-button" routerLink="/">Return to homepage</a>
+        <a class="pdm-managed-access-result__support" [href]="'mailto:' + supportEmail">
+          {{ supportEmail }}
+        </a>
+      </div>
+    </section>
+  </div>
+</section>

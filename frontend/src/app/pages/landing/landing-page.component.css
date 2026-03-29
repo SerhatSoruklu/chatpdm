@@ -236,6 +236,25 @@
   line-height: 1.76;
 }
 
+.pdm-home__managed-access {
+  display: grid;
+  gap: 12px;
+  margin-top: 24px;
+  max-width: 36rem;
+}
+
+.pdm-home__managed-access-button {
+  width: 100%;
+  justify-content: center;
+}
+
+.pdm-home__managed-access-tagline {
+  margin: 0;
+  color: #526277;
+  font-size: 0.94rem;
+  line-height: 1.72;
+}
+
 .pdm-home__signal-row {
   gap: 10px;
   margin-top: 24px;
@@ -1339,6 +1358,11 @@
 
   .pdm-home__input-shell {
     padding: 20px;
+  }
+
+  .pdm-home__managed-access-button {
+    width: auto;
+    justify-self: start;
   }
 
   .pdm-home__resolution-strip {

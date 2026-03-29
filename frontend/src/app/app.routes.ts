@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { CookiesPageComponent } from './pages/cookies-page/cookies-page.component';
 import { InspectIndexPageComponent } from './pages/inspect-index-page/inspect-index-page.component';
 import { LandingPageComponent } from './pages/landing/landing-page.component';
+import { ManagedAccessVerificationResultComponent } from './pages/managed-access-verification-result/managed-access-verification-result.component';
 import { PolicyPageComponent } from './pages/policy-page/policy-page.component';
 import { PublicPageComponent } from './pages/public-page/public-page.component';
 import { TermsPageComponent } from './pages/terms-page/terms-page.component';
@@ -47,6 +48,11 @@ export const routes: Routes = [
     path: 'contact',
     component: PublicPageComponent,
     data: pageRouteData('contact', 'static.contact'),
+  },
+  {
+    path: 'managed-access/verification-result',
+    component: ManagedAccessVerificationResultComponent,
+    data: seoRouteData('static.managed-access-verification-result'),
   },
   {
     path: 'privacy',

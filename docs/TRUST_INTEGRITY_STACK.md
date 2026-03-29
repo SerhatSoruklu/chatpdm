@@ -31,10 +31,12 @@ Public trust alignment is invalid when either runtime evidence or governance evi
 
 Runtime integrity governs executable truth.
 It governs deterministic replay, refusal integrity, contract stability, and safe-failure behavior.
+The binding runtime-law document for this layer is [INTERGRITY_RUNTIME_LAWS.md](./INTERGRITY_RUNTIME_LAWS.md).
 
 Runtime integrity requires:
 
 - exact canonical resolution to remain stable for the authored runtime boundary
+- canonical identity inputs must match exact canonical form at the system boundary; near-valid or malformed identity inputs shall be rejected rather than normalized
 - same input to produce the same canonical output
 - refusal behavior to fail closed outside authored scope
 - response contracts to remain explicit and auditable
@@ -43,12 +45,13 @@ Runtime integrity requires:
 Runtime integrity is invalid when:
 
 - the same input produces inconsistent outputs
+- identity-bearing inputs are silently normalized, repaired, or coerced into canonical form after acceptance
 - refusal behavior widens into fuzzy acceptance
 - unsupported or ambiguous inputs begin resolving silently
 - output contracts shift without explicit evidence and inspection
 - package or boundary leakage alters core resolution behavior without explicit authority
 
-Runtime integrity shall not be preserved by silent normalization, hidden fallback, or post-hoc explanation laundering.
+Runtime integrity shall not be preserved by silent normalization, including identity repair, hidden fallback, or post-hoc explanation laundering.
 
 ## 4. Governance Integrity
 

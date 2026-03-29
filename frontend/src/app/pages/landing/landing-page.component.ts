@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 
@@ -26,6 +27,7 @@ import {
   ReadingLensMode,
 } from '../../core/concepts/derived-explanation-reading-lens-ui.policy';
 import { FeedbackService } from '../../core/feedback/feedback.service';
+import { InstitutionalAccessDialogComponent } from './components/institutional-access-dialog/institutional-access-dialog.component';
 import type {
   AmbiguousSelectionOrigin,
   EntryFeedbackState,
@@ -222,6 +224,7 @@ const NO_EXACT_MATCH_FEEDBACK_OPTIONS: FeedbackOption[] = [
 export class LandingPageComponent {
   private readonly resolver = inject(ConceptResolverService);
   private readonly feedbackService = inject(FeedbackService);
+  private readonly dialog = inject(MatDialog);
   private readonly directConceptPattern = /^[a-z]+(?:[ -][a-z]+){0,3}$/i;
   private readonly canonicalLookupPattern = /^define\s+[a-z]+(?:[ -][a-z]+){0,3}$/i;
   private readonly controlledComparisonPattern =
@@ -322,6 +325,18 @@ export class LandingPageComponent {
     this.activeHeroSignalId.update((activeSignalId) => (
       activeSignalId === signalId ? null : signalId
     ));
+  }
+
+  protected openInstitutionalAccessDialog(): void {
+    this.dialog.open(InstitutionalAccessDialogComponent, {
+      autoFocus: false,
+      restoreFocus: true,
+      width: 'calc(100vw - 24px)',
+      maxWidth: '960px',
+      maxHeight: 'calc(100vh - 24px)',
+      panelClass: 'pdm-managed-access-dialog-panel',
+      backdropClass: 'pdm-managed-access-dialog-backdrop',
+    });
   }
 
   protected signalTargetHref(targetId: string): string {
