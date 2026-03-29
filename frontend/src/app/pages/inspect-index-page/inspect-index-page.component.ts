@@ -25,6 +25,12 @@ export class InspectIndexPageComponent {
       detail: 'Current inspectable privacy behavior surface with traceability and lifecycle evidence.',
     },
     {
+      title: 'Data retention inspect',
+      subtitle: 'lifecycle, storage, expiry, and session-control evidence',
+      route: '/inspect/data-retention',
+      detail: 'Current inspectable data-retention surface for feedback persistence, browser continuity, and request-bound transport.',
+    },
+    {
       title: 'Cookie inspect',
       subtitle: 'browser and SSR cookie transport evidence',
       route: '/inspect/cookies',

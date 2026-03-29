@@ -12,6 +12,45 @@ const appRoutesPath = join(currentDir, '../src/app/app.routes.ts');
 const publicPageTypesPath = join(currentDir, '../src/app/pages/public-page/public-page.types.ts');
 const seoLegalPath = join(currentDir, '../src/app/seo/registry/seo.legal.ts');
 
+interface PolicyRouteSpec {
+  key: keyof typeof POLICY_SURFACE_DATA;
+  publicPath: string;
+  inspectPath: string;
+  inspectSeoKey: string;
+  policyFile: string;
+}
+
+const routeSpecs: readonly PolicyRouteSpec[] = [
+  {
+    key: 'privacy',
+    publicPath: '/privacy',
+    inspectPath: '/inspect/privacy',
+    inspectSeoKey: 'legal.privacy.inspect',
+    policyFile: 'privacy.md',
+  },
+  {
+    key: 'data-retention',
+    publicPath: '/data-retention',
+    inspectPath: '/inspect/data-retention',
+    inspectSeoKey: 'legal.data-retention.inspect',
+    policyFile: 'data-retention.md',
+  },
+  {
+    key: 'terms',
+    publicPath: '/terms',
+    inspectPath: '/inspect/terms',
+    inspectSeoKey: 'legal.terms.inspect',
+    policyFile: 'terms.md',
+  },
+  {
+    key: 'cookies',
+    publicPath: '/cookies',
+    inspectPath: '/inspect/cookies',
+    inspectSeoKey: 'legal.cookies.inspect',
+    policyFile: 'cookies.md',
+  },
+] as const;
+
 function main(): void {
   const routeSource = readFileSync(appRoutesPath, 'utf8');
   const publicPageTypesSource = readFileSync(publicPageTypesPath, 'utf8');
@@ -34,6 +73,11 @@ function assertRouteIdentity(routeSource: string): void {
   );
   assertBlock(
     routeSource,
+    'data-retention public route',
+    /path:\s*'data-retention'[\s\S]*?component:\s*PublicPageComponent[\s\S]*?pageRouteData\('data-retention',\s*'legal\.data-retention'\)/,
+  );
+  assertBlock(
+    routeSource,
     'terms public route',
     /path:\s*'terms'[\s\S]*?component:\s*TermsPageComponent[\s\S]*?seoRouteData\('legal\.terms'\)/,
   );
@@ -43,37 +87,21 @@ function assertRouteIdentity(routeSource: string): void {
     /path:\s*'cookies'[\s\S]*?component:\s*CookiesPageComponent[\s\S]*?seoRouteData\('legal\.cookies'\)/,
   );
 
-  assertBlock(
-    routeSource,
-    'privacy inspect redirect',
-    /path:\s*'privacy\/inspect'[\s\S]*?redirectTo:\s*'inspect\/privacy'/,
-  );
-  assertBlock(
-    routeSource,
-    'terms inspect redirect',
-    /path:\s*'terms\/inspect'[\s\S]*?redirectTo:\s*'inspect\/terms'/,
-  );
-  assertBlock(
-    routeSource,
-    'cookies inspect redirect',
-    /path:\s*'cookies\/inspect'[\s\S]*?redirectTo:\s*'inspect\/cookies'/,
-  );
+  for (const spec of routeSpecs) {
+    const publicSlug = spec.publicPath.slice(1);
+    const inspectSlug = spec.inspectPath.slice(1);
 
-  assertBlock(
-    routeSource,
-    'privacy inspect route',
-    /path:\s*'inspect\/privacy'[\s\S]*?component:\s*PolicyPageComponent[\s\S]*?policyRouteData\('privacy',\s*'legal\.privacy\.inspect'\)/,
-  );
-  assertBlock(
-    routeSource,
-    'terms inspect route',
-    /path:\s*'inspect\/terms'[\s\S]*?component:\s*PolicyPageComponent[\s\S]*?policyRouteData\('terms',\s*'legal\.terms\.inspect'\)/,
-  );
-  assertBlock(
-    routeSource,
-    'cookies inspect route',
-    /path:\s*'inspect\/cookies'[\s\S]*?component:\s*PolicyPageComponent[\s\S]*?policyRouteData\('cookies',\s*'legal\.cookies\.inspect'\)/,
-  );
+    assertBlock(
+      routeSource,
+      `${spec.key} inspect redirect`,
+      new RegExp(`path:\\s*'${escapeRegExp(publicSlug)}\\/inspect'[\\s\\S]*?redirectTo:\\s*'${escapeRegExp(inspectSlug)}'`),
+    );
+    assertBlock(
+      routeSource,
+      `${spec.key} inspect route`,
+      new RegExp(`path:\\s*'${escapeRegExp(inspectSlug)}'[\\s\\S]*?component:\\s*PolicyPageComponent[\\s\\S]*?policyRouteData\\('${escapeRegExp(spec.key)}',\\s*'${escapeRegExp(spec.inspectSeoKey)}'\\)`),
+    );
+  }
   assertBlock(
     routeSource,
     'inspect index route',
@@ -86,6 +114,11 @@ function assertPublicPageBoundary(publicPageTypesSource: string): void {
     publicPageTypesSource,
     /\|\s*'privacy'/,
     'Public page types must still include privacy as the public human-readable route.',
+  );
+  assert.match(
+    publicPageTypesSource,
+    /\|\s*'data-retention'/,
+    'Public page types must include data-retention as the public human-readable route.',
   );
   assert.doesNotMatch(
     publicPageTypesSource,
@@ -100,60 +133,40 @@ function assertPublicPageBoundary(publicPageTypesSource: string): void {
 }
 
 function assertSeoParity(seoLegalSource: string): void {
-  assertBlock(
-    seoLegalSource,
-    'privacy SEO',
-    /'legal\.privacy':\s*\{[\s\S]*?canonicalPath:\s*'\/privacy'/,
-  );
-  assertBlock(
-    seoLegalSource,
-    'terms SEO',
-    /'legal\.terms':\s*\{[\s\S]*?canonicalPath:\s*'\/terms'/,
-  );
-  assertBlock(
-    seoLegalSource,
-    'cookies SEO',
-    /'legal\.cookies':\s*\{[\s\S]*?canonicalPath:\s*'\/cookies'/,
-  );
-  assertBlock(
-    seoLegalSource,
-    'privacy inspect SEO',
-    /'legal\.privacy\.inspect':\s*\{[\s\S]*?canonicalPath:\s*'\/inspect\/privacy'/,
-  );
-  assertBlock(
-    seoLegalSource,
-    'terms inspect SEO',
-    /'legal\.terms\.inspect':\s*\{[\s\S]*?canonicalPath:\s*'\/inspect\/terms'/,
-  );
-  assertBlock(
-    seoLegalSource,
-    'cookies inspect SEO',
-    /'legal\.cookies\.inspect':\s*\{[\s\S]*?canonicalPath:\s*'\/inspect\/cookies'/,
-  );
+  for (const spec of routeSpecs) {
+    assertBlock(
+      seoLegalSource,
+      `${spec.key} SEO`,
+      new RegExp(`'${escapeRegExp(spec.inspectSeoKey.replace(/\.inspect$/, ''))}':\\s*\\{[\\s\\S]*?canonicalPath:\\s*'${escapeRegExp(spec.publicPath)}'`),
+    );
+    assertBlock(
+      seoLegalSource,
+      `${spec.key} inspect SEO`,
+      new RegExp(`'${escapeRegExp(spec.inspectSeoKey)}':\\s*\\{[\\s\\S]*?canonicalPath:\\s*'${escapeRegExp(spec.inspectPath)}'`),
+    );
+  }
 }
 
 function assertSurfaceTruthIdentity(): void {
-  const { privacy, cookies, terms } = POLICY_SURFACE_DATA;
+  for (const spec of routeSpecs) {
+    const surface = POLICY_SURFACE_DATA[spec.key];
+    assert.equal(surface.route, spec.inspectPath);
+    assert.ok(
+      surface.claims.every((claim) => claim.policyFile === spec.policyFile),
+      `${spec.key} surface claims must remain ${spec.policyFile}-backed.`,
+    );
+  }
 
-  assert.equal(privacy.route, '/inspect/privacy');
-  assert.equal(cookies.route, '/inspect/cookies');
-  assert.equal(terms.route, '/inspect/terms');
+  const { privacy, 'data-retention': dataRetention, cookies, terms } = POLICY_SURFACE_DATA;
 
   assert.equal(privacy.cookiesTruth, undefined, 'Privacy must not gain cookies truth.');
   assert.equal(privacy.termsTruth, undefined, 'Privacy must not gain terms truth.');
+  assert.equal(dataRetention.cookiesTruth, undefined, 'Data-retention must not gain cookies truth.');
+  assert.equal(dataRetention.termsTruth, undefined, 'Data-retention must not gain terms truth.');
   assert.ok(cookies.cookiesTruth && cookies.cookiesTruth.length > 0, 'Cookies truth must exist.');
   assert.equal(cookies.termsTruth, undefined, 'Cookies must not gain terms truth.');
   assert.ok(terms.termsTruth, 'Terms truth must exist.');
   assert.equal(terms.cookiesTruth, undefined, 'Terms must not gain cookies truth.');
-
-  assert.ok(
-    cookies.claims.every((claim) => claim.policyFile === 'cookies.md'),
-    'Cookies surface claims must remain cookies-backed.',
-  );
-  assert.ok(
-    terms.claims.every((claim) => claim.policyFile === 'terms.md'),
-    'Terms surface claims must remain terms-backed.',
-  );
 
   for (const fact of cookies.cookiesTruth ?? []) {
     assert.ok(
@@ -233,6 +246,10 @@ function assertPublicInspectParity(): void {
 
 function assertBlock(source: string, label: string, pattern: RegExp): void {
   assert.match(source, pattern, `Missing or malformed ${label}.`);
+}
+
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
 main();

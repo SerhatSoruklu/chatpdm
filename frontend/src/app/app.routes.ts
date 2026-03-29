@@ -54,8 +54,18 @@ export const routes: Routes = [
     data: pageRouteData('privacy', 'legal.privacy'),
   },
   {
+    path: 'data-retention',
+    component: PublicPageComponent,
+    data: pageRouteData('data-retention', 'legal.data-retention'),
+  },
+  {
     path: 'privacy/inspect',
     redirectTo: 'inspect/privacy',
+    pathMatch: 'full',
+  },
+  {
+    path: 'data-retention/inspect',
+    redirectTo: 'inspect/data-retention',
     pathMatch: 'full',
   },
   {
@@ -82,6 +92,11 @@ export const routes: Routes = [
     path: 'inspect/privacy',
     component: PolicyPageComponent,
     data: policyRouteData('privacy', 'legal.privacy.inspect'),
+  },
+  {
+    path: 'inspect/data-retention',
+    component: PolicyPageComponent,
+    data: policyRouteData('data-retention', 'legal.data-retention.inspect'),
   },
   {
     path: 'inspect/terms',

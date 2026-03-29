@@ -25,6 +25,22 @@ export const seoLegalEntries = {
     sitemapChangeFrequency: 'yearly',
     sitemapPriority: 0.2,
   },
+  'legal.data-retention': {
+    title: 'Data Retention / Data Usage - ChatPDM',
+    description: 'Implementation-backed view over current ChatPDM lifecycle, storage, and expiry behavior.',
+    canonicalPath: '/data-retention',
+    includeInSitemap: true,
+    sitemapChangeFrequency: 'yearly',
+    sitemapPriority: 0.3,
+  },
+  'legal.data-retention.inspect': {
+    title: 'Data Retention / Data Usage (Inspect) - ChatPDM',
+    description: 'Current inspectable data-retention surface for ChatPDM lifecycle, storage, and expiry evidence.',
+    canonicalPath: '/inspect/data-retention',
+    includeInSitemap: false,
+    sitemapChangeFrequency: 'yearly',
+    sitemapPriority: 0.2,
+  },
   'legal.terms': {
     title: 'Terms of Service - ChatPDM',
     description: 'Human-readable terms surface for the current ChatPDM modeled behavior and boundary rules.',

@@ -56,6 +56,7 @@ export class SiteFooterComponent {
       tone: 'secondary',
       links: [
         { label: 'Privacy Policy', route: '/privacy' },
+        { label: 'Data Retention / Data Usage', route: '/data-retention' },
         { label: 'Cookie Policy', route: '/cookies' },
         { label: 'Terms of Service', route: '/terms' },
       ],

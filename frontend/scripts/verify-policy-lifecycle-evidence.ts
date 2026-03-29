@@ -41,6 +41,27 @@ function main(): void {
     'Transport claims must stay request-bound and must not show storage or feedback controls.',
   );
 
+  const dataRetentionFeedbackClaim = findClaim('data-retention', 'data-retention-4');
+  const dataRetentionEvidence = getPolicyLifecycleEvidence(dataRetentionFeedbackClaim);
+
+  assert.ok(
+    dataRetentionEvidence,
+    'Expected lifecycle evidence for feedback-event stores claim data-retention-4.',
+  );
+  assert.equal(dataRetentionEvidence.title, 'Lifecycle evidence');
+  assert.deepEqual(
+    dataRetentionEvidence.items,
+    [
+      { label: 'Lifecycle', value: 'short-lived storage' },
+      { label: 'Deletion trigger', value: 'TTL expiry' },
+      { label: 'Retention window', value: '30 days' },
+      { label: 'Stored form', value: 'sha256 digest only' },
+      { label: 'Feedback controls', value: 'export and delete by sessionId' },
+      { label: 'Audit trail', value: 'whitelist-only operational metadata' },
+    ],
+    'Data-retention feedback lifecycle evidence must stay aligned with the live short-lived contract.',
+  );
+
   const nonLifecycleClaim = findClaim('terms', 'terms-1');
   const nonLifecycleEvidence = getPolicyLifecycleEvidence(nonLifecycleClaim);
 

@@ -46,22 +46,43 @@ const policiesDir = join(repoRoot, 'policies');
 const outputPath = join(currentDir, '../src/app/policies/policy-surface.data.ts');
 const phaseDPath = join(policiesDir, 'POLICY_AUDIT_PHASE_D.md');
 
-const policyFiles = {
-  privacy: join(policiesDir, 'privacy.md'),
-  terms: join(policiesDir, 'terms.md'),
-  cookies: join(policiesDir, 'cookies.md'),
-} as const;
+interface PolicySurfaceConfig {
+  policyFileName: string;
+  route: string;
+  title: string;
+  subtitle: string;
+  traceHeading: string;
+}
 
-const subtitles: Record<PolicySurfaceKey, string> = {
-  privacy: 'Inspectable privacy behavior',
-  cookies: 'Browser and SSR cookie behavior',
-  terms: 'Runtime rules and allowed use',
-};
-
-const routes: Record<PolicySurfaceKey, string> = {
-  privacy: '/inspect/privacy',
-  cookies: '/inspect/cookies',
-  terms: '/inspect/terms',
+const policySurfaceConfig: Record<PolicySurfaceKey, PolicySurfaceConfig> = {
+  privacy: {
+    policyFileName: 'privacy.md',
+    route: '/inspect/privacy',
+    title: 'Privacy Policy',
+    subtitle: 'Inspectable privacy behavior',
+    traceHeading: '## 2. Privacy Policy Traceability',
+  },
+  terms: {
+    policyFileName: 'terms.md',
+    route: '/inspect/terms',
+    title: 'Terms of Service',
+    subtitle: 'Runtime rules and allowed use',
+    traceHeading: '## 3. Terms of Service Traceability',
+  },
+  cookies: {
+    policyFileName: 'cookies.md',
+    route: '/inspect/cookies',
+    title: 'Cookie Policy',
+    subtitle: 'Browser and SSR cookie behavior',
+    traceHeading: '## 4. Cookie Policy Traceability',
+  },
+  'data-retention': {
+    policyFileName: 'data-retention.md',
+    route: '/inspect/data-retention',
+    title: 'Data Retention / Data Usage',
+    subtitle: 'Lifecycle, storage, and expiry evidence',
+    traceHeading: '## 5. Data Retention Policy Traceability',
+  },
 };
 
 const policyDrafts = buildDraftMetadata();
@@ -72,11 +93,13 @@ mkdirSync(dirname(outputPath), { recursive: true });
 writeFileSync(outputPath, buildOutputFile(outputData), 'utf8');
 
 function buildDraftMetadata(): Record<PolicySurfaceKey, DraftMeta> {
-  return {
-    privacy: parsePolicyDraft('privacy', readFileSync(policyFiles.privacy, 'utf8')),
-    terms: parsePolicyDraft('terms', readFileSync(policyFiles.terms, 'utf8')),
-    cookies: parsePolicyDraft('cookies', readFileSync(policyFiles.cookies, 'utf8')),
-  };
+  return Object.fromEntries(
+    getPolicySurfaceKeys().map((key) => {
+      const config = policySurfaceConfig[key];
+      const markdown = readFileSync(join(policiesDir, config.policyFileName), 'utf8');
+      return [key, parsePolicyDraft(key, markdown)];
+    }),
+  ) as Record<PolicySurfaceKey, DraftMeta>;
 }
 
 function parsePolicyDraft(key: PolicySurfaceKey, markdown: string): DraftMeta {
@@ -101,32 +124,19 @@ function parsePolicyDraft(key: PolicySurfaceKey, markdown: string): DraftMeta {
 
   return {
     key,
-    route: routes[key],
-    title: getLegalTitle(key),
-    subtitle: subtitles[key],
+    route: policySurfaceConfig[key].route,
+    title: policySurfaceConfig[key].title,
+    subtitle: policySurfaceConfig[key].subtitle,
     sourceTitle,
     scopeBullets,
   };
 }
 
-function getLegalTitle(key: PolicySurfaceKey): string {
-  switch (key) {
-    case 'privacy':
-      return 'Privacy Policy';
-    case 'cookies':
-      return 'Cookie Policy';
-    case 'terms':
-      return 'Terms of Service';
-  }
-}
-
 function parsePhaseD(markdown: string): Record<PolicySurfaceKey, TraceRow[]> {
   const blocks = markdown.split(/\n## /);
-  const rowsByPolicy: Record<PolicySurfaceKey, TraceRow[]> = {
-    privacy: [],
-    terms: [],
-    cookies: [],
-  };
+  const rowsByPolicy = Object.fromEntries(
+    getPolicySurfaceKeys().map((key) => [key, []]),
+  ) as Record<PolicySurfaceKey, TraceRow[]>;
 
   for (const block of blocks) {
     const normalizedBlock = block.startsWith('## ') ? block : `## ${block}`;
@@ -144,16 +154,10 @@ function parsePhaseD(markdown: string): Record<PolicySurfaceKey, TraceRow[]> {
 }
 
 function getPolicyKeyFromBlock(block: string): PolicySurfaceKey | null {
-  if (block.startsWith('## 2. Privacy Policy Traceability')) {
-    return 'privacy';
-  }
-
-  if (block.startsWith('## 3. Terms of Service Traceability')) {
-    return 'terms';
-  }
-
-  if (block.startsWith('## 4. Cookie Policy Traceability')) {
-    return 'cookies';
+  for (const key of getPolicySurfaceKeys()) {
+    if (block.startsWith(policySurfaceConfig[key].traceHeading)) {
+      return key;
+    }
   }
 
   return null;
@@ -218,11 +222,9 @@ function buildPolicyRegistry(
   drafts: Record<PolicySurfaceKey, DraftMeta>,
   traceability: Record<PolicySurfaceKey, TraceRow[]>,
 ): PolicySurfaceRegistry {
-  return {
-    privacy: buildPolicySurface(drafts.privacy, traceability.privacy),
-    terms: buildPolicySurface(drafts.terms, traceability.terms),
-    cookies: buildPolicySurface(drafts.cookies, traceability.cookies),
-  };
+  return Object.fromEntries(
+    getPolicySurfaceKeys().map((key) => [key, buildPolicySurface(drafts[key], traceability[key])]),
+  ) as PolicySurfaceRegistry;
 }
 
 function buildPolicySurface(draft: DraftMeta, rows: TraceRow[]): PolicySurfaceDefinition {
@@ -350,6 +352,10 @@ function formatJoinedList(values: readonly string[]): string {
 
 function collectUniqueValues(values: readonly string[]): string[] {
   return Array.from(new Set(values));
+}
+
+function getPolicySurfaceKeys(): PolicySurfaceKey[] {
+  return Object.keys(policySurfaceConfig) as PolicySurfaceKey[];
 }
 
 function buildOutputFile(data: PolicySurfaceRegistry): string {

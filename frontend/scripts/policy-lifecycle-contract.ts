@@ -10,6 +10,7 @@ export interface PolicyLifecycleTraceRow {
 
 const FEEDBACK_EVENT_STORAGE_SECTION_PREFIX = 'Data Storage — Feedback event fields';
 const BROWSER_SESSION_STORAGE_SECTION = 'Data Storage — Browser local storage';
+const DATA_RETENTION_POLICY_FILE = 'data-retention.md';
 
 const FEEDBACK_EVENT_STORAGE_LIFECYCLE: PolicyClaimLifecycle = {
   lifecycleClass: 'short_lived',
@@ -230,10 +231,7 @@ function resolveStoresLifecycle(row: PolicyLifecycleTraceRow): PolicyClaimLifecy
   // Current rendered storage claims are limited to feedback event documents and
   // browser-local session storage. Any new stores claim must be mapped here
   // explicitly so the generator fails closed instead of inventing semantics.
-  if (
-    row.policyFile === 'privacy.md'
-    && row.section.startsWith(FEEDBACK_EVENT_STORAGE_SECTION_PREFIX)
-  ) {
+  if (isFeedbackEventStoresClaim(row)) {
     if (storesHashedFeedbackQueryField(row.policySentence)) {
       return {
         ...FEEDBACK_EVENT_STORAGE_LIFECYCLE,
@@ -244,11 +242,38 @@ function resolveStoresLifecycle(row: PolicyLifecycleTraceRow): PolicyClaimLifecy
     return FEEDBACK_EVENT_STORAGE_LIFECYCLE;
   }
 
-  if (row.policyFile === 'privacy.md' && row.section === BROWSER_SESSION_STORAGE_SECTION) {
+  if (isBrowserSessionStorageClaim(row)) {
     return BROWSER_SESSION_STORAGE_LIFECYCLE;
   }
 
   throw new Error(`Missing lifecycle metadata for stores claim: ${describePolicyTraceRow(row)}`);
+}
+
+function isFeedbackEventStoresClaim(row: PolicyLifecycleTraceRow): boolean {
+  if (
+    row.policyFile === 'privacy.md'
+    && row.section.startsWith(FEEDBACK_EVENT_STORAGE_SECTION_PREFIX)
+  ) {
+    return true;
+  }
+
+  if (row.policyFile !== DATA_RETENTION_POLICY_FILE) {
+    return false;
+  }
+
+  return /stores `[^`]+` in feedback event documents/.test(row.policySentence);
+}
+
+function isBrowserSessionStorageClaim(row: PolicyLifecycleTraceRow): boolean {
+  if (row.policyFile === 'privacy.md' && row.section === BROWSER_SESSION_STORAGE_SECTION) {
+    return true;
+  }
+
+  if (row.policyFile !== DATA_RETENTION_POLICY_FILE) {
+    return false;
+  }
+
+  return row.policySentence.includes('browser local storage');
 }
 
 function storesHashedFeedbackQueryField(policySentence: string): boolean {
@@ -303,7 +328,5 @@ function validateFeedbackSessionControls(
 }
 
 function isFeedbackEventStoresRow(row: PolicyLifecycleTraceRow): boolean {
-  return row.policyFile === 'privacy.md'
-    && row.claimClass === 'stores'
-    && row.section.startsWith(FEEDBACK_EVENT_STORAGE_SECTION_PREFIX);
+  return row.claimClass === 'stores' && isFeedbackEventStoresClaim(row);
 }
