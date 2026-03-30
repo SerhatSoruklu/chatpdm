@@ -353,10 +353,11 @@ Assemble the deterministic trace, verify replay-critical invariants, and persist
 
 ### Inputs
 
-- continue outcomes from:
+- continue outcome from:
   - `doctrine-loader.service`
+- traceable upstream outcomes from:
   - `resolver.service`
-  - `validation-kernel.service`
+  - optional `validation-kernel.service` result when resolver continued
 - request envelope containing:
   - `resolverVersion`
   - `inputHash`
@@ -365,12 +366,13 @@ Assemble the deterministic trace, verify replay-critical invariants, and persist
   - `doctrineHash`
 - trace contributions from upstream services:
   - `sourceAnchors`
-  - `mappingRuleIds`
-  - `validationRuleIds`
   - `interpretationUsed`
-  - `interpretationRegimeId`
   - `manualOverrideUsed`
   - `overrideIds`
+- upstream-derived trace truth bound or validated by `trace.service`:
+  - `mappingRuleIds`
+  - `validationRuleIds`
+  - `interpretationRegimeId`
   - loaded manifest references
 
 ### Outputs
@@ -378,7 +380,8 @@ Assemble the deterministic trace, verify replay-critical invariants, and persist
 - continue outcome:
   - persisted `ValidationRun` summary
   - `validationRunWritten = true`
-  - `result = valid`
+  - `result = valid | invalid | unresolved`
+  - `failureCodes` preserved from the upstream stopping stage
 - terminal outcome:
   - `result = invalid`
   - trace/replay failure code
@@ -399,7 +402,7 @@ The service may read:
 - `DoctrineArtifact`
 - `Mapping`
 - `OverrideRecord`
-- normalized upstream continue context needed for trace assembly
+- normalized upstream traceable context needed for trace assembly
 
 The service may write:
 
@@ -415,6 +418,6 @@ The service may not write:
 
 ### Stop Conditions
 
-- in this wave, trace finalization supports only the valid path
-- stop with terminal `invalid` if replay or trace integrity fails after a run has otherwise classified as valid
+- trace finalization may persist `valid`, `invalid`, or `unresolved` runs when the reached-stage trace requirements are satisfied
+- stop with terminal `invalid` if replay or trace integrity fails before persistence
 - do not resume domain evaluation after trace finalization

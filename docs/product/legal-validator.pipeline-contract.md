@@ -62,7 +62,7 @@ No service may be skipped or reordered without updating this document first.
 
 - `trace.service` is the only service that may create `ValidationRun`
 - once `trace.service` begins finalization, no upstream service may resume domain evaluation
-- in this wave, `trace.service` runs only after a valid continue outcome from `validation-kernel.service`
+- in this wave, `trace.service` may run after a valid kernel continue outcome or after a terminal resolver/kernel stop when trace and replay prerequisites are satisfied
 
 ## Persistence Rights
 
@@ -137,7 +137,7 @@ May read:
 - `DoctrineArtifact`
 - `Mapping`
 - `OverrideRecord`
-- normalized upstream continue context from the valid path
+- normalized upstream traceable context from the reached path
 
 May write:
 
@@ -156,14 +156,14 @@ May not write:
 ### On `invalid`
 
 - the domain path stops immediately at the service that owns the failure
-- no downstream domain service may continue after an `invalid` result
-- in this wave, `trace.service` does not persist invalid runs
+- no downstream domain evaluation may continue after an `invalid` result
+- `trace.service` may still finalize and persist the stopped run if trace and replay requirements are satisfied
 
 ### On `unresolved`
 
 - the domain path stops immediately at the service that owns the unresolved condition
 - unresolved does not permit fallback interpretation, alternate mapping, or retry inside the same run
-- in this wave, `trace.service` does not persist unresolved runs
+- `trace.service` may still finalize and persist the stopped run if trace and replay requirements are satisfied
 
 ### On `valid`
 
@@ -172,28 +172,28 @@ May not write:
 
 ## ValidationRun Prerequisites
 
-`trace.service` may create `ValidationRun` only when all of the following are available for a valid path:
+`trace.service` may create `ValidationRun` only when all of the following are available for the reached path:
 
 - `matterId`
 - `doctrineArtifactId`
 - `doctrineHash`
 - `resolverVersion`
 - `inputHash`
-- final `result = valid`
-- `failureCodes = []`
+- final `result`
+- `failureCodes` matching the upstream stopping stage
 - trace payload containing:
   - `sourceAnchors`
-  - `mappingRuleIds`
-  - `validationRuleIds`
   - `loadedManifest`
   - `interpretationUsed`
   - `manualOverrideUsed`
 
 Conditional requirements:
 
+- if resolver wrote `Mapping`, trace must carry resolver-derived `mappingRuleIds`
+- if `validation-kernel.service` participated, trace must carry kernel-derived `validationRuleIds`
 - if `interpretationUsed = true`, `trace.interpretationRegimeId` is required
 - if `manualOverrideUsed = true`, `trace.overrideIds` is required
-- if `result = valid`, trace must not be structurally empty
+- trace must not be structurally empty for the reached path
 
 ## ValidationRun Creation Rule
 
@@ -226,6 +226,7 @@ Full replay re-execution against preserved upstream state is a later hardening t
 
 Once any service emits a terminal result for the domain path:
 
-- no later domain service may execute
+- no later domain evaluation service may execute
 - no earlier service may be re-entered within the same run
+- `trace.service` may only finalize the already-classified run; it may not alter the domain result
 - any retry requires a new validation request and a new `ValidationRun`
