@@ -461,6 +461,10 @@ Reason:
 
 ## Section 6: Replay and Trace Integrity
 
+Current runtime proof in this wave covers retained-artifact/hash safety and deterministic forward-path behavior.
+
+The cases below remain the long-term replay and trace integrity target, but not every replay case is yet runtime-proven by the current test suite.
+
 ### Case 6.1
 
 Input pattern:
@@ -501,7 +505,7 @@ Reason:
 
 Input pattern:
 
-- `Replay produces a different result with the same inputs, doctrine artifact, and resolver version.`
+- `A future replay execution produces a different result with the same inputs, doctrine artifact, and resolver version.`
 
 Expected result:
 
@@ -513,7 +517,7 @@ Failure code:
 
 Reason:
 
-- Deterministic replay has been violated.
+- Deterministic replay would be violated if a future replay execution diverged from the recorded run.
 
 ### Case 6.4
 

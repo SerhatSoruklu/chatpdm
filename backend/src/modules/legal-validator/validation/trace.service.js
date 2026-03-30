@@ -57,6 +57,10 @@ function normalizeStringArray(values) {
   return values.filter((value) => typeof value === 'string' && value.trim().length > 0);
 }
 
+function canonicalizeStringArray(values) {
+  return [...values].sort((left, right) => left.localeCompare(right));
+}
+
 function hasDuplicateValues(values) {
   return new Set(values).size !== values.length;
 }
@@ -184,7 +188,7 @@ function buildTracePayload(doctrineLoadResult, resolverResult, validationKernelR
   const inputHash = legalValidatorSchemas.isNonEmptyTrimmedString(traceInput.inputHash)
     ? traceInput.inputHash
     : null;
-  const sourceAnchors = normalizeStringArray(traceInput.sourceAnchors);
+  const sourceAnchors = canonicalizeStringArray(normalizeStringArray(traceInput.sourceAnchors));
   const interpretationUsed = traceInput.interpretationUsed === true;
   const manualOverrideUsed = traceInput.manualOverrideUsed === true;
   const interpretationRegimeId = legalValidatorSchemas.isNonEmptyTrimmedString(traceInput.interpretationRegimeId)
@@ -192,9 +196,9 @@ function buildTracePayload(doctrineLoadResult, resolverResult, validationKernelR
     : null;
   const normalizedMappingRuleIds = normalizeStringArray(traceInput.mappingRuleIds);
   const mappingRuleIds = normalizedMappingRuleIds.length > 0
-    ? normalizedMappingRuleIds
-    : normalizeStringArray([resolverResult.resolverRuleId]);
-  const validationRuleIds = normalizeStringArray(validationKernelResult.validationRuleIds);
+    ? canonicalizeStringArray(normalizedMappingRuleIds)
+    : canonicalizeStringArray(normalizeStringArray([resolverResult.resolverRuleId]));
+  const validationRuleIds = canonicalizeStringArray(normalizeStringArray(validationKernelResult.validationRuleIds));
   const overrideIds = normalizeStringArray(traceInput.overrideIds);
   const loadedManifest = buildLoadedManifest(doctrineLoadResult, traceInput);
 
