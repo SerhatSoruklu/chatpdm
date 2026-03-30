@@ -3,7 +3,7 @@ import type { SeoRegistryFamily } from '../seo.types';
 export const seoLegalEntries = {
   'legal.inspect': {
     title: 'Inspect - ChatPDM',
-    description: 'Raw inspect entry for ChatPDM policy-backed behavior surfaces.',
+    description: 'Index of inspectable policy-backed behavior surfaces for ChatPDM.',
     canonicalPath: '/inspect',
     includeInSitemap: false,
     sitemapChangeFrequency: 'yearly',
@@ -51,7 +51,7 @@ export const seoLegalEntries = {
   },
   'legal.terms.inspect': {
     title: 'Terms of Service (Inspect) - ChatPDM',
-    description: 'Current inspectable terms surface for ChatPDM implementation behavior and allowed-use boundaries.',
+    description: 'Current inspectable terms surface for ChatPDM runtime operations, field rules, and refusal boundaries.',
     canonicalPath: '/inspect/terms',
     includeInSitemap: false,
     sitemapChangeFrequency: 'yearly',

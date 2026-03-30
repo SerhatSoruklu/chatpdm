@@ -37,7 +37,7 @@
 ## Data Handling — Internal proxy transport
 
 - The platform shares incoming `x-forwarded-for` headers with the API proxy target through the SSR layer.
-- internal SSR proxy transport only
+- internal SSR transport only
 - not third-party disclosure
 
 ## Behavior Controls — Backend request controls

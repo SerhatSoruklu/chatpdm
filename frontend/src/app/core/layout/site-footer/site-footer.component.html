@@ -5,11 +5,43 @@
         <app-chatpdm-logo class="pdm-site-footer__logo" variant="footer" />
       </a>
       <p class="pdm-site-footer__title">Deterministic concept resolution inside a bounded runtime.</p>
+      <div class="pdm-site-footer__explanation">
+        <p class="pdm-site-footer__copy">
+          ChatPDM validates reasoning like a compiler validates code.
+        </p>
+        <p class="pdm-site-footer__copy">Given an argument, it checks:</p>
+        <ul class="pdm-site-footer__checklist">
+          <li>are all terms defined?</li>
+          <li>does each claim have support?</li>
+          <li>are there contradictions?</li>
+        </ul>
+        <div class="pdm-site-footer__example">
+          <p class="pdm-site-footer__example-label">Example</p>
+          <p class="pdm-site-footer__example-line">
+            <span class="pdm-site-footer__example-key">Input:</span>
+            “Company policy overrides statutory law in all cases.”
+          </p>
+          <p class="pdm-site-footer__example-line">
+            <span class="pdm-site-footer__example-key">Result:</span>
+            Invalid — contradicts defined legal hierarchy.
+          </p>
+        </div>
+        <p class="pdm-site-footer__support">
+          If the system cannot map the input to known concepts, it refuses instead of guessing.
+          <br />
+          Refusal is a correct outcome, not a failure.
+        </p>
+        <p class="pdm-site-footer__trust-anchor">
+          Every output is traceable, bounded, and derived only from defined concepts.
+          <br />
+          No hidden reasoning. No probabilistic guesses.
+        </p>
+      </div>
       <p class="pdm-site-footer__copy">
-        Canonical lookup, controlled comparison, and explicit refusal are fixed parts of the public runtime.
+        All reasoning is constrained to defined concepts and visible system rules.
       </p>
       <p class="pdm-site-footer__support">
-        Authored scope, source-bounded outputs, and refusal visibility remain inspectable across runtime and reference surfaces.
+        Nothing is inferred. Everything is resolved or refused.
       </p>
 
       <section class="pdm-site-footer__contact" aria-label="Footer contact">

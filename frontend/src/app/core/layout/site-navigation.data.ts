@@ -15,4 +15,4 @@ export const SITE_PRIMARY_NAV_ITEMS: readonly SiteNavItem[] = [
   { label: 'Contact', route: '/contact' },
 ];
 
-export const SITE_SUPPORT_EMAIL = 'hello@chatpdm.com';
+export const SITE_SUPPORT_EMAIL = 'contact@chatpdm.com';

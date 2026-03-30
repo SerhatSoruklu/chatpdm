@@ -1,6 +1,6 @@
 # POLICY_AUDIT_PHASE_D.md
 
-Phase D traceability pass for current Phase C policy drafts.
+Phase D traceability pass for current policy surfaces.
 
 Inputs:
 
@@ -14,13 +14,13 @@ Inputs:
 ## 1. Phase D Notes
 
 - Phase D is the authoritative rendered-policy trace layer.
-- This file traces current Phase C claim sentences only.
+- This file traces current rendered-policy claim sentences only.
 - Scope bullets are excluded as non-claim text.
 - SSR annotation fragments are excluded as non-claim text.
 - Excluded SSR annotation fragments:
-  - `internal SSR proxy transport only`
+  - `internal SSR transport only`
   - `not third-party disclosure`
-- Each traced sentence maps to one Phase B canonical claim.
+- Each traced sentence maps to one canonical claim.
 - Each traced sentence maps to one concrete implementation element.
 - Internal SSR forwarding remains product-internal transport only.
 - Non-claim text is excluded by rule, not by omission.
@@ -175,4 +175,4 @@ Inputs:
 - `conflicts_with_system`: `0`
 - excluded non-claim scope bullets: `21`
 - excluded non-claim SSR annotation fragments: `6`
-- Phase B canonical claim total referenced: `116`
+- Canonical claim total referenced: `116`

@@ -47,10 +47,64 @@
   letter-spacing: -0.03em;
 }
 
+.pdm-site-footer__explanation {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+
 .pdm-site-footer__copy {
   margin: 14px 0 0;
   color: rgba(226, 232, 240, 0.82);
   line-height: 1.7;
+}
+
+.pdm-site-footer__explanation .pdm-site-footer__copy,
+.pdm-site-footer__explanation .pdm-site-footer__support {
+  margin: 0;
+}
+
+.pdm-site-footer__checklist {
+  margin: 0;
+  padding-left: 1.2rem;
+  color: rgba(226, 232, 240, 0.82);
+  line-height: 1.65;
+}
+
+.pdm-site-footer__checklist li + li {
+  margin-top: 6px;
+}
+
+.pdm-site-footer__example {
+  display: grid;
+  gap: 4px;
+  max-width: 30rem;
+  margin: 0;
+  padding: 12px 14px;
+  border: 1px solid rgba(96, 165, 250, 0.16);
+  border-radius: 16px;
+  background: rgba(15, 23, 42, 0.24);
+}
+
+.pdm-site-footer__example-label {
+  margin: 0;
+  color: rgba(147, 197, 253, 0.76);
+  font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.pdm-site-footer__example-line {
+  margin: 0;
+  color: rgba(226, 232, 240, 0.82);
+  line-height: 1.65;
+}
+
+.pdm-site-footer__example-key {
+  color: rgba(248, 250, 252, 0.94);
+  font-weight: 600;
 }
 
 .pdm-site-footer__support {
@@ -58,6 +112,14 @@
   margin: 10px 0 0;
   color: rgba(203, 213, 225, 0.7);
   line-height: 1.65;
+}
+
+.pdm-site-footer__trust-anchor {
+  max-width: 30rem;
+  margin: 0;
+  color: rgba(191, 219, 254, 0.92);
+  font-weight: 600;
+  line-height: 1.7;
 }
 
 .pdm-site-footer__contact {

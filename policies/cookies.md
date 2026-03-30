@@ -10,7 +10,7 @@
 
 - The platform shares incoming `cookie` headers with the API proxy target through the SSR layer.
 - The platform shares upstream `set-cookie` headers with the client response through the SSR layer.
-- internal SSR proxy transport only
+- internal SSR transport only
 - not third-party disclosure
 
 ## Boundaries — Conditional forwarding

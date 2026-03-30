@@ -37,7 +37,7 @@ const BROWSER_SESSION_STORAGE_LIFECYCLE: PolicyClaimLifecycle = {
 
 const INTERNAL_TRANSPORT_LIFECYCLE: PolicyClaimLifecycle = {
   lifecycleClass: 'transport_only',
-  retentionReason: 'Declared request-bound SSR transport within the product boundary.',
+  retentionReason: 'Declared request-bound internal SSR transport within the product boundary.',
   deletionTrigger: 'request_complete',
   enforcementStatus: 'declared_only',
 };

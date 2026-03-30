@@ -556,7 +556,7 @@ export const POLICY_SURFACE_DATA = {
         "hasInternalTransportNote": true,
         "lifecycle": {
           "lifecycleClass": "transport_only",
-          "retentionReason": "Declared request-bound SSR transport within the product boundary.",
+          "retentionReason": "Declared request-bound internal SSR transport within the product boundary.",
           "deletionTrigger": "request_complete",
           "enforcementStatus": "declared_only"
         },
@@ -1151,7 +1151,7 @@ export const POLICY_SURFACE_DATA = {
     "key": "terms",
     "route": "/inspect/terms",
     "title": "Terms of Service",
-    "subtitle": "Runtime rules and allowed use",
+    "subtitle": "Runtime operations, field rules, and refusal boundaries",
     "intro": "Current rendered policy claims covering concept resolution access, feedback submission access, feedback input schema, response type limits, and comparison output limits.",
     "sourceTitle": "Terms of Service — Runtime Operations",
     "scopeBullets": [
@@ -2577,7 +2577,7 @@ export const POLICY_SURFACE_DATA = {
         "hasInternalTransportNote": true,
         "lifecycle": {
           "lifecycleClass": "transport_only",
-          "retentionReason": "Declared request-bound SSR transport within the product boundary.",
+          "retentionReason": "Declared request-bound internal SSR transport within the product boundary.",
           "deletionTrigger": "request_complete",
           "enforcementStatus": "declared_only"
         },
@@ -2606,7 +2606,7 @@ export const POLICY_SURFACE_DATA = {
         "hasInternalTransportNote": true,
         "lifecycle": {
           "lifecycleClass": "transport_only",
-          "retentionReason": "Declared request-bound SSR transport within the product boundary.",
+          "retentionReason": "Declared request-bound internal SSR transport within the product boundary.",
           "deletionTrigger": "request_complete",
           "enforcementStatus": "declared_only"
         },
@@ -2635,7 +2635,7 @@ export const POLICY_SURFACE_DATA = {
         "hasInternalTransportNote": true,
         "lifecycle": {
           "lifecycleClass": "transport_only",
-          "retentionReason": "Declared request-bound SSR transport within the product boundary.",
+          "retentionReason": "Declared request-bound internal SSR transport within the product boundary.",
           "deletionTrigger": "request_complete",
           "enforcementStatus": "declared_only"
         },
@@ -2664,7 +2664,7 @@ export const POLICY_SURFACE_DATA = {
         "hasInternalTransportNote": true,
         "lifecycle": {
           "lifecycleClass": "transport_only",
-          "retentionReason": "Declared request-bound SSR transport within the product boundary.",
+          "retentionReason": "Declared request-bound internal SSR transport within the product boundary.",
           "deletionTrigger": "request_complete",
           "enforcementStatus": "declared_only"
         },
@@ -2765,13 +2765,13 @@ export const POLICY_SURFACE_DATA = {
     "key": "data-retention",
     "route": "/inspect/data-retention",
     "title": "Data Retention / Data Usage",
-    "subtitle": "Lifecycle, storage, and expiry evidence",
-    "intro": "Current rendered policy claims covering feedback persistence lifecycle and expiry, browser session continuity for feedback controls, request-bound SSR transport evidence, and session-bound export and delete controls.",
+    "subtitle": "Lifecycle, storage, expiry, and session-bound control evidence",
+    "intro": "Current rendered policy claims covering feedback persistence lifecycle and expiry, browser session continuity for feedback controls, request-bound internal SSR transport evidence, and session-bound export and delete controls.",
     "sourceTitle": "Data Retention / Data Usage",
     "scopeBullets": [
       "feedback persistence lifecycle and expiry",
       "browser session continuity for feedback controls",
-      "request-bound SSR transport evidence",
+      "request-bound internal SSR transport evidence",
       "session-bound export and delete controls"
     ],
     "claims": [
@@ -3023,7 +3023,7 @@ export const POLICY_SURFACE_DATA = {
         "hasInternalTransportNote": true,
         "lifecycle": {
           "lifecycleClass": "transport_only",
-          "retentionReason": "Declared request-bound SSR transport within the product boundary.",
+          "retentionReason": "Declared request-bound internal SSR transport within the product boundary.",
           "deletionTrigger": "request_complete",
           "enforcementStatus": "declared_only"
         },
