@@ -123,7 +123,7 @@ Expected result:
 
 Failure code:
 
-- `RULE_NOT_AUTHORED`
+- `RULE_NOT_DEFINED`
 
 Reason:
 
@@ -141,7 +141,7 @@ Expected result:
 
 Failure code:
 
-- `ANALOGY_RULE_NOT_ENCODED`
+- `PRECEDENT_NOT_STRUCTURED`
 
 Reason:
 
@@ -181,7 +181,7 @@ Failure code:
 
 Reason:
 
-- A precedent source may exist, but the doctrine package has not yet encoded the precedent rule and similarity bridge needed for deterministic application.
+- A precedent source may exist, but the doctrine package has not yet encoded the precedent rule in a deterministic structured form.
 
 ### Case 2.5
 

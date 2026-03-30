@@ -215,22 +215,37 @@ Produce deterministic concept and authority mappings from admissible argument un
 ### Outputs
 
 - continue outcome:
-  - one or more `Mapping` records or `Mapping` write payloads
-  - mapping summary by `argumentUnitId`
-  - mapping trace material:
-    - `mappingRuleIds`
-    - `interpretationUsed`
-    - `interpretationRegimeId` when used
-    - `overrideIds` when used
+  - normalized single-mapping success result:
+    - `argumentUnitId`
+    - `matterId`
+    - `documentId`
+    - `doctrineArtifactId`
+    - `doctrineHash`
+    - `mappingId`
+    - `mappingStatus`
+    - `matchBasis`
+    - `mappingType`
+    - `conceptId`
+    - `authorityId`
+    - `resolverRuleId`
+    - `mappingWritten = true`
 - terminal outcome:
   - `result`
   - `failureCode`
   - `reason`
-  - any partial mapping context that remains trace-safe
+  - partial mapping context that remains trace-safe:
+    - `argumentUnitId`
+    - `matterId`
+    - `documentId`
+    - `doctrineArtifactId`
+    - `doctrineHash`
+    - `mappingWritten = false`
 
 ### Allowed Failure Codes
 
+- `RULE_NOT_DEFINED`
 - `RULE_NOT_AUTHORED`
+- `PRECEDENT_NOT_STRUCTURED`
 - `ANALOGY_RULE_NOT_ENCODED`
 - `CATEGORY_BOUNDARY_NOT_AUTHORED`
 - `AMBIGUOUS_CONCEPT_MAPPING`
