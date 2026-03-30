@@ -166,6 +166,48 @@ test('doctrine-loader.service rejects doctrine artifacts that are not runtime-el
   assert.equal(result.failureCode, 'DOCTRINE_NOT_RECOGNIZED');
 });
 
+test('doctrine-loader.service rejects approved doctrine artifacts that do not declare an interpretation regime', async () => {
+  await DoctrineArtifact.collection.insertOne({
+    artifactId: 'artifact-missing-regime',
+    packageId: 'uk-negligence',
+    version: '1.0.1',
+    hash: 'b'.repeat(64),
+    storageKey: 'doctrine/uk-negligence/1.0.1.json',
+    manifest: {
+      packageId: 'uk-negligence',
+      jurisdiction: 'UK',
+      practiceArea: 'negligence',
+      sourceClasses: ['statute', 'case_law'],
+      coreConceptsReferenced: ['authority'],
+      packageConceptsDeclared: ['duty_of_care'],
+      authorityIds: [],
+      mappingRuleIds: [],
+      validationRuleIds: [],
+    },
+    governance: {
+      status: 'approved',
+      approvedBy: 'reviewer-1',
+      approvedAt: new Date('2026-03-30T10:00:00Z'),
+    },
+    replay: {
+      isRetained: true,
+      retainedAt: new Date('2026-03-30T10:00:00Z'),
+    },
+    createdBy: 'author-1',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  });
+
+  const result = await doctrineLoaderService.loadDoctrineArtifact({ artifactId: 'artifact-missing-regime' });
+
+  assert.equal(result.ok, false);
+  assert.equal(result.terminal, true);
+  assert.equal(result.result, 'invalid');
+  assert.equal(result.failureCode, 'INTERPRETATION_RULE_UNSPECIFIED');
+  assert.equal(result.doctrineArtifactId, 'artifact-missing-regime');
+  assert.equal(result.doctrineHash, 'b'.repeat(64));
+});
+
 test('doctrine-loader.service rejects artifactId and doctrineHash mismatches with a loader-local integrity code', async () => {
   const artifact = await createDoctrineArtifact({
     artifactId: 'artifact-hash-mismatch',
@@ -397,6 +439,7 @@ test('resolver.service returns AMBIGUOUS_CONCEPT_MAPPING on explicit ambiguous d
   assert.equal(result.argumentUnitId, unit.argumentUnitId);
   assert.equal(result.doctrineArtifactId, artifact.artifactId);
   assert.equal(result.mappingWritten, false);
+  assert.equal(await Mapping.countDocuments({}), 0);
 });
 
 test('resolver.service returns RULE_NOT_DEFINED on explicit undefined-rule decision', async () => {
@@ -562,6 +605,29 @@ test('validation-kernel.service returns INSUFFICIENT_DOCTRINE on explicit doctri
       status: 'doctrine_gap',
       reason: 'The doctrine package lacks the rule needed to complete validation.',
     },
+  });
+
+  assert.equal(result.ok, false);
+  assert.equal(result.terminal, true);
+  assert.equal(result.result, 'unresolved');
+  assert.equal(result.failureCode, 'INSUFFICIENT_DOCTRINE');
+  assert.equal(result.argumentUnitId, unit.argumentUnitId);
+  assert.equal(result.doctrineArtifactId, artifact.artifactId);
+  assert.equal(result.mappingId, resolverResult.mappingId);
+  assert.equal(result.validationWritten, false);
+});
+
+test('validation-kernel.service returns INSUFFICIENT_DOCTRINE when no validationDecision is provided', async () => {
+  const { artifact, unit, doctrineLoadResult, resolverResult } = await createResolverSuccessResult({
+    artifactId: 'artifact-kernel-no-decision',
+    doctrineHash: '2'.repeat(64),
+    argumentUnitId: 'argument-unit-kernel-no-decision',
+    mappingId: 'mapping-kernel-no-decision',
+  });
+
+  const result = await validationKernelService.evaluate({
+    doctrineLoadResult,
+    resolverResult,
   });
 
   assert.equal(result.ok, false);
