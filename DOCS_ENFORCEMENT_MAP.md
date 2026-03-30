@@ -26,9 +26,9 @@ This map covers `docs/` only. It does not replace the root-level law and invaria
 | Category | Count |
 | --- | ---: |
 | `ENFORCED` | 27 |
-| `MAPPABLE` | 30 |
+| `MAPPABLE` | 31 |
 | `DECORATIVE` | 17 |
-| Total | 74 |
+| Total | 75 |
 
 ## Classification Legend
 
@@ -79,6 +79,7 @@ This map covers `docs/` only. It does not replace the root-level law and invaria
 | [docs/architecture/phase-1-mapping-entry-contract.md](./docs/architecture/phase-1-mapping-entry-contract.md) | `medium` | `schema` | Add a mapping-entry schema and CI validation. | It is a contract document without a live schema gate. |
 | [docs/architecture/responsive-layout.md](./docs/architecture/responsive-layout.md) | `medium` | `pipeline` | Lint or verify allowed breakpoint bands in frontend styles/templates. | Breakpoint rules are documented but not machine-enforced. |
 | [docs/authoring/phase-6-concept-authoring-and-validation.md](./docs/authoring/phase-6-concept-authoring-and-validation.md) | `medium` | `pipeline` | Enforce authoring packet completeness and phase prerequisites. | It defines authoring flow beyond what the current validators guarantee. |
+| [docs/authoring/new-concept-workflow-template.md](./docs/authoring/new-concept-workflow-template.md) | `medium` | `pipeline` | Require two-phase admission and implementation review, including source-grounding, conflict, cascade, and runtime-isolation checks before a new concept is published. | It defines hard stop conditions for new concept admission that are stronger than the current validator and workflow gates. |
 | [docs/authoring/phase-6-pairwise-stress-testing.md](./docs/authoring/phase-6-pairwise-stress-testing.md) | `medium` | `pipeline` | Require pairwise verifier coverage for each mandated concept pair. | Some pairs are enforced, but the full required stress regimen is not. |
 | [docs/conceptual-reference-stack.md](./docs/conceptual-reference-stack.md) | `medium` | `other` | Require source-priority proof in authoring/review workflow. | Source-priority law is still review guidance, not validator-backed. |
 | [docs/data-model/concepts-and-sources.md](./docs/data-model/concepts-and-sources.md) | `medium` | `schema` | Formalize authored concept/source packet schema. | The concept/source model is documented but not fully schema-bound. |
@@ -145,6 +146,7 @@ This map covers `docs/` only. It does not replace the root-level law and invaria
 - [docs/governance/AI_OUTPUT_SURFACE_SPEC.md](./docs/governance/AI_OUTPUT_SURFACE_SPEC.md) defines how AI must appear in UI, but it remains a mapped guard target until the repo has AI-facing UI surfaces and enforcement checks for them.
 - [docs/governance/LLGS_AI_BOUNDARY_PROTOCOL.md](./docs/governance/LLGS_AI_BOUNDARY_PROTOCOL.md) defines a critical future boundary, and while part of it is now defended, it remains a mapped guard target until full AI integration boundaries exist around any future LLM-facing adapters.
 - [docs/architecture/responsive-layout.md](./docs/architecture/responsive-layout.md) and [docs/seo-policy.md](./docs/seo-policy.md) define strong rules, but current enforcement is light compared with the rest of the validator-driven system.
+- [docs/authoring/new-concept-workflow-template.md](./docs/authoring/new-concept-workflow-template.md) defines stricter admission and publish discipline for new concepts than the current authoring and publish pipeline enforces automatically.
 - The legal-validator docs under [`docs/product`](./docs/product) mix active subsystem contracts with future/planning notes, so some “law” documents there still outpace enforcement.
 
 ## Conversion Backlog
