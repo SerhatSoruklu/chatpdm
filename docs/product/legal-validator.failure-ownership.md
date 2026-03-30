@@ -29,7 +29,7 @@ Secondary downstream propagation is allowed only when:
 | `AUTHORITY_NOT_IDENTIFIABLE` | `authority-registry.service` | `trace.service` | implied source cannot be pinned down |
 | `UNRECOGNIZED_SOURCE_INSTITUTION` | `authority-registry.service` | `validation-kernel.service`, `trace.service` | institution/source-class failure |
 | `AUTHORITY_SCOPE_VIOLATION` | `authority-registry.service` | `validation-kernel.service`, `trace.service` | scope failure may be carried into final classification but not re-owned |
-| `EVALUATIVE_FACT_NOT_ADMISSIBLE` | `admissibility.service` | `trace.service` | blocked before mapping |
+| `FACT_INPUT_NOT_ADMISSIBLE` | `admissibility.service` | `trace.service` | blocked before mapping because the input cannot enter deterministic admissibility |
 | `PENDING_REVIEW_BLOCK` | `admissibility.service` | `trace.service` | blocked before mapping |
 | `RULE_NOT_AUTHORED` | `resolver.service` | `trace.service` | doctrine has no authored rule path |
 | `ANALOGY_RULE_NOT_ENCODED` | `resolver.service` | `trace.service` | analogy bridge missing |
@@ -85,7 +85,7 @@ Current risk:
 Required resolution:
 
 - `admissibility.service` owns only:
-  - `EVALUATIVE_FACT_NOT_ADMISSIBLE`
+  - `FACT_INPUT_NOT_ADMISSIBLE`
   - `PENDING_REVIEW_BLOCK`
 - `validation-kernel.service` owns `FACTUAL_LINKAGE_MISSING` once the inputs have already crossed the admissibility gate
 

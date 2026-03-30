@@ -399,7 +399,7 @@ Expected result:
 
 Failure code:
 
-- `EVALUATIVE_FACT_NOT_ADMISSIBLE`
+- `FACT_INPUT_NOT_ADMISSIBLE`
 
 Reason:
 
