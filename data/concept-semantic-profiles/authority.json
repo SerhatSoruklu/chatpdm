@@ -1,0 +1,159 @@
+{
+  "concept": "authority",
+  "requiredAnchors": {
+    "shortDefinition": [
+      {
+        "id": "directive-right",
+        "matchAny": [
+          "right to direct",
+          "right to decide",
+          "directive right",
+          "standing to direct",
+          "directive acts"
+        ]
+      },
+      {
+        "id": "governance-domain",
+        "matchAny": [
+          "governance domain",
+          "governance order",
+          "within governance",
+          "governing order",
+          "within a governance order"
+        ]
+      }
+    ],
+    "coreMeaning": [
+      {
+        "id": "directive-right",
+        "matchAny": [
+          "right to direct",
+          "right to decide",
+          "directive right",
+          "who may direct",
+          "directive competence",
+          "may direct or determine"
+        ]
+      },
+      {
+        "id": "governance-domain",
+        "matchAny": [
+          "governance domain",
+          "governance order",
+          "within governance",
+          "governing order",
+          "in governance"
+        ]
+      }
+    ],
+    "fullDefinition": [
+      {
+        "id": "directive-right",
+        "matchAny": [
+          "right to direct",
+          "right to decide",
+          "directive right",
+          "issue direction",
+          "who may decide",
+          "who may command"
+        ]
+      },
+      {
+        "id": "governance-domain",
+        "matchAny": [
+          "governance domain",
+          "governance order",
+          "within governance",
+          "governing order",
+          "within governance structures"
+        ]
+      }
+    ]
+  },
+  "requiredBoundaries": {
+    "coreMeaning": [
+      {
+        "id": "boundary-power",
+        "matchAny": [
+          "not power",
+          "not what can be enforced",
+          "not what outcomes can be produced",
+          "not produced outcomes",
+          "not about force",
+          "what effects can be produced"
+        ]
+      },
+      {
+        "id": "boundary-legitimacy",
+        "matchAny": [
+          "not whether that standing is valid",
+          "legitimacy",
+          "whether that standing is valid",
+          "validity"
+        ]
+      }
+    ],
+    "fullDefinition": [
+      {
+        "id": "boundary-power",
+        "matchAny": [
+          "distinct from power",
+          "not power",
+          "what outcomes can be produced",
+          "produced outcomes"
+        ]
+      },
+      {
+        "id": "boundary-legitimacy",
+        "matchAny": [
+          "distinct from legitimacy",
+          "legitimacy",
+          "whether that standing is valid",
+          "validity of standing"
+        ]
+      }
+    ]
+  },
+  "forbiddenDrift": {
+    "allZones": [
+      {
+        "id": "mere-ability",
+        "matchAny": [
+          "mere ability",
+          "ability to produce effects",
+          "mere capacity",
+          "capacity to produce outcomes"
+        ]
+      },
+      {
+        "id": "influence-only",
+        "matchAny": [
+          "influence only",
+          "just influence",
+          "influence alone"
+        ]
+      },
+      {
+        "id": "social-approval-only",
+        "matchAny": [
+          "social approval",
+          "public approval",
+          "approval alone"
+        ]
+      }
+    ]
+  },
+  "optionalWarnings": {
+    "allZones": [
+      {
+        "id": "recognized-standing-signal",
+        "matchAny": [
+          "recognized standing",
+          "recognized role",
+          "recognized office",
+          "recognized position"
+        ]
+      }
+    ]
+  }
+}

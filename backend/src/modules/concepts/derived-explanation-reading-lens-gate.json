@@ -28,6 +28,64 @@
     "canonicalHashLength": 12,
     "sourceAnchorStrategy": "primary_source_priority_id_if_present"
   },
+  "divergenceValidation": {
+    "normalizedComparison": {
+      "stripCase": true,
+      "stripWhitespace": true,
+      "stripPunctuation": true
+    },
+    "prefixOnlyPrefixes": [
+      "simplified explanation:",
+      "formal framing:",
+      "standard explanation:",
+      "simplified:",
+      "formal:",
+      "standard:"
+    ],
+    "tooCloseThresholds": {
+      "tokenJaccardMin": 0.88,
+      "lengthDeltaMax": 0.12
+    },
+    "modeRules": {
+      "standard": {
+        "sentenceLengthBand": {
+          "min": 12,
+          "max": 22
+        },
+        "bannedPhrases": [
+          "simplified explanation:",
+          "formal framing:"
+        ]
+      },
+      "simplified": {
+        "sentenceLengthBand": {
+          "min": 8,
+          "max": 16
+        },
+        "bannedPhrases": [
+          "internal composition",
+          "structured right",
+          "directive claim",
+          "mere capacity",
+          "directive obligation",
+          "operative capacity"
+        ]
+      },
+      "formal": {
+        "sentenceLengthBand": {
+          "min": 18,
+          "max": 30
+        },
+        "bannedPhrases": [
+          "in simple terms",
+          "put simply",
+          "this means",
+          "basically",
+          "you can think of"
+        ]
+      }
+    }
+  },
   "semanticParityAudit": {
     "conceptIds": [
       "authority",

@@ -1,0 +1,16 @@
+{
+  "concept": "authority",
+  "version": 1,
+  "changeType": "canonical-change",
+  "summary": "Initial published baseline recorded for audit continuity.",
+  "validatorSnapshot": {
+    "v1": "pass",
+    "v2": "pass",
+    "v3": "pass"
+  },
+  "approvedBy": "bootstrap-seed",
+  "approvedAt": "2026-03-30T00:00:00Z",
+  "stateTransitions": [
+    "approved->published"
+  ]
+}

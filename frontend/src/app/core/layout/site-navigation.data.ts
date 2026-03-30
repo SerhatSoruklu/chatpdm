@@ -15,4 +15,9 @@ export const SITE_PRIMARY_NAV_ITEMS: readonly SiteNavItem[] = [
   { label: 'Contact', route: '/contact' },
 ];
 
-export const SITE_SUPPORT_EMAIL = 'contact@chatpdm.com';
+export const SITE_CONTACT_EMAIL = 'contact@chatpdm.com';
+export const SITE_HELLO_EMAIL = 'hello@chatpdm.com';
+export const SITE_INFO_EMAIL = 'info@chatpdm.com';
+export const SITE_SUPPORT_EMAIL = 'support@chatpdm.com';
+export const SITE_LEGAL_EMAIL = 'legal@chatpdm.com';
+export const SITE_POLICY_EMAIL = 'policy@chatpdm.com';

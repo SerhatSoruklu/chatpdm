@@ -11,7 +11,7 @@ const {
 const {
   loadConceptSet,
 } = require('./concept-loader');
-const { resolveDerivedExplanationOverlaysForConcept } = require('./derived-explanation-overlays');
+const { buildReadingRegistersForConcept } = require('./reading-registers');
 const { loadResolveRules } = require('./resolve-rules-loader');
 const { matchQuery } = require('./matcher');
 const { normalizeQuery } = require('./normalizer');
@@ -145,7 +145,7 @@ function resolveConceptQuery(rawQuery) {
         shortDefinition: match.concept.shortDefinition,
         coreMeaning: match.concept.coreMeaning,
         fullDefinition: match.concept.fullDefinition,
-        derivedExplanationOverlays: resolveDerivedExplanationOverlaysForConcept(match.concept),
+        registers: buildReadingRegistersForConcept(match.concept),
         contexts: match.concept.contexts.map(buildContextPayload),
         sources: match.concept.sources.map((source) => ({
           id: source.id,

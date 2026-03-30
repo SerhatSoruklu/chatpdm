@@ -7,11 +7,11 @@
     "dev": "nodemon --watch src --watch scripts --ext js,json src/server.js",
     "start": "node src/server.js",
     "build": "npm run check",
-    "check": "node scripts/verify-shell.js && node scripts/verify-resolver.js && node scripts/verify-derived-explanation-overlays.js && node scripts/verify-feedback.js",
+    "check": "node scripts/verify-shell.js && node scripts/verify-resolver.js && node scripts/verify-reading-registers.js && node scripts/validate-register-divergence.js && node scripts/verify-feedback.js",
     "validate:phase-1-mapping": "node scripts/validate-phase-1-mapping.js",
-    "regenerate:derived-overlays": "node scripts/regenerate-derived-explanation-overlays.js",
+    "validate:register-divergence": "node scripts/validate-register-divergence.js",
     "pressure:semantic": "node ../tests/runtime/run-query-stress.js",
-    "test": "node scripts/verify-resolver.js && node scripts/verify-derived-explanation-overlays.js && node scripts/verify-feedback.js"
+    "test": "node scripts/verify-resolver.js && node scripts/verify-reading-registers.js && node scripts/validate-register-divergence.js && node scripts/verify-feedback.js"
   },
   "keywords": [
     "chatpdm",

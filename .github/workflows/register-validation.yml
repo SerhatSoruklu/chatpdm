@@ -1,0 +1,36 @@
+name: register-validation
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  register-validation:
+    name: register-validation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+
+      - name: Install root dependencies
+        run: npm ci
+
+      - name: Validate authored registers
+        run: npm run validate:registers
+
+      - name: Upload register validation artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: register-validation-report
+          path: artifacts/register-validation-report.json
+          if-no-files-found: warn

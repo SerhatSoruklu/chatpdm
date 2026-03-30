@@ -379,8 +379,8 @@ This is why the reading-lens architecture matters.
 The public surface is allowed to move at the wording layer, but it is not allowed to drift at the truth layer. ChatPDM can tolerate visible register changes because the base remains structurally fixed:
 
 - the canonical concept remains authored and singular
-- derived overlays remain read-only
-- stale or mismatched overlays do not stay active
+- authored reading registers remain read-only in the runtime response
+- `registers.standard` remains pinned to the canonical baseline
 - the UI changes wording locally without changing the object identity underneath
 
 That is the architectural version of the quote. The post may sway, but it does not collapse, because the base is made of explicit invariants rather than appearance.
@@ -390,10 +390,9 @@ That is the architectural version of the quote. The post may sway, but it does n
 The philosophy is not only stated in markdown. It is implemented directly in the codebase.
 
 - Authored concept packets are protected from overlay drift in `assertNoReservedAuthoredOverlayFields(...)` and `validateConceptShape(...)` in [backend/src/modules/concepts/concept-loader.js](../../backend/src/modules/concepts/concept-loader.js).
-- Canonical identity is bound through `computeCanonicalConceptHash(...)` and `buildDerivedExplanationOverlayContract(...)` in [backend/src/modules/concepts/concept-loader.js](../../backend/src/modules/concepts/concept-loader.js).
-- Deterministic overlay generation stays template-locked in `buildGeneratedOverlayFieldValue(...)`, `buildGeneratedOverlayMode(...)`, and `buildGeneratedOverlayContract(...)` in [backend/src/modules/concepts/derived-explanation-overlays.js](../../backend/src/modules/concepts/derived-explanation-overlays.js).
-- Fail-closed read-time integrity is enforced in `resolveDerivedExplanationOverlaysForConcept(...)` in [backend/src/modules/concepts/derived-explanation-overlays.js](../../backend/src/modules/concepts/derived-explanation-overlays.js). If canonical binding fails or semantic lag is exceeded, the overlay does not keep pretending to be active.
-- The pre-UI trust gate is locked in [backend/src/modules/concepts/derived-explanation-reading-lens-gate.json](../../backend/src/modules/concepts/derived-explanation-reading-lens-gate.json) and verified in `verifyTrustCopyLock()`, `verifySemanticParityAuditGate()`, and `verifyCanonicalVisualAnchorSpec()` in [backend/scripts/verify-derived-explanation-overlays.js](../../backend/scripts/verify-derived-explanation-overlays.js).
+- Canonical identity is bound through `computeCanonicalConceptHash(...)` in [backend/src/modules/concepts/concept-loader.js](../../backend/src/modules/concepts/concept-loader.js), with authored register fields and the static `canonical` anchor block excluded from the hash input so the canonical visual anchor stays stable while the register model evolves.
+- Authored public registers are assembled directly from concept packets in `buildReadingRegistersForConcept(...)` in [backend/src/modules/concepts/reading-registers.js](../../backend/src/modules/concepts/reading-registers.js).
+- The pre-UI trust gate is locked in [backend/src/modules/concepts/derived-explanation-reading-lens-gate.json](../../backend/src/modules/concepts/derived-explanation-reading-lens-gate.json) and verified in `verifyTrustCopyLock()`, `verifyReadingRegisterPayloads()`, and `verifyCanonicalVisualAnchorSpec()` in [backend/scripts/verify-reading-registers.js](../../backend/scripts/verify-reading-registers.js).
 - The public lens surface keeps the trust anchor static while switching only explanatory fields through `selectReadingLens(...)`, `activeReadingFields(...)`, and the static trust block in [frontend/src/app/pages/landing/landing-page.component.ts](../../frontend/src/app/pages/landing/landing-page.component.ts) and [frontend/src/app/pages/landing/landing-page.component.html](../../frontend/src/app/pages/landing/landing-page.component.html).
 
 ### Why This Counts As Evidence
@@ -402,20 +401,19 @@ The important point is not that the system claims stability. The important point
 
 When pressure enters the system:
 
-- bad authored overlay fields are rejected
-- stale overlay bindings downgrade
-- expired overlay state downgrades
-- corrupt generated text fails closed
+- malformed authored register fields are rejected
+- legacy overlay fields are rejected from authored packets
+- `registers.standard` mismatches are rejected before publish
 - the UI does not invent motion or loading theatrics that suggest live answer generation
 
 ### Failure Behavior Matrix
 
 | Pressure | Structural response | Truth outcome |
 | --- | --- | --- |
-| Authored overlay drift | Reject packet | Canonical remains singular |
-| Hash mismatch | `pending_generation` | No stale active overlay |
-| Lag exceeded | `pending_generation` | No expired semantic state |
-| Corrupt generated mode | `invalid` | Fail closed |
+| Authored register drift | Reject packet | Canonical remains singular |
+| Legacy overlay field in authored packet | Reject packet | Prefix-derived path stays dead |
+| `registers.standard` mismatch | Reject packet | Canonical baseline stays stable |
+| UI register switch | Swap authored prose only | Canonical identity stays fixed |
 | Lens switch | local field swap only | Object identity unchanged |
 
 That is why the reading-lens system fits the philosophy. It does not rely on the hope that users will interpret it correctly. It builds structural conditions that make incorrect interpretation harder and silent drift less survivable.

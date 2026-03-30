@@ -83,3 +83,9 @@ chatpdm-sources/
 .codex
 .codex/
 tmp/
+artifacts/
+
+# Local legal-validator research notes
+docs/product/legal-argument-validator-hart-notes.md
+docs/product/legal-argument-validator-levi-notes.md
+docs/product/legal-argument-validator-reading-law-notes.md

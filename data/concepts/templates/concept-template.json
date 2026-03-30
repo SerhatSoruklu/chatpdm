@@ -1,10 +1,38 @@
 {
+  "concept": "",
   "conceptId": "",
   "title": "",
+  "version": 1,
+  "state": "draft",
+  "previousVersion": null,
+  "createdAt": "",
+  "updatedAt": "",
   "domain": "",
+  "canonical": {
+    "invariant": "",
+    "excludes": [],
+    "adjacent": {}
+  },
   "shortDefinition": "",
   "coreMeaning": "",
   "fullDefinition": "",
+  "registers": {
+    "standard": {
+      "shortDefinition": "",
+      "coreMeaning": "",
+      "fullDefinition": ""
+    },
+    "simplified": {
+      "shortDefinition": "",
+      "coreMeaning": "",
+      "fullDefinition": ""
+    },
+    "formal": {
+      "shortDefinition": "",
+      "coreMeaning": "",
+      "fullDefinition": ""
+    }
+  },
   "contexts": [
     {
       "label": "",

@@ -13,7 +13,7 @@ import {
   ComparisonAxisValue,
   ConceptMatchResponse,
   ConceptSource,
-  DerivedExplanationOverlays,
+  ReadingRegisters,
   NoExactMatchResponse,
   RelatedConcept,
   ResolveProductResponse,
@@ -542,32 +542,27 @@ export class LandingPageComponent {
   }
 
   protected readingLensesAvailable(response: ConceptMatchResponse): boolean {
-    const overlays = this.derivedExplanationOverlays(response);
-    return overlays?.status === 'generated';
+    return this.exposedReadingLensModes(response).length > 1;
+  }
+
+  protected visibleReadingLensOptions(response: ConceptMatchResponse) {
+    const exposedRegisters = this.exposedReadingLensModes(response);
+    return this.readingLensOptions.filter((lens) => exposedRegisters.includes(lens.mode));
   }
 
   protected activeReadingFields(response: ConceptMatchResponse): ActiveReadingFields {
-    const overlays = this.derivedExplanationOverlays(response);
+    const registers = this.readingRegisters(response);
 
-    if (!overlays || !this.readingLensesAvailable(response)) {
+    if (!registers) {
       return this.canonicalReadingFields(response);
     }
 
-    const activeMode = overlays.modes[this.activeReadingLens()];
-
-    if (
-      activeMode.status !== 'generated'
-      || !activeMode.fields.shortDefinition
-      || !activeMode.fields.coreMeaning
-      || !activeMode.fields.fullDefinition
-    ) {
-      return this.canonicalReadingFields(response);
-    }
+    const activeMode = registers[this.activeReadingMode(response)];
 
     return {
-      shortDefinition: activeMode.fields.shortDefinition,
-      coreMeaning: activeMode.fields.coreMeaning,
-      fullDefinition: activeMode.fields.fullDefinition,
+      shortDefinition: activeMode.shortDefinition,
+      coreMeaning: activeMode.coreMeaning,
+      fullDefinition: activeMode.fullDefinition,
     };
   }
 
@@ -576,13 +571,13 @@ export class LandingPageComponent {
   }
 
   protected canonicalHashShort(response: ConceptMatchResponse): string {
-    const overlays = this.derivedExplanationOverlays(response);
+    const registers = this.readingRegisters(response);
 
-    if (!overlays) {
+    if (!registers) {
       return 'Unavailable';
     }
 
-    return overlays.canonicalBinding.canonicalHash.slice(
+    return registers.canonicalBinding.canonicalHash.slice(
       0,
       CANONICAL_VISUAL_ANCHOR_HASH_LENGTH,
     );
@@ -765,17 +760,37 @@ export class LandingPageComponent {
     };
   }
 
-  private derivedExplanationOverlays(response: ConceptMatchResponse): DerivedExplanationOverlays | null {
-    const overlays = response.answer.derivedExplanationOverlays;
+  protected activeReadingMode(response: ConceptMatchResponse): ReadingLensMode {
+    const exposedRegisters = this.exposedReadingLensModes(response);
+    return exposedRegisters.includes(this.activeReadingLens()) ? this.activeReadingLens() : 'standard';
+  }
 
-    if (!overlays || typeof overlays !== 'object' || Array.isArray(overlays)) {
+  private exposedReadingLensModes(response: ConceptMatchResponse): ReadingLensMode[] {
+    const registers = this.readingRegisters(response);
+    const exposedRegisters = registers?.validation?.availableModes ?? [];
+
+    return exposedRegisters.filter((mode): mode is ReadingLensMode => (
+      this.readingLensOptions.some((option) => option.mode === mode)
+    ));
+  }
+
+  private readingRegisters(response: ConceptMatchResponse): ReadingRegisters | null {
+    const registers = response.answer.registers;
+
+    if (!registers || typeof registers !== 'object' || Array.isArray(registers)) {
       return null;
     }
 
-    if (!overlays.canonicalBinding || !overlays.modes) {
+    if (
+      !registers.canonicalBinding
+      || !registers.validation
+      || !registers.standard
+      || !registers.simplified
+      || !registers.formal
+    ) {
       return null;
     }
 
-    return overlays;
+    return registers;
   }
 }

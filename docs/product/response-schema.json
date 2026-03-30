@@ -185,16 +185,7 @@
         }
       }
     },
-    "derivedExplanationOverlayStatus": {
-      "type": "string",
-      "enum": [
-        "absent",
-        "pending_generation",
-        "generated",
-        "invalid"
-      ]
-    },
-    "derivedExplanationOverlayCanonicalBinding": {
+    "readingRegisterCanonicalBinding": {
       "type": "object",
       "additionalProperties": false,
       "required": [
@@ -215,7 +206,7 @@
         }
       }
     },
-    "derivedExplanationOverlayFields": {
+    "readingRegisterFields": {
       "type": "object",
       "additionalProperties": false,
       "required": [
@@ -225,149 +216,75 @@
       ],
       "properties": {
         "shortDefinition": {
-          "type": [
-            "string",
-            "null"
-          ]
+          "$ref": "#/$defs/stringValue"
         },
         "coreMeaning": {
-          "type": [
-            "string",
-            "null"
-          ]
+          "$ref": "#/$defs/stringValue"
         },
         "fullDefinition": {
-          "type": [
-            "string",
-            "null"
-          ]
+          "$ref": "#/$defs/stringValue"
         }
       }
     },
-    "derivedExplanationOverlayFieldCheck": {
+    "readingRegisterValidationReason": {
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "strategy",
-        "prefix",
-        "canonicalSuffixMatch"
+        "code"
       ],
       "properties": {
-        "strategy": {
-          "type": "string",
-          "enum": [
-            "identity",
-            "prefixed_copy"
-          ]
+        "code": {
+          "$ref": "#/$defs/stringValue"
         },
-        "prefix": {
-          "type": "string"
+        "field": {
+          "$ref": "#/$defs/stringValue"
         },
-        "canonicalSuffixMatch": {
-          "const": true
+        "detail": {
+          "$ref": "#/$defs/stringValue"
         }
       }
     },
-    "derivedExplanationEquivalenceCertificate": {
+    "readingRegisterModeValidation": {
       "type": "object",
       "additionalProperties": false,
       "required": [
         "status",
-        "certificateVersion",
-        "templateVersion",
-        "canonicalHash",
-        "mode",
-        "fieldChecks"
+        "reasons"
       ],
       "properties": {
         "status": {
-          "const": "certified"
-        },
-        "certificateVersion": {
-          "$ref": "#/$defs/stringValue"
-        },
-        "templateVersion": {
-          "$ref": "#/$defs/stringValue"
-        },
-        "canonicalHash": {
-          "type": "string",
-          "pattern": "^[a-f0-9]{64}$"
-        },
-        "mode": {
           "type": "string",
           "enum": [
-            "standard",
-            "simplified",
-            "formal"
+            "available",
+            "rejected"
           ]
         },
-        "fieldChecks": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": [
-            "shortDefinition",
-            "coreMeaning",
-            "fullDefinition"
-          ],
-          "properties": {
-            "shortDefinition": {
-              "$ref": "#/$defs/derivedExplanationOverlayFieldCheck"
-            },
-            "coreMeaning": {
-              "$ref": "#/$defs/derivedExplanationOverlayFieldCheck"
-            },
-            "fullDefinition": {
-              "$ref": "#/$defs/derivedExplanationOverlayFieldCheck"
-            }
+        "reasons": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/readingRegisterValidationReason"
           }
         }
       }
     },
-    "derivedExplanationOverlayModeObject": {
+    "readingRegisterValidation": {
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "status",
-        "fields",
-        "equivalenceCertificate"
-      ],
-      "properties": {
-        "status": {
-          "$ref": "#/$defs/derivedExplanationOverlayStatus"
-        },
-        "fields": {
-          "$ref": "#/$defs/derivedExplanationOverlayFields"
-        },
-        "equivalenceCertificate": {
-          "oneOf": [
-            {
-              "type": "null"
-            },
-            {
-              "$ref": "#/$defs/derivedExplanationEquivalenceCertificate"
-            }
-          ]
-        }
-      }
-    },
-    "derivedExplanationOverlaysObject": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "readOnly",
-        "status",
-        "canonicalBinding",
+        "availableModes",
         "modes"
       ],
       "properties": {
-        "readOnly": {
-          "const": true
-        },
-        "status": {
-          "$ref": "#/$defs/derivedExplanationOverlayStatus"
-        },
-        "canonicalBinding": {
-          "$ref": "#/$defs/derivedExplanationOverlayCanonicalBinding"
+        "availableModes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "standard",
+              "simplified",
+              "formal"
+            ]
+          }
         },
         "modes": {
           "type": "object",
@@ -379,15 +296,47 @@
           ],
           "properties": {
             "standard": {
-              "$ref": "#/$defs/derivedExplanationOverlayModeObject"
+              "$ref": "#/$defs/readingRegisterModeValidation"
             },
             "simplified": {
-              "$ref": "#/$defs/derivedExplanationOverlayModeObject"
+              "$ref": "#/$defs/readingRegisterModeValidation"
             },
             "formal": {
-              "$ref": "#/$defs/derivedExplanationOverlayModeObject"
+              "$ref": "#/$defs/readingRegisterModeValidation"
             }
           }
+        }
+      }
+    },
+    "readingRegistersObject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "readOnly",
+        "canonicalBinding",
+        "validation",
+        "standard",
+        "simplified",
+        "formal"
+      ],
+      "properties": {
+        "readOnly": {
+          "const": true
+        },
+        "canonicalBinding": {
+          "$ref": "#/$defs/readingRegisterCanonicalBinding"
+        },
+        "validation": {
+          "$ref": "#/$defs/readingRegisterValidation"
+        },
+        "standard": {
+          "$ref": "#/$defs/readingRegisterFields"
+        },
+        "simplified": {
+          "$ref": "#/$defs/readingRegisterFields"
+        },
+        "formal": {
+          "$ref": "#/$defs/readingRegisterFields"
         }
       }
     },
@@ -511,7 +460,7 @@
         "shortDefinition",
         "coreMeaning",
         "fullDefinition",
-        "derivedExplanationOverlays",
+        "registers",
         "contexts",
         "sources",
         "relatedConcepts"
@@ -529,8 +478,8 @@
         "fullDefinition": {
           "$ref": "#/$defs/stringValue"
         },
-        "derivedExplanationOverlays": {
-          "$ref": "#/$defs/derivedExplanationOverlaysObject"
+        "registers": {
+          "$ref": "#/$defs/readingRegistersObject"
         },
         "contexts": {
           "type": "array",

@@ -1,4 +1,10 @@
 import type { PublicPageContent, PublicPageKey } from './public-page.types';
+import {
+  SITE_HELLO_EMAIL,
+  SITE_INFO_EMAIL,
+  SITE_POLICY_EMAIL,
+  SITE_SUPPORT_EMAIL,
+} from '../../core/layout/site-navigation.data';
 
 const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
   about: {
@@ -96,23 +102,64 @@ const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
           'clear boundary notes for support expectations',
         ],
       },
+      {
+        title: 'Current inboxes',
+        contacts: [
+          {
+            label: 'Hello',
+            email: SITE_HELLO_EMAIL,
+            note: 'General product introductions and first-contact outreach.',
+          },
+          {
+            label: 'Info',
+            email: SITE_INFO_EMAIL,
+            note: 'Research, documentation, and general public inquiries.',
+          },
+          {
+            label: 'Support',
+            email: SITE_SUPPORT_EMAIL,
+            note: 'Runtime questions, product support expectations, and route help.',
+          },
+        ],
+      },
     ],
   },
   privacy: {
     eyebrow: 'Privacy Policy',
-    title: 'Human-readable version in preparation.',
+    title: 'Current privacy posture for the public beta.',
     intro:
-      'A simpler public privacy page is being prepared for this route. The current inspectable privacy surface remains available in the meantime.',
+      'ChatPDM keeps this page limited to the current public-beta privacy posture: what the platform stores, what stays request-bound, and where the inspectable runtime-backed detail lives.',
     sections: [
       {
-        title: 'Policy status',
+        title: 'Current scope',
         paragraphs: [
-          'This top-level route is reserved for the human-readable privacy page. Until that version is ready, use the inspectable page for the current system-backed view of privacy behavior.',
+          'The current runtime stores feedback and system-trace fields needed for bounded product behavior, while keeping some transport paths request-bound rather than persisted.',
+          'This page is the human-readable entry point. The inspect surface remains the evidence-backed technical view of the same policy area.',
+        ],
+        bullets: [
+          'feedback events are persisted with declared lifecycle controls',
+          'browser session continuity is handled separately from backend persistence',
+          'request-bound SSR transport is described separately from stored data',
+        ],
+        contacts: [
+          {
+            label: 'Policy',
+            email: SITE_POLICY_EMAIL,
+            note: 'Privacy, data-retention, cookie, and acceptable-use policy questions.',
+          },
+        ],
+      },
+      {
+        title: 'How to use this page',
+        bullets: [
+          'use this route for the current plain-language privacy summary',
+          'use the inspect route when you need file-backed implementation evidence',
+          'treat the inspect route as traceability detail, not the primary human entry point',
         ],
       },
     ],
     action: {
-      label: 'View current inspectable privacy page',
+      label: 'Open privacy inspect surface',
       route: '/inspect/privacy',
     },
   },
@@ -120,7 +167,7 @@ const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
     eyebrow: 'Data Retention / Data Usage',
     title: 'Current lifecycle, storage, and expiry behavior.',
     intro:
-      'This page stays limited to current implementation-backed retention declarations for feedback persistence, browser session continuity, and request-bound internal SSR transport.',
+      'This page summarizes the current lifecycle rules around persistence, expiry, export, deletion, and request-bound transport in the public beta.',
     sections: [
       {
         title: 'Current scope',
@@ -135,12 +182,25 @@ const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
         bullets: [
           'feedback export by sessionId',
           'feedback deletion by sessionId',
-          'inspect route for current trace anchors and lifecycle evidence',
+          'inspect route for current lifecycle evidence and traceable implementation detail',
+        ],
+        contacts: [
+          {
+            label: 'Policy',
+            email: SITE_POLICY_EMAIL,
+            note: 'Data-retention and policy-surface questions for the current public beta.',
+          },
+        ],
+      },
+      {
+        title: 'Reading guide',
+        paragraphs: [
+          'This route is the plain-language summary of current lifecycle behavior. The inspect surface should be used when you need exact evidence mappings, implementation anchors, or current claim-by-claim traceability.',
         ],
       },
     ],
     action: {
-      label: 'View current inspectable data-retention page',
+      label: 'Open data-retention inspect surface',
       route: '/inspect/data-retention',
     },
   },
@@ -148,7 +208,7 @@ const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
     eyebrow: 'Acceptable Use',
     title: 'Current runtime use boundaries.',
     intro:
-      'This page stays limited to current implementation-backed runtime scope, refusal behavior, and feedback-surface constraints in ChatPDM.',
+      'This page summarizes what the current public beta supports, what it refuses, and where the runtime draws hard boundary lines instead of guessing.',
     sections: [
       {
         title: 'Current supported use',
@@ -165,10 +225,23 @@ const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
           'non-allowlisted comparison pairs return no_exact_match instead of synthetic comparison output',
           'invalid feedback payloads and invalid session controls are rejected through current route validation',
         ],
+        contacts: [
+          {
+            label: 'Policy',
+            email: SITE_POLICY_EMAIL,
+            note: 'Acceptable-use, runtime boundary, and policy interpretation questions.',
+          },
+        ],
+      },
+      {
+        title: 'Reading guide',
+        paragraphs: [
+          'Use this route for the human-readable boundary summary. Use the inspect surface when you need claim-level evidence for runtime scope, refusal behavior, or feedback constraints.',
+        ],
       },
     ],
     action: {
-      label: 'View current inspectable acceptable-use page',
+      label: 'Open acceptable-use inspect surface',
       route: '/inspect/acceptable-use',
     },
   },
