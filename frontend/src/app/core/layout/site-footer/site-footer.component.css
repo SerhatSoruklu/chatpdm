@@ -157,6 +157,13 @@
   text-decoration: underline;
 }
 
+.pdm-site-footer__credit {
+  margin: 16px 0 0;
+  color: rgba(191, 219, 254, 0.72);
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+
 .pdm-site-footer__grid {
   display: grid;
   gap: 18px;
