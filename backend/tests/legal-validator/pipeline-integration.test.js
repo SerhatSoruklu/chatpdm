@@ -9,11 +9,14 @@ const { connectMongo, disconnectMongo } = require('../../src/config/mongoose');
 const DoctrineArtifact = require('../../src/modules/legal-validator/doctrine/doctrine-artifact.model');
 const ArgumentUnit = require('../../src/modules/legal-validator/arguments/argument-unit.model');
 const AuthorityNode = require('../../src/modules/legal-validator/authority/authority-node.model');
+const SourceDocument = require('../../src/modules/legal-validator/sources/source-document.model');
+const SourceSegment = require('../../src/modules/legal-validator/sources/source-segment.model');
 const Mapping = require('../../src/modules/legal-validator/mapping/mapping.model');
 const ValidationRun = require('../../src/modules/legal-validator/validation/validation-run.model');
 const doctrineLoaderService = require('../../src/modules/legal-validator/doctrine/doctrine-loader.service');
 const admissibilityService = require('../../src/modules/legal-validator/arguments/admissibility.service');
 const authorityRegistryService = require('../../src/modules/legal-validator/authority/authority-registry.service');
+const segmentationService = require('../../src/modules/legal-validator/sources/segmentation.service');
 const resolverService = require('../../src/modules/legal-validator/mapping/resolver.service');
 const validationKernelService = require('../../src/modules/legal-validator/validation/validation-kernel.service');
 const traceService = require('../../src/modules/legal-validator/validation/trace.service');
@@ -59,15 +62,36 @@ async function createDoctrineArtifact() {
   return artifact;
 }
 
-async function createArgumentUnit() {
+async function createSourceDocument() {
+  const sourceDocument = new SourceDocument({
+    sourceDocumentId: 'source-document-integration-1',
+    matterId: 'matter-integration-1',
+    documentId: 'document-integration-1',
+    contentFormat: 'markdown',
+    content: [
+      '# Duty of Care',
+      '',
+      'The defendant owed a duty of care and failed to inspect the equipment.',
+      '',
+      'The defendant did not maintain a safe system of work.',
+    ].join('\n'),
+  });
+
+  await sourceDocument.save();
+  return sourceDocument;
+}
+
+async function createArgumentUnit({ sourceSegments }) {
+  const paragraphSegments = sourceSegments.filter((segment) => segment.segmentType === 'paragraph');
+  const primarySegment = paragraphSegments[0];
   const unit = new ArgumentUnit({
     argumentUnitId: 'argument-unit-integration-1',
     matterId: 'matter-integration-1',
     documentId: 'document-integration-1',
-    sourceSegmentIds: ['segment-integration-1'],
+    sourceSegmentIds: paragraphSegments.map((segment) => segment.sourceSegmentId),
     unitType: 'application_step',
-    text: 'The defendant owed a duty of care and failed to inspect the equipment.',
-    normalizedText: 'the defendant owed a duty of care and failed to inspect the equipment',
+    text: primarySegment.text,
+    normalizedText: primarySegment.text.toLowerCase(),
     speakerRole: 'claimant',
     positionSide: 'claimant',
     sequence: 1,
@@ -107,7 +131,15 @@ async function createAuthorityNode(doctrineArtifactId) {
 
 async function createRecognizedAuthorityContext() {
   const artifact = await createDoctrineArtifact();
-  const unit = await createArgumentUnit();
+  const sourceDocument = await createSourceDocument();
+  const segmentationResult = await segmentationService.segmentSourceDocument({
+    sourceDocument,
+  });
+  const sourceSegments = await SourceSegment.find({ sourceDocumentId: sourceDocument.sourceDocumentId })
+    .sort({ sequence: 1 })
+    .lean()
+    .exec();
+  const unit = await createArgumentUnit({ sourceSegments });
   const authorityNode = await createAuthorityNode(artifact.artifactId);
 
   const admissibilityResult = await admissibilityService.evaluateArgumentUnits({
@@ -130,6 +162,9 @@ async function createRecognizedAuthorityContext() {
 
   return {
     artifact,
+    sourceDocument,
+    segmentationResult,
+    sourceSegments,
     unit,
     authorityNode,
     admissibilityResult,
@@ -160,6 +195,9 @@ test.afterEach(async () => {
 test('legal-validator pipeline persists a replay-safe ValidationRun on the valid path', async () => {
   const {
     artifact,
+    sourceDocument,
+    segmentationResult,
+    sourceSegments,
     unit,
     admissibilityResult,
     doctrineLoadResult,
@@ -198,7 +236,9 @@ test('legal-validator pipeline persists a replay-safe ValidationRun on the valid
       validationRunId: 'validation-run-integration-1',
       resolverVersion: 'resolver-v1',
       inputHash: '9'.repeat(64),
-      sourceAnchors: ['segment-integration-1'],
+      sourceAnchors: sourceSegments
+        .filter((segment) => unit.sourceSegmentIds.includes(segment.sourceSegmentId))
+        .map((segment) => segment.sourceAnchor),
       interpretationUsed: true,
       interpretationRegimeId: 'uk-textual-v1',
       manualOverrideUsed: false,
@@ -212,6 +252,11 @@ test('legal-validator pipeline persists a replay-safe ValidationRun on the valid
   assert.equal(resolverResult.ok, true);
   assert.equal(validationKernelResult.ok, true);
   assert.equal(traceResult.ok, true);
+  assert.equal(segmentationResult.ok, true);
+  assert.equal(sourceDocument.documentId, unit.documentId);
+  assert.deepEqual(unit.sourceSegmentIds, sourceSegments
+    .filter((segment) => segment.segmentType === 'paragraph')
+    .map((segment) => segment.sourceSegmentId));
   assert.equal(traceResult.terminal, false);
   assert.equal(traceResult.result, 'valid');
   assert.equal(traceResult.validationRunWritten, true);
@@ -220,7 +265,9 @@ test('legal-validator pipeline persists a replay-safe ValidationRun on the valid
   assert.equal(traceResult.mappingId, 'mapping-integration-1');
   assert.equal(traceResult.validationRunId, 'validation-run-integration-1');
   assert.deepEqual(traceResult.persistedTraceSummary, {
-    sourceAnchors: ['segment-integration-1'],
+    sourceAnchors: sourceSegments
+      .filter((segment) => unit.sourceSegmentIds.includes(segment.sourceSegmentId))
+      .map((segment) => segment.sourceAnchor),
     interpretationRegimeId: 'uk-textual-v1',
     mappingRuleIds: ['resolver-rule-duty-of-care'],
     validationRuleIds: ['validation-rule-duty-applies'],
@@ -245,7 +292,12 @@ test('legal-validator pipeline persists a replay-safe ValidationRun on the valid
   assert.equal(persistedRun.inputHash, '9'.repeat(64));
   assert.equal(persistedRun.result, 'valid');
   assert.deepEqual(persistedRun.failureCodes, []);
-  assert.deepEqual(persistedRun.trace.sourceAnchors, ['segment-integration-1']);
+  assert.deepEqual(
+    persistedRun.trace.sourceAnchors,
+    sourceSegments
+      .filter((segment) => unit.sourceSegmentIds.includes(segment.sourceSegmentId))
+      .map((segment) => segment.sourceAnchor),
+  );
   assert.equal(persistedRun.trace.interpretationUsed, true);
   assert.equal(persistedRun.trace.interpretationRegimeId, 'uk-textual-v1');
   assert.equal(persistedRun.trace.manualOverrideUsed, false);
@@ -254,6 +306,8 @@ test('legal-validator pipeline persists a replay-safe ValidationRun on the valid
   assert.deepEqual(persistedRun.trace.overrideIds, []);
   assert.deepEqual(persistedRun.trace.loadedManifest.conceptIds, ['duty_of_care']);
   assert.deepEqual(persistedRun.trace.loadedManifest.authorityIds, ['authority-duty-1']);
+  assert.equal(await SourceDocument.countDocuments({}), 1);
+  assert.equal(await SourceSegment.countDocuments({}), 3);
   assert.equal(await ValidationRun.countDocuments({}), 1);
 });
 
