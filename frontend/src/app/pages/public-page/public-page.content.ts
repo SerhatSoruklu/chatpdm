@@ -120,14 +120,14 @@ const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
     eyebrow: 'Data Retention / Data Usage',
     title: 'Current lifecycle, storage, and expiry behavior.',
     intro:
-      'This page stays limited to current implementation-backed retention declarations for feedback persistence, browser session continuity, and request-bound SSR transport.',
+      'This page stays limited to current implementation-backed retention declarations for feedback persistence, browser session continuity, and request-bound internal SSR transport.',
     sections: [
       {
         title: 'Current scope',
         bullets: [
           'feedback event persistence with derived expiresAt and TTL deletion',
           'browser local storage used for feedback session continuity',
-          'request-bound SSR header transport shown separately from persisted storage',
+          'request-bound internal SSR header transport shown separately from persisted storage',
         ],
       },
       {

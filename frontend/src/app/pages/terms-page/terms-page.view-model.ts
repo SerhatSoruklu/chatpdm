@@ -73,7 +73,7 @@ export function buildTermsPageViewModel(surface: PolicySurfaceDefinition): Terms
   return {
     title: 'Terms of Service',
     intro:
-      'Current terms behavior is rendered here as a modeled behavior surface: public endpoints, accepted feedback fields and values, platform rules, and mapped refusal or capability boundaries.',
+      'Current terms behavior is rendered here as a modeled runtime surface: public endpoints, accepted feedback fields and values, platform rules, and mapped runtime and refusal boundaries.',
     summaryLine: `Current modeled scope shows ${endpointContracts.length} public endpoints, ${fieldContracts.length} field rules, ${platformRules.length} platform rule, ${runtimeBoundaries.length} runtime boundary, and ${refusalBoundaries.length} refusal boundaries.`,
     badges: [
       {

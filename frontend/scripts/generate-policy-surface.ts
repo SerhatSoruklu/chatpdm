@@ -66,7 +66,7 @@ const policySurfaceConfig: Record<PolicySurfaceKey, PolicySurfaceConfig> = {
     policyFileName: 'terms.md',
     route: '/inspect/terms',
     title: 'Terms of Service',
-    subtitle: 'Runtime rules and allowed use',
+    subtitle: 'Runtime operations, field rules, and refusal boundaries',
     traceHeading: '## 3. Terms of Service Traceability',
   },
   cookies: {
@@ -80,7 +80,7 @@ const policySurfaceConfig: Record<PolicySurfaceKey, PolicySurfaceConfig> = {
     policyFileName: 'data-retention.md',
     route: '/inspect/data-retention',
     title: 'Data Retention / Data Usage',
-    subtitle: 'Lifecycle, storage, and expiry evidence',
+    subtitle: 'Lifecycle, storage, expiry, and session-bound control evidence',
     traceHeading: '## 5. Data Retention Policy Traceability',
   },
   'acceptable-use': {

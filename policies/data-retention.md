@@ -6,7 +6,7 @@ Implementation-backed view over lifecycle, storage, and expiry behavior.
 
 - feedback persistence lifecycle and expiry
 - browser session continuity for feedback controls
-- request-bound SSR transport evidence
+- request-bound internal SSR transport evidence
 - session-bound export and delete controls
 
 ## Runtime Snapshot
@@ -44,7 +44,7 @@ Implementation-backed view over lifecycle, storage, and expiry behavior.
 
 ## Implementation Boundaries
 
-This file keeps feedback persistence, browser storage continuity, and request-bound SSR transport separate.
+This file keeps feedback persistence, browser storage continuity, and request-bound internal SSR transport separate.
 
 Storage form claims and expiry claims are not interchangeable in this surface.
 

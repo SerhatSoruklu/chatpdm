@@ -19,34 +19,34 @@ interface InspectSurfaceLink {
 export class InspectIndexPageComponent {
   protected readonly surfaces: readonly InspectSurfaceLink[] = [
     {
-      title: 'Privacy inspect',
+      title: 'Privacy Policy Inspect',
       subtitle: 'storage, lifecycle, and feedback-event evidence',
       route: '/inspect/privacy',
       detail: 'Current inspectable privacy behavior surface with traceability and lifecycle evidence.',
     },
     {
-      title: 'Data retention inspect',
-      subtitle: 'lifecycle, storage, expiry, and session-control evidence',
+      title: 'Data Retention / Data Usage Inspect',
+      subtitle: 'lifecycle, storage, expiry, and session-bound control evidence',
       route: '/inspect/data-retention',
-      detail: 'Current inspectable data-retention surface for feedback persistence, browser continuity, and request-bound transport.',
+      detail: 'Current inspectable data-retention surface for feedback persistence, browser session continuity, and request-bound internal SSR transport.',
     },
     {
-      title: 'Acceptable use inspect',
+      title: 'Acceptable Use Inspect',
       subtitle: 'runtime scope, refusal, and feedback boundary evidence',
       route: '/inspect/acceptable-use',
-      detail: 'Current inspectable acceptable-use surface for runtime scope, unsupported composition boundaries, and feedback-surface constraints.',
+      detail: 'Current inspectable acceptable-use surface for runtime scope, refused query forms, and feedback-surface constraints.',
     },
     {
-      title: 'Cookie inspect',
+      title: 'Cookie Policy Inspect',
       subtitle: 'browser and SSR cookie transport evidence',
       route: '/inspect/cookies',
       detail: 'Current inspectable cookie surface for SSR transport and browser-facing cookie behavior.',
     },
     {
-      title: 'Terms inspect',
-      subtitle: 'runtime rules and allowed-use boundaries',
+      title: 'Terms of Service Inspect',
+      subtitle: 'runtime operations, field rules, and refusal boundaries',
       route: '/inspect/terms',
-      detail: 'Current inspectable terms surface for modeled behavior and mapped refusal boundaries.',
+      detail: 'Current inspectable terms surface for runtime operations, field rules, and refusal boundaries.',
     },
   ];
 }
