@@ -2,9 +2,28 @@
 
 ## Scope Metadata
 
+- `concept`:
 - `conceptId`:
 - `title`:
+- `version`:
+- `state`:
+- `previousVersion`:
+- `createdAt`:
+- `updatedAt`:
 - `domain`:
+
+## Canonical Anchor
+
+### `canonical.invariant`
+
+### `canonical.excludes`
+
+-
+
+### `canonical.adjacent`
+
+- `relatedConceptId`:
+  `boundary`:
 
 ## Canonical Fields
 
@@ -67,6 +86,12 @@
 
 ## Authoring Notes
 
+- `canonical.*` defines the concept-level meaning anchor for all authored registers.
+- `concept`, `version`, `state`, `previousVersion`, `createdAt`, and `updatedAt` define the packet lifecycle surface.
+- New packets should begin as `draft`; published packets should be copied into `data/concept-versions/<concept>/v<version>.json` before later versions are authored.
+- `canonical.invariant` should state what the concept is without using register-specific scaffolding.
+- `canonical.excludes` should list what the concept must not collapse into.
+- `canonical.adjacent` should name nearby concepts and state the boundary against each one.
 - `registers.standard.*` must exactly match the top-level canonical prose fields.
 - `registers.simplified.*` and `registers.formal.*` must be independently authored, not mechanically derived.
 - Use the published packets for `authority`, `power`, `legitimacy`, `duty`, and `responsibility` as the current reference standard for divergence quality.

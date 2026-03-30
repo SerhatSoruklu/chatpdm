@@ -542,12 +542,12 @@ export class LandingPageComponent {
   }
 
   protected readingLensesAvailable(response: ConceptMatchResponse): boolean {
-    return this.availableReadingLensModes(response).length > 1;
+    return this.exposedReadingLensModes(response).length > 1;
   }
 
   protected visibleReadingLensOptions(response: ConceptMatchResponse) {
-    const availableModes = this.availableReadingLensModes(response);
-    return this.readingLensOptions.filter((lens) => availableModes.includes(lens.mode));
+    const exposedRegisters = this.exposedReadingLensModes(response);
+    return this.readingLensOptions.filter((lens) => exposedRegisters.includes(lens.mode));
   }
 
   protected activeReadingFields(response: ConceptMatchResponse): ActiveReadingFields {
@@ -761,18 +761,17 @@ export class LandingPageComponent {
   }
 
   protected activeReadingMode(response: ConceptMatchResponse): ReadingLensMode {
-    const availableModes = this.availableReadingLensModes(response);
-    return availableModes.includes(this.activeReadingLens()) ? this.activeReadingLens() : 'standard';
+    const exposedRegisters = this.exposedReadingLensModes(response);
+    return exposedRegisters.includes(this.activeReadingLens()) ? this.activeReadingLens() : 'standard';
   }
 
-  private availableReadingLensModes(response: ConceptMatchResponse): ReadingLensMode[] {
+  private exposedReadingLensModes(response: ConceptMatchResponse): ReadingLensMode[] {
     const registers = this.readingRegisters(response);
-    const availableModes = registers?.validation?.availableModes ?? [];
-    const filteredModes = availableModes.filter((mode): mode is ReadingLensMode => (
+    const exposedRegisters = registers?.validation?.availableModes ?? [];
+
+    return exposedRegisters.filter((mode): mode is ReadingLensMode => (
       this.readingLensOptions.some((option) => option.mode === mode)
     ));
-
-    return filteredModes.length > 0 ? filteredModes : ['standard'];
   }
 
   private readingRegisters(response: ConceptMatchResponse): ReadingRegisters | null {

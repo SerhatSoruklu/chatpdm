@@ -3,6 +3,7 @@
 const { compareConceptRegisters } = require('./compare-registers');
 const { REASON_CODES } = require('./reason-codes');
 const { collectTextStats } = require('./text-stats');
+const { validateSemanticInvariance } = require('./validate-semantic-invariance');
 const { REGISTER_NAMES, ZONE_NAMES } = require('./validate-structure');
 const { validateZoneContract } = require('./validate-zone');
 
@@ -43,6 +44,59 @@ function buildProfileDeltas(leftProfile, rightProfile) {
       leftProfile.abstractNounDensity - rightProfile.abstractNounDensity,
     ),
   };
+}
+
+function attachSemanticResults(report, semanticReport) {
+  REGISTER_NAMES.forEach((registerName) => {
+    const registerReport = report.registers[registerName];
+    const semanticRegisterReport = semanticReport.registerResults[registerName];
+
+    Object.keys(registerReport.zones).forEach((zoneName) => {
+      const zoneReport = registerReport.zones[zoneName];
+      const semanticZoneReport = semanticReport.zoneResults[registerName][zoneName];
+
+      zoneReport.passed = zoneReport.passed && semanticZoneReport.passed;
+      zoneReport.errors = uniqueCodes([...zoneReport.errors, ...semanticZoneReport.errors]);
+      zoneReport.warnings = uniqueCodes([...zoneReport.warnings, ...semanticZoneReport.warnings]);
+      zoneReport.semantic = {
+        passed: semanticZoneReport.passed,
+        errors: [...semanticZoneReport.errors],
+        warnings: [...semanticZoneReport.warnings],
+        matchedAnchors: semanticZoneReport.matchedAnchors,
+        missingAnchors: semanticZoneReport.missingAnchors,
+        forbiddenMatches: semanticZoneReport.forbiddenMatches,
+      };
+
+      if (registerReport.present && !zoneReport.passed) {
+        registerReport.passed = false;
+      }
+    });
+
+    registerReport.errors = uniqueCodes([
+      ...registerReport.errors,
+      ...semanticRegisterReport.errors,
+      ...Object.values(registerReport.zones).flatMap((zoneReport) => zoneReport.errors),
+    ]);
+    registerReport.warnings = uniqueCodes([
+      ...registerReport.warnings,
+      ...semanticRegisterReport.warnings,
+      ...Object.values(registerReport.zones).flatMap((zoneReport) => zoneReport.warnings),
+    ]);
+    registerReport.semantic = {
+      profileFound: semanticReport.profileFound,
+      skipped: semanticReport.skipped,
+      present: semanticRegisterReport.present,
+      passed: semanticRegisterReport.passed,
+      errors: [...semanticRegisterReport.errors],
+      warnings: [...semanticRegisterReport.warnings],
+    };
+    registerReport.passed = registerReport.passed && semanticRegisterReport.passed;
+  });
+
+  report.semantic = semanticReport;
+  report.passed = Object.values(report.registers).every(
+    (registerReport) => (registerReport.required || registerReport.present ? registerReport.passed : true),
+  );
 }
 
 function applyProfileRules(report) {
@@ -140,18 +194,31 @@ function deriveExposure(report) {
   const exposedRegisters = [];
   const hiddenRegisters = {};
   const standardReport = report.registers.standard;
-  const standardPassed = Boolean(standardReport?.present && standardReport?.passed);
+  const standardSemanticPassed = report.semantic?.profileFound
+    ? Boolean(standardReport?.semantic?.passed)
+    : true;
+  const standardPassed = Boolean(
+    standardReport?.present
+    && standardReport?.passed
+    && standardSemanticPassed,
+  );
 
   if (standardPassed) {
     exposedRegisters.push('standard');
   } else {
-    hiddenRegisters.standard = uniqueCodes(standardReport?.errors ?? [REASON_CODES.MISSING_REGISTER]);
+    hiddenRegisters.standard = uniqueCodes([
+      ...(standardReport?.errors ?? [REASON_CODES.MISSING_REGISTER]),
+      ...(standardReport?.semantic?.errors ?? []),
+    ]);
   }
 
   ['simplified', 'formal'].forEach((registerName) => {
     const registerReport = report.registers[registerName];
+    const semanticPassed = report.semantic?.profileFound
+      ? Boolean(registerReport?.semantic?.passed)
+      : true;
 
-    if (standardPassed && registerReport?.present && registerReport.passed) {
+    if (standardPassed && registerReport?.present && registerReport.passed && semanticPassed) {
       exposedRegisters.push(registerName);
       return;
     }
@@ -162,6 +229,7 @@ function deriveExposure(report) {
       reasons.push(REASON_CODES.MISSING_REGISTER);
     } else {
       reasons.push(...registerReport.errors);
+      reasons.push(...(registerReport.semantic?.errors ?? []));
     }
 
     if (!standardPassed) {
@@ -180,6 +248,7 @@ function deriveExposure(report) {
 function validateConcept(concept) {
   const comparisonReport = compareConceptRegisters(concept);
   const structureReport = comparisonReport.structure;
+  const semanticReport = validateSemanticInvariance(concept?.conceptId, concept);
   const registers = {};
 
   REGISTER_NAMES.forEach((registerName) => {
@@ -251,13 +320,17 @@ function validateConcept(concept) {
     passed: Object.values(registers).every(
       (registerReport) => (registerReport.required || registerReport.present ? registerReport.passed : true),
     ),
+    warnings: [...(structureReport.warnings || [])],
     structure: structureReport,
+    canonical: structureReport.canonical,
     comparisons: comparisonReport.comparisons,
     pairs: comparisonReport.pairs,
+    semantic: null,
     registers,
   };
 
   applyProfileRules(report);
+  attachSemanticResults(report, semanticReport);
 
   report.exposure = deriveExposure(report);
   return report;

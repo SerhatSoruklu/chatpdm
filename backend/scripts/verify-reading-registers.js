@@ -39,6 +39,17 @@ function assertReadingRegistersPayload(concept, result, context) {
   assert.ok(Array.isArray(registers.validation.availableModes), `${context}.registers.validation.availableModes mismatch.`);
   assert.notEqual(registers.validation.modes, null, `${context}.registers.validation.modes mismatch.`);
 
+  const exposedModes = registers.validation.availableModes;
+  const derivedExposedModes = ['standard', 'simplified', 'formal'].filter(
+    (modeName) => registers.validation.modes[modeName].status === 'available',
+  );
+
+  assert.deepEqual(
+    exposedModes,
+    derivedExposedModes,
+    `${context}.registers.validation.availableModes must be derived only from validator status.`,
+  );
+
   ['standard', 'simplified', 'formal'].forEach((modeName) => {
     assertRegisterFieldsEqual(
       registers[modeName],
@@ -53,6 +64,11 @@ function assertReadingRegistersPayload(concept, result, context) {
     assert.ok(
       Array.isArray(registers.validation.modes[modeName].reasons),
       `${context}.registers.validation.modes.${modeName}.reasons mismatch.`,
+    );
+    assert.equal(
+      exposedModes.includes(modeName),
+      registers.validation.modes[modeName].status === 'available',
+      `${context}.registers.validation exposure mismatch for ${modeName}.`,
     );
   });
 

@@ -1,0 +1,150 @@
+{
+  "conceptId": "legitimacy",
+  "title": "Legitimacy",
+  "version": 1,
+  "domain": "relational-structures",
+  "canonical": {
+    "invariant": "Legitimacy is accepted or justified validity of rule or standing within a governance order.",
+    "excludes": [
+      "recognized standing to direct",
+      "effective capacity to produce outcomes",
+      "mere operation without valid standing"
+    ],
+    "adjacent": {
+      "authority": "Authority concerns who may direct, not whether rule or standing counts as valid.",
+      "power": "Power concerns operative capacity to produce outcomes, not accepted or justified validity."
+    }
+  },
+  "scope": {
+    "domain": "governance",
+    "isUniversal": false,
+    "mustPreserveIn": [
+      "canonical_outputs",
+      "comparison_outputs",
+      "relation_outputs",
+      "documentation",
+      "ui_api_surfaces"
+    ],
+    "nonGovernanceHandling": [
+      "scoped_clarification",
+      "out_of_scope_refusal"
+    ]
+  },
+  "shortDefinition": "Legitimacy is accepted or justified validity of rule or standing within a governance order.",
+  "coreMeaning": "Within the governance domain, legitimacy functions by marking a rule, office, or standing as valid rather than merely operative. It concerns what counts as justified or accepted, not who may direct or what can be made to happen.",
+  "fullDefinition": "Legitimacy is not the same as authority or power. In ChatPDM v1 it is defined within the governance domain as accepted or justified validity of rule or standing within a governance order.\n\nIts internal composition joins acceptance or justification to a rule, office, institution, or governing order. The concept therefore evaluates standing rather than conferring directive right or operative capacity.\n\nWithin governance structures, legitimacy stabilizes obedience, trust, and continuity by making authority or power count as valid. Power may operate without it, and authority may exist while its legitimacy is contested.",
+  "registers": {
+    "standard": {
+      "shortDefinition": "Legitimacy is accepted or justified validity of rule or standing within a governance order.",
+      "coreMeaning": "Within the governance domain, legitimacy functions by marking a rule, office, or standing as valid rather than merely operative. It concerns what counts as justified or accepted, not who may direct or what can be made to happen.",
+      "fullDefinition": "Legitimacy is not the same as authority or power. In ChatPDM v1 it is defined within the governance domain as accepted or justified validity of rule or standing within a governance order.\n\nIts internal composition joins acceptance or justification to a rule, office, institution, or governing order. The concept therefore evaluates standing rather than conferring directive right or operative capacity.\n\nWithin governance structures, legitimacy stabilizes obedience, trust, and continuity by making authority or power count as valid. Power may operate without it, and authority may exist while its legitimacy is contested."
+    },
+    "simplified": {
+      "shortDefinition": "Legitimacy means a rule or office counts as valid within a governance order.",
+      "coreMeaning": "In governance, legitimacy marks a rule, office, or claim as accepted or justified. It is about valid standing, not about who may direct or what force can do.",
+      "fullDefinition": "Legitimacy is not the same as authority or power. It asks whether rule or standing counts as valid in a governance order.\n\nA government, office, or claim can have power or authority without legitimacy. Legitimacy depends on acceptance, justification, or both.\n\nSo legitimacy judges validity. Authority marks who may direct. Power marks what can be made to happen."
+    },
+    "formal": {
+      "shortDefinition": "Legitimacy is the accepted or justified validity by which rule or standing counts as proper within a governance order.",
+      "coreMeaning": "Within the governance domain, legitimacy attributes valid standing to a rule, office, institution, or governing claim rather than merely recording that it operates in fact. It therefore concerns justification or acceptance, not directive competence and not effective capacity as such.",
+      "fullDefinition": "Legitimacy is defined, within the governance domain, as the accepted or justified validity of rule or standing within a governance order. The concept evaluates whether an office, institution, procedure, or claim counts as proper, and it does so without thereby conferring authority or generating power. Power may remain effective in the absence of legitimacy, and authority may persist while the legitimacy of the underlying order is contested."
+    }
+  },
+  "contexts": [
+    {
+      "label": "governance",
+      "explanation": "Legitimacy concerns whether rule, office, or governing standing is treated as valid within an order."
+    },
+    {
+      "label": "institutional",
+      "explanation": "Legitimacy concerns whether decisions, offices, or procedures are accepted as properly grounded."
+    },
+    {
+      "label": "legal",
+      "explanation": "Legitimacy concerns whether formally recognized standing or rule counts as justified rather than merely enforced."
+    }
+  ],
+  "sourcePriority": [
+    "beetham",
+    "oxford"
+  ],
+  "sources": [
+    {
+      "id": "beetham",
+      "label": "David Beetham, The Legitimation of Power",
+      "type": "book",
+      "usedFor": "structural distinction between valid standing and mere operative power"
+    },
+    {
+      "id": "oxford",
+      "label": "Oxford Languages",
+      "type": "dictionary",
+      "usedFor": "definition boundary for accepted validity and proper standing"
+    }
+  ],
+  "relatedConcepts": [
+    {
+      "conceptId": "authority",
+      "relationType": "contrast"
+    },
+    {
+      "conceptId": "power",
+      "relationType": "contrast"
+    }
+  ],
+  "comparison": {
+    "power": {
+      "axes": [
+        {
+          "axis": "core_nature",
+          "A": "accepted validity of a rule, office, or claim",
+          "B": "effective capacity to shape outcomes"
+        },
+        {
+          "axis": "depends_on",
+          "A": "acceptance or justification within an order",
+          "B": "resources, coercion, coordination, or leverage"
+        },
+        {
+          "axis": "not_equivalent",
+          "statement": "legitimacy is not power; power may operate without legitimacy"
+        }
+      ]
+    }
+  },
+  "reviewMetadata": {
+    "what_it_is": [
+      "accepted validity",
+      "justified standing",
+      "proper claim within an order"
+    ],
+    "what_it_is_not": [
+      "recognized office itself",
+      "mere effective capacity",
+      "personal trust alone"
+    ],
+    "must_not_collapse_into": [
+      "authority",
+      "power",
+      "trust"
+    ],
+    "related_concepts": [
+      "authority",
+      "power",
+      "law"
+    ],
+    "contrast_prompts": [
+      "legitimacy vs authority",
+      "legitimacy vs power",
+      "legitimate but no authority"
+    ]
+  },
+  "aliases": [
+    "legitimacy",
+    "what is legitimacy",
+    "define legitimacy"
+  ],
+  "normalizedAliases": [
+    "legitimacy"
+  ]
+}

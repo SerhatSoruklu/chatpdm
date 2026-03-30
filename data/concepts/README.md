@@ -19,6 +19,14 @@ Rules:
 
 Published concept packets must carry:
 
+- lifecycle metadata:
+  - `concept`
+  - `version`
+  - `state`
+  - `previousVersion`
+  - `createdAt`
+  - `updatedAt`
+- static `canonical` anchor data
 - top-level canonical prose fields
 - authored `registers.standard`
 - authored `registers.simplified`
@@ -26,9 +34,18 @@ Published concept packets must carry:
 
 `registers.standard` must match the top-level canonical prose exactly.
 
+The `canonical` block defines the invariant meaning anchor for all three registers:
+
+- `canonical.invariant`
+- `canonical.excludes`
+- `canonical.adjacent`
+
 This folder is not a dumping ground for ideas, loose notes, or speculative concepts.
 
 If a concept is not ready to pass Phase 6 authoring and validation, it does not belong here as a published source artifact.
+
+Version archive snapshots live in `../concept-versions/`.
+Published packets in this folder represent the current active surface, not the full historical record.
 
 Templates for Phase 6 source files live in `templates/`.
 

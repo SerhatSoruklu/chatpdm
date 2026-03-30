@@ -67,6 +67,14 @@ function stableStringify(value) {
 
 function buildCanonicalConceptHashInput(concept) {
   const canonicalConcept = { ...concept };
+  // Keep the runtime integrity anchor stable while the static semantic anchor
+  // and lifecycle metadata are introduced as documentation and validation data.
+  delete canonicalConcept.canonical;
+  delete canonicalConcept.concept;
+  delete canonicalConcept.state;
+  delete canonicalConcept.previousVersion;
+  delete canonicalConcept.createdAt;
+  delete canonicalConcept.updatedAt;
   delete canonicalConcept.registers;
   return canonicalConcept;
 }

@@ -1,7 +1,18 @@
 {
+  "concept": "",
   "conceptId": "",
   "title": "",
+  "version": 1,
+  "state": "draft",
+  "previousVersion": null,
+  "createdAt": "",
+  "updatedAt": "",
   "domain": "",
+  "canonical": {
+    "invariant": "",
+    "excludes": [],
+    "adjacent": {}
+  },
   "shortDefinition": "",
   "coreMeaning": "",
   "fullDefinition": "",
