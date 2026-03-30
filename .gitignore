@@ -80,5 +80,6 @@ chatpdm-sources/
 *.pdf
 
 # Local agent and scratch artifacts
+.codex
 .codex/
 tmp/
