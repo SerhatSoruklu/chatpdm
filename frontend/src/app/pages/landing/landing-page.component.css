@@ -283,6 +283,18 @@
   border-top: 1px solid rgba(148, 163, 184, 0.12);
 }
 
+.pdm-home__hero-scope {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.pdm-home__scope-chips--hero {
+  gap: 10px;
+}
+
 .pdm-home__signal-chip,
 .pdm-home__scope-chip,
 .pdm-home__mini-chip,

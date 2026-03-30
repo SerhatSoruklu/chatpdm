@@ -1,0 +1,38 @@
+<section class="pdm-ai-advisory" aria-labelledby="pdm-ai-advisory-title">
+  <div class="pdm-ai-advisory__head">
+    <div>
+      <p class="pdm-ai-advisory__label">AI (Advisory, Non-Canonical)</p>
+      <h4 class="pdm-ai-advisory__title" id="pdm-ai-advisory-title">AI Advisory</h4>
+      <p class="pdm-ai-advisory__support">Secondary reading. Not the canonical answer.</p>
+    </div>
+  </div>
+
+  <div class="pdm-ai-advisory__body">
+    <p class="pdm-ai-advisory__copy">{{ advisoryLead() }}</p>
+    <p class="pdm-ai-advisory__copy pdm-ai-advisory__copy--anchor">
+      Canonical anchor: {{ shortDefinition() }}
+    </p>
+    <p class="pdm-ai-advisory__copy">{{ advisoryGuidance() }}</p>
+  </div>
+
+  <div class="pdm-ai-advisory__actions">
+    <button
+      class="pdm-ai-advisory__action"
+      type="button"
+      [disabled]="disabled()"
+      (click)="followAdvisory()"
+    >
+      Use advisory reading
+    </button>
+    <button
+      class="pdm-ai-advisory__action pdm-ai-advisory__action--secondary"
+      type="button"
+      [disabled]="disabled()"
+      (click)="useCanonical()"
+    >
+      Keep canonical answer
+    </button>
+  </div>
+
+  <p class="pdm-ai-advisory__state">{{ interactionMessage() }}</p>
+</section>
