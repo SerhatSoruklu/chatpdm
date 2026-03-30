@@ -11,6 +11,19 @@ It exists to prevent:
 - undocumented terminal behavior
 - service-boundary confusion
 
+## Pre-Validation Input Preparation
+
+Deterministic source-document intake, segmentation, and source-anchor generation happen before the validation path begins.
+
+This pre-validation preparation may produce:
+
+- `SourceDocument`
+- `SourceSegment`
+- generated `sourceAnchors`
+- `ArgumentUnit.sourceSegmentIds`
+
+It is input preparation, not part of the locked validation service order below.
+
 ## Validation Path Order
 
 The v1 service execution order is fixed as:
@@ -190,6 +203,14 @@ If the prerequisites above are not available:
 - the pipeline must surface the appropriate trace or replay failure
 
 ## Fresh Validation vs Replay
+
+Current runtime proof in this wave covers:
+
+- retained-artifact availability checks
+- doctrine-hash integrity checks
+- deterministic forward-path behavior from generated source anchors
+
+Full replay re-execution against preserved upstream state is a later hardening target and is not yet runtime-proven by the current suite.
 
 ### Fresh validation
 

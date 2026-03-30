@@ -1560,14 +1560,14 @@ test('trace.service rejects write when doctrine hash is missing across upstream 
   assert.equal(await ValidationRun.countDocuments({}), 0);
 });
 
-test('trace.service writes ValidationRun only on the narrow explicit valid path', async () => {
+test('trace.service writes ValidationRun with canonical trace array ordering on the narrow explicit valid path', async () => {
   const { artifact, doctrineLoadResult, resolverResult, validationKernelResult } = await createKernelSuccessResult({
     artifactId: 'artifact-trace-valid',
     doctrineHash: '4'.repeat(64),
     argumentUnitId: 'argument-unit-trace-valid',
     mappingId: 'mapping-trace-valid',
     resolverRuleId: 'resolver-rule-trace-valid',
-    validationRuleIds: ['validation-rule-trace-1', 'validation-rule-trace-2'],
+    validationRuleIds: ['validation-rule-trace-2', 'validation-rule-trace-1'],
   });
 
   const result = await traceService.finalize({
@@ -1578,7 +1578,8 @@ test('trace.service writes ValidationRun only on the narrow explicit valid path'
       validationRunId: 'validation-run-trace-valid',
       resolverVersion: 'resolver-v1',
       inputHash: '5'.repeat(64),
-      sourceAnchors: ['segment-trace-1', 'segment-trace-2'],
+      sourceAnchors: ['segment-trace-2', 'segment-trace-1'],
+      mappingRuleIds: ['resolver-rule-trace-b', 'resolver-rule-trace-a'],
     }),
   });
 
@@ -1593,7 +1594,7 @@ test('trace.service writes ValidationRun only on the narrow explicit valid path'
   assert.deepEqual(result.persistedTraceSummary, {
     sourceAnchors: ['segment-trace-1', 'segment-trace-2'],
     interpretationRegimeId: null,
-    mappingRuleIds: ['resolver-rule-trace-valid'],
+    mappingRuleIds: ['resolver-rule-trace-a', 'resolver-rule-trace-b'],
     validationRuleIds: ['validation-rule-trace-1', 'validation-rule-trace-2'],
     overrideIds: [],
   });
@@ -1608,7 +1609,7 @@ test('trace.service writes ValidationRun only on the narrow explicit valid path'
   assert.equal(persistedRun.result, 'valid');
   assert.deepEqual(persistedRun.failureCodes, []);
   assert.deepEqual(persistedRun.trace.sourceAnchors, ['segment-trace-1', 'segment-trace-2']);
-  assert.deepEqual(persistedRun.trace.mappingRuleIds, ['resolver-rule-trace-valid']);
+  assert.deepEqual(persistedRun.trace.mappingRuleIds, ['resolver-rule-trace-a', 'resolver-rule-trace-b']);
   assert.deepEqual(persistedRun.trace.validationRuleIds, ['validation-rule-trace-1', 'validation-rule-trace-2']);
   assert.equal(await ValidationRun.countDocuments({}), 1);
 });
