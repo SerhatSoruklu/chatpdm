@@ -9,6 +9,7 @@ const {
   NON_GOVERNANCE_HANDLING_REQUIRED,
   SEED_CONCEPT_IDS,
 } = require('./constants');
+const { assertCanonicalStoreFreeOfAiMarkers } = require('../../lib/ai-governance-guard');
 
 const conceptsDirectory = path.resolve(__dirname, '../../../../data/concepts');
 const sourceRegistry = require('./source-registry.json');
@@ -365,6 +366,7 @@ function loadConceptFile(conceptId) {
   const rawFile = fs.readFileSync(filePath, 'utf8');
   const concept = JSON.parse(rawFile);
 
+  assertCanonicalStoreFreeOfAiMarkers(concept, `Concept "${conceptId}" authored packet`);
   validateConceptShape(concept, conceptId);
 
   return concept;

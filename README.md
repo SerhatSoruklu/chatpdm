@@ -87,6 +87,22 @@ Queries implying non-governance usage must result in:
 
 This policy is enforced at runtime and must not be bypassed.
 
+## Governance Contracts
+
+Governance-facing system boundaries are documented in:
+
+- [ANTI_CORRUPTION/ANTI_CORRUPTION_SYSTEM_LAW.md](./ANTI_CORRUPTION/ANTI_CORRUPTION_SYSTEM_LAW.md)
+- [LLGS AI Boundary Protocol](./docs/governance/LLGS_AI_BOUNDARY_PROTOCOL.md)
+- [AI Interaction Contract](./docs/governance/AI_INTERACTION_CONTRACT.md)
+- [AI Output Surface Spec](./docs/governance/AI_OUTPUT_SURFACE_SPEC.md)
+- [AI Misuse Scenarios](./docs/governance/AI_MISUSE_SCENARIOS.md)
+- [AI Automated Integrity Checks](./docs/governance/AI_AUTOMATED_INTEGRITY_CHECKS.md)
+- [LANGUAGE_CONTRACT.md](./LANGUAGE_CONTRACT.md)
+
+If AI is introduced, it remains advisory only and must not acquire canonical authority.
+
+Known AI governance regressions are stored as machine-readable replay fixtures under [governance/violations](/home/serhat/code/chatpdm/governance/violations).
+
 ## Current Status
 
 The repo is in active beta development.
@@ -170,6 +186,7 @@ chatpdm/
 ├─ data/
 ├─ docs/
 ├─ frontend/
+├─ governance/
 └─ package.json
 ```
 
@@ -179,6 +196,7 @@ Key areas:
 - [backend](/home/serhat/code/chatpdm/backend): Express resolver runtime
 - [docs](/home/serhat/code/chatpdm/docs): product, architecture, authoring, and validation docs
 - [data](/home/serhat/code/chatpdm/data): canonical concept source artifacts
+- [governance](/home/serhat/code/chatpdm/governance): machine-readable governance replay fixtures and supporting artifacts
 - [tests](/home/serhat/code/chatpdm/tests): golden fixtures and semantic pressure harness
 - [chatpdm-reference](/home/serhat/code/chatpdm/chatpdm-reference): conceptual grounding stack for authoring discipline
 
@@ -205,6 +223,8 @@ npm run dev:frontend
 npm run dev:backend
 npm run build
 npm run check
+npm run scan:ai-governance
+npm run replay:ai-violations
 ```
 
 Run subprojects directly:

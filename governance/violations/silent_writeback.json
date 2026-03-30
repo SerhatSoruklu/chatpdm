@@ -1,0 +1,14 @@
+{
+  "$schema": "./violation.schema.json",
+  "id": "silent_writeback",
+  "type": "silent_writeback",
+  "description": "AI-related code must not write directly into canonical concept stores.",
+  "trigger": {
+    "mode": "scanner_fixture",
+    "file_path": "backend/src/modules/concepts/replay-silent-writeback.js",
+    "content": "const { writeFileSync } = require('node:fs');\nconst aiGenerated = 'draft definition';\nwriteFileSync('data/concepts/duty.json', aiGenerated, 'utf8');\n",
+    "expected_rule": "AI_CANONICAL_WRITE_ATTEMPT"
+  },
+  "expected_outcome": "blocked",
+  "detected_by": "scanner"
+}

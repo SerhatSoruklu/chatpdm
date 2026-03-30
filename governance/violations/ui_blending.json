@@ -1,0 +1,14 @@
+{
+  "$schema": "./violation.schema.json",
+  "id": "ui_blending",
+  "type": "ui_blending",
+  "description": "AI-related core-page UI surfaces must show the visible advisory label and remain distinct from canonical content.",
+  "trigger": {
+    "mode": "scanner_fixture",
+    "file_path": "frontend/src/app/pages/replay-ai-ui-blending.component.html",
+    "content": "<section>llm helper panel</section>\n",
+    "expected_rule": "AI_UI_MISSING_ADVISORY_LABEL"
+  },
+  "expected_outcome": "blocked",
+  "detected_by": "scanner"
+}

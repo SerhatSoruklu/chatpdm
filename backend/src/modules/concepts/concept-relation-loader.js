@@ -10,6 +10,7 @@ const {
   RELATION_TYPES,
 } = require('./concept-relation-schema');
 const { getRelationPolicy } = require('./relation-policy');
+const { assertCanonicalStoreFreeOfAiMarkers } = require('../../lib/ai-governance-guard');
 
 const relationPacketsDirectory = path.resolve(__dirname, '../../../../data/concepts/relations');
 
@@ -263,11 +264,12 @@ function loadAuthoredRelationPackets(options = {}) {
 
     try {
       packet = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+      assertCanonicalStoreFreeOfAiMarkers(packet, `Relation packet "${conceptId}"`);
     } catch (error) {
       const failure = createPacketEntry(
         'RELATION_PACKET_INVALID',
         conceptId,
-        `Relation packet could not be parsed: ${error.message}`,
+        `Relation packet could not be loaded safely: ${error.message}`,
         filePath,
       );
       failures.push(failure);

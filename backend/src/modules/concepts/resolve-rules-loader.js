@@ -4,6 +4,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { EMPTY_NORMALIZED_QUERY } = require('./constants');
 const { normalizeQuery } = require('./normalizer');
+const { assertCanonicalStoreFreeOfAiMarkers } = require('../../lib/ai-governance-guard');
 
 const resolveRulesPath = path.resolve(__dirname, '../../../../data/concepts/resolve-rules.json');
 
@@ -73,6 +74,7 @@ function validateSuggestionRule(rule, index) {
 function loadResolveRules() {
   const rawFile = fs.readFileSync(resolveRulesPath, 'utf8');
   const parsed = JSON.parse(rawFile);
+  assertCanonicalStoreFreeOfAiMarkers(parsed, 'resolve-rules.json');
 
   if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
     throw new Error('resolve-rules.json must be a JSON object.');
