@@ -1581,6 +1581,10 @@
     gap: 80px;
   }
 
+  .pdm-home__hero {
+    min-height: calc(100svh - 160px);
+  }
+
   .pdm-home__response-card,
   .pdm-home__comparison-card,
   .pdm-home__scope-stat,
@@ -1601,5 +1605,11 @@
 
   .pdm-home__relationship-list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1440px) {
+  .pdm-home__hero {
+    min-height: calc(100svh - 176px);
   }
 }
