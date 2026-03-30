@@ -176,8 +176,32 @@ const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
     eyebrow: 'Docs',
     title: 'Product and architecture documentation index.',
     intro:
-      'The public docs surface will explain product boundaries, runtime contracts, and implementation architecture without turning the site into a content farm.',
+      'The public docs surface explains product boundaries, runtime contracts, and the locked roadmap layers that govern later implementation without turning the site into a content farm.',
     sections: [
+      {
+        title: 'Locked roadmap',
+        paragraphs: [
+          'The Legal Argument Validator Roadmap is now locked as a named product roadmap. The sequence is fixed so later implementation work cannot silently rename or reorder the phase structure. Detailed phase controls, entry gates, and implementation artifacts are maintained separately from the public roadmap to preserve naming stability and avoid roadmap drift.',
+        ],
+      },
+      {
+        title: 'Legal Argument Validator roadmap',
+        bullets: [
+          'Pre-A: Scope Lock and Product Law',
+          'A: Matter and Document Intake',
+          'B: Segmentation and Source Anchors',
+          'C: Argument Extraction and Admissibility Gate',
+          'D: Concept Registry and Doctrine Loader',
+          'E: Authority Registry and Citation Scope Law',
+          'F: Mapping Engine and Synonym Governance',
+          'G: Validation Kernel',
+          'H: Failure Codes, Trace, and Replay Artifact Support',
+          'I: Analyst Workbench UI',
+          'J: Report and Export Layer',
+          'K: Governance and Promotion Controls',
+          'L: Hardening, Audit, and Tenancy',
+        ],
+      },
       {
         title: 'Planned surfaces',
         bullets: [

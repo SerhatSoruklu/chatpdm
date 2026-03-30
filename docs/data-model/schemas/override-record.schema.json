@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chatpdm.local/docs/data-model/schemas/override-record.schema.json",
+  "title": "Legal Argument Validator OverrideRecord Schema",
+  "description": "Strict JSON Schema for explicit manual override records in legal validation flow.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "overrideId",
+    "matterId",
+    "argumentUnitId",
+    "mappingId",
+    "overrideType",
+    "reason",
+    "createdBy",
+    "createdAt",
+    "reviewStatus"
+  ],
+  "properties": {
+    "overrideId": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[a-z0-9][a-z0-9._-]*$"
+    },
+    "matterId": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[a-z0-9][a-z0-9._-]*$"
+    },
+    "argumentUnitId": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[a-z0-9][a-z0-9._-]*$"
+    },
+    "mappingId": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1,
+      "pattern": "^[a-z0-9][a-z0-9._-]*$"
+    },
+    "overrideType": {
+      "type": "string",
+      "enum": [
+        "mapping_resolution",
+        "authority_link",
+        "admissibility_exception",
+        "review_state_exception"
+      ]
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1
+    },
+    "createdBy": {
+      "type": "string",
+      "minLength": 1
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "reviewStatus": {
+      "type": "string",
+      "enum": [
+        "pending_review",
+        "approved",
+        "rejected",
+        "superseded"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "overrideType": {
+            "enum": [
+              "mapping_resolution",
+              "authority_link"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "mappingId": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[a-z0-9][a-z0-9._-]*$"
+          }
+        }
+      }
+    }
+  ]
+}
