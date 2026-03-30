@@ -31,7 +31,9 @@ Secondary downstream propagation is allowed only when:
 | `AUTHORITY_SCOPE_VIOLATION` | `authority-registry.service` | `validation-kernel.service`, `trace.service` | scope failure may be carried into final classification but not re-owned |
 | `FACT_INPUT_NOT_ADMISSIBLE` | `admissibility.service` | `trace.service` | blocked before mapping because the input cannot enter deterministic admissibility |
 | `PENDING_REVIEW_BLOCK` | `admissibility.service` | `trace.service` | blocked before mapping |
+| `RULE_NOT_DEFINED` | `resolver.service` | `trace.service` | the resolver received no authored deterministic rule path for the requested mapping |
 | `RULE_NOT_AUTHORED` | `resolver.service` | `trace.service` | doctrine has no authored rule path |
+| `PRECEDENT_NOT_STRUCTURED` | `resolver.service` | `trace.service` | precedent text exists but has not been converted into a deterministic doctrine rule path |
 | `ANALOGY_RULE_NOT_ENCODED` | `resolver.service` | `trace.service` | analogy bridge missing |
 | `CATEGORY_BOUNDARY_NOT_AUTHORED` | `resolver.service` | `trace.service` | concept boundary stretch attempt |
 | `AMBIGUOUS_CONCEPT_MAPPING` | `resolver.service` | `validation-kernel.service`, `trace.service` | ambiguity originates in mapping even if final result is unresolved |
