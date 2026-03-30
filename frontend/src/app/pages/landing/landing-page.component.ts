@@ -19,6 +19,8 @@ import {
   ResolveProductResponse,
   Suggestion,
 } from '../../core/concepts/concept-resolver.types';
+import { AiAdvisoryComponent } from '../../core/ai/ai-advisory/ai-advisory.component';
+import { AiTrackingEventType, AiTrackingService } from '../../core/ai/ai-tracking.service';
 import {
   CANONICAL_VISUAL_ANCHOR_HASH_LENGTH,
   READING_LENS_FALLBACK_COPY,
@@ -40,13 +42,14 @@ import type {
   SubmitQueryOptions,
 } from './landing-page.types';
 
-const LIVE_RUNTIME_CONCEPTS = new Set([
+const LIVE_RUNTIME_CONCEPT_IDS = Object.freeze([
   'authority',
   'power',
   'legitimacy',
-  'responsibility',
   'duty',
+  'responsibility',
 ]);
+const LIVE_RUNTIME_CONCEPTS = new Set(LIVE_RUNTIME_CONCEPT_IDS);
 
 const SCOPE_GROUPS: ScopeGroup[] = [
   {
@@ -78,10 +81,11 @@ const SCOPE_GROUPS: ScopeGroup[] = [
 ];
 
 const STARTER_QUERIES: StarterQuery[] = [
+  { label: 'authority vs power', query: 'authority vs power' },
   { label: 'authority', query: 'authority' },
-  { label: 'What is authority vs power?', query: 'authority vs power' },
   { label: 'legitimacy', query: 'legitimacy' },
-  { label: 'civic duty', query: 'civic duty' },
+  { label: 'duty', query: 'duty' },
+  { label: 'responsibility', query: 'responsibility' },
 ];
 
 type QueryClassification =
@@ -173,12 +177,13 @@ const NO_EXACT_MATCH_FEEDBACK_OPTIONS: FeedbackOption[] = [
 @Component({
   selector: 'app-landing-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink, AiAdvisoryComponent],
   templateUrl: './landing-page.component.html',
   styleUrl: './landing-page.component.css',
 })
 export class LandingPageComponent {
   private readonly resolver = inject(ConceptResolverService);
+  private readonly aiTracking = inject(AiTrackingService);
   private readonly feedbackService = inject(FeedbackService);
   private readonly directConceptPattern = /^[a-z]+(?:[ -][a-z]+){0,3}$/i;
   private readonly canonicalLookupPattern = /^define\s+[a-z]+(?:[ -][a-z]+){0,3}$/i;
@@ -193,6 +198,7 @@ export class LandingPageComponent {
   protected readonly queryEntryModes = QUERY_ENTRY_MODES;
   protected readonly homepageSteps = HOMEPAGE_STEPS;
   protected readonly referenceLinks = REFERENCE_LINKS;
+  protected readonly liveRuntimeConceptIds = LIVE_RUNTIME_CONCEPT_IDS;
   protected readonly readingLensOptions = READING_LENS_OPTIONS;
   protected readonly readingLensTrustCopy = READING_LENS_TRUST_COPY;
   protected readonly readingLensFallbackCopy = READING_LENS_FALLBACK_COPY;
@@ -585,6 +591,23 @@ export class LandingPageComponent {
 
   protected sourceAnchor(response: ConceptMatchResponse): string | null {
     return response.answer.sources[0]?.id ?? null;
+  }
+
+  protected trackAiAdvisoryEvent(
+    eventType: AiTrackingEventType,
+    response: ConceptMatchResponse,
+    submittedQuery: string,
+  ): void {
+    this.aiTracking.track({
+      eventType,
+      surface: 'landing_runtime_ai_advisory',
+      conceptId: response.resolution.conceptId,
+      query: submittedQuery,
+      details: {
+        contractVersion: response.contractVersion,
+        queryType: response.queryType,
+      },
+    });
   }
 
   private buildFeedbackState(

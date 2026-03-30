@@ -12,19 +12,19 @@
             <div class="pdm-home__status">
               <span class="pdm-home__status-pill">
                 <span class="pdm-home__status-dot" aria-hidden="true"></span>
-                Live runtime
+                Live scope
               </span>
             </div>
 
-            <p class="pdm-home__eyebrow">Deterministic concept runtime</p>
+            <p class="pdm-home__eyebrow">Defined concept system</p>
             <h1 class="pdm-home__title" id="pdm-home-title">
-              Exact concept resolution for authored scope.
+              Exact answers for defined concepts.
             </h1>
             <p class="pdm-home__support-line">
-              Ask a concept. Get a precise, non-guessing answer or a refusal.
+              Search a concept. Get a precise answer within scope, or an explicit refusal.
             </p>
             <p class="pdm-home__lead">
-              Query authored concepts. Unsupported meanings are refused.
+              Try the current supported concept set directly.
             </p>
 
             <form class="pdm-home__hero-query" (ngSubmit)="submitDraft()">
@@ -42,7 +42,7 @@
                     autocapitalize="off"
                     autocomplete="off"
                     autofocus
-                    placeholder="What is authority vs power?"
+                    placeholder="authority vs power"
                   >
 
                   <button
@@ -82,13 +82,23 @@
                     </button>
                   }
                 </div>
+
+                <div class="pdm-home__hero-scope" aria-label="Current supported concepts">
+                  <p class="pdm-home__micro-label">Current scope</p>
+                  <div class="pdm-home__scope-chips pdm-home__scope-chips--hero">
+                    @for (concept of liveRuntimeConceptIds; track concept) {
+                      <span class="pdm-home__scope-chip pdm-home__scope-chip--live pdm-site-chip">
+                        {{ concept }}
+                      </span>
+                    }
+                  </div>
+                </div>
               </div>
             </form>
 
             <div class="pdm-home__boundary-strip pdm-home__boundary-strip--hero">
               <p>
-                Resolves authored concepts and controlled comparisons inside a bounded runtime.
-                Unsupported meanings are explicitly refused.
+                Only supported concepts resolve. Everything else is refused.
               </p>
             </div>
           </div>
@@ -103,11 +113,11 @@
         <div class="pdm-home__query-card pdm-site-surface pdm-site-panel">
           <div class="pdm-home__section-head pdm-home__section-head--query">
             <div>
-              <p class="pdm-home__section-label">Runtime output</p>
-              <h2 class="pdm-home__section-title" id="pdm-query-title">Live runtime resolution</h2>
+              <p class="pdm-home__section-label">Resolution output</p>
+              <h2 class="pdm-home__section-title" id="pdm-query-title">Structured result</h2>
             </div>
             <p class="pdm-home__section-copy">
-              Submitted queries resolve or refuse here under the fixed response contract.
+              Supported queries return structured answers here. Unsupported queries are explicitly refused.
             </p>
           </div>
 
@@ -357,6 +367,16 @@
                         }
                       </section>
                     }
+
+                    <app-ai-advisory
+                      [conceptTitle]="asConceptMatch(response).answer.title"
+                      [shortDefinition]="activeReadingFields(asConceptMatch(response)).shortDefinition"
+                      [coreMeaning]="activeReadingFields(asConceptMatch(response)).coreMeaning"
+                      [disabled]="isSubmitting()"
+                      (advisoryViewed)="trackAiAdvisoryEvent('AI_VIEWED', asConceptMatch(response), entry.submittedQuery)"
+                      (advisoryFollowed)="trackAiAdvisoryEvent('AI_FOLLOWED', asConceptMatch(response), entry.submittedQuery)"
+                      (canonicalUsed)="trackAiAdvisoryEvent('CANONICAL_USED', asConceptMatch(response), entry.submittedQuery)"
+                    />
                   </section>
                 }
 

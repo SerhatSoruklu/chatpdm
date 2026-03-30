@@ -7,11 +7,11 @@
     "dev": "nodemon --watch src --watch scripts --ext js,json src/server.js",
     "start": "node src/server.js",
     "build": "npm run check",
-    "check": "node scripts/verify-shell.js && node scripts/verify-runtime-validation-state.js && node scripts/verify-relation-hardening.js && node scripts/verify-resolver.js && node scripts/verify-reading-registers.js && node scripts/verify-duty-v3.js && node scripts/verify-responsibility-v3.js && node scripts/verify-authority-v3.js && node scripts/verify-power-v3.js && node scripts/verify-legitimacy-v3.js && node scripts/validate-register-divergence.js && node scripts/verify-feedback.js",
+    "check": "node scripts/verify-shell.js && node scripts/verify-runtime-validation-state.js && node scripts/verify-relation-hardening.js && node scripts/verify-resolver.js && node scripts/verify-reading-registers.js && node scripts/verify-duty-v3.js && node scripts/verify-responsibility-v3.js && node scripts/verify-authority-v3.js && node scripts/verify-power-v3.js && node scripts/verify-legitimacy-v3.js && node scripts/validate-register-divergence.js && node scripts/verify-feedback.js && node scripts/verify-ai-events.js",
     "validate:phase-1-mapping": "node scripts/validate-phase-1-mapping.js",
     "validate:register-divergence": "node scripts/validate-register-divergence.js",
     "pressure:semantic": "node ../tests/runtime/run-query-stress.js",
-    "test": "node scripts/verify-runtime-validation-state.js && node scripts/verify-relation-hardening.js && node scripts/verify-resolver.js && node scripts/verify-reading-registers.js && node scripts/verify-duty-v3.js && node scripts/verify-responsibility-v3.js && node scripts/verify-authority-v3.js && node scripts/verify-power-v3.js && node scripts/verify-legitimacy-v3.js && node scripts/validate-register-divergence.js && node scripts/verify-feedback.js"
+    "test": "node scripts/verify-runtime-validation-state.js && node scripts/verify-relation-hardening.js && node scripts/verify-resolver.js && node scripts/verify-reading-registers.js && node scripts/verify-duty-v3.js && node scripts/verify-responsibility-v3.js && node scripts/verify-authority-v3.js && node scripts/verify-power-v3.js && node scripts/verify-legitimacy-v3.js && node scripts/validate-register-divergence.js && node scripts/verify-feedback.js && node scripts/verify-ai-events.js"
   },
   "keywords": [
     "chatpdm",
