@@ -19,8 +19,25 @@
     ]
   },
   "shortDefinition": "Authority is recognized standing to direct, decide, or govern within a governance order.",
-  "coreMeaning": "Within the governance domain, authority functions by attaching directive right to a role, office, or position that others treat as operative. It concerns who may direct, not what can be enforced or whether that standing is valid.",
-  "fullDefinition": "Authority is not any ability to produce effects. In ChatPDM v1 it is defined within the governance domain as a structured right to issue direction, make decisions, or govern within a governance order.\n\nIts internal composition joins a directive claim to a recognized role, office, or position. The concept requires that the right to direct is treated as attached to standing rather than to mere capacity.\n\nWithin governance structures, authority organizes who may decide, command, or settle matters. Questions of whether that standing is valid belong to legitimacy, while questions of what outcomes can be produced belong to power.",
+  "coreMeaning": "Within the governance domain, authority works by giving a recognized role, office, or position the right to direct. It concerns who may direct, not what can be enforced or whether that standing is valid.",
+  "fullDefinition": "Authority is not any ability to produce effects. In ChatPDM v1 it is defined within the governance domain as a structured right to issue direction, make decisions, or govern within a governance order.\n\nIts structure joins the right to direct to a recognized role, office, or position. The concept requires that this right attach to standing rather than to mere capacity.\n\nWithin governance structures, authority organizes who may decide, command, or settle matters. Questions of whether that standing is valid belong to legitimacy, while questions of what outcomes can be produced belong to power.",
+  "registers": {
+    "standard": {
+      "shortDefinition": "Authority is recognized standing to direct, decide, or govern within a governance order.",
+      "coreMeaning": "Within the governance domain, authority works by giving a recognized role, office, or position the right to direct. It concerns who may direct, not what can be enforced or whether that standing is valid.",
+      "fullDefinition": "Authority is not any ability to produce effects. In ChatPDM v1 it is defined within the governance domain as a structured right to issue direction, make decisions, or govern within a governance order.\n\nIts structure joins the right to direct to a recognized role, office, or position. The concept requires that this right attach to standing rather than to mere capacity.\n\nWithin governance structures, authority organizes who may decide, command, or settle matters. Questions of whether that standing is valid belong to legitimacy, while questions of what outcomes can be produced belong to power."
+    },
+    "simplified": {
+      "shortDefinition": "Authority is the recognized right to direct, decide, or govern in a governing order.",
+      "coreMeaning": "In governance, authority marks who may direct from a recognized role or office. It is about who has the right to decide, not about force or validity.",
+      "fullDefinition": "Authority is not power. It is the recognized right to direct from a role, office, or post in a governing order.\n\nIt is about recognized status, not force. Power can exist without authority. Authority can exist while legitimacy is disputed.\n\nSo authority tells us who may decide or command. Legitimacy asks whether that status is valid. Power asks what outcomes can actually be produced."
+    },
+    "formal": {
+      "shortDefinition": "Authority is the recognized standing that makes directive acts institutionally operative within a governance order.",
+      "coreMeaning": "Within the governance domain, authority assigns directive competence to a recognized role, office, or position within the order. It identifies who may direct or determine, rather than what effects can be produced or whether that standing is valid.",
+      "fullDefinition": "Authority is defined, within the governance domain, as the recognized standing to issue direction, make determinations, or govern within a governance order. The concept requires that the right to direct attach to role, office, or position and count as institutionally operative rather than as mere capacity. Authority is distinct from power, which concerns produced outcomes, and from legitimacy, which concerns whether that standing is valid."
+    }
+  },
   "contexts": [
     {
       "label": "governance",

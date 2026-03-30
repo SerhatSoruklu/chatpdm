@@ -213,13 +213,13 @@
                       <div class="pdm-home__reading-switch-shell">
                         <p class="pdm-home__micro-label">Active register</p>
                         <div class="pdm-home__reading-switch" role="group" aria-label="Reading register">
-                          @for (lens of readingLensOptions; track lens.mode) {
+                          @for (lens of visibleReadingLensOptions(asConceptMatch(response)); track lens.mode) {
                             <button
                               class="pdm-home__reading-switch-option"
                               type="button"
-                              [class.pdm-home__reading-switch-option--active]="activeReadingLens() === lens.mode"
-                              [attr.aria-pressed]="activeReadingLens() === lens.mode"
-                              [disabled]="isSubmitting() || !readingLensesAvailable(asConceptMatch(response))"
+                              [class.pdm-home__reading-switch-option--active]="activeReadingMode(asConceptMatch(response)) === lens.mode"
+                              [attr.aria-pressed]="activeReadingMode(asConceptMatch(response)) === lens.mode"
+                              [disabled]="isSubmitting()"
                               (click)="selectReadingLens(lens.mode)"
                             >
                               {{ lens.label }}

@@ -14,6 +14,24 @@
 
 ### `fullDefinition`
 
+### `registers.standard`
+
+- `shortDefinition`:
+- `coreMeaning`:
+- `fullDefinition`:
+
+### `registers.simplified`
+
+- `shortDefinition`:
+- `coreMeaning`:
+- `fullDefinition`:
+
+### `registers.formal`
+
+- `shortDefinition`:
+- `coreMeaning`:
+- `fullDefinition`:
+
 ### `contexts`
 
 - `label`:
@@ -49,4 +67,8 @@
 
 ## Authoring Notes
 
--
+- `registers.standard.*` must exactly match the top-level canonical prose fields.
+- `registers.simplified.*` and `registers.formal.*` must be independently authored, not mechanically derived.
+- Use the published packets for `authority`, `power`, `legitimacy`, `duty`, and `responsibility` as the current reference standard for divergence quality.
+- Run `npm run validate:register-divergence` before treating a new packet as publishable.
+- 

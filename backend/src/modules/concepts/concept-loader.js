@@ -17,9 +17,8 @@ const RESERVED_AUTHORED_OVERLAY_FIELDS = Object.freeze([
   'derivedExplanationOverlays',
   'derivedExplanationOverlayContract',
 ]);
-const DERIVED_OVERLAY_MODES = Object.freeze(['standard', 'simplified', 'formal']);
-const DERIVED_OVERLAY_FIELDS = Object.freeze(['shortDefinition', 'coreMeaning', 'fullDefinition']);
-const DERIVED_OVERLAY_STATUS_ABSENT = 'absent';
+const AUTHORED_REGISTER_MODES = Object.freeze(['standard', 'simplified', 'formal']);
+const AUTHORED_REGISTER_FIELDS = Object.freeze(['shortDefinition', 'coreMeaning', 'fullDefinition']);
 
 const PRIMARY_SOURCE_BY_CONCEPT = Object.freeze({
   authority: 'weber',
@@ -66,44 +65,67 @@ function stableStringify(value) {
   return JSON.stringify(value);
 }
 
+function buildCanonicalConceptHashInput(concept) {
+  const canonicalConcept = { ...concept };
+  delete canonicalConcept.registers;
+  return canonicalConcept;
+}
+
 function computeCanonicalConceptHash(concept, algorithm = 'sha256') {
   return crypto
     .createHash(algorithm)
-    .update(stableStringify(concept))
+    .update(stableStringify(buildCanonicalConceptHashInput(concept)))
     .digest('hex');
 }
 
-function buildDerivedExplanationModeShell() {
-  const fields = {};
-
-  for (const fieldName of DERIVED_OVERLAY_FIELDS) {
-    fields[fieldName] = null;
+function validateRegisterModeShape(modeRecord, modeName, conceptId) {
+  if (!modeRecord || typeof modeRecord !== 'object' || Array.isArray(modeRecord)) {
+    throw new Error(`Concept "${conceptId}" has invalid registers.${modeName}; expected an object.`);
   }
 
-  return {
-    status: DERIVED_OVERLAY_STATUS_ABSENT,
-    fields,
-    equivalenceCertificate: null,
-  };
+  const unexpectedFields = Object.keys(modeRecord).filter(
+    (fieldName) => !AUTHORED_REGISTER_FIELDS.includes(fieldName),
+  );
+
+  if (unexpectedFields.length > 0) {
+    throw new Error(
+      `Concept "${conceptId}" has unsupported registers.${modeName} field(s): ${unexpectedFields.join(', ')}.`,
+    );
+  }
+
+  AUTHORED_REGISTER_FIELDS.forEach((fieldName) => {
+    assertNonEmptyString(modeRecord[fieldName], `registers.${modeName}.${fieldName}`, conceptId);
+  });
 }
 
-function buildDerivedExplanationOverlayContract(concept) {
-  const modes = {};
+function validateRegistersShape(concept, conceptId) {
+  const registers = concept.registers;
 
-  for (const mode of DERIVED_OVERLAY_MODES) {
-    modes[mode] = buildDerivedExplanationModeShell();
+  if (!registers || typeof registers !== 'object' || Array.isArray(registers)) {
+    throw new Error(`Concept "${conceptId}" has invalid registers; expected an object.`);
   }
 
-  return {
-    readOnly: true,
-    status: DERIVED_OVERLAY_STATUS_ABSENT,
-    canonicalBinding: {
-      conceptId: concept.conceptId,
-      conceptVersion: concept.version,
-      canonicalHash: computeCanonicalConceptHash(concept),
-    },
-    modes,
-  };
+  const unexpectedModes = Object.keys(registers).filter(
+    (modeName) => !AUTHORED_REGISTER_MODES.includes(modeName),
+  );
+
+  if (unexpectedModes.length > 0) {
+    throw new Error(
+      `Concept "${conceptId}" has unsupported register mode(s): ${unexpectedModes.join(', ')}.`,
+    );
+  }
+
+  AUTHORED_REGISTER_MODES.forEach((modeName) => {
+    validateRegisterModeShape(registers[modeName], modeName, conceptId);
+  });
+
+  AUTHORED_REGISTER_FIELDS.forEach((fieldName) => {
+    if (registers.standard[fieldName] !== concept[fieldName]) {
+      throw new Error(
+        `Concept "${conceptId}" registers.standard.${fieldName} must exactly match the canonical ${fieldName}.`,
+      );
+    }
+  });
 }
 
 function validateComparisonAxis(axis, conceptId, relatedConceptId, axisIndex) {
@@ -290,7 +312,7 @@ function assertNoReservedAuthoredOverlayFields(concept, conceptId) {
   for (const fieldName of RESERVED_AUTHORED_OVERLAY_FIELDS) {
     if (Object.hasOwn(concept, fieldName)) {
       throw new Error(
-        `Concept "${conceptId}" must not declare "${fieldName}" in authored packets; derived explanation overlays are read-only contract data.`,
+        `Concept "${conceptId}" must not declare "${fieldName}" in authored packets; legacy derived overlays are not allowed in the authored register model.`,
       );
     }
   }
@@ -311,6 +333,7 @@ function validateConceptShape(concept, expectedConceptId) {
   assertNonEmptyString(concept.shortDefinition, 'shortDefinition', expectedConceptId);
   assertNonEmptyString(concept.coreMeaning, 'coreMeaning', expectedConceptId);
   assertNonEmptyString(concept.fullDefinition, 'fullDefinition', expectedConceptId);
+  validateRegistersShape(concept, expectedConceptId);
   assertNoReservedAuthoredOverlayFields(concept, expectedConceptId);
 
   if (!Number.isInteger(concept.version)) {
@@ -343,7 +366,8 @@ function loadConceptSet() {
 }
 
 module.exports = {
-  buildDerivedExplanationOverlayContract,
+  AUTHORED_REGISTER_FIELDS,
+  AUTHORED_REGISTER_MODES,
   computeCanonicalConceptHash,
   loadConceptSet,
   validateConceptShape,

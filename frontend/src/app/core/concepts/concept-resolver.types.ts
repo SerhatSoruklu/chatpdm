@@ -49,58 +49,47 @@ export interface RelatedConcept {
   relationType: 'see_also' | 'prerequisite' | 'extension' | 'contrast';
 }
 
-export type DerivedExplanationOverlayStatus =
-  | 'absent'
-  | 'pending_generation'
-  | 'generated'
-  | 'invalid';
-
-export interface DerivedExplanationOverlayCanonicalBinding {
+export interface ReadingRegisterCanonicalBinding {
   conceptId: string;
   conceptVersion: number;
   canonicalHash: string;
 }
 
-export interface DerivedExplanationOverlayFieldCheck {
-  strategy: 'identity' | 'prefixed_copy';
-  prefix: string;
-  canonicalSuffixMatch: true;
+export interface ReadingRegisterFields {
+  shortDefinition: string;
+  coreMeaning: string;
+  fullDefinition: string;
 }
 
-export interface DerivedExplanationEquivalenceCertificate {
-  status: 'certified';
-  certificateVersion: string;
-  templateVersion: string;
-  canonicalHash: string;
-  mode: 'standard' | 'simplified' | 'formal';
-  fieldChecks: {
-    shortDefinition: DerivedExplanationOverlayFieldCheck;
-    coreMeaning: DerivedExplanationOverlayFieldCheck;
-    fullDefinition: DerivedExplanationOverlayFieldCheck;
-  };
+export type ReadingRegisterMode = 'standard' | 'simplified' | 'formal';
+
+export interface ReadingRegisterValidationReason {
+  code: string;
+  field?: string;
+  detail?: string;
 }
 
-export interface DerivedExplanationOverlayFields {
-  shortDefinition: string | null;
-  coreMeaning: string | null;
-  fullDefinition: string | null;
+export interface ReadingRegisterModeValidation {
+  status: 'available' | 'rejected';
+  reasons: ReadingRegisterValidationReason[];
 }
 
-export interface DerivedExplanationOverlayModeShell {
-  status: DerivedExplanationOverlayStatus;
-  fields: DerivedExplanationOverlayFields;
-  equivalenceCertificate: DerivedExplanationEquivalenceCertificate | null;
-}
-
-export interface DerivedExplanationOverlays {
-  readOnly: true;
-  status: DerivedExplanationOverlayStatus;
-  canonicalBinding: DerivedExplanationOverlayCanonicalBinding;
+export interface ReadingRegisterValidation {
+  availableModes: ReadingRegisterMode[];
   modes: {
-    standard: DerivedExplanationOverlayModeShell;
-    simplified: DerivedExplanationOverlayModeShell;
-    formal: DerivedExplanationOverlayModeShell;
+    standard: ReadingRegisterModeValidation;
+    simplified: ReadingRegisterModeValidation;
+    formal: ReadingRegisterModeValidation;
   };
+}
+
+export interface ReadingRegisters {
+  readOnly: true;
+  canonicalBinding: ReadingRegisterCanonicalBinding;
+  validation: ReadingRegisterValidation;
+  standard: ReadingRegisterFields;
+  simplified: ReadingRegisterFields;
+  formal: ReadingRegisterFields;
 }
 
 export interface ConceptMatchResponse {
@@ -123,7 +112,7 @@ export interface ConceptMatchResponse {
     shortDefinition: string;
     coreMeaning: string;
     fullDefinition: string;
-    derivedExplanationOverlays: DerivedExplanationOverlays;
+    registers: ReadingRegisters;
     contexts: ConceptContext[];
     sources: ConceptSource[];
     relatedConcepts: RelatedConcept[];

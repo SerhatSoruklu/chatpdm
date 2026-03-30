@@ -28,34 +28,29 @@ function loadConceptFixture(conceptId) {
   );
 }
 
-function assertDerivedExplanationOverlayShell(contract, expectedConceptId, expectedConceptVersion, context) {
-  assert.notEqual(contract, null, `${context} is missing.`);
-  assert.equal(contract.readOnly, true, `${context}.readOnly mismatch.`);
-  assert.equal(contract.status, 'generated', `${context}.status mismatch.`);
-  assert.equal(contract.canonicalBinding.conceptId, expectedConceptId, `${context}.canonicalBinding.conceptId mismatch.`);
+function assertReadingRegistersShell(registers, expectedConceptId, expectedConceptVersion, answer, context) {
+  assert.notEqual(registers, null, `${context} is missing.`);
+  assert.equal(registers.readOnly, true, `${context}.readOnly mismatch.`);
+  assert.equal(registers.canonicalBinding.conceptId, expectedConceptId, `${context}.canonicalBinding.conceptId mismatch.`);
   assert.equal(
-    contract.canonicalBinding.conceptVersion,
+    registers.canonicalBinding.conceptVersion,
     expectedConceptVersion,
     `${context}.canonicalBinding.conceptVersion mismatch.`,
   );
-  assert.match(contract.canonicalBinding.canonicalHash, /^[a-f0-9]{64}$/, `${context}.canonicalBinding.canonicalHash mismatch.`);
+  assert.match(registers.canonicalBinding.canonicalHash, /^[a-f0-9]{64}$/, `${context}.canonicalBinding.canonicalHash mismatch.`);
 
   for (const modeName of ['standard', 'simplified', 'formal']) {
-    const mode = contract.modes[modeName];
+    const mode = registers[modeName];
 
-    assert.notEqual(mode, null, `${context}.modes.${modeName} is missing.`);
-    assert.equal(mode.status, 'generated', `${context}.modes.${modeName}.status mismatch.`);
-    assert.equal(typeof mode.fields.shortDefinition, 'string', `${context}.modes.${modeName}.fields.shortDefinition mismatch.`);
-    assert.equal(typeof mode.fields.coreMeaning, 'string', `${context}.modes.${modeName}.fields.coreMeaning mismatch.`);
-    assert.equal(typeof mode.fields.fullDefinition, 'string', `${context}.modes.${modeName}.fields.fullDefinition mismatch.`);
-    assert.notEqual(mode.equivalenceCertificate, null, `${context}.modes.${modeName}.equivalenceCertificate mismatch.`);
-    assert.equal(mode.equivalenceCertificate.status, 'certified', `${context}.modes.${modeName}.equivalenceCertificate.status mismatch.`);
-    assert.equal(
-      mode.equivalenceCertificate.canonicalHash,
-      contract.canonicalBinding.canonicalHash,
-      `${context}.modes.${modeName}.equivalenceCertificate.canonicalHash mismatch.`,
-    );
+    assert.notEqual(mode, null, `${context}.${modeName} is missing.`);
+    assert.equal(typeof mode.shortDefinition, 'string', `${context}.${modeName}.shortDefinition mismatch.`);
+    assert.equal(typeof mode.coreMeaning, 'string', `${context}.${modeName}.coreMeaning mismatch.`);
+    assert.equal(typeof mode.fullDefinition, 'string', `${context}.${modeName}.fullDefinition mismatch.`);
   }
+
+  assert.equal(registers.standard.shortDefinition, answer.shortDefinition, `${context}.standard.shortDefinition mismatch.`);
+  assert.equal(registers.standard.coreMeaning, answer.coreMeaning, `${context}.standard.coreMeaning mismatch.`);
+  assert.equal(registers.standard.fullDefinition, answer.fullDefinition, `${context}.standard.fullDefinition mismatch.`);
 }
 
 function verifyReservedOverlayFieldsAreRejected() {
@@ -81,7 +76,7 @@ function verifyReservedOverlayFieldsAreRejected() {
     'authored packets must reject derivedExplanationOverlayContract.',
   );
 
-  process.stdout.write('PASS overlay_authored_fields_rejected\n');
+  process.stdout.write('PASS legacy_overlay_fields_rejected\n');
 }
 
 function assertSubset(actualValue, expectedValue, context) {
@@ -143,11 +138,12 @@ function runCase(testCase) {
       testCase.expectedConceptId,
       `${testCase.name} conceptId mismatch.`,
     );
-    assertDerivedExplanationOverlayShell(
-      firstResult.answer.derivedExplanationOverlays,
+    assertReadingRegistersShell(
+      firstResult.answer.registers,
       testCase.expectedConceptId,
       firstResult.resolution.conceptVersion,
-      `${testCase.name} derivedExplanationOverlays`,
+      firstResult.answer,
+      `${testCase.name} registers`,
     );
   }
 

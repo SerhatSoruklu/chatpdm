@@ -5,6 +5,23 @@
   "shortDefinition": "",
   "coreMeaning": "",
   "fullDefinition": "",
+  "registers": {
+    "standard": {
+      "shortDefinition": "",
+      "coreMeaning": "",
+      "fullDefinition": ""
+    },
+    "simplified": {
+      "shortDefinition": "",
+      "coreMeaning": "",
+      "fullDefinition": ""
+    },
+    "formal": {
+      "shortDefinition": "",
+      "coreMeaning": "",
+      "fullDefinition": ""
+    }
+  },
   "contexts": [
     {
       "label": "",

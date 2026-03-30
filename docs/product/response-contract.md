@@ -205,11 +205,49 @@ Allowed `queryType` values:
 - `shortDefinition`: short editorially constrained definition
 - `coreMeaning`: compressed semantic center of the concept
 - `fullDefinition`: fuller canonical explanation in plain text only
+- `registers`: authored public reading registers bound to the same canonical concept
 - `contexts`: array of authored context objects
 - `sources`: array of minimal source objects
 - `relatedConcepts`: array of curated related concept objects
 
 The `answer` object is the canonical payload boundary. Only fields inside `answer` are part of the canonical meaning surface.
+
+`answer.registers` object fields:
+
+- `readOnly`
+- `canonicalBinding`
+- `validation`
+- `standard`
+- `simplified`
+- `formal`
+
+`answer.registers.canonicalBinding` object fields:
+
+- `conceptId`
+- `conceptVersion`
+- `canonicalHash`
+
+Each register object contains:
+
+- `shortDefinition`
+- `coreMeaning`
+- `fullDefinition`
+
+`answer.registers.validation` object fields:
+
+- `availableModes`
+- `modes`
+
+Each validation mode object contains:
+
+- `status`
+- `reasons`
+
+`answer.registers.standard` must preserve the same prose as the top-level canonical fields.
+
+`answer.registers.simplified` and `answer.registers.formal` are separately authored renderings of the same concept meaning. They must not be produced through runtime rewriting or prefix-derived overlays.
+
+Only registers listed in `answer.registers.validation.availableModes` may be exposed in the UI. If validation collapses to `standard` only, the public surface must render `standard` only.
 
 `answer.contexts` object fields:
 
