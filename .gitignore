@@ -78,3 +78,7 @@ web_modules/
 chatpdm-reference/**/*.pdf
 chatpdm-sources/
 *.pdf
+
+# Local agent and scratch artifacts
+.codex/
+tmp/
