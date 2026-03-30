@@ -1,140 +1,51 @@
 # Legal Argument Validator Laws
 
-## Purpose
+## Pre-A
 
-These laws define the non-negotiable operating boundary for the Legal Argument Validator workstream.
+### Authority Identification Law
 
-They govern product scope before implementation convenience.
+A legal claim cannot validate unless its authority is identifiable by recognized source criteria in the loaded doctrine package.
 
-Violation of these laws means the system has drifted outside the intended product.
+The system does not validate claims based on free moral reasoning, fairness assertions, or extra-source justification alone.
 
-## 1. Boundary Law
+### Restrictive Attribution Law
 
-The system is a bounded legal reasoning workbench.
+The validator may attribute legal content to a source or institution only through doctrine-encoded attribution and interpretation rules.
 
-It is not:
+It must not promote all logical, policy, or moral consequences of a source into legal content.
 
-- a court AI
-- a judge replacement
-- a case outcome predictor
-- a witness credibility assessor
-- a freeform legal chat system
+## D
 
-Its role is to:
+### Authority Concept Law
 
-- take structured legal arguments
-- normalize them into defined units
-- map them to controlled doctrine
-- validate consistency, support, scope, and completeness
-- return tightly bounded validation outcomes
+Authority is a source-recognized directive or legal source whose binding force is identified through origin and source criteria, not through post-hoc moral evaluation alone.
 
-## 2. Decision Contract Law
+Claimed authority, effective authority, and validated authority are distinct states and must not be collapsed.
 
-The only allowed top-level results are:
+### Doctrine Non-Expansion Law
 
-- `valid`
-- `invalid`
-- `unresolved`
+Doctrine packages may encode explicit implications, interpretation rules, and scope conditions.
 
-The system must not emit:
+They may not silently redefine legal content by auto-expanding source text into all entailed consequences or by importing extra-source morality.
 
-- likely correct
-- mostly valid
-- probably persuasive
-- likely winner
-- likely loser
+## E
 
-`unresolved` is a required safety outcome when deterministic validation is not possible under the loaded doctrine and retained artifacts.
+### Source and Interpretation Law
 
-## 3. Refusal-First Law
+A mapped authority is valid only if it:
 
-If exact deterministic mapping or validation is not possible, the system must refuse success and return `unresolved` or an explicit failure path.
+- belongs to a recognized source class
+- matches jurisdiction scope
+- matches temporal scope
+- is included or allowed by the active doctrine package
+- is interpreted under the package's declared attribution rules
 
-Near misses, broad plausibility, and soft resemblance are not valid success grounds.
+## G
 
-## 4. No-Fuzz Law
+### Deterministic Overflow Law
 
-No probabilistic confidence may justify successful mapping or successful validation.
+If a claim lacks source-identifiable authority, return `INVALID`.
 
-Success requires an exact deterministic basis.
+If a claim relies on extra-source morality to defeat or replace identified authority, return `INVALID`.
 
-Ambiguity must remain ambiguity.
-Unresolved must remain unresolved.
-
-## 5. Core Identity Law
-
-Packages may extend application behavior, but they may not silently redefine protected core concept identity.
-
-This law must be enforced in:
-
-- doctrine loader
-- resolver
-- validation rules
-- authoring tools
-- promotion workflow
-- regression suites
-
-## 6. Admissibility Law
-
-Blocked or pending-review extraction outputs may not silently enter successful deterministic mapping or validation.
-
-If review or admissibility is incomplete, the result must stay blocked or unresolved.
-
-## 7. Replay Law
-
-Replay requires:
-
-- the same input
-- the same doctrine artifact
-- the same resolver version
-
-Hash-only identity is insufficient.
-
-Replay claims are valid only when the referenced doctrine artifact is immutably retained and retrievable.
-
-## 8. Trace Law
-
-Every successful, invalid, unresolved, or manually overridden outcome must be explainable through trace.
-
-Trace must preserve:
-
-- source anchor lineage
-- mapping basis
-- validation rule path
-- doctrine artifact identity
-- override visibility where applicable
-
-## 9. Authority Scope Law
-
-Authority must be validated against:
-
-- jurisdiction
-- effective period
-- doctrine package scope
-- supported authority class
-
-Out-of-scope, superseded, or unsupported authority must not validate as current support unless a doctrine package explicitly allows a historical analysis mode.
-
-## 10. Governance Law
-
-Doctrine, synonym, protected concept, and authority-scope changes require review, regression checks, and promotion controls.
-
-They must not enter runtime as convenience edits.
-
-## 11. Override Visibility Law
-
-Manual overrides are allowed only as explicit, traceable, reviewable exceptions.
-
-They must never masquerade as automatic exact matches or automatic admissible success.
-
-## 12. Drift-Kill Law
-
-Any change that could silently alter:
-
-- concept identity
-- authority scope
-- replay behavior
-- success classification
-- override visibility
-
-must be blocked, surfaced, or regression-tested before promotion.
+If a recognizable legal standard exists but the doctrine package lacks deterministic resolution rules, return `UNRESOLVED`.
