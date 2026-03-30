@@ -29,15 +29,14 @@ All services in this document use the same contract shape:
 - terminal outcome:
   - the service returns a terminal `result`
   - the service emits exactly one primary failure code
-  - upstream services do not continue
-  - `trace.service` still runs if the minimum `ValidationRun` prerequisites are available
+  - upstream services do not continue in the domain path
 
 Allowed terminal results in this path are:
 
 - `invalid`
 - `unresolved`
 
-Only `validation-kernel.service` may produce terminal `valid`.
+In this wave, `valid` remains a continue outcome from `validation-kernel.service` and a persisted success outcome from `trace.service`.
 
 ## doctrine-loader.service
 
@@ -115,9 +114,17 @@ Resolve and validate authority candidates against doctrine scope, source class, 
 ### Outputs
 
 - continue outcome:
-  - `authorityCandidates`
-  - `recognizedAuthorityIds`
-  - scope-checked authority metadata
+  - `authorityId`
+  - `citation`
+  - `authorityType`
+  - `sourceClass`
+  - `institution`
+  - `jurisdiction`
+  - `effectiveDate`
+  - `endDate`
+  - `precedentialWeight`
+  - `interpretationRegimeId`
+  - `authorityResolved = true`
 - terminal outcome:
   - `result`
   - `failureCode`
@@ -298,12 +305,12 @@ Apply structural, concept, authority, and completeness validation over resolver 
 ### Outputs
 
 - continue outcome:
-  - final `result`
-  - `failureCodes`
+  - `validationOutcome = valid`
   - `validationRuleIds`
-  - kernel decision summary
+  - `validationWritten = false`
+  - normalized mapping and doctrine context
 
-There is no downstream continue service after classification except `trace.service`.
+There is no downstream domain service after classification except `trace.service`.
 
 ### Allowed Failure Codes
 
@@ -346,9 +353,11 @@ Assemble the deterministic trace, verify replay-critical invariants, and persist
 
 ### Inputs
 
-- terminal output from the previous domain service
+- continue outcomes from:
+  - `doctrine-loader.service`
+  - `resolver.service`
+  - `validation-kernel.service`
 - request envelope containing:
-  - `matterId`
   - `resolverVersion`
   - `inputHash`
 - doctrine identity:
@@ -366,8 +375,14 @@ Assemble the deterministic trace, verify replay-critical invariants, and persist
 
 ### Outputs
 
-- final persisted `ValidationRun`
-- replay/trace verification outcome
+- continue outcome:
+  - persisted `ValidationRun` summary
+  - `validationRunWritten = true`
+  - `result = valid`
+- terminal outcome:
+  - `result = invalid`
+  - trace/replay failure code
+  - `validationRunWritten = false`
 
 ### Allowed Failure Codes
 
@@ -384,7 +399,7 @@ The service may read:
 - `DoctrineArtifact`
 - `Mapping`
 - `OverrideRecord`
-- any upstream terminal context needed for trace assembly
+- normalized upstream continue context needed for trace assembly
 
 The service may write:
 
@@ -400,6 +415,6 @@ The service may not write:
 
 ### Stop Conditions
 
-- trace finalization is always terminal
-- stop and persist `invalid` if replay or trace integrity fails after a run has otherwise classified
+- in this wave, trace finalization supports only the valid path
+- stop with terminal `invalid` if replay or trace integrity fails after a run has otherwise classified as valid
 - do not resume domain evaluation after trace finalization
