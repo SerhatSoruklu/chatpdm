@@ -25,10 +25,10 @@ This map covers `docs/` only. It does not replace the root-level law and invaria
 
 | Category | Count |
 | --- | ---: |
-| `ENFORCED` | 26 |
-| `MAPPABLE` | 26 |
+| `ENFORCED` | 27 |
+| `MAPPABLE` | 30 |
 | `DECORATIVE` | 17 |
-| Total | 69 |
+| Total | 74 |
 
 ## Classification Legend
 
@@ -66,6 +66,7 @@ This map covers `docs/` only. It does not replace the root-level law and invaria
 | [docs/public/promotion-flow.md](./docs/public/promotion-flow.md) | Promotion and publish flow are already implemented in workflow code. |
 | [docs/public/register-contract.md](./docs/public/register-contract.md) | Register invariants and exposure rules already map to validator logic. |
 | [docs/public/semantic-anchor-contract.md](./docs/public/semantic-anchor-contract.md) | Semantic-anchor requirements already map to invariance and parity checks. |
+| [docs/governance/AI_AUTOMATED_INTEGRITY_CHECKS.md](./docs/governance/AI_AUTOMATED_INTEGRITY_CHECKS.md) | Blocker-grade repo scanning, CI replay, captured violation fixtures, and minimal runtime guards now connect this document to live enforcement behavior. |
 
 ## MAPPABLE
 
@@ -85,6 +86,10 @@ This map covers `docs/` only. It does not replace the root-level law and invaria
 | [docs/data-model/schemas/doctrine-artifact.schema.json](./docs/data-model/schemas/doctrine-artifact.schema.json) | `medium` | `schema` | Validate doctrine artifacts against this JSON schema in CI/runtime. | The schema file exists but is not the live validation source. |
 | [docs/data-model/schemas/override-record.schema.json](./docs/data-model/schemas/override-record.schema.json) | `medium` | `schema` | Validate override records against this JSON schema in CI/runtime. | The schema file exists but is not the live validation source. |
 | [docs/git-push-workflow.md](./docs/git-push-workflow.md) | `medium` | `pipeline` | Add branch/publish safety checks that reflect the documented workflow. | It defines contributor workflow rules but relies on convention. |
+| [docs/governance/AI_INTERACTION_CONTRACT.md](./docs/governance/AI_INTERACTION_CONTRACT.md) | `high` | `guard` | Require any future AI integration to use labeled, non-authoritative, read-only interaction surfaces and to prevent advisory output from reaching canonical paths. | Scanner blockers and runtime guards now enforce part of this contract, but there are still no AI-facing adapters or full surface-specific controls because AI is not in the canonical path today. |
+| [docs/governance/AI_MISUSE_SCENARIOS.md](./docs/governance/AI_MISUSE_SCENARIOS.md) | `high` | `guard` | Require future AI integration review to detect writeback, authority leakage, hidden dependency, prompt drift, UI blending, and ungated expansion before release. | Active blockers and replay fixtures now cover several high-risk misuse paths, but the broader misuse model is not yet fully enforced through dedicated review gates, outage checks, or full-surface scanners. |
+| [docs/governance/AI_OUTPUT_SURFACE_SPEC.md](./docs/governance/AI_OUTPUT_SURFACE_SPEC.md) | `high` | `guard` | Require any future AI UI surface to keep advisory output visibly distinct, explicitly labeled, and structurally separate from canonical LLGS content. | Missing advisory labels now block core-page AI surfaces, but no live AI-facing UI surfaces exist yet and broader visual-separation rules still rely on future UI guards. |
+| [docs/governance/LLGS_AI_BOUNDARY_PROTOCOL.md](./docs/governance/LLGS_AI_BOUNDARY_PROTOCOL.md) | `high` | `guard` | Require any future AI or LLM integration to stay non-authoritative, read-only against canonical artifacts, validator-gated, and unable to replace deterministic meaning resolution. | Scanner blockers and runtime guards now defend part of this boundary, but full AI integration boundaries still depend on future adapters because AI is not in the canonical path today. |
 | [docs/local-change-cascade-rule.md](./docs/local-change-cascade-rule.md) | `medium` | `pipeline` | Add diff-based cascade detection and warnings. | Cascade thresholds are policy, not a live guard. |
 | [docs/product/examples/ambiguous_match.json](./docs/product/examples/ambiguous_match.json) | `medium` | `schema` | Validate it against `response-schema.json` and runtime fixture expectations. | The contract example can drift from runtime because it is not in the enforced fixture path. |
 | [docs/product/examples/concept_match.json](./docs/product/examples/concept_match.json) | `medium` | `schema` | Validate it against `response-schema.json` and runtime fixture expectations. | The contract example can drift from runtime because it is not in the enforced fixture path. |
@@ -124,17 +129,21 @@ This map covers `docs/` only. It does not replace the root-level law and invaria
 
 | file_path | why high-risk | next conversion target |
 | --- | --- | --- |
-| [docs/product/version-bump-policy.md](./docs/product/version-bump-policy.md) | Contract drift can exist until a human bumps the version. | Add a version-bump CI rule keyed to contract/schema/example changes. |
-| [docs/architecture/concept-writing-standard.md](./docs/architecture/concept-writing-standard.md) | It governs the quality of canonical truth objects, but much of it is still review-only. | Promote the highest-signal writing rules into validators. |
-| [docs/public/review-law.md](./docs/public/review-law.md) | Publish/review discipline can still be bypassed outside the strongest workflow path. | Gate promotion/publish on explicit review-state evidence. |
-| [docs/product/legal-argument-validator-acceptance-matrix.md](./docs/product/legal-argument-validator-acceptance-matrix.md) | Acceptance criteria are easy to claim and easy to drift without executable coverage. | Convert rows into tests. |
-| [docs/seo-policy.md](./docs/seo-policy.md) | Public route and metadata drift can happen silently because the policy is mostly declarative today. | Add a route/meta verification script. |
+| [docs/governance/AI_MISUSE_SCENARIOS.md](./docs/governance/AI_MISUSE_SCENARIOS.md) | If future AI integration lacks misuse detection, corruption paths can enter the system before anyone notices authority or writeback drift. | Add explicit AI misuse checks and review gates before any LLM-facing capability is allowed into the system. |
+| [docs/governance/AI_INTERACTION_CONTRACT.md](./docs/governance/AI_INTERACTION_CONTRACT.md) | If future AI interaction surfaces are added without strict input/output boundaries, advisory output can leak into canonical behavior. | Add explicit AI interaction guards, labeling rules, and no-writeback enforcement before any LLM-facing feature is allowed into the system. |
+| [docs/governance/LLGS_AI_BOUNDARY_PROTOCOL.md](./docs/governance/LLGS_AI_BOUNDARY_PROTOCOL.md) | If future AI enters the system without a hard boundary, probabilistic output can leak into canonical authority. | Add explicit AI integration guards before any LLM-facing feature is allowed into the canonical path. |
+| [docs/governance/AI_OUTPUT_SURFACE_SPEC.md](./docs/governance/AI_OUTPUT_SURFACE_SPEC.md) | If future AI UI surfaces are introduced without hard separation, advisory content can visually borrow canonical authority. | Add explicit AI UI-surface guards before any AI advisory panel or explanation surface is allowed into the product. |
 
 ## Pressure Points
 
 - [docs/product/version-bump-policy.md](./docs/product/version-bump-policy.md) is normative, but enforcement is still manual; contract drift can exist until a human bumps the version.
 - [docs/product/examples/concept_match.json](./docs/product/examples/concept_match.json), [docs/product/examples/ambiguous_match.json](./docs/product/examples/ambiguous_match.json), and [docs/product/examples/no_exact_match.json](./docs/product/examples/no_exact_match.json) behave like contract artifacts, but they are outside the current enforced test fixture path.
 - [docs/public/review-law.md](./docs/public/review-law.md), [docs/public/change-transparency.md](./docs/public/change-transparency.md), and [docs/git-push-workflow.md](./docs/git-push-workflow.md) read like hard governance/process law, but they are still mostly convention-backed.
+- [docs/governance/AI_AUTOMATED_INTEGRITY_CHECKS.md](./docs/governance/AI_AUTOMATED_INTEGRITY_CHECKS.md) now has blocker-grade scanner enforcement, replayed violation fixtures, and minimal runtime guards, but it still covers only the highest-risk patterns rather than the full AI misuse surface.
+- [docs/governance/AI_INTERACTION_CONTRACT.md](./docs/governance/AI_INTERACTION_CONTRACT.md) defines the AI interaction surface cleanly, but it remains a mapped guard target until the repo has actual AI-facing adapters and full surface-specific enforcement.
+- [docs/governance/AI_MISUSE_SCENARIOS.md](./docs/governance/AI_MISUSE_SCENARIOS.md) defines realistic AI corruption patterns and detection rules, and some are now replay-backed, but it remains a mapped guard target until the repo has broader AI misuse checks and review gates.
+- [docs/governance/AI_OUTPUT_SURFACE_SPEC.md](./docs/governance/AI_OUTPUT_SURFACE_SPEC.md) defines how AI must appear in UI, but it remains a mapped guard target until the repo has AI-facing UI surfaces and enforcement checks for them.
+- [docs/governance/LLGS_AI_BOUNDARY_PROTOCOL.md](./docs/governance/LLGS_AI_BOUNDARY_PROTOCOL.md) defines a critical future boundary, and while part of it is now defended, it remains a mapped guard target until full AI integration boundaries exist around any future LLM-facing adapters.
 - [docs/architecture/responsive-layout.md](./docs/architecture/responsive-layout.md) and [docs/seo-policy.md](./docs/seo-policy.md) define strong rules, but current enforcement is light compared with the rest of the validator-driven system.
 - The legal-validator docs under [`docs/product`](./docs/product) mix active subsystem contracts with future/planning notes, so some “law” documents there still outpace enforcement.
 
@@ -142,6 +151,11 @@ This map covers `docs/` only. It does not replace the root-level law and invaria
 
 ### High
 
+- Expand [docs/governance/AI_AUTOMATED_INTEGRITY_CHECKS.md](./docs/governance/AI_AUTOMATED_INTEGRITY_CHECKS.md) beyond the current blocker and replay set so more misuse scenarios gain precise CI and runtime enforcement without adding noisy failures.
+- Add explicit AI misuse checks for [docs/governance/AI_MISUSE_SCENARIOS.md](./docs/governance/AI_MISUSE_SCENARIOS.md) before any LLM-facing integration is allowed into the system.
+- Add explicit AI interaction guards for [docs/governance/AI_INTERACTION_CONTRACT.md](./docs/governance/AI_INTERACTION_CONTRACT.md) before any LLM-facing assistive surface is allowed into the system.
+- Add explicit AI UI-surface guards for [docs/governance/AI_OUTPUT_SURFACE_SPEC.md](./docs/governance/AI_OUTPUT_SURFACE_SPEC.md) before any AI advisory panel or explanation surface is allowed into the product.
+- Add explicit AI boundary guards for [docs/governance/LLGS_AI_BOUNDARY_PROTOCOL.md](./docs/governance/LLGS_AI_BOUNDARY_PROTOCOL.md) before any LLM-facing integration enters the canonical path.
 - Add CI enforcement for [docs/product/version-bump-policy.md](./docs/product/version-bump-policy.md).
 - Bind [docs/architecture/concept-writing-standard.md](./docs/architecture/concept-writing-standard.md) to validator rules.
 - Gate publish/review flow using [docs/public/review-law.md](./docs/public/review-law.md).

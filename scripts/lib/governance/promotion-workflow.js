@@ -3,6 +3,7 @@
 const { appendAuditRecord, buildAuditRecord } = require('./audit-trail');
 const { semanticProfileExists } = require('../register-validation/load-semantic-profile');
 const { validateConcept } = require('../register-validation/validate-concept');
+const { assertCanonicalWriteInputFreeOfAiMarkers } = require('../../../backend/src/lib/ai-governance-guard');
 
 const CONCEPT_STATES = Object.freeze([
   'draft',
@@ -107,6 +108,7 @@ function assertTransitionAllowed(currentState, nextState) {
 
 function transitionConceptState(concept, nextState, options = {}) {
   assertPlainObject(concept, 'concept');
+  assertCanonicalWriteInputFreeOfAiMarkers(concept, 'Concept workflow transition input');
   assertTransitionAllowed(concept.state, nextState);
 
   const nextConcept = clone(concept);

@@ -19,6 +19,7 @@ const { normalizeQuery } = require('./normalizer');
 const { classifyQueryShape } = require('./query-shape-classifier');
 const { resolveComparisonQuery } = require('./comparison-resolver');
 const { detectGovernanceScopeEnforcement } = require('./governance-scope-enforcer');
+const { assertDeterministicPathFreeOfAiMarkers } = require('../../lib/ai-governance-guard');
 const { assertValidProductResponse } = require('../../lib/product-response-validator');
 
 function buildContextPayload(context) {
@@ -276,6 +277,7 @@ function resolveConceptQuery(rawQuery) {
     };
   }
 
+  assertDeterministicPathFreeOfAiMarkers(response, 'Concept resolver response');
   return assertValidProductResponse(response);
 }
 

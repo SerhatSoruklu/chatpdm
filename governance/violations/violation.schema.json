@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "chatpdm://governance/violations/violation.schema.json",
+  "title": "AI Governance Violation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "description",
+    "trigger",
+    "expected_outcome",
+    "detected_by"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "type": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "trigger": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "mode",
+            "file_path",
+            "content",
+            "expected_rule"
+          ],
+          "properties": {
+            "mode": {
+              "const": "scanner_fixture"
+            },
+            "file_path": {
+              "type": "string",
+              "minLength": 1
+            },
+            "content": {
+              "type": "string"
+            },
+            "expected_rule": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "mode",
+            "guard",
+            "context",
+            "payload"
+          ],
+          "properties": {
+            "mode": {
+              "const": "runtime_guard"
+            },
+            "guard": {
+              "type": "string",
+              "enum": [
+                "canonical_store",
+                "canonical_write_input",
+                "deterministic_path"
+              ]
+            },
+            "context": {
+              "type": "string",
+              "minLength": 1
+            },
+            "payload": {}
+          }
+        }
+      ]
+    },
+    "expected_outcome": {
+      "type": "string",
+      "enum": [
+        "blocked",
+        "flagged"
+      ]
+    },
+    "detected_by": {
+      "type": "string",
+      "minLength": 1
+    },
+    "capture": {
+      "type": "object"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "./violation.schema.json",
+  "id": "authority_leakage",
+  "type": "authority_leakage",
+  "description": "AI usage must not appear inside restricted deterministic resolution or validation paths.",
+  "trigger": {
+    "mode": "scanner_fixture",
+    "file_path": "backend/src/modules/concepts/replay-authority-leakage.js",
+    "content": "const provider = 'openai';\nmodule.exports = { provider };\n",
+    "expected_rule": "AI_USAGE_IN_RESTRICTED_PATH"
+  },
+  "expected_outcome": "blocked",
+  "detected_by": "scanner"
+}
