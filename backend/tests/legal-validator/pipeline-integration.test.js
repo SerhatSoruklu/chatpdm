@@ -8,10 +8,12 @@ const { MongoMemoryServer } = require('mongodb-memory-server');
 const { connectMongo, disconnectMongo } = require('../../src/config/mongoose');
 const DoctrineArtifact = require('../../src/modules/legal-validator/doctrine/doctrine-artifact.model');
 const ArgumentUnit = require('../../src/modules/legal-validator/arguments/argument-unit.model');
+const AuthorityNode = require('../../src/modules/legal-validator/authority/authority-node.model');
 const Mapping = require('../../src/modules/legal-validator/mapping/mapping.model');
 const ValidationRun = require('../../src/modules/legal-validator/validation/validation-run.model');
 const doctrineLoaderService = require('../../src/modules/legal-validator/doctrine/doctrine-loader.service');
 const admissibilityService = require('../../src/modules/legal-validator/arguments/admissibility.service');
+const authorityRegistryService = require('../../src/modules/legal-validator/authority/authority-registry.service');
 const resolverService = require('../../src/modules/legal-validator/mapping/resolver.service');
 const validationKernelService = require('../../src/modules/legal-validator/validation/validation-kernel.service');
 const traceService = require('../../src/modules/legal-validator/validation/trace.service');
@@ -79,6 +81,30 @@ async function createArgumentUnit() {
   return unit;
 }
 
+async function createAuthorityNode(doctrineArtifactId) {
+  const authorityNode = new AuthorityNode({
+    authorityId: 'authority-duty-1',
+    doctrineArtifactId,
+    authorityType: 'statute_section',
+    sourceClass: 'statute',
+    institution: 'UK Parliament',
+    citation: 'Health and Safety at Work Act 1974 s.2',
+    jurisdiction: 'UK',
+    text: 'It shall be the duty of every employer to ensure safety at work.',
+    effectiveDate: new Date('2020-01-01T00:00:00Z'),
+    endDate: null,
+    precedentialWeight: 'binding',
+    status: 'active',
+    attribution: {
+      interpretationRegimeId: 'uk-textual-v1',
+      sourcePath: 'statute/health-and-safety-at-work/section-2',
+    },
+  });
+
+  await authorityNode.save();
+  return authorityNode;
+}
+
 test.before(async () => {
   mongoServer = await MongoMemoryServer.create();
   await connectMongo(mongoServer.getUri());
@@ -101,6 +127,7 @@ test.afterEach(async () => {
 test('legal-validator pipeline persists a replay-safe ValidationRun on the valid path', async () => {
   const artifact = await createDoctrineArtifact();
   const unit = await createArgumentUnit();
+  const authorityNode = await createAuthorityNode(artifact.artifactId);
 
   const admissibilityResult = await admissibilityService.evaluateArgumentUnits({
     argumentUnits: [unit],
@@ -110,9 +137,20 @@ test('legal-validator pipeline persists a replay-safe ValidationRun on the valid
     artifactId: artifact.artifactId,
   });
 
+  const authorityLookupResult = await authorityRegistryService.resolveAuthority({
+    doctrineLoadResult,
+    admissibilityResult,
+    authorityInput: {
+      authorityId: authorityNode.authorityId,
+      evaluationDate: '2020-06-01T00:00:00Z',
+      requiredInterpretationRegimeId: 'uk-textual-v1',
+    },
+  });
+
   const resolverResult = await resolverService.resolve({
     doctrineLoadResult,
     admissibilityResult,
+    authorityLookupResult,
     resolverDecision: {
       status: 'success',
       mappingId: 'mapping-integration-1',
@@ -151,6 +189,7 @@ test('legal-validator pipeline persists a replay-safe ValidationRun on the valid
 
   assert.equal(admissibilityResult.ok, true);
   assert.equal(doctrineLoadResult.ok, true);
+  assert.equal(authorityLookupResult.ok, true);
   assert.equal(resolverResult.ok, true);
   assert.equal(validationKernelResult.ok, true);
   assert.equal(traceResult.ok, true);

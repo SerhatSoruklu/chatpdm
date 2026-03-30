@@ -8,8 +8,10 @@ const { MongoMemoryServer } = require('mongodb-memory-server');
 const { connectMongo, disconnectMongo } = require('../../src/config/mongoose');
 const DoctrineArtifact = require('../../src/modules/legal-validator/doctrine/doctrine-artifact.model');
 const ArgumentUnit = require('../../src/modules/legal-validator/arguments/argument-unit.model');
+const AuthorityNode = require('../../src/modules/legal-validator/authority/authority-node.model');
 const doctrineLoaderService = require('../../src/modules/legal-validator/doctrine/doctrine-loader.service');
 const admissibilityService = require('../../src/modules/legal-validator/arguments/admissibility.service');
+const authorityRegistryService = require('../../src/modules/legal-validator/authority/authority-registry.service');
 const resolverService = require('../../src/modules/legal-validator/mapping/resolver.service');
 const validationKernelService = require('../../src/modules/legal-validator/validation/validation-kernel.service');
 const traceService = require('../../src/modules/legal-validator/validation/trace.service');
@@ -79,6 +81,31 @@ async function createArgumentUnit(overrides = {}) {
 
   await unit.save();
   return unit;
+}
+
+async function createAuthorityNode(overrides = {}) {
+  const authorityNode = new AuthorityNode({
+    authorityId: 'authority-1',
+    doctrineArtifactId: overrides.doctrineArtifactId || 'artifact-1',
+    authorityType: 'statute_section',
+    sourceClass: 'statute',
+    institution: 'UK Parliament',
+    citation: 'Health and Safety at Work Act 1974 s.2',
+    jurisdiction: 'UK',
+    text: 'It shall be the duty of every employer to ensure safety at work.',
+    effectiveDate: new Date('2020-01-01T00:00:00Z'),
+    endDate: null,
+    precedentialWeight: 'binding',
+    status: 'active',
+    attribution: {
+      interpretationRegimeId: overrides.attribution?.interpretationRegimeId || 'uk-textual-v1',
+      sourcePath: overrides.attribution?.sourcePath || 'statute/health-and-safety-at-work/section-2',
+    },
+    ...overrides,
+  });
+
+  await authorityNode.save();
+  return authorityNode;
 }
 
 async function createResolverSuccessResult(overrides = {}) {
@@ -381,6 +408,280 @@ test('admissibility.service blocks malformed argument unit objects deterministic
   assert.equal(result.argumentUnitId, null);
   assert.equal(result.reviewState, null);
   assert.equal(result.admissibility, null);
+});
+
+test('authority-registry.service rejects entry when doctrine-loader did not pass', async () => {
+  const unit = await createArgumentUnit({
+    argumentUnitId: 'argument-unit-authority-doctrine-reject',
+  });
+  const admissibilityResult = await admissibilityService.evaluateArgumentUnits({ argumentUnits: [unit] });
+
+  await assert.rejects(
+    authorityRegistryService.resolveAuthority({
+      doctrineLoadResult: {
+        ok: false,
+        terminal: true,
+        result: 'invalid',
+        failureCode: 'DOCTRINE_NOT_RECOGNIZED',
+      },
+      admissibilityResult,
+      authorityInput: {
+        authorityId: 'authority-1',
+      },
+    }),
+    /requires a continue outcome from doctrine-loader\.service/,
+  );
+});
+
+test('authority-registry.service rejects entry when admissibility did not pass', async () => {
+  const artifact = await createDoctrineArtifact({
+    artifactId: 'artifact-authority-admissibility-reject',
+    hash: 'd'.repeat(64),
+  });
+  const doctrineLoadResult = await doctrineLoaderService.loadDoctrineArtifact({ artifactId: artifact.artifactId });
+
+  await assert.rejects(
+    authorityRegistryService.resolveAuthority({
+      doctrineLoadResult,
+      admissibilityResult: {
+        ok: false,
+        terminal: true,
+        result: 'unresolved',
+        failureCode: 'PENDING_REVIEW_BLOCK',
+      },
+      authorityInput: {
+        authorityId: 'authority-1',
+      },
+    }),
+    /requires a continue outcome from admissibility\.service/,
+  );
+});
+
+test('authority-registry.service returns NO_SOURCE_AUTHORITY when no authority input is provided', async () => {
+  const artifact = await createDoctrineArtifact({
+    artifactId: 'artifact-authority-no-source',
+    hash: 'e'.repeat(64),
+  });
+  const unit = await createArgumentUnit({
+    argumentUnitId: 'argument-unit-authority-no-source',
+  });
+  const doctrineLoadResult = await doctrineLoaderService.loadDoctrineArtifact({ artifactId: artifact.artifactId });
+  const admissibilityResult = await admissibilityService.evaluateArgumentUnits({ argumentUnits: [unit] });
+
+  const result = await authorityRegistryService.resolveAuthority({
+    doctrineLoadResult,
+    admissibilityResult,
+  });
+
+  assert.equal(result.ok, false);
+  assert.equal(result.terminal, true);
+  assert.equal(result.result, 'invalid');
+  assert.equal(result.failureCode, 'NO_SOURCE_AUTHORITY');
+  assert.equal(result.argumentUnitId, unit.argumentUnitId);
+  assert.equal(result.doctrineArtifactId, artifact.artifactId);
+  assert.equal(result.authorityResolved, false);
+});
+
+test('authority-registry.service returns AUTHORITY_NOT_IDENTIFIABLE when citation cannot resolve to a single authority node', async () => {
+  const artifact = await createDoctrineArtifact({
+    artifactId: 'artifact-authority-identifiable-1',
+    hash: 'f'.repeat(64),
+  });
+  await createDoctrineArtifact({
+    artifactId: 'artifact-authority-identifiable-2',
+    packageId: 'uk-employment',
+    version: '2.0.0',
+    hash: '1'.repeat(64),
+  });
+  const unit = await createArgumentUnit({
+    argumentUnitId: 'argument-unit-authority-identifiable',
+  });
+  await createAuthorityNode({
+    authorityId: 'authority-duplicate-1',
+    doctrineArtifactId: artifact.artifactId,
+    citation: 'Common Citation',
+  });
+  await createAuthorityNode({
+    authorityId: 'authority-duplicate-2',
+    doctrineArtifactId: 'artifact-authority-identifiable-2',
+    citation: 'Common Citation',
+  });
+
+  const doctrineLoadResult = await doctrineLoaderService.loadDoctrineArtifact({ artifactId: artifact.artifactId });
+  const admissibilityResult = await admissibilityService.evaluateArgumentUnits({ argumentUnits: [unit] });
+
+  const result = await authorityRegistryService.resolveAuthority({
+    doctrineLoadResult,
+    admissibilityResult,
+    authorityInput: {
+      citation: 'Common Citation',
+    },
+  });
+
+  assert.equal(result.ok, false);
+  assert.equal(result.terminal, true);
+  assert.equal(result.result, 'invalid');
+  assert.equal(result.failureCode, 'AUTHORITY_NOT_IDENTIFIABLE');
+  assert.equal(result.authorityResolved, false);
+});
+
+test('authority-registry.service returns UNRECOGNIZED_SOURCE_INSTITUTION when the authority source class is not allowed by doctrine', async () => {
+  const artifact = await createDoctrineArtifact({
+    artifactId: 'artifact-authority-unrecognized-source',
+    hash: '2'.repeat(64),
+    manifest: {
+      packageId: 'uk-negligence',
+      jurisdiction: 'UK',
+      practiceArea: 'negligence',
+      sourceClasses: ['case_law'],
+      interpretationRegime: {
+        regimeId: 'uk-textual-v1',
+        name: 'UK Textual v1',
+        hierarchy: ['text', 'definitions', 'whole_text'],
+      },
+      coreConceptsReferenced: ['authority'],
+      packageConceptsDeclared: ['duty_of_care'],
+      authorityIds: [],
+      mappingRuleIds: [],
+      validationRuleIds: [],
+    },
+  });
+  const unit = await createArgumentUnit({
+    argumentUnitId: 'argument-unit-authority-unrecognized-source',
+  });
+  const authorityNode = await createAuthorityNode({
+    authorityId: 'authority-unrecognized-source',
+    doctrineArtifactId: artifact.artifactId,
+    sourceClass: 'statute',
+  });
+
+  const doctrineLoadResult = await doctrineLoaderService.loadDoctrineArtifact({ artifactId: artifact.artifactId });
+  const admissibilityResult = await admissibilityService.evaluateArgumentUnits({ argumentUnits: [unit] });
+
+  const result = await authorityRegistryService.resolveAuthority({
+    doctrineLoadResult,
+    admissibilityResult,
+    authorityInput: {
+      authorityId: authorityNode.authorityId,
+    },
+  });
+
+  assert.equal(result.ok, false);
+  assert.equal(result.terminal, true);
+  assert.equal(result.result, 'invalid');
+  assert.equal(result.failureCode, 'UNRECOGNIZED_SOURCE_INSTITUTION');
+  assert.equal(result.authorityResolved, false);
+});
+
+test('authority-registry.service returns AUTHORITY_SCOPE_VIOLATION when jurisdiction does not match', async () => {
+  const artifact = await createDoctrineArtifact({
+    artifactId: 'artifact-authority-scope',
+    hash: '3'.repeat(64),
+  });
+  const unit = await createArgumentUnit({
+    argumentUnitId: 'argument-unit-authority-scope',
+  });
+  const authorityNode = await createAuthorityNode({
+    authorityId: 'authority-scope',
+    doctrineArtifactId: artifact.artifactId,
+    jurisdiction: 'US',
+  });
+
+  const doctrineLoadResult = await doctrineLoaderService.loadDoctrineArtifact({ artifactId: artifact.artifactId });
+  const admissibilityResult = await admissibilityService.evaluateArgumentUnits({ argumentUnits: [unit] });
+
+  const result = await authorityRegistryService.resolveAuthority({
+    doctrineLoadResult,
+    admissibilityResult,
+    authorityInput: {
+      authorityId: authorityNode.authorityId,
+    },
+  });
+
+  assert.equal(result.ok, false);
+  assert.equal(result.terminal, true);
+  assert.equal(result.result, 'invalid');
+  assert.equal(result.failureCode, 'AUTHORITY_SCOPE_VIOLATION');
+  assert.equal(result.authorityId, authorityNode.authorityId);
+  assert.equal(result.authorityResolved, false);
+});
+
+test('authority-registry.service returns SUPERSEDED_AUTHORITY when the authority is outside its operative period', async () => {
+  const artifact = await createDoctrineArtifact({
+    artifactId: 'artifact-authority-superseded',
+    hash: '4'.repeat(64),
+  });
+  const unit = await createArgumentUnit({
+    argumentUnitId: 'argument-unit-authority-superseded',
+  });
+  const authorityNode = await createAuthorityNode({
+    authorityId: 'authority-superseded',
+    doctrineArtifactId: artifact.artifactId,
+    endDate: new Date('2020-12-31T00:00:00Z'),
+  });
+
+  const doctrineLoadResult = await doctrineLoaderService.loadDoctrineArtifact({ artifactId: artifact.artifactId });
+  const admissibilityResult = await admissibilityService.evaluateArgumentUnits({ argumentUnits: [unit] });
+
+  const result = await authorityRegistryService.resolveAuthority({
+    doctrineLoadResult,
+    admissibilityResult,
+    authorityInput: {
+      authorityId: authorityNode.authorityId,
+      evaluationDate: '2021-01-01T00:00:00Z',
+    },
+  });
+
+  assert.equal(result.ok, false);
+  assert.equal(result.terminal, true);
+  assert.equal(result.result, 'invalid');
+  assert.equal(result.failureCode, 'SUPERSEDED_AUTHORITY');
+  assert.equal(result.authorityId, authorityNode.authorityId);
+  assert.equal(result.authorityResolved, false);
+});
+
+test('authority-registry.service returns continue only on the narrow explicit in-scope authority path', async () => {
+  const artifact = await createDoctrineArtifact({
+    artifactId: 'artifact-authority-valid',
+    hash: '5'.repeat(64),
+  });
+  const unit = await createArgumentUnit({
+    argumentUnitId: 'argument-unit-authority-valid',
+  });
+  const authorityNode = await createAuthorityNode({
+    authorityId: 'authority-valid',
+    doctrineArtifactId: artifact.artifactId,
+  });
+
+  const doctrineLoadResult = await doctrineLoaderService.loadDoctrineArtifact({ artifactId: artifact.artifactId });
+  const admissibilityResult = await admissibilityService.evaluateArgumentUnits({ argumentUnits: [unit] });
+
+  const result = await authorityRegistryService.resolveAuthority({
+    doctrineLoadResult,
+    admissibilityResult,
+    authorityInput: {
+      authorityId: authorityNode.authorityId,
+      evaluationDate: '2020-06-01T00:00:00Z',
+      requiredInterpretationRegimeId: 'uk-textual-v1',
+    },
+  });
+
+  assert.equal(result.ok, true);
+  assert.equal(result.terminal, false);
+  assert.equal(result.argumentUnitId, unit.argumentUnitId);
+  assert.equal(result.matterId, unit.matterId);
+  assert.equal(result.documentId, unit.documentId);
+  assert.equal(result.doctrineArtifactId, artifact.artifactId);
+  assert.equal(result.doctrineHash, artifact.hash);
+  assert.equal(result.authorityId, authorityNode.authorityId);
+  assert.equal(result.citation, authorityNode.citation);
+  assert.equal(result.authorityType, authorityNode.authorityType);
+  assert.equal(result.sourceClass, authorityNode.sourceClass);
+  assert.equal(result.institution, authorityNode.institution);
+  assert.equal(result.jurisdiction, authorityNode.jurisdiction);
+  assert.equal(result.precedentialWeight, authorityNode.precedentialWeight);
+  assert.equal(result.interpretationRegimeId, 'uk-textual-v1');
+  assert.equal(result.authorityResolved, true);
 });
 
 test('resolver.service rejects entry when admissibility did not pass', async () => {
