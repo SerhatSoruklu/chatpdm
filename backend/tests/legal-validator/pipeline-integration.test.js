@@ -105,26 +105,7 @@ async function createAuthorityNode(doctrineArtifactId) {
   return authorityNode;
 }
 
-test.before(async () => {
-  mongoServer = await MongoMemoryServer.create();
-  await connectMongo(mongoServer.getUri());
-});
-
-test.after(async () => {
-  await disconnectMongo();
-
-  if (mongoServer) {
-    await mongoServer.stop();
-  }
-});
-
-test.afterEach(async () => {
-  if (mongoose.connection.readyState === 1) {
-    await mongoose.connection.db.dropDatabase();
-  }
-});
-
-test('legal-validator pipeline persists a replay-safe ValidationRun on the valid path', async () => {
+async function createRecognizedAuthorityContext() {
   const artifact = await createDoctrineArtifact();
   const unit = await createArgumentUnit();
   const authorityNode = await createAuthorityNode(artifact.artifactId);
@@ -146,6 +127,44 @@ test('legal-validator pipeline persists a replay-safe ValidationRun on the valid
       requiredInterpretationRegimeId: 'uk-textual-v1',
     },
   });
+
+  return {
+    artifact,
+    unit,
+    authorityNode,
+    admissibilityResult,
+    doctrineLoadResult,
+    authorityLookupResult,
+  };
+}
+
+test.before(async () => {
+  mongoServer = await MongoMemoryServer.create();
+  await connectMongo(mongoServer.getUri());
+});
+
+test.after(async () => {
+  await disconnectMongo();
+
+  if (mongoServer) {
+    await mongoServer.stop();
+  }
+});
+
+test.afterEach(async () => {
+  if (mongoose.connection.readyState === 1) {
+    await mongoose.connection.db.dropDatabase();
+  }
+});
+
+test('legal-validator pipeline persists a replay-safe ValidationRun on the valid path', async () => {
+  const {
+    artifact,
+    unit,
+    admissibilityResult,
+    doctrineLoadResult,
+    authorityLookupResult,
+  } = await createRecognizedAuthorityContext();
 
   const resolverResult = await resolverService.resolve({
     doctrineLoadResult,
@@ -236,4 +255,91 @@ test('legal-validator pipeline persists a replay-safe ValidationRun on the valid
   assert.deepEqual(persistedRun.trace.loadedManifest.conceptIds, ['duty_of_care']);
   assert.deepEqual(persistedRun.trace.loadedManifest.authorityIds, ['authority-duty-1']);
   assert.equal(await ValidationRun.countDocuments({}), 1);
+});
+
+test('legal-validator pipeline stops on an invalid kernel result without persisting ValidationRun', async () => {
+  const {
+    artifact,
+    unit,
+    admissibilityResult,
+    doctrineLoadResult,
+    authorityLookupResult,
+  } = await createRecognizedAuthorityContext();
+
+  const resolverResult = await resolverService.resolve({
+    doctrineLoadResult,
+    admissibilityResult,
+    authorityLookupResult,
+    resolverDecision: {
+      status: 'success',
+      mappingId: 'mapping-integration-invalid-1',
+      mappingType: 'combined',
+      matchBasis: 'exact_structural_rule',
+      conceptId: 'duty_of_care',
+      authorityId: 'authority-duty-1',
+      resolverRuleId: 'resolver-rule-duty-of-care',
+    },
+  });
+
+  const validationKernelResult = await validationKernelService.evaluate({
+    doctrineLoadResult,
+    resolverResult,
+    authorityLookupResult,
+    validationDecision: {
+      status: 'source_override',
+      reason: 'The claim attempts to override the controlling source.',
+    },
+  });
+
+  assert.equal(admissibilityResult.ok, true);
+  assert.equal(doctrineLoadResult.ok, true);
+  assert.equal(authorityLookupResult.ok, true);
+  assert.equal(resolverResult.ok, true);
+  assert.equal(validationKernelResult.ok, false);
+  assert.equal(validationKernelResult.terminal, true);
+  assert.equal(validationKernelResult.result, 'invalid');
+  assert.equal(validationKernelResult.failureCode, 'SOURCE_OVERRIDE_ATTEMPT');
+  assert.equal(validationKernelResult.argumentUnitId, unit.argumentUnitId);
+  assert.equal(validationKernelResult.doctrineArtifactId, artifact.artifactId);
+  assert.equal(validationKernelResult.mappingId, 'mapping-integration-invalid-1');
+
+  const persistedMapping = await Mapping.findOne({ mappingId: 'mapping-integration-invalid-1' }).lean().exec();
+
+  assert.ok(persistedMapping);
+  assert.equal(persistedMapping.status, 'success');
+  assert.equal(await Mapping.countDocuments({}), 1);
+  assert.equal(await ValidationRun.countDocuments({}), 0);
+});
+
+test('legal-validator pipeline stops on an unresolved resolver result without persisting Mapping or ValidationRun', async () => {
+  const {
+    artifact,
+    unit,
+    admissibilityResult,
+    doctrineLoadResult,
+    authorityLookupResult,
+  } = await createRecognizedAuthorityContext();
+
+  const resolverResult = await resolverService.resolve({
+    doctrineLoadResult,
+    admissibilityResult,
+    authorityLookupResult,
+    resolverDecision: {
+      status: 'ambiguous',
+      reason: 'Two live authority-grounded readings remain available.',
+    },
+  });
+
+  assert.equal(admissibilityResult.ok, true);
+  assert.equal(doctrineLoadResult.ok, true);
+  assert.equal(authorityLookupResult.ok, true);
+  assert.equal(resolverResult.ok, false);
+  assert.equal(resolverResult.terminal, true);
+  assert.equal(resolverResult.result, 'unresolved');
+  assert.equal(resolverResult.failureCode, 'AMBIGUOUS_CONCEPT_MAPPING');
+  assert.equal(resolverResult.argumentUnitId, unit.argumentUnitId);
+  assert.equal(resolverResult.doctrineArtifactId, artifact.artifactId);
+  assert.equal(resolverResult.mappingWritten, false);
+  assert.equal(await Mapping.countDocuments({}), 0);
+  assert.equal(await ValidationRun.countDocuments({}), 0);
 });
