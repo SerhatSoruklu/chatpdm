@@ -89,3 +89,6 @@ artifacts/
 docs/product/legal-argument-validator-hart-notes.md
 docs/product/legal-argument-validator-levi-notes.md
 docs/product/legal-argument-validator-reading-law-notes.md
+
+# Local docs enforcement working notes
+DOCS_ENFORCEMENT_MAP_INTERNAL.local.md
