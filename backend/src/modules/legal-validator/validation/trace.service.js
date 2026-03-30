@@ -87,6 +87,10 @@ function hasDuplicateValues(values) {
   return new Set(values).size !== values.length;
 }
 
+function haveSameCanonicalValues(left, right) {
+  return canonicalizeStringArray(left).join('\n') === canonicalizeStringArray(right).join('\n');
+}
+
 function compareSharedContext(doctrineLoadResult, resolverResult, validationKernelResult = null) {
   const doctrineArtifactIds = [
     doctrineLoadResult.doctrineArtifactId,
@@ -228,17 +232,10 @@ async function loadRetainedDoctrineArtifact(context) {
   };
 }
 
-function buildLoadedManifest(doctrineLoadResult, traceInput = {}) {
-  if (traceInput.loadedManifest && typeof traceInput.loadedManifest === 'object') {
-    return {
-      conceptIds: normalizeStringArray(traceInput.loadedManifest.conceptIds),
-      authorityIds: normalizeStringArray(traceInput.loadedManifest.authorityIds),
-    };
-  }
-
+function buildLoadedManifest(doctrineLoadResult) {
   return {
-    conceptIds: normalizeStringArray(doctrineLoadResult?.manifest?.packageConceptsDeclared),
-    authorityIds: normalizeStringArray(doctrineLoadResult?.manifest?.authorityIds),
+    conceptIds: canonicalizeStringArray(normalizeStringArray(doctrineLoadResult?.manifest?.packageConceptsDeclared)),
+    authorityIds: canonicalizeStringArray(normalizeStringArray(doctrineLoadResult?.manifest?.authorityIds)),
   };
 }
 
@@ -255,20 +252,29 @@ function buildTracePayload({ doctrineLoadResult, resolverResult, validationKerne
   const sourceAnchors = canonicalizeStringArray(normalizeStringArray(traceInput.sourceAnchors));
   const interpretationUsed = traceInput.interpretationUsed === true;
   const manualOverrideUsed = traceInput.manualOverrideUsed === true;
-  const interpretationRegimeId = legalValidatorSchemas.isNonEmptyTrimmedString(traceInput.interpretationRegimeId)
+  const requestedInterpretationRegimeId = legalValidatorSchemas.isNonEmptyTrimmedString(traceInput.interpretationRegimeId)
     ? traceInput.interpretationRegimeId
     : null;
   const normalizedMappingRuleIds = normalizeStringArray(traceInput.mappingRuleIds);
   const normalizedValidationRuleIdsFromTraceInput = normalizeStringArray(traceInput.validationRuleIds);
-  const normalizedValidationRuleIdsFromKernel = normalizeStringArray(validationKernelResult?.validationRuleIds);
-  const mappingRuleIds = normalizedMappingRuleIds.length > 0
-    ? canonicalizeStringArray(normalizedMappingRuleIds)
-    : canonicalizeStringArray(normalizeStringArray([resolverResult.resolverRuleId]));
-  const validationRuleIds = normalizedValidationRuleIdsFromTraceInput.length > 0
-    ? canonicalizeStringArray(normalizedValidationRuleIdsFromTraceInput)
-    : canonicalizeStringArray(normalizedValidationRuleIdsFromKernel);
+  const normalizedValidationRuleIdsFromKernel = canonicalizeStringArray(normalizeStringArray(validationKernelResult?.validationRuleIds));
+  const resolverDerivedMappingRuleIds = resolverResult.mappingWritten === true
+    ? canonicalizeStringArray(normalizeStringArray([resolverResult.resolverRuleId]))
+    : [];
+  const doctrineInterpretationRegimeId = doctrineLoadResult?.manifest?.interpretationRegime?.regimeId
+    || doctrineLoadResult?.interpretationRegime?.regimeId
+    || null;
   const overrideIds = normalizeStringArray(traceInput.overrideIds);
-  const loadedManifest = buildLoadedManifest(doctrineLoadResult, traceInput);
+  const loadedManifest = buildLoadedManifest(doctrineLoadResult);
+  const providedLoadedManifest = traceInput.loadedManifest && typeof traceInput.loadedManifest === 'object'
+    ? {
+      conceptIds: canonicalizeStringArray(normalizeStringArray(traceInput.loadedManifest.conceptIds)),
+      authorityIds: canonicalizeStringArray(normalizeStringArray(traceInput.loadedManifest.authorityIds)),
+    }
+    : null;
+  let interpretationRegimeId = null;
+  let mappingRuleIds = [];
+  let validationRuleIds = [];
 
   if (!validationRunId) {
     return {
@@ -299,25 +305,44 @@ function buildTracePayload({ doctrineLoadResult, resolverResult, validationKerne
     };
   }
 
-  if (normalizedMappingRuleIds.length > 0 && resolverResult.mappingWritten !== true) {
+  if (providedLoadedManifest) {
+    if (
+      !haveSameCanonicalValues(providedLoadedManifest.conceptIds, loadedManifest.conceptIds)
+      || !haveSameCanonicalValues(providedLoadedManifest.authorityIds, loadedManifest.authorityIds)
+    ) {
+      return {
+        ok: false,
+        reason: 'Trace finalization must not alter loadedManifest derived from doctrine-loader.service.',
+      };
+    }
+  }
+
+  if (resolverResult.mappingWritten !== true && normalizedMappingRuleIds.length > 0) {
     return {
       ok: false,
       reason: 'Trace finalization must not include mappingRuleIds before resolver.service writes Mapping.',
     };
   }
 
-  if (finalOutcome.stopStage === 'validation-kernel' && normalizedMappingRuleIds.length === 0 && !resolverResult.resolverRuleId) {
-    return {
-      ok: false,
-      reason: 'Trace finalization requires resolverRuleId when no mappingRuleIds are provided.',
-    };
-  }
+  if (resolverResult.mappingWritten === true) {
+    if (resolverDerivedMappingRuleIds.length === 0) {
+      return {
+        ok: false,
+        reason: 'Trace finalization requires resolverRuleId when resolver.service wrote Mapping.',
+      };
+    }
 
-  if (finalOutcome.stopStage === 'validation-kernel' && mappingRuleIds.length === 0) {
-    return {
-      ok: false,
-      reason: 'Trace finalization requires mappingRuleIds from the resolver path.',
-    };
+    if (
+      normalizedMappingRuleIds.length > 0
+      && !haveSameCanonicalValues(normalizedMappingRuleIds, resolverDerivedMappingRuleIds)
+    ) {
+      return {
+        ok: false,
+        reason: 'Trace finalization must not alter mappingRuleIds produced by resolver.service.',
+      };
+    }
+
+    mappingRuleIds = resolverDerivedMappingRuleIds;
   }
 
   if (hasDuplicateValues(mappingRuleIds)) {
@@ -334,26 +359,18 @@ function buildTracePayload({ doctrineLoadResult, resolverResult, validationKerne
     };
   }
 
-  if (
-    normalizedValidationRuleIdsFromTraceInput.length > 0
-    && finalOutcome.stopStage === 'validation-kernel'
-    && normalizedValidationRuleIdsFromKernel.length === 0
-  ) {
-    return {
-      ok: false,
-      reason: 'Trace finalization must not include validationRuleIds not produced by validation-kernel.service.',
-    };
-  }
+  if (finalOutcome.stopStage === 'validation-kernel') {
+    if (
+      normalizedValidationRuleIdsFromTraceInput.length > 0
+      && !haveSameCanonicalValues(normalizedValidationRuleIdsFromTraceInput, normalizedValidationRuleIdsFromKernel)
+    ) {
+      return {
+        ok: false,
+        reason: 'Trace finalization must not alter validationRuleIds produced by validation-kernel.service.',
+      };
+    }
 
-  if (
-    normalizedValidationRuleIdsFromTraceInput.length > 0
-    && finalOutcome.stopStage === 'validation-kernel'
-    && validationRuleIds.join('\n') !== canonicalizeStringArray(normalizedValidationRuleIdsFromKernel).join('\n')
-  ) {
-    return {
-      ok: false,
-      reason: 'Trace finalization must not alter validationRuleIds produced by validation-kernel.service.',
-    };
+    validationRuleIds = normalizedValidationRuleIdsFromKernel;
   }
 
   if (finalOutcome.result === 'valid' && validationRuleIds.length === 0) {
@@ -370,11 +387,29 @@ function buildTracePayload({ doctrineLoadResult, resolverResult, validationKerne
     };
   }
 
-  if (interpretationUsed && !interpretationRegimeId) {
+  if (!interpretationUsed && requestedInterpretationRegimeId) {
     return {
       ok: false,
-      reason: 'Trace finalization requires interpretationRegimeId when interpretationUsed is true.',
+      reason: 'Trace finalization must not include interpretationRegimeId when interpretationUsed is false.',
     };
+  }
+
+  if (interpretationUsed) {
+    if (!doctrineInterpretationRegimeId) {
+      return {
+        ok: false,
+        reason: 'Trace finalization requires doctrine-derived interpretationRegimeId when interpretationUsed is true.',
+      };
+    }
+
+    if (requestedInterpretationRegimeId && requestedInterpretationRegimeId !== doctrineInterpretationRegimeId) {
+      return {
+        ok: false,
+        reason: 'Trace finalization must not alter interpretationRegimeId derived from doctrine-loader.service.',
+      };
+    }
+
+    interpretationRegimeId = doctrineInterpretationRegimeId;
   }
 
   if (manualOverrideUsed && overrideIds.length === 0) {

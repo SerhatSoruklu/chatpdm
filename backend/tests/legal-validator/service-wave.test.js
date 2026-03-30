@@ -1448,6 +1448,33 @@ test('trace.service rejects write when mappingRuleIds contain duplicates', async
   assert.equal(await ValidationRun.countDocuments({}), 0);
 });
 
+test('trace.service rejects mismatched mappingRuleIds after resolver wrote Mapping', async () => {
+  const { doctrineLoadResult, resolverResult, validationKernelResult } = await createKernelSuccessResult({
+    artifactId: 'artifact-trace-mismatched-mapping-rules',
+    doctrineHash: '7'.repeat(64),
+    argumentUnitId: 'argument-unit-trace-mismatched-mapping-rules',
+    mappingId: 'mapping-trace-mismatched-mapping-rules',
+    resolverRuleId: 'resolver-rule-trace-mismatched-mapping-rules',
+  });
+
+  const result = await traceService.finalize({
+    doctrineLoadResult,
+    resolverResult,
+    validationKernelResult,
+    traceInput: buildTraceInput({
+      validationRunId: 'validation-run-trace-mismatched-mapping-rules',
+      mappingRuleIds: ['resolver-rule-does-not-match'],
+    }),
+  });
+
+  assert.equal(result.ok, false);
+  assert.equal(result.terminal, true);
+  assert.equal(result.result, 'invalid');
+  assert.equal(result.failureCode, 'TRACE_INCOMPLETE');
+  assert.equal(result.validationRunWritten, false);
+  assert.equal(await ValidationRun.countDocuments({}), 0);
+});
+
 test('trace.service rejects write when validationRuleIds contain duplicates in the kernel context', async () => {
   const { doctrineLoadResult, resolverResult, validationKernelResult } = await createKernelSuccessResult({
     artifactId: 'artifact-trace-duplicate-validation-rules',
@@ -1476,7 +1503,34 @@ test('trace.service rejects write when validationRuleIds contain duplicates in t
   assert.equal(await ValidationRun.countDocuments({}), 0);
 });
 
-test('trace.service rejects write when interpretationUsed is true but interpretationRegimeId is missing', async () => {
+test('trace.service rejects mismatched validationRuleIds after validation-kernel produced them', async () => {
+  const { doctrineLoadResult, resolverResult, validationKernelResult } = await createKernelSuccessResult({
+    artifactId: 'artifact-trace-mismatched-validation-rules',
+    doctrineHash: '8'.repeat(64),
+    argumentUnitId: 'argument-unit-trace-mismatched-validation-rules',
+    mappingId: 'mapping-trace-mismatched-validation-rules',
+    validationRuleIds: ['validation-rule-upstream'],
+  });
+
+  const result = await traceService.finalize({
+    doctrineLoadResult,
+    resolverResult,
+    validationKernelResult,
+    traceInput: buildTraceInput({
+      validationRunId: 'validation-run-trace-mismatched-validation-rules',
+      validationRuleIds: ['validation-rule-caller-shaped'],
+    }),
+  });
+
+  assert.equal(result.ok, false);
+  assert.equal(result.terminal, true);
+  assert.equal(result.result, 'invalid');
+  assert.equal(result.failureCode, 'TRACE_INCOMPLETE');
+  assert.equal(result.validationRunWritten, false);
+  assert.equal(await ValidationRun.countDocuments({}), 0);
+});
+
+test('trace.service derives interpretationRegimeId from doctrine truth when interpretationUsed is true', async () => {
   const { doctrineLoadResult, resolverResult, validationKernelResult } = await createKernelSuccessResult({
     artifactId: 'artifact-trace-missing-regime-id',
     doctrineHash: '1'.repeat(64),
@@ -1492,6 +1546,44 @@ test('trace.service rejects write when interpretationUsed is true but interpreta
       validationRunId: 'validation-run-trace-missing-regime-id',
       interpretationUsed: true,
       interpretationRegimeId: null,
+    }),
+  });
+
+  assert.equal(result.ok, true);
+  assert.equal(result.terminal, false);
+  assert.equal(result.result, 'valid');
+  assert.equal(result.validationRunWritten, true);
+  assert.deepEqual(result.persistedTraceSummary, {
+    sourceAnchors: ['segment-1'],
+    interpretationRegimeId: 'uk-textual-v1',
+    mappingRuleIds: ['resolver-rule-kernel'],
+    validationRuleIds: ['validation-rule-1'],
+    overrideIds: [],
+  });
+
+  const persistedRun = await ValidationRun.findOne({ validationRunId: 'validation-run-trace-missing-regime-id' }).lean().exec();
+
+  assert.ok(persistedRun);
+  assert.equal(persistedRun.trace.interpretationRegimeId, 'uk-textual-v1');
+  assert.equal(await ValidationRun.countDocuments({}), 1);
+});
+
+test('trace.service rejects conflicting interpretationRegimeId when doctrine truth differs', async () => {
+  const { doctrineLoadResult, resolverResult, validationKernelResult } = await createKernelSuccessResult({
+    artifactId: 'artifact-trace-conflicting-regime-id',
+    doctrineHash: '1'.repeat(64),
+    argumentUnitId: 'argument-unit-trace-conflicting-regime-id',
+    mappingId: 'mapping-trace-conflicting-regime-id',
+  });
+
+  const result = await traceService.finalize({
+    doctrineLoadResult,
+    resolverResult,
+    validationKernelResult,
+    traceInput: buildTraceInput({
+      validationRunId: 'validation-run-trace-conflicting-regime-id',
+      interpretationUsed: true,
+      interpretationRegimeId: 'uk-purposive-v1',
     }),
   });
 
@@ -1740,7 +1832,6 @@ test('trace.service writes ValidationRun with canonical trace array ordering on 
       resolverVersion: 'resolver-v1',
       inputHash: '5'.repeat(64),
       sourceAnchors: ['segment-trace-2', 'segment-trace-1'],
-      mappingRuleIds: ['resolver-rule-trace-b', 'resolver-rule-trace-a'],
     }),
   });
 
@@ -1755,7 +1846,7 @@ test('trace.service writes ValidationRun with canonical trace array ordering on 
   assert.deepEqual(result.persistedTraceSummary, {
     sourceAnchors: ['segment-trace-1', 'segment-trace-2'],
     interpretationRegimeId: null,
-    mappingRuleIds: ['resolver-rule-trace-a', 'resolver-rule-trace-b'],
+    mappingRuleIds: ['resolver-rule-trace-valid'],
     validationRuleIds: ['validation-rule-trace-1', 'validation-rule-trace-2'],
     overrideIds: [],
   });
@@ -1770,7 +1861,7 @@ test('trace.service writes ValidationRun with canonical trace array ordering on 
   assert.equal(persistedRun.result, 'valid');
   assert.deepEqual(persistedRun.failureCodes, []);
   assert.deepEqual(persistedRun.trace.sourceAnchors, ['segment-trace-1', 'segment-trace-2']);
-  assert.deepEqual(persistedRun.trace.mappingRuleIds, ['resolver-rule-trace-a', 'resolver-rule-trace-b']);
+  assert.deepEqual(persistedRun.trace.mappingRuleIds, ['resolver-rule-trace-valid']);
   assert.deepEqual(persistedRun.trace.validationRuleIds, ['validation-rule-trace-1', 'validation-rule-trace-2']);
   assert.equal(await ValidationRun.countDocuments({}), 1);
 });
