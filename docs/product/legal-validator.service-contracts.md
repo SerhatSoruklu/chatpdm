@@ -177,7 +177,7 @@ Apply the admissibility gate to `ArgumentUnit` input before any deterministic ma
 
 ### Allowed Failure Codes
 
-- `EVALUATIVE_FACT_NOT_ADMISSIBLE`
+- `FACT_INPUT_NOT_ADMISSIBLE`
 - `PENDING_REVIEW_BLOCK`
 
 ### Persistence Side Effects

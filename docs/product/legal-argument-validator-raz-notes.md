@@ -363,7 +363,7 @@ Deterministic implication:
 - `INTERPRETATION_RULE_UNSPECIFIED`: the active doctrine artifact does not encode the interpretation regime needed to attribute content to the source.
 - `ATTRIBUTION_OVERREACH`: the claim attributes to a source or institution content not supportable under doctrine-encoded attribution rules.
 - `INSUFFICIENT_DOCTRINE`: a recognizable legal standard exists, but the doctrine package lacks deterministic rules to resolve it.
-- `EVALUATIVE_FACT_NOT_ADMISSIBLE`: the applied claim depends on evaluative fact assertions that have not entered the system as admissible structured factual input.
+- `FACT_INPUT_NOT_ADMISSIBLE`: the applied claim depends on fact input that has not entered the system as admissible structured factual input.
 
 ### Later-phase candidate
 

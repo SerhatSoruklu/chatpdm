@@ -155,6 +155,11 @@ test('admissibility.service returns a continue outcome for accepted admissible a
 
   assert.equal(result.ok, true);
   assert.equal(result.terminal, false);
+  assert.equal(result.argumentUnitId, unit.argumentUnitId);
+  assert.equal(result.matterId, unit.matterId);
+  assert.equal(result.documentId, unit.documentId);
+  assert.equal(result.reviewState, unit.reviewState);
+  assert.equal(result.admissibility, unit.admissibility);
   assert.equal(Array.isArray(result.eligibleArgumentUnits), true);
   assert.equal(result.eligibleArgumentUnits.length, 1);
   assert.equal(result.eligibleArgumentUnits[0].argumentUnitId, unit.argumentUnitId);
@@ -172,6 +177,24 @@ test('admissibility.service blocks pending_review argument units', async () => {
   assert.equal(result.terminal, true);
   assert.equal(result.result, 'unresolved');
   assert.equal(result.failureCode, 'PENDING_REVIEW_BLOCK');
+  assert.equal(result.argumentUnitId, unit.argumentUnitId);
+  assert.equal(result.reviewState, 'pending_review');
+});
+
+test('admissibility.service blocks rejected argument units', async () => {
+  const unit = await createArgumentUnit({
+    argumentUnitId: 'argument-unit-rejected',
+    reviewState: 'rejected',
+  });
+
+  const result = await admissibilityService.evaluateArgumentUnits({ argumentUnits: [unit] });
+
+  assert.equal(result.ok, false);
+  assert.equal(result.terminal, true);
+  assert.equal(result.result, 'unresolved');
+  assert.equal(result.failureCode, 'FACT_INPUT_NOT_ADMISSIBLE');
+  assert.equal(result.argumentUnitId, unit.argumentUnitId);
+  assert.equal(result.reviewState, 'rejected');
 });
 
 test('admissibility.service blocks non-admissible argument units', async () => {
@@ -185,7 +208,63 @@ test('admissibility.service blocks non-admissible argument units', async () => {
   assert.equal(result.ok, false);
   assert.equal(result.terminal, true);
   assert.equal(result.result, 'unresolved');
-  assert.equal(result.failureCode, 'EVALUATIVE_FACT_NOT_ADMISSIBLE');
+  assert.equal(result.failureCode, 'FACT_INPUT_NOT_ADMISSIBLE');
+  assert.equal(result.argumentUnitId, unit.argumentUnitId);
+  assert.equal(result.admissibility, 'blocked');
+});
+
+test('admissibility.service blocks argument units with missing reviewState', async () => {
+  const result = await admissibilityService.evaluateArgumentUnits({
+    argumentUnits: [
+      {
+        argumentUnitId: 'argument-unit-missing-review',
+        matterId: 'matter-1',
+        documentId: 'document-1',
+        admissibility: 'admissible',
+      },
+    ],
+  });
+
+  assert.equal(result.ok, false);
+  assert.equal(result.terminal, true);
+  assert.equal(result.result, 'unresolved');
+  assert.equal(result.failureCode, 'FACT_INPUT_NOT_ADMISSIBLE');
+  assert.equal(result.argumentUnitId, 'argument-unit-missing-review');
+  assert.equal(result.reviewState, null);
+});
+
+test('admissibility.service blocks argument units with missing admissibility state', async () => {
+  const result = await admissibilityService.evaluateArgumentUnits({
+    argumentUnits: [
+      {
+        argumentUnitId: 'argument-unit-missing-admissibility',
+        matterId: 'matter-1',
+        documentId: 'document-1',
+        reviewState: 'accepted',
+      },
+    ],
+  });
+
+  assert.equal(result.ok, false);
+  assert.equal(result.terminal, true);
+  assert.equal(result.result, 'unresolved');
+  assert.equal(result.failureCode, 'FACT_INPUT_NOT_ADMISSIBLE');
+  assert.equal(result.argumentUnitId, 'argument-unit-missing-admissibility');
+  assert.equal(result.admissibility, null);
+});
+
+test('admissibility.service blocks malformed argument unit objects deterministically', async () => {
+  const result = await admissibilityService.evaluateArgumentUnits({
+    argumentUnits: [null],
+  });
+
+  assert.equal(result.ok, false);
+  assert.equal(result.terminal, true);
+  assert.equal(result.result, 'unresolved');
+  assert.equal(result.failureCode, 'FACT_INPUT_NOT_ADMISSIBLE');
+  assert.equal(result.argumentUnitId, null);
+  assert.equal(result.reviewState, null);
+  assert.equal(result.admissibility, null);
 });
 
 test('resolver.service cannot persist illegal success mappings', async () => {
