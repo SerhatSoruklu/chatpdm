@@ -130,6 +130,7 @@ Resolve and validate authority candidates against doctrine scope, source class, 
 - `AUTHORITY_NOT_IDENTIFIABLE`
 - `UNRECOGNIZED_SOURCE_INSTITUTION`
 - `AUTHORITY_SCOPE_VIOLATION`
+- `SUPERSEDED_AUTHORITY`
 
 ### Persistence Side Effects
 

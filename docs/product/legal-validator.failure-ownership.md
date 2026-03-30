@@ -29,6 +29,7 @@ Secondary downstream propagation is allowed only when:
 | `AUTHORITY_NOT_IDENTIFIABLE` | `authority-registry.service` | `trace.service` | implied source cannot be pinned down |
 | `UNRECOGNIZED_SOURCE_INSTITUTION` | `authority-registry.service` | `validation-kernel.service`, `trace.service` | institution/source-class failure |
 | `AUTHORITY_SCOPE_VIOLATION` | `authority-registry.service` | `validation-kernel.service`, `trace.service` | scope failure may be carried into final classification but not re-owned |
+| `SUPERSEDED_AUTHORITY` | `authority-registry.service` | `trace.service` | authority exists but is not operative for the evaluation period |
 | `FACT_INPUT_NOT_ADMISSIBLE` | `admissibility.service` | `trace.service` | blocked before mapping because the input cannot enter deterministic admissibility |
 | `PENDING_REVIEW_BLOCK` | `admissibility.service` | `trace.service` | blocked before mapping |
 | `RULE_NOT_DEFINED` | `resolver.service` | `trace.service` | the resolver received no authored deterministic rule path for the requested mapping |

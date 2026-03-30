@@ -109,6 +109,24 @@ Reason:
 
 - The cited authority falls outside the jurisdiction, temporal, or doctrine scope of the matter.
 
+### Case 1.6
+
+Input pattern:
+
+- `A once-valid regulation is cited even though it was superseded before the evaluation period.`
+
+Expected result:
+
+- `INVALID`
+
+Failure code:
+
+- `SUPERSEDED_AUTHORITY`
+
+Reason:
+
+- The cited authority can be identified, but it is no longer operative for the relevant evaluation period.
+
 ## Section 2: Rule Definition
 
 ### Case 2.1
