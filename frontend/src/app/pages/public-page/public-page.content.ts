@@ -144,6 +144,34 @@ const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
       route: '/inspect/data-retention',
     },
   },
+  'acceptable-use': {
+    eyebrow: 'Acceptable Use',
+    title: 'Current runtime use boundaries.',
+    intro:
+      'This page stays limited to current implementation-backed runtime scope, refusal behavior, and feedback-surface constraints in ChatPDM.',
+    sections: [
+      {
+        title: 'Current supported use',
+        bullets: [
+          'public concept resolution through the resolver route',
+          'comparison output only for authored allowlisted pairs',
+          'feedback submission plus session-bound export and delete controls',
+        ],
+      },
+      {
+        title: 'Current refusal path',
+        bullets: [
+          'unsupported complex, relation, role, and invalid canonical lookup forms are refused',
+          'non-allowlisted comparison pairs return no_exact_match instead of synthetic comparison output',
+          'invalid feedback payloads and invalid session controls are rejected through current route validation',
+        ],
+      },
+    ],
+    action: {
+      label: 'View current inspectable acceptable-use page',
+      route: '/inspect/acceptable-use',
+    },
+  },
   docs: {
     eyebrow: 'Docs',
     title: 'Product and architecture documentation index.',

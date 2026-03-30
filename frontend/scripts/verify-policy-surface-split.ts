@@ -36,6 +36,13 @@ const routeSpecs: readonly PolicyRouteSpec[] = [
     policyFile: 'data-retention.md',
   },
   {
+    key: 'acceptable-use',
+    publicPath: '/acceptable-use',
+    inspectPath: '/inspect/acceptable-use',
+    inspectSeoKey: 'legal.acceptable-use.inspect',
+    policyFile: 'acceptable-use.md',
+  },
+  {
     key: 'terms',
     publicPath: '/terms',
     inspectPath: '/inspect/terms',
@@ -75,6 +82,11 @@ function assertRouteIdentity(routeSource: string): void {
     routeSource,
     'data-retention public route',
     /path:\s*'data-retention'[\s\S]*?component:\s*PublicPageComponent[\s\S]*?pageRouteData\('data-retention',\s*'legal\.data-retention'\)/,
+  );
+  assertBlock(
+    routeSource,
+    'acceptable-use public route',
+    /path:\s*'acceptable-use'[\s\S]*?component:\s*PublicPageComponent[\s\S]*?pageRouteData\('acceptable-use',\s*'legal\.acceptable-use'\)/,
   );
   assertBlock(
     routeSource,
@@ -120,6 +132,11 @@ function assertPublicPageBoundary(publicPageTypesSource: string): void {
     /\|\s*'data-retention'/,
     'Public page types must include data-retention as the public human-readable route.',
   );
+  assert.match(
+    publicPageTypesSource,
+    /\|\s*'acceptable-use'/,
+    'Public page types must include acceptable-use as the public human-readable route.',
+  );
   assert.doesNotMatch(
     publicPageTypesSource,
     /\|\s*'terms'/,
@@ -157,12 +174,15 @@ function assertSurfaceTruthIdentity(): void {
     );
   }
 
-  const { privacy, 'data-retention': dataRetention, cookies, terms } = POLICY_SURFACE_DATA;
+  const { privacy, 'data-retention': dataRetention, 'acceptable-use': acceptableUse, cookies, terms } =
+    POLICY_SURFACE_DATA;
 
   assert.equal(privacy.cookiesTruth, undefined, 'Privacy must not gain cookies truth.');
   assert.equal(privacy.termsTruth, undefined, 'Privacy must not gain terms truth.');
   assert.equal(dataRetention.cookiesTruth, undefined, 'Data-retention must not gain cookies truth.');
   assert.equal(dataRetention.termsTruth, undefined, 'Data-retention must not gain terms truth.');
+  assert.equal(acceptableUse.cookiesTruth, undefined, 'Acceptable-use must not gain cookies truth.');
+  assert.equal(acceptableUse.termsTruth, undefined, 'Acceptable-use must not gain terms truth.');
   assert.ok(cookies.cookiesTruth && cookies.cookiesTruth.length > 0, 'Cookies truth must exist.');
   assert.equal(cookies.termsTruth, undefined, 'Cookies must not gain terms truth.');
   assert.ok(terms.termsTruth, 'Terms truth must exist.');

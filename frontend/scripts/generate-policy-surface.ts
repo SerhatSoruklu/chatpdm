@@ -83,6 +83,13 @@ const policySurfaceConfig: Record<PolicySurfaceKey, PolicySurfaceConfig> = {
     subtitle: 'Lifecycle, storage, and expiry evidence',
     traceHeading: '## 5. Data Retention Policy Traceability',
   },
+  'acceptable-use': {
+    policyFileName: 'acceptable-use.md',
+    route: '/inspect/acceptable-use',
+    title: 'Acceptable Use',
+    subtitle: 'Runtime scope, refusal, and feedback constraints',
+    traceHeading: '## 6. Acceptable Use Traceability',
+  },
 };
 
 const policyDrafts = buildDraftMetadata();

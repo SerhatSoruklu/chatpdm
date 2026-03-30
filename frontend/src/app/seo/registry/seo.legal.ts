@@ -75,8 +75,16 @@ export const seoLegalEntries = {
   },
   'legal.acceptable-use': {
     title: 'Acceptable Use - ChatPDM',
-    description: 'ChatPDM acceptable use policy.',
+    description: 'Implementation-backed view over current ChatPDM runtime scope, refusal boundaries, and feedback-surface constraints.',
     canonicalPath: '/acceptable-use',
+    includeInSitemap: true,
+    sitemapChangeFrequency: 'yearly',
+    sitemapPriority: 0.3,
+  },
+  'legal.acceptable-use.inspect': {
+    title: 'Acceptable Use (Inspect) - ChatPDM',
+    description: 'Current inspectable acceptable-use surface for ChatPDM runtime scope, refusal behavior, and feedback boundary evidence.',
+    canonicalPath: '/inspect/acceptable-use',
     includeInSitemap: false,
     sitemapChangeFrequency: 'yearly',
     sitemapPriority: 0.2,

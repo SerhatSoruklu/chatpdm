@@ -31,6 +31,12 @@ export class InspectIndexPageComponent {
       detail: 'Current inspectable data-retention surface for feedback persistence, browser continuity, and request-bound transport.',
     },
     {
+      title: 'Acceptable use inspect',
+      subtitle: 'runtime scope, refusal, and feedback boundary evidence',
+      route: '/inspect/acceptable-use',
+      detail: 'Current inspectable acceptable-use surface for runtime scope, unsupported composition boundaries, and feedback-surface constraints.',
+    },
+    {
       title: 'Cookie inspect',
       subtitle: 'browser and SSR cookie transport evidence',
       route: '/inspect/cookies',

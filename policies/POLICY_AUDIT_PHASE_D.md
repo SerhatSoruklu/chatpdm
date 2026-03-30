@@ -8,6 +8,7 @@ Inputs:
 - `policies/terms.md`
 - `policies/cookies.md`
 - `policies/data-retention.md`
+- `policies/acceptable-use.md`
 - `policies/POLICY_AUDIT_PHASE_B.md`
 
 ## 1. Phase D Notes
@@ -132,13 +133,46 @@ Inputs:
 |`data-retention.md`|`Controls`|The platform allows feedback export by `sessionId`.|The platform allows feedback export by `sessionId`.|`allows`|`backend/src/routes/api/v1/feedback.route.js:45-68`; `backend/src/modules/feedback/service.js:170-190`|`mapped`||
 |`data-retention.md`|`Controls`|The platform allows feedback deletion by `sessionId`.|The platform allows feedback deletion by `sessionId`.|`allows`|`backend/src/routes/api/v1/feedback.route.js:70-93`; `backend/src/modules/feedback/service.js:193-213`|`mapped`||
 
-## 6. Phase D Summary
+## 6. Acceptable Use Traceability
 
-- claim sentences traced: `88`
-- `mapped`: `88`
+|Policy File|Section|Policy Sentence|Canonical Claim|Claim Class|System Mapping|Status|Notes|
+|---|---|---|---|---|---|---|---|
+|`acceptable-use.md`|`Runtime Scope`|The platform allows concept resolution through `GET /api/v1/concepts/resolve?q=...`.|The platform allows concept resolution through `GET /api/v1/concepts/resolve?q=...`.|`allows`|`backend/src/routes/api/v1/concepts.route.js:16-31`|`mapped`||
+|`acceptable-use.md`|`Runtime Scope`|The platform allows comparison output only for authored allowlisted concept pairs with authored comparison axes.|The platform allows comparison output only for authored allowlisted concept pairs with authored comparison axes.|`allows`|`backend/src/modules/concepts/comparison-resolver.js:20-55`; `backend/src/modules/concepts/resolver.js:112-123`|`mapped`||
+|`acceptable-use.md`|`Runtime Scope`|The platform allows feedback submission through `POST /api/v1/feedback`.|The platform allows feedback submission through `POST /api/v1/feedback`.|`allows`|`backend/src/routes/api/v1/feedback.route.js:20-23`|`mapped`||
+|`acceptable-use.md`|`Runtime Scope`|The platform allows feedback export by `sessionId`.|The platform allows feedback export by `sessionId`.|`allows`|`backend/src/routes/api/v1/feedback.route.js:45-68`; `backend/src/modules/feedback/service.js:170-190`|`mapped`||
+|`acceptable-use.md`|`Runtime Scope`|The platform allows feedback deletion by `sessionId`.|The platform allows feedback deletion by `sessionId`.|`allows`|`backend/src/routes/api/v1/feedback.route.js:70-93`; `backend/src/modules/feedback/service.js:193-213`|`mapped`||
+|`acceptable-use.md`|`Unsupported or Refused Use`|The platform refuses concept resolution requests when query parameter `q` is missing.|The platform refuses concept resolution requests when query parameter `q` is missing.|`refuses`|`backend/src/routes/api/v1/concepts.route.js:16-27`|`mapped`|Shared validation branch.|
+|`acceptable-use.md`|`Unsupported or Refused Use`|The platform refuses concept resolution requests when query parameter `q` is empty.|The platform refuses concept resolution requests when query parameter `q` is empty.|`refuses`|`backend/src/routes/api/v1/concepts.route.js:16-27`|`mapped`|Shared validation branch.|
+|`acceptable-use.md`|`Unsupported or Refused Use`|The platform refuses concept resolution requests when query parameter `q` is not a string.|The platform refuses concept resolution requests when query parameter `q` is not a string.|`refuses`|`backend/src/routes/api/v1/concepts.route.js:16-27`|`mapped`|Shared validation branch.|
+|`acceptable-use.md`|`Unsupported or Refused Use`|The platform refuses unsupported complex queries.|The platform refuses unsupported complex queries.|`refuses`|`backend/src/modules/concepts/query-shape-classifier.js:191-195,357-365`|`mapped`||
+|`acceptable-use.md`|`Unsupported or Refused Use`|The platform refuses relation queries.|The platform refuses relation queries.|`refuses`|`backend/src/modules/concepts/query-shape-classifier.js:173-179,330-335`|`mapped`||
+|`acceptable-use.md`|`Unsupported or Refused Use`|The platform refuses role or actor queries.|The platform refuses role or actor queries.|`refuses`|`backend/src/modules/concepts/query-shape-classifier.js:182-188,314-319`|`mapped`||
+|`acceptable-use.md`|`Unsupported or Refused Use`|The platform refuses canonical lookup requests when no authored concept ID is provided.|The platform refuses canonical lookup requests when no authored concept ID is provided.|`refuses`|`backend/src/modules/concepts/query-shape-classifier.js:198-204,287-294`|`mapped`||
+|`acceptable-use.md`|`Unsupported or Refused Use`|The platform refuses canonical lookup requests when no authored concept exists for the requested ID.|The platform refuses canonical lookup requests when no authored concept exists for the requested ID.|`refuses`|`backend/src/modules/concepts/query-shape-classifier.js:206-210,287-294`|`mapped`||
+|`acceptable-use.md`|`Unsupported or Refused Use`|The platform refuses comparison output for non-allowlisted concept pairs by returning `no_exact_match`.|The platform refuses comparison output for non-allowlisted concept pairs by returning `no_exact_match`.|`refuses`|`backend/src/modules/concepts/comparison-resolver.js:46-55`; `backend/src/modules/concepts/resolver.js:112-132`|`mapped`||
+|`acceptable-use.md`|`Unsupported or Refused Use`|The platform refuses non-governance usage of governance-scoped concepts by returning `no_exact_match`.|The platform refuses non-governance usage of governance-scoped concepts by returning `no_exact_match`.|`refuses`|`backend/src/modules/concepts/resolver.js:90-109`; `backend/src/modules/concepts/governance-scope-enforcer.js:44-48,108-133`|`mapped`||
+|`acceptable-use.md`|`Feedback Surface Boundaries`|The platform exposes feedback operations `submit`, `export_by_session`, and `delete_by_session`.|The platform exposes feedback operations `submit`, `export_by_session`, and `delete_by_session`.|`allows`|`backend/src/routes/api/v1/feedback.route.js:12-17`|`mapped`||
+|`acceptable-use.md`|`Feedback Surface Boundaries`|The platform allows only `concept_match`, `ambiguous_match`, and `no_exact_match` as feedback `responseType` values.|The platform allows only `concept_match`, `ambiguous_match`, and `no_exact_match` as feedback `responseType` values.|`allows`|`backend/src/modules/feedback/constants.js:3`; `backend/src/modules/feedback/service.js:80-84`|`mapped`||
+|`acceptable-use.md`|`Feedback Surface Boundaries`|The platform allows feedback options only from the response-type-specific allowlist.|The platform allows feedback options only from the response-type-specific allowlist.|`allows`|`backend/src/modules/feedback/constants.js:5-8`; `backend/src/modules/feedback/service.js:84-89`|`mapped`||
+|`acceptable-use.md`|`Feedback Surface Boundaries`|The platform refuses feedback payload keys outside the approved field set.|The platform refuses feedback payload keys outside the approved field set.|`refuses`|`backend/src/modules/feedback/service.js:46-64`|`mapped`||
+|`acceptable-use.md`|`Feedback Surface Boundaries`|The platform refuses invalid `feedbackType` and `responseType` combinations.|The platform refuses invalid `feedbackType` and `responseType` combinations.|`refuses`|`backend/src/modules/feedback/service.js:84-89`|`mapped`||
+|`acceptable-use.md`|`Feedback Surface Boundaries`|The platform refuses candidate or suggestion concept IDs on `concept_match` feedback.|The platform refuses candidate or suggestion concept IDs on `concept_match` feedback.|`refuses`|`backend/src/modules/feedback/service.js:105-111`|`mapped`||
+|`acceptable-use.md`|`Feedback Surface Boundaries`|The platform refuses `ambiguous_match` feedback with fewer than two candidate concept IDs.|The platform refuses `ambiguous_match` feedback with fewer than two candidate concept IDs.|`refuses`|`backend/src/modules/feedback/service.js:113-122`|`mapped`||
+|`acceptable-use.md`|`Feedback Surface Boundaries`|The platform refuses suggestion concept IDs on `ambiguous_match` feedback.|The platform refuses suggestion concept IDs on `ambiguous_match` feedback.|`refuses`|`backend/src/modules/feedback/service.js:113-122`|`mapped`||
+|`acceptable-use.md`|`Feedback Surface Boundaries`|The platform refuses candidate concept IDs on `no_exact_match` feedback.|The platform refuses candidate concept IDs on `no_exact_match` feedback.|`refuses`|`backend/src/modules/feedback/service.js:125-131`|`mapped`||
+|`acceptable-use.md`|`Feedback Surface Boundaries`|The platform refuses invalid feedback submissions with HTTP `400`.|The platform refuses invalid feedback submissions with HTTP `400`.|`refuses`|`backend/src/routes/api/v1/feedback.route.js:20-32`|`mapped`||
+|`acceptable-use.md`|`Feedback Surface Boundaries`|The platform refuses invalid feedback submissions with error code `invalid_feedback`.|The platform refuses invalid feedback submissions with error code `invalid_feedback`.|`refuses`|`backend/src/routes/api/v1/feedback.route.js:25-30`|`mapped`||
+|`acceptable-use.md`|`Feedback Surface Boundaries`|The platform refuses invalid feedback session control requests with error code `invalid_feedback_session_control`.|The platform refuses invalid feedback session control requests with error code `invalid_feedback_session_control`.|`refuses`|`backend/src/routes/api/v1/feedback.route.js:45-57,70-82`|`mapped`||
+|`acceptable-use.md`|`Feedback Surface Boundaries`|The platform refuses session control requests when `sessionId` is not a non-empty string.|The platform refuses session control requests when `sessionId` is not a non-empty string.|`refuses`|`backend/src/modules/feedback/service.js:216-224`; `backend/src/routes/api/v1/feedback.route.js:45-57,70-82`|`mapped`||
+
+## 7. Phase D Summary
+
+- claim sentences traced: `116`
+- `mapped`: `116`
 - `unmapped`: `0`
 - `unclear`: `0`
 - `conflicts_with_system`: `0`
-- excluded non-claim scope bullets: `17`
+- excluded non-claim scope bullets: `21`
 - excluded non-claim SSR annotation fragments: `6`
-- Phase B canonical claim total referenced: `88`
+- Phase B canonical claim total referenced: `116`
