@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-30T16:10:24.305Z",
+  "generatedAt": "2026-03-30T17:27:16.501Z",
   "baseUrl": "http://127.0.0.1:4301",
   "packVersion": "v1",
   "summary": {
@@ -910,9 +910,9 @@
       "statusCode": 200,
       "deterministic": true,
       "hashes": [
-        "cf2f63457d7710fff2c750171934e8785fb3da2e878b25727a78bfa6133500da",
-        "cf2f63457d7710fff2c750171934e8785fb3da2e878b25727a78bfa6133500da",
-        "cf2f63457d7710fff2c750171934e8785fb3da2e878b25727a78bfa6133500da"
+        "48c6fdcb8673e8c8a5c3fcd9ae96040b4091db2b8f77ceee299529d439659c86",
+        "48c6fdcb8673e8c8a5c3fcd9ae96040b4091db2b8f77ceee299529d439659c86",
+        "48c6fdcb8673e8c8a5c3fcd9ae96040b4091db2b8f77ceee299529d439659c86"
       ],
       "score": 2,
       "labels": [],
@@ -995,7 +995,7 @@
               "fullDefinition": "Duty is not identical to responsibility. Responsibility links an actor to answerability; duty specifies conduct that is owed under a rule, role, office, or obligation.\n\nIts internal structure joins requirement to an actor through a binding source. The concept therefore concerns directive obligation rather than mere preference or capacity.\n\nWithin a system, duty stabilizes expected conduct by marking what is required before action occurs. Whether failure produces broader responsibility is a further question, not the definition of duty itself."
             },
             "simplified": {
-              "shortDefinition": "Duty means conduct a person must do or avoid under a rule or role.",
+              "shortDefinition": "Duty means what an actor must do or avoid under a rule, role, or obligation.",
               "coreMeaning": "Duty marks what an actor is required to do or not do. It is about owed conduct, not about every outcome for which the actor may later be blamed.",
               "fullDefinition": "Duty is not the same as responsibility. It states what conduct is required under a rule, office, role, or obligation.\n\nA duty binds an actor through a source that marks the conduct as owed. It comes before the action is taken.\n\nResponsibility is a further question about answerability. Duty itself concerns what must be done or avoided."
             },
@@ -1763,9 +1763,9 @@
       "statusCode": 200,
       "deterministic": true,
       "hashes": [
-        "14e2419ae99d18161d750857072efbcae08e2abc2583cc6b7ce393c4bdcf7d7c",
-        "14e2419ae99d18161d750857072efbcae08e2abc2583cc6b7ce393c4bdcf7d7c",
-        "14e2419ae99d18161d750857072efbcae08e2abc2583cc6b7ce393c4bdcf7d7c"
+        "f9a6d84410aad8f5d8bda5cda77ba62cd8e05155c9e43d092de4fbf59f22ad4c",
+        "f9a6d84410aad8f5d8bda5cda77ba62cd8e05155c9e43d092de4fbf59f22ad4c",
+        "f9a6d84410aad8f5d8bda5cda77ba62cd8e05155c9e43d092de4fbf59f22ad4c"
       ],
       "score": 2,
       "labels": [],
@@ -1848,7 +1848,7 @@
               "fullDefinition": "Duty is not identical to responsibility. Responsibility links an actor to answerability; duty specifies conduct that is owed under a rule, role, office, or obligation.\n\nIts internal structure joins requirement to an actor through a binding source. The concept therefore concerns directive obligation rather than mere preference or capacity.\n\nWithin a system, duty stabilizes expected conduct by marking what is required before action occurs. Whether failure produces broader responsibility is a further question, not the definition of duty itself."
             },
             "simplified": {
-              "shortDefinition": "Duty means conduct a person must do or avoid under a rule or role.",
+              "shortDefinition": "Duty means what an actor must do or avoid under a rule, role, or obligation.",
               "coreMeaning": "Duty marks what an actor is required to do or not do. It is about owed conduct, not about every outcome for which the actor may later be blamed.",
               "fullDefinition": "Duty is not the same as responsibility. It states what conduct is required under a rule, office, role, or obligation.\n\nA duty binds an actor through a source that marks the conduct as owed. It comes before the action is taken.\n\nResponsibility is a further question about answerability. Duty itself concerns what must be done or avoided."
             },
@@ -5110,9 +5110,9 @@
       "statusCode": 200,
       "deterministic": true,
       "hashes": [
-        "30319f738e20253d0dd8d74f2c02f5429698135d61a30aeb60bade121e86b45b",
-        "30319f738e20253d0dd8d74f2c02f5429698135d61a30aeb60bade121e86b45b",
-        "30319f738e20253d0dd8d74f2c02f5429698135d61a30aeb60bade121e86b45b"
+        "06177b7f7d5fc0ca44d0ae712e65cc2f92f851f99fc303681a2b79ea7d17c352",
+        "06177b7f7d5fc0ca44d0ae712e65cc2f92f851f99fc303681a2b79ea7d17c352",
+        "06177b7f7d5fc0ca44d0ae712e65cc2f92f851f99fc303681a2b79ea7d17c352"
       ],
       "score": 2,
       "labels": [],
@@ -5195,7 +5195,7 @@
               "fullDefinition": "Duty is not identical to responsibility. Responsibility links an actor to answerability; duty specifies conduct that is owed under a rule, role, office, or obligation.\n\nIts internal structure joins requirement to an actor through a binding source. The concept therefore concerns directive obligation rather than mere preference or capacity.\n\nWithin a system, duty stabilizes expected conduct by marking what is required before action occurs. Whether failure produces broader responsibility is a further question, not the definition of duty itself."
             },
             "simplified": {
-              "shortDefinition": "Duty means conduct a person must do or avoid under a rule or role.",
+              "shortDefinition": "Duty means what an actor must do or avoid under a rule, role, or obligation.",
               "coreMeaning": "Duty marks what an actor is required to do or not do. It is about owed conduct, not about every outcome for which the actor may later be blamed.",
               "fullDefinition": "Duty is not the same as responsibility. It states what conduct is required under a rule, office, role, or obligation.\n\nA duty binds an actor through a source that marks the conduct as owed. It comes before the action is taken.\n\nResponsibility is a further question about answerability. Duty itself concerns what must be done or avoided."
             },
@@ -5963,9 +5963,9 @@
       "statusCode": 200,
       "deterministic": true,
       "hashes": [
-        "6abe9c6279cc9310cddcc77273b862bde7f1329315165836a54cd869a544e8d5",
-        "6abe9c6279cc9310cddcc77273b862bde7f1329315165836a54cd869a544e8d5",
-        "6abe9c6279cc9310cddcc77273b862bde7f1329315165836a54cd869a544e8d5"
+        "ad0ca75e5d7345b5789ee5d1eb77fe791796bfb5aa05bd4b5079966e2fb36417",
+        "ad0ca75e5d7345b5789ee5d1eb77fe791796bfb5aa05bd4b5079966e2fb36417",
+        "ad0ca75e5d7345b5789ee5d1eb77fe791796bfb5aa05bd4b5079966e2fb36417"
       ],
       "score": 2,
       "labels": [],
@@ -6048,7 +6048,7 @@
               "fullDefinition": "Duty is not identical to responsibility. Responsibility links an actor to answerability; duty specifies conduct that is owed under a rule, role, office, or obligation.\n\nIts internal structure joins requirement to an actor through a binding source. The concept therefore concerns directive obligation rather than mere preference or capacity.\n\nWithin a system, duty stabilizes expected conduct by marking what is required before action occurs. Whether failure produces broader responsibility is a further question, not the definition of duty itself."
             },
             "simplified": {
-              "shortDefinition": "Duty means conduct a person must do or avoid under a rule or role.",
+              "shortDefinition": "Duty means what an actor must do or avoid under a rule, role, or obligation.",
               "coreMeaning": "Duty marks what an actor is required to do or not do. It is about owed conduct, not about every outcome for which the actor may later be blamed.",
               "fullDefinition": "Duty is not the same as responsibility. It states what conduct is required under a rule, office, role, or obligation.\n\nA duty binds an actor through a source that marks the conduct as owed. It comes before the action is taken.\n\nResponsibility is a further question about answerability. Duty itself concerns what must be done or avoided."
             },
@@ -6813,9 +6813,9 @@
       "statusCode": 200,
       "deterministic": true,
       "hashes": [
-        "2e158e3238f4bcf96e324022735bb86567a4c307b5cac46e5b64b5561a1234c3",
-        "2e158e3238f4bcf96e324022735bb86567a4c307b5cac46e5b64b5561a1234c3",
-        "2e158e3238f4bcf96e324022735bb86567a4c307b5cac46e5b64b5561a1234c3"
+        "fe157019773c1772f3d7a97ae37cf0f5a5646e2afb1de1fde61d2679e6968143",
+        "fe157019773c1772f3d7a97ae37cf0f5a5646e2afb1de1fde61d2679e6968143",
+        "fe157019773c1772f3d7a97ae37cf0f5a5646e2afb1de1fde61d2679e6968143"
       ],
       "score": 2,
       "labels": [],
@@ -6898,7 +6898,7 @@
               "fullDefinition": "Duty is not identical to responsibility. Responsibility links an actor to answerability; duty specifies conduct that is owed under a rule, role, office, or obligation.\n\nIts internal structure joins requirement to an actor through a binding source. The concept therefore concerns directive obligation rather than mere preference or capacity.\n\nWithin a system, duty stabilizes expected conduct by marking what is required before action occurs. Whether failure produces broader responsibility is a further question, not the definition of duty itself."
             },
             "simplified": {
-              "shortDefinition": "Duty means conduct a person must do or avoid under a rule or role.",
+              "shortDefinition": "Duty means what an actor must do or avoid under a rule, role, or obligation.",
               "coreMeaning": "Duty marks what an actor is required to do or not do. It is about owed conduct, not about every outcome for which the actor may later be blamed.",
               "fullDefinition": "Duty is not the same as responsibility. It states what conduct is required under a rule, office, role, or obligation.\n\nA duty binds an actor through a source that marks the conduct as owed. It comes before the action is taken.\n\nResponsibility is a further question about answerability. Duty itself concerns what must be done or avoided."
             },
@@ -11782,9 +11782,9 @@
       "statusCode": 200,
       "deterministic": true,
       "hashes": [
-        "38ae844fc6663773a0a8a5c51aceb70322e43ff49dbe97d0e172a1ce0c93f682",
-        "38ae844fc6663773a0a8a5c51aceb70322e43ff49dbe97d0e172a1ce0c93f682",
-        "38ae844fc6663773a0a8a5c51aceb70322e43ff49dbe97d0e172a1ce0c93f682"
+        "0ca53f67963ff87fed98764f9b10157e75eddc68af3300dae944eb6e778a28ce",
+        "0ca53f67963ff87fed98764f9b10157e75eddc68af3300dae944eb6e778a28ce",
+        "0ca53f67963ff87fed98764f9b10157e75eddc68af3300dae944eb6e778a28ce"
       ],
       "score": 2,
       "labels": [],
@@ -11867,7 +11867,7 @@
               "fullDefinition": "Duty is not identical to responsibility. Responsibility links an actor to answerability; duty specifies conduct that is owed under a rule, role, office, or obligation.\n\nIts internal structure joins requirement to an actor through a binding source. The concept therefore concerns directive obligation rather than mere preference or capacity.\n\nWithin a system, duty stabilizes expected conduct by marking what is required before action occurs. Whether failure produces broader responsibility is a further question, not the definition of duty itself."
             },
             "simplified": {
-              "shortDefinition": "Duty means conduct a person must do or avoid under a rule or role.",
+              "shortDefinition": "Duty means what an actor must do or avoid under a rule, role, or obligation.",
               "coreMeaning": "Duty marks what an actor is required to do or not do. It is about owed conduct, not about every outcome for which the actor may later be blamed.",
               "fullDefinition": "Duty is not the same as responsibility. It states what conduct is required under a rule, office, role, or obligation.\n\nA duty binds an actor through a source that marks the conduct as owed. It comes before the action is taken.\n\nResponsibility is a further question about answerability. Duty itself concerns what must be done or avoided."
             },
