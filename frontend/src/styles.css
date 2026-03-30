@@ -157,6 +157,99 @@ pre,
   box-shadow: 0 10px 24px rgba(148, 163, 184, 0.14);
 }
 
+.pdm-tooltip-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.pdm-tooltip-wrapper:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 1px rgba(37, 99, 235, 0.45),
+    0 0 0 4px rgba(37, 99, 235, 0.18);
+}
+
+.pdm-tooltip {
+  position: fixed;
+  z-index: 1000;
+  max-width: 220px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #1f2937;
+  color: #ffffff;
+  font-size: 0.81rem;
+  line-height: 1.4;
+  text-align: left;
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.12),
+    0 2px 6px rgba(0, 0, 0, 0.08);
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  transition:
+    opacity 120ms ease-out,
+    transform 120ms ease-out,
+    visibility 120ms ease-out;
+}
+
+.pdm-tooltip::after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: #1f2937;
+  transform: rotate(45deg);
+}
+
+.pdm-tooltip--top {
+  transform: translateY(4px);
+}
+
+.pdm-tooltip--top::after {
+  left: 50%;
+  bottom: -5px;
+  margin-left: -5px;
+}
+
+.pdm-tooltip--bottom {
+  transform: translateY(-4px);
+}
+
+.pdm-tooltip--bottom::after {
+  left: 50%;
+  top: -5px;
+  margin-left: -5px;
+}
+
+.pdm-tooltip--left {
+  transform: translateX(4px);
+}
+
+.pdm-tooltip--left::after {
+  top: 50%;
+  right: -5px;
+  margin-top: -5px;
+}
+
+.pdm-tooltip--right {
+  transform: translateX(-4px);
+}
+
+.pdm-tooltip--right::after {
+  top: 50%;
+  left: -5px;
+  margin-top: -5px;
+}
+
+.pdm-tooltip--visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(0, 0);
+}
+
 .pdm-shell {
   position: relative;
   z-index: 1;
