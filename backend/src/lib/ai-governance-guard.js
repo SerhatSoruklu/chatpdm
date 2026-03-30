@@ -1,6 +1,6 @@
 'use strict';
 
-const { logAiViolation } = require('../modules/ai/service');
+let cachedAiViolationLogger = undefined;
 
 const REQUIRED_AI_LABEL = 'AI (Advisory, Non-Canonical)';
 const EXPLICIT_AI_STATUS_PATTERN = /^(advisory|non-canonical|untrusted)$/i;
@@ -49,6 +49,45 @@ class AiGovernanceBoundaryError extends Error {
     this.code = code;
     this.details = details;
   }
+}
+
+function getAiViolationLogger() {
+  if (cachedAiViolationLogger !== undefined) {
+    return cachedAiViolationLogger;
+  }
+
+  try {
+    ({ logAiViolation: cachedAiViolationLogger } = require('../modules/ai/service'));
+  } catch (error) {
+    if (error?.code !== 'MODULE_NOT_FOUND') {
+      throw error;
+    }
+
+    cachedAiViolationLogger = null;
+  }
+
+  return cachedAiViolationLogger;
+}
+
+function logAiViolationFallback(eventType, surface, details = {}) {
+  const createdAt = new Date().toISOString();
+  process.stderr.write(`[chatpdm-backend] ai-violation ${JSON.stringify({
+    eventType,
+    surface,
+    createdAt,
+    details,
+    persistence: 'skipped',
+  })}\n`);
+}
+
+function emitAiViolation(eventType, surface, details = {}) {
+  const logger = getAiViolationLogger();
+
+  if (logger) {
+    return logger(eventType, surface, details);
+  }
+
+  return logAiViolationFallback(eventType, surface, details);
 }
 
 function buildPath(basePath, nextSegment) {
@@ -146,7 +185,7 @@ function assertAiBoundaryClean(value, context, errorCode, violationEventType) {
     return value;
   }
 
-  logAiViolation(violationEventType, context, {
+  emitAiViolation(violationEventType, context, {
     errorCode,
     path: violation.path,
     reason: violation.reason,
