@@ -119,6 +119,10 @@ Published packets in this folder represent the current active surface, not the f
 
 Templates for Phase 6 source files live in `templates/`.
 
+For new concept admission and implementation workflow prompts, use:
+
+- `../../docs/authoring/new-concept-workflow-template.md`
+
 Current published reference-standard packets for multi-register authoring are:
 
 - `authority`
