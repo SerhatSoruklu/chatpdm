@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, input, signal } from '@angular/core';
+import { Component, computed, input, output } from '@angular/core';
 
 import {
   formatPolicyClaimClass,
@@ -18,15 +18,18 @@ import { PolicyTracePanelComponent } from '../policy-trace-panel/policy-trace-pa
 })
 export class PolicyClaimCardComponent {
   readonly claim = input.required<PolicyClaim>();
+  readonly selected = input(false);
+  readonly inspectRequested = output<string>();
 
-  protected readonly expanded = signal(false);
   protected readonly sentenceSegments = computed(() =>
     splitPolicyInlineCode(this.claim().policySentence),
   );
   protected readonly lifecycleEvidence = computed(() => getPolicyLifecycleEvidence(this.claim()));
+  protected readonly statusLabel = computed(() => this.claim().status.replaceAll('_', ' '));
+  protected readonly traceCount = computed(() => this.claim().traces.length);
 
-  protected toggleExpanded(): void {
-    this.expanded.update((expanded) => !expanded);
+  protected toggleInspect(): void {
+    this.inspectRequested.emit(this.selected() ? '' : this.claim().id);
   }
 
   protected claimClassName(): string {

@@ -2,6 +2,8 @@ export type PolicySurfaceKey = 'privacy' | 'terms' | 'cookies' | 'data-retention
 
 export type PolicyTraceStatus = 'mapped' | 'unmapped' | 'unclear' | 'conflicts_with_system';
 
+export type PolicyClaimState = 'draft' | 'published' | 'superseded';
+
 export type PolicyClaimLifecycleClass =
   | 'short_lived'
   | 'session_bound'
@@ -155,6 +157,8 @@ export interface PolicyClaimLifecycle {
 
 export interface PolicyClaim {
   id: string;
+  version: number;
+  state: PolicyClaimState;
   policyFile: string;
   section: string;
   policySentence: string;
@@ -168,6 +172,30 @@ export interface PolicyClaim {
   lifecycle: PolicyClaimLifecycle;
   traces: readonly PolicyTraceMapping[];
 }
+
+export interface PolicyClaimRegistryEntry {
+  id: string;
+  version: number;
+  state: PolicyClaimState;
+  policyFile: string;
+  section: string;
+  policySentence: string;
+  canonicalClaim: string;
+  claimClass: string;
+  status: PolicyTraceStatus;
+  notes: string;
+  lifecycle: PolicyClaimLifecycle;
+  evidenceLinks: readonly PolicyTraceMapping[];
+}
+
+export interface PolicyClaimRegistrySurface {
+  key: PolicySurfaceKey;
+  version: number;
+  state: PolicyClaimState;
+  claims: readonly PolicyClaimRegistryEntry[];
+}
+
+export type PolicyClaimRegistry = Record<PolicySurfaceKey, PolicyClaimRegistrySurface>;
 
 export interface PolicyCookiesTruthFact {
   claimId: string;

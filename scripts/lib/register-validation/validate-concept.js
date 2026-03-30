@@ -3,6 +3,7 @@
 const { compareConceptRegisters } = require('./compare-registers');
 const { REASON_CODES } = require('./reason-codes');
 const { collectTextStats } = require('./text-stats');
+const { validateConceptShape } = require('./validate-concept-shape');
 const { validateSemanticInvariance } = require('./validate-semantic-invariance');
 const { REGISTER_NAMES, ZONE_NAMES } = require('./validate-structure');
 const { validateZoneContract } = require('./validate-zone');
@@ -245,6 +246,22 @@ function deriveExposure(report) {
   };
 }
 
+function deriveValidationState(languagePassed, v3Status) {
+  if (!languagePassed) {
+    return 'language_invalid';
+  }
+
+  if (v3Status === 'incomplete') {
+    return 'structurally_incomplete';
+  }
+
+  if (v3Status === 'passing') {
+    return 'fully_validated';
+  }
+
+  return 'language_valid';
+}
+
 function validateConcept(concept) {
   const comparisonReport = compareConceptRegisters(concept);
   const structureReport = comparisonReport.structure;
@@ -331,7 +348,60 @@ function validateConcept(concept) {
 
   applyProfileRules(report);
   attachSemanticResults(report, semanticReport);
+  report.languagePassed = report.passed;
+  report.v3 = validateConceptShape(concept);
+  report.v3Status = report.v3.v3Status;
+  report.relationStatus = 'not_applicable';
+  report.lawStatus = 'not_applicable';
+  report.relations = {
+    applicable: false,
+    passed: true,
+    source: 'none',
+    relationDataPresent: false,
+    dataSource: 'none',
+    counts: {
+      total: 0,
+      failures: 0,
+      warnings: 0,
+    },
+    failures: [],
+    warnings: [],
+    packetValidation: null,
+    results: [],
+  };
+  report.laws = {
+    applicable: false,
+    passed: true,
+    source: 'none',
+    relationDataPresent: false,
+    dataSource: 'none',
+    counts: {
+      total: 0,
+      failures: 0,
+      warnings: 0,
+    },
+    failures: [],
+    warnings: [],
+    results: [],
+  };
+  report.enforcementStatus = 'passing';
+  report.enforcement = {
+    applicable: false,
+    enforcementStatus: 'passing',
+    blockingFailures: [],
+    nonBlockingWarnings: [],
+    activations: [],
+    blockingFailureCategories: {},
+    nonBlockingWarningCategories: {},
+  };
+  report.systemValidationState = report.validationState;
 
+  if (report.v3.applicable && !report.v3.passed) {
+    report.passed = false;
+  }
+
+  report.validationState = deriveValidationState(report.languagePassed, report.v3Status);
+  report.systemValidationState = report.validationState;
   report.exposure = deriveExposure(report);
   return report;
 }

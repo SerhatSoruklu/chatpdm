@@ -1,0 +1,107 @@
+{
+  "key": "cookies",
+  "version": 1,
+  "state": "published",
+  "claims": [
+    {
+      "id": "cookies-1",
+      "version": 1,
+      "state": "published",
+      "policyFile": "cookies.md",
+      "section": "Data Handling — Internal proxy forwarding",
+      "policySentence": "The platform shares incoming `cookie` headers with the API proxy target through the SSR layer.",
+      "canonicalClaim": "The platform shares incoming `cookie` headers with the API proxy target through the SSR layer.",
+      "claimClass": "shares",
+      "status": "mapped",
+      "notes": "internal SSR transport only",
+      "lifecycle": {
+        "lifecycleClass": "transport_only",
+        "retentionReason": "Declared request-bound internal SSR transport within the product boundary.",
+        "deletionTrigger": "request_complete",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "frontend/src/server.ts:123-135",
+          "path": "frontend/src/server.ts",
+          "lines": "123-135"
+        }
+      ]
+    },
+    {
+      "id": "cookies-2",
+      "version": 1,
+      "state": "published",
+      "policyFile": "cookies.md",
+      "section": "Data Handling — Internal proxy forwarding",
+      "policySentence": "The platform shares upstream `set-cookie` headers with the client response through the SSR layer.",
+      "canonicalClaim": "The platform shares upstream `set-cookie` headers with the client response through the SSR layer.",
+      "claimClass": "shares",
+      "status": "mapped",
+      "notes": "internal SSR transport only",
+      "lifecycle": {
+        "lifecycleClass": "transport_only",
+        "retentionReason": "Declared request-bound internal SSR transport within the product boundary.",
+        "deletionTrigger": "request_complete",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "frontend/src/server.ts:103-120",
+          "path": "frontend/src/server.ts",
+          "lines": "103-120"
+        }
+      ]
+    },
+    {
+      "id": "cookies-3",
+      "version": 1,
+      "state": "published",
+      "policyFile": "cookies.md",
+      "section": "Boundaries — Conditional forwarding",
+      "policySentence": "The platform does not allow SSR forwarding of cookie headers when the incoming request omits them.",
+      "canonicalClaim": "The platform does not allow SSR forwarding of cookie headers when the incoming request omits them.",
+      "claimClass": "does_not_share",
+      "status": "mapped",
+      "notes": "internal SSR transport only",
+      "lifecycle": {
+        "lifecycleClass": "transport_only",
+        "retentionReason": "Declared request-bound internal SSR transport within the product boundary.",
+        "deletionTrigger": "request_complete",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "frontend/src/server.ts:123-135",
+          "path": "frontend/src/server.ts",
+          "lines": "123-135"
+        }
+      ]
+    },
+    {
+      "id": "cookies-4",
+      "version": 1,
+      "state": "published",
+      "policyFile": "cookies.md",
+      "section": "Boundaries — Conditional forwarding",
+      "policySentence": "The platform does not allow SSR forwarding of upstream set-cookie headers when upstream responses omit them.",
+      "canonicalClaim": "The platform does not allow SSR forwarding of upstream set-cookie headers when upstream responses omit them.",
+      "claimClass": "does_not_share",
+      "status": "mapped",
+      "notes": "internal SSR transport only",
+      "lifecycle": {
+        "lifecycleClass": "transport_only",
+        "retentionReason": "Declared request-bound internal SSR transport within the product boundary.",
+        "deletionTrigger": "request_complete",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "frontend/src/server.ts:114-119",
+          "path": "frontend/src/server.ts",
+          "lines": "114-119"
+        }
+      ]
+    }
+  ]
+}

@@ -21,6 +21,10 @@
   gap: 8px;
 }
 
+.pdm-policy-filter__field--search {
+  grid-column: 1 / -1;
+}
+
 .pdm-policy-filter__label {
   color: #78716c;
   font-size: 0.72rem;
@@ -51,6 +55,39 @@
   align-items: center;
 }
 
+.pdm-policy-filter__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.pdm-policy-filter__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1px solid rgba(120, 113, 108, 0.18);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.84);
+  color: #44403c;
+  font-size: 0.84rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.pdm-policy-filter__chip--active {
+  border-color: rgba(37, 99, 235, 0.28);
+  background: rgba(219, 234, 254, 0.86);
+  color: #1d4ed8;
+}
+
+.pdm-policy-filter__chip-count {
+  color: #78716c;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
 .pdm-policy-filter__toggle {
   display: inline-flex;
   align-items: center;
@@ -73,6 +110,14 @@
   letter-spacing: 0.04em;
 }
 
+.pdm-policy-filter__inspect {
+  margin: 0;
+  color: #57534e;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
 .pdm-policy-filter__clear {
   justify-self: start;
   min-height: 40px;
@@ -91,7 +136,7 @@
   }
 
   .pdm-policy-filter__grid {
-    grid-template-columns: minmax(0, 1.5fr) repeat(2, minmax(0, 0.7fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .pdm-policy-filter__meta {

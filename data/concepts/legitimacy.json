@@ -55,6 +55,29 @@
       "fullDefinition": "Legitimacy is defined, within the governance domain, as the accepted or justified validity of rule or standing within a governance order. The concept evaluates whether an office, institution, procedure, or claim counts as proper, and it does so without thereby conferring authority or generating power. Power may remain effective in the absence of legitimacy, and authority may persist while the legitimacy of the underlying order is contested."
     }
   },
+  "structureV3": {
+    "schemaVersion": 1,
+    "conceptFamily": "legitimacy",
+    "legitimacy": {
+      "subject": {
+        "type": "authority",
+        "id": "governing_rule_or_standing",
+        "label": "Rule or standing under evaluative review"
+      },
+      "basis": {
+        "type": "procedural",
+        "description": "validity grounded in accepted governance procedure and justificatory order"
+      },
+      "scope": {
+        "domain": "governance",
+        "object": "rule, office, or standing within a governance order"
+      },
+      "status": {
+        "recognised": true,
+        "justified": true
+      }
+    }
+  },
   "contexts": [
     {
       "label": "governance",

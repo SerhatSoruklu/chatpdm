@@ -1,0 +1,191 @@
+{
+  "concept": "authority",
+  "conceptId": "authority",
+  "title": "Authority",
+  "version": 1,
+  "state": "published",
+  "previousVersion": null,
+  "createdAt": "2026-03-30T00:00:00Z",
+  "updatedAt": "2026-03-30T00:00:00Z",
+  "domain": "relational-structures",
+  "canonical": {
+    "invariant": "Authority is recognized standing to direct, decide, or govern within a governance order.",
+    "excludes": [
+      "effective capacity to produce outcomes",
+      "accepted or justified validity of standing",
+      "mere force or resource control"
+    ],
+    "adjacent": {
+      "power": "Power concerns effective capacity to produce outcomes, not recognized standing to direct.",
+      "legitimacy": "Legitimacy concerns whether standing is valid, not whether it carries directive right."
+    }
+  },
+  "scope": {
+    "domain": "governance",
+    "isUniversal": false,
+    "mustPreserveIn": [
+      "canonical_outputs",
+      "comparison_outputs",
+      "relation_outputs",
+      "documentation",
+      "ui_api_surfaces"
+    ],
+    "nonGovernanceHandling": [
+      "scoped_clarification",
+      "out_of_scope_refusal"
+    ]
+  },
+  "shortDefinition": "Authority is recognized standing to direct, decide, or govern within a governance order.",
+  "coreMeaning": "Within the governance domain, authority works by giving a recognized role, office, or position the right to direct. It concerns who may direct, not what can be enforced or whether that standing is valid.",
+  "fullDefinition": "Authority is not any ability to produce effects. In ChatPDM v1 it is defined within the governance domain as a structured right to issue direction, make decisions, or govern within a governance order.\n\nIts structure joins the right to direct to a recognized role, office, or position. The concept requires that this right attach to standing rather than to mere capacity.\n\nWithin governance structures, authority organizes who may decide, command, or settle matters. Questions of whether that standing is valid belong to legitimacy, while questions of what outcomes can be produced belong to power.",
+  "registers": {
+    "standard": {
+      "shortDefinition": "Authority is recognized standing to direct, decide, or govern within a governance order.",
+      "coreMeaning": "Within the governance domain, authority works by giving a recognized role, office, or position the right to direct. It concerns who may direct, not what can be enforced or whether that standing is valid.",
+      "fullDefinition": "Authority is not any ability to produce effects. In ChatPDM v1 it is defined within the governance domain as a structured right to issue direction, make decisions, or govern within a governance order.\n\nIts structure joins the right to direct to a recognized role, office, or position. The concept requires that this right attach to standing rather than to mere capacity.\n\nWithin governance structures, authority organizes who may decide, command, or settle matters. Questions of whether that standing is valid belong to legitimacy, while questions of what outcomes can be produced belong to power."
+    },
+    "simplified": {
+      "shortDefinition": "Authority is the recognized right to direct, decide, or govern in a governing order.",
+      "coreMeaning": "In governance, authority marks who may direct from a recognized role or office. It is about who has the right to decide, not about force or validity.",
+      "fullDefinition": "Authority is not power. It is the recognized right to direct from a role, office, or post in a governing order.\n\nIt is about recognized status, not force. Power can exist without authority. Authority can exist while legitimacy is disputed.\n\nSo authority tells us who may decide or command. Legitimacy asks whether that status is valid. Power asks what outcomes can actually be produced."
+    },
+    "formal": {
+      "shortDefinition": "Authority is the recognized standing that makes directive acts institutionally operative within a governance order.",
+      "coreMeaning": "Within the governance domain, authority assigns directive competence to a recognized role, office, or position within the order. It identifies who may direct or determine, rather than what effects can be produced or whether that standing is valid.",
+      "fullDefinition": "Authority is defined, within the governance domain, as the recognized standing to issue direction, make determinations, or govern within a governance order. The concept requires that the right to direct attach to role, office, or position and count as institutionally operative rather than as mere capacity. Authority is distinct from power, which concerns produced outcomes, and from legitimacy, which concerns whether that standing is valid."
+    }
+  },
+  "structureV3": {
+    "schemaVersion": 1,
+    "conceptFamily": "authority",
+    "authority": {
+      "holder": {
+        "type": "office",
+        "id": "recognized_governing_office",
+        "label": "Recognized governing office or position"
+      },
+      "scope": {
+        "domain": "governance",
+        "actions": [
+          "direct",
+          "decide",
+          "govern"
+        ]
+      }
+    }
+  },
+  "contexts": [
+    {
+      "label": "governance",
+      "explanation": "Authority organizes who may direct, decide, or govern within an accepted governing order."
+    },
+    {
+      "label": "legal",
+      "explanation": "Authority marks recognized jurisdiction to decide, command, or settle matters under formal rule."
+    },
+    {
+      "label": "institutional",
+      "explanation": "Authority attaches directive standing to an office, rank, or assigned position inside an organized structure."
+    }
+  ],
+  "sourcePriority": [
+    "weber",
+    "oxford"
+  ],
+  "sources": [
+    {
+      "id": "weber",
+      "label": "Max Weber, Economy and Society",
+      "type": "book",
+      "usedFor": "structural distinction between recognized rule-bound command and mere power"
+    },
+    {
+      "id": "oxford",
+      "label": "Oxford Languages",
+      "type": "dictionary",
+      "usedFor": "definition boundary for recognized right to direct or decide"
+    }
+  ],
+  "relatedConcepts": [
+    {
+      "conceptId": "power",
+      "relationType": "contrast"
+    },
+    {
+      "conceptId": "legitimacy",
+      "relationType": "contrast"
+    }
+  ],
+  "comparison": {
+    "legitimacy": {
+      "axes": [
+        {
+          "axis": "core_nature",
+          "A": "recognized right to direct within a role or office",
+          "B": "accepted validity of a rule, standing, or office"
+        },
+        {
+          "axis": "depends_on",
+          "A": "recognized standing attached to a position",
+          "B": "acceptance or justification within an order"
+        },
+        {
+          "axis": "not_equivalent",
+          "statement": "authority is not legitimacy; a role may have authority while its legitimacy is contested"
+        }
+      ]
+    },
+    "power": {
+      "axes": [
+        {
+          "axis": "core_nature",
+          "A": "recognized right to direct",
+          "B": "effective capacity to produce outcomes"
+        },
+        {
+          "axis": "depends_on",
+          "A": "recognized role or standing",
+          "B": "resources, force, or influence"
+        },
+        {
+          "axis": "not_equivalent",
+          "statement": "authority is not power; power does not require authority"
+        }
+      ]
+    }
+  },
+  "reviewMetadata": {
+    "what_it_is": [
+      "recognized standing",
+      "directive right",
+      "role-bound decision status"
+    ],
+    "what_it_is_not": [
+      "mere force",
+      "mere effective capacity",
+      "mere accepted validity"
+    ],
+    "must_not_collapse_into": [
+      "power",
+      "legitimacy"
+    ],
+    "related_concepts": [
+      "power",
+      "legitimacy",
+      "duty"
+    ],
+    "contrast_prompts": [
+      "authority vs power",
+      "authority vs legitimacy",
+      "authority without legitimacy"
+    ]
+  },
+  "aliases": [
+    "authority",
+    "what is authority",
+    "define authority"
+  ],
+  "normalizedAliases": [
+    "authority"
+  ]
+}

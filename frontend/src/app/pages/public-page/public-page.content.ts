@@ -245,6 +245,89 @@ const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
       route: '/inspect/acceptable-use',
     },
   },
+  terms: {
+    eyebrow: 'Terms of Service',
+    title: 'Current public terms for the ChatPDM beta.',
+    intro:
+      'ChatPDM keeps this route as the human-readable terms summary. The implementation-heavy contract tables live under API, and claim-by-claim evidence lives under the inspect surface.',
+    sections: [
+      {
+        title: 'Current scope',
+        paragraphs: [
+          'The current beta exposes a bounded resolver surface, a constrained feedback workflow, and explicit refusal paths when requests fall outside the authored or approved contract.',
+          'These terms describe the active runtime boundary in public language rather than reproducing the raw contract tables line by line.',
+        ],
+        bullets: [
+          'deterministic concept resolution only within the authored runtime',
+          'feedback submission, export, and delete controls within the approved surface',
+          'refusal instead of silent expansion when requests fall outside supported structure',
+        ],
+      },
+      {
+        title: 'Where implementation detail lives',
+        bullets: [
+          'use API for endpoint contracts, accepted fields, typed values, and refusal boundaries',
+          'use the inspect terms route for claim-level evidence and implementation mappings',
+          'use acceptable use for the plain-language summary of runtime boundary behavior',
+        ],
+      },
+      {
+        title: 'Policy questions',
+        contacts: [
+          {
+            label: 'Policy',
+            email: SITE_POLICY_EMAIL,
+            note: 'Terms, acceptable-use, and public policy-surface questions.',
+          },
+        ],
+      },
+    ],
+    action: {
+      label: 'Open API reference',
+      route: '/api',
+    },
+  },
+  cookies: {
+    eyebrow: 'Cookie Policy',
+    title: 'Current cookie posture for the ChatPDM beta.',
+    intro:
+      'ChatPDM keeps this route as the plain-language cookie summary. The detailed request and response transport evidence stays on the inspect surface rather than the public entry page.',
+    sections: [
+      {
+        title: 'Current scope',
+        paragraphs: [
+          'The current beta does not present a broad browser-cookie feature surface. Cookie handling is narrow and tied to essential internal SSR transport within the product boundary.',
+        ],
+        bullets: [
+          'incoming cookie headers are handled only where the current SSR transport path requires them',
+          'upstream set-cookie headers are returned only through the same bounded SSR path',
+          'this policy is about current runtime behavior, not a broad advertising or tracking cookie layer',
+        ],
+      },
+      {
+        title: 'Where detail lives',
+        bullets: [
+          'use the inspect cookies route for request and response transport evidence',
+          'treat the inspect route as the technical proof surface',
+          'use privacy and data retention for the broader storage and lifecycle context',
+        ],
+      },
+      {
+        title: 'Policy questions',
+        contacts: [
+          {
+            label: 'Policy',
+            email: SITE_POLICY_EMAIL,
+            note: 'Cookie, privacy, and data-handling questions for the current public beta.',
+          },
+        ],
+      },
+    ],
+    action: {
+      label: 'Open cookie inspect surface',
+      route: '/inspect/cookies',
+    },
+  },
   docs: {
     eyebrow: 'Docs',
     title: 'Product and architecture documentation index.',
@@ -313,20 +396,6 @@ const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
           'authoring guidance for concept work',
           'system discipline and boundary notes',
           'longform operational references',
-        ],
-      },
-    ],
-  },
-  api: {
-    eyebrow: 'API',
-    title: 'Reference index for the ChatPDM API surface.',
-    intro:
-      'This route marks the public API reference surface for resolver behavior, endpoint expectations, and response-contract guidance.',
-    sections: [
-      {
-        title: 'Current API posture',
-        paragraphs: [
-          'The live runtime already exposes deterministic resolver and health endpoints. This page will become the public reference index for that API surface.',
         ],
       },
     ],

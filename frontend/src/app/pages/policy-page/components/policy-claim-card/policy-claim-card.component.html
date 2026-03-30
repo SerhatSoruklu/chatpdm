@@ -1,19 +1,28 @@
-<article class="pdm-policy-claim">
+<article
+  class="pdm-policy-claim"
+  [class.pdm-policy-claim--selected]="selected()"
+  [attr.id]="'pdm-policy-claim-' + claim().id"
+  tabindex="-1"
+>
   <div class="pdm-policy-claim__main">
     <header class="pdm-policy-claim__header">
       <div class="pdm-policy-claim__meta">
+        <span class="pdm-policy-claim__id pdm-mono">{{ claim().id }}</span>
         <span class="pdm-policy-claim__section pdm-mono">{{ claim().section }}</span>
         <span class="pdm-policy-claim__class" [attr.data-claim-class]="claimClassName()">
           {{ claimClassLabel() }}
         </span>
+        <span class="pdm-policy-claim__status pdm-mono">{{ statusLabel() }}</span>
         @if (claim().hasInternalTransportNote) {
           <span class="pdm-policy-claim__flag pdm-mono">internal SSR</span>
         }
       </div>
 
-      <button type="button" class="pdm-policy-claim__toggle" (click)="toggleExpanded()">
-        {{ expanded() ? 'Hide trace' : 'Show trace' }}
-      </button>
+      <div class="pdm-policy-claim__actions">
+        <button type="button" class="pdm-policy-claim__toggle" (click)="toggleInspect()">
+          {{ selected() ? 'Hide evidence' : 'Inspect evidence' }}
+        </button>
+      </div>
     </header>
 
     <p class="pdm-policy-claim__sentence">
@@ -25,6 +34,26 @@
         }
       }
     </p>
+
+    <dl class="pdm-policy-claim__inspect-grid">
+      <div class="pdm-policy-claim__inspect-item">
+        <dt class="pdm-policy-claim__inspect-label pdm-mono">Policy file</dt>
+        <dd class="pdm-policy-claim__inspect-value">{{ claim().policyFile }}</dd>
+      </div>
+      <div class="pdm-policy-claim__inspect-item">
+        <dt class="pdm-policy-claim__inspect-label pdm-mono">Evidence anchors</dt>
+        <dd class="pdm-policy-claim__inspect-value">{{ traceCount() }}</dd>
+      </div>
+    </dl>
+
+    @if (claim().hasInternalTransportNote) {
+      <section class="pdm-policy-claim__annotation" aria-label="Internal SSR annotation">
+        <p class="pdm-policy-claim__annotation-label pdm-mono">Internal SSR annotation</p>
+        <p class="pdm-policy-claim__annotation-copy">
+          This claim includes request-bound server transport notes. Inspect the evidence panel before reading it as persisted browser or database behavior.
+        </p>
+      </section>
+    }
 
     @if (lifecycleEvidence(); as evidence) {
       <section class="pdm-policy-claim__evidence" aria-label="Lifecycle evidence">
@@ -43,7 +72,7 @@
     }
   </div>
 
-  @if (expanded()) {
+  @if (selected()) {
     <app-policy-trace-panel [claim]="claim()" />
   }
 </article>

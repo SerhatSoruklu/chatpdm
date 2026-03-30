@@ -1,0 +1,154 @@
+{
+  "concept": "duty",
+  "conceptId": "duty",
+  "title": "Duty",
+  "version": 1,
+  "state": "published",
+  "previousVersion": null,
+  "createdAt": "2026-03-30T00:00:00Z",
+  "updatedAt": "2026-03-30T00:00:00Z",
+  "domain": "governance-structures",
+  "canonical": {
+    "invariant": "Duty is required conduct owed by an actor under a rule, role, or obligation.",
+    "excludes": [
+      "answerability for attributable outcomes",
+      "mere preference or optional conduct",
+      "capacity without binding requirement"
+    ],
+    "adjacent": {
+      "responsibility": "Responsibility concerns answerability for what is attributable, not conduct that is owed in advance.",
+      "authority": "Authority concerns who may direct within an order, not what conduct an actor is required to perform."
+    }
+  },
+  "shortDefinition": "Duty is required conduct owed by an actor under a rule, role, or obligation.",
+  "coreMeaning": "Duty functions by attaching a required line of conduct to a position, office, or binding norm. It concerns what must be done or refrained from, not who is answerable for all resulting outcomes.",
+  "fullDefinition": "Duty is not identical to responsibility. Responsibility links an actor to answerability; duty specifies conduct that is owed under a rule, role, office, or obligation.\n\nIts internal structure joins requirement to an actor through a binding source. The concept therefore concerns directive obligation rather than mere preference or capacity.\n\nWithin a system, duty stabilizes expected conduct by marking what is required before action occurs. Whether failure produces broader responsibility is a further question, not the definition of duty itself.",
+  "registers": {
+    "standard": {
+      "shortDefinition": "Duty is required conduct owed by an actor under a rule, role, or obligation.",
+      "coreMeaning": "Duty functions by attaching a required line of conduct to a position, office, or binding norm. It concerns what must be done or refrained from, not who is answerable for all resulting outcomes.",
+      "fullDefinition": "Duty is not identical to responsibility. Responsibility links an actor to answerability; duty specifies conduct that is owed under a rule, role, office, or obligation.\n\nIts internal structure joins requirement to an actor through a binding source. The concept therefore concerns directive obligation rather than mere preference or capacity.\n\nWithin a system, duty stabilizes expected conduct by marking what is required before action occurs. Whether failure produces broader responsibility is a further question, not the definition of duty itself."
+    },
+    "simplified": {
+      "shortDefinition": "Duty means conduct a person must do or avoid under a rule or role.",
+      "coreMeaning": "Duty marks what an actor is required to do or not do. It is about owed conduct, not about every outcome for which the actor may later be blamed.",
+      "fullDefinition": "Duty is not the same as responsibility. It states what conduct is required under a rule, office, role, or obligation.\n\nA duty binds an actor through a source that marks the conduct as owed. It comes before the action is taken.\n\nResponsibility is a further question about answerability. Duty itself concerns what must be done or avoided."
+    },
+    "formal": {
+      "shortDefinition": "Duty is the required conduct owed by an actor under a rule, role, office, or other binding obligation.",
+      "coreMeaning": "Duty attaches a required line of conduct to an actor through a rule, office, role, or norm that has binding force within the relevant system. It concerns what must be done or omitted, rather than who may later bear answerability for resulting effects.",
+      "fullDefinition": "Duty is defined as conduct owed by an actor under a binding rule, role, office, or obligation, and it is therefore not reducible to responsibility. The concept specifies required action or restraint before performance, by linking an actor to a norm that governs what must occur or be avoided. Whether breach of that requirement generates broader responsibility is a further question of answerability, not part of the definition of duty itself."
+    }
+  },
+  "structureV3": {
+    "schemaVersion": 1,
+    "conceptFamily": "duty",
+    "duty": {
+      "bearer": {
+        "type": "organization_role",
+        "id": "actor",
+        "label": "Actor or office-bearer subject to the duty"
+      },
+      "content": {
+        "type": "do",
+        "description": "perform or refrain from conduct that is owed under a binding governance source",
+        "standard": "rule_like"
+      }
+    }
+  },
+  "contexts": [
+    {
+      "label": "legal",
+      "explanation": "Duty marks conduct required under formal rule and enforceable obligation."
+    },
+    {
+      "label": "office",
+      "explanation": "Duty marks conduct required by holding a position, office, or assigned function."
+    },
+    {
+      "label": "normative",
+      "explanation": "Duty marks conduct treated as owed under a binding standard rather than optional choice."
+    }
+  ],
+  "sourcePriority": [
+    "hohfeld",
+    "oxford"
+  ],
+  "sources": [
+    {
+      "id": "hohfeld",
+      "label": "Wesley Newcomb Hohfeld, Fundamental Legal Conceptions",
+      "type": "book",
+      "usedFor": "structural grounding for duty as owed conduct under a binding relation"
+    },
+    {
+      "id": "oxford",
+      "label": "Oxford Languages",
+      "type": "dictionary",
+      "usedFor": "definition boundary for required conduct and obligation"
+    }
+  ],
+  "relatedConcepts": [
+    {
+      "conceptId": "responsibility",
+      "relationType": "contrast"
+    },
+    {
+      "conceptId": "authority",
+      "relationType": "extension"
+    }
+  ],
+  "comparison": {
+    "responsibility": {
+      "axes": [
+        {
+          "axis": "core_nature",
+          "A": "required conduct owed under a rule, role, or obligation",
+          "B": "answerable connection between an actor and attributable action or outcome"
+        },
+        {
+          "axis": "depends_on",
+          "A": "a binding source that marks what must be done",
+          "B": "attribution that marks who can be called to account"
+        },
+        {
+          "axis": "not_equivalent",
+          "statement": "duty is not responsibility; required conduct does not by itself settle answerability"
+        }
+      ]
+    }
+  },
+  "reviewMetadata": {
+    "what_it_is": [
+      "required conduct",
+      "owed action or restraint",
+      "binding role or rule requirement"
+    ],
+    "what_it_is_not": [
+      "generic answerability",
+      "mere preference",
+      "mere capacity"
+    ],
+    "must_not_collapse_into": [
+      "responsibility"
+    ],
+    "related_concepts": [
+      "responsibility",
+      "authority",
+      "law"
+    ],
+    "contrast_prompts": [
+      "duty vs responsibility",
+      "duty without responsibility",
+      "what makes conduct a duty"
+    ]
+  },
+  "aliases": [
+    "duty",
+    "what is duty",
+    "define duty"
+  ],
+  "normalizedAliases": [
+    "duty"
+  ]
+}

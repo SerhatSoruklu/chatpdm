@@ -7,9 +7,11 @@ function main(): void {
   const viewModel = buildTermsPageViewModel(POLICY_SURFACE_DATA.terms);
 
   assert.equal(viewModel.inspectRoute, '/inspect/terms');
+  assert.equal(viewModel.eyebrow, 'API Reference');
+  assert.equal(viewModel.title, 'Current runtime contract for public endpoints and feedback boundaries.');
   assert.equal(
     viewModel.summaryLine,
-    'Current modeled scope shows 2 public endpoints, 22 field rules, 1 platform rule, 1 runtime boundary, and 8 refusal boundaries.',
+    'Current API surface shows 2 public endpoints, 22 field rules, 1 platform rule, 1 runtime boundary, and 8 refusal boundaries.',
   );
   assert.deepEqual(
     viewModel.badges,
@@ -39,7 +41,7 @@ function main(): void {
         method: 'POST',
         path: '/api/v1/feedback',
         input: 'request body',
-        evidence: 'backend/src/routes/api/v1/feedback.route.js:16-19',
+        evidence: 'backend/src/routes/api/v1/feedback.route.js:20-23',
       },
     ],
     'Endpoint contract rows must remain separate from field and boundary rows.',

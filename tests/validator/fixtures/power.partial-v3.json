@@ -1,0 +1,150 @@
+{
+  "concept": "power",
+  "conceptId": "power",
+  "title": "Power",
+  "version": 1,
+  "state": "published",
+  "previousVersion": null,
+  "createdAt": "2026-03-30T00:00:00Z",
+  "updatedAt": "2026-03-30T00:00:00Z",
+  "domain": "relational-structures",
+  "canonical": {
+    "invariant": "Power is effective capacity to produce outcomes in relation to a governance structure.",
+    "excludes": [
+      "recognized standing to direct",
+      "accepted or justified validity of rule or standing",
+      "formal authority by itself"
+    ],
+    "adjacent": {
+      "authority": "Authority concerns recognized standing to direct, not effective capacity by itself.",
+      "legitimacy": "Legitimacy concerns valid standing within an order, not operative capacity to produce outcomes."
+    }
+  },
+  "scope": {
+    "domain": "governance",
+    "isUniversal": false,
+    "mustPreserveIn": [
+      "canonical_outputs",
+      "comparison_outputs",
+      "relation_outputs",
+      "documentation",
+      "ui_api_surfaces"
+    ],
+    "nonGovernanceHandling": [
+      "scoped_clarification",
+      "out_of_scope_refusal"
+    ]
+  },
+  "shortDefinition": "Power is effective capacity to produce outcomes in relation to a governance structure.",
+  "coreMeaning": "Within the governance domain, power functions through the ability to produce effects, secure compliance, or alter conditions in relation to a governance structure. It does not depend on recognized right or accepted validity.",
+  "fullDefinition": "Power is not identical to authority or legitimacy. In ChatPDM v1 it is defined within the governance domain as effective capacity to produce outcomes in relation to a governance structure.\n\nIts internal composition may rest in resources, coercive capacity, institutional position, coordination, or control over dependencies. The concept therefore concerns what can be made to happen, not who may rightfully direct or whether that capacity counts as valid.\n\nWithin governance structures, power explains operative effect. Authority may channel it and legitimacy may justify it, but neither is required for power to exist or to work.",
+  "registers": {
+    "standard": {
+      "shortDefinition": "Power is effective capacity to produce outcomes in relation to a governance structure.",
+      "coreMeaning": "Within the governance domain, power functions through the ability to produce effects, secure compliance, or alter conditions in relation to a governance structure. It does not depend on recognized right or accepted validity.",
+      "fullDefinition": "Power is not identical to authority or legitimacy. In ChatPDM v1 it is defined within the governance domain as effective capacity to produce outcomes in relation to a governance structure.\n\nIts internal composition may rest in resources, coercive capacity, institutional position, coordination, or control over dependencies. The concept therefore concerns what can be made to happen, not who may rightfully direct or whether that capacity counts as valid.\n\nWithin governance structures, power explains operative effect. Authority may channel it and legitimacy may justify it, but neither is required for power to exist or to work."
+    },
+    "simplified": {
+      "shortDefinition": "Power means being able to make outcomes happen in a governance structure.",
+      "coreMeaning": "In governance, power is the ability to produce effects, gain compliance, or change conditions. It does not require a recognized right to rule or a valid claim to rule.",
+      "fullDefinition": "Power is not the same as authority or legitimacy. It is about what can actually be done in a governance structure.\n\nPower can come from force, resources, position, coordination, or control over dependence. Those sources let actors shape outcomes even when no recognized right is present.\n\nSo power tracks effective impact. Authority asks who may direct. Legitimacy asks whether rule or standing is valid."
+    },
+    "formal": {
+      "shortDefinition": "Power is the effective capacity by which outcomes are produced or conditions are altered within a governance structure.",
+      "coreMeaning": "Within the governance domain, power concerns the capacity to secure compliance, alter distributions, or determine effects in relation to an order of rule. It does not require recognized authority, nor does it depend on legitimacy as a condition of existence.",
+      "fullDefinition": "Power is defined, within the governance domain, as effective capacity to produce outcomes in relation to a governance structure. The capacity may arise from coercive means, resource control, institutional position, coordinated action, or dependency management, and it therefore concerns operative effect rather than recognized right. Authority may organize or channel power, and legitimacy may justify its exercise, but neither relation is constitutive of power itself."
+    }
+  },
+  "structureV3": {
+    "schemaVersion": 1,
+    "conceptFamily": "power",
+    "power": {
+      "holder": {
+        "type": "organization_role",
+        "id": "governing_actor",
+        "label": "Actor able to secure effects within a governance structure"
+      },
+      "capability": {
+        "type": "institutional",
+        "description": "capacity to produce outcomes, secure compliance, or alter conditions within governance"
+      }
+    }
+  },
+  "contexts": [
+    {
+      "label": "governance",
+      "explanation": "Power concerns effective capacity to shape collective outcomes, compliance, or distribution in relation to governing order."
+    },
+    {
+      "label": "institutional",
+      "explanation": "Power concerns control over decisions, dependencies, or resources inside organized structures."
+    },
+    {
+      "label": "coercive",
+      "explanation": "Power concerns the ability to compel or shape outcomes even when recognized standing is absent or contested."
+    }
+  ],
+  "sourcePriority": [
+    "lukes",
+    "oxford"
+  ],
+  "sources": [
+    {
+      "id": "lukes",
+      "label": "Steven Lukes, Power: A Radical View",
+      "type": "book",
+      "usedFor": "structural grounding for power as effective capacity rather than formal right"
+    },
+    {
+      "id": "oxford",
+      "label": "Oxford Languages",
+      "type": "dictionary",
+      "usedFor": "definition boundary for capacity and ability to act or affect"
+    }
+  ],
+  "relatedConcepts": [
+    {
+      "conceptId": "authority",
+      "relationType": "contrast"
+    },
+    {
+      "conceptId": "legitimacy",
+      "relationType": "contrast"
+    }
+  ],
+  "comparison": {},
+  "reviewMetadata": {
+    "what_it_is": [
+      "effective capacity",
+      "ability to secure effects",
+      "operative leverage"
+    ],
+    "what_it_is_not": [
+      "recognized standing",
+      "accepted validity",
+      "formal right by itself"
+    ],
+    "must_not_collapse_into": [
+      "authority",
+      "legitimacy"
+    ],
+    "related_concepts": [
+      "authority",
+      "legitimacy",
+      "responsibility"
+    ],
+    "contrast_prompts": [
+      "power vs authority",
+      "power vs legitimacy",
+      "can power exist without legitimacy"
+    ]
+  },
+  "aliases": [
+    "power",
+    "what is power",
+    "define power"
+  ],
+  "normalizedAliases": [
+    "power"
+  ]
+}

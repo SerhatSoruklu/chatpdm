@@ -76,6 +76,7 @@ function buildCanonicalConceptHashInput(concept) {
   delete canonicalConcept.createdAt;
   delete canonicalConcept.updatedAt;
   delete canonicalConcept.registers;
+  delete canonicalConcept.structureV3;
   return canonicalConcept;
 }
 

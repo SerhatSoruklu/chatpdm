@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "conceptId": "duty",
+  "relations": [
+    {
+      "schemaVersion": 1,
+      "subject": {
+        "conceptId": "duty",
+        "path": "structureV3.duty.content",
+        "label": "Duty under performance review"
+      },
+      "type": "TRIGGERS_RESPONSIBILITY",
+      "target": {
+        "conceptId": "responsibility",
+        "path": "structureV3.responsibility.trigger",
+        "label": "Responsibility activated by duty breach or non-performance"
+      },
+      "basis": {
+        "kind": "governance_rule",
+        "description": "Duty breach, non-performance, or attributable outcome may activate responsibility."
+      },
+      "conditions": {
+        "when": [
+          "duty performance fails, breaches, or produces attributable outcome"
+        ],
+        "unless": [
+          "the duty is discharged or the trigger event does not occur"
+        ]
+      },
+      "effect": {
+        "kind": "triggers",
+        "description": "Responsibility becomes active when the duty trigger condition is met."
+      },
+      "status": {
+        "active": true,
+        "blocking": false,
+        "note": "Authored relation packet for duty triggering responsibility."
+      }
+    }
+  ]
+}

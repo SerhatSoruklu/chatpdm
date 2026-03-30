@@ -3,23 +3,91 @@
     <div class="pdm-shell__frame pdm-inspect-page__frame">
       <header class="pdm-inspect-page__hero">
         <p class="pdm-inspect-page__eyebrow pdm-mono">Inspect</p>
-        <h1 class="pdm-inspect-page__title" id="pdm-inspect-title">Inspectable behavior surfaces.</h1>
-        <p class="pdm-inspect-page__intro">
-          This route is the raw inspect entry for current traceable evidence surfaces. It remains separate from the human-readable legal pages.
-        </p>
-        <p class="pdm-inspect-page__traceability pdm-mono">TRACEABILITY SNAPSHOT — NOT RUNTIME ASSURANCE</p>
-        <p class="pdm-inspect-page__quote">“Policy drift is a system bug. Trace drift is a governance bug.”</p>
+        <h1 class="pdm-inspect-page__title" id="pdm-inspect-title">{{ viewModel().title }}</h1>
+        <p class="pdm-inspect-page__intro">{{ viewModel().intro }}</p>
+        <p class="pdm-inspect-page__traceability pdm-mono">{{ viewModel().traceabilityLabel }}</p>
+        <p class="pdm-inspect-page__quote">{{ viewModel().quote }}</p>
       </header>
 
-      <section class="pdm-inspect-page__grid" aria-label="Inspect surfaces">
-        @for (surface of surfaces; track surface.route) {
-          <article class="pdm-inspect-page__card">
-            <p class="pdm-inspect-page__card-label pdm-mono">{{ surface.title }}</p>
-            <p class="pdm-inspect-page__card-subtitle">{{ surface.subtitle }}</p>
-            <p class="pdm-inspect-page__card-detail">{{ surface.detail }}</p>
-            <a class="pdm-inspect-page__card-link" [routerLink]="surface.route">Open inspect surface</a>
+      <section class="pdm-inspect-page__snapshot-grid" aria-label="Integrity snapshot">
+        @for (snapshot of viewModel().snapshotCards; track snapshot.label) {
+          <article class="pdm-inspect-page__snapshot-card">
+            <p class="pdm-inspect-page__snapshot-label pdm-mono">{{ snapshot.label }}</p>
+            <p class="pdm-inspect-page__snapshot-value">{{ snapshot.value }}</p>
+            <p class="pdm-inspect-page__snapshot-detail">{{ snapshot.detail }}</p>
           </article>
         }
+      </section>
+
+      <section class="pdm-inspect-page__section" aria-labelledby="pdm-inspect-guarantees-title">
+        <div class="pdm-inspect-page__section-head">
+          <p class="pdm-inspect-page__section-eyebrow pdm-mono">Implementation-backed guarantees</p>
+          <h2 class="pdm-inspect-page__section-title" id="pdm-inspect-guarantees-title">
+            Current public guarantees with live claim anchors.
+          </h2>
+        </div>
+
+        <div class="pdm-inspect-page__guarantee-grid">
+          @for (guarantee of viewModel().guarantees; track guarantee.title) {
+            <article class="pdm-inspect-page__guarantee-card">
+              <p class="pdm-inspect-page__card-label pdm-mono">{{ guarantee.title }}</p>
+              <p class="pdm-inspect-page__card-subtitle">{{ guarantee.summary }}</p>
+              <p class="pdm-inspect-page__card-detail">{{ guarantee.detail }}</p>
+
+              <div class="pdm-inspect-page__evidence-list" aria-label="Guarantee evidence links">
+                @for (link of guarantee.evidenceLinks; track link.claimId) {
+                  <a
+                    class="pdm-inspect-page__evidence-link"
+                    [routerLink]="link.route"
+                    [queryParams]="{ claim: link.claimId }"
+                  >
+                    <span class="pdm-inspect-page__evidence-link-label">{{ link.label }}</span>
+                    <span class="pdm-inspect-page__evidence-link-claim pdm-mono">{{ link.claimId }}</span>
+                  </a>
+                }
+              </div>
+            </article>
+          }
+        </div>
+      </section>
+
+      <section class="pdm-inspect-page__section" aria-labelledby="pdm-inspect-surfaces-title">
+        <div class="pdm-inspect-page__section-head">
+          <p class="pdm-inspect-page__section-eyebrow pdm-mono">Cross-policy surfaces</p>
+          <h2 class="pdm-inspect-page__section-title" id="pdm-inspect-surfaces-title">
+            Inspect surfaces derived from published claim objects.
+          </h2>
+        </div>
+
+        <section class="pdm-inspect-page__grid" aria-label="Inspect surfaces">
+          @for (surface of viewModel().surfaces; track surface.route) {
+            <article class="pdm-inspect-page__card">
+              <p class="pdm-inspect-page__card-label pdm-mono">{{ surface.title }}</p>
+              <p class="pdm-inspect-page__card-subtitle">{{ surface.subtitle }}</p>
+              <p class="pdm-inspect-page__card-detail">{{ surface.detail }}</p>
+
+              <dl class="pdm-inspect-page__card-metrics">
+                <div class="pdm-inspect-page__card-metric">
+                  <dt class="pdm-inspect-page__card-metric-label pdm-mono">Mapped</dt>
+                  <dd class="pdm-inspect-page__card-metric-value">
+                    {{ surface.mappedClaims }} / {{ surface.totalClaims }}
+                  </dd>
+                </div>
+                <div class="pdm-inspect-page__card-metric">
+                  <dt class="pdm-inspect-page__card-metric-label pdm-mono">Boundaries</dt>
+                  <dd class="pdm-inspect-page__card-metric-value">{{ surface.refusalBoundaryCount }}</dd>
+                </div>
+                <div class="pdm-inspect-page__card-metric">
+                  <dt class="pdm-inspect-page__card-metric-label pdm-mono">Status</dt>
+                  <dd class="pdm-inspect-page__card-metric-value">{{ surface.integrityStatus }}</dd>
+                </div>
+              </dl>
+
+              <p class="pdm-inspect-page__card-integrity">{{ surface.integrityDetail }}</p>
+              <a class="pdm-inspect-page__card-link" [routerLink]="surface.route">Open inspect surface</a>
+            </article>
+          }
+        </section>
       </section>
     </div>
   </main>

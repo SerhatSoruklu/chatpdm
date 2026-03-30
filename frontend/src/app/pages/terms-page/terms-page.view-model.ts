@@ -45,6 +45,7 @@ export interface TermsPageBoundaryRow {
 }
 
 export interface TermsPageViewModel {
+  eyebrow: string;
   title: string;
   intro: string;
   summaryLine: string;
@@ -71,10 +72,11 @@ export function buildTermsPageViewModel(surface: PolicySurfaceDefinition): Terms
     surface.termsTruth;
 
   return {
-    title: 'Terms of Service',
+    eyebrow: 'API Reference',
+    title: 'Current runtime contract for public endpoints and feedback boundaries.',
     intro:
-      'Current terms behavior is rendered here as a modeled runtime surface: public endpoints, accepted feedback fields and values, platform rules, and mapped runtime and refusal boundaries.',
-    summaryLine: `Current modeled scope shows ${endpointContracts.length} public endpoints, ${fieldContracts.length} field rules, ${platformRules.length} platform rule, ${runtimeBoundaries.length} runtime boundary, and ${refusalBoundaries.length} refusal boundaries.`,
+      'Current API behavior is rendered here as a modeled runtime contract: public endpoints, accepted feedback fields and values, platform rules, and mapped runtime and refusal boundaries.',
+    summaryLine: `Current API surface shows ${endpointContracts.length} public endpoints, ${fieldContracts.length} field rules, ${platformRules.length} platform rule, ${runtimeBoundaries.length} runtime boundary, and ${refusalBoundaries.length} refusal boundaries.`,
     badges: [
       {
         label: 'Endpoints',

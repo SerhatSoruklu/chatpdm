@@ -1,7 +1,7 @@
 {
   "query": "civic duty",
   "normalizedQuery": "civic duty",
-  "contractVersion": "v1.2",
+  "contractVersion": "v1.3",
   "normalizerVersion": "2026-03-27.v1",
   "matcherVersion": "2026-03-27.v3",
   "conceptSetVersion": "20260327.4",

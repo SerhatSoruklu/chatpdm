@@ -38,8 +38,9 @@ export type PublicPageKey =
   | 'privacy'
   | 'data-retention'
   | 'acceptable-use'
+  | 'terms'
+  | 'cookies'
   | 'docs'
   | 'developers'
   | 'handbooks'
-  | 'api'
   | 'not-found';

@@ -1,0 +1,838 @@
+{
+  "key": "terms",
+  "version": 1,
+  "state": "published",
+  "claims": [
+    {
+      "id": "terms-1",
+      "version": 1,
+      "state": "published",
+      "policyFile": "terms.md",
+      "section": "Data and Behavior — Endpoint access",
+      "policySentence": "The platform allows concept resolution through `GET /api/v1/concepts/resolve?q=...`.",
+      "canonicalClaim": "The platform allows concept resolution through `GET /api/v1/concepts/resolve?q=...`.",
+      "claimClass": "allows",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/routes/api/v1/concepts.route.js:16-31",
+          "path": "backend/src/routes/api/v1/concepts.route.js",
+          "lines": "16-31"
+        }
+      ]
+    },
+    {
+      "id": "terms-2",
+      "version": 1,
+      "state": "published",
+      "policyFile": "terms.md",
+      "section": "Data and Behavior — Endpoint access",
+      "policySentence": "The platform allows feedback submission through `POST /api/v1/feedback`.",
+      "canonicalClaim": "The platform allows feedback submission through `POST /api/v1/feedback`.",
+      "claimClass": "allows",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/routes/api/v1/feedback.route.js:20-23",
+          "path": "backend/src/routes/api/v1/feedback.route.js",
+          "lines": "20-23"
+        }
+      ]
+    },
+    {
+      "id": "terms-3",
+      "version": 1,
+      "state": "published",
+      "policyFile": "terms.md",
+      "section": "Data and Behavior — Feedback fields I",
+      "policySentence": "The platform allows feedback field `sessionId`.",
+      "canonicalClaim": "The platform allows feedback field `sessionId`.",
+      "claimClass": "allows",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/service.js:46-78",
+          "path": "backend/src/modules/feedback/service.js",
+          "lines": "46-78"
+        }
+      ]
+    },
+    {
+      "id": "terms-4",
+      "version": 1,
+      "state": "published",
+      "policyFile": "terms.md",
+      "section": "Data and Behavior — Feedback fields I",
+      "policySentence": "The platform allows feedback field `rawQuery`.",
+      "canonicalClaim": "The platform allows feedback field `rawQuery`.",
+      "claimClass": "allows",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/service.js:46-78",
+          "path": "backend/src/modules/feedback/service.js",
+          "lines": "46-78"
+        }
+      ]
+    },
+    {
+      "id": "terms-5",
+      "version": 1,
+      "state": "published",
+      "policyFile": "terms.md",
+      "section": "Data and Behavior — Feedback fields I",
+      "policySentence": "The platform allows feedback field `normalizedQuery`.",
+      "canonicalClaim": "The platform allows feedback field `normalizedQuery`.",
+      "claimClass": "allows",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/service.js:46-78",
+          "path": "backend/src/modules/feedback/service.js",
+          "lines": "46-78"
+        }
+      ]
+    },
+    {
+      "id": "terms-6",
+      "version": 1,
+      "state": "published",
+      "policyFile": "terms.md",
+      "section": "Data and Behavior — Feedback fields I",
+      "policySentence": "The platform allows feedback field `responseType`.",
+      "canonicalClaim": "The platform allows feedback field `responseType`.",
+      "claimClass": "allows",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/service.js:46-78",
+          "path": "backend/src/modules/feedback/service.js",
+          "lines": "46-78"
+        }
+      ]
+    },
+    {
+      "id": "terms-7",
+      "version": 1,
+      "state": "published",
+      "policyFile": "terms.md",
+      "section": "Data and Behavior — Feedback fields I",
+      "policySentence": "The platform allows feedback field `feedbackType`.",
+      "canonicalClaim": "The platform allows feedback field `feedbackType`.",
+      "claimClass": "allows",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/service.js:46-78",
+          "path": "backend/src/modules/feedback/service.js",
+          "lines": "46-78"
+        }
+      ]
+    },
+    {
+      "id": "terms-8",
+      "version": 1,
+      "state": "published",
+      "policyFile": "terms.md",
+      "section": "Data and Behavior — Feedback fields II",
+      "policySentence": "The platform allows feedback field `resolvedConceptId`.",
+      "canonicalClaim": "The platform allows feedback field `resolvedConceptId`.",
+      "claimClass": "allows",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/service.js:46-78",
+          "path": "backend/src/modules/feedback/service.js",
+          "lines": "46-78"
+        }
+      ]
+    },
+    {
+      "id": "terms-9",
+      "version": 1,
+      "state": "published",
+      "policyFile": "terms.md",
+      "section": "Data and Behavior — Feedback fields II",
+      "policySentence": "The platform allows feedback field `candidateConceptIds`.",
+      "canonicalClaim": "The platform allows feedback field `candidateConceptIds`.",
+      "claimClass": "allows",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/service.js:46-78",
+          "path": "backend/src/modules/feedback/service.js",
+          "lines": "46-78"
+        }
+      ]
+    },
+    {
+      "id": "terms-10",
+      "version": 1,
+      "state": "published",
+      "policyFile": "terms.md",
+      "section": "Data and Behavior — Feedback fields II",
+      "policySentence": "The platform allows feedback field `suggestionConceptIds`.",
+      "canonicalClaim": "The platform allows feedback field `suggestionConceptIds`.",
+      "claimClass": "allows",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/service.js:46-78",
+          "path": "backend/src/modules/feedback/service.js",
+          "lines": "46-78"
+        }
+      ]
+    },
+    {
+      "id": "terms-11",
+      "version": 1,
+      "state": "published",
+      "policyFile": "terms.md",
+      "section": "Data and Behavior — Feedback fields II",
+      "policySentence": "The platform allows feedback field `contractVersion`.",
+      "canonicalClaim": "The platform allows feedback field `contractVersion`.",
+      "claimClass": "allows",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/service.js:46-78",
+          "path": "backend/src/modules/feedback/service.js",
+          "lines": "46-78"
+        }
+      ]
+    },
+    {
+      "id": "terms-12",
+      "version": 1,
+      "state": "published",
+      "policyFile": "terms.md",
+      "section": "Data and Behavior — Feedback fields II",
+      "policySentence": "The platform allows feedback field `normalizerVersion`.",
+      "canonicalClaim": "The platform allows feedback field `normalizerVersion`.",
+      "claimClass": "allows",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/service.js:46-78",
+          "path": "backend/src/modules/feedback/service.js",
+          "lines": "46-78"
+        }
+      ]
+    },
+    {
+      "id": "terms-13",
+      "version": 1,
+      "state": "published",
+      "policyFile": "terms.md",
+      "section": "Data and Behavior — Feedback fields III",
+      "policySentence": "The platform allows feedback field `matcherVersion`.",
+      "canonicalClaim": "The platform allows feedback field `matcherVersion`.",
+      "claimClass": "allows",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/service.js:46-78",
+          "path": "backend/src/modules/feedback/service.js",
+          "lines": "46-78"
+        }
+      ]
+    },
+    {
+      "id": "terms-14",
+      "version": 1,
+      "state": "published",
+      "policyFile": "terms.md",
+      "section": "Data and Behavior — Feedback fields III",
+      "policySentence": "The platform allows feedback field `conceptSetVersion`.",
+      "canonicalClaim": "The platform allows feedback field `conceptSetVersion`.",
+      "claimClass": "allows",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/service.js:46-78",
+          "path": "backend/src/modules/feedback/service.js",
+          "lines": "46-78"
+        }
+      ]
+    },
+    {
+      "id": "terms-15",
+      "version": 1,
+      "state": "published",
+      "policyFile": "terms.md",
+      "section": "Data and Behavior — Feedback response types",
+      "policySentence": "The platform allows feedback response type `concept_match`.",
+      "canonicalClaim": "The platform allows feedback response type `concept_match`.",
+      "claimClass": "allows",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/constants.js:3",
+          "path": "backend/src/modules/feedback/constants.js",
+          "lines": "3"
+        },
+        {
+          "source": "backend/src/modules/feedback/service.js:67-69",
+          "path": "backend/src/modules/feedback/service.js",
+          "lines": "67-69"
+        }
+      ]
+    },
+    {
+      "id": "terms-16",
+      "version": 1,
+      "state": "published",
+      "policyFile": "terms.md",
+      "section": "Data and Behavior — Feedback response types",
+      "policySentence": "The platform allows feedback response type `ambiguous_match`.",
+      "canonicalClaim": "The platform allows feedback response type `ambiguous_match`.",
+      "claimClass": "allows",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/constants.js:3",
+          "path": "backend/src/modules/feedback/constants.js",
+          "lines": "3"
+        },
+        {
+          "source": "backend/src/modules/feedback/service.js:67-69",
+          "path": "backend/src/modules/feedback/service.js",
+          "lines": "67-69"
+        }
+      ]
+    },
+    {
+      "id": "terms-17",
+      "version": 1,
+      "state": "published",
+      "policyFile": "terms.md",
+      "section": "Data and Behavior — Feedback response types",
+      "policySentence": "The platform allows feedback response type `no_exact_match`.",
+      "canonicalClaim": "The platform allows feedback response type `no_exact_match`.",
+      "claimClass": "allows",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/constants.js:3",
+          "path": "backend/src/modules/feedback/constants.js",
+          "lines": "3"
+        },
+        {
+          "source": "backend/src/modules/feedback/service.js:67-69",
+          "path": "backend/src/modules/feedback/service.js",
+          "lines": "67-69"
+        }
+      ]
+    },
+    {
+      "id": "terms-18",
+      "version": 1,
+      "state": "published",
+      "policyFile": "terms.md",
+      "section": "Data and Behavior — Concept match options",
+      "policySentence": "The platform allows feedback option `clear` for `concept_match`.",
+      "canonicalClaim": "The platform allows feedback option `clear` for `concept_match`.",
+      "claimClass": "allows",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/constants.js:5-8",
+          "path": "backend/src/modules/feedback/constants.js",
+          "lines": "5-8"
+        }
+      ]
+    },
+    {
+      "id": "terms-19",
+      "version": 1,
+      "state": "published",
+      "policyFile": "terms.md",
+      "section": "Data and Behavior — Concept match options",
+      "policySentence": "The platform allows feedback option `unclear` for `concept_match`.",
+      "canonicalClaim": "The platform allows feedback option `unclear` for `concept_match`.",
+      "claimClass": "allows",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/constants.js:5-8",
+          "path": "backend/src/modules/feedback/constants.js",
+          "lines": "5-8"
+        }
+      ]
+    },
+    {
+      "id": "terms-20",
+      "version": 1,
+      "state": "published",
+      "policyFile": "terms.md",
+      "section": "Data and Behavior — Concept match options",
+      "policySentence": "The platform allows feedback option `wrong_concept` for `concept_match`.",
+      "canonicalClaim": "The platform allows feedback option `wrong_concept` for `concept_match`.",
+      "claimClass": "allows",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/constants.js:5-8",
+          "path": "backend/src/modules/feedback/constants.js",
+          "lines": "5-8"
+        }
+      ]
+    },
+    {
+      "id": "terms-21",
+      "version": 1,
+      "state": "published",
+      "policyFile": "terms.md",
+      "section": "Data and Behavior — Ambiguous match options",
+      "policySentence": "The platform allows feedback option `found_right_one` for `ambiguous_match`.",
+      "canonicalClaim": "The platform allows feedback option `found_right_one` for `ambiguous_match`.",
+      "claimClass": "allows",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/constants.js:5-8",
+          "path": "backend/src/modules/feedback/constants.js",
+          "lines": "5-8"
+        }
+      ]
+    },
+    {
+      "id": "terms-22",
+      "version": 1,
+      "state": "published",
+      "policyFile": "terms.md",
+      "section": "Data and Behavior — Ambiguous match options",
+      "policySentence": "The platform allows feedback option `still_not_right` for `ambiguous_match`.",
+      "canonicalClaim": "The platform allows feedback option `still_not_right` for `ambiguous_match`.",
+      "claimClass": "allows",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/constants.js:5-8",
+          "path": "backend/src/modules/feedback/constants.js",
+          "lines": "5-8"
+        }
+      ]
+    },
+    {
+      "id": "terms-23",
+      "version": 1,
+      "state": "published",
+      "policyFile": "terms.md",
+      "section": "Data and Behavior — No exact match options",
+      "policySentence": "The platform allows feedback option `expected` for `no_exact_match`.",
+      "canonicalClaim": "The platform allows feedback option `expected` for `no_exact_match`.",
+      "claimClass": "allows",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/constants.js:5-8",
+          "path": "backend/src/modules/feedback/constants.js",
+          "lines": "5-8"
+        }
+      ]
+    },
+    {
+      "id": "terms-24",
+      "version": 1,
+      "state": "published",
+      "policyFile": "terms.md",
+      "section": "Data and Behavior — No exact match options",
+      "policySentence": "The platform allows feedback option `should_exist` for `no_exact_match`.",
+      "canonicalClaim": "The platform allows feedback option `should_exist` for `no_exact_match`.",
+      "claimClass": "allows",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/constants.js:5-8",
+          "path": "backend/src/modules/feedback/constants.js",
+          "lines": "5-8"
+        }
+      ]
+    },
+    {
+      "id": "terms-25",
+      "version": 1,
+      "state": "published",
+      "policyFile": "terms.md",
+      "section": "Boundaries — Origin and payload constraints",
+      "policySentence": "The platform does not allow CORS requests from origins outside the normalized allowed origin set.",
+      "canonicalClaim": "The platform does not allow CORS requests from origins outside the normalized allowed origin set.",
+      "claimClass": "does_not_allow",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/security/cors.js:7-20",
+          "path": "backend/src/security/cors.js",
+          "lines": "7-20"
+        }
+      ]
+    },
+    {
+      "id": "terms-26",
+      "version": 1,
+      "state": "published",
+      "policyFile": "terms.md",
+      "section": "Boundaries — Origin and payload constraints",
+      "policySentence": "The platform does not allow feedback payload keys outside the approved field set.",
+      "canonicalClaim": "The platform does not allow feedback payload keys outside the approved field set.",
+      "claimClass": "does_not_allow",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/service.js:33-52",
+          "path": "backend/src/modules/feedback/service.js",
+          "lines": "33-52"
+        }
+      ]
+    },
+    {
+      "id": "terms-27",
+      "version": 1,
+      "state": "published",
+      "policyFile": "terms.md",
+      "section": "Boundaries — Origin and payload constraints",
+      "policySentence": "The platform does not allow unsupported `responseType` values.",
+      "canonicalClaim": "The platform does not allow unsupported `responseType` values.",
+      "claimClass": "does_not_allow",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/service.js:67-69",
+          "path": "backend/src/modules/feedback/service.js",
+          "lines": "67-69"
+        }
+      ]
+    },
+    {
+      "id": "terms-28",
+      "version": 1,
+      "state": "published",
+      "policyFile": "terms.md",
+      "section": "Boundaries — Origin and payload constraints",
+      "policySentence": "The platform does not allow invalid `feedbackType` and `responseType` combinations.",
+      "canonicalClaim": "The platform does not allow invalid `feedbackType` and `responseType` combinations.",
+      "claimClass": "does_not_allow",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/service.js:71-77",
+          "path": "backend/src/modules/feedback/service.js",
+          "lines": "71-77"
+        }
+      ]
+    },
+    {
+      "id": "terms-29",
+      "version": 1,
+      "state": "published",
+      "policyFile": "terms.md",
+      "section": "Boundaries — Concept match constraints",
+      "policySentence": "The platform does not allow candidate concept IDs on `concept_match` feedback.",
+      "canonicalClaim": "The platform does not allow candidate concept IDs on `concept_match` feedback.",
+      "claimClass": "does_not_allow",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/service.js:92-97",
+          "path": "backend/src/modules/feedback/service.js",
+          "lines": "92-97"
+        }
+      ]
+    },
+    {
+      "id": "terms-30",
+      "version": 1,
+      "state": "published",
+      "policyFile": "terms.md",
+      "section": "Boundaries — Concept match constraints",
+      "policySentence": "The platform does not allow suggestion concept IDs on `concept_match` feedback.",
+      "canonicalClaim": "The platform does not allow suggestion concept IDs on `concept_match` feedback.",
+      "claimClass": "does_not_allow",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/service.js:92-97",
+          "path": "backend/src/modules/feedback/service.js",
+          "lines": "92-97"
+        }
+      ]
+    },
+    {
+      "id": "terms-31",
+      "version": 1,
+      "state": "published",
+      "policyFile": "terms.md",
+      "section": "Boundaries — Ambiguous match constraints",
+      "policySentence": "The platform does not allow `ambiguous_match` feedback with fewer than two candidate concept IDs.",
+      "canonicalClaim": "The platform does not allow `ambiguous_match` feedback with fewer than two candidate concept IDs.",
+      "claimClass": "does_not_allow",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/service.js:100-105",
+          "path": "backend/src/modules/feedback/service.js",
+          "lines": "100-105"
+        }
+      ]
+    },
+    {
+      "id": "terms-32",
+      "version": 1,
+      "state": "published",
+      "policyFile": "terms.md",
+      "section": "Boundaries — Ambiguous match constraints",
+      "policySentence": "The platform does not allow suggestion concept IDs on `ambiguous_match` feedback.",
+      "canonicalClaim": "The platform does not allow suggestion concept IDs on `ambiguous_match` feedback.",
+      "claimClass": "does_not_allow",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/service.js:107-109",
+          "path": "backend/src/modules/feedback/service.js",
+          "lines": "107-109"
+        }
+      ]
+    },
+    {
+      "id": "terms-33",
+      "version": 1,
+      "state": "published",
+      "policyFile": "terms.md",
+      "section": "Boundaries — No exact match constraints",
+      "policySentence": "The platform does not allow candidate concept IDs on `no_exact_match` feedback.",
+      "canonicalClaim": "The platform does not allow candidate concept IDs on `no_exact_match` feedback.",
+      "claimClass": "does_not_allow",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/service.js:112-115",
+          "path": "backend/src/modules/feedback/service.js",
+          "lines": "112-115"
+        }
+      ]
+    },
+    {
+      "id": "terms-34",
+      "version": 1,
+      "state": "published",
+      "policyFile": "terms.md",
+      "section": "Boundaries — Comparison constraints",
+      "policySentence": "The platform does not allow comparison output for non-allowlisted concept pairs.",
+      "canonicalClaim": "The platform does not allow comparison output for non-allowlisted concept pairs.",
+      "claimClass": "does_not_allow",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/concepts/comparison-resolver.js:20-22,46-55",
+          "path": "backend/src/modules/concepts/comparison-resolver.js",
+          "lines": "20-22,46-55"
+        }
+      ]
+    }
+  ]
+}

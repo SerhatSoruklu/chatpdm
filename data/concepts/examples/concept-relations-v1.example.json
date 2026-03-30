@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "relations": [
+    {
+      "schemaVersion": 1,
+      "subject": {
+        "conceptId": "authority",
+        "path": "structureV3.authority.scope",
+        "label": "Recognized authority within governance scope"
+      },
+      "type": "GROUNDS_DUTY",
+      "target": {
+        "conceptId": "duty",
+        "path": "structureV3.duty.source",
+        "label": "Derived duty grounded in authority"
+      },
+      "basis": {
+        "kind": "concept_law",
+        "description": "Valid authority may ground or issue duties within its defined governance scope."
+      },
+      "conditions": {
+        "when": [
+          "authority acts within the recognized scope of standing"
+        ],
+        "unless": [
+          "the standing is invalidated or exceeds scope"
+        ]
+      },
+      "effect": {
+        "kind": "derives",
+        "description": "A scoped duty may be generated or grounded from authority."
+      },
+      "status": {
+        "active": true,
+        "blocking": false,
+        "note": "Schema-only example for the relation layer foundation."
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "subject": {
+        "conceptId": "duty",
+        "path": "structureV3.duty.content",
+        "label": "Duty under performance review"
+      },
+      "type": "TRIGGERS_RESPONSIBILITY",
+      "target": {
+        "conceptId": "responsibility",
+        "path": "structureV3.responsibility.trigger",
+        "label": "Responsibility activated by duty breach or non-performance"
+      },
+      "basis": {
+        "kind": "governance_rule",
+        "description": "Duty breach, non-performance, or attributable outcome may activate responsibility."
+      },
+      "conditions": {
+        "when": [
+          "duty performance fails, breaches, or produces attributable outcome"
+        ],
+        "unless": [
+          "the duty is discharged or the trigger event does not occur"
+        ]
+      },
+      "effect": {
+        "kind": "triggers",
+        "description": "Responsibility becomes active when the duty trigger condition is met."
+      },
+      "status": {
+        "active": true,
+        "blocking": false,
+        "note": "Schema-only example for future cross-concept law validation."
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "subject": {
+        "conceptId": "legitimacy",
+        "path": "structureV3.legitimacy.status",
+        "label": "Legitimacy assessment of governance standing"
+      },
+      "type": "VALIDATES_AUTHORITY",
+      "target": {
+        "conceptId": "authority",
+        "path": "structureV3.authority.holder",
+        "label": "Authority standing subject to validation"
+      },
+      "basis": {
+        "kind": "boundary_rule",
+        "description": "Legitimacy evaluates whether authority standing counts as justified or accepted."
+      },
+      "conditions": {
+        "when": [
+          "authority standing is assessed within governance order"
+        ],
+        "unless": [
+          "no evaluative basis is available for legitimacy review"
+        ]
+      },
+      "effect": {
+        "kind": "validates",
+        "description": "Legitimacy may validate, weaken, or invalidate authority standing."
+      },
+      "status": {
+        "active": true,
+        "blocking": false,
+        "note": "Schema-only example for authority validation relation."
+      }
+    }
+  ]
+}

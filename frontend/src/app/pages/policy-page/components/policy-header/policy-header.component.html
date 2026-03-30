@@ -5,6 +5,9 @@
     <p class="pdm-policy-header__subtitle">{{ surface().subtitle }}</p>
     <p class="pdm-policy-header__intro">{{ surface().intro }}</p>
     <p class="pdm-policy-header__traceability pdm-mono">TRACEABILITY SNAPSHOT — NOT RUNTIME ASSURANCE</p>
+    @if (inspectFocus()) {
+      <p class="pdm-policy-header__focus pdm-mono">INSPECT FOCUS — {{ inspectFocus() }}</p>
+    }
   </div>
 
   <div class="pdm-policy-header__stats" aria-label="Policy summary">

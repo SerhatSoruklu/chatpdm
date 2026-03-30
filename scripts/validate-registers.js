@@ -8,7 +8,12 @@ const {
   getLatestPublished,
 } = require('./lib/governance/audit-trail');
 const { REASON_CODES } = require('./lib/register-validation/reason-codes');
+const {
+  deriveGovernanceEnforcement,
+  deriveSystemValidationState,
+} = require('./lib/register-validation/derive-governance-enforcement');
 const { evaluateEditDiscipline } = require('./lib/register-validation/edit-discipline');
+const { validateGovernanceLaws } = require('./lib/register-validation/validate-governance-laws');
 const { REGISTER_NAMES, ZONE_NAMES } = require('./lib/register-validation/validate-structure');
 const { validateConcept } = require('./lib/register-validation/validate-concept');
 
@@ -224,10 +229,14 @@ function attachGoldenAlignment(report, concept, goldenConceptPackets, goldenBase
   report.golden = golden;
 }
 
-function collectFailureCategories(conceptReports) {
+function collectFailureCategories(conceptReports, governanceLawReport = null) {
   const counts = new Map();
 
   conceptReports.forEach((conceptReport) => {
+    (conceptReport.v3?.failures || []).forEach((entry) => {
+      counts.set(entry.code, (counts.get(entry.code) || 0) + 1);
+    });
+
     Object.values(conceptReport.registers).forEach((registerReport) => {
       registerReport.errors.forEach((code) => {
         counts.set(code, (counts.get(code) || 0) + 1);
@@ -235,13 +244,21 @@ function collectFailureCategories(conceptReports) {
     });
   });
 
+  (governanceLawReport?.failures || []).forEach((entry) => {
+    counts.set(entry.code, (counts.get(entry.code) || 0) + 1);
+  });
+
   return Object.fromEntries([...counts.entries()].sort());
 }
 
-function collectWarningCategories(conceptReports) {
+function collectWarningCategories(conceptReports, governanceLawReport = null) {
   const counts = new Map();
 
   conceptReports.forEach((conceptReport) => {
+    (conceptReport.v3?.warnings || []).forEach((entry) => {
+      counts.set(entry.code, (counts.get(entry.code) || 0) + 1);
+    });
+
     (conceptReport.warnings || []).forEach((code) => {
       counts.set(code, (counts.get(code) || 0) + 1);
     });
@@ -261,6 +278,10 @@ function collectWarningCategories(conceptReports) {
     (conceptReport.golden?.warnings || []).forEach((code) => {
       counts.set(code, (counts.get(code) || 0) + 1);
     });
+  });
+
+  (governanceLawReport?.warnings || []).forEach((entry) => {
+    counts.set(entry.code, (counts.get(entry.code) || 0) + 1);
   });
 
   return Object.fromEntries([...counts.entries()].sort());
@@ -336,6 +357,332 @@ function buildSemanticSummary(conceptReports) {
       ),
     },
   };
+}
+
+function buildV3Summary(conceptReports) {
+  const failureCounts = new Map();
+  const warningCounts = new Map();
+  const statusCounts = {
+    not_applicable: 0,
+    incomplete: 0,
+    passing: 0,
+  };
+
+  conceptReports.forEach((conceptReport) => {
+    const status = conceptReport.v3Status || conceptReport.v3?.v3Status || 'not_applicable';
+    statusCounts[status] = (statusCounts[status] || 0) + 1;
+
+    (conceptReport.v3?.failures || []).forEach((entry) => {
+      failureCounts.set(entry.code, (failureCounts.get(entry.code) || 0) + 1);
+    });
+
+    (conceptReport.v3?.warnings || []).forEach((entry) => {
+      warningCounts.set(entry.code, (warningCounts.get(entry.code) || 0) + 1);
+    });
+  });
+
+  return {
+    applicableConcepts: conceptReports.filter((report) => report.v3?.applicable).length,
+    failingConcepts: conceptReports.filter((report) => report.v3?.applicable && !report.v3.passed).length,
+    statusCounts,
+    structuralCompleteness: { ...statusCounts },
+    failureCount: [...failureCounts.values()].reduce((sum, count) => sum + count, 0),
+    warningCount: [...warningCounts.values()].reduce((sum, count) => sum + count, 0),
+    failureCategories: Object.fromEntries([...failureCounts.entries()].sort()),
+    warningCategories: Object.fromEntries([...warningCounts.entries()].sort()),
+  };
+}
+
+function buildValidationStateSummary(conceptReports) {
+  const counts = {
+    language_invalid: 0,
+    language_valid: 0,
+    structurally_incomplete: 0,
+    fully_validated: 0,
+  };
+
+  conceptReports.forEach((conceptReport) => {
+    const state = conceptReport.validationState || 'language_valid';
+    counts[state] = (counts[state] || 0) + 1;
+  });
+
+  return counts;
+}
+
+function deriveRelationStatus(relationSlice) {
+  if (!relationSlice.applicable) {
+    return 'not_applicable';
+  }
+
+  if (relationSlice.failures.length > 0) {
+    return 'incomplete';
+  }
+
+  return 'passing';
+}
+
+function deriveLawStatus(lawSlice) {
+  if (!lawSlice.applicable) {
+    return 'not_applicable';
+  }
+
+  if (lawSlice.failures.length > 0) {
+    return 'failing';
+  }
+
+  if (lawSlice.warnings.length > 0) {
+    return 'warning_only';
+  }
+
+  return 'passing';
+}
+
+function touchesConcept(entry, conceptId) {
+  return (
+    entry?.conceptId === conceptId
+    || entry?.subjectConceptId === conceptId
+    || entry?.targetConceptId === conceptId
+  );
+}
+
+function relationTouchesConcept(relationResult, conceptId) {
+  return (
+    relationResult?.relation?.subject?.conceptId === conceptId
+    || relationResult?.relation?.target?.conceptId === conceptId
+  );
+}
+
+function attachGovernanceLawResults(conceptReports, governanceLawReport) {
+  const source = governanceLawReport?.source || 'none';
+  const relationDataPresent = Boolean(governanceLawReport?.relationDataPresent);
+  const dataSource = governanceLawReport?.dataSource || 'none';
+  const strictMode = Boolean(governanceLawReport?.strictMode);
+  const fallbackUsed = Boolean(governanceLawReport?.fallbackUsed);
+  const packetResults = governanceLawReport?.relationReport?.packetResults || [];
+  const relationResults = governanceLawReport?.relationReport?.relations || [];
+  const relationFailures = governanceLawReport?.relationReport?.failures || [];
+  const relationWarnings = governanceLawReport?.relationReport?.warnings || [];
+  const lawChecks = governanceLawReport?.lawChecks || [];
+  const lawFailures = governanceLawReport?.lawFailures || [];
+  const lawWarnings = governanceLawReport?.lawWarnings || [];
+
+  conceptReports.forEach((conceptReport) => {
+    const conceptPacketValidation = packetResults.find((entry) => entry.conceptId === conceptReport.conceptId) || null;
+    const conceptRelationResults = relationResults.filter((entry) => relationTouchesConcept(entry, conceptReport.conceptId));
+    const conceptRelationFailures = relationFailures.filter((entry) => touchesConcept(entry, conceptReport.conceptId));
+    const conceptRelationWarnings = relationWarnings.filter((entry) => touchesConcept(entry, conceptReport.conceptId));
+    const conceptLawResults = lawChecks.filter((entry) => touchesConcept(entry, conceptReport.conceptId));
+    const conceptLawFailures = lawFailures.filter((entry) => touchesConcept(entry, conceptReport.conceptId));
+    const conceptLawWarnings = lawWarnings.filter((entry) => touchesConcept(entry, conceptReport.conceptId));
+
+    conceptReport.relations = {
+      applicable: conceptRelationResults.length > 0 || Boolean(conceptPacketValidation),
+      passed: conceptRelationFailures.length === 0,
+      source,
+      relationDataPresent,
+      dataSource,
+      strictMode,
+      fallbackUsed,
+      counts: {
+        total: conceptRelationResults.length,
+        failures: conceptRelationFailures.length,
+        warnings: conceptRelationWarnings.length,
+      },
+      failures: conceptRelationFailures,
+      warnings: conceptRelationWarnings,
+      packetValidation: conceptPacketValidation,
+      results: conceptRelationResults,
+    };
+    conceptReport.laws = {
+      applicable: conceptLawResults.length > 0,
+      passed: conceptLawFailures.length === 0,
+      source,
+      relationDataPresent,
+      dataSource,
+      strictMode,
+      fallbackUsed,
+      counts: {
+        total: conceptLawResults.length,
+        failures: conceptLawFailures.length,
+        warnings: conceptLawWarnings.length,
+      },
+      failures: conceptLawFailures,
+      warnings: conceptLawWarnings,
+      results: conceptLawResults,
+    };
+    conceptReport.relationStatus = deriveRelationStatus(conceptReport.relations);
+    conceptReport.lawStatus = deriveLawStatus(conceptReport.laws);
+    conceptReport.enforcement = deriveGovernanceEnforcement({
+      relationFailures: conceptReport.relations.failures,
+      relationWarnings: conceptReport.relations.warnings,
+      lawFailures: conceptReport.laws.failures,
+      lawWarnings: conceptReport.laws.warnings,
+    });
+    conceptReport.enforcement.applicable = conceptReport.relations.applicable || conceptReport.laws.applicable;
+    conceptReport.enforcementStatus = conceptReport.enforcement.enforcementStatus;
+    conceptReport.systemValidationState = deriveSystemValidationState({
+      languagePassed: conceptReport.languagePassed,
+      v3Status: conceptReport.v3Status,
+      enforcementStatus: conceptReport.enforcementStatus,
+    });
+
+    if (conceptReport.enforcementStatus === 'blocked') {
+      conceptReport.passed = false;
+    }
+  });
+}
+
+function buildRelationSummary(governanceLawReport) {
+  const relationReport = governanceLawReport?.relationReport;
+
+  if (!relationReport) {
+    return {
+      applicable: false,
+      source: 'none',
+      relationDataPresent: false,
+      dataSource: 'none',
+      relationStatus: 'not_applicable',
+      counts: {
+        total: 0,
+        failures: 0,
+        warnings: 0,
+      },
+      failureCategories: {},
+      warningCategories: {},
+      packetResults: [],
+    };
+  }
+
+  const failureCounts = new Map();
+  const warningCounts = new Map();
+
+  (relationReport.failures || []).forEach((entry) => {
+    failureCounts.set(entry.code, (failureCounts.get(entry.code) || 0) + 1);
+  });
+
+  (relationReport.warnings || []).forEach((entry) => {
+    warningCounts.set(entry.code, (warningCounts.get(entry.code) || 0) + 1);
+  });
+
+  return {
+    applicable: relationReport.applicable,
+    source: relationReport.source,
+    relationDataPresent: relationReport.relationDataPresent,
+    dataSource: relationReport.dataSource,
+    strictMode: Boolean(relationReport.strictMode),
+    fallbackUsed: Boolean(relationReport.fallbackUsed),
+    relationStatus: relationReport.failures.length > 0
+      ? 'incomplete'
+      : relationReport.applicable ? 'passing' : 'not_applicable',
+    counts: {
+      total: relationReport.relationCount,
+      failures: relationReport.failureCount,
+      warnings: relationReport.warningCount,
+    },
+    failureCategories: Object.fromEntries([...failureCounts.entries()].sort()),
+    warningCategories: Object.fromEntries([...warningCounts.entries()].sort()),
+    packetResults: relationReport.packetResults || [],
+  };
+}
+
+function buildLawSummary(governanceLawReport) {
+  if (!governanceLawReport) {
+    return {
+      applicable: false,
+      source: 'none',
+      relationDataPresent: false,
+      dataSource: 'none',
+      lawStatus: 'not_applicable',
+      counts: {
+        total: 0,
+        failures: 0,
+        warnings: 0,
+      },
+      failureCategories: {},
+      warningCategories: {},
+    };
+  }
+
+  const failureCounts = new Map();
+  const warningCounts = new Map();
+
+  (governanceLawReport.lawFailures || []).forEach((entry) => {
+    failureCounts.set(entry.code, (failureCounts.get(entry.code) || 0) + 1);
+  });
+
+  (governanceLawReport.lawWarnings || []).forEach((entry) => {
+    warningCounts.set(entry.code, (warningCounts.get(entry.code) || 0) + 1);
+  });
+
+  return {
+    applicable: governanceLawReport.applicable,
+    source: governanceLawReport.source,
+    relationDataPresent: governanceLawReport.relationDataPresent,
+    dataSource: governanceLawReport.dataSource,
+    strictMode: Boolean(governanceLawReport.strictMode),
+    fallbackUsed: Boolean(governanceLawReport.fallbackUsed),
+    lawStatus: governanceLawReport.lawFailures.length > 0
+      ? 'failing'
+      : governanceLawReport.lawWarnings.length > 0
+        ? 'warning_only'
+        : governanceLawReport.applicable ? 'passing' : 'not_applicable',
+    counts: {
+      total: governanceLawReport.lawChecks.length,
+      failures: governanceLawReport.lawFailures.length,
+      warnings: governanceLawReport.lawWarnings.length,
+    },
+    failureCategories: Object.fromEntries([...failureCounts.entries()].sort()),
+    warningCategories: Object.fromEntries([...warningCounts.entries()].sort()),
+  };
+}
+
+function buildEnforcementSummary(conceptReports, governanceLawReport) {
+  const statusCounts = {
+    passing: 0,
+    warning_only: 0,
+    blocked: 0,
+  };
+
+  conceptReports.forEach((conceptReport) => {
+    const status = conceptReport.enforcementStatus || 'passing';
+    statusCounts[status] = (statusCounts[status] || 0) + 1;
+  });
+
+  const systemEnforcement = deriveGovernanceEnforcement({
+    relationFailures: governanceLawReport?.relationReport?.failures || [],
+    relationWarnings: governanceLawReport?.relationReport?.warnings || [],
+    lawFailures: governanceLawReport?.lawFailures || [],
+    lawWarnings: governanceLawReport?.lawWarnings || [],
+  });
+
+  return {
+    applicable: Boolean(governanceLawReport?.applicable),
+    enforcementStatus: systemEnforcement.enforcementStatus,
+    statusCounts,
+    blockingFailures: systemEnforcement.blockingFailures,
+    nonBlockingWarnings: systemEnforcement.nonBlockingWarnings,
+    activations: systemEnforcement.activations,
+    blockingFailureCategories: systemEnforcement.blockingFailureCategories,
+    nonBlockingWarningCategories: systemEnforcement.nonBlockingWarningCategories,
+  };
+}
+
+function buildSystemValidationStateSummary(conceptReports) {
+  const counts = {
+    language_invalid: 0,
+    structurally_incomplete: 0,
+    law_blocked: 0,
+    law_warning_only: 0,
+    law_validated: 0,
+    language_valid: 0,
+  };
+
+  conceptReports.forEach((conceptReport) => {
+    const state = conceptReport.systemValidationState || 'language_valid';
+    counts[state] = (counts[state] || 0) + 1;
+  });
+
+  return counts;
 }
 
 function collectExposedRegisterCounts(conceptReports) {
@@ -593,6 +940,12 @@ function appendHistoryEntry(summary) {
     generatedAt: new Date().toISOString(),
     gitRevision: resolveGitRevision(),
     semantic: summary.semantic,
+    v3: summary.v3,
+    relations: summary.relations,
+    laws: summary.laws,
+    enforcement: summary.enforcement,
+    validationStates: summary.validationStates,
+    systemValidationStates: summary.systemValidationStates,
     telemetry: summary.telemetry,
     trendIndicators: summary.trendIndicators,
     exposedRegisterCounts: summary.exposedRegisterCounts,
@@ -618,6 +971,9 @@ function formatZoneWarnings(registerReport) {
 
 function printConceptSummary(conceptReport) {
   process.stdout.write(`[${conceptReport.conceptId}] ${conceptReport.passed ? 'PASS' : 'FAIL'}\n`);
+  process.stdout.write(
+    `  classification: language=${conceptReport.languagePassed ? 'PASS' : 'FAIL'} v3=${conceptReport.v3Status} relation=${conceptReport.relationStatus} law=${conceptReport.lawStatus} enforcement=${conceptReport.enforcementStatus} state=${conceptReport.validationState} system=${conceptReport.systemValidationState}\n`,
+  );
 
   if ((conceptReport.warnings || []).length > 0) {
     process.stdout.write(`  ~ canonical: ${conceptReport.warnings.join(', ')}\n`);
@@ -642,6 +998,98 @@ function printConceptSummary(conceptReport) {
       process.stdout.write(`${line}\n`);
     });
   });
+
+  if (
+    conceptReport.v3?.applicable
+    || (conceptReport.v3?.failures?.length || 0) > 0
+    || (conceptReport.v3?.warnings?.length || 0) > 0
+  ) {
+    const v3Status = conceptReport.v3.passed ? 'PASS' : 'FAIL';
+    process.stdout.write(`  v3: ${v3Status}\n`);
+    process.stdout.write(
+      `    requiredSlots=${Object.entries(conceptReport.v3.requiredSlots).map(([slotName, present]) => `${slotName}:${present ? 'yes' : 'no'}`).join(', ')}\n`,
+    );
+    process.stdout.write(
+      `    recommendedSlots=${Object.entries(conceptReport.v3.recommendedSlots).map(([slotName, present]) => `${slotName}:${present ? 'yes' : 'no'}`).join(', ')}\n`,
+    );
+
+    if (conceptReport.v3.failures.length > 0) {
+      process.stdout.write(
+        `    - failures: ${conceptReport.v3.failures.map((entry) => `${entry.code}${entry.slot ? `(${entry.slot})` : entry.zone ? `(${entry.zone})` : ''}`).join(', ')}\n`,
+      );
+    }
+
+    if (conceptReport.v3.warnings.length > 0) {
+      process.stdout.write(
+        `    ~ warnings: ${conceptReport.v3.warnings.map((entry) => `${entry.code}${entry.slot ? `(${entry.slot})` : entry.zone ? `(${entry.zone})` : ''}`).join(', ')}\n`,
+      );
+    }
+  }
+
+  if (conceptReport.relations?.applicable || conceptReport.laws?.applicable) {
+    process.stdout.write(
+      `  connected: relation=${conceptReport.relationStatus} law=${conceptReport.lawStatus}\n`,
+    );
+
+    if (conceptReport.relations?.applicable) {
+      process.stdout.write(
+        `    relations total=${conceptReport.relations.counts.total} failures=${conceptReport.relations.counts.failures} warnings=${conceptReport.relations.counts.warnings} source=${conceptReport.relations.source} strict=${conceptReport.relations.strictMode ? 'yes' : 'no'} fallback=${conceptReport.relations.fallbackUsed ? 'yes' : 'no'}\n`,
+      );
+      if (conceptReport.relations.packetValidation) {
+        process.stdout.write(
+          `    packet: present=${conceptReport.relations.packetValidation.present ? 'yes' : 'no'} passed=${conceptReport.relations.packetValidation.passed ? 'yes' : 'no'} source=${conceptReport.relations.packetValidation.source}\n`,
+        );
+      }
+
+      if (conceptReport.relations.failures.length > 0) {
+        process.stdout.write(
+          `    - relationFailures: ${conceptReport.relations.failures.map((entry) => entry.code).join(', ')}\n`,
+        );
+      }
+    }
+
+    if (conceptReport.laws?.applicable) {
+      process.stdout.write(
+        `    laws total=${conceptReport.laws.counts.total} failures=${conceptReport.laws.counts.failures} warnings=${conceptReport.laws.counts.warnings} source=${conceptReport.laws.source} strict=${conceptReport.laws.strictMode ? 'yes' : 'no'} fallback=${conceptReport.laws.fallbackUsed ? 'yes' : 'no'}\n`,
+      );
+
+      if (conceptReport.laws.failures.length > 0) {
+        process.stdout.write(
+          `    - lawFailures: ${conceptReport.laws.failures.map((entry) => entry.code).join(', ')}\n`,
+        );
+      }
+
+      if (conceptReport.laws.warnings.length > 0) {
+        process.stdout.write(
+          `    ~ lawWarnings: ${conceptReport.laws.warnings.map((entry) => entry.code).join(', ')}\n`,
+        );
+      }
+    }
+  }
+
+  if (conceptReport.enforcement?.applicable) {
+    process.stdout.write(
+      `  enforcement: status=${conceptReport.enforcementStatus} blocking=${conceptReport.enforcement.blockingFailures.length} warnings=${conceptReport.enforcement.nonBlockingWarnings.length}\n`,
+    );
+
+    if (conceptReport.enforcement.activations.length > 0) {
+      process.stdout.write(
+        `    ~ activations: ${conceptReport.enforcement.activations.map((entry) => `${entry.code}(${entry.status})`).join(', ')}\n`,
+      );
+    }
+
+    if (conceptReport.enforcement.blockingFailures.length > 0) {
+      process.stdout.write(
+        `    - blockingFailures: ${conceptReport.enforcement.blockingFailures.map((entry) => entry.code).join(', ')}\n`,
+      );
+    }
+
+    if (conceptReport.enforcement.nonBlockingWarnings.length > 0) {
+      process.stdout.write(
+        `    ~ nonBlockingWarnings: ${conceptReport.enforcement.nonBlockingWarnings.map((entry) => entry.code).join(', ')}\n`,
+      );
+    }
+  }
 
   process.stdout.write(`  exposed: ${conceptReport.exposure.exposedRegisters.join(', ') || 'none'}\n`);
 
@@ -716,6 +1164,100 @@ function printSemanticSummary(summary) {
   }
 }
 
+function printV3Summary(summary) {
+  process.stdout.write(
+    `V3 applicableConcepts=${summary.v3.applicableConcepts} failingConcepts=${summary.v3.failingConcepts}\n`,
+  );
+  process.stdout.write(
+    `V3 statusCounts=${Object.entries(summary.v3.statusCounts).map(([status, count]) => `${status}:${count}`).join(', ')}\n`,
+  );
+  process.stdout.write(
+    `V3 totals failures=${summary.v3.failureCount} warnings=${summary.v3.warningCount}\n`,
+  );
+
+  if (Object.keys(summary.v3.failureCategories).length > 0) {
+    process.stdout.write(
+      `V3 failureCategories=${Object.entries(summary.v3.failureCategories).map(([code, count]) => `${code}:${count}`).join(', ')}\n`,
+    );
+  }
+
+  if (Object.keys(summary.v3.warningCategories).length > 0) {
+    process.stdout.write(
+      `V3 warningCategories=${Object.entries(summary.v3.warningCategories).map(([code, count]) => `${code}:${count}`).join(', ')}\n`,
+    );
+  }
+
+  process.stdout.write(
+    `V3 validationStates=${Object.entries(summary.validationStates).map(([state, count]) => `${state}:${count}`).join(', ')}\n`,
+  );
+}
+
+function printRelationSummary(summary) {
+  process.stdout.write(
+    `RELATIONS status=${summary.relationStatus} total=${summary.relations.counts.total} failures=${summary.relations.counts.failures} warnings=${summary.relations.counts.warnings} source=${summary.relations.source} strict=${summary.relations.strictMode ? 'yes' : 'no'} fallback=${summary.relations.fallbackUsed ? 'yes' : 'no'}\n`,
+  );
+
+  if (Object.keys(summary.relations.failureCategories).length > 0) {
+    process.stdout.write(
+      `RELATIONS failureCategories=${Object.entries(summary.relations.failureCategories).map(([code, count]) => `${code}:${count}`).join(', ')}\n`,
+    );
+  }
+
+  if (Object.keys(summary.relations.warningCategories).length > 0) {
+    process.stdout.write(
+      `RELATIONS warningCategories=${Object.entries(summary.relations.warningCategories).map(([code, count]) => `${code}:${count}`).join(', ')}\n`,
+    );
+  }
+}
+
+function printLawSummary(summary) {
+  process.stdout.write(
+    `LAWS status=${summary.lawStatus} total=${summary.laws.counts.total} failures=${summary.laws.counts.failures} warnings=${summary.laws.counts.warnings} source=${summary.laws.source} strict=${summary.laws.strictMode ? 'yes' : 'no'} fallback=${summary.laws.fallbackUsed ? 'yes' : 'no'}\n`,
+  );
+
+  if (Object.keys(summary.laws.failureCategories).length > 0) {
+    process.stdout.write(
+      `LAWS failureCategories=${Object.entries(summary.laws.failureCategories).map(([code, count]) => `${code}:${count}`).join(', ')}\n`,
+    );
+  }
+
+  if (Object.keys(summary.laws.warningCategories).length > 0) {
+    process.stdout.write(
+      `LAWS warningCategories=${Object.entries(summary.laws.warningCategories).map(([code, count]) => `${code}:${count}`).join(', ')}\n`,
+    );
+  }
+}
+
+function printEnforcementSummary(summary) {
+  process.stdout.write(
+    `ENFORCEMENT status=${summary.enforcement.enforcementStatus} blocking=${summary.enforcement.blockingFailures.length} warnings=${summary.enforcement.nonBlockingWarnings.length}\n`,
+  );
+  process.stdout.write(
+    `ENFORCEMENT statusCounts=${Object.entries(summary.enforcement.statusCounts).map(([status, count]) => `${status}:${count}`).join(', ')}\n`,
+  );
+  process.stdout.write(
+    `ENFORCEMENT systemValidationStates=${Object.entries(summary.systemValidationStates).map(([state, count]) => `${state}:${count}`).join(', ')}\n`,
+  );
+
+  if (Object.keys(summary.enforcement.blockingFailureCategories).length > 0) {
+    process.stdout.write(
+      `ENFORCEMENT blockingCategories=${Object.entries(summary.enforcement.blockingFailureCategories).map(([code, count]) => `${code}:${count}`).join(', ')}\n`,
+    );
+  }
+
+  if (Object.keys(summary.enforcement.nonBlockingWarningCategories).length > 0) {
+    process.stdout.write(
+      `ENFORCEMENT warningCategories=${Object.entries(summary.enforcement.nonBlockingWarningCategories).map(([code, count]) => `${code}:${count}`).join(', ')}\n`,
+    );
+  }
+
+  if (summary.enforcement.activations.length > 0) {
+    process.stdout.write(
+      `ENFORCEMENT activations=${summary.enforcement.activations.map((entry) => `${entry.code}:${entry.status}`).join(', ')}\n`,
+    );
+  }
+}
+
 function printEditDisciplineSummary(editDisciplineReport) {
   process.stdout.write(
     `EDIT_DISCIPLINE mode=${editDisciplineReport.mode} baseRef=${editDisciplineReport.baseRef} warnings=${editDisciplineReport.warningCount}\n`,
@@ -763,6 +1305,8 @@ function main() {
     attachGoldenAlignment(report, concept, goldenConceptPackets, goldenBaselines);
     return report;
   });
+  const governanceLawReport = validateGovernanceLaws({ concepts });
+  attachGovernanceLawResults(conceptReports, governanceLawReport);
   const summary = {
     totalConcepts: conceptReports.length,
     goldenConceptCount: GOLDEN_CONCEPT_IDS.length,
@@ -770,10 +1314,18 @@ function main() {
     passingConcepts: conceptReports.filter((report) => report.passed).length,
     failingConcepts: conceptReports.filter((report) => !report.passed).length,
     exposedRegisterCounts: collectExposedRegisterCounts(conceptReports),
-    failureCategories: collectFailureCategories(conceptReports),
-    warningCategories: collectWarningCategories(conceptReports),
+    failureCategories: collectFailureCategories(conceptReports, governanceLawReport),
+    warningCategories: collectWarningCategories(conceptReports, governanceLawReport),
   };
   summary.semantic = buildSemanticSummary(conceptReports);
+  summary.v3 = buildV3Summary(conceptReports);
+  summary.relations = buildRelationSummary(governanceLawReport);
+  summary.laws = buildLawSummary(governanceLawReport);
+  summary.enforcement = buildEnforcementSummary(conceptReports, governanceLawReport);
+  summary.relationStatus = summary.relations.relationStatus;
+  summary.lawStatus = summary.laws.lawStatus;
+  summary.validationStates = buildValidationStateSummary(conceptReports);
+  summary.systemValidationStates = buildSystemValidationStateSummary(conceptReports);
   summary.telemetry = buildTelemetry(summary, conceptReports);
   summary.trendIndicators = buildTrendIndicators(summary, previousArtifact);
   summary.audit = buildAuditSummary(concepts);
@@ -781,10 +1333,52 @@ function main() {
   const artifactReport = {
     summary,
     editDiscipline,
+    relations: {
+      passed: governanceLawReport.relationReport.passed,
+      applicable: governanceLawReport.relationReport.applicable,
+      relationStatus: summary.relationStatus,
+      source: governanceLawReport.relationReport.source,
+      relationDataPresent: governanceLawReport.relationReport.relationDataPresent,
+      dataSource: governanceLawReport.relationReport.dataSource,
+      strictMode: Boolean(governanceLawReport.relationReport.strictMode),
+      fallbackUsed: Boolean(governanceLawReport.relationReport.fallbackUsed),
+      counts: {
+        total: governanceLawReport.relationReport.relationCount,
+        failures: governanceLawReport.relationReport.failureCount,
+        warnings: governanceLawReport.relationReport.warningCount,
+      },
+      failures: governanceLawReport.relationReport.failures,
+      warnings: governanceLawReport.relationReport.warnings,
+      packetResults: governanceLawReport.relationReport.packetResults,
+      results: governanceLawReport.relationReport.relations,
+    },
+    laws: {
+      passed: governanceLawReport.passed,
+      applicable: governanceLawReport.applicable,
+      lawStatus: summary.lawStatus,
+      source: governanceLawReport.source,
+      relationDataPresent: governanceLawReport.relationDataPresent,
+      dataSource: governanceLawReport.dataSource,
+      strictMode: Boolean(governanceLawReport.strictMode),
+      fallbackUsed: Boolean(governanceLawReport.fallbackUsed),
+      counts: {
+        total: governanceLawReport.lawChecks.length,
+        failures: governanceLawReport.lawFailures.length,
+        warnings: governanceLawReport.lawWarnings.length,
+      },
+      failures: governanceLawReport.lawFailures,
+      warnings: governanceLawReport.lawWarnings,
+      results: governanceLawReport.lawChecks,
+    },
+    enforcement: summary.enforcement,
     concepts: conceptReports,
   };
 
   conceptReports.forEach(printConceptSummary);
+  printV3Summary(summary);
+  printRelationSummary(summary);
+  printLawSummary(summary);
+  printEnforcementSummary(summary);
   printSemanticSummary(summary);
   printTelemetrySummary(summary);
   printAuditSummary(summary);
