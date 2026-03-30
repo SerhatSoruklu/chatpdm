@@ -24,7 +24,7 @@
               Search a concept. Get a precise answer within scope, or an explicit refusal.
             </p>
             <p class="pdm-home__lead">
-              Try the current supported concept set directly.
+              Compare and resolve concepts that are often confused or misused.
             </p>
 
             <form class="pdm-home__hero-query" (ngSubmit)="submitDraft()">
@@ -42,32 +42,38 @@
                     autocapitalize="off"
                     autocomplete="off"
                     autofocus
-                    placeholder="authority vs power"
+                    placeholder="Try: authority vs power"
                   >
 
-                  <button
-                    class="pdm-home__submit pdm-site-button"
-                    type="submit"
-                    [disabled]="!canSubmitDraft()"
-                    [attr.title]="submitButtonTitle()"
+                  <span
+                    class="pdm-tooltip-wrapper"
+                    [attr.tabindex]="submitButtonTooltip() ? 0 : null"
+                    [attr.aria-label]="submitButtonTooltip() ? 'Resolve concept unavailable' : null"
+                    [pdmTooltip]="submitButtonTooltip() ?? ''"
                   >
-                    <span>{{ isSubmitting() ? 'Resolving…' : 'Resolve concept' }}</span>
-                    <svg
-                      class="pdm-home__submit-icon"
-                      aria-hidden="true"
-                      viewBox="0 0 20 20"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
+                    <button
+                      class="pdm-home__submit pdm-site-button"
+                      type="submit"
+                      [disabled]="!canSubmitDraft()"
                     >
-                      <path
-                        d="M4.16666 10H15.8333M15.8333 10L10.8333 5M15.8333 10L10.8333 15"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                    </svg>
-                  </button>
+                      <span>{{ isSubmitting() ? 'Resolving…' : 'Resolve concept' }}</span>
+                      <svg
+                        class="pdm-home__submit-icon"
+                        aria-hidden="true"
+                        viewBox="0 0 20 20"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M4.16666 10H15.8333M15.8333 10L10.8333 5M15.8333 10L10.8333 15"
+                          stroke="currentColor"
+                          stroke-width="1.8"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                    </button>
+                  </span>
                 </div>
 
                 <div class="pdm-home__examples pdm-home__hero-examples" aria-label="Suggested queries">
@@ -93,8 +99,15 @@
                     }
                   </div>
                 </div>
+
+                <p class="pdm-home__hero-guidance">
+                  Search or compare concepts from the defined set above.
+                </p>
               </div>
             </form>
+
+            <p class="pdm-home__preview-intro">See how it works:</p>
+            <app-example-preview />
 
             <div class="pdm-home__boundary-strip pdm-home__boundary-strip--hero">
               <p>
@@ -293,13 +306,16 @@
                         @for (source of asConceptMatch(response).answer.sources; track source.id; let sourceIndex = $index) {
                           <div class="pdm-home__source-row">
                             <div class="pdm-home__source-meta">
-                              <span
-                                class="pdm-home__source-icon pdm-mono"
-                                [attr.data-source-type]="source.type"
-                                [attr.aria-label]="sourceTypeLabel(source.type)"
-                                [attr.title]="sourceTypeLabel(source.type)"
-                              >
-                                {{ sourceTypeCode(source.type) }}
+                              <span class="pdm-tooltip-wrapper">
+                                <span
+                                  class="pdm-home__source-icon pdm-mono"
+                                  [attr.data-source-type]="source.type"
+                                  [attr.aria-label]="sourceTypeLabel(source.type)"
+                                  tabindex="0"
+                                  [pdmTooltip]="sourceTypeLabel(source.type)"
+                                >
+                                  {{ sourceTypeCode(source.type) }}
+                                </span>
                               </span>
 
                               <div>

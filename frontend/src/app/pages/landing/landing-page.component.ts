@@ -21,6 +21,8 @@ import {
 } from '../../core/concepts/concept-resolver.types';
 import { AiAdvisoryComponent } from '../../core/ai/ai-advisory/ai-advisory.component';
 import { AiTrackingEventType, AiTrackingService } from '../../core/ai/ai-tracking.service';
+import { ExamplePreviewComponent } from '../../core/preview/example-preview.component';
+import { PdmTooltipDirective } from '../../core/ui/tooltip/pdm-tooltip.directive';
 import {
   CANONICAL_VISUAL_ANCHOR_HASH_LENGTH,
   READING_LENS_FALLBACK_COPY,
@@ -177,7 +179,14 @@ const NO_EXACT_MATCH_FEEDBACK_OPTIONS: FeedbackOption[] = [
 @Component({
   selector: 'app-landing-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, AiAdvisoryComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterLink,
+    AiAdvisoryComponent,
+    ExamplePreviewComponent,
+    PdmTooltipDirective,
+  ],
   templateUrl: './landing-page.component.html',
   styleUrl: './landing-page.component.css',
 })
@@ -242,15 +251,53 @@ export class LandingPageComponent {
         response,
         feedback: this.buildFeedbackState(response, options.feedbackOrigin),
       });
+      this.scheduleScrollToResult();
     } catch (error) {
       this.activeEntry.set({
         submittedQuery,
         status: 'error',
         errorMessage: this.describeError(error),
       });
+      this.scheduleScrollToResult();
     } finally {
       this.isSubmitting.set(false);
     }
+  }
+
+  private scheduleScrollToResult(): void {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    window.requestAnimationFrame(() => {
+      this.scrollToResult();
+    });
+  }
+
+  private scrollToResult(): void {
+    if (typeof window === 'undefined' || typeof document === 'undefined') {
+      return;
+    }
+
+    const element = document.querySelector<HTMLElement>('.pdm-home__response-card')
+      ?? document.querySelector<HTMLElement>('.pdm-home__state-card');
+
+    if (!element) {
+      return;
+    }
+
+    const rect = element.getBoundingClientRect();
+    const elementTop = rect.top + window.scrollY;
+    const viewportHeight = window.innerHeight;
+    let y = elementTop - (viewportHeight * 0.35);
+    const maxOffset = elementTop - 60;
+    y = Math.min(y, maxOffset);
+    const maxY = Math.max(document.documentElement.scrollHeight - viewportHeight, 0);
+
+    window.scrollTo({
+      top: Math.min(Math.max(y, 0), maxY),
+      behavior: 'smooth',
+    });
   }
 
   protected isLiveConcept(concept: string): boolean {
@@ -265,7 +312,7 @@ export class LandingPageComponent {
     return this.queryAssessment().canSubmit && !this.isSubmitting();
   }
 
-  protected submitButtonTitle(): string | null {
+  protected submitButtonTooltip(): string | null {
     if (this.isSubmitting()) {
       return null;
     }
