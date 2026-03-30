@@ -183,6 +183,24 @@ function getGeneratedSourceAnchors(unit, sourceSegments) {
     .map((segment) => segment.sourceAnchor);
 }
 
+function buildGeneratedTraceInput({
+  validationRunId,
+  sourceAnchors,
+  interpretationUsed = false,
+  interpretationRegimeId = null,
+}) {
+  return {
+    validationRunId,
+    resolverVersion: 'resolver-v1',
+    inputHash: '9'.repeat(64),
+    sourceAnchors,
+    interpretationUsed,
+    interpretationRegimeId,
+    manualOverrideUsed: false,
+    overrideIds: [],
+  };
+}
+
 test.before(async () => {
   mongoServer = await MongoMemoryServer.create();
   await connectMongo(mongoServer.getUri());
@@ -242,18 +260,14 @@ test('legal-validator pipeline persists a replay-safe ValidationRun on the valid
     doctrineLoadResult,
     resolverResult,
     validationKernelResult,
-    traceInput: {
+    traceInput: buildGeneratedTraceInput({
       validationRunId: 'validation-run-integration-1',
-      resolverVersion: 'resolver-v1',
-      inputHash: '9'.repeat(64),
       sourceAnchors: sourceSegments
         .filter((segment) => unit.sourceSegmentIds.includes(segment.sourceSegmentId))
         .map((segment) => segment.sourceAnchor),
       interpretationUsed: true,
       interpretationRegimeId: 'uk-textual-v1',
-      manualOverrideUsed: false,
-      overrideIds: [],
-    },
+    }),
   });
 
   assert.equal(admissibilityResult.ok, true);
@@ -315,7 +329,7 @@ test('legal-validator pipeline persists a replay-safe ValidationRun on the valid
   assert.equal(await ValidationRun.countDocuments({}), 1);
 });
 
-test('legal-validator pipeline stops on an invalid kernel result without persisting ValidationRun', async () => {
+test('legal-validator pipeline persists ValidationRun on an invalid kernel result', async () => {
   const {
     artifact,
     sourceDocument,
@@ -352,6 +366,16 @@ test('legal-validator pipeline stops on an invalid kernel result without persist
     },
   });
 
+  const traceResult = await traceService.finalize({
+    doctrineLoadResult,
+    resolverResult,
+    validationKernelResult,
+    traceInput: buildGeneratedTraceInput({
+      validationRunId: 'validation-run-integration-invalid-1',
+      sourceAnchors: getGeneratedSourceAnchors(unit, sourceSegments),
+    }),
+  });
+
   assert.equal(admissibilityResult.ok, true);
   assert.equal(doctrineLoadResult.ok, true);
   assert.equal(authorityLookupResult.ok, true);
@@ -373,18 +397,30 @@ test('legal-validator pipeline stops on an invalid kernel result without persist
   assert.equal(validationKernelResult.argumentUnitId, unit.argumentUnitId);
   assert.equal(validationKernelResult.doctrineArtifactId, artifact.artifactId);
   assert.equal(validationKernelResult.mappingId, 'mapping-integration-invalid-1');
+  assert.equal(traceResult.ok, true);
+  assert.equal(traceResult.terminal, false);
+  assert.equal(traceResult.result, 'invalid');
+  assert.deepEqual(traceResult.failureCodes, ['SOURCE_OVERRIDE_ATTEMPT']);
+  assert.equal(traceResult.validationRunWritten, true);
 
   const persistedMapping = await Mapping.findOne({ mappingId: 'mapping-integration-invalid-1' }).lean().exec();
+  const persistedRun = await ValidationRun.findOne({ validationRunId: 'validation-run-integration-invalid-1' }).lean().exec();
 
   assert.ok(persistedMapping);
   assert.equal(persistedMapping.status, 'success');
+  assert.ok(persistedRun);
+  assert.equal(persistedRun.result, 'invalid');
+  assert.deepEqual(persistedRun.failureCodes, ['SOURCE_OVERRIDE_ATTEMPT']);
+  assert.deepEqual(persistedRun.trace.sourceAnchors, getGeneratedSourceAnchors(unit, sourceSegments));
+  assert.deepEqual(persistedRun.trace.mappingRuleIds, ['resolver-rule-duty-of-care']);
+  assert.deepEqual(persistedRun.trace.validationRuleIds, []);
   assert.equal(await SourceDocument.countDocuments({}), 1);
   assert.equal(await SourceSegment.countDocuments({}), 3);
   assert.equal(await Mapping.countDocuments({}), 1);
-  assert.equal(await ValidationRun.countDocuments({}), 0);
+  assert.equal(await ValidationRun.countDocuments({}), 1);
 });
 
-test('legal-validator pipeline stops on an unresolved resolver result without persisting Mapping or ValidationRun', async () => {
+test('legal-validator pipeline persists ValidationRun on an unresolved resolver result without persisting Mapping', async () => {
   const {
     artifact,
     sourceDocument,
@@ -404,6 +440,15 @@ test('legal-validator pipeline stops on an unresolved resolver result without pe
       status: 'ambiguous',
       reason: 'Two live authority-grounded readings remain available.',
     },
+  });
+
+  const traceResult = await traceService.finalize({
+    doctrineLoadResult,
+    resolverResult,
+    traceInput: buildGeneratedTraceInput({
+      validationRunId: 'validation-run-integration-unresolved-1',
+      sourceAnchors: getGeneratedSourceAnchors(unit, sourceSegments),
+    }),
   });
 
   assert.equal(admissibilityResult.ok, true);
@@ -426,8 +471,21 @@ test('legal-validator pipeline stops on an unresolved resolver result without pe
   assert.equal(resolverResult.argumentUnitId, unit.argumentUnitId);
   assert.equal(resolverResult.doctrineArtifactId, artifact.artifactId);
   assert.equal(resolverResult.mappingWritten, false);
+  assert.equal(traceResult.ok, true);
+  assert.equal(traceResult.terminal, false);
+  assert.equal(traceResult.result, 'unresolved');
+  assert.deepEqual(traceResult.failureCodes, ['AMBIGUOUS_CONCEPT_MAPPING']);
+  assert.equal(traceResult.validationRunWritten, true);
+  assert.equal(traceResult.mappingId, null);
+  const persistedRun = await ValidationRun.findOne({ validationRunId: 'validation-run-integration-unresolved-1' }).lean().exec();
+  assert.ok(persistedRun);
+  assert.equal(persistedRun.result, 'unresolved');
+  assert.deepEqual(persistedRun.failureCodes, ['AMBIGUOUS_CONCEPT_MAPPING']);
+  assert.deepEqual(persistedRun.trace.sourceAnchors, getGeneratedSourceAnchors(unit, sourceSegments));
+  assert.deepEqual(persistedRun.trace.mappingRuleIds, []);
+  assert.deepEqual(persistedRun.trace.validationRuleIds, []);
   assert.equal(await SourceDocument.countDocuments({}), 1);
   assert.equal(await SourceSegment.countDocuments({}), 3);
   assert.equal(await Mapping.countDocuments({}), 0);
-  assert.equal(await ValidationRun.countDocuments({}), 0);
+  assert.equal(await ValidationRun.countDocuments({}), 1);
 });

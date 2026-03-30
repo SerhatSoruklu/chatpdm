@@ -39,14 +39,36 @@ function buildContinueResult({ context, validationRun, persistedTraceSummary }) 
     validationRunId: validationRun.validationRunId,
     validationRunWritten: true,
     result: validationRun.result,
+    failureCodes: validationRun.failureCodes,
     persistedTraceSummary,
   };
+}
+
+function isContinueInput(value) {
+  return Boolean(value && value.ok === true && value.terminal === false);
+}
+
+function isTerminalInput(value) {
+  return Boolean(
+    value
+    && value.ok === false
+    && value.terminal === true
+    && ['invalid', 'unresolved'].includes(value.result),
+  );
 }
 
 function assertContinueInput(name, value) {
   if (!value || value.ok !== true || value.terminal !== false) {
     throw new Error(`${SERVICE_NAME} requires a continue outcome from ${name}.`);
   }
+}
+
+function assertTraceableInput(name, value) {
+  if (isContinueInput(value) || isTerminalInput(value)) {
+    return;
+  }
+
+  throw new Error(`${SERVICE_NAME} requires a continue or terminal outcome from ${name}.`);
 }
 
 function normalizeStringArray(values) {
@@ -65,24 +87,28 @@ function hasDuplicateValues(values) {
   return new Set(values).size !== values.length;
 }
 
-function compareSharedContext(doctrineLoadResult, resolverResult, validationKernelResult) {
+function compareSharedContext(doctrineLoadResult, resolverResult, validationKernelResult = null) {
   const doctrineArtifactIds = [
     doctrineLoadResult.doctrineArtifactId,
     resolverResult.doctrineArtifactId,
-    validationKernelResult.doctrineArtifactId,
   ];
   const doctrineHashes = [
     doctrineLoadResult.doctrineHash,
     resolverResult.doctrineHash,
-    validationKernelResult.doctrineHash,
   ];
+
+  if (validationKernelResult != null) {
+    doctrineArtifactIds.push(validationKernelResult.doctrineArtifactId);
+    doctrineHashes.push(validationKernelResult.doctrineHash);
+  }
+
   const mappingIds = [
     resolverResult.mappingId,
-    validationKernelResult.mappingId,
+    validationKernelResult?.mappingId,
   ].filter(Boolean);
   const matterIds = [
     resolverResult.matterId,
-    validationKernelResult.matterId,
+    validationKernelResult?.matterId,
   ].filter(Boolean);
 
   if (doctrineArtifactIds.some((value) => !value) || new Set(doctrineArtifactIds).size > 1) {
@@ -104,30 +130,68 @@ function compareSharedContext(doctrineLoadResult, resolverResult, validationKern
   return null;
 }
 
-function buildTraceContext(doctrineLoadResult, resolverResult, validationKernelResult) {
-  const doctrineArtifactId = validationKernelResult.doctrineArtifactId
+function buildTraceContext(doctrineLoadResult, resolverResult, validationKernelResult = null) {
+  const doctrineArtifactId = validationKernelResult?.doctrineArtifactId
     || resolverResult.doctrineArtifactId
     || doctrineLoadResult.doctrineArtifactId
     || null;
-  const doctrineHash = validationKernelResult.doctrineHash
+  const doctrineHash = validationKernelResult?.doctrineHash
     || resolverResult.doctrineHash
     || doctrineLoadResult.doctrineHash
     || null;
-  const mappingId = validationKernelResult.mappingId || resolverResult.mappingId || null;
-  const matterId = validationKernelResult.matterId || resolverResult.matterId || null;
+  const mappingId = validationKernelResult?.mappingId || resolverResult.mappingId || null;
+  const matterId = validationKernelResult?.matterId || resolverResult.matterId || null;
 
-  if (!doctrineArtifactId || !doctrineHash || !mappingId || !matterId) {
+  if (!doctrineArtifactId || !doctrineHash || !matterId) {
     throw new Error(
-      `${SERVICE_NAME} requires doctrineArtifactId, doctrineHash, mappingId, and matterId from doctrine-loader.service, resolver.service, and validation-kernel.service.`,
+      `${SERVICE_NAME} requires doctrineArtifactId, doctrineHash, and matterId from doctrine-loader.service, resolver.service, and validation-kernel.service.`,
     );
   }
 
   return {
     doctrineArtifactId,
     doctrineHash,
-    mappingId,
+    mappingId: mappingId || null,
     matterId,
   };
+}
+
+function resolveFinalOutcome({ resolverResult, validationKernelResult = null }) {
+  if (isTerminalInput(resolverResult) && validationKernelResult != null) {
+    throw new Error(`${SERVICE_NAME} must not receive validation-kernel.service output after a terminal resolver.service result.`);
+  }
+
+  if (validationKernelResult != null) {
+    assertTraceableInput('validation-kernel.service', validationKernelResult);
+
+    if (isContinueInput(validationKernelResult)) {
+      if (validationKernelResult.validationOutcome !== 'valid') {
+        throw new Error(`${SERVICE_NAME} supports only validationOutcome=valid on continue results.`);
+      }
+
+      return {
+        stopStage: 'validation-kernel',
+        result: 'valid',
+        failureCodes: [],
+      };
+    }
+
+    return {
+      stopStage: 'validation-kernel',
+      result: validationKernelResult.result,
+      failureCodes: [validationKernelResult.failureCode],
+    };
+  }
+
+  if (isTerminalInput(resolverResult)) {
+    return {
+      stopStage: 'resolver',
+      result: resolverResult.result,
+      failureCodes: [resolverResult.failureCode],
+    };
+  }
+
+  throw new Error(`${SERVICE_NAME} requires validation-kernel.service once resolver.service continues.`);
 }
 
 async function loadRetainedDoctrineArtifact(context) {
@@ -178,7 +242,7 @@ function buildLoadedManifest(doctrineLoadResult, traceInput = {}) {
   };
 }
 
-function buildTracePayload(doctrineLoadResult, resolverResult, validationKernelResult, traceInput = {}) {
+function buildTracePayload({ doctrineLoadResult, resolverResult, validationKernelResult = null, finalOutcome, traceInput = {} }) {
   const validationRunId = legalValidatorSchemas.isNonEmptyTrimmedString(traceInput.validationRunId)
     ? traceInput.validationRunId
     : null;
@@ -195,10 +259,14 @@ function buildTracePayload(doctrineLoadResult, resolverResult, validationKernelR
     ? traceInput.interpretationRegimeId
     : null;
   const normalizedMappingRuleIds = normalizeStringArray(traceInput.mappingRuleIds);
+  const normalizedValidationRuleIdsFromTraceInput = normalizeStringArray(traceInput.validationRuleIds);
+  const normalizedValidationRuleIdsFromKernel = normalizeStringArray(validationKernelResult?.validationRuleIds);
   const mappingRuleIds = normalizedMappingRuleIds.length > 0
     ? canonicalizeStringArray(normalizedMappingRuleIds)
     : canonicalizeStringArray(normalizeStringArray([resolverResult.resolverRuleId]));
-  const validationRuleIds = canonicalizeStringArray(normalizeStringArray(validationKernelResult.validationRuleIds));
+  const validationRuleIds = normalizedValidationRuleIdsFromTraceInput.length > 0
+    ? canonicalizeStringArray(normalizedValidationRuleIdsFromTraceInput)
+    : canonicalizeStringArray(normalizedValidationRuleIdsFromKernel);
   const overrideIds = normalizeStringArray(traceInput.overrideIds);
   const loadedManifest = buildLoadedManifest(doctrineLoadResult, traceInput);
 
@@ -231,14 +299,21 @@ function buildTracePayload(doctrineLoadResult, resolverResult, validationKernelR
     };
   }
 
-  if (normalizedMappingRuleIds.length === 0 && !resolverResult.resolverRuleId) {
+  if (normalizedMappingRuleIds.length > 0 && resolverResult.mappingWritten !== true) {
+    return {
+      ok: false,
+      reason: 'Trace finalization must not include mappingRuleIds before resolver.service writes Mapping.',
+    };
+  }
+
+  if (finalOutcome.stopStage === 'validation-kernel' && normalizedMappingRuleIds.length === 0 && !resolverResult.resolverRuleId) {
     return {
       ok: false,
       reason: 'Trace finalization requires resolverRuleId when no mappingRuleIds are provided.',
     };
   }
 
-  if (mappingRuleIds.length === 0) {
+  if (finalOutcome.stopStage === 'validation-kernel' && mappingRuleIds.length === 0) {
     return {
       ok: false,
       reason: 'Trace finalization requires mappingRuleIds from the resolver path.',
@@ -252,7 +327,36 @@ function buildTracePayload(doctrineLoadResult, resolverResult, validationKernelR
     };
   }
 
-  if (validationRuleIds.length === 0) {
+  if (normalizedValidationRuleIdsFromTraceInput.length > 0 && finalOutcome.stopStage !== 'validation-kernel') {
+    return {
+      ok: false,
+      reason: 'Trace finalization must not include validationRuleIds before validation-kernel.service runs.',
+    };
+  }
+
+  if (
+    normalizedValidationRuleIdsFromTraceInput.length > 0
+    && finalOutcome.stopStage === 'validation-kernel'
+    && normalizedValidationRuleIdsFromKernel.length === 0
+  ) {
+    return {
+      ok: false,
+      reason: 'Trace finalization must not include validationRuleIds not produced by validation-kernel.service.',
+    };
+  }
+
+  if (
+    normalizedValidationRuleIdsFromTraceInput.length > 0
+    && finalOutcome.stopStage === 'validation-kernel'
+    && validationRuleIds.join('\n') !== canonicalizeStringArray(normalizedValidationRuleIdsFromKernel).join('\n')
+  ) {
+    return {
+      ok: false,
+      reason: 'Trace finalization must not alter validationRuleIds produced by validation-kernel.service.',
+    };
+  }
+
+  if (finalOutcome.result === 'valid' && validationRuleIds.length === 0) {
     return {
       ok: false,
       reason: 'Trace finalization requires validationRuleIds from validation-kernel.service.',
@@ -335,12 +439,16 @@ async function persistValidationRun(validationRunPayload, context) {
 async function finalize({
   doctrineLoadResult,
   resolverResult,
-  validationKernelResult,
+  validationKernelResult = null,
   traceInput = {},
 } = {}) {
   assertContinueInput('doctrine-loader.service', doctrineLoadResult);
-  assertContinueInput('resolver.service', resolverResult);
-  assertContinueInput('validation-kernel.service', validationKernelResult);
+  assertTraceableInput('resolver.service', resolverResult);
+
+  const finalOutcome = resolveFinalOutcome({
+    resolverResult,
+    validationKernelResult,
+  });
 
   const contextMismatch = compareSharedContext(doctrineLoadResult, resolverResult, validationKernelResult);
 
@@ -354,29 +462,19 @@ async function finalize({
 
   const context = buildTraceContext(doctrineLoadResult, resolverResult, validationKernelResult);
 
-  // v1 limitation:
-  // trace persistence only supports valid outcomes.
-  // invalid/unresolved trace support will be introduced in a later phase.
-  if (validationKernelResult.validationOutcome !== 'valid') {
-    return buildTerminalResult({
-      failureCode: 'TRACE_INCOMPLETE',
-      reason: 'Trace service requires a valid continuation from validation-kernel.service in this wave.',
-      extras: context,
-    });
-  }
-
   const retainedArtifactResult = await loadRetainedDoctrineArtifact(context);
 
   if (retainedArtifactResult.terminal) {
     return retainedArtifactResult;
   }
 
-  const tracePayload = buildTracePayload(
+  const tracePayload = buildTracePayload({
     doctrineLoadResult,
     resolverResult,
     validationKernelResult,
+    finalOutcome,
     traceInput,
-  );
+  });
 
   if (!tracePayload.ok) {
     return buildTerminalResult({
@@ -393,8 +491,8 @@ async function finalize({
     doctrineHash: context.doctrineHash,
     resolverVersion: tracePayload.resolverVersion,
     inputHash: tracePayload.inputHash,
-    result: 'valid',
-    failureCodes: [],
+    result: finalOutcome.result,
+    failureCodes: finalOutcome.failureCodes,
     trace: tracePayload.trace,
   }, context);
 

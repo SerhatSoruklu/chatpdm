@@ -175,6 +175,7 @@ function buildTraceInput(overrides = {}) {
     manualOverrideUsed: overrides.manualOverrideUsed === true,
     overrideIds: overrides.overrideIds === undefined ? [] : overrides.overrideIds,
     mappingRuleIds: overrides.mappingRuleIds,
+    validationRuleIds: overrides.validationRuleIds,
     loadedManifest: overrides.loadedManifest,
   };
 }
@@ -1260,30 +1261,58 @@ test('validation-kernel.service refuses valid continuation when validationRuleId
   assert.equal(result.validationWritten, false);
 });
 
-test('trace.service rejects entry if validation-kernel did not return continue', async () => {
-  const { doctrineLoadResult, resolverResult } = await createResolverSuccessResult({
-    artifactId: 'artifact-trace-kernel-reject',
+test('trace.service persists ValidationRun on a terminal invalid kernel result', async () => {
+  const { artifact, doctrineLoadResult, resolverResult } = await createResolverSuccessResult({
+    artifactId: 'artifact-trace-kernel-invalid',
     doctrineHash: 'd'.repeat(64),
-    argumentUnitId: 'argument-unit-trace-kernel-reject',
-    mappingId: 'mapping-trace-kernel-reject',
+    argumentUnitId: 'argument-unit-trace-kernel-invalid',
+    mappingId: 'mapping-trace-kernel-invalid',
+    resolverRuleId: 'resolver-rule-trace-kernel-invalid',
   });
 
-  await assert.rejects(
-    traceService.finalize({
-      doctrineLoadResult,
-      resolverResult,
-      validationKernelResult: {
-        ok: false,
-        terminal: true,
-        result: 'unresolved',
-        failureCode: 'INSUFFICIENT_DOCTRINE',
-      },
-      traceInput: buildTraceInput({
-        validationRunId: 'validation-run-trace-kernel-reject',
-      }),
+  const validationKernelResult = await validationKernelService.evaluate({
+    doctrineLoadResult,
+    resolverResult,
+    validationDecision: {
+      status: 'source_override',
+      reason: 'The claim attempts to override the controlling source.',
+    },
+  });
+
+  const result = await traceService.finalize({
+    doctrineLoadResult,
+    resolverResult,
+    validationKernelResult,
+    traceInput: buildTraceInput({
+      validationRunId: 'validation-run-trace-kernel-invalid',
+      sourceAnchors: ['segment-2', 'segment-1'],
     }),
-    /requires a continue outcome from validation-kernel\.service/,
-  );
+  });
+
+  assert.equal(result.ok, true);
+  assert.equal(result.terminal, false);
+  assert.equal(result.result, 'invalid');
+  assert.deepEqual(result.failureCodes, ['SOURCE_OVERRIDE_ATTEMPT']);
+  assert.equal(result.doctrineArtifactId, artifact.artifactId);
+  assert.equal(result.mappingId, resolverResult.mappingId);
+  assert.equal(result.validationRunWritten, true);
+  assert.deepEqual(result.persistedTraceSummary, {
+    sourceAnchors: ['segment-1', 'segment-2'],
+    interpretationRegimeId: null,
+    mappingRuleIds: ['resolver-rule-trace-kernel-invalid'],
+    validationRuleIds: [],
+    overrideIds: [],
+  });
+
+  const persistedRun = await ValidationRun.findOne({ validationRunId: 'validation-run-trace-kernel-invalid' }).lean().exec();
+
+  assert.ok(persistedRun);
+  assert.equal(persistedRun.result, 'invalid');
+  assert.deepEqual(persistedRun.failureCodes, ['SOURCE_OVERRIDE_ATTEMPT']);
+  assert.deepEqual(persistedRun.trace.sourceAnchors, ['segment-1', 'segment-2']);
+  assert.deepEqual(persistedRun.trace.mappingRuleIds, ['resolver-rule-trace-kernel-invalid']);
+  assert.deepEqual(persistedRun.trace.validationRuleIds, []);
+  assert.equal(await ValidationRun.countDocuments({}), 1);
 });
 
 test('trace.service rejects entry if doctrine-loader did not return continue', async () => {
@@ -1556,6 +1585,138 @@ test('trace.service rejects write when doctrine hash is missing across upstream 
   assert.equal(result.terminal, true);
   assert.equal(result.result, 'invalid');
   assert.equal(result.failureCode, 'REPLAY_ARTIFACT_MISMATCH');
+  assert.equal(result.validationRunWritten, false);
+  assert.equal(await ValidationRun.countDocuments({}), 0);
+});
+
+test('trace.service persists ValidationRun on a terminal unresolved resolver result without kernel-only trace fields', async () => {
+  const artifact = await createDoctrineArtifact({
+    artifactId: 'artifact-trace-resolver-unresolved',
+    hash: 'a'.repeat(64),
+  });
+  const unit = await createArgumentUnit({
+    argumentUnitId: 'argument-unit-trace-resolver-unresolved',
+    matterId: 'matter-trace-resolver-unresolved',
+    documentId: 'document-trace-resolver-unresolved',
+  });
+
+  const doctrineLoadResult = await doctrineLoaderService.loadDoctrineArtifact({ artifactId: artifact.artifactId });
+  const admissibilityResult = await admissibilityService.evaluateArgumentUnits({ argumentUnits: [unit] });
+  const resolverResult = await resolverService.resolve({
+    doctrineLoadResult,
+    admissibilityResult,
+    resolverDecision: {
+      status: 'ambiguous',
+      reason: 'Two live readings remain available.',
+    },
+  });
+
+  const result = await traceService.finalize({
+    doctrineLoadResult,
+    resolverResult,
+    traceInput: buildTraceInput({
+      validationRunId: 'validation-run-trace-resolver-unresolved',
+      sourceAnchors: ['segment-2', 'segment-1'],
+    }),
+  });
+
+  assert.equal(result.ok, true);
+  assert.equal(result.terminal, false);
+  assert.equal(result.result, 'unresolved');
+  assert.deepEqual(result.failureCodes, ['AMBIGUOUS_CONCEPT_MAPPING']);
+  assert.equal(result.doctrineArtifactId, artifact.artifactId);
+  assert.equal(result.mappingId, null);
+  assert.equal(result.validationRunWritten, true);
+  assert.deepEqual(result.persistedTraceSummary, {
+    sourceAnchors: ['segment-1', 'segment-2'],
+    interpretationRegimeId: null,
+    mappingRuleIds: [],
+    validationRuleIds: [],
+    overrideIds: [],
+  });
+
+  const persistedRun = await ValidationRun.findOne({ validationRunId: 'validation-run-trace-resolver-unresolved' }).lean().exec();
+
+  assert.ok(persistedRun);
+  assert.equal(persistedRun.result, 'unresolved');
+  assert.deepEqual(persistedRun.failureCodes, ['AMBIGUOUS_CONCEPT_MAPPING']);
+  assert.deepEqual(persistedRun.trace.sourceAnchors, ['segment-1', 'segment-2']);
+  assert.deepEqual(persistedRun.trace.mappingRuleIds, []);
+  assert.deepEqual(persistedRun.trace.validationRuleIds, []);
+  assert.equal(await ValidationRun.countDocuments({}), 1);
+});
+
+test('trace.service rejects mappingRuleIds when resolver stopped before writing Mapping', async () => {
+  const artifact = await createDoctrineArtifact({
+    artifactId: 'artifact-trace-resolver-no-mapping-rules',
+    hash: 'b'.repeat(64),
+  });
+  const unit = await createArgumentUnit({
+    argumentUnitId: 'argument-unit-trace-resolver-no-mapping-rules',
+    matterId: 'matter-trace-resolver-no-mapping-rules',
+    documentId: 'document-trace-resolver-no-mapping-rules',
+  });
+
+  const doctrineLoadResult = await doctrineLoaderService.loadDoctrineArtifact({ artifactId: artifact.artifactId });
+  const admissibilityResult = await admissibilityService.evaluateArgumentUnits({ argumentUnits: [unit] });
+  const resolverResult = await resolverService.resolve({
+    doctrineLoadResult,
+    admissibilityResult,
+    resolverDecision: {
+      status: 'ambiguous',
+      reason: 'Two live readings remain available.',
+    },
+  });
+
+  const result = await traceService.finalize({
+    doctrineLoadResult,
+    resolverResult,
+    traceInput: buildTraceInput({
+      validationRunId: 'validation-run-trace-resolver-no-mapping-rules',
+      mappingRuleIds: ['resolver-rule-should-not-exist'],
+    }),
+  });
+
+  assert.equal(result.ok, false);
+  assert.equal(result.terminal, true);
+  assert.equal(result.result, 'invalid');
+  assert.equal(result.failureCode, 'TRACE_INCOMPLETE');
+  assert.equal(result.validationRunWritten, false);
+  assert.equal(await ValidationRun.countDocuments({}), 0);
+});
+
+test('trace.service rejects validationRuleIds not produced by a terminal kernel result', async () => {
+  const { doctrineLoadResult, resolverResult } = await createResolverSuccessResult({
+    artifactId: 'artifact-trace-kernel-no-validation-rules',
+    doctrineHash: 'c'.repeat(64),
+    argumentUnitId: 'argument-unit-trace-kernel-no-validation-rules',
+    mappingId: 'mapping-trace-kernel-no-validation-rules',
+    resolverRuleId: 'resolver-rule-trace-kernel-no-validation-rules',
+  });
+
+  const validationKernelResult = await validationKernelService.evaluate({
+    doctrineLoadResult,
+    resolverResult,
+    validationDecision: {
+      status: 'source_override',
+      reason: 'The claim attempts to override the controlling source.',
+    },
+  });
+
+  const result = await traceService.finalize({
+    doctrineLoadResult,
+    resolverResult,
+    validationKernelResult,
+    traceInput: buildTraceInput({
+      validationRunId: 'validation-run-trace-kernel-no-validation-rules',
+      validationRuleIds: ['validation-rule-should-not-exist'],
+    }),
+  });
+
+  assert.equal(result.ok, false);
+  assert.equal(result.terminal, true);
+  assert.equal(result.result, 'invalid');
+  assert.equal(result.failureCode, 'TRACE_INCOMPLETE');
   assert.equal(result.validationRunWritten, false);
   assert.equal(await ValidationRun.countDocuments({}), 0);
 });
