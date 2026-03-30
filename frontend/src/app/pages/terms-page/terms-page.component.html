@@ -20,6 +20,9 @@
           <a class="pdm-terms-page__inspect-link" [routerLink]="viewModel().inspectRoute">
             Open inspect surface
           </a>
+          <a class="pdm-terms-page__inspect-link" [href]="'mailto:' + legalEmail">
+            {{ legalEmail }}
+          </a>
         </div>
       </header>
 

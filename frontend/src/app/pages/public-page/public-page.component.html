@@ -42,6 +42,20 @@
                 }
               </div>
             }
+
+            @if (section.contacts; as contacts) {
+              <div class="pdm-page__contact-list">
+                @for (contact of contacts; track contact.email) {
+                  <article class="pdm-page__contact-card">
+                    <p class="pdm-page__contact-label">{{ contact.label }}</p>
+                    <a class="pdm-page__contact-link" [href]="'mailto:' + contact.email">{{ contact.email }}</a>
+                    @if (contact.note; as note) {
+                      <p class="pdm-page__contact-note">{{ note }}</p>
+                    }
+                  </article>
+                }
+              </div>
+            }
           </section>
         }
       </div>

@@ -8,11 +8,18 @@ export interface PublicPageAction {
   route: string;
 }
 
+export interface PublicPageContact {
+  label: string;
+  email: string;
+  note?: string;
+}
+
 export interface PublicPageSection {
   title: string;
   paragraphs?: readonly string[];
   bullets?: readonly string[];
   questions?: readonly PublicPageQuestion[];
+  contacts?: readonly PublicPageContact[];
 }
 
 export interface PublicPageContent {
