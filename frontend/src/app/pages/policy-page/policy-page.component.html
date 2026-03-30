@@ -1,7 +1,14 @@
 <div class="pdm-policy-page">
   <main class="pdm-policy-page__main pdm-shell" aria-labelledby="pdm-policy-page-title">
     <div class="pdm-shell__frame pdm-policy-page__frame">
-      <app-policy-header [surface]="surface()" />
+      <app-policy-header
+        [surface]="surface()"
+        [visibleClaimCount]="filteredClaims().length"
+        [visibleMappedClaimCount]="visibleMappedClaimCount()"
+        [visibleInternalTransportCount]="visibleInternalTransportCount()"
+        [activeSearch]="searchQuery()"
+        [activeClaimId]="activeClaimId()"
+      />
 
       <section class="pdm-policy-page__controls" aria-labelledby="pdm-policy-page-title">
         <h2 class="pdm-policy-page__sr-only" id="pdm-policy-page-title">{{ surface().title }}</h2>
@@ -11,9 +18,12 @@
           [activeClaimClass]="activeClaimClass()"
           [activeSection]="activeSection()"
           [internalTransportOnly]="internalTransportOnly()"
-          [claimClasses]="claimClasses()"
-          [sections]="sections()"
+          [activeClaimId]="activeClaimId()"
+          [claimClassOptions]="claimClassOptions()"
+          [sectionOptions]="sectionOptions()"
           [visibleClaimCount]="filteredClaims().length"
+          [visibleMappedClaimCount]="visibleMappedClaimCount()"
+          [visibleInternalTransportCount]="visibleInternalTransportCount()"
           [totalClaimCount]="surface().summary.totalClaims"
           (searchChange)="updateSearch($event)"
           (claimClassChange)="updateClaimClass($event)"
@@ -23,7 +33,11 @@
         />
       </section>
 
-      <app-policy-claim-list [claims]="filteredClaims()" />
+      <app-policy-claim-list
+        [claims]="filteredClaims()"
+        [selectedClaimId]="activeClaimId()"
+        (inspectClaim)="toggleInspectClaim($event)"
+      />
     </div>
   </main>
 </div>

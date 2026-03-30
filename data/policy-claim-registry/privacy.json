@@ -1,0 +1,1077 @@
+{
+  "key": "privacy",
+  "version": 1,
+  "state": "published",
+  "claims": [
+    {
+      "id": "privacy-1",
+      "version": 1,
+      "state": "published",
+      "policyFile": "privacy.md",
+      "section": "Data Storage — Feedback event fields I",
+      "policySentence": "The platform stores `sessionId` in feedback event documents.",
+      "canonicalClaim": "The platform stores `sessionId` in feedback event documents.",
+      "claimClass": "stores",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "short_lived",
+        "ttlDays": 30,
+        "retentionReason": "Declared short-lived retention window for feedback event review and contract calibration.",
+        "deletionTrigger": "ttl_expiry",
+        "enforcementStatus": "declared_only",
+        "storageForm": "plaintext",
+        "controls": {
+          "exportBy": "sessionId",
+          "deleteBy": "sessionId",
+          "auditTrail": "whitelist_only_operational_metadata"
+        }
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/feedback-event.model.js:7-11",
+          "path": "backend/src/modules/feedback/feedback-event.model.js",
+          "lines": "7-11"
+        },
+        {
+          "source": "backend/src/modules/feedback/store.js:5-20",
+          "path": "backend/src/modules/feedback/store.js",
+          "lines": "5-20"
+        }
+      ]
+    },
+    {
+      "id": "privacy-2",
+      "version": 1,
+      "state": "published",
+      "policyFile": "privacy.md",
+      "section": "Data Storage — Feedback event fields I",
+      "policySentence": "The platform stores `rawQuery` in feedback event documents.",
+      "canonicalClaim": "The platform stores `rawQuery` in feedback event documents.",
+      "claimClass": "stores",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "short_lived",
+        "ttlDays": 30,
+        "retentionReason": "Declared short-lived retention window for feedback event review and contract calibration.",
+        "deletionTrigger": "ttl_expiry",
+        "enforcementStatus": "declared_only",
+        "storageForm": "sha256",
+        "controls": {
+          "exportBy": "sessionId",
+          "deleteBy": "sessionId",
+          "auditTrail": "whitelist_only_operational_metadata"
+        }
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/feedback-event.model.js:12-16",
+          "path": "backend/src/modules/feedback/feedback-event.model.js",
+          "lines": "12-16"
+        },
+        {
+          "source": "backend/src/modules/feedback/store.js:5-20",
+          "path": "backend/src/modules/feedback/store.js",
+          "lines": "5-20"
+        }
+      ]
+    },
+    {
+      "id": "privacy-3",
+      "version": 1,
+      "state": "published",
+      "policyFile": "privacy.md",
+      "section": "Data Storage — Feedback event fields I",
+      "policySentence": "The platform stores `normalizedQuery` in feedback event documents.",
+      "canonicalClaim": "The platform stores `normalizedQuery` in feedback event documents.",
+      "claimClass": "stores",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "short_lived",
+        "ttlDays": 30,
+        "retentionReason": "Declared short-lived retention window for feedback event review and contract calibration.",
+        "deletionTrigger": "ttl_expiry",
+        "enforcementStatus": "declared_only",
+        "storageForm": "sha256",
+        "controls": {
+          "exportBy": "sessionId",
+          "deleteBy": "sessionId",
+          "auditTrail": "whitelist_only_operational_metadata"
+        }
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/feedback-event.model.js:22-30",
+          "path": "backend/src/modules/feedback/feedback-event.model.js",
+          "lines": "22-30"
+        },
+        {
+          "source": "backend/src/modules/feedback/store.js:5-20",
+          "path": "backend/src/modules/feedback/store.js",
+          "lines": "5-20"
+        }
+      ]
+    },
+    {
+      "id": "privacy-4",
+      "version": 1,
+      "state": "published",
+      "policyFile": "privacy.md",
+      "section": "Data Storage — Feedback event fields I",
+      "policySentence": "The platform stores `responseType` in feedback event documents.",
+      "canonicalClaim": "The platform stores `responseType` in feedback event documents.",
+      "claimClass": "stores",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "short_lived",
+        "ttlDays": 30,
+        "retentionReason": "Declared short-lived retention window for feedback event review and contract calibration.",
+        "deletionTrigger": "ttl_expiry",
+        "enforcementStatus": "declared_only",
+        "storageForm": "plaintext",
+        "controls": {
+          "exportBy": "sessionId",
+          "deleteBy": "sessionId",
+          "auditTrail": "whitelist_only_operational_metadata"
+        }
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/feedback-event.model.js:31-35",
+          "path": "backend/src/modules/feedback/feedback-event.model.js",
+          "lines": "31-35"
+        },
+        {
+          "source": "backend/src/modules/feedback/store.js:5-20",
+          "path": "backend/src/modules/feedback/store.js",
+          "lines": "5-20"
+        }
+      ]
+    },
+    {
+      "id": "privacy-5",
+      "version": 1,
+      "state": "published",
+      "policyFile": "privacy.md",
+      "section": "Data Storage — Feedback event fields I",
+      "policySentence": "The platform stores `feedbackType` in feedback event documents.",
+      "canonicalClaim": "The platform stores `feedbackType` in feedback event documents.",
+      "claimClass": "stores",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "short_lived",
+        "ttlDays": 30,
+        "retentionReason": "Declared short-lived retention window for feedback event review and contract calibration.",
+        "deletionTrigger": "ttl_expiry",
+        "enforcementStatus": "declared_only",
+        "storageForm": "plaintext",
+        "controls": {
+          "exportBy": "sessionId",
+          "deleteBy": "sessionId",
+          "auditTrail": "whitelist_only_operational_metadata"
+        }
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/feedback-event.model.js:36-40",
+          "path": "backend/src/modules/feedback/feedback-event.model.js",
+          "lines": "36-40"
+        },
+        {
+          "source": "backend/src/modules/feedback/store.js:5-20",
+          "path": "backend/src/modules/feedback/store.js",
+          "lines": "5-20"
+        }
+      ]
+    },
+    {
+      "id": "privacy-6",
+      "version": 1,
+      "state": "published",
+      "policyFile": "privacy.md",
+      "section": "Data Storage — Feedback event fields II",
+      "policySentence": "The platform stores `resolvedConceptId` in feedback event documents when provided.",
+      "canonicalClaim": "The platform stores `resolvedConceptId` in feedback event documents when provided.",
+      "claimClass": "stores",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "short_lived",
+        "ttlDays": 30,
+        "retentionReason": "Declared short-lived retention window for feedback event review and contract calibration.",
+        "deletionTrigger": "ttl_expiry",
+        "enforcementStatus": "declared_only",
+        "storageForm": "plaintext",
+        "controls": {
+          "exportBy": "sessionId",
+          "deleteBy": "sessionId",
+          "auditTrail": "whitelist_only_operational_metadata"
+        }
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/feedback-event.model.js:41-45",
+          "path": "backend/src/modules/feedback/feedback-event.model.js",
+          "lines": "41-45"
+        },
+        {
+          "source": "backend/src/modules/feedback/store.js:5-20",
+          "path": "backend/src/modules/feedback/store.js",
+          "lines": "5-20"
+        }
+      ]
+    },
+    {
+      "id": "privacy-7",
+      "version": 1,
+      "state": "published",
+      "policyFile": "privacy.md",
+      "section": "Data Storage — Feedback event fields II",
+      "policySentence": "The platform stores `candidateConceptIds` in feedback event documents when provided.",
+      "canonicalClaim": "The platform stores `candidateConceptIds` in feedback event documents when provided.",
+      "claimClass": "stores",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "short_lived",
+        "ttlDays": 30,
+        "retentionReason": "Declared short-lived retention window for feedback event review and contract calibration.",
+        "deletionTrigger": "ttl_expiry",
+        "enforcementStatus": "declared_only",
+        "storageForm": "plaintext",
+        "controls": {
+          "exportBy": "sessionId",
+          "deleteBy": "sessionId",
+          "auditTrail": "whitelist_only_operational_metadata"
+        }
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/feedback-event.model.js:46-49",
+          "path": "backend/src/modules/feedback/feedback-event.model.js",
+          "lines": "46-49"
+        },
+        {
+          "source": "backend/src/modules/feedback/store.js:5-20",
+          "path": "backend/src/modules/feedback/store.js",
+          "lines": "5-20"
+        }
+      ]
+    },
+    {
+      "id": "privacy-8",
+      "version": 1,
+      "state": "published",
+      "policyFile": "privacy.md",
+      "section": "Data Storage — Feedback event fields II",
+      "policySentence": "The platform stores `suggestionConceptIds` in feedback event documents when provided.",
+      "canonicalClaim": "The platform stores `suggestionConceptIds` in feedback event documents when provided.",
+      "claimClass": "stores",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "short_lived",
+        "ttlDays": 30,
+        "retentionReason": "Declared short-lived retention window for feedback event review and contract calibration.",
+        "deletionTrigger": "ttl_expiry",
+        "enforcementStatus": "declared_only",
+        "storageForm": "plaintext",
+        "controls": {
+          "exportBy": "sessionId",
+          "deleteBy": "sessionId",
+          "auditTrail": "whitelist_only_operational_metadata"
+        }
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/feedback-event.model.js:50-53",
+          "path": "backend/src/modules/feedback/feedback-event.model.js",
+          "lines": "50-53"
+        },
+        {
+          "source": "backend/src/modules/feedback/store.js:5-20",
+          "path": "backend/src/modules/feedback/store.js",
+          "lines": "5-20"
+        }
+      ]
+    },
+    {
+      "id": "privacy-9",
+      "version": 1,
+      "state": "published",
+      "policyFile": "privacy.md",
+      "section": "Data Storage — Feedback event fields II",
+      "policySentence": "The platform stores `contractVersion` in feedback event documents.",
+      "canonicalClaim": "The platform stores `contractVersion` in feedback event documents.",
+      "claimClass": "stores",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "short_lived",
+        "ttlDays": 30,
+        "retentionReason": "Declared short-lived retention window for feedback event review and contract calibration.",
+        "deletionTrigger": "ttl_expiry",
+        "enforcementStatus": "declared_only",
+        "storageForm": "plaintext",
+        "controls": {
+          "exportBy": "sessionId",
+          "deleteBy": "sessionId",
+          "auditTrail": "whitelist_only_operational_metadata"
+        }
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/feedback-event.model.js:54-58",
+          "path": "backend/src/modules/feedback/feedback-event.model.js",
+          "lines": "54-58"
+        },
+        {
+          "source": "backend/src/modules/feedback/store.js:5-20",
+          "path": "backend/src/modules/feedback/store.js",
+          "lines": "5-20"
+        }
+      ]
+    },
+    {
+      "id": "privacy-10",
+      "version": 1,
+      "state": "published",
+      "policyFile": "privacy.md",
+      "section": "Data Storage — Feedback event fields II",
+      "policySentence": "The platform stores `normalizerVersion` in feedback event documents.",
+      "canonicalClaim": "The platform stores `normalizerVersion` in feedback event documents.",
+      "claimClass": "stores",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "short_lived",
+        "ttlDays": 30,
+        "retentionReason": "Declared short-lived retention window for feedback event review and contract calibration.",
+        "deletionTrigger": "ttl_expiry",
+        "enforcementStatus": "declared_only",
+        "storageForm": "plaintext",
+        "controls": {
+          "exportBy": "sessionId",
+          "deleteBy": "sessionId",
+          "auditTrail": "whitelist_only_operational_metadata"
+        }
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/feedback-event.model.js:59-63",
+          "path": "backend/src/modules/feedback/feedback-event.model.js",
+          "lines": "59-63"
+        },
+        {
+          "source": "backend/src/modules/feedback/store.js:5-20",
+          "path": "backend/src/modules/feedback/store.js",
+          "lines": "5-20"
+        }
+      ]
+    },
+    {
+      "id": "privacy-11",
+      "version": 1,
+      "state": "published",
+      "policyFile": "privacy.md",
+      "section": "Data Storage — Feedback event fields III",
+      "policySentence": "The platform stores `matcherVersion` in feedback event documents.",
+      "canonicalClaim": "The platform stores `matcherVersion` in feedback event documents.",
+      "claimClass": "stores",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "short_lived",
+        "ttlDays": 30,
+        "retentionReason": "Declared short-lived retention window for feedback event review and contract calibration.",
+        "deletionTrigger": "ttl_expiry",
+        "enforcementStatus": "declared_only",
+        "storageForm": "plaintext",
+        "controls": {
+          "exportBy": "sessionId",
+          "deleteBy": "sessionId",
+          "auditTrail": "whitelist_only_operational_metadata"
+        }
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/feedback-event.model.js:64-68",
+          "path": "backend/src/modules/feedback/feedback-event.model.js",
+          "lines": "64-68"
+        },
+        {
+          "source": "backend/src/modules/feedback/store.js:5-20",
+          "path": "backend/src/modules/feedback/store.js",
+          "lines": "5-20"
+        }
+      ]
+    },
+    {
+      "id": "privacy-12",
+      "version": 1,
+      "state": "published",
+      "policyFile": "privacy.md",
+      "section": "Data Storage — Feedback event fields III",
+      "policySentence": "The platform stores `conceptSetVersion` in feedback event documents.",
+      "canonicalClaim": "The platform stores `conceptSetVersion` in feedback event documents.",
+      "claimClass": "stores",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "short_lived",
+        "ttlDays": 30,
+        "retentionReason": "Declared short-lived retention window for feedback event review and contract calibration.",
+        "deletionTrigger": "ttl_expiry",
+        "enforcementStatus": "declared_only",
+        "storageForm": "plaintext",
+        "controls": {
+          "exportBy": "sessionId",
+          "deleteBy": "sessionId",
+          "auditTrail": "whitelist_only_operational_metadata"
+        }
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/feedback-event.model.js:69-73",
+          "path": "backend/src/modules/feedback/feedback-event.model.js",
+          "lines": "69-73"
+        },
+        {
+          "source": "backend/src/modules/feedback/store.js:5-20",
+          "path": "backend/src/modules/feedback/store.js",
+          "lines": "5-20"
+        }
+      ]
+    },
+    {
+      "id": "privacy-13",
+      "version": 1,
+      "state": "published",
+      "policyFile": "privacy.md",
+      "section": "Data Storage — Feedback event fields III",
+      "policySentence": "The platform stores `createdAt` in feedback event documents.",
+      "canonicalClaim": "The platform stores `createdAt` in feedback event documents.",
+      "claimClass": "stores",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "short_lived",
+        "ttlDays": 30,
+        "retentionReason": "Declared short-lived retention window for feedback event review and contract calibration.",
+        "deletionTrigger": "ttl_expiry",
+        "enforcementStatus": "declared_only",
+        "storageForm": "plaintext",
+        "controls": {
+          "exportBy": "sessionId",
+          "deleteBy": "sessionId",
+          "auditTrail": "whitelist_only_operational_metadata"
+        }
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/feedback-event.model.js:74-78",
+          "path": "backend/src/modules/feedback/feedback-event.model.js",
+          "lines": "74-78"
+        },
+        {
+          "source": "backend/src/modules/feedback/service.js:136-142",
+          "path": "backend/src/modules/feedback/service.js",
+          "lines": "136-142"
+        }
+      ]
+    },
+    {
+      "id": "privacy-14",
+      "version": 1,
+      "state": "published",
+      "policyFile": "privacy.md",
+      "section": "Data Storage — Browser local storage",
+      "policySentence": "The platform stores a feedback session identifier in browser local storage under `chatpdm-beta-session-id`.",
+      "canonicalClaim": "The platform stores a feedback session identifier in browser local storage under `chatpdm-beta-session-id`.",
+      "claimClass": "stores",
+      "status": "mapped",
+      "notes": "Browser-side storage.",
+      "lifecycle": {
+        "lifecycleClass": "session_bound",
+        "retentionReason": "Declared browser-scoped session continuity for the feedback flow.",
+        "deletionTrigger": "browser_clear",
+        "enforcementStatus": "declared_only",
+        "storageForm": "plaintext"
+      },
+      "evidenceLinks": [
+        {
+          "source": "frontend/src/app/core/feedback/feedback-session.service.ts:4,16-18,23-33",
+          "path": "frontend/src/app/core/feedback/feedback-session.service.ts",
+          "lines": "4,16-18,23-33"
+        }
+      ]
+    },
+    {
+      "id": "privacy-15",
+      "version": 1,
+      "state": "published",
+      "policyFile": "privacy.md",
+      "section": "Data Handling — Internal proxy transport",
+      "policySentence": "The platform shares incoming `x-forwarded-for` headers with the API proxy target through the SSR layer.",
+      "canonicalClaim": "The platform shares incoming `x-forwarded-for` headers with the API proxy target through the SSR layer.",
+      "claimClass": "shares",
+      "status": "mapped",
+      "notes": "internal SSR transport only",
+      "lifecycle": {
+        "lifecycleClass": "transport_only",
+        "retentionReason": "Declared request-bound internal SSR transport within the product boundary.",
+        "deletionTrigger": "request_complete",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "frontend/src/server.ts:123-145",
+          "path": "frontend/src/server.ts",
+          "lines": "123-145"
+        }
+      ]
+    },
+    {
+      "id": "privacy-16",
+      "version": 1,
+      "state": "published",
+      "policyFile": "privacy.md",
+      "section": "Behavior Controls — Backend request controls",
+      "policySentence": "The platform enforces Helmet security middleware on backend requests.",
+      "canonicalClaim": "The platform enforces Helmet security middleware on backend requests.",
+      "claimClass": "enforces",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/app.js:17-20",
+          "path": "backend/src/app.js",
+          "lines": "17-20"
+        }
+      ]
+    },
+    {
+      "id": "privacy-17",
+      "version": 1,
+      "state": "published",
+      "policyFile": "privacy.md",
+      "section": "Behavior Controls — Backend request controls",
+      "policySentence": "The platform enforces CORS on backend requests.",
+      "canonicalClaim": "The platform enforces CORS on backend requests.",
+      "claimClass": "enforces",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/app.js:26-27",
+          "path": "backend/src/app.js",
+          "lines": "26-27"
+        }
+      ]
+    },
+    {
+      "id": "privacy-18",
+      "version": 1,
+      "state": "published",
+      "policyFile": "privacy.md",
+      "section": "Behavior Controls — Backend request controls",
+      "policySentence": "The platform enforces backend JSON body size limits of `64kb`.",
+      "canonicalClaim": "The platform enforces backend JSON body size limits of `64kb`.",
+      "claimClass": "enforces",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/app.js:26-27",
+          "path": "backend/src/app.js",
+          "lines": "26-27"
+        }
+      ]
+    },
+    {
+      "id": "privacy-19",
+      "version": 1,
+      "state": "published",
+      "policyFile": "privacy.md",
+      "section": "Behavior Controls — Backend request controls",
+      "policySentence": "The platform enforces SSR `/api/*` JSON body size limits of `32kb`.",
+      "canonicalClaim": "The platform enforces SSR `/api/*` JSON body size limits of `32kb`.",
+      "claimClass": "enforces",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "frontend/src/server.ts:43-45",
+          "path": "frontend/src/server.ts",
+          "lines": "43-45"
+        }
+      ]
+    },
+    {
+      "id": "privacy-20",
+      "version": 1,
+      "state": "published",
+      "policyFile": "privacy.md",
+      "section": "Behavior Controls — CORS settings",
+      "policySentence": "The platform enforces CORS credentials.",
+      "canonicalClaim": "The platform enforces CORS credentials.",
+      "claimClass": "enforces",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/security/cors.js:6-27",
+          "path": "backend/src/security/cors.js",
+          "lines": "6-27"
+        }
+      ]
+    },
+    {
+      "id": "privacy-21",
+      "version": 1,
+      "state": "published",
+      "policyFile": "privacy.md",
+      "section": "Behavior Controls — CORS settings",
+      "policySentence": "The platform enforces CORS methods `GET`, `POST`, and `OPTIONS`.",
+      "canonicalClaim": "The platform enforces CORS methods `GET`, `POST`, and `OPTIONS`.",
+      "claimClass": "enforces",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/security/cors.js:22-26",
+          "path": "backend/src/security/cors.js",
+          "lines": "22-26"
+        }
+      ]
+    },
+    {
+      "id": "privacy-22",
+      "version": 1,
+      "state": "published",
+      "policyFile": "privacy.md",
+      "section": "Behavior Controls — CORS settings",
+      "policySentence": "The platform enforces CORS headers `Content-Type` and `Accept`.",
+      "canonicalClaim": "The platform enforces CORS headers `Content-Type` and `Accept`.",
+      "claimClass": "enforces",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/security/cors.js:22-26",
+          "path": "backend/src/security/cors.js",
+          "lines": "22-26"
+        }
+      ]
+    },
+    {
+      "id": "privacy-23",
+      "version": 1,
+      "state": "published",
+      "policyFile": "privacy.md",
+      "section": "Behavior Controls — CORS settings",
+      "policySentence": "The platform enforces CORS `maxAge` of `86400`.",
+      "canonicalClaim": "The platform enforces CORS `maxAge` of `86400`.",
+      "claimClass": "enforces",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/security/cors.js:22-26",
+          "path": "backend/src/security/cors.js",
+          "lines": "22-26"
+        }
+      ]
+    },
+    {
+      "id": "privacy-24",
+      "version": 1,
+      "state": "published",
+      "policyFile": "privacy.md",
+      "section": "Boundaries — Invalid request refusal",
+      "policySentence": "The platform refuses concept resolution requests when query parameter `q` is missing.",
+      "canonicalClaim": "The platform refuses concept resolution requests when query parameter `q` is missing.",
+      "claimClass": "refuses",
+      "status": "mapped",
+      "notes": "Shared validation branch.",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/routes/api/v1/concepts.route.js:16-27",
+          "path": "backend/src/routes/api/v1/concepts.route.js",
+          "lines": "16-27"
+        }
+      ]
+    },
+    {
+      "id": "privacy-25",
+      "version": 1,
+      "state": "published",
+      "policyFile": "privacy.md",
+      "section": "Boundaries — Invalid request refusal",
+      "policySentence": "The platform refuses concept resolution requests when query parameter `q` is empty.",
+      "canonicalClaim": "The platform refuses concept resolution requests when query parameter `q` is empty.",
+      "claimClass": "refuses",
+      "status": "mapped",
+      "notes": "Shared validation branch.",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/routes/api/v1/concepts.route.js:16-27",
+          "path": "backend/src/routes/api/v1/concepts.route.js",
+          "lines": "16-27"
+        }
+      ]
+    },
+    {
+      "id": "privacy-26",
+      "version": 1,
+      "state": "published",
+      "policyFile": "privacy.md",
+      "section": "Boundaries — Invalid request refusal",
+      "policySentence": "The platform refuses concept resolution requests when query parameter `q` is not a string.",
+      "canonicalClaim": "The platform refuses concept resolution requests when query parameter `q` is not a string.",
+      "claimClass": "refuses",
+      "status": "mapped",
+      "notes": "Shared validation branch.",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/routes/api/v1/concepts.route.js:16-27",
+          "path": "backend/src/routes/api/v1/concepts.route.js",
+          "lines": "16-27"
+        }
+      ]
+    },
+    {
+      "id": "privacy-27",
+      "version": 1,
+      "state": "published",
+      "policyFile": "privacy.md",
+      "section": "Boundaries — Invalid request refusal",
+      "policySentence": "The platform refuses invalid feedback submissions with HTTP `400`.",
+      "canonicalClaim": "The platform refuses invalid feedback submissions with HTTP `400`.",
+      "claimClass": "refuses",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/routes/api/v1/feedback.route.js:16-28",
+          "path": "backend/src/routes/api/v1/feedback.route.js",
+          "lines": "16-28"
+        }
+      ]
+    },
+    {
+      "id": "privacy-28",
+      "version": 1,
+      "state": "published",
+      "policyFile": "privacy.md",
+      "section": "Boundaries — Invalid request refusal",
+      "policySentence": "The platform refuses invalid feedback submissions with error code `invalid_feedback`.",
+      "canonicalClaim": "The platform refuses invalid feedback submissions with error code `invalid_feedback`.",
+      "claimClass": "refuses",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/routes/api/v1/feedback.route.js:21-27",
+          "path": "backend/src/routes/api/v1/feedback.route.js",
+          "lines": "21-27"
+        }
+      ]
+    },
+    {
+      "id": "privacy-29",
+      "version": 1,
+      "state": "published",
+      "policyFile": "privacy.md",
+      "section": "Boundaries — Unsupported query refusal",
+      "policySentence": "The platform refuses unsupported complex queries.",
+      "canonicalClaim": "The platform refuses unsupported complex queries.",
+      "claimClass": "refuses",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/concepts/query-shape-classifier.js:191-195",
+          "path": "backend/src/modules/concepts/query-shape-classifier.js",
+          "lines": "191-195"
+        }
+      ]
+    },
+    {
+      "id": "privacy-30",
+      "version": 1,
+      "state": "published",
+      "policyFile": "privacy.md",
+      "section": "Boundaries — Unsupported query refusal",
+      "policySentence": "The platform refuses relation queries.",
+      "canonicalClaim": "The platform refuses relation queries.",
+      "claimClass": "refuses",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/concepts/query-shape-classifier.js:173-179",
+          "path": "backend/src/modules/concepts/query-shape-classifier.js",
+          "lines": "173-179"
+        }
+      ]
+    },
+    {
+      "id": "privacy-31",
+      "version": 1,
+      "state": "published",
+      "policyFile": "privacy.md",
+      "section": "Boundaries — Unsupported query refusal",
+      "policySentence": "The platform refuses role or actor queries.",
+      "canonicalClaim": "The platform refuses role or actor queries.",
+      "claimClass": "refuses",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/concepts/query-shape-classifier.js:182-188",
+          "path": "backend/src/modules/concepts/query-shape-classifier.js",
+          "lines": "182-188"
+        }
+      ]
+    },
+    {
+      "id": "privacy-32",
+      "version": 1,
+      "state": "published",
+      "policyFile": "privacy.md",
+      "section": "Boundaries — Unsupported query refusal",
+      "policySentence": "The platform refuses canonical lookup requests when no authored concept ID is provided.",
+      "canonicalClaim": "The platform refuses canonical lookup requests when no authored concept ID is provided.",
+      "claimClass": "refuses",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/concepts/query-shape-classifier.js:198-204",
+          "path": "backend/src/modules/concepts/query-shape-classifier.js",
+          "lines": "198-204"
+        }
+      ]
+    },
+    {
+      "id": "privacy-33",
+      "version": 1,
+      "state": "published",
+      "policyFile": "privacy.md",
+      "section": "Boundaries — Unsupported query refusal",
+      "policySentence": "The platform refuses canonical lookup requests when no authored concept exists for the requested ID.",
+      "canonicalClaim": "The platform refuses canonical lookup requests when no authored concept exists for the requested ID.",
+      "claimClass": "refuses",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/concepts/query-shape-classifier.js:206-210",
+          "path": "backend/src/modules/concepts/query-shape-classifier.js",
+          "lines": "206-210"
+        }
+      ]
+    },
+    {
+      "id": "privacy-34",
+      "version": 1,
+      "state": "published",
+      "policyFile": "privacy.md",
+      "section": "Boundaries — Scope and comparison refusal",
+      "policySentence": "The platform refuses comparison queries outside the allowlisted comparison set.",
+      "canonicalClaim": "The platform refuses comparison queries outside the allowlisted comparison set.",
+      "claimClass": "refuses",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/concepts/comparison-resolver.js:20-22,46-55",
+          "path": "backend/src/modules/concepts/comparison-resolver.js",
+          "lines": "20-22,46-55"
+        },
+        {
+          "source": "backend/src/modules/concepts/resolver.js:109-130",
+          "path": "backend/src/modules/concepts/resolver.js",
+          "lines": "109-130"
+        }
+      ]
+    },
+    {
+      "id": "privacy-35",
+      "version": 1,
+      "state": "published",
+      "policyFile": "privacy.md",
+      "section": "Conditions — Scope-triggered controls",
+      "policySentence": "The platform enforces governance-domain scope handling for governance-scoped concepts with non-governance signals.",
+      "canonicalClaim": "The platform enforces governance-domain scope handling for governance-scoped concepts with non-governance signals.",
+      "claimClass": "enforces",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/concepts/governance-scope-enforcer.js:108-133",
+          "path": "backend/src/modules/concepts/governance-scope-enforcer.js",
+          "lines": "108-133"
+        }
+      ]
+    },
+    {
+      "id": "privacy-36",
+      "version": 1,
+      "state": "published",
+      "policyFile": "privacy.md",
+      "section": "Conditions — Scope-triggered controls",
+      "policySentence": "The platform enforces product-response validation before resolver output returns.",
+      "canonicalClaim": "The platform enforces product-response validation before resolver output returns.",
+      "claimClass": "enforces",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/concepts/resolver.js:18,106,179",
+          "path": "backend/src/modules/concepts/resolver.js",
+          "lines": "18,106,179"
+        }
+      ]
+    },
+    {
+      "id": "privacy-37",
+      "version": 1,
+      "state": "published",
+      "policyFile": "privacy.md",
+      "section": "Conditions — Scope-triggered controls",
+      "policySentence": "The platform refuses non-governance usage of governance-scoped concepts by returning `no_exact_match`.",
+      "canonicalClaim": "The platform refuses non-governance usage of governance-scoped concepts by returning `no_exact_match`.",
+      "claimClass": "refuses",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/concepts/resolver.js:87-107",
+          "path": "backend/src/modules/concepts/resolver.js",
+          "lines": "87-107"
+        },
+        {
+          "source": "backend/src/modules/concepts/governance-scope-enforcer.js:44-45,108-133",
+          "path": "backend/src/modules/concepts/governance-scope-enforcer.js",
+          "lines": "44-45,108-133"
+        }
+      ]
+    }
+  ]
+}

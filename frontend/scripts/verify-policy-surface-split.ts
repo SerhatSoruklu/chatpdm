@@ -11,6 +11,7 @@ const currentDir = dirname(fileURLToPath(import.meta.url));
 const appRoutesPath = join(currentDir, '../src/app/app.routes.ts');
 const publicPageTypesPath = join(currentDir, '../src/app/pages/public-page/public-page.types.ts');
 const seoLegalPath = join(currentDir, '../src/app/seo/registry/seo.legal.ts');
+const generatePolicySurfacePath = join(currentDir, './generate-policy-surface.ts');
 
 interface PolicyRouteSpec {
   key: keyof typeof POLICY_SURFACE_DATA;
@@ -62,14 +63,34 @@ function main(): void {
   const routeSource = readFileSync(appRoutesPath, 'utf8');
   const publicPageTypesSource = readFileSync(publicPageTypesPath, 'utf8');
   const seoLegalSource = readFileSync(seoLegalPath, 'utf8');
+  const generatePolicySurfaceSource = readFileSync(generatePolicySurfacePath, 'utf8');
 
   assertRouteIdentity(routeSource);
   assertPublicPageBoundary(publicPageTypesSource);
   assertSeoParity(seoLegalSource);
+  assertClaimRegistrySource(generatePolicySurfaceSource);
   assertSurfaceTruthIdentity();
   assertPublicInspectParity();
 
   console.log('PASS policy_surface_split');
+}
+
+function assertClaimRegistrySource(generatePolicySurfaceSource: string): void {
+  assert.match(
+    generatePolicySurfaceSource,
+    /loadPolicyClaimRegistry/,
+    'Policy surface generator must load structured claim registry data.',
+  );
+  assert.doesNotMatch(
+    generatePolicySurfaceSource,
+    /POLICY_AUDIT_PHASE_D\.md/,
+    'Policy surface generator must not treat POLICY_AUDIT_PHASE_D.md as claim truth.',
+  );
+  assert.doesNotMatch(
+    generatePolicySurfaceSource,
+    /parsePhaseD|parseTraceTable/,
+    'Policy surface generator must not reconstruct claims from markdown trace tables.',
+  );
 }
 
 function assertRouteIdentity(routeSource: string): void {
@@ -91,12 +112,17 @@ function assertRouteIdentity(routeSource: string): void {
   assertBlock(
     routeSource,
     'terms public route',
-    /path:\s*'terms'[\s\S]*?component:\s*TermsPageComponent[\s\S]*?seoRouteData\('legal\.terms'\)/,
+    /path:\s*'terms'[\s\S]*?component:\s*PublicPageComponent[\s\S]*?pageRouteData\('terms',\s*'legal\.terms'\)/,
+  );
+  assertBlock(
+    routeSource,
+    'api public route',
+    /path:\s*'api'[\s\S]*?component:\s*TermsPageComponent[\s\S]*?seoRouteData\('api\.index'\)/,
   );
   assertBlock(
     routeSource,
     'cookies public route',
-    /path:\s*'cookies'[\s\S]*?component:\s*CookiesPageComponent[\s\S]*?seoRouteData\('legal\.cookies'\)/,
+    /path:\s*'cookies'[\s\S]*?component:\s*PublicPageComponent[\s\S]*?pageRouteData\('cookies',\s*'legal\.cookies'\)/,
   );
 
   for (const spec of routeSpecs) {
@@ -124,8 +150,23 @@ function assertRouteIdentity(routeSource: string): void {
 function assertPublicPageBoundary(publicPageTypesSource: string): void {
   assert.match(
     publicPageTypesSource,
+    /\|\s*'terms'/,
+    'Public page types must include terms as the public human-readable route.',
+  );
+  assert.match(
+    publicPageTypesSource,
+    /\|\s*'cookies'/,
+    'Public page types must include cookies as the public human-readable route.',
+  );
+  assert.match(
+    publicPageTypesSource,
     /\|\s*'privacy'/,
     'Public page types must still include privacy as the public human-readable route.',
+  );
+  assert.doesNotMatch(
+    publicPageTypesSource,
+    /\|\s*'api'/,
+    'API must not drift back into the generic public-page surface.',
   );
   assert.match(
     publicPageTypesSource,
@@ -136,16 +177,6 @@ function assertPublicPageBoundary(publicPageTypesSource: string): void {
     publicPageTypesSource,
     /\|\s*'acceptable-use'/,
     'Public page types must include acceptable-use as the public human-readable route.',
-  );
-  assert.doesNotMatch(
-    publicPageTypesSource,
-    /\|\s*'terms'/,
-    'Terms must not drift back into the generic public-page surface.',
-  );
-  assert.doesNotMatch(
-    publicPageTypesSource,
-    /\|\s*'cookies'/,
-    'Cookies must not drift back into the generic public-page surface.',
   );
 }
 
@@ -171,6 +202,14 @@ function assertSurfaceTruthIdentity(): void {
     assert.ok(
       surface.claims.every((claim) => claim.policyFile === spec.policyFile),
       `${spec.key} surface claims must remain ${spec.policyFile}-backed.`,
+    );
+    assert.ok(
+      surface.claims.every((claim) => claim.state === 'published'),
+      `${spec.key} surface claims must remain published registry claims only.`,
+    );
+    assert.ok(
+      surface.claims.every((claim) => Number.isInteger(claim.version) && claim.version > 0),
+      `${spec.key} surface claims must carry explicit positive integer versions.`,
     );
   }
 

@@ -40,6 +40,25 @@
       "fullDefinition": "Responsibility is defined as the answerable connection between an actor and attributable action, omission, role, or outcome, and it is not identical to duty. The concept assigns a bearer for conduct or effect by joining attribution to a basis for being called to account. Duty may specify what was required in advance, but responsibility identifies who stands as answerable once action, omission, or result is in question."
     }
   },
+  "structureV3": {
+    "schemaVersion": 1,
+    "conceptFamily": "responsibility",
+    "responsibility": {
+      "subject": {
+        "type": "organization_role",
+        "id": "actor",
+        "label": "Actor or office-bearer held answerable"
+      },
+      "trigger": {
+        "type": "action",
+        "description": "conduct, omission, or outcome attributable to the actor within the relevant governance setting"
+      },
+      "scope": {
+        "domain": "governance",
+        "object": "attributable actions, omissions, roles, or outcomes"
+      }
+    }
+  },
   "contexts": [
     {
       "label": "causal",

@@ -55,6 +55,29 @@
       "fullDefinition": "Authority is defined, within the governance domain, as the recognized standing to issue direction, make determinations, or govern within a governance order. The concept requires that the right to direct attach to role, office, or position and count as institutionally operative rather than as mere capacity. Authority is distinct from power, which concerns produced outcomes, and from legitimacy, which concerns whether that standing is valid."
     }
   },
+  "structureV3": {
+    "schemaVersion": 1,
+    "conceptFamily": "authority",
+    "authority": {
+      "holder": {
+        "type": "office",
+        "id": "recognized_governing_office",
+        "label": "Recognized governing office or position"
+      },
+      "scope": {
+        "domain": "governance",
+        "actions": [
+          "direct",
+          "decide",
+          "govern"
+        ]
+      },
+      "source": {
+        "type": "institution",
+        "system": "governance_order"
+      }
+    }
+  },
   "contexts": [
     {
       "label": "governance",

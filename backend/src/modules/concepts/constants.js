@@ -1,6 +1,6 @@
 'use strict';
 
-const CONTRACT_VERSION = 'v1.2';
+const CONTRACT_VERSION = 'v1.3';
 const NORMALIZER_VERSION = '2026-03-27.v1';
 const MATCHER_VERSION = '2026-03-27.v3';
 const CONCEPT_SET_VERSION = '20260327.4';

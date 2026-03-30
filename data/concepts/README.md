@@ -34,6 +34,76 @@ Published concept packets must carry:
 
 `registers.standard` must match the top-level canonical prose exactly.
 
+V3 governance concept structure is now defined as a shared foundation module in:
+
+- `backend/src/modules/concepts/concept-structure-schema.js`
+
+It is not enforced on published packets yet.
+It exists so validators and loaders can adopt structured concept fields without
+breaking current text-first packets.
+
+An internal duty-only example fixture lives at:
+
+- `examples/duty-structure-v3.example.json`
+
+An internal relation-schema example fixture lives at:
+
+- `examples/concept-relations-v1.example.json`
+
+Authored relation packets now live in:
+
+- `relations/authority.json`
+- `relations/duty.json`
+- `relations/legitimacy.json`
+- `relations/power.json`
+- `relations/responsibility.json`
+
+Validator and runtime relation policy is controlled by:
+
+- `REQUIRE_AUTHORED_RELATIONS=false`
+  - compatible mode
+  - missing authored relation packets warn and may fall back to seeded defaults
+- `REQUIRE_AUTHORED_RELATIONS=true`
+  - strict mode
+  - missing authored relation packets fail validation and do not fall back
+
+During the Duty-first V3 rollout, concept packets may optionally include:
+
+- `structureV3`
+
+This block is additive and backward-compatible.
+It does not replace the canonical prose or authored reading registers.
+
+Duty rollout regression fixtures live at:
+
+- `../../tests/validator/fixtures/duty.complete-v3.json`
+- `../../tests/validator/fixtures/duty.partial-v3.json`
+- `../../tests/validator/fixtures/duty.legacy-text-only.json`
+
+Responsibility rollout regression fixtures live at:
+
+- `../../tests/validator/fixtures/responsibility.complete-v3.json`
+- `../../tests/validator/fixtures/responsibility.partial-v3.json`
+- `../../tests/validator/fixtures/responsibility.legacy-text-only.json`
+
+Authority rollout regression fixtures live at:
+
+- `../../tests/validator/fixtures/authority.complete-v3.json`
+- `../../tests/validator/fixtures/authority.partial-v3.json`
+- `../../tests/validator/fixtures/authority.legacy-text-only.json`
+
+Power rollout regression fixtures live at:
+
+- `../../tests/validator/fixtures/power.complete-v3.json`
+- `../../tests/validator/fixtures/power.partial-v3.json`
+- `../../tests/validator/fixtures/power.legacy-text-only.json`
+
+Legitimacy rollout regression fixtures live at:
+
+- `../../tests/validator/fixtures/legitimacy.complete-v3.json`
+- `../../tests/validator/fixtures/legitimacy.partial-v3.json`
+- `../../tests/validator/fixtures/legitimacy.legacy-text-only.json`
+
 The `canonical` block defines the invariant meaning anchor for all three registers:
 
 - `canonical.invariant`
@@ -61,3 +131,8 @@ Before publishing any new concept packet, run register divergence validation acr
 
 - `npm run validate:register-divergence`
 - or `npm --prefix ./backend run validate:register-divergence`
+
+Before tightening authored relation enforcement, run the full validator and hardening checks:
+
+- `npm run validate:registers`
+- `npm --prefix ./backend run check`

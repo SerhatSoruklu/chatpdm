@@ -55,6 +55,29 @@
       "fullDefinition": "Power is defined, within the governance domain, as effective capacity to produce outcomes in relation to a governance structure. The capacity may arise from coercive means, resource control, institutional position, coordinated action, or dependency management, and it therefore concerns operative effect rather than recognized right. Authority may organize or channel power, and legitimacy may justify its exercise, but neither relation is constitutive of power itself."
     }
   },
+  "structureV3": {
+    "schemaVersion": 1,
+    "conceptFamily": "power",
+    "power": {
+      "holder": {
+        "type": "organization_role",
+        "id": "governing_actor",
+        "label": "Actor able to secure effects within a governance structure"
+      },
+      "capability": {
+        "type": "institutional",
+        "description": "capacity to produce outcomes, secure compliance, or alter conditions within governance"
+      },
+      "scope": {
+        "domain": "governance",
+        "actions": [
+          "produce outcomes",
+          "secure compliance",
+          "alter conditions"
+        ]
+      }
+    }
+  },
   "contexts": [
     {
       "label": "governance",

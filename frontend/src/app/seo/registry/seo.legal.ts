@@ -2,8 +2,8 @@ import type { SeoRegistryFamily } from '../seo.types';
 
 export const seoLegalEntries = {
   'legal.inspect': {
-    title: 'Inspect - ChatPDM',
-    description: 'Index of inspectable policy-backed behavior surfaces for ChatPDM.',
+    title: 'System Integrity Surface - ChatPDM',
+    description: 'Public system integrity surface for registry-backed policy claims, refusal boundaries, and implementation evidence.',
     canonicalPath: '/inspect',
     includeInSitemap: false,
     sitemapChangeFrequency: 'yearly',
@@ -43,7 +43,7 @@ export const seoLegalEntries = {
   },
   'legal.terms': {
     title: 'Terms of Service - ChatPDM',
-    description: 'Human-readable terms surface for the current ChatPDM modeled behavior and boundary rules.',
+    description: 'Human-readable terms summary for the current ChatPDM beta usage boundary and policy posture.',
     canonicalPath: '/terms',
     includeInSitemap: true,
     sitemapChangeFrequency: 'yearly',
@@ -59,7 +59,7 @@ export const seoLegalEntries = {
   },
   'legal.cookies': {
     title: 'Cookie Policy - ChatPDM',
-    description: 'Human-readable cookie surface for current essential SSR and browser cookie behavior.',
+    description: 'Human-readable cookie summary for the current ChatPDM beta and its bounded SSR cookie handling.',
     canonicalPath: '/cookies',
     includeInSitemap: true,
     sitemapChangeFrequency: 'yearly',

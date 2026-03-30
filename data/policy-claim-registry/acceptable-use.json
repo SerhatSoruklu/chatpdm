@@ -1,0 +1,719 @@
+{
+  "key": "acceptable-use",
+  "version": 1,
+  "state": "published",
+  "claims": [
+    {
+      "id": "acceptable-use-1",
+      "version": 1,
+      "state": "published",
+      "policyFile": "acceptable-use.md",
+      "section": "Runtime Scope",
+      "policySentence": "The platform allows concept resolution through `GET /api/v1/concepts/resolve?q=...`.",
+      "canonicalClaim": "The platform allows concept resolution through `GET /api/v1/concepts/resolve?q=...`.",
+      "claimClass": "allows",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/routes/api/v1/concepts.route.js:16-31",
+          "path": "backend/src/routes/api/v1/concepts.route.js",
+          "lines": "16-31"
+        }
+      ]
+    },
+    {
+      "id": "acceptable-use-2",
+      "version": 1,
+      "state": "published",
+      "policyFile": "acceptable-use.md",
+      "section": "Runtime Scope",
+      "policySentence": "The platform allows comparison output only for authored allowlisted concept pairs with authored comparison axes.",
+      "canonicalClaim": "The platform allows comparison output only for authored allowlisted concept pairs with authored comparison axes.",
+      "claimClass": "allows",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/concepts/comparison-resolver.js:20-55",
+          "path": "backend/src/modules/concepts/comparison-resolver.js",
+          "lines": "20-55"
+        },
+        {
+          "source": "backend/src/modules/concepts/resolver.js:112-123",
+          "path": "backend/src/modules/concepts/resolver.js",
+          "lines": "112-123"
+        }
+      ]
+    },
+    {
+      "id": "acceptable-use-3",
+      "version": 1,
+      "state": "published",
+      "policyFile": "acceptable-use.md",
+      "section": "Runtime Scope",
+      "policySentence": "The platform allows feedback submission through `POST /api/v1/feedback`.",
+      "canonicalClaim": "The platform allows feedback submission through `POST /api/v1/feedback`.",
+      "claimClass": "allows",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/routes/api/v1/feedback.route.js:20-23",
+          "path": "backend/src/routes/api/v1/feedback.route.js",
+          "lines": "20-23"
+        }
+      ]
+    },
+    {
+      "id": "acceptable-use-4",
+      "version": 1,
+      "state": "published",
+      "policyFile": "acceptable-use.md",
+      "section": "Runtime Scope",
+      "policySentence": "The platform allows feedback export by `sessionId`.",
+      "canonicalClaim": "The platform allows feedback export by `sessionId`.",
+      "claimClass": "allows",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/routes/api/v1/feedback.route.js:45-68",
+          "path": "backend/src/routes/api/v1/feedback.route.js",
+          "lines": "45-68"
+        },
+        {
+          "source": "backend/src/modules/feedback/service.js:170-190",
+          "path": "backend/src/modules/feedback/service.js",
+          "lines": "170-190"
+        }
+      ]
+    },
+    {
+      "id": "acceptable-use-5",
+      "version": 1,
+      "state": "published",
+      "policyFile": "acceptable-use.md",
+      "section": "Runtime Scope",
+      "policySentence": "The platform allows feedback deletion by `sessionId`.",
+      "canonicalClaim": "The platform allows feedback deletion by `sessionId`.",
+      "claimClass": "allows",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/routes/api/v1/feedback.route.js:70-93",
+          "path": "backend/src/routes/api/v1/feedback.route.js",
+          "lines": "70-93"
+        },
+        {
+          "source": "backend/src/modules/feedback/service.js:193-213",
+          "path": "backend/src/modules/feedback/service.js",
+          "lines": "193-213"
+        }
+      ]
+    },
+    {
+      "id": "acceptable-use-6",
+      "version": 1,
+      "state": "published",
+      "policyFile": "acceptable-use.md",
+      "section": "Unsupported or Refused Use",
+      "policySentence": "The platform refuses concept resolution requests when query parameter `q` is missing.",
+      "canonicalClaim": "The platform refuses concept resolution requests when query parameter `q` is missing.",
+      "claimClass": "refuses",
+      "status": "mapped",
+      "notes": "Shared validation branch.",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/routes/api/v1/concepts.route.js:16-27",
+          "path": "backend/src/routes/api/v1/concepts.route.js",
+          "lines": "16-27"
+        }
+      ]
+    },
+    {
+      "id": "acceptable-use-7",
+      "version": 1,
+      "state": "published",
+      "policyFile": "acceptable-use.md",
+      "section": "Unsupported or Refused Use",
+      "policySentence": "The platform refuses concept resolution requests when query parameter `q` is empty.",
+      "canonicalClaim": "The platform refuses concept resolution requests when query parameter `q` is empty.",
+      "claimClass": "refuses",
+      "status": "mapped",
+      "notes": "Shared validation branch.",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/routes/api/v1/concepts.route.js:16-27",
+          "path": "backend/src/routes/api/v1/concepts.route.js",
+          "lines": "16-27"
+        }
+      ]
+    },
+    {
+      "id": "acceptable-use-8",
+      "version": 1,
+      "state": "published",
+      "policyFile": "acceptable-use.md",
+      "section": "Unsupported or Refused Use",
+      "policySentence": "The platform refuses concept resolution requests when query parameter `q` is not a string.",
+      "canonicalClaim": "The platform refuses concept resolution requests when query parameter `q` is not a string.",
+      "claimClass": "refuses",
+      "status": "mapped",
+      "notes": "Shared validation branch.",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/routes/api/v1/concepts.route.js:16-27",
+          "path": "backend/src/routes/api/v1/concepts.route.js",
+          "lines": "16-27"
+        }
+      ]
+    },
+    {
+      "id": "acceptable-use-9",
+      "version": 1,
+      "state": "published",
+      "policyFile": "acceptable-use.md",
+      "section": "Unsupported or Refused Use",
+      "policySentence": "The platform refuses unsupported complex queries.",
+      "canonicalClaim": "The platform refuses unsupported complex queries.",
+      "claimClass": "refuses",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/concepts/query-shape-classifier.js:191-195,357-365",
+          "path": "backend/src/modules/concepts/query-shape-classifier.js",
+          "lines": "191-195,357-365"
+        }
+      ]
+    },
+    {
+      "id": "acceptable-use-10",
+      "version": 1,
+      "state": "published",
+      "policyFile": "acceptable-use.md",
+      "section": "Unsupported or Refused Use",
+      "policySentence": "The platform refuses relation queries.",
+      "canonicalClaim": "The platform refuses relation queries.",
+      "claimClass": "refuses",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/concepts/query-shape-classifier.js:173-179,330-335",
+          "path": "backend/src/modules/concepts/query-shape-classifier.js",
+          "lines": "173-179,330-335"
+        }
+      ]
+    },
+    {
+      "id": "acceptable-use-11",
+      "version": 1,
+      "state": "published",
+      "policyFile": "acceptable-use.md",
+      "section": "Unsupported or Refused Use",
+      "policySentence": "The platform refuses role or actor queries.",
+      "canonicalClaim": "The platform refuses role or actor queries.",
+      "claimClass": "refuses",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/concepts/query-shape-classifier.js:182-188,314-319",
+          "path": "backend/src/modules/concepts/query-shape-classifier.js",
+          "lines": "182-188,314-319"
+        }
+      ]
+    },
+    {
+      "id": "acceptable-use-12",
+      "version": 1,
+      "state": "published",
+      "policyFile": "acceptable-use.md",
+      "section": "Unsupported or Refused Use",
+      "policySentence": "The platform refuses canonical lookup requests when no authored concept ID is provided.",
+      "canonicalClaim": "The platform refuses canonical lookup requests when no authored concept ID is provided.",
+      "claimClass": "refuses",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/concepts/query-shape-classifier.js:198-204,287-294",
+          "path": "backend/src/modules/concepts/query-shape-classifier.js",
+          "lines": "198-204,287-294"
+        }
+      ]
+    },
+    {
+      "id": "acceptable-use-13",
+      "version": 1,
+      "state": "published",
+      "policyFile": "acceptable-use.md",
+      "section": "Unsupported or Refused Use",
+      "policySentence": "The platform refuses canonical lookup requests when no authored concept exists for the requested ID.",
+      "canonicalClaim": "The platform refuses canonical lookup requests when no authored concept exists for the requested ID.",
+      "claimClass": "refuses",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/concepts/query-shape-classifier.js:206-210,287-294",
+          "path": "backend/src/modules/concepts/query-shape-classifier.js",
+          "lines": "206-210,287-294"
+        }
+      ]
+    },
+    {
+      "id": "acceptable-use-14",
+      "version": 1,
+      "state": "published",
+      "policyFile": "acceptable-use.md",
+      "section": "Unsupported or Refused Use",
+      "policySentence": "The platform refuses comparison output for non-allowlisted concept pairs by returning `no_exact_match`.",
+      "canonicalClaim": "The platform refuses comparison output for non-allowlisted concept pairs by returning `no_exact_match`.",
+      "claimClass": "refuses",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/concepts/comparison-resolver.js:46-55",
+          "path": "backend/src/modules/concepts/comparison-resolver.js",
+          "lines": "46-55"
+        },
+        {
+          "source": "backend/src/modules/concepts/resolver.js:112-132",
+          "path": "backend/src/modules/concepts/resolver.js",
+          "lines": "112-132"
+        }
+      ]
+    },
+    {
+      "id": "acceptable-use-15",
+      "version": 1,
+      "state": "published",
+      "policyFile": "acceptable-use.md",
+      "section": "Unsupported or Refused Use",
+      "policySentence": "The platform refuses non-governance usage of governance-scoped concepts by returning `no_exact_match`.",
+      "canonicalClaim": "The platform refuses non-governance usage of governance-scoped concepts by returning `no_exact_match`.",
+      "claimClass": "refuses",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/concepts/resolver.js:90-109",
+          "path": "backend/src/modules/concepts/resolver.js",
+          "lines": "90-109"
+        },
+        {
+          "source": "backend/src/modules/concepts/governance-scope-enforcer.js:44-48,108-133",
+          "path": "backend/src/modules/concepts/governance-scope-enforcer.js",
+          "lines": "44-48,108-133"
+        }
+      ]
+    },
+    {
+      "id": "acceptable-use-16",
+      "version": 1,
+      "state": "published",
+      "policyFile": "acceptable-use.md",
+      "section": "Feedback Surface Boundaries",
+      "policySentence": "The platform exposes feedback operations `submit`, `export_by_session`, and `delete_by_session`.",
+      "canonicalClaim": "The platform exposes feedback operations `submit`, `export_by_session`, and `delete_by_session`.",
+      "claimClass": "allows",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/routes/api/v1/feedback.route.js:12-17",
+          "path": "backend/src/routes/api/v1/feedback.route.js",
+          "lines": "12-17"
+        }
+      ]
+    },
+    {
+      "id": "acceptable-use-17",
+      "version": 1,
+      "state": "published",
+      "policyFile": "acceptable-use.md",
+      "section": "Feedback Surface Boundaries",
+      "policySentence": "The platform allows only `concept_match`, `ambiguous_match`, and `no_exact_match` as feedback `responseType` values.",
+      "canonicalClaim": "The platform allows only `concept_match`, `ambiguous_match`, and `no_exact_match` as feedback `responseType` values.",
+      "claimClass": "allows",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/constants.js:3",
+          "path": "backend/src/modules/feedback/constants.js",
+          "lines": "3"
+        },
+        {
+          "source": "backend/src/modules/feedback/service.js:80-84",
+          "path": "backend/src/modules/feedback/service.js",
+          "lines": "80-84"
+        }
+      ]
+    },
+    {
+      "id": "acceptable-use-18",
+      "version": 1,
+      "state": "published",
+      "policyFile": "acceptable-use.md",
+      "section": "Feedback Surface Boundaries",
+      "policySentence": "The platform allows feedback options only from the response-type-specific allowlist.",
+      "canonicalClaim": "The platform allows feedback options only from the response-type-specific allowlist.",
+      "claimClass": "allows",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/constants.js:5-8",
+          "path": "backend/src/modules/feedback/constants.js",
+          "lines": "5-8"
+        },
+        {
+          "source": "backend/src/modules/feedback/service.js:84-89",
+          "path": "backend/src/modules/feedback/service.js",
+          "lines": "84-89"
+        }
+      ]
+    },
+    {
+      "id": "acceptable-use-19",
+      "version": 1,
+      "state": "published",
+      "policyFile": "acceptable-use.md",
+      "section": "Feedback Surface Boundaries",
+      "policySentence": "The platform refuses feedback payload keys outside the approved field set.",
+      "canonicalClaim": "The platform refuses feedback payload keys outside the approved field set.",
+      "claimClass": "refuses",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/service.js:46-64",
+          "path": "backend/src/modules/feedback/service.js",
+          "lines": "46-64"
+        }
+      ]
+    },
+    {
+      "id": "acceptable-use-20",
+      "version": 1,
+      "state": "published",
+      "policyFile": "acceptable-use.md",
+      "section": "Feedback Surface Boundaries",
+      "policySentence": "The platform refuses invalid `feedbackType` and `responseType` combinations.",
+      "canonicalClaim": "The platform refuses invalid `feedbackType` and `responseType` combinations.",
+      "claimClass": "refuses",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/service.js:84-89",
+          "path": "backend/src/modules/feedback/service.js",
+          "lines": "84-89"
+        }
+      ]
+    },
+    {
+      "id": "acceptable-use-21",
+      "version": 1,
+      "state": "published",
+      "policyFile": "acceptable-use.md",
+      "section": "Feedback Surface Boundaries",
+      "policySentence": "The platform refuses candidate or suggestion concept IDs on `concept_match` feedback.",
+      "canonicalClaim": "The platform refuses candidate or suggestion concept IDs on `concept_match` feedback.",
+      "claimClass": "refuses",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/service.js:105-111",
+          "path": "backend/src/modules/feedback/service.js",
+          "lines": "105-111"
+        }
+      ]
+    },
+    {
+      "id": "acceptable-use-22",
+      "version": 1,
+      "state": "published",
+      "policyFile": "acceptable-use.md",
+      "section": "Feedback Surface Boundaries",
+      "policySentence": "The platform refuses `ambiguous_match` feedback with fewer than two candidate concept IDs.",
+      "canonicalClaim": "The platform refuses `ambiguous_match` feedback with fewer than two candidate concept IDs.",
+      "claimClass": "refuses",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/service.js:113-122",
+          "path": "backend/src/modules/feedback/service.js",
+          "lines": "113-122"
+        }
+      ]
+    },
+    {
+      "id": "acceptable-use-23",
+      "version": 1,
+      "state": "published",
+      "policyFile": "acceptable-use.md",
+      "section": "Feedback Surface Boundaries",
+      "policySentence": "The platform refuses suggestion concept IDs on `ambiguous_match` feedback.",
+      "canonicalClaim": "The platform refuses suggestion concept IDs on `ambiguous_match` feedback.",
+      "claimClass": "refuses",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/service.js:113-122",
+          "path": "backend/src/modules/feedback/service.js",
+          "lines": "113-122"
+        }
+      ]
+    },
+    {
+      "id": "acceptable-use-24",
+      "version": 1,
+      "state": "published",
+      "policyFile": "acceptable-use.md",
+      "section": "Feedback Surface Boundaries",
+      "policySentence": "The platform refuses candidate concept IDs on `no_exact_match` feedback.",
+      "canonicalClaim": "The platform refuses candidate concept IDs on `no_exact_match` feedback.",
+      "claimClass": "refuses",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/service.js:125-131",
+          "path": "backend/src/modules/feedback/service.js",
+          "lines": "125-131"
+        }
+      ]
+    },
+    {
+      "id": "acceptable-use-25",
+      "version": 1,
+      "state": "published",
+      "policyFile": "acceptable-use.md",
+      "section": "Feedback Surface Boundaries",
+      "policySentence": "The platform refuses invalid feedback submissions with HTTP `400`.",
+      "canonicalClaim": "The platform refuses invalid feedback submissions with HTTP `400`.",
+      "claimClass": "refuses",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/routes/api/v1/feedback.route.js:20-32",
+          "path": "backend/src/routes/api/v1/feedback.route.js",
+          "lines": "20-32"
+        }
+      ]
+    },
+    {
+      "id": "acceptable-use-26",
+      "version": 1,
+      "state": "published",
+      "policyFile": "acceptable-use.md",
+      "section": "Feedback Surface Boundaries",
+      "policySentence": "The platform refuses invalid feedback submissions with error code `invalid_feedback`.",
+      "canonicalClaim": "The platform refuses invalid feedback submissions with error code `invalid_feedback`.",
+      "claimClass": "refuses",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/routes/api/v1/feedback.route.js:25-30",
+          "path": "backend/src/routes/api/v1/feedback.route.js",
+          "lines": "25-30"
+        }
+      ]
+    },
+    {
+      "id": "acceptable-use-27",
+      "version": 1,
+      "state": "published",
+      "policyFile": "acceptable-use.md",
+      "section": "Feedback Surface Boundaries",
+      "policySentence": "The platform refuses invalid feedback session control requests with error code `invalid_feedback_session_control`.",
+      "canonicalClaim": "The platform refuses invalid feedback session control requests with error code `invalid_feedback_session_control`.",
+      "claimClass": "refuses",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/routes/api/v1/feedback.route.js:45-57,70-82",
+          "path": "backend/src/routes/api/v1/feedback.route.js",
+          "lines": "45-57,70-82"
+        }
+      ]
+    },
+    {
+      "id": "acceptable-use-28",
+      "version": 1,
+      "state": "published",
+      "policyFile": "acceptable-use.md",
+      "section": "Feedback Surface Boundaries",
+      "policySentence": "The platform refuses session control requests when `sessionId` is not a non-empty string.",
+      "canonicalClaim": "The platform refuses session control requests when `sessionId` is not a non-empty string.",
+      "claimClass": "refuses",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/modules/feedback/service.js:216-224",
+          "path": "backend/src/modules/feedback/service.js",
+          "lines": "216-224"
+        },
+        {
+          "source": "backend/src/routes/api/v1/feedback.route.js:45-57,70-82",
+          "path": "backend/src/routes/api/v1/feedback.route.js",
+          "lines": "45-57,70-82"
+        }
+      ]
+    }
+  ]
+}

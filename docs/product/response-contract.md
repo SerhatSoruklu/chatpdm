@@ -12,7 +12,7 @@ This is a product response contract, not an API failure contract. Internal failu
 
 Current runtime declarations for this contract:
 
-- `contractVersion = "v1.2"`
+- `contractVersion = "v1.3"`
 - `matcherVersion = "2026-03-27.v3"`
 - `normalizerVersion = "2026-03-27.v1"`
 
@@ -51,7 +51,7 @@ Shared top-level skeleton:
   "type": "concept_match",
   "query": "what is authority",
   "normalizedQuery": "authority",
-  "contractVersion": "v1.2",
+  "contractVersion": "v1.3",
   "normalizerVersion": "2026-03-27.v1",
   "matcherVersion": "2026-03-27.v3",
   "conceptSetVersion": "20260327.4",
@@ -205,12 +205,31 @@ Allowed `queryType` values:
 - `shortDefinition`: short editorially constrained definition
 - `coreMeaning`: compressed semantic center of the concept
 - `fullDefinition`: fuller canonical explanation in plain text only
+- `governanceState`: validator-derived governance and law-enforcement state for the resolved concept at response time
 - `registers`: authored public reading registers bound to the same canonical concept
 - `contexts`: array of authored context objects
 - `sources`: array of minimal source objects
 - `relatedConcepts`: array of curated related concept objects
 
 The `answer` object is the canonical payload boundary. Only fields inside `answer` are part of the canonical meaning surface.
+
+`answer.governanceState` is validator-derived contract metadata. It must be copied from validator output exactly as served and must not be recomputed, rewritten, or decorated in the runtime surface.
+
+`answer.governanceState` object fields:
+
+- `source`
+- `available`
+- `validationState`
+- `v3Status`
+- `relationStatus`
+- `lawStatus`
+- `enforcementStatus`
+- `systemValidationState`
+- `isBlocked`
+- `isStructurallyIncomplete`
+- `isFullyValidated`
+- `isActionable`
+- `trace`
 
 `answer.registers` object fields:
 
@@ -361,7 +380,9 @@ Top-level:
 
 Allowed `queryType` values:
 
+- `exact_concept_query`
 - `canonical_id_query`
+- `ambiguity_query`
 - `broader_topic_query`
 - `subtype_query`
 - `comparison_query`
@@ -398,6 +419,7 @@ Allowed `reason` values:
 
 Interpretation patterns allowed in this response type include:
 
+- validator-law blocked canonical concept
 - canonical lookup failure
 - broader-topic hint
 - narrower subtype hint

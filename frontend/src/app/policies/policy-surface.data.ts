@@ -18,6 +18,8 @@ export const POLICY_SURFACE_DATA = {
     "claims": [
       {
         "id": "privacy-1",
+        "version": 1,
+        "state": "published",
         "policyFile": "privacy.md",
         "section": "Data Storage — Feedback event fields I",
         "policySentence": "The platform stores `sessionId` in feedback event documents.",
@@ -56,6 +58,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "privacy-2",
+        "version": 1,
+        "state": "published",
         "policyFile": "privacy.md",
         "section": "Data Storage — Feedback event fields I",
         "policySentence": "The platform stores `rawQuery` in feedback event documents.",
@@ -94,12 +98,14 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "privacy-3",
+        "version": 1,
+        "state": "published",
         "policyFile": "privacy.md",
         "section": "Data Storage — Feedback event fields I",
         "policySentence": "The platform stores `normalizedQuery` in feedback event documents.",
         "canonicalClaim": "The platform stores `normalizedQuery` in feedback event documents.",
         "claimClass": "stores",
-        "systemMapping": "`backend/src/modules/feedback/feedback-event.model.js:17-21`; `backend/src/modules/feedback/store.js:5-20`",
+        "systemMapping": "`backend/src/modules/feedback/feedback-event.model.js:22-30`; `backend/src/modules/feedback/store.js:5-20`",
         "status": "mapped",
         "notes": "",
         "specialNotes": [],
@@ -119,9 +125,9 @@ export const POLICY_SURFACE_DATA = {
         },
         "traces": [
           {
-            "source": "backend/src/modules/feedback/feedback-event.model.js:17-21",
+            "source": "backend/src/modules/feedback/feedback-event.model.js:22-30",
             "path": "backend/src/modules/feedback/feedback-event.model.js",
-            "lines": "17-21"
+            "lines": "22-30"
           },
           {
             "source": "backend/src/modules/feedback/store.js:5-20",
@@ -132,12 +138,14 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "privacy-4",
+        "version": 1,
+        "state": "published",
         "policyFile": "privacy.md",
         "section": "Data Storage — Feedback event fields I",
         "policySentence": "The platform stores `responseType` in feedback event documents.",
         "canonicalClaim": "The platform stores `responseType` in feedback event documents.",
         "claimClass": "stores",
-        "systemMapping": "`backend/src/modules/feedback/feedback-event.model.js:22-26`; `backend/src/modules/feedback/store.js:5-20`",
+        "systemMapping": "`backend/src/modules/feedback/feedback-event.model.js:31-35`; `backend/src/modules/feedback/store.js:5-20`",
         "status": "mapped",
         "notes": "",
         "specialNotes": [],
@@ -157,9 +165,9 @@ export const POLICY_SURFACE_DATA = {
         },
         "traces": [
           {
-            "source": "backend/src/modules/feedback/feedback-event.model.js:22-26",
+            "source": "backend/src/modules/feedback/feedback-event.model.js:31-35",
             "path": "backend/src/modules/feedback/feedback-event.model.js",
-            "lines": "22-26"
+            "lines": "31-35"
           },
           {
             "source": "backend/src/modules/feedback/store.js:5-20",
@@ -170,12 +178,14 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "privacy-5",
+        "version": 1,
+        "state": "published",
         "policyFile": "privacy.md",
         "section": "Data Storage — Feedback event fields I",
         "policySentence": "The platform stores `feedbackType` in feedback event documents.",
         "canonicalClaim": "The platform stores `feedbackType` in feedback event documents.",
         "claimClass": "stores",
-        "systemMapping": "`backend/src/modules/feedback/feedback-event.model.js:27-31`; `backend/src/modules/feedback/store.js:5-20`",
+        "systemMapping": "`backend/src/modules/feedback/feedback-event.model.js:36-40`; `backend/src/modules/feedback/store.js:5-20`",
         "status": "mapped",
         "notes": "",
         "specialNotes": [],
@@ -195,9 +205,9 @@ export const POLICY_SURFACE_DATA = {
         },
         "traces": [
           {
-            "source": "backend/src/modules/feedback/feedback-event.model.js:27-31",
+            "source": "backend/src/modules/feedback/feedback-event.model.js:36-40",
             "path": "backend/src/modules/feedback/feedback-event.model.js",
-            "lines": "27-31"
+            "lines": "36-40"
           },
           {
             "source": "backend/src/modules/feedback/store.js:5-20",
@@ -208,12 +218,14 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "privacy-6",
+        "version": 1,
+        "state": "published",
         "policyFile": "privacy.md",
         "section": "Data Storage — Feedback event fields II",
         "policySentence": "The platform stores `resolvedConceptId` in feedback event documents when provided.",
         "canonicalClaim": "The platform stores `resolvedConceptId` in feedback event documents when provided.",
         "claimClass": "stores",
-        "systemMapping": "`backend/src/modules/feedback/feedback-event.model.js:32-36`; `backend/src/modules/feedback/store.js:5-20`",
+        "systemMapping": "`backend/src/modules/feedback/feedback-event.model.js:41-45`; `backend/src/modules/feedback/store.js:5-20`",
         "status": "mapped",
         "notes": "",
         "specialNotes": [],
@@ -233,9 +245,9 @@ export const POLICY_SURFACE_DATA = {
         },
         "traces": [
           {
-            "source": "backend/src/modules/feedback/feedback-event.model.js:32-36",
+            "source": "backend/src/modules/feedback/feedback-event.model.js:41-45",
             "path": "backend/src/modules/feedback/feedback-event.model.js",
-            "lines": "32-36"
+            "lines": "41-45"
           },
           {
             "source": "backend/src/modules/feedback/store.js:5-20",
@@ -246,12 +258,14 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "privacy-7",
+        "version": 1,
+        "state": "published",
         "policyFile": "privacy.md",
         "section": "Data Storage — Feedback event fields II",
         "policySentence": "The platform stores `candidateConceptIds` in feedback event documents when provided.",
         "canonicalClaim": "The platform stores `candidateConceptIds` in feedback event documents when provided.",
         "claimClass": "stores",
-        "systemMapping": "`backend/src/modules/feedback/feedback-event.model.js:37-40`; `backend/src/modules/feedback/store.js:5-20`",
+        "systemMapping": "`backend/src/modules/feedback/feedback-event.model.js:46-49`; `backend/src/modules/feedback/store.js:5-20`",
         "status": "mapped",
         "notes": "",
         "specialNotes": [],
@@ -271,9 +285,9 @@ export const POLICY_SURFACE_DATA = {
         },
         "traces": [
           {
-            "source": "backend/src/modules/feedback/feedback-event.model.js:37-40",
+            "source": "backend/src/modules/feedback/feedback-event.model.js:46-49",
             "path": "backend/src/modules/feedback/feedback-event.model.js",
-            "lines": "37-40"
+            "lines": "46-49"
           },
           {
             "source": "backend/src/modules/feedback/store.js:5-20",
@@ -284,12 +298,14 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "privacy-8",
+        "version": 1,
+        "state": "published",
         "policyFile": "privacy.md",
         "section": "Data Storage — Feedback event fields II",
         "policySentence": "The platform stores `suggestionConceptIds` in feedback event documents when provided.",
         "canonicalClaim": "The platform stores `suggestionConceptIds` in feedback event documents when provided.",
         "claimClass": "stores",
-        "systemMapping": "`backend/src/modules/feedback/feedback-event.model.js:41-44`; `backend/src/modules/feedback/store.js:5-20`",
+        "systemMapping": "`backend/src/modules/feedback/feedback-event.model.js:50-53`; `backend/src/modules/feedback/store.js:5-20`",
         "status": "mapped",
         "notes": "",
         "specialNotes": [],
@@ -309,9 +325,9 @@ export const POLICY_SURFACE_DATA = {
         },
         "traces": [
           {
-            "source": "backend/src/modules/feedback/feedback-event.model.js:41-44",
+            "source": "backend/src/modules/feedback/feedback-event.model.js:50-53",
             "path": "backend/src/modules/feedback/feedback-event.model.js",
-            "lines": "41-44"
+            "lines": "50-53"
           },
           {
             "source": "backend/src/modules/feedback/store.js:5-20",
@@ -322,12 +338,14 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "privacy-9",
+        "version": 1,
+        "state": "published",
         "policyFile": "privacy.md",
         "section": "Data Storage — Feedback event fields II",
         "policySentence": "The platform stores `contractVersion` in feedback event documents.",
         "canonicalClaim": "The platform stores `contractVersion` in feedback event documents.",
         "claimClass": "stores",
-        "systemMapping": "`backend/src/modules/feedback/feedback-event.model.js:45-49`; `backend/src/modules/feedback/store.js:5-20`",
+        "systemMapping": "`backend/src/modules/feedback/feedback-event.model.js:54-58`; `backend/src/modules/feedback/store.js:5-20`",
         "status": "mapped",
         "notes": "",
         "specialNotes": [],
@@ -347,9 +365,9 @@ export const POLICY_SURFACE_DATA = {
         },
         "traces": [
           {
-            "source": "backend/src/modules/feedback/feedback-event.model.js:45-49",
+            "source": "backend/src/modules/feedback/feedback-event.model.js:54-58",
             "path": "backend/src/modules/feedback/feedback-event.model.js",
-            "lines": "45-49"
+            "lines": "54-58"
           },
           {
             "source": "backend/src/modules/feedback/store.js:5-20",
@@ -360,12 +378,14 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "privacy-10",
+        "version": 1,
+        "state": "published",
         "policyFile": "privacy.md",
         "section": "Data Storage — Feedback event fields II",
         "policySentence": "The platform stores `normalizerVersion` in feedback event documents.",
         "canonicalClaim": "The platform stores `normalizerVersion` in feedback event documents.",
         "claimClass": "stores",
-        "systemMapping": "`backend/src/modules/feedback/feedback-event.model.js:50-54`; `backend/src/modules/feedback/store.js:5-20`",
+        "systemMapping": "`backend/src/modules/feedback/feedback-event.model.js:59-63`; `backend/src/modules/feedback/store.js:5-20`",
         "status": "mapped",
         "notes": "",
         "specialNotes": [],
@@ -385,9 +405,9 @@ export const POLICY_SURFACE_DATA = {
         },
         "traces": [
           {
-            "source": "backend/src/modules/feedback/feedback-event.model.js:50-54",
+            "source": "backend/src/modules/feedback/feedback-event.model.js:59-63",
             "path": "backend/src/modules/feedback/feedback-event.model.js",
-            "lines": "50-54"
+            "lines": "59-63"
           },
           {
             "source": "backend/src/modules/feedback/store.js:5-20",
@@ -398,12 +418,14 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "privacy-11",
+        "version": 1,
+        "state": "published",
         "policyFile": "privacy.md",
         "section": "Data Storage — Feedback event fields III",
         "policySentence": "The platform stores `matcherVersion` in feedback event documents.",
         "canonicalClaim": "The platform stores `matcherVersion` in feedback event documents.",
         "claimClass": "stores",
-        "systemMapping": "`backend/src/modules/feedback/feedback-event.model.js:55-59`; `backend/src/modules/feedback/store.js:5-20`",
+        "systemMapping": "`backend/src/modules/feedback/feedback-event.model.js:64-68`; `backend/src/modules/feedback/store.js:5-20`",
         "status": "mapped",
         "notes": "",
         "specialNotes": [],
@@ -423,9 +445,9 @@ export const POLICY_SURFACE_DATA = {
         },
         "traces": [
           {
-            "source": "backend/src/modules/feedback/feedback-event.model.js:55-59",
+            "source": "backend/src/modules/feedback/feedback-event.model.js:64-68",
             "path": "backend/src/modules/feedback/feedback-event.model.js",
-            "lines": "55-59"
+            "lines": "64-68"
           },
           {
             "source": "backend/src/modules/feedback/store.js:5-20",
@@ -436,12 +458,14 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "privacy-12",
+        "version": 1,
+        "state": "published",
         "policyFile": "privacy.md",
         "section": "Data Storage — Feedback event fields III",
         "policySentence": "The platform stores `conceptSetVersion` in feedback event documents.",
         "canonicalClaim": "The platform stores `conceptSetVersion` in feedback event documents.",
         "claimClass": "stores",
-        "systemMapping": "`backend/src/modules/feedback/feedback-event.model.js:60-64`; `backend/src/modules/feedback/store.js:5-20`",
+        "systemMapping": "`backend/src/modules/feedback/feedback-event.model.js:69-73`; `backend/src/modules/feedback/store.js:5-20`",
         "status": "mapped",
         "notes": "",
         "specialNotes": [],
@@ -461,9 +485,9 @@ export const POLICY_SURFACE_DATA = {
         },
         "traces": [
           {
-            "source": "backend/src/modules/feedback/feedback-event.model.js:60-64",
+            "source": "backend/src/modules/feedback/feedback-event.model.js:69-73",
             "path": "backend/src/modules/feedback/feedback-event.model.js",
-            "lines": "60-64"
+            "lines": "69-73"
           },
           {
             "source": "backend/src/modules/feedback/store.js:5-20",
@@ -474,12 +498,14 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "privacy-13",
+        "version": 1,
+        "state": "published",
         "policyFile": "privacy.md",
         "section": "Data Storage — Feedback event fields III",
         "policySentence": "The platform stores `createdAt` in feedback event documents.",
         "canonicalClaim": "The platform stores `createdAt` in feedback event documents.",
         "claimClass": "stores",
-        "systemMapping": "`backend/src/modules/feedback/feedback-event.model.js:65-69`; `backend/src/modules/feedback/service.js:136-142`",
+        "systemMapping": "`backend/src/modules/feedback/feedback-event.model.js:74-78`; `backend/src/modules/feedback/service.js:136-142`",
         "status": "mapped",
         "notes": "",
         "specialNotes": [],
@@ -499,9 +525,9 @@ export const POLICY_SURFACE_DATA = {
         },
         "traces": [
           {
-            "source": "backend/src/modules/feedback/feedback-event.model.js:65-69",
+            "source": "backend/src/modules/feedback/feedback-event.model.js:74-78",
             "path": "backend/src/modules/feedback/feedback-event.model.js",
-            "lines": "65-69"
+            "lines": "74-78"
           },
           {
             "source": "backend/src/modules/feedback/service.js:136-142",
@@ -512,6 +538,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "privacy-14",
+        "version": 1,
+        "state": "published",
         "policyFile": "privacy.md",
         "section": "Data Storage — Browser local storage",
         "policySentence": "The platform stores a feedback session identifier in browser local storage under `chatpdm-beta-session-id`.",
@@ -541,6 +569,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "privacy-15",
+        "version": 1,
+        "state": "published",
         "policyFile": "privacy.md",
         "section": "Data Handling — Internal proxy transport",
         "policySentence": "The platform shares incoming `x-forwarded-for` headers with the API proxy target through the SSR layer.",
@@ -570,6 +600,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "privacy-16",
+        "version": 1,
+        "state": "published",
         "policyFile": "privacy.md",
         "section": "Behavior Controls — Backend request controls",
         "policySentence": "The platform enforces Helmet security middleware on backend requests.",
@@ -595,6 +627,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "privacy-17",
+        "version": 1,
+        "state": "published",
         "policyFile": "privacy.md",
         "section": "Behavior Controls — Backend request controls",
         "policySentence": "The platform enforces CORS on backend requests.",
@@ -620,6 +654,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "privacy-18",
+        "version": 1,
+        "state": "published",
         "policyFile": "privacy.md",
         "section": "Behavior Controls — Backend request controls",
         "policySentence": "The platform enforces backend JSON body size limits of `64kb`.",
@@ -645,6 +681,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "privacy-19",
+        "version": 1,
+        "state": "published",
         "policyFile": "privacy.md",
         "section": "Behavior Controls — Backend request controls",
         "policySentence": "The platform enforces SSR `/api/*` JSON body size limits of `32kb`.",
@@ -670,6 +708,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "privacy-20",
+        "version": 1,
+        "state": "published",
         "policyFile": "privacy.md",
         "section": "Behavior Controls — CORS settings",
         "policySentence": "The platform enforces CORS credentials.",
@@ -695,6 +735,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "privacy-21",
+        "version": 1,
+        "state": "published",
         "policyFile": "privacy.md",
         "section": "Behavior Controls — CORS settings",
         "policySentence": "The platform enforces CORS methods `GET`, `POST`, and `OPTIONS`.",
@@ -720,6 +762,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "privacy-22",
+        "version": 1,
+        "state": "published",
         "policyFile": "privacy.md",
         "section": "Behavior Controls — CORS settings",
         "policySentence": "The platform enforces CORS headers `Content-Type` and `Accept`.",
@@ -745,6 +789,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "privacy-23",
+        "version": 1,
+        "state": "published",
         "policyFile": "privacy.md",
         "section": "Behavior Controls — CORS settings",
         "policySentence": "The platform enforces CORS `maxAge` of `86400`.",
@@ -770,6 +816,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "privacy-24",
+        "version": 1,
+        "state": "published",
         "policyFile": "privacy.md",
         "section": "Boundaries — Invalid request refusal",
         "policySentence": "The platform refuses concept resolution requests when query parameter `q` is missing.",
@@ -797,6 +845,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "privacy-25",
+        "version": 1,
+        "state": "published",
         "policyFile": "privacy.md",
         "section": "Boundaries — Invalid request refusal",
         "policySentence": "The platform refuses concept resolution requests when query parameter `q` is empty.",
@@ -824,6 +874,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "privacy-26",
+        "version": 1,
+        "state": "published",
         "policyFile": "privacy.md",
         "section": "Boundaries — Invalid request refusal",
         "policySentence": "The platform refuses concept resolution requests when query parameter `q` is not a string.",
@@ -851,6 +903,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "privacy-27",
+        "version": 1,
+        "state": "published",
         "policyFile": "privacy.md",
         "section": "Boundaries — Invalid request refusal",
         "policySentence": "The platform refuses invalid feedback submissions with HTTP `400`.",
@@ -876,6 +930,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "privacy-28",
+        "version": 1,
+        "state": "published",
         "policyFile": "privacy.md",
         "section": "Boundaries — Invalid request refusal",
         "policySentence": "The platform refuses invalid feedback submissions with error code `invalid_feedback`.",
@@ -901,6 +957,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "privacy-29",
+        "version": 1,
+        "state": "published",
         "policyFile": "privacy.md",
         "section": "Boundaries — Unsupported query refusal",
         "policySentence": "The platform refuses unsupported complex queries.",
@@ -926,6 +984,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "privacy-30",
+        "version": 1,
+        "state": "published",
         "policyFile": "privacy.md",
         "section": "Boundaries — Unsupported query refusal",
         "policySentence": "The platform refuses relation queries.",
@@ -951,6 +1011,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "privacy-31",
+        "version": 1,
+        "state": "published",
         "policyFile": "privacy.md",
         "section": "Boundaries — Unsupported query refusal",
         "policySentence": "The platform refuses role or actor queries.",
@@ -976,6 +1038,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "privacy-32",
+        "version": 1,
+        "state": "published",
         "policyFile": "privacy.md",
         "section": "Boundaries — Unsupported query refusal",
         "policySentence": "The platform refuses canonical lookup requests when no authored concept ID is provided.",
@@ -1001,6 +1065,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "privacy-33",
+        "version": 1,
+        "state": "published",
         "policyFile": "privacy.md",
         "section": "Boundaries — Unsupported query refusal",
         "policySentence": "The platform refuses canonical lookup requests when no authored concept exists for the requested ID.",
@@ -1026,6 +1092,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "privacy-34",
+        "version": 1,
+        "state": "published",
         "policyFile": "privacy.md",
         "section": "Boundaries — Scope and comparison refusal",
         "policySentence": "The platform refuses comparison queries outside the allowlisted comparison set.",
@@ -1056,6 +1124,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "privacy-35",
+        "version": 1,
+        "state": "published",
         "policyFile": "privacy.md",
         "section": "Conditions — Scope-triggered controls",
         "policySentence": "The platform enforces governance-domain scope handling for governance-scoped concepts with non-governance signals.",
@@ -1081,6 +1151,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "privacy-36",
+        "version": 1,
+        "state": "published",
         "policyFile": "privacy.md",
         "section": "Conditions — Scope-triggered controls",
         "policySentence": "The platform enforces product-response validation before resolver output returns.",
@@ -1106,6 +1178,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "privacy-37",
+        "version": 1,
+        "state": "published",
         "policyFile": "privacy.md",
         "section": "Conditions — Scope-triggered controls",
         "policySentence": "The platform refuses non-governance usage of governance-scoped concepts by returning `no_exact_match`.",
@@ -1164,6 +1238,8 @@ export const POLICY_SURFACE_DATA = {
     "claims": [
       {
         "id": "terms-1",
+        "version": 1,
+        "state": "published",
         "policyFile": "terms.md",
         "section": "Data and Behavior — Endpoint access",
         "policySentence": "The platform allows concept resolution through `GET /api/v1/concepts/resolve?q=...`.",
@@ -1189,12 +1265,14 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "terms-2",
+        "version": 1,
+        "state": "published",
         "policyFile": "terms.md",
         "section": "Data and Behavior — Endpoint access",
         "policySentence": "The platform allows feedback submission through `POST /api/v1/feedback`.",
         "canonicalClaim": "The platform allows feedback submission through `POST /api/v1/feedback`.",
         "claimClass": "allows",
-        "systemMapping": "`backend/src/routes/api/v1/feedback.route.js:16-19`",
+        "systemMapping": "`backend/src/routes/api/v1/feedback.route.js:20-23`",
         "status": "mapped",
         "notes": "",
         "specialNotes": [],
@@ -1206,20 +1284,22 @@ export const POLICY_SURFACE_DATA = {
         },
         "traces": [
           {
-            "source": "backend/src/routes/api/v1/feedback.route.js:16-19",
+            "source": "backend/src/routes/api/v1/feedback.route.js:20-23",
             "path": "backend/src/routes/api/v1/feedback.route.js",
-            "lines": "16-19"
+            "lines": "20-23"
           }
         ]
       },
       {
         "id": "terms-3",
+        "version": 1,
+        "state": "published",
         "policyFile": "terms.md",
         "section": "Data and Behavior — Feedback fields I",
         "policySentence": "The platform allows feedback field `sessionId`.",
         "canonicalClaim": "The platform allows feedback field `sessionId`.",
         "claimClass": "allows",
-        "systemMapping": "`backend/src/modules/feedback/service.js:33-46`",
+        "systemMapping": "`backend/src/modules/feedback/service.js:46-78`",
         "status": "mapped",
         "notes": "",
         "specialNotes": [],
@@ -1231,20 +1311,22 @@ export const POLICY_SURFACE_DATA = {
         },
         "traces": [
           {
-            "source": "backend/src/modules/feedback/service.js:33-46",
+            "source": "backend/src/modules/feedback/service.js:46-78",
             "path": "backend/src/modules/feedback/service.js",
-            "lines": "33-46"
+            "lines": "46-78"
           }
         ]
       },
       {
         "id": "terms-4",
+        "version": 1,
+        "state": "published",
         "policyFile": "terms.md",
         "section": "Data and Behavior — Feedback fields I",
         "policySentence": "The platform allows feedback field `rawQuery`.",
         "canonicalClaim": "The platform allows feedback field `rawQuery`.",
         "claimClass": "allows",
-        "systemMapping": "`backend/src/modules/feedback/service.js:33-46`",
+        "systemMapping": "`backend/src/modules/feedback/service.js:46-78`",
         "status": "mapped",
         "notes": "",
         "specialNotes": [],
@@ -1256,20 +1338,22 @@ export const POLICY_SURFACE_DATA = {
         },
         "traces": [
           {
-            "source": "backend/src/modules/feedback/service.js:33-46",
+            "source": "backend/src/modules/feedback/service.js:46-78",
             "path": "backend/src/modules/feedback/service.js",
-            "lines": "33-46"
+            "lines": "46-78"
           }
         ]
       },
       {
         "id": "terms-5",
+        "version": 1,
+        "state": "published",
         "policyFile": "terms.md",
         "section": "Data and Behavior — Feedback fields I",
         "policySentence": "The platform allows feedback field `normalizedQuery`.",
         "canonicalClaim": "The platform allows feedback field `normalizedQuery`.",
         "claimClass": "allows",
-        "systemMapping": "`backend/src/modules/feedback/service.js:33-46`",
+        "systemMapping": "`backend/src/modules/feedback/service.js:46-78`",
         "status": "mapped",
         "notes": "",
         "specialNotes": [],
@@ -1281,20 +1365,22 @@ export const POLICY_SURFACE_DATA = {
         },
         "traces": [
           {
-            "source": "backend/src/modules/feedback/service.js:33-46",
+            "source": "backend/src/modules/feedback/service.js:46-78",
             "path": "backend/src/modules/feedback/service.js",
-            "lines": "33-46"
+            "lines": "46-78"
           }
         ]
       },
       {
         "id": "terms-6",
+        "version": 1,
+        "state": "published",
         "policyFile": "terms.md",
         "section": "Data and Behavior — Feedback fields I",
         "policySentence": "The platform allows feedback field `responseType`.",
         "canonicalClaim": "The platform allows feedback field `responseType`.",
         "claimClass": "allows",
-        "systemMapping": "`backend/src/modules/feedback/service.js:33-46`",
+        "systemMapping": "`backend/src/modules/feedback/service.js:46-78`",
         "status": "mapped",
         "notes": "",
         "specialNotes": [],
@@ -1306,20 +1392,22 @@ export const POLICY_SURFACE_DATA = {
         },
         "traces": [
           {
-            "source": "backend/src/modules/feedback/service.js:33-46",
+            "source": "backend/src/modules/feedback/service.js:46-78",
             "path": "backend/src/modules/feedback/service.js",
-            "lines": "33-46"
+            "lines": "46-78"
           }
         ]
       },
       {
         "id": "terms-7",
+        "version": 1,
+        "state": "published",
         "policyFile": "terms.md",
         "section": "Data and Behavior — Feedback fields I",
         "policySentence": "The platform allows feedback field `feedbackType`.",
         "canonicalClaim": "The platform allows feedback field `feedbackType`.",
         "claimClass": "allows",
-        "systemMapping": "`backend/src/modules/feedback/service.js:33-46`",
+        "systemMapping": "`backend/src/modules/feedback/service.js:46-78`",
         "status": "mapped",
         "notes": "",
         "specialNotes": [],
@@ -1331,20 +1419,22 @@ export const POLICY_SURFACE_DATA = {
         },
         "traces": [
           {
-            "source": "backend/src/modules/feedback/service.js:33-46",
+            "source": "backend/src/modules/feedback/service.js:46-78",
             "path": "backend/src/modules/feedback/service.js",
-            "lines": "33-46"
+            "lines": "46-78"
           }
         ]
       },
       {
         "id": "terms-8",
+        "version": 1,
+        "state": "published",
         "policyFile": "terms.md",
         "section": "Data and Behavior — Feedback fields II",
         "policySentence": "The platform allows feedback field `resolvedConceptId`.",
         "canonicalClaim": "The platform allows feedback field `resolvedConceptId`.",
         "claimClass": "allows",
-        "systemMapping": "`backend/src/modules/feedback/service.js:33-46`",
+        "systemMapping": "`backend/src/modules/feedback/service.js:46-78`",
         "status": "mapped",
         "notes": "",
         "specialNotes": [],
@@ -1356,20 +1446,22 @@ export const POLICY_SURFACE_DATA = {
         },
         "traces": [
           {
-            "source": "backend/src/modules/feedback/service.js:33-46",
+            "source": "backend/src/modules/feedback/service.js:46-78",
             "path": "backend/src/modules/feedback/service.js",
-            "lines": "33-46"
+            "lines": "46-78"
           }
         ]
       },
       {
         "id": "terms-9",
+        "version": 1,
+        "state": "published",
         "policyFile": "terms.md",
         "section": "Data and Behavior — Feedback fields II",
         "policySentence": "The platform allows feedback field `candidateConceptIds`.",
         "canonicalClaim": "The platform allows feedback field `candidateConceptIds`.",
         "claimClass": "allows",
-        "systemMapping": "`backend/src/modules/feedback/service.js:33-46`",
+        "systemMapping": "`backend/src/modules/feedback/service.js:46-78`",
         "status": "mapped",
         "notes": "",
         "specialNotes": [],
@@ -1381,20 +1473,22 @@ export const POLICY_SURFACE_DATA = {
         },
         "traces": [
           {
-            "source": "backend/src/modules/feedback/service.js:33-46",
+            "source": "backend/src/modules/feedback/service.js:46-78",
             "path": "backend/src/modules/feedback/service.js",
-            "lines": "33-46"
+            "lines": "46-78"
           }
         ]
       },
       {
         "id": "terms-10",
+        "version": 1,
+        "state": "published",
         "policyFile": "terms.md",
         "section": "Data and Behavior — Feedback fields II",
         "policySentence": "The platform allows feedback field `suggestionConceptIds`.",
         "canonicalClaim": "The platform allows feedback field `suggestionConceptIds`.",
         "claimClass": "allows",
-        "systemMapping": "`backend/src/modules/feedback/service.js:33-46`",
+        "systemMapping": "`backend/src/modules/feedback/service.js:46-78`",
         "status": "mapped",
         "notes": "",
         "specialNotes": [],
@@ -1406,20 +1500,22 @@ export const POLICY_SURFACE_DATA = {
         },
         "traces": [
           {
-            "source": "backend/src/modules/feedback/service.js:33-46",
+            "source": "backend/src/modules/feedback/service.js:46-78",
             "path": "backend/src/modules/feedback/service.js",
-            "lines": "33-46"
+            "lines": "46-78"
           }
         ]
       },
       {
         "id": "terms-11",
+        "version": 1,
+        "state": "published",
         "policyFile": "terms.md",
         "section": "Data and Behavior — Feedback fields II",
         "policySentence": "The platform allows feedback field `contractVersion`.",
         "canonicalClaim": "The platform allows feedback field `contractVersion`.",
         "claimClass": "allows",
-        "systemMapping": "`backend/src/modules/feedback/service.js:33-46`",
+        "systemMapping": "`backend/src/modules/feedback/service.js:46-78`",
         "status": "mapped",
         "notes": "",
         "specialNotes": [],
@@ -1431,20 +1527,22 @@ export const POLICY_SURFACE_DATA = {
         },
         "traces": [
           {
-            "source": "backend/src/modules/feedback/service.js:33-46",
+            "source": "backend/src/modules/feedback/service.js:46-78",
             "path": "backend/src/modules/feedback/service.js",
-            "lines": "33-46"
+            "lines": "46-78"
           }
         ]
       },
       {
         "id": "terms-12",
+        "version": 1,
+        "state": "published",
         "policyFile": "terms.md",
         "section": "Data and Behavior — Feedback fields II",
         "policySentence": "The platform allows feedback field `normalizerVersion`.",
         "canonicalClaim": "The platform allows feedback field `normalizerVersion`.",
         "claimClass": "allows",
-        "systemMapping": "`backend/src/modules/feedback/service.js:33-46`",
+        "systemMapping": "`backend/src/modules/feedback/service.js:46-78`",
         "status": "mapped",
         "notes": "",
         "specialNotes": [],
@@ -1456,20 +1554,22 @@ export const POLICY_SURFACE_DATA = {
         },
         "traces": [
           {
-            "source": "backend/src/modules/feedback/service.js:33-46",
+            "source": "backend/src/modules/feedback/service.js:46-78",
             "path": "backend/src/modules/feedback/service.js",
-            "lines": "33-46"
+            "lines": "46-78"
           }
         ]
       },
       {
         "id": "terms-13",
+        "version": 1,
+        "state": "published",
         "policyFile": "terms.md",
         "section": "Data and Behavior — Feedback fields III",
         "policySentence": "The platform allows feedback field `matcherVersion`.",
         "canonicalClaim": "The platform allows feedback field `matcherVersion`.",
         "claimClass": "allows",
-        "systemMapping": "`backend/src/modules/feedback/service.js:33-46`",
+        "systemMapping": "`backend/src/modules/feedback/service.js:46-78`",
         "status": "mapped",
         "notes": "",
         "specialNotes": [],
@@ -1481,20 +1581,22 @@ export const POLICY_SURFACE_DATA = {
         },
         "traces": [
           {
-            "source": "backend/src/modules/feedback/service.js:33-46",
+            "source": "backend/src/modules/feedback/service.js:46-78",
             "path": "backend/src/modules/feedback/service.js",
-            "lines": "33-46"
+            "lines": "46-78"
           }
         ]
       },
       {
         "id": "terms-14",
+        "version": 1,
+        "state": "published",
         "policyFile": "terms.md",
         "section": "Data and Behavior — Feedback fields III",
         "policySentence": "The platform allows feedback field `conceptSetVersion`.",
         "canonicalClaim": "The platform allows feedback field `conceptSetVersion`.",
         "claimClass": "allows",
-        "systemMapping": "`backend/src/modules/feedback/service.js:33-46`",
+        "systemMapping": "`backend/src/modules/feedback/service.js:46-78`",
         "status": "mapped",
         "notes": "",
         "specialNotes": [],
@@ -1506,14 +1608,16 @@ export const POLICY_SURFACE_DATA = {
         },
         "traces": [
           {
-            "source": "backend/src/modules/feedback/service.js:33-46",
+            "source": "backend/src/modules/feedback/service.js:46-78",
             "path": "backend/src/modules/feedback/service.js",
-            "lines": "33-46"
+            "lines": "46-78"
           }
         ]
       },
       {
         "id": "terms-15",
+        "version": 1,
+        "state": "published",
         "policyFile": "terms.md",
         "section": "Data and Behavior — Feedback response types",
         "policySentence": "The platform allows feedback response type `concept_match`.",
@@ -1544,6 +1648,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "terms-16",
+        "version": 1,
+        "state": "published",
         "policyFile": "terms.md",
         "section": "Data and Behavior — Feedback response types",
         "policySentence": "The platform allows feedback response type `ambiguous_match`.",
@@ -1574,6 +1680,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "terms-17",
+        "version": 1,
+        "state": "published",
         "policyFile": "terms.md",
         "section": "Data and Behavior — Feedback response types",
         "policySentence": "The platform allows feedback response type `no_exact_match`.",
@@ -1604,6 +1712,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "terms-18",
+        "version": 1,
+        "state": "published",
         "policyFile": "terms.md",
         "section": "Data and Behavior — Concept match options",
         "policySentence": "The platform allows feedback option `clear` for `concept_match`.",
@@ -1629,6 +1739,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "terms-19",
+        "version": 1,
+        "state": "published",
         "policyFile": "terms.md",
         "section": "Data and Behavior — Concept match options",
         "policySentence": "The platform allows feedback option `unclear` for `concept_match`.",
@@ -1654,6 +1766,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "terms-20",
+        "version": 1,
+        "state": "published",
         "policyFile": "terms.md",
         "section": "Data and Behavior — Concept match options",
         "policySentence": "The platform allows feedback option `wrong_concept` for `concept_match`.",
@@ -1679,6 +1793,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "terms-21",
+        "version": 1,
+        "state": "published",
         "policyFile": "terms.md",
         "section": "Data and Behavior — Ambiguous match options",
         "policySentence": "The platform allows feedback option `found_right_one` for `ambiguous_match`.",
@@ -1704,6 +1820,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "terms-22",
+        "version": 1,
+        "state": "published",
         "policyFile": "terms.md",
         "section": "Data and Behavior — Ambiguous match options",
         "policySentence": "The platform allows feedback option `still_not_right` for `ambiguous_match`.",
@@ -1729,6 +1847,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "terms-23",
+        "version": 1,
+        "state": "published",
         "policyFile": "terms.md",
         "section": "Data and Behavior — No exact match options",
         "policySentence": "The platform allows feedback option `expected` for `no_exact_match`.",
@@ -1754,6 +1874,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "terms-24",
+        "version": 1,
+        "state": "published",
         "policyFile": "terms.md",
         "section": "Data and Behavior — No exact match options",
         "policySentence": "The platform allows feedback option `should_exist` for `no_exact_match`.",
@@ -1779,6 +1901,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "terms-25",
+        "version": 1,
+        "state": "published",
         "policyFile": "terms.md",
         "section": "Boundaries — Origin and payload constraints",
         "policySentence": "The platform does not allow CORS requests from origins outside the normalized allowed origin set.",
@@ -1804,6 +1928,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "terms-26",
+        "version": 1,
+        "state": "published",
         "policyFile": "terms.md",
         "section": "Boundaries — Origin and payload constraints",
         "policySentence": "The platform does not allow feedback payload keys outside the approved field set.",
@@ -1829,6 +1955,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "terms-27",
+        "version": 1,
+        "state": "published",
         "policyFile": "terms.md",
         "section": "Boundaries — Origin and payload constraints",
         "policySentence": "The platform does not allow unsupported `responseType` values.",
@@ -1854,6 +1982,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "terms-28",
+        "version": 1,
+        "state": "published",
         "policyFile": "terms.md",
         "section": "Boundaries — Origin and payload constraints",
         "policySentence": "The platform does not allow invalid `feedbackType` and `responseType` combinations.",
@@ -1879,6 +2009,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "terms-29",
+        "version": 1,
+        "state": "published",
         "policyFile": "terms.md",
         "section": "Boundaries — Concept match constraints",
         "policySentence": "The platform does not allow candidate concept IDs on `concept_match` feedback.",
@@ -1904,6 +2036,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "terms-30",
+        "version": 1,
+        "state": "published",
         "policyFile": "terms.md",
         "section": "Boundaries — Concept match constraints",
         "policySentence": "The platform does not allow suggestion concept IDs on `concept_match` feedback.",
@@ -1929,6 +2063,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "terms-31",
+        "version": 1,
+        "state": "published",
         "policyFile": "terms.md",
         "section": "Boundaries — Ambiguous match constraints",
         "policySentence": "The platform does not allow `ambiguous_match` feedback with fewer than two candidate concept IDs.",
@@ -1954,6 +2090,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "terms-32",
+        "version": 1,
+        "state": "published",
         "policyFile": "terms.md",
         "section": "Boundaries — Ambiguous match constraints",
         "policySentence": "The platform does not allow suggestion concept IDs on `ambiguous_match` feedback.",
@@ -1979,6 +2117,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "terms-33",
+        "version": 1,
+        "state": "published",
         "policyFile": "terms.md",
         "section": "Boundaries — No exact match constraints",
         "policySentence": "The platform does not allow candidate concept IDs on `no_exact_match` feedback.",
@@ -2004,6 +2144,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "terms-34",
+        "version": 1,
+        "state": "published",
         "policyFile": "terms.md",
         "section": "Boundaries — Comparison constraints",
         "policySentence": "The platform does not allow comparison output for non-allowlisted concept pairs.",
@@ -2051,9 +2193,9 @@ export const POLICY_SURFACE_DATA = {
           "path": "/api/v1/feedback",
           "evidence": [
             {
-              "source": "backend/src/routes/api/v1/feedback.route.js:16-19",
+              "source": "backend/src/routes/api/v1/feedback.route.js:20-23",
               "path": "backend/src/routes/api/v1/feedback.route.js",
-              "lines": "16-19"
+              "lines": "20-23"
             }
           ]
         }
@@ -2066,9 +2208,9 @@ export const POLICY_SURFACE_DATA = {
           "fieldName": "sessionId",
           "evidence": [
             {
-              "source": "backend/src/modules/feedback/service.js:33-46",
+              "source": "backend/src/modules/feedback/service.js:46-78",
               "path": "backend/src/modules/feedback/service.js",
-              "lines": "33-46"
+              "lines": "46-78"
             }
           ]
         },
@@ -2079,9 +2221,9 @@ export const POLICY_SURFACE_DATA = {
           "fieldName": "rawQuery",
           "evidence": [
             {
-              "source": "backend/src/modules/feedback/service.js:33-46",
+              "source": "backend/src/modules/feedback/service.js:46-78",
               "path": "backend/src/modules/feedback/service.js",
-              "lines": "33-46"
+              "lines": "46-78"
             }
           ]
         },
@@ -2092,9 +2234,9 @@ export const POLICY_SURFACE_DATA = {
           "fieldName": "normalizedQuery",
           "evidence": [
             {
-              "source": "backend/src/modules/feedback/service.js:33-46",
+              "source": "backend/src/modules/feedback/service.js:46-78",
               "path": "backend/src/modules/feedback/service.js",
-              "lines": "33-46"
+              "lines": "46-78"
             }
           ]
         },
@@ -2105,9 +2247,9 @@ export const POLICY_SURFACE_DATA = {
           "fieldName": "responseType",
           "evidence": [
             {
-              "source": "backend/src/modules/feedback/service.js:33-46",
+              "source": "backend/src/modules/feedback/service.js:46-78",
               "path": "backend/src/modules/feedback/service.js",
-              "lines": "33-46"
+              "lines": "46-78"
             }
           ]
         },
@@ -2118,9 +2260,9 @@ export const POLICY_SURFACE_DATA = {
           "fieldName": "feedbackType",
           "evidence": [
             {
-              "source": "backend/src/modules/feedback/service.js:33-46",
+              "source": "backend/src/modules/feedback/service.js:46-78",
               "path": "backend/src/modules/feedback/service.js",
-              "lines": "33-46"
+              "lines": "46-78"
             }
           ]
         },
@@ -2131,9 +2273,9 @@ export const POLICY_SURFACE_DATA = {
           "fieldName": "resolvedConceptId",
           "evidence": [
             {
-              "source": "backend/src/modules/feedback/service.js:33-46",
+              "source": "backend/src/modules/feedback/service.js:46-78",
               "path": "backend/src/modules/feedback/service.js",
-              "lines": "33-46"
+              "lines": "46-78"
             }
           ]
         },
@@ -2144,9 +2286,9 @@ export const POLICY_SURFACE_DATA = {
           "fieldName": "candidateConceptIds",
           "evidence": [
             {
-              "source": "backend/src/modules/feedback/service.js:33-46",
+              "source": "backend/src/modules/feedback/service.js:46-78",
               "path": "backend/src/modules/feedback/service.js",
-              "lines": "33-46"
+              "lines": "46-78"
             }
           ]
         },
@@ -2157,9 +2299,9 @@ export const POLICY_SURFACE_DATA = {
           "fieldName": "suggestionConceptIds",
           "evidence": [
             {
-              "source": "backend/src/modules/feedback/service.js:33-46",
+              "source": "backend/src/modules/feedback/service.js:46-78",
               "path": "backend/src/modules/feedback/service.js",
-              "lines": "33-46"
+              "lines": "46-78"
             }
           ]
         },
@@ -2170,9 +2312,9 @@ export const POLICY_SURFACE_DATA = {
           "fieldName": "contractVersion",
           "evidence": [
             {
-              "source": "backend/src/modules/feedback/service.js:33-46",
+              "source": "backend/src/modules/feedback/service.js:46-78",
               "path": "backend/src/modules/feedback/service.js",
-              "lines": "33-46"
+              "lines": "46-78"
             }
           ]
         },
@@ -2183,9 +2325,9 @@ export const POLICY_SURFACE_DATA = {
           "fieldName": "normalizerVersion",
           "evidence": [
             {
-              "source": "backend/src/modules/feedback/service.js:33-46",
+              "source": "backend/src/modules/feedback/service.js:46-78",
               "path": "backend/src/modules/feedback/service.js",
-              "lines": "33-46"
+              "lines": "46-78"
             }
           ]
         },
@@ -2196,9 +2338,9 @@ export const POLICY_SURFACE_DATA = {
           "fieldName": "matcherVersion",
           "evidence": [
             {
-              "source": "backend/src/modules/feedback/service.js:33-46",
+              "source": "backend/src/modules/feedback/service.js:46-78",
               "path": "backend/src/modules/feedback/service.js",
-              "lines": "33-46"
+              "lines": "46-78"
             }
           ]
         },
@@ -2209,9 +2351,9 @@ export const POLICY_SURFACE_DATA = {
           "fieldName": "conceptSetVersion",
           "evidence": [
             {
-              "source": "backend/src/modules/feedback/service.js:33-46",
+              "source": "backend/src/modules/feedback/service.js:46-78",
               "path": "backend/src/modules/feedback/service.js",
-              "lines": "33-46"
+              "lines": "46-78"
             }
           ]
         },
@@ -2562,6 +2704,8 @@ export const POLICY_SURFACE_DATA = {
     "claims": [
       {
         "id": "cookies-1",
+        "version": 1,
+        "state": "published",
         "policyFile": "cookies.md",
         "section": "Data Handling — Internal proxy forwarding",
         "policySentence": "The platform shares incoming `cookie` headers with the API proxy target through the SSR layer.",
@@ -2591,6 +2735,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "cookies-2",
+        "version": 1,
+        "state": "published",
         "policyFile": "cookies.md",
         "section": "Data Handling — Internal proxy forwarding",
         "policySentence": "The platform shares upstream `set-cookie` headers with the client response through the SSR layer.",
@@ -2620,6 +2766,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "cookies-3",
+        "version": 1,
+        "state": "published",
         "policyFile": "cookies.md",
         "section": "Boundaries — Conditional forwarding",
         "policySentence": "The platform does not allow SSR forwarding of cookie headers when the incoming request omits them.",
@@ -2649,6 +2797,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "cookies-4",
+        "version": 1,
+        "state": "published",
         "policyFile": "cookies.md",
         "section": "Boundaries — Conditional forwarding",
         "policySentence": "The platform does not allow SSR forwarding of upstream set-cookie headers when upstream responses omit them.",
@@ -2777,6 +2927,8 @@ export const POLICY_SURFACE_DATA = {
     "claims": [
       {
         "id": "data-retention-1",
+        "version": 1,
+        "state": "published",
         "policyFile": "data-retention.md",
         "section": "Runtime Snapshot",
         "policySentence": "The platform derives `expiresAt` before feedback event persistence.",
@@ -2807,6 +2959,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "data-retention-2",
+        "version": 1,
+        "state": "published",
         "policyFile": "data-retention.md",
         "section": "Runtime Snapshot",
         "policySentence": "The platform stores `expiresAt` in feedback event documents.",
@@ -2845,6 +2999,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "data-retention-3",
+        "version": 1,
+        "state": "published",
         "policyFile": "data-retention.md",
         "section": "Runtime Snapshot",
         "policySentence": "The platform exposes feedback export and delete controls by `sessionId`.",
@@ -2870,6 +3026,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "data-retention-4",
+        "version": 1,
+        "state": "published",
         "policyFile": "data-retention.md",
         "section": "Lifecycle Bands — Short-lived persistence",
         "policySentence": "The platform stores `rawQuery` in feedback event documents as a `sha256` digest.",
@@ -2913,6 +3071,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "data-retention-5",
+        "version": 1,
+        "state": "published",
         "policyFile": "data-retention.md",
         "section": "Lifecycle Bands — Short-lived persistence",
         "policySentence": "The platform stores `normalizedQuery` in feedback event documents as a `sha256` digest.",
@@ -2956,6 +3116,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "data-retention-6",
+        "version": 1,
+        "state": "published",
         "policyFile": "data-retention.md",
         "section": "Lifecycle Bands — Short-lived persistence",
         "policySentence": "The platform deletes feedback event documents through a TTL index on `expiresAt`.",
@@ -2981,6 +3143,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "data-retention-7",
+        "version": 1,
+        "state": "published",
         "policyFile": "data-retention.md",
         "section": "Lifecycle Bands — Session-bound continuity",
         "policySentence": "The platform stores a feedback session identifier in browser local storage under `chatpdm-beta-session-id`.",
@@ -3008,6 +3172,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "data-retention-8",
+        "version": 1,
+        "state": "published",
         "policyFile": "data-retention.md",
         "section": "Lifecycle Bands — Transport-only flow",
         "policySentence": "The platform shares incoming `x-forwarded-for` headers with the API proxy target through the SSR layer.",
@@ -3037,6 +3203,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "data-retention-9",
+        "version": 1,
+        "state": "published",
         "policyFile": "data-retention.md",
         "section": "Retention Path",
         "policySentence": "The platform minimizes `rawQuery` before persistence.",
@@ -3067,6 +3235,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "data-retention-10",
+        "version": 1,
+        "state": "published",
         "policyFile": "data-retention.md",
         "section": "Retention Path",
         "policySentence": "The platform minimizes `normalizedQuery` before persistence.",
@@ -3097,6 +3267,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "data-retention-11",
+        "version": 1,
+        "state": "published",
         "policyFile": "data-retention.md",
         "section": "Retention Path",
         "policySentence": "The platform derives `expiresAt` from `createdAt` using the live feedback lifecycle contract before persistence.",
@@ -3127,6 +3299,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "data-retention-12",
+        "version": 1,
+        "state": "published",
         "policyFile": "data-retention.md",
         "section": "Controls",
         "policySentence": "The platform allows feedback export by `sessionId`.",
@@ -3157,6 +3331,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "data-retention-13",
+        "version": 1,
+        "state": "published",
         "policyFile": "data-retention.md",
         "section": "Controls",
         "policySentence": "The platform allows feedback deletion by `sessionId`.",
@@ -3216,6 +3392,8 @@ export const POLICY_SURFACE_DATA = {
     "claims": [
       {
         "id": "acceptable-use-1",
+        "version": 1,
+        "state": "published",
         "policyFile": "acceptable-use.md",
         "section": "Runtime Scope",
         "policySentence": "The platform allows concept resolution through `GET /api/v1/concepts/resolve?q=...`.",
@@ -3241,6 +3419,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "acceptable-use-2",
+        "version": 1,
+        "state": "published",
         "policyFile": "acceptable-use.md",
         "section": "Runtime Scope",
         "policySentence": "The platform allows comparison output only for authored allowlisted concept pairs with authored comparison axes.",
@@ -3271,6 +3451,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "acceptable-use-3",
+        "version": 1,
+        "state": "published",
         "policyFile": "acceptable-use.md",
         "section": "Runtime Scope",
         "policySentence": "The platform allows feedback submission through `POST /api/v1/feedback`.",
@@ -3296,6 +3478,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "acceptable-use-4",
+        "version": 1,
+        "state": "published",
         "policyFile": "acceptable-use.md",
         "section": "Runtime Scope",
         "policySentence": "The platform allows feedback export by `sessionId`.",
@@ -3326,6 +3510,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "acceptable-use-5",
+        "version": 1,
+        "state": "published",
         "policyFile": "acceptable-use.md",
         "section": "Runtime Scope",
         "policySentence": "The platform allows feedback deletion by `sessionId`.",
@@ -3356,6 +3542,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "acceptable-use-6",
+        "version": 1,
+        "state": "published",
         "policyFile": "acceptable-use.md",
         "section": "Unsupported or Refused Use",
         "policySentence": "The platform refuses concept resolution requests when query parameter `q` is missing.",
@@ -3383,6 +3571,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "acceptable-use-7",
+        "version": 1,
+        "state": "published",
         "policyFile": "acceptable-use.md",
         "section": "Unsupported or Refused Use",
         "policySentence": "The platform refuses concept resolution requests when query parameter `q` is empty.",
@@ -3410,6 +3600,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "acceptable-use-8",
+        "version": 1,
+        "state": "published",
         "policyFile": "acceptable-use.md",
         "section": "Unsupported or Refused Use",
         "policySentence": "The platform refuses concept resolution requests when query parameter `q` is not a string.",
@@ -3437,6 +3629,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "acceptable-use-9",
+        "version": 1,
+        "state": "published",
         "policyFile": "acceptable-use.md",
         "section": "Unsupported or Refused Use",
         "policySentence": "The platform refuses unsupported complex queries.",
@@ -3462,6 +3656,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "acceptable-use-10",
+        "version": 1,
+        "state": "published",
         "policyFile": "acceptable-use.md",
         "section": "Unsupported or Refused Use",
         "policySentence": "The platform refuses relation queries.",
@@ -3487,6 +3683,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "acceptable-use-11",
+        "version": 1,
+        "state": "published",
         "policyFile": "acceptable-use.md",
         "section": "Unsupported or Refused Use",
         "policySentence": "The platform refuses role or actor queries.",
@@ -3512,6 +3710,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "acceptable-use-12",
+        "version": 1,
+        "state": "published",
         "policyFile": "acceptable-use.md",
         "section": "Unsupported or Refused Use",
         "policySentence": "The platform refuses canonical lookup requests when no authored concept ID is provided.",
@@ -3537,6 +3737,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "acceptable-use-13",
+        "version": 1,
+        "state": "published",
         "policyFile": "acceptable-use.md",
         "section": "Unsupported or Refused Use",
         "policySentence": "The platform refuses canonical lookup requests when no authored concept exists for the requested ID.",
@@ -3562,6 +3764,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "acceptable-use-14",
+        "version": 1,
+        "state": "published",
         "policyFile": "acceptable-use.md",
         "section": "Unsupported or Refused Use",
         "policySentence": "The platform refuses comparison output for non-allowlisted concept pairs by returning `no_exact_match`.",
@@ -3592,6 +3796,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "acceptable-use-15",
+        "version": 1,
+        "state": "published",
         "policyFile": "acceptable-use.md",
         "section": "Unsupported or Refused Use",
         "policySentence": "The platform refuses non-governance usage of governance-scoped concepts by returning `no_exact_match`.",
@@ -3622,6 +3828,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "acceptable-use-16",
+        "version": 1,
+        "state": "published",
         "policyFile": "acceptable-use.md",
         "section": "Feedback Surface Boundaries",
         "policySentence": "The platform exposes feedback operations `submit`, `export_by_session`, and `delete_by_session`.",
@@ -3647,6 +3855,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "acceptable-use-17",
+        "version": 1,
+        "state": "published",
         "policyFile": "acceptable-use.md",
         "section": "Feedback Surface Boundaries",
         "policySentence": "The platform allows only `concept_match`, `ambiguous_match`, and `no_exact_match` as feedback `responseType` values.",
@@ -3677,6 +3887,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "acceptable-use-18",
+        "version": 1,
+        "state": "published",
         "policyFile": "acceptable-use.md",
         "section": "Feedback Surface Boundaries",
         "policySentence": "The platform allows feedback options only from the response-type-specific allowlist.",
@@ -3707,6 +3919,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "acceptable-use-19",
+        "version": 1,
+        "state": "published",
         "policyFile": "acceptable-use.md",
         "section": "Feedback Surface Boundaries",
         "policySentence": "The platform refuses feedback payload keys outside the approved field set.",
@@ -3732,6 +3946,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "acceptable-use-20",
+        "version": 1,
+        "state": "published",
         "policyFile": "acceptable-use.md",
         "section": "Feedback Surface Boundaries",
         "policySentence": "The platform refuses invalid `feedbackType` and `responseType` combinations.",
@@ -3757,6 +3973,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "acceptable-use-21",
+        "version": 1,
+        "state": "published",
         "policyFile": "acceptable-use.md",
         "section": "Feedback Surface Boundaries",
         "policySentence": "The platform refuses candidate or suggestion concept IDs on `concept_match` feedback.",
@@ -3782,6 +4000,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "acceptable-use-22",
+        "version": 1,
+        "state": "published",
         "policyFile": "acceptable-use.md",
         "section": "Feedback Surface Boundaries",
         "policySentence": "The platform refuses `ambiguous_match` feedback with fewer than two candidate concept IDs.",
@@ -3807,6 +4027,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "acceptable-use-23",
+        "version": 1,
+        "state": "published",
         "policyFile": "acceptable-use.md",
         "section": "Feedback Surface Boundaries",
         "policySentence": "The platform refuses suggestion concept IDs on `ambiguous_match` feedback.",
@@ -3832,6 +4054,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "acceptable-use-24",
+        "version": 1,
+        "state": "published",
         "policyFile": "acceptable-use.md",
         "section": "Feedback Surface Boundaries",
         "policySentence": "The platform refuses candidate concept IDs on `no_exact_match` feedback.",
@@ -3857,6 +4081,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "acceptable-use-25",
+        "version": 1,
+        "state": "published",
         "policyFile": "acceptable-use.md",
         "section": "Feedback Surface Boundaries",
         "policySentence": "The platform refuses invalid feedback submissions with HTTP `400`.",
@@ -3882,6 +4108,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "acceptable-use-26",
+        "version": 1,
+        "state": "published",
         "policyFile": "acceptable-use.md",
         "section": "Feedback Surface Boundaries",
         "policySentence": "The platform refuses invalid feedback submissions with error code `invalid_feedback`.",
@@ -3907,6 +4135,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "acceptable-use-27",
+        "version": 1,
+        "state": "published",
         "policyFile": "acceptable-use.md",
         "section": "Feedback Surface Boundaries",
         "policySentence": "The platform refuses invalid feedback session control requests with error code `invalid_feedback_session_control`.",
@@ -3932,6 +4162,8 @@ export const POLICY_SURFACE_DATA = {
       },
       {
         "id": "acceptable-use-28",
+        "version": 1,
+        "state": "published",
         "policyFile": "acceptable-use.md",
         "section": "Feedback Surface Boundaries",
         "policySentence": "The platform refuses session control requests when `sessionId` is not a non-empty string.",

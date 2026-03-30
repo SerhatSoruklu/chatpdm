@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "conceptFamily": "duty",
+  "structureV3": {
+    "bearer": {
+      "type": "office",
+      "id": "director",
+      "label": "Company director"
+    },
+    "content": {
+      "type": "do",
+      "description": "act in the interest of the governed entity within the defined office scope",
+      "standard": "open_textured"
+    },
+    "source": {
+      "type": "statute",
+      "system": "governance_law"
+    },
+    "obligee": {
+      "type": "public"
+    },
+    "conditions": {
+      "when": [
+        "while the actor occupies the office"
+      ],
+      "unless": [
+        "a valid suspension or disqualification applies"
+      ],
+      "exceptions": []
+    },
+    "enforcement": {
+      "enforceable": true,
+      "enforcer": [
+        "court",
+        "oversight_body"
+      ],
+      "forum": "governance_review_process",
+      "sanctions": [
+        "injunction",
+        "removal"
+      ]
+    },
+    "delegation": {
+      "delegable": false,
+      "effect": "none"
+    },
+    "phase": "primary",
+    "modality": "defeasible"
+  }
+}

@@ -6,7 +6,11 @@
 } @else {
   <div class="pdm-policy-claim-list">
     @for (claim of claims(); track claim.id) {
-      <app-policy-claim-card [claim]="claim" />
+      <app-policy-claim-card
+        [claim]="claim"
+        [selected]="claim.id === selectedClaimId()"
+        (inspectRequested)="inspectClaim.emit($event)"
+      />
     }
   </div>
 }

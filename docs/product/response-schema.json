@@ -69,6 +69,7 @@
             "relation_not_supported",
             "role_or_actor_not_supported",
             "ambiguous_selection",
+            "validation_blocked",
             "unsupported_complex",
             "canonical_lookup_not_found",
             "out_of_scope",
@@ -340,6 +341,181 @@
         }
       }
     },
+    "nullableV3Status": {
+      "enum": [
+        "not_applicable",
+        "incomplete",
+        "passing",
+        null
+      ]
+    },
+    "nullableRelationStatus": {
+      "enum": [
+        "not_applicable",
+        "incomplete",
+        "passing",
+        null
+      ]
+    },
+    "nullableLawStatus": {
+      "enum": [
+        "not_applicable",
+        "failing",
+        "warning_only",
+        "passing",
+        null
+      ]
+    },
+    "nullableEnforcementStatus": {
+      "enum": [
+        "passing",
+        "warning_only",
+        "blocked",
+        null
+      ]
+    },
+    "nullableValidationState": {
+      "enum": [
+        "language_invalid",
+        "language_valid",
+        "structurally_incomplete",
+        "fully_validated",
+        null
+      ]
+    },
+    "nullableSystemValidationState": {
+      "enum": [
+        "language_invalid",
+        "structurally_incomplete",
+        "law_blocked",
+        "law_warning_only",
+        "law_validated",
+        "language_valid",
+        null
+      ]
+    },
+    "governanceStateTraceObject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "conceptId",
+        "validatorSource",
+        "unavailableReason",
+        "relationSource",
+        "lawSource",
+        "relationDataPresent",
+        "dataSource"
+      ],
+      "properties": {
+        "conceptId": {
+          "$ref": "#/$defs/stringValue"
+        },
+        "validatorSource": {
+          "enum": [
+            "validator_artifact",
+            "unavailable"
+          ]
+        },
+        "unavailableReason": {
+          "enum": [
+            "artifact_missing",
+            "artifact_invalid",
+            "concept_state_missing",
+            null
+          ]
+        },
+        "relationSource": {
+          "enum": [
+            "authored",
+            "fallback",
+            "none",
+            null
+          ]
+        },
+        "lawSource": {
+          "enum": [
+            "authored",
+            "fallback",
+            "none",
+            null
+          ]
+        },
+        "relationDataPresent": {
+          "type": "boolean"
+        },
+        "dataSource": {
+          "enum": [
+            "authored_relation_packets",
+            "default_seed_relations",
+            "none",
+            null
+          ]
+        }
+      }
+    },
+    "governanceStateObject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source",
+        "available",
+        "validationState",
+        "v3Status",
+        "relationStatus",
+        "lawStatus",
+        "enforcementStatus",
+        "systemValidationState",
+        "isBlocked",
+        "isStructurallyIncomplete",
+        "isFullyValidated",
+        "isActionable",
+        "trace"
+      ],
+      "properties": {
+        "source": {
+          "enum": [
+            "validator_artifact",
+            "unavailable"
+          ]
+        },
+        "available": {
+          "type": "boolean"
+        },
+        "validationState": {
+          "$ref": "#/$defs/nullableValidationState"
+        },
+        "v3Status": {
+          "$ref": "#/$defs/nullableV3Status"
+        },
+        "relationStatus": {
+          "$ref": "#/$defs/nullableRelationStatus"
+        },
+        "lawStatus": {
+          "$ref": "#/$defs/nullableLawStatus"
+        },
+        "enforcementStatus": {
+          "$ref": "#/$defs/nullableEnforcementStatus"
+        },
+        "systemValidationState": {
+          "$ref": "#/$defs/nullableSystemValidationState"
+        },
+        "isBlocked": {
+          "type": "boolean"
+        },
+        "isStructurallyIncomplete": {
+          "type": "boolean"
+        },
+        "isFullyValidated": {
+          "type": "boolean"
+        },
+        "isActionable": {
+          "type": "boolean"
+        },
+        "trace": {
+          "$ref": "#/$defs/governanceStateTraceObject"
+        }
+      }
+    },
     "suggestionObject": {
       "type": "object",
       "additionalProperties": false,
@@ -460,6 +636,7 @@
         "shortDefinition",
         "coreMeaning",
         "fullDefinition",
+        "governanceState",
         "registers",
         "contexts",
         "sources",
@@ -477,6 +654,9 @@
         },
         "fullDefinition": {
           "$ref": "#/$defs/stringValue"
+        },
+        "governanceState": {
+          "$ref": "#/$defs/governanceStateObject"
         },
         "registers": {
           "$ref": "#/$defs/readingRegistersObject"
@@ -715,7 +895,9 @@
         "queryType": {
           "type": "string",
           "enum": [
+            "exact_concept_query",
             "canonical_id_query",
+            "ambiguity_query",
             "broader_topic_query",
             "subtype_query",
             "comparison_query",

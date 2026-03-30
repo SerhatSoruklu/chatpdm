@@ -17,4 +17,8 @@ export class PolicyTracePanelComponent {
   protected readonly canonicalSegments = computed(() =>
     splitPolicyInlineCode(this.claim().canonicalClaim),
   );
+  protected readonly systemMappingSegments = computed(() =>
+    splitPolicyInlineCode(this.claim().systemMapping),
+  );
+  protected readonly statusLabel = computed(() => this.claim().status.replaceAll('_', ' '));
 }

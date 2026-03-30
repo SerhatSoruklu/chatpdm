@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "conceptId": "legitimacy",
+  "relations": [
+    {
+      "schemaVersion": 1,
+      "subject": {
+        "conceptId": "legitimacy",
+        "path": "structureV3.legitimacy.status",
+        "label": "Legitimacy assessment of governance standing"
+      },
+      "type": "VALIDATES_AUTHORITY",
+      "target": {
+        "conceptId": "authority",
+        "path": "structureV3.authority.holder",
+        "label": "Authority standing subject to validation"
+      },
+      "basis": {
+        "kind": "boundary_rule",
+        "description": "Legitimacy evaluates whether authority standing counts as justified or accepted."
+      },
+      "conditions": {
+        "when": [
+          "authority standing is assessed within governance order"
+        ],
+        "unless": [
+          "no evaluative basis is available for legitimacy review"
+        ]
+      },
+      "effect": {
+        "kind": "validates",
+        "description": "Legitimacy may validate, weaken, or invalidate authority standing."
+      },
+      "status": {
+        "active": true,
+        "blocking": false,
+        "note": "Authored relation packet for legitimacy validating authority."
+      }
+    }
+  ]
+}

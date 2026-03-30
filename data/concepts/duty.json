@@ -40,6 +40,27 @@
       "fullDefinition": "Duty is defined as conduct owed by an actor under a binding rule, role, office, or obligation, and it is therefore not reducible to responsibility. The concept specifies required action or restraint before performance, by linking an actor to a norm that governs what must occur or be avoided. Whether breach of that requirement generates broader responsibility is a further question of answerability, not part of the definition of duty itself."
     }
   },
+  "structureV3": {
+    "schemaVersion": 1,
+    "conceptFamily": "duty",
+    "duty": {
+      "bearer": {
+        "type": "organization_role",
+        "id": "actor",
+        "label": "Actor or office-bearer subject to the duty"
+      },
+      "content": {
+        "type": "do",
+        "description": "perform or refrain from conduct that is owed under a binding governance source",
+        "standard": "rule_like"
+      },
+      "source": {
+        "type": "policy",
+        "system": "governance_order"
+      },
+      "phase": "primary"
+    }
+  },
   "contexts": [
     {
       "label": "legal",

@@ -1,6 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, input, output } from '@angular/core';
 
+export interface PolicyFilterOption {
+  value: string;
+  label: string;
+  count: number;
+}
+
 @Component({
   selector: 'app-policy-filter-bar',
   standalone: true,
@@ -13,9 +19,12 @@ export class PolicyFilterBarComponent {
   readonly activeClaimClass = input('');
   readonly activeSection = input('');
   readonly internalTransportOnly = input(false);
-  readonly claimClasses = input<readonly string[]>([]);
-  readonly sections = input<readonly string[]>([]);
+  readonly activeClaimId = input('');
+  readonly claimClassOptions = input<readonly PolicyFilterOption[]>([]);
+  readonly sectionOptions = input<readonly PolicyFilterOption[]>([]);
   readonly visibleClaimCount = input(0);
+  readonly visibleMappedClaimCount = input(0);
+  readonly visibleInternalTransportCount = input(0);
   readonly totalClaimCount = input(0);
 
   readonly searchChange = output<string>();
@@ -49,7 +58,12 @@ export class PolicyFilterBarComponent {
       this.search().trim() ||
         this.activeClaimClass().trim() ||
         this.activeSection().trim() ||
-        this.internalTransportOnly(),
+        this.internalTransportOnly() ||
+        this.activeClaimId().trim(),
     );
+  }
+
+  protected toggleClaimClass(value: string): void {
+    this.claimClassChange.emit(this.activeClaimClass() === value ? '' : value);
   }
 }

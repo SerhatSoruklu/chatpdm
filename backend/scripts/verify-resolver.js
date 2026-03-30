@@ -4,6 +4,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const { resolveConceptQuery } = require('../src/modules/concepts');
+const { getConceptRuntimeGovernanceState } = require('../src/modules/concepts/concept-validation-state-loader');
 const { validateConceptShape } = require('../src/modules/concepts/concept-loader');
 
 const fixturePath = path.resolve(
@@ -51,6 +52,27 @@ function assertReadingRegistersShell(registers, expectedConceptId, expectedConce
   assert.equal(registers.standard.shortDefinition, answer.shortDefinition, `${context}.standard.shortDefinition mismatch.`);
   assert.equal(registers.standard.coreMeaning, answer.coreMeaning, `${context}.standard.coreMeaning mismatch.`);
   assert.equal(registers.standard.fullDefinition, answer.fullDefinition, `${context}.standard.fullDefinition mismatch.`);
+}
+
+function assertGovernanceStateShell(governanceState, expectedConceptId, context) {
+  assert.notEqual(governanceState, null, `${context} is missing.`);
+  assert.equal(governanceState.trace.conceptId, expectedConceptId, `${context}.trace.conceptId mismatch.`);
+  assert.equal(typeof governanceState.available, 'boolean', `${context}.available mismatch.`);
+  assert.equal(typeof governanceState.isBlocked, 'boolean', `${context}.isBlocked mismatch.`);
+  assert.equal(
+    typeof governanceState.isStructurallyIncomplete,
+    'boolean',
+    `${context}.isStructurallyIncomplete mismatch.`,
+  );
+  assert.equal(typeof governanceState.isFullyValidated, 'boolean', `${context}.isFullyValidated mismatch.`);
+  assert.equal(typeof governanceState.isActionable, 'boolean', `${context}.isActionable mismatch.`);
+
+  const expectedGovernanceState = getConceptRuntimeGovernanceState(expectedConceptId);
+  assert.deepEqual(
+    governanceState,
+    expectedGovernanceState,
+    `${context} mismatch against validator-derived runtime governance state.`,
+  );
 }
 
 function verifyReservedOverlayFieldsAreRejected() {
@@ -144,6 +166,11 @@ function runCase(testCase) {
       firstResult.resolution.conceptVersion,
       firstResult.answer,
       `${testCase.name} registers`,
+    );
+    assertGovernanceStateShell(
+      firstResult.answer.governanceState,
+      testCase.expectedConceptId,
+      `${testCase.name} governanceState`,
     );
   }
 

@@ -12,6 +12,13 @@
     0 10px 24px rgba(41, 37, 36, 0.05);
 }
 
+.pdm-policy-claim--selected {
+  border-color: rgba(37, 99, 235, 0.22);
+  box-shadow:
+    0 1px 2px rgba(41, 37, 36, 0.04),
+    0 14px 32px rgba(37, 99, 235, 0.1);
+}
+
 .pdm-policy-claim__main {
   display: grid;
   gap: 14px;
@@ -31,7 +38,9 @@
 }
 
 .pdm-policy-claim__section,
-.pdm-policy-claim__flag {
+.pdm-policy-claim__flag,
+.pdm-policy-claim__id,
+.pdm-policy-claim__status {
   display: inline-flex;
   align-items: center;
   min-height: 28px;
@@ -42,6 +51,15 @@
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.04em;
+}
+
+.pdm-policy-claim__id {
+  color: #57534e;
+}
+
+.pdm-policy-claim__status {
+  background: rgba(255, 255, 255, 0.86);
+  color: #57534e;
 }
 
 .pdm-policy-claim__class {
@@ -79,7 +97,6 @@
 }
 
 .pdm-policy-claim__toggle {
-  justify-self: start;
   min-height: 40px;
   padding: 0 14px;
   border: 1px solid rgba(120, 113, 108, 0.16);
@@ -88,6 +105,12 @@
   color: #1f2937;
   font-weight: 600;
   cursor: pointer;
+}
+
+.pdm-policy-claim__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .pdm-policy-claim__sentence {
@@ -102,6 +125,57 @@
   border-radius: 6px;
   background: rgba(231, 229, 228, 0.78);
   color: #1f2937;
+}
+
+.pdm-policy-claim__inspect-grid {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+}
+
+.pdm-policy-claim__inspect-item {
+  display: grid;
+  gap: 4px;
+}
+
+.pdm-policy-claim__inspect-label {
+  margin: 0;
+  color: #78716c;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.pdm-policy-claim__inspect-value {
+  margin: 0;
+  color: #292524;
+  line-height: 1.55;
+  word-break: break-word;
+}
+
+.pdm-policy-claim__annotation {
+  display: grid;
+  gap: 6px;
+  padding: 14px;
+  border: 1px solid rgba(59, 130, 246, 0.14);
+  border-radius: 18px;
+  background: rgba(239, 246, 255, 0.72);
+}
+
+.pdm-policy-claim__annotation-label {
+  margin: 0;
+  color: #1d4ed8;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.pdm-policy-claim__annotation-copy {
+  margin: 0;
+  color: #1e3a8a;
+  line-height: 1.55;
 }
 
 .pdm-policy-claim__evidence {
@@ -164,6 +238,10 @@
 
   .pdm-policy-claim__toggle {
     justify-self: end;
+  }
+
+  .pdm-policy-claim__inspect-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .pdm-policy-claim__evidence-grid {

@@ -6,7 +6,7 @@
         type="search"
         class="pdm-policy-filter__input"
         [value]="search()"
-        placeholder="Search sentence, canonical claim, file path"
+        placeholder="Search claim id, canonical wording, file path"
         (input)="onSearchInput($event)"
       >
     </label>
@@ -15,8 +15,8 @@
       <span class="pdm-policy-filter__label pdm-mono">Claim class</span>
       <select class="pdm-policy-filter__select" [value]="activeClaimClass()" (change)="onClaimClassInput($event)">
         <option value="">All classes</option>
-        @for (claimClass of claimClasses(); track claimClass) {
-          <option [value]="claimClass">{{ claimClass.replaceAll('_', ' ') }}</option>
+        @for (option of claimClassOptions(); track option.value) {
+          <option [value]="option.value">{{ option.label }} ({{ option.count }})</option>
         }
       </select>
     </label>
@@ -25,12 +25,28 @@
       <span class="pdm-policy-filter__label pdm-mono">Section</span>
       <select class="pdm-policy-filter__select" [value]="activeSection()" (change)="onSectionInput($event)">
         <option value="">All sections</option>
-        @for (section of sections(); track section) {
-          <option [value]="section">{{ section }}</option>
+        @for (option of sectionOptions(); track option.value) {
+          <option [value]="option.value">{{ option.label }} ({{ option.count }})</option>
         }
       </select>
     </label>
   </div>
+
+  @if (claimClassOptions().length > 0) {
+    <div class="pdm-policy-filter__chips" aria-label="Quick claim class filters">
+      @for (option of claimClassOptions(); track option.value) {
+        <button
+          type="button"
+          class="pdm-policy-filter__chip"
+          [class.pdm-policy-filter__chip--active]="activeClaimClass() === option.value"
+          (click)="toggleClaimClass(option.value)"
+        >
+          <span>{{ option.label }}</span>
+          <span class="pdm-policy-filter__chip-count pdm-mono">{{ option.count }}</span>
+        </button>
+      }
+    </div>
+  }
 
   <div class="pdm-policy-filter__meta">
     <label class="pdm-policy-filter__toggle">
@@ -43,8 +59,12 @@
     </label>
 
     <p class="pdm-policy-filter__count pdm-mono">
-      {{ visibleClaimCount() }} / {{ totalClaimCount() }} claims visible
+      {{ visibleClaimCount() }} / {{ totalClaimCount() }} visible · {{ visibleMappedClaimCount() }} mapped · {{ visibleInternalTransportCount() }} internal SSR
     </p>
+
+    @if (activeClaimId()) {
+      <p class="pdm-policy-filter__inspect pdm-mono">Inspect focus locked to {{ activeClaimId() }}</p>
+    }
 
     @if (hasActiveFilters()) {
       <button type="button" class="pdm-policy-filter__clear" (click)="clearFilters.emit()">

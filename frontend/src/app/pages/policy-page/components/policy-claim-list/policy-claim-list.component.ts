@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 
 import type { PolicyClaim } from '../../../../policies/policy-surface.types';
 import { PolicyClaimCardComponent } from '../policy-claim-card/policy-claim-card.component';
@@ -13,4 +13,6 @@ import { PolicyClaimCardComponent } from '../policy-claim-card/policy-claim-card
 })
 export class PolicyClaimListComponent {
   readonly claims = input<readonly PolicyClaim[]>([]);
+  readonly selectedClaimId = input('');
+  readonly inspectClaim = output<string>();
 }

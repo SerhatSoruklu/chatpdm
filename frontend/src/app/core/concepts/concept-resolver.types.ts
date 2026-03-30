@@ -23,6 +23,7 @@ export interface QueryInterpretation {
     | 'relation_not_supported'
     | 'role_or_actor_not_supported'
     | 'ambiguous_selection'
+    | 'validation_blocked'
     | 'scoped_clarification'
     | 'out_of_scope'
     | 'unsupported_complex'
@@ -34,6 +35,8 @@ export interface QueryInterpretation {
   relationTerm?: string;
   actorTerm?: string;
   targetConceptId?: string;
+  concept?: string;
+  domain?: string;
 }
 
 export interface ConceptSource {
@@ -92,6 +95,39 @@ export interface ReadingRegisters {
   formal: ReadingRegisterFields;
 }
 
+export interface GovernanceStateTrace {
+  conceptId: string;
+  validatorSource: 'validator_artifact' | 'unavailable';
+  unavailableReason: 'artifact_missing' | 'artifact_invalid' | 'concept_state_missing' | null;
+  relationSource: 'authored' | 'fallback' | 'none' | null;
+  lawSource: 'authored' | 'fallback' | 'none' | null;
+  relationDataPresent: boolean;
+  dataSource: 'authored_relation_packets' | 'default_seed_relations' | 'none' | null;
+}
+
+export interface GovernanceState {
+  source: 'validator_artifact' | 'unavailable';
+  available: boolean;
+  validationState: 'language_invalid' | 'language_valid' | 'structurally_incomplete' | 'fully_validated' | null;
+  v3Status: 'not_applicable' | 'incomplete' | 'passing' | null;
+  relationStatus: 'not_applicable' | 'incomplete' | 'passing' | null;
+  lawStatus: 'not_applicable' | 'failing' | 'warning_only' | 'passing' | null;
+  enforcementStatus: 'not_applicable' | 'passing' | 'warning_only' | 'blocked' | null;
+  systemValidationState:
+    | 'language_invalid'
+    | 'language_valid'
+    | 'structurally_incomplete'
+    | 'law_warning_only'
+    | 'law_blocked'
+    | 'law_validated'
+    | null;
+  isBlocked: boolean;
+  isStructurallyIncomplete: boolean;
+  isFullyValidated: boolean;
+  isActionable: boolean;
+  trace: GovernanceStateTrace;
+}
+
 export interface ConceptMatchResponse {
   type: 'concept_match';
   query: string;
@@ -112,6 +148,7 @@ export interface ConceptMatchResponse {
     shortDefinition: string;
     coreMeaning: string;
     fullDefinition: string;
+    governanceState: GovernanceState;
     registers: ReadingRegisters;
     contexts: ConceptContext[];
     sources: ConceptSource[];
