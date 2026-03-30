@@ -8,7 +8,7 @@ It exists to prevent:
 
 - orchestration drift
 - duplicate writes
-- trace-free terminal results
+- undocumented terminal behavior
 - service-boundary confusion
 
 ## Validation Path Order
@@ -49,6 +49,7 @@ No service may be skipped or reordered without updating this document first.
 
 - `trace.service` is the only service that may create `ValidationRun`
 - once `trace.service` begins finalization, no upstream service may resume domain evaluation
+- in this wave, `trace.service` runs only after a valid continue outcome from `validation-kernel.service`
 
 ## Persistence Rights
 
@@ -123,7 +124,7 @@ May read:
 - `DoctrineArtifact`
 - `Mapping`
 - `OverrideRecord`
-- terminal decision context from all prior services
+- normalized upstream continue context from the valid path
 
 May write:
 
@@ -142,14 +143,14 @@ May not write:
 ### On `invalid`
 
 - the domain path stops immediately at the service that owns the failure
-- only `trace.service` may still run afterward
 - no downstream domain service may continue after an `invalid` result
+- in this wave, `trace.service` does not persist invalid runs
 
 ### On `unresolved`
 
 - the domain path stops immediately at the service that owns the unresolved condition
-- only `trace.service` may still run afterward
 - unresolved does not permit fallback interpretation, alternate mapping, or retry inside the same run
+- in this wave, `trace.service` does not persist unresolved runs
 
 ### On `valid`
 
@@ -158,15 +159,15 @@ May not write:
 
 ## ValidationRun Prerequisites
 
-`trace.service` may create `ValidationRun` only when all of the following are available:
+`trace.service` may create `ValidationRun` only when all of the following are available for a valid path:
 
 - `matterId`
 - `doctrineArtifactId`
 - `doctrineHash`
 - `resolverVersion`
 - `inputHash`
-- final `result`
-- terminal `failureCodes` array, which may be empty only for `valid`
+- final `result = valid`
+- `failureCodes = []`
 - trace payload containing:
   - `sourceAnchors`
   - `mappingRuleIds`
@@ -204,6 +205,6 @@ If the prerequisites above are not available:
 
 Once any service emits a terminal result for the domain path:
 
-- no later service except `trace.service` may execute
+- no later domain service may execute
 - no earlier service may be re-entered within the same run
 - any retry requires a new validation request and a new `ValidationRun`

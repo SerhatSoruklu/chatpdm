@@ -27,7 +27,7 @@ Input pattern:
 
 Expected result:
 
-- `INVALID`
+- `UNRESOLVED`
 
 Failure code:
 

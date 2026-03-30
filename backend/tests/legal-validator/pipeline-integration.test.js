@@ -173,6 +173,16 @@ async function createRecognizedAuthorityContext() {
   };
 }
 
+function getParagraphSourceSegments(sourceSegments) {
+  return sourceSegments.filter((segment) => segment.segmentType === 'paragraph');
+}
+
+function getGeneratedSourceAnchors(unit, sourceSegments) {
+  return sourceSegments
+    .filter((segment) => unit.sourceSegmentIds.includes(segment.sourceSegmentId))
+    .map((segment) => segment.sourceAnchor);
+}
+
 test.before(async () => {
   mongoServer = await MongoMemoryServer.create();
   await connectMongo(mongoServer.getUri());
@@ -254,9 +264,10 @@ test('legal-validator pipeline persists a replay-safe ValidationRun on the valid
   assert.equal(traceResult.ok, true);
   assert.equal(segmentationResult.ok, true);
   assert.equal(sourceDocument.documentId, unit.documentId);
-  assert.deepEqual(unit.sourceSegmentIds, sourceSegments
-    .filter((segment) => segment.segmentType === 'paragraph')
-    .map((segment) => segment.sourceSegmentId));
+  assert.deepEqual(
+    unit.sourceSegmentIds,
+    getParagraphSourceSegments(sourceSegments).map((segment) => segment.sourceSegmentId),
+  );
   assert.equal(traceResult.terminal, false);
   assert.equal(traceResult.result, 'valid');
   assert.equal(traceResult.validationRunWritten, true);
@@ -265,9 +276,7 @@ test('legal-validator pipeline persists a replay-safe ValidationRun on the valid
   assert.equal(traceResult.mappingId, 'mapping-integration-1');
   assert.equal(traceResult.validationRunId, 'validation-run-integration-1');
   assert.deepEqual(traceResult.persistedTraceSummary, {
-    sourceAnchors: sourceSegments
-      .filter((segment) => unit.sourceSegmentIds.includes(segment.sourceSegmentId))
-      .map((segment) => segment.sourceAnchor),
+    sourceAnchors: getGeneratedSourceAnchors(unit, sourceSegments),
     interpretationRegimeId: 'uk-textual-v1',
     mappingRuleIds: ['resolver-rule-duty-of-care'],
     validationRuleIds: ['validation-rule-duty-applies'],
@@ -292,12 +301,7 @@ test('legal-validator pipeline persists a replay-safe ValidationRun on the valid
   assert.equal(persistedRun.inputHash, '9'.repeat(64));
   assert.equal(persistedRun.result, 'valid');
   assert.deepEqual(persistedRun.failureCodes, []);
-  assert.deepEqual(
-    persistedRun.trace.sourceAnchors,
-    sourceSegments
-      .filter((segment) => unit.sourceSegmentIds.includes(segment.sourceSegmentId))
-      .map((segment) => segment.sourceAnchor),
-  );
+  assert.deepEqual(persistedRun.trace.sourceAnchors, getGeneratedSourceAnchors(unit, sourceSegments));
   assert.equal(persistedRun.trace.interpretationUsed, true);
   assert.equal(persistedRun.trace.interpretationRegimeId, 'uk-textual-v1');
   assert.equal(persistedRun.trace.manualOverrideUsed, false);
@@ -314,6 +318,9 @@ test('legal-validator pipeline persists a replay-safe ValidationRun on the valid
 test('legal-validator pipeline stops on an invalid kernel result without persisting ValidationRun', async () => {
   const {
     artifact,
+    sourceDocument,
+    segmentationResult,
+    sourceSegments,
     unit,
     admissibilityResult,
     doctrineLoadResult,
@@ -348,6 +355,16 @@ test('legal-validator pipeline stops on an invalid kernel result without persist
   assert.equal(admissibilityResult.ok, true);
   assert.equal(doctrineLoadResult.ok, true);
   assert.equal(authorityLookupResult.ok, true);
+  assert.equal(segmentationResult.ok, true);
+  assert.equal(sourceDocument.documentId, unit.documentId);
+  assert.deepEqual(
+    unit.sourceSegmentIds,
+    getParagraphSourceSegments(sourceSegments).map((segment) => segment.sourceSegmentId),
+  );
+  assert.deepEqual(
+    getGeneratedSourceAnchors(unit, sourceSegments),
+    getParagraphSourceSegments(sourceSegments).map((segment) => segment.sourceAnchor),
+  );
   assert.equal(resolverResult.ok, true);
   assert.equal(validationKernelResult.ok, false);
   assert.equal(validationKernelResult.terminal, true);
@@ -361,6 +378,8 @@ test('legal-validator pipeline stops on an invalid kernel result without persist
 
   assert.ok(persistedMapping);
   assert.equal(persistedMapping.status, 'success');
+  assert.equal(await SourceDocument.countDocuments({}), 1);
+  assert.equal(await SourceSegment.countDocuments({}), 3);
   assert.equal(await Mapping.countDocuments({}), 1);
   assert.equal(await ValidationRun.countDocuments({}), 0);
 });
@@ -368,6 +387,9 @@ test('legal-validator pipeline stops on an invalid kernel result without persist
 test('legal-validator pipeline stops on an unresolved resolver result without persisting Mapping or ValidationRun', async () => {
   const {
     artifact,
+    sourceDocument,
+    segmentationResult,
+    sourceSegments,
     unit,
     admissibilityResult,
     doctrineLoadResult,
@@ -387,6 +409,16 @@ test('legal-validator pipeline stops on an unresolved resolver result without pe
   assert.equal(admissibilityResult.ok, true);
   assert.equal(doctrineLoadResult.ok, true);
   assert.equal(authorityLookupResult.ok, true);
+  assert.equal(segmentationResult.ok, true);
+  assert.equal(sourceDocument.documentId, unit.documentId);
+  assert.deepEqual(
+    unit.sourceSegmentIds,
+    getParagraphSourceSegments(sourceSegments).map((segment) => segment.sourceSegmentId),
+  );
+  assert.deepEqual(
+    getGeneratedSourceAnchors(unit, sourceSegments),
+    getParagraphSourceSegments(sourceSegments).map((segment) => segment.sourceAnchor),
+  );
   assert.equal(resolverResult.ok, false);
   assert.equal(resolverResult.terminal, true);
   assert.equal(resolverResult.result, 'unresolved');
@@ -394,6 +426,8 @@ test('legal-validator pipeline stops on an unresolved resolver result without pe
   assert.equal(resolverResult.argumentUnitId, unit.argumentUnitId);
   assert.equal(resolverResult.doctrineArtifactId, artifact.artifactId);
   assert.equal(resolverResult.mappingWritten, false);
+  assert.equal(await SourceDocument.countDocuments({}), 1);
+  assert.equal(await SourceSegment.countDocuments({}), 3);
   assert.equal(await Mapping.countDocuments({}), 0);
   assert.equal(await ValidationRun.countDocuments({}), 0);
 });
