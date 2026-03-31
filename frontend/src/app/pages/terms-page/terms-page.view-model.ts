@@ -75,8 +75,8 @@ export function buildTermsPageViewModel(surface: PolicySurfaceDefinition): Terms
     eyebrow: 'API Reference',
     title: 'Current runtime contract for public endpoints and feedback boundaries.',
     intro:
-      'Current API behavior is rendered here as a modeled runtime contract: public endpoints, accepted feedback fields and values, platform rules, and mapped runtime and refusal boundaries.',
-    summaryLine: `Current API surface shows ${endpointContracts.length} public endpoints, ${fieldContracts.length} field rules, ${platformRules.length} platform rule, ${runtimeBoundaries.length} runtime boundary, and ${refusalBoundaries.length} refusal boundaries.`,
+      'Current API behavior is rendered here as a modeled runtime contract: active public endpoints, concept detail access, feedback controls, accepted feedback fields and values, platform rules, and mapped runtime and refusal boundaries. Scaffold discovery routes and placeholder resources are not part of this contract view.',
+    summaryLine: `Current API surface shows ${formatCount(endpointContracts.length, 'public endpoint')}, ${formatCount(fieldContracts.length, 'field rule')}, ${formatCount(platformRules.length, 'platform rule')}, ${formatCount(runtimeBoundaries.length, 'runtime boundary')}, and ${formatCount(refusalBoundaries.length, 'refusal boundary')}.`,
     badges: [
       {
         label: 'Endpoints',
@@ -115,7 +115,7 @@ function buildEndpointRow(contract: PolicyTermsEndpointContract): TermsPageEndpo
     operation: formatEndpointOperation(contract),
     method: contract.method,
     path: contract.path,
-    input: contract.requiredQueryParam ? `query: ${contract.requiredQueryParam}` : 'request body',
+    input: formatEndpointInput(contract),
     evidence: formatEvidence(contract.evidence),
   };
 }
@@ -163,9 +163,27 @@ function formatEndpointOperation(contract: PolicyTermsEndpointContract): string 
   switch (contract.operation) {
     case 'concept_resolution':
       return 'concept resolution';
+    case 'concept_detail':
+      return 'concept detail';
     case 'feedback_submission':
       return 'feedback submission';
+    case 'feedback_export':
+      return 'feedback export';
+    case 'feedback_delete':
+      return 'feedback delete';
   }
+}
+
+function formatEndpointInput(contract: PolicyTermsEndpointContract): string {
+  if (contract.requiredQueryParam) {
+    return `query: ${contract.requiredQueryParam}`;
+  }
+
+  if (contract.requiredRouteParam) {
+    return `route: ${contract.requiredRouteParam}`;
+  }
+
+  return 'request body';
 }
 
 function formatFieldRule(contract: PolicyTermsFieldContract): string {
@@ -241,4 +259,8 @@ function formatEvidence(
   evidence: readonly { path: string; lines: string }[],
 ): string {
   return evidence.map((trace) => `${trace.path}:${trace.lines}`).join(' | ');
+}
+
+function formatCount(count: number, singular: string): string {
+  return `${count} ${count === 1 ? singular : `${singular}s`}`;
 }

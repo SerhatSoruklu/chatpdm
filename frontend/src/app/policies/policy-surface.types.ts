@@ -57,9 +57,14 @@ export type PolicyCookiesTruthTransportRole = 'request_transport' | 'response_tr
 
 export type PolicyCookiesTruthBrowserNoteRelevance = 'direct' | 'not_applicable';
 
-export type PolicyTermsEndpointMethod = 'GET' | 'POST';
+export type PolicyTermsEndpointMethod = 'GET' | 'POST' | 'DELETE';
 
-export type PolicyTermsEndpointOperation = 'concept_resolution' | 'feedback_submission';
+export type PolicyTermsEndpointOperation =
+  | 'concept_resolution'
+  | 'concept_detail'
+  | 'feedback_submission'
+  | 'feedback_export'
+  | 'feedback_delete';
 
 export interface PolicyTermsEndpointContract {
   claimId: string;
@@ -67,6 +72,7 @@ export interface PolicyTermsEndpointContract {
   method: PolicyTermsEndpointMethod;
   path: string;
   requiredQueryParam?: string;
+  requiredRouteParam?: string;
   evidence: readonly PolicyTraceMapping[];
 }
 
