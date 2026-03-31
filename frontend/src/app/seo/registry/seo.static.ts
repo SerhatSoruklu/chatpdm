@@ -2,9 +2,9 @@ import type { SeoRegistryFamily } from '../seo.types';
 
 export const seoStaticEntries = {
   'static.home': {
-    title: 'ChatPDM | Deterministic, Source-Bounded Concept Resolution',
+    title: 'ChatPDM | Answers That Don’t Change or Guess',
     description:
-      'ChatPDM resolves authored concepts through a deterministic, source-bounded runtime with explicit ambiguity handling, refusal behavior, and inspectable limits.',
+      'ChatPDM gives you answers that don’t change, don’t guess, and show exactly where they come from. Deterministic, source-backed reasoning with full traceability.',
     canonicalPath: '/',
     includeInSitemap: true,
     sitemapChangeFrequency: 'weekly',
@@ -15,7 +15,7 @@ export const seoStaticEntries = {
       name: 'ChatPDM',
       url: 'https://chatpdm.com/',
       description:
-        'ChatPDM resolves authored concepts through a deterministic, source-bounded runtime with explicit ambiguity handling, refusal behavior, and inspectable limits.',
+        'ChatPDM gives you answers that don’t change, don’t guess, and show exactly where they come from. Deterministic, source-backed reasoning with full traceability.',
     },
   },
   'static.about': {
