@@ -1,0 +1,294 @@
+:host {
+  display: block;
+}
+
+.pdm-live-concepts {
+  position: relative;
+  min-height: 100%;
+}
+
+.pdm-live-concepts__main {
+  justify-content: center;
+  padding: 28px 18px 56px;
+}
+
+.pdm-live-concepts__frame,
+.pdm-live-concepts__catalog {
+  display: grid;
+  gap: 18px;
+}
+
+.pdm-live-concepts__hero,
+.pdm-live-concepts__jump-shell,
+.pdm-live-concepts__state-card,
+.pdm-live-concepts__concept {
+  position: relative;
+  border-radius: 30px;
+}
+
+.pdm-live-concepts__hero {
+  overflow: hidden;
+}
+
+.pdm-live-concepts__hero::after {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto auto;
+  width: 240px;
+  height: 240px;
+  background: radial-gradient(circle at top right, rgba(96, 165, 250, 0.14), transparent 72%);
+  pointer-events: none;
+}
+
+.pdm-live-concepts__eyebrow,
+.pdm-live-concepts__section-label,
+.pdm-live-concepts__block-label,
+.pdm-live-concepts__meta-label {
+  margin: 0;
+  color: #2563eb;
+  font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pdm-live-concepts__title,
+.pdm-live-concepts__section-title,
+.pdm-live-concepts__concept-title,
+.pdm-live-concepts__related-title {
+  margin: 0;
+  color: #0f172a;
+  letter-spacing: -0.04em;
+}
+
+.pdm-live-concepts__title {
+  margin-top: 12px;
+  font-size: clamp(2.6rem, 5vw, 4rem);
+  font-weight: 700;
+  line-height: 0.96;
+}
+
+.pdm-live-concepts__subtitle,
+.pdm-live-concepts__concept-subtitle,
+.pdm-live-concepts__copy,
+.pdm-live-concepts__meta-value,
+.pdm-live-concepts__source-title,
+.pdm-live-concepts__related-copy {
+  color: #475569;
+}
+
+.pdm-live-concepts__subtitle {
+  max-width: 38rem;
+  margin: 16px 0 0;
+  font-size: clamp(1.02rem, 1.45vw, 1.14rem);
+  line-height: 1.72;
+}
+
+.pdm-live-concepts__section-head {
+  display: grid;
+  gap: 8px;
+}
+
+.pdm-live-concepts__section-title,
+.pdm-live-concepts__concept-title {
+  font-size: clamp(1.5rem, 2vw, 2rem);
+  font-weight: 700;
+  line-height: 1.06;
+}
+
+.pdm-live-concepts__copy,
+.pdm-live-concepts__concept-subtitle,
+.pdm-live-concepts__meta-value,
+.pdm-live-concepts__source-title,
+.pdm-live-concepts__related-copy {
+  font-size: 1rem;
+  line-height: 1.72;
+}
+
+.pdm-live-concepts__copy,
+.pdm-live-concepts__concept-subtitle,
+.pdm-live-concepts__source-title,
+.pdm-live-concepts__related-copy {
+  margin: 0;
+}
+
+.pdm-live-concepts__jump-row,
+.pdm-live-concepts__meta-grid,
+.pdm-live-concepts__split,
+.pdm-live-concepts__source-list,
+.pdm-live-concepts__related-list {
+  display: grid;
+  gap: 14px;
+}
+
+.pdm-live-concepts__jump-row {
+  margin-top: 18px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.pdm-live-concepts__jump-chip,
+.pdm-live-concepts__related-card {
+  cursor: pointer;
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease,
+    transform 150ms ease;
+}
+
+.pdm-live-concepts__jump-chip {
+  border-color: rgba(96, 165, 250, 0.24);
+  background: rgba(37, 99, 235, 0.08);
+  color: #1d4ed8;
+}
+
+.pdm-live-concepts__jump-chip:hover:not(:disabled),
+.pdm-live-concepts__jump-chip:focus-visible:not(:disabled),
+.pdm-live-concepts__related-card:hover,
+.pdm-live-concepts__related-card:focus-visible {
+  transform: translateY(-1px);
+  border-color: rgba(37, 99, 235, 0.24);
+  box-shadow: 0 12px 26px rgba(148, 163, 184, 0.12);
+}
+
+.pdm-live-concepts__concept {
+  display: grid;
+  gap: 18px;
+}
+
+.pdm-live-concepts__concept-top {
+  display: grid;
+  gap: 18px;
+}
+
+.pdm-live-concepts__concept-subtitle {
+  margin-top: 12px;
+}
+
+.pdm-live-concepts__meta-grid {
+  align-self: start;
+}
+
+.pdm-live-concepts__meta-item,
+.pdm-live-concepts__content-block,
+.pdm-live-concepts__source-card,
+.pdm-live-concepts__related-card {
+  padding: 16px;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 22px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(248, 250, 255, 0.84)),
+    rgba(255, 255, 255, 0.82);
+}
+
+.pdm-live-concepts__meta-item {
+  display: grid;
+  gap: 10px;
+}
+
+.pdm-live-concepts__meta-value {
+  color: #0f172a;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.pdm-live-concepts__block-label {
+  margin-bottom: 10px;
+}
+
+.pdm-live-concepts__definition-stack {
+  display: grid;
+  gap: 14px;
+}
+
+.pdm-live-concepts__source-list,
+.pdm-live-concepts__related-list {
+  margin-top: 14px;
+}
+
+.pdm-live-concepts__source-title {
+  color: #0f172a;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.pdm-live-concepts__source-card .pdm-live-concepts__copy {
+  margin: 8px 0 12px;
+}
+
+.pdm-live-concepts__related-card {
+  display: grid;
+  gap: 6px;
+  width: 100%;
+  text-align: left;
+}
+
+.pdm-live-concepts__related-title {
+  font-size: 1.04rem;
+  font-weight: 700;
+  line-height: 1.28;
+}
+
+.pdm-live-concepts__related-copy {
+  font-size: 0.96rem;
+  line-height: 1.62;
+}
+
+.pdm-live-concepts__state-card--error {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(249, 250, 255, 0.9)),
+    rgba(255, 255, 255, 0.88);
+}
+
+@media (min-width: 600px) {
+  .pdm-live-concepts__main {
+    padding: 36px 28px 72px;
+  }
+
+  .pdm-live-concepts__hero,
+  .pdm-live-concepts__jump-shell,
+  .pdm-live-concepts__state-card,
+  .pdm-live-concepts__concept {
+    border-radius: 32px;
+  }
+}
+
+@media (min-width: 840px) {
+  .pdm-live-concepts__main {
+    padding: 44px 32px 88px;
+  }
+
+  .pdm-live-concepts__concept-top {
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .pdm-live-concepts__meta-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pdm-live-concepts__split {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+}
+
+@media (min-width: 1200px) {
+  .pdm-live-concepts__main {
+    padding: 52px 40px 96px;
+  }
+
+  .pdm-live-concepts__hero,
+  .pdm-live-concepts__jump-shell,
+  .pdm-live-concepts__state-card,
+  .pdm-live-concepts__concept {
+    padding: 28px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .pdm-live-concepts__main {
+    padding: 60px 48px 104px;
+  }
+}

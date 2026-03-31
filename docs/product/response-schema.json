@@ -9,6 +9,9 @@
       "$ref": "#/$defs/conceptMatchResponse"
     },
     {
+      "$ref": "#/$defs/rejectedConceptResponse"
+    },
+    {
       "$ref": "#/$defs/noExactMatchResponse"
     },
     {
@@ -628,6 +631,42 @@
         }
       }
     },
+    "rejectedConceptResolution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "method",
+        "conceptId"
+      ],
+      "properties": {
+        "method": {
+          "const": "rejection_registry"
+        },
+        "conceptId": {
+          "$ref": "#/$defs/stringValue"
+        }
+      }
+    },
+    "rejectionObject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "decisionType",
+        "finality"
+      ],
+      "properties": {
+        "status": {
+          "const": "REJECTED"
+        },
+        "decisionType": {
+          "const": "STRUCTURAL_REJECTION"
+        },
+        "finality": {
+          "type": "boolean"
+        }
+      }
+    },
     "answerObject": {
       "type": "object",
       "additionalProperties": false,
@@ -850,6 +889,66 @@
         },
         "comparison": {
           "$ref": "#/$defs/comparisonObject"
+        }
+      }
+    },
+    "rejectedConceptResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "query",
+        "normalizedQuery",
+        "contractVersion",
+        "normalizerVersion",
+        "matcherVersion",
+        "conceptSetVersion",
+        "queryType",
+        "interpretation",
+        "resolution",
+        "message",
+        "rejection"
+      ],
+      "properties": {
+        "type": {
+          "const": "rejected_concept"
+        },
+        "query": {
+          "$ref": "#/$defs/stringValue"
+        },
+        "normalizedQuery": {
+          "$ref": "#/$defs/stringValue"
+        },
+        "contractVersion": {
+          "$ref": "#/$defs/contractVersionString"
+        },
+        "normalizerVersion": {
+          "$ref": "#/$defs/datedVersionString"
+        },
+        "matcherVersion": {
+          "$ref": "#/$defs/datedVersionString"
+        },
+        "conceptSetVersion": {
+          "$ref": "#/$defs/conceptSetVersionString"
+        },
+        "queryType": {
+          "type": "string",
+          "enum": [
+            "exact_concept_query",
+            "canonical_id_query"
+          ]
+        },
+        "interpretation": {
+          "type": "null"
+        },
+        "resolution": {
+          "$ref": "#/$defs/rejectedConceptResolution"
+        },
+        "message": {
+          "const": "This concept is structurally rejected under the current system state."
+        },
+        "rejection": {
+          "$ref": "#/$defs/rejectionObject"
         }
       }
     },

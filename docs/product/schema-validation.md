@@ -12,10 +12,12 @@ The schema exists to stop shape drift during runtime implementation and later co
 
 The schema enforces the structural boundary of ChatPDM v1 product responses:
 
-- only three product response types are valid:
+- only five product response types are valid:
   - `concept_match`
+  - `rejected_concept`
   - `no_exact_match`
   - `ambiguous_match`
+  - `comparison`
 - every product response must include the required top-level version fields
 - every product response must include `queryType` and `interpretation`
 - nested object shapes must match the contract exactly
@@ -23,6 +25,7 @@ The schema enforces the structural boundary of ChatPDM v1 product responses:
 - undocumented fields are rejected
 - cross-type leakage is rejected
   - `answer` is valid only on `concept_match`
+  - `rejection` is valid only on `rejected_concept`
   - `suggestions` are valid only on `no_exact_match`
   - `candidates` are valid only on `ambiguous_match`
 - `conceptVersion` is integer only

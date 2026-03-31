@@ -1,0 +1,290 @@
+:host {
+  display: block;
+}
+
+.pdm-controlled-comparisons {
+  position: relative;
+  min-height: 100%;
+}
+
+.pdm-controlled-comparisons__main {
+  justify-content: center;
+  padding: 28px 18px 56px;
+}
+
+.pdm-controlled-comparisons__frame,
+.pdm-controlled-comparisons__catalog {
+  display: grid;
+  gap: 18px;
+}
+
+.pdm-controlled-comparisons__hero,
+.pdm-controlled-comparisons__boundary,
+.pdm-controlled-comparisons__state-card,
+.pdm-controlled-comparisons__catalog-shell,
+.pdm-controlled-comparisons__matrix-shell,
+.pdm-controlled-comparisons__closing {
+  position: relative;
+  border-radius: 30px;
+}
+
+.pdm-controlled-comparisons__hero {
+  overflow: hidden;
+}
+
+.pdm-controlled-comparisons__hero::after {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto auto;
+  width: 240px;
+  height: 240px;
+  background: radial-gradient(circle at top right, rgba(96, 165, 250, 0.14), transparent 72%);
+  pointer-events: none;
+}
+
+.pdm-controlled-comparisons__eyebrow,
+.pdm-controlled-comparisons__section-label,
+.pdm-controlled-comparisons__axis-label,
+.pdm-controlled-comparisons__axis-side {
+  margin: 0;
+  color: #2563eb;
+  font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pdm-controlled-comparisons__title,
+.pdm-controlled-comparisons__section-title,
+.pdm-controlled-comparisons__pair-title {
+  margin: 0;
+  color: #0f172a;
+  letter-spacing: -0.04em;
+}
+
+.pdm-controlled-comparisons__title {
+  margin-top: 12px;
+  font-size: clamp(2.6rem, 5vw, 4rem);
+  font-weight: 700;
+  line-height: 0.96;
+}
+
+.pdm-controlled-comparisons__subtitle,
+.pdm-controlled-comparisons__copy,
+.pdm-controlled-comparisons__pair-subtitle,
+.pdm-controlled-comparisons__matrix-symbol {
+  color: #475569;
+}
+
+.pdm-controlled-comparisons__subtitle,
+.pdm-controlled-comparisons__copy,
+.pdm-controlled-comparisons__pair-subtitle {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.72;
+}
+
+.pdm-controlled-comparisons__subtitle {
+  max-width: 40rem;
+  margin-top: 16px;
+  font-size: clamp(1.02rem, 1.45vw, 1.14rem);
+}
+
+.pdm-controlled-comparisons__section-head,
+.pdm-controlled-comparisons__pair-head,
+.pdm-controlled-comparisons__axis-values,
+.pdm-controlled-comparisons__catalog {
+  display: grid;
+  gap: 14px;
+}
+
+.pdm-controlled-comparisons__section-head {
+  gap: 8px;
+}
+
+.pdm-controlled-comparisons__section-title,
+.pdm-controlled-comparisons__pair-title {
+  font-size: clamp(1.5rem, 2vw, 2rem);
+  font-weight: 700;
+  line-height: 1.08;
+}
+
+.pdm-controlled-comparisons__pair-card,
+.pdm-controlled-comparisons__axis-card {
+  padding: 18px;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 24px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(248, 250, 255, 0.84)),
+    rgba(255, 255, 255, 0.84);
+}
+
+.pdm-controlled-comparisons__pair-card {
+  display: grid;
+  gap: 18px;
+}
+
+.pdm-controlled-comparisons__pair-subtitle {
+  max-width: 48rem;
+}
+
+.pdm-controlled-comparisons__pair-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: start;
+}
+
+.pdm-controlled-comparisons__axes-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.pdm-controlled-comparisons__axis-card {
+  display: grid;
+  gap: 12px;
+}
+
+.pdm-controlled-comparisons__axis-label {
+  color: #64748b;
+}
+
+.pdm-controlled-comparisons__axis-values {
+  gap: 16px;
+}
+
+.pdm-controlled-comparisons__axis-side {
+  display: inline-block;
+  margin-bottom: 6px;
+  color: #0f172a;
+}
+
+.pdm-controlled-comparisons__matrix-scroll {
+  overflow-x: auto;
+}
+
+.pdm-controlled-comparisons__matrix {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: separate;
+  border-spacing: 10px;
+}
+
+.pdm-controlled-comparisons__matrix th,
+.pdm-controlled-comparisons__matrix td {
+  padding: 14px 12px;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(248, 250, 255, 0.84)),
+    rgba(255, 255, 255, 0.82);
+  text-align: center;
+  vertical-align: middle;
+}
+
+.pdm-controlled-comparisons__matrix th {
+  color: #0f172a;
+  font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.pdm-controlled-comparisons__matrix th:first-child {
+  text-align: left;
+}
+
+.pdm-controlled-comparisons__matrix-cell--admitted {
+  background:
+    linear-gradient(180deg, rgba(239, 246, 255, 0.96), rgba(219, 234, 254, 0.86)),
+    rgba(219, 234, 254, 0.76);
+  border-color: rgba(96, 165, 250, 0.26);
+}
+
+.pdm-controlled-comparisons__matrix-cell--blocked {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(248, 250, 255, 0.82)),
+    rgba(255, 255, 255, 0.84);
+}
+
+.pdm-controlled-comparisons__matrix-cell--mirrored {
+  background:
+    linear-gradient(180deg, rgba(248, 250, 252, 0.96), rgba(241, 245, 249, 0.88)),
+    rgba(241, 245, 249, 0.8);
+}
+
+.pdm-controlled-comparisons__matrix-cell--diagonal {
+  background:
+    linear-gradient(180deg, rgba(248, 250, 252, 0.96), rgba(241, 245, 249, 0.86)),
+    rgba(241, 245, 249, 0.76);
+}
+
+.pdm-controlled-comparisons__matrix-link {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: #1d4ed8;
+  font-size: 0.92rem;
+  font-weight: 700;
+  line-height: 1.2;
+  cursor: pointer;
+}
+
+.pdm-controlled-comparisons__matrix-link:hover,
+.pdm-controlled-comparisons__matrix-link:focus-visible {
+  color: #1e40af;
+  text-decoration: underline;
+}
+
+.pdm-controlled-comparisons__matrix-symbol {
+  font-size: 0.92rem;
+  line-height: 1.2;
+}
+
+.pdm-controlled-comparisons__state-card--error {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(249, 250, 255, 0.9)),
+    rgba(255, 255, 255, 0.88);
+}
+
+@media (min-width: 600px) {
+  .pdm-controlled-comparisons__main {
+    padding: 36px 28px 72px;
+  }
+
+  .pdm-controlled-comparisons__hero,
+  .pdm-controlled-comparisons__boundary,
+  .pdm-controlled-comparisons__state-card,
+  .pdm-controlled-comparisons__catalog-shell,
+  .pdm-controlled-comparisons__matrix-shell,
+  .pdm-controlled-comparisons__closing {
+    border-radius: 32px;
+  }
+}
+
+@media (min-width: 840px) {
+  .pdm-controlled-comparisons__main {
+    padding: 44px 32px 88px;
+  }
+
+  .pdm-controlled-comparisons__pair-head {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+  }
+
+  .pdm-controlled-comparisons__axes-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pdm-controlled-comparisons__axis-card:first-child:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 1200px) {
+  .pdm-controlled-comparisons__axes-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

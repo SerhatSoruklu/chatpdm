@@ -24,7 +24,13 @@
               Search a concept. Get a precise answer within scope or an explicit refusal.
             </p>
             <p class="pdm-home__lead">
+              Concepts here are tested, not explained.
+            </p>
+            <p class="pdm-home__lead pdm-home__lead--secondary">
               Deterministic, source-backed reasoning within defined domains.
+            </p>
+            <p class="pdm-home__lead pdm-home__lead--secondary pdm-home__lead--scope">
+              ChatPDM is a deterministic reasoning system, not Product Data Management software.
             </p>
             <p class="pdm-home__lead pdm-home__lead--scope">
               Starting with law and governance.
@@ -92,7 +98,7 @@
                   }
                 </div>
 
-                <div class="pdm-home__hero-scope" aria-label="Current supported concepts">
+                <div class="pdm-home__hero-scope" aria-label="Visible concept groups">
                   <p class="pdm-home__micro-label">Current scope</p>
                   <div class="pdm-home__scope-chips pdm-home__scope-chips--hero">
                     @for (concept of liveRuntimeConceptIds; track concept) {
@@ -101,10 +107,29 @@
                       </span>
                     }
                   </div>
+
+                  @if (reviewedConceptIds.length > 0) {
+                    <div class="pdm-home__hero-scope-group">
+                      <p class="pdm-home__micro-label">Reviewed concepts</p>
+                      <p class="pdm-home__hero-scope-note">Not yet admitted to runtime</p>
+                      <div class="pdm-home__scope-chips pdm-home__scope-chips--hero">
+                        @for (concept of reviewedConceptIds; track concept) {
+                          <button
+                            class="pdm-home__scope-chip pdm-home__scope-chip--reviewed pdm-site-chip"
+                            type="button"
+                            [disabled]="isSubmitting()"
+                            (click)="submitScopedConcept(concept)"
+                          >
+                            {{ concept }}
+                          </button>
+                        }
+                      </div>
+                    </div>
+                  }
                 </div>
 
                 <p class="pdm-home__hero-guidance">
-                  Search or compare concepts from the defined set above.
+                  Search or compare concepts from the visible concept groups above.
                 </p>
               </div>
             </form>
@@ -190,6 +215,47 @@
                         <span class="pdm-site-chip">{{ response.contractVersion }}</span>
                       </div>
                     </div>
+
+                    @if (entry.detail; as detail) {
+                      @if (detail.reviewState; as reviewState) {
+                        <section class="pdm-home__review-state-surface" aria-label="Concept lifecycle evidence">
+                          <div class="pdm-home__review-state-grid">
+                            <div class="pdm-home__review-state-item">
+                              <span class="pdm-home__micro-label">Status</span>
+                              <span class="pdm-home__review-state-value">
+                                {{ reviewAdmissionLabel(reviewState.admission) }}
+                              </span>
+                            </div>
+
+                            <div class="pdm-home__review-state-item">
+                              <span class="pdm-home__micro-label">Validation</span>
+                              <span class="pdm-home__review-state-value">{{ reviewValidationLabel(detail) }}</span>
+                            </div>
+                          </div>
+
+                          <button
+                            class="pdm-home__trace-toggle"
+                            type="button"
+                            [attr.aria-expanded]="validationTraceVisible()"
+                            [disabled]="isSubmitting()"
+                            (click)="toggleValidationTrace()"
+                          >
+                            {{ validationTraceToggleLabel() }}
+                          </button>
+
+                          @if (validationTraceVisible()) {
+                            <dl class="pdm-home__trace-list">
+                              @for (row of validationTraceRows(detail); track row.label) {
+                                <div class="pdm-home__trace-row">
+                                  <dt class="pdm-home__trace-label pdm-mono">{{ row.label }}</dt>
+                                  <dd class="pdm-home__trace-value">{{ row.value }}</dd>
+                                </div>
+                              }
+                            </dl>
+                          }
+                        </section>
+                      }
+                    }
 
                     <section class="pdm-home__reading-surface" aria-label="Reading registers">
                       <div class="pdm-home__reading-trust-zone">
@@ -509,12 +575,95 @@
                   </section>
                 }
 
+                @if (response.type === 'rejected_concept') {
+                  <section class="pdm-home__response-card pdm-home__response-card--rejected pdm-site-surface">
+                    <div class="pdm-home__resolution-strip" aria-label="Resolution status">
+                      <div class="pdm-home__resolution-item">
+                        <span class="pdm-home__resolution-label">Status</span>
+                        <span class="pdm-home__resolution-value">{{ resolutionTypeLabel(response) }}</span>
+                      </div>
+                      <div class="pdm-home__resolution-item">
+                        <span class="pdm-home__resolution-label">Runtime</span>
+                        <span class="pdm-home__resolution-value">Current system state</span>
+                      </div>
+                      <div class="pdm-home__resolution-item">
+                        <span class="pdm-home__resolution-label">Method</span>
+                        <span class="pdm-home__resolution-value">{{ methodLabel(asRejectedConcept(response).resolution.method) }}</span>
+                      </div>
+                    </div>
+
+                    <div class="pdm-home__response-head">
+                      <div>
+                        <p class="pdm-home__micro-label">{{ responseLabel(response) }}</p>
+                        <h3 class="pdm-home__response-title">Structurally rejected</h3>
+                      </div>
+
+                      <div class="pdm-home__meta-row pdm-home__meta-row--tight">
+                        <span class="pdm-site-chip pdm-home__response-chip--rejected">Concept not admitted</span>
+                        <span class="pdm-site-chip">{{ queryTypeLabel(response.queryType) }}</span>
+                        <span class="pdm-site-chip">{{ response.contractVersion }}</span>
+                      </div>
+                    </div>
+
+                    @if (entry.detail; as detail) {
+                      @if (detail.reviewState; as reviewState) {
+                        <section class="pdm-home__review-state-surface" aria-label="Concept lifecycle evidence">
+                          <div class="pdm-home__review-state-grid">
+                            <div class="pdm-home__review-state-item">
+                              <span class="pdm-home__micro-label">Status</span>
+                              <span class="pdm-home__review-state-value">
+                                {{ reviewAdmissionLabel(reviewState.admission) }}
+                              </span>
+                            </div>
+
+                            <div class="pdm-home__review-state-item">
+                              <span class="pdm-home__micro-label">Validation</span>
+                              <span class="pdm-home__review-state-value">{{ reviewValidationLabel(detail) }}</span>
+                            </div>
+                          </div>
+
+                          <button
+                            class="pdm-home__trace-toggle"
+                            type="button"
+                            [attr.aria-expanded]="validationTraceVisible()"
+                            [disabled]="isSubmitting()"
+                            (click)="toggleValidationTrace()"
+                          >
+                            {{ validationTraceToggleLabel() }}
+                          </button>
+
+                          @if (validationTraceVisible()) {
+                            <dl class="pdm-home__trace-list">
+                              @for (row of validationTraceRows(detail); track row.label) {
+                                <div class="pdm-home__trace-row">
+                                  <dt class="pdm-home__trace-label pdm-mono">{{ row.label }}</dt>
+                                  <dd class="pdm-home__trace-value">{{ row.value }}</dd>
+                                </div>
+                              }
+                            </dl>
+                          }
+                        </section>
+                      }
+                    }
+
+                    <p class="pdm-home__body-copy">
+                      This concept was evaluated and rejected under the current system state.
+                    </p>
+
+                    <p class="pdm-home__support-copy">
+                      This is a governed rejection, not a no-match response.
+                    </p>
+                  </section>
+                }
+
                 @if (response.type === 'no_exact_match') {
                   <section class="pdm-home__response-card pdm-site-surface">
                     <div class="pdm-home__resolution-strip" aria-label="Resolution status">
                       <div class="pdm-home__resolution-item">
-                        <span class="pdm-home__resolution-label">Resolution</span>
-                        <span class="pdm-home__resolution-value">{{ resolutionTypeLabel(response) }}</span>
+                        <span class="pdm-home__resolution-label">{{ noExactMatchStripLabel(entry.detail) }}</span>
+                        <span class="pdm-home__resolution-value">
+                          {{ noExactMatchResolutionValue(asNoExactMatch(response), entry.detail) }}
+                        </span>
                       </div>
                       <div class="pdm-home__resolution-item">
                         <span class="pdm-home__resolution-label">Scope</span>
@@ -522,24 +671,67 @@
                       </div>
                       <div class="pdm-home__resolution-item">
                         <span class="pdm-home__resolution-label">Execution</span>
-                        <span class="pdm-home__resolution-value">{{ executionStateLabel(response) }}</span>
+                        <span class="pdm-home__resolution-value">
+                          {{ noExactMatchExecutionValue(asNoExactMatch(response), entry.detail) }}
+                        </span>
                       </div>
                     </div>
 
                     <div class="pdm-home__response-head">
                       <div>
-                        <p class="pdm-home__micro-label">{{ responseLabel(response) }}</p>
-                        <h3 class="pdm-home__response-title">No canonical concept resolved</h3>
+                        <p class="pdm-home__micro-label">{{ noExactMatchResponseLabel(entry.detail) }}</p>
+                        <h3 class="pdm-home__response-title">{{ noExactMatchTitle(entry.detail) }}</h3>
                       </div>
 
                       <div class="pdm-home__meta-row pdm-home__meta-row--tight">
-                        <span class="pdm-site-chip">{{ methodLabel(asNoExactMatch(response).resolution.method) }}</span>
-                        <span class="pdm-site-chip">{{ queryTypeLabel(response.queryType) }}</span>
-                        <span class="pdm-site-chip">{{ response.contractVersion }}</span>
+                        @for (chip of noExactMatchMetaChips(asNoExactMatch(response), entry.detail); track chip) {
+                          <span class="pdm-site-chip">{{ chip }}</span>
+                        }
                       </div>
                     </div>
 
-                    <p class="pdm-home__body-copy">{{ asNoExactMatch(response).message }}</p>
+                    @if (entry.detail; as detail) {
+                      @if (detail.reviewState; as reviewState) {
+                        <section class="pdm-home__review-state-surface" aria-label="Concept lifecycle evidence">
+                          <div class="pdm-home__review-state-grid">
+                            <div class="pdm-home__review-state-item">
+                              <span class="pdm-home__micro-label">Status</span>
+                              <span class="pdm-home__review-state-value">
+                                {{ reviewAdmissionLabel(reviewState.admission) }}
+                              </span>
+                            </div>
+
+                            <div class="pdm-home__review-state-item">
+                              <span class="pdm-home__micro-label">Validation</span>
+                              <span class="pdm-home__review-state-value">{{ reviewValidationLabel(detail) }}</span>
+                            </div>
+                          </div>
+
+                          <button
+                            class="pdm-home__trace-toggle"
+                            type="button"
+                            [attr.aria-expanded]="validationTraceVisible()"
+                            [disabled]="isSubmitting()"
+                            (click)="toggleValidationTrace()"
+                          >
+                            {{ validationTraceToggleLabel() }}
+                          </button>
+
+                          @if (validationTraceVisible()) {
+                            <dl class="pdm-home__trace-list">
+                              @for (row of validationTraceRows(detail); track row.label) {
+                                <div class="pdm-home__trace-row">
+                                  <dt class="pdm-home__trace-label pdm-mono">{{ row.label }}</dt>
+                                  <dd class="pdm-home__trace-value">{{ row.value }}</dd>
+                                </div>
+                              }
+                            </dl>
+                          }
+                        </section>
+                      }
+                    }
+
+                    <p class="pdm-home__body-copy">{{ noExactMatchBody(asNoExactMatch(response), entry.detail) }}</p>
 
                     @if (asNoExactMatch(response).suggestions.length > 0) {
                       <div class="pdm-home__action-grid">
@@ -557,7 +749,7 @@
                       </div>
                     } @else {
                       <p class="pdm-home__support-copy">
-                        No exact concept exists in the current authored set for this query.
+                        {{ noExactMatchSupportCopy(entry.detail) }}
                       </p>
                     }
 
@@ -669,6 +861,24 @@
                     @if (isLiveConcept(concept)) {
                       <button
                         class="pdm-home__scope-chip pdm-home__scope-chip--live pdm-site-chip"
+                        type="button"
+                        [disabled]="isSubmitting()"
+                        (click)="submitScopedConcept(concept)"
+                      >
+                        {{ concept }}
+                      </button>
+                    } @else if (isReviewedConcept(concept)) {
+                      <button
+                        class="pdm-home__scope-chip pdm-home__scope-chip--reviewed pdm-site-chip"
+                        type="button"
+                        [disabled]="isSubmitting()"
+                        (click)="submitScopedConcept(concept)"
+                      >
+                        {{ concept }}
+                      </button>
+                    } @else if (isKnownConceptDetail(concept)) {
+                      <button
+                        class="pdm-home__scope-chip pdm-home__scope-chip--detail pdm-site-chip"
                         type="button"
                         [disabled]="isSubmitting()"
                         (click)="submitScopedConcept(concept)"

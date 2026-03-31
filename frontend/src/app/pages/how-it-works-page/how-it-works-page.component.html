@@ -1,0 +1,120 @@
+<div class="pdm-how">
+  <main class="pdm-how__main pdm-shell" aria-labelledby="pdm-how-title">
+    <div class="pdm-shell__frame pdm-how__frame">
+      <section class="pdm-how__hero pdm-site-surface pdm-site-panel">
+        <p class="pdm-how__eyebrow">How it works</p>
+        <h1 class="pdm-how__title" id="pdm-how-title">
+          Every answer is the result of validation, not generation.
+        </h1>
+        <p class="pdm-how__subtitle">
+          ChatPDM resolves concepts through a deterministic validation pipeline.
+        </p>
+      </section>
+
+      <section class="pdm-how__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-how-overview">
+        <div class="pdm-how__section-head">
+          <p class="pdm-how__section-label">Input to output</p>
+          <h2 class="pdm-how__section-title" id="pdm-how-overview">A bounded path from request to result.</h2>
+        </div>
+
+        <div class="pdm-how__flow" aria-label="Input output overview">
+          @for (stage of flowStages; track stage; let last = $last) {
+            <span class="pdm-how__flow-stage pdm-site-chip">{{ stage }}</span>
+            @if (!last) {
+              <span class="pdm-how__flow-arrow pdm-mono" aria-hidden="true">&rarr;</span>
+            }
+          }
+        </div>
+      </section>
+
+      <section class="pdm-how__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-how-pipeline">
+        <div class="pdm-how__section-head">
+          <p class="pdm-how__section-label">Validation pipeline</p>
+          <h2 class="pdm-how__section-title" id="pdm-how-pipeline">Each layer exists to constrain meaning before output.</h2>
+        </div>
+
+        <div class="pdm-how__pipeline-grid">
+          @for (stage of pipelineStages; track stage.label) {
+            <article class="pdm-how__pipeline-card">
+              <p class="pdm-how__pipeline-label">{{ stage.label }}</p>
+              <h3 class="pdm-how__pipeline-title">{{ stage.title }}</h3>
+              <p class="pdm-how__copy">{{ stage.copy }}</p>
+              <ul class="pdm-how__list">
+                @for (bullet of stage.bullets; track bullet) {
+                  <li>{{ bullet }}</li>
+                }
+              </ul>
+            </article>
+          }
+        </div>
+      </section>
+
+      <section class="pdm-how__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-how-output-states">
+        <div class="pdm-how__section-head">
+          <p class="pdm-how__section-label">Output states</p>
+          <h2 class="pdm-how__section-title" id="pdm-how-output-states">Every query ends in a declared system state.</h2>
+        </div>
+
+        <div class="pdm-how__state-grid">
+          @for (state of outputStates; track state.title) {
+            <article class="pdm-how__state-card" [attr.data-state]="state.kind">
+              <div class="pdm-how__state-head">
+                <span class="pdm-how__state-symbol pdm-mono">{{ outputStateSymbol(state.kind) }}</span>
+                <h3 class="pdm-how__state-title">{{ state.title }}</h3>
+              </div>
+              <p class="pdm-how__copy">{{ state.copy }}</p>
+            </article>
+          }
+        </div>
+      </section>
+
+      <div class="pdm-how__split">
+        <section class="pdm-how__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-how-refusal">
+          <div class="pdm-how__section-head">
+            <p class="pdm-how__section-label">Refusal system</p>
+            <h2 class="pdm-how__section-title" id="pdm-how-refusal">Refusal is an explicit system action.</h2>
+          </div>
+
+          <ul class="pdm-how__list">
+            @for (condition of refusalConditions; track condition) {
+              <li>{{ condition }}</li>
+            }
+          </ul>
+        </section>
+
+        <section class="pdm-how__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-how-refusal-example">
+          <div class="pdm-how__section-head">
+            <p class="pdm-how__section-label">Refusal payload</p>
+            <h2 class="pdm-how__section-title" id="pdm-how-refusal-example">The system exposes why resolution failed.</h2>
+          </div>
+
+          <pre class="pdm-how__code-block"><code>{{ refusalExample }}</code></pre>
+        </section>
+      </div>
+
+      <section class="pdm-how__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-how-lifecycle">
+        <div class="pdm-how__section-head">
+          <p class="pdm-how__section-label">Concept lifecycle</p>
+          <h2 class="pdm-how__section-title" id="pdm-how-lifecycle">Concepts must pass before they become queryable.</h2>
+        </div>
+
+        <div class="pdm-how__lifecycle-grid">
+          @for (stage of lifecycleStages; track stage.label) {
+            <article class="pdm-how__lifecycle-card">
+              <p class="pdm-how__lifecycle-label">{{ stage.label }}</p>
+              <h3 class="pdm-how__pipeline-title">{{ stage.title }}</h3>
+              <p class="pdm-how__copy">{{ stage.copy }}</p>
+            </article>
+          }
+        </div>
+      </section>
+
+      <section class="pdm-how__closing pdm-site-surface pdm-site-panel" aria-labelledby="pdm-how-why">
+        <p class="pdm-how__section-label">Why this matters</p>
+        <h2 class="pdm-how__closing-line" id="pdm-how-why">
+          Systems fail when meaning is unstable. ChatPDM ensures meaning is reliable.
+        </h2>
+      </section>
+    </div>
+  </main>
+</div>

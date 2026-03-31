@@ -7,6 +7,7 @@ const {
   MATCHER_VERSION,
   NORMALIZER_VERSION,
   NO_EXACT_MATCH_MESSAGE,
+  REJECTED_CONCEPT_MESSAGE,
 } = require('./constants');
 const {
   loadConceptSet,
@@ -14,8 +15,9 @@ const {
 const { getConceptRuntimeGovernanceState } = require('./concept-validation-state-loader');
 const { buildReadingRegistersForConcept } = require('./reading-registers');
 const { loadResolveRules } = require('./resolve-rules-loader');
+const { getRejectedConceptRecord } = require('./rejection-registry-loader');
 const { matchQuery } = require('./matcher');
-const { normalizeQuery } = require('./normalizer');
+const { extractCanonicalId, normalizeQuery } = require('./normalizer');
 const { classifyQueryShape } = require('./query-shape-classifier');
 const { resolveComparisonQuery } = require('./comparison-resolver');
 const { detectGovernanceScopeEnforcement } = require('./governance-scope-enforcer');
@@ -57,6 +59,30 @@ function buildBaseResponse(query, normalizedQuery, queryClassification) {
     conceptSetVersion: CONCEPT_SET_VERSION,
     queryType: queryClassification.queryType,
     interpretation: queryClassification.interpretation,
+  };
+}
+
+function buildRejectedConceptResponse(query, normalizedQuery, conceptId, queryType, rejectionRecord) {
+  return {
+    query,
+    normalizedQuery,
+    contractVersion: CONTRACT_VERSION,
+    normalizerVersion: NORMALIZER_VERSION,
+    matcherVersion: MATCHER_VERSION,
+    conceptSetVersion: CONCEPT_SET_VERSION,
+    queryType,
+    interpretation: null,
+    type: 'rejected_concept',
+    resolution: {
+      method: 'rejection_registry',
+      conceptId,
+    },
+    message: REJECTED_CONCEPT_MESSAGE,
+    rejection: {
+      status: rejectionRecord.status,
+      decisionType: rejectionRecord.decisionType,
+      finality: rejectionRecord.finality,
+    },
   };
 }
 
@@ -138,10 +164,26 @@ function resolveConceptQuery(rawQuery) {
     throw new TypeError('Expected query to be a non-empty string.');
   }
 
+  const normalizedQuery = normalizeQuery(rawQuery);
+  const canonicalId = extractCanonicalId(rawQuery);
+  const rejectedConcept = getRejectedConceptRecord(canonicalId !== null ? canonicalId : normalizedQuery);
+
+  if (rejectedConcept) {
+    const response = buildRejectedConceptResponse(
+      rawQuery,
+      normalizedQuery,
+      rejectedConcept.conceptId,
+      canonicalId !== null ? 'canonical_id_query' : 'exact_concept_query',
+      rejectedConcept,
+    );
+
+    assertDeterministicPathFreeOfAiMarkers(response, 'Concept resolver response');
+    return assertValidProductResponse(response);
+  }
+
   const concepts = loadConceptSet();
   const resolveRules = loadResolveRules();
   const conceptIndex = new Map(concepts.map((concept) => [concept.conceptId, concept]));
-  const normalizedQuery = normalizeQuery(rawQuery);
   const match = matchQuery({
     rawQuery,
     normalizedQuery,

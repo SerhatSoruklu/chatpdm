@@ -1,0 +1,243 @@
+:host {
+  display: block;
+}
+
+.pdm-vision {
+  position: relative;
+  min-height: 100%;
+}
+
+.pdm-vision__main {
+  justify-content: center;
+  padding: 28px 18px 56px;
+}
+
+.pdm-vision__frame {
+  display: grid;
+  gap: 18px;
+}
+
+.pdm-vision__hero,
+.pdm-vision__section,
+.pdm-vision__signature,
+.pdm-vision__closing {
+  position: relative;
+  border-radius: 30px;
+}
+
+.pdm-vision__hero {
+  overflow: hidden;
+}
+
+.pdm-vision__hero::after {
+  content: '';
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 260px;
+  height: 260px;
+  background: radial-gradient(circle at top left, rgba(96, 165, 250, 0.14), transparent 70%);
+  pointer-events: none;
+}
+
+.pdm-vision__eyebrow,
+.pdm-vision__section-label,
+.pdm-vision__stage-label {
+  margin: 0;
+  color: #2563eb;
+  font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pdm-vision__title,
+.pdm-vision__section-title,
+.pdm-vision__stage-title,
+.pdm-vision__closing-line {
+  margin: 0;
+  color: #0f172a;
+  letter-spacing: -0.04em;
+}
+
+.pdm-vision__title {
+  max-width: 15ch;
+  margin-top: 12px;
+  font-size: clamp(2.6rem, 6vw, 4.3rem);
+  font-weight: 700;
+  line-height: 0.95;
+}
+
+.pdm-vision__subtitle,
+.pdm-vision__copy,
+.pdm-vision__signal-copy,
+.pdm-vision__signature-copy {
+  color: #475569;
+  line-height: 1.72;
+}
+
+.pdm-vision__subtitle {
+  max-width: 44rem;
+  margin: 18px 0 0;
+  font-size: clamp(1.02rem, 1.5vw, 1.18rem);
+  color: #334155;
+}
+
+.pdm-vision__section-head {
+  display: grid;
+  gap: 8px;
+}
+
+.pdm-vision__section-title {
+  max-width: 22ch;
+  font-size: clamp(1.5rem, 2vw, 2rem);
+  font-weight: 700;
+  line-height: 1.08;
+}
+
+.pdm-vision__copy,
+.pdm-vision__signature-copy {
+  margin: 14px 0 0;
+  font-size: 1rem;
+}
+
+.pdm-vision__split,
+.pdm-vision__signal-grid,
+.pdm-vision__stage-grid,
+.pdm-vision__continuity-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.pdm-vision__signal-grid,
+.pdm-vision__stage-grid,
+.pdm-vision__continuity-grid {
+  margin-top: 18px;
+}
+
+.pdm-vision__signal-card,
+.pdm-vision__stage-card,
+.pdm-vision__continuity-card {
+  padding: 16px;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 22px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(248, 250, 255, 0.84)),
+    rgba(255, 255, 255, 0.82);
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease,
+    transform 150ms ease;
+}
+
+.pdm-vision__signal-card:hover,
+.pdm-vision__stage-card:hover,
+.pdm-vision__continuity-card:hover {
+  transform: translateY(-1px);
+  border-color: rgba(37, 99, 235, 0.18);
+  box-shadow: 0 10px 24px rgba(148, 163, 184, 0.1);
+}
+
+.pdm-vision__signal-copy {
+  margin: 0;
+  font-size: 0.98rem;
+}
+
+.pdm-vision__stage-title {
+  margin-top: 10px;
+  font-size: 1.08rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.pdm-vision__chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.pdm-vision__chip {
+  color: #1d4ed8;
+  border-color: rgba(37, 99, 235, 0.16);
+  background: rgba(37, 99, 235, 0.08);
+  font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+}
+
+.pdm-vision__chip--future {
+  color: #526277;
+  border-color: rgba(148, 163, 184, 0.18);
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.pdm-vision__future-note {
+  margin-top: 16px;
+}
+
+.pdm-vision__signature-copy {
+  max-width: 52rem;
+  margin-top: 10px;
+  color: #334155;
+}
+
+.pdm-vision__closing-line {
+  max-width: 18ch;
+  margin-top: 10px;
+  font-size: clamp(1.8rem, 2.7vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+@media (min-width: 600px) {
+  .pdm-vision__main {
+    padding: 36px 28px 72px;
+  }
+
+  .pdm-vision__hero,
+  .pdm-vision__section,
+  .pdm-vision__signature,
+  .pdm-vision__closing {
+    border-radius: 32px;
+  }
+}
+
+@media (min-width: 840px) {
+  .pdm-vision__main {
+    padding: 44px 32px 88px;
+  }
+
+  .pdm-vision__split {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+
+  .pdm-vision__signal-grid,
+  .pdm-vision__continuity-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1200px) {
+  .pdm-vision__main {
+    padding: 52px 40px 96px;
+  }
+
+  .pdm-vision__hero,
+  .pdm-vision__section,
+  .pdm-vision__signature,
+  .pdm-vision__closing {
+    padding: 28px;
+  }
+
+  .pdm-vision__signal-grid,
+  .pdm-vision__stage-grid,
+  .pdm-vision__continuity-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1440px) {
+  .pdm-vision__main {
+    padding: 60px 48px 104px;
+  }
+}

@@ -376,10 +376,25 @@ function loadConceptSet() {
   return SEED_CONCEPT_IDS.map(loadConceptFile);
 }
 
+function getConceptById(conceptId) {
+  if (typeof conceptId !== 'string' || conceptId.trim() === '') {
+    return null;
+  }
+
+  const filePath = path.join(conceptsDirectory, `${conceptId}.json`);
+
+  if (!fs.existsSync(filePath)) {
+    return null;
+  }
+
+  return loadConceptFile(conceptId);
+}
+
 module.exports = {
   AUTHORED_REGISTER_FIELDS,
   AUTHORED_REGISTER_MODES,
   computeCanonicalConceptHash,
+  getConceptById,
   loadConceptSet,
   validateConceptShape,
 };

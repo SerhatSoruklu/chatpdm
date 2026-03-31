@@ -12,7 +12,7 @@ This is a product response contract, not an API failure contract. Internal failu
 
 Current runtime declarations for this contract:
 
-- `contractVersion = "v1.3"`
+- `contractVersion = "v1.4"`
 - `matcherVersion = "2026-03-27.v3"`
 - `normalizerVersion = "2026-03-27.v1"`
 
@@ -51,7 +51,7 @@ Shared top-level skeleton:
   "type": "concept_match",
   "query": "what is authority",
   "normalizedQuery": "authority",
-  "contractVersion": "v1.3",
+  "contractVersion": "v1.4",
   "normalizerVersion": "2026-03-27.v1",
   "matcherVersion": "2026-03-27.v3",
   "conceptSetVersion": "20260327.4",
@@ -353,7 +353,56 @@ For statement-only axes:
 
 The `comparison` object is the canonical payload boundary for this response type.
 
-### 3. no_exact_match
+### 3. rejected_concept
+
+#### Purpose (rejected_concept)
+
+Return an explicit refusal when the normalized query targets a concept recorded in the permanent rejection registry.
+
+This type exists to make structural rejections first-class in the product contract. It must not be collapsed into generic `no_exact_match`.
+
+#### Required fields (rejected_concept)
+
+Top-level:
+
+- `type`: `"rejected_concept"`
+- `query`
+- `normalizedQuery`
+- `contractVersion`
+- `normalizerVersion`
+- `matcherVersion`
+- `conceptSetVersion`
+- `queryType`
+- `interpretation`
+- `resolution`
+- `message`
+- `rejection`
+
+Allowed `queryType` values:
+
+- `exact_concept_query`
+- `canonical_id_query`
+
+`interpretation`:
+
+- must be `null`
+
+`resolution` object:
+
+- `method`: `"rejection_registry"`
+- `conceptId`
+
+`message`:
+
+- fixed canonical text for v1: `"This concept is structurally rejected under the current system state."`
+
+`rejection` object fields:
+
+- `status`: `"REJECTED"`
+- `decisionType`: `"STRUCTURAL_REJECTION"`
+- `finality`
+
+### 4. no_exact_match
 
 #### Purpose (no_exact_match)
 
@@ -430,7 +479,7 @@ Interpretation patterns allowed in this response type include:
 - unsupported actor or holder query
 - unsupported complex query shape
 
-### 4. ambiguous_match
+### 5. ambiguous_match
 
 #### Purpose (ambiguous_match)
 
@@ -497,10 +546,11 @@ The frontend must follow these rules exactly:
 5. Treat all canonical text fields as plain text in v1.
 6. Render `comparison` as a structured authored comparison, never as generated prose.
 7. Render `ambiguous_match` as explicit user choice, never as an already-resolved answer.
-8. Render `no_exact_match` honestly even when `suggestions` is empty.
-9. Do not re-sort `contexts`, `sources`, `relatedConcepts`, `suggestions`, `candidates`, `comparison.axes`, or `interpretation.concepts` in the UI.
-10. Present `interpretation` as bounded system guidance, not as a generated answer.
-11. Cache product responses using at least:
+8. Render `rejected_concept` as an explicit permanent refusal, never as a generic non-match.
+9. Render `no_exact_match` honestly even when `suggestions` is empty.
+10. Do not re-sort `contexts`, `sources`, `relatedConcepts`, `suggestions`, `candidates`, `comparison.axes`, or `interpretation.concepts` in the UI.
+11. Present `interpretation` as bounded system guidance, not as a generated answer.
+12. Cache product responses using at least:
 
     - `normalizedQuery`
     - `contractVersion`
@@ -524,6 +574,7 @@ The backend must enforce these rules:
 - matcher behavior must be deterministic under the declared `matcherVersion`
 - `conceptSetVersion` must refer to an immutable published snapshot, not an informal label
 - `concept_match` must only return published canonical concepts
+- `rejected_concept` must only return concepts recorded in the rejection registry
 - `comparison` must only return authored allowlisted comparison pairs
 - `no_exact_match` suggestions must be deterministic and must reference published canonical concepts only
 - `ambiguous_match` candidate ordering must be deterministic

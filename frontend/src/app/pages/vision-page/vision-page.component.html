@@ -1,0 +1,141 @@
+<div class="pdm-vision">
+  <main class="pdm-vision__main pdm-shell" aria-labelledby="pdm-vision-title">
+    <div class="pdm-shell__frame pdm-vision__frame">
+      <section class="pdm-vision__hero pdm-site-surface pdm-site-panel">
+        <p class="pdm-vision__eyebrow">Vision</p>
+        <h1 class="pdm-vision__title" id="pdm-vision-title">Infrastructure for meaning.</h1>
+        <p class="pdm-vision__subtitle">
+          ChatPDM is being built as long-term semantic infrastructure. Not to control information.
+          Not to claim universal authority. But to make concepts reliable enough for systems to
+          depend on without ambiguity.
+        </p>
+      </section>
+
+      <section class="pdm-vision__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-vision-now">
+        <div class="pdm-vision__section-head">
+          <p class="pdm-vision__section-label">Why this matters now</p>
+          <h2 class="pdm-vision__section-title" id="pdm-vision-now">Information is unstable before systems even begin to reason over it.</h2>
+        </div>
+
+        <div class="pdm-vision__signal-grid">
+          @for (signal of instabilitySignals; track signal) {
+            <article class="pdm-vision__signal-card">
+              <p class="pdm-vision__signal-copy">{{ signal }}</p>
+            </article>
+          }
+        </div>
+      </section>
+
+      <section class="pdm-vision__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-vision-problem">
+        <div class="pdm-vision__section-head">
+          <p class="pdm-vision__section-label">The deeper problem</p>
+          <h2 class="pdm-vision__section-title" id="pdm-vision-problem">Misinformation is only part of it. Ambiguity is the lower-layer failure.</h2>
+        </div>
+
+        <p class="pdm-vision__copy">
+          If concepts are unstable, every system built on top of them becomes unstable: AI systems,
+          legal reasoning, public discourse, software contracts, and institutional decision systems.
+          ChatPDM exists to address that lower layer: the stability of the concepts themselves.
+        </p>
+      </section>
+
+      <div class="pdm-vision__split">
+        <section class="pdm-vision__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-vision-build">
+          <div class="pdm-vision__section-head">
+            <p class="pdm-vision__section-label">What ChatPDM is trying to build</p>
+            <h2 class="pdm-vision__section-title" id="pdm-vision-build">A system layer that meaning-sensitive systems can rely on.</h2>
+          </div>
+
+          <p class="pdm-vision__copy">
+            This is not about knowing more. It is about knowing exactly what something means. The
+            goal is infrastructure where admitted concepts remain stable across time, use, and
+            representation.
+          </p>
+
+          <div class="pdm-vision__chip-row" aria-label="Infrastructure traits">
+            @for (trait of infrastructureTraits; track trait) {
+              <span class="pdm-vision__chip pdm-site-chip">{{ trait }}</span>
+            }
+          </div>
+        </section>
+
+        <section class="pdm-vision__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-vision-narrow">
+          <div class="pdm-vision__section-head">
+            <p class="pdm-vision__section-label">Why it starts narrow</p>
+            <h2 class="pdm-vision__section-title" id="pdm-vision-narrow">Deterministic systems cannot begin broad.</h2>
+          </div>
+
+          <p class="pdm-vision__copy">
+            Governance comes first because ambiguity already breaks rules, institutions, and public
+            reasoning there. Expansion is not earned by coverage. It is earned by proof.
+          </p>
+        </section>
+      </div>
+
+      <section class="pdm-vision__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-vision-direction">
+        <div class="pdm-vision__section-head">
+          <p class="pdm-vision__section-label">Long-term direction</p>
+          <h2 class="pdm-vision__section-title" id="pdm-vision-direction">Expansion follows stability, not ambition alone.</h2>
+        </div>
+
+        <div class="pdm-vision__stage-grid">
+          @for (stage of expansionStages; track stage.label) {
+            <article class="pdm-vision__stage-card">
+              <p class="pdm-vision__stage-label">{{ stage.label }}</p>
+              <h3 class="pdm-vision__stage-title">{{ stage.title }}</h3>
+              <p class="pdm-vision__copy">{{ stage.copy }}</p>
+            </article>
+          }
+        </div>
+
+        <div class="pdm-vision__future-note">
+          <p class="pdm-vision__copy">
+            Future domains may include:
+          </p>
+          <div class="pdm-vision__chip-row" aria-label="Future domains">
+            @for (domain of futureDomains; track domain) {
+              <span class="pdm-vision__chip pdm-site-chip pdm-vision__chip--future">{{ domain }}</span>
+            }
+          </div>
+        </div>
+      </section>
+
+      <section class="pdm-vision__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-vision-continuity">
+        <div class="pdm-vision__section-head">
+          <p class="pdm-vision__section-label">Open source and continuity</p>
+          <h2 class="pdm-vision__section-title" id="pdm-vision-continuity">The system should outlast its creator.</h2>
+        </div>
+
+        <p class="pdm-vision__copy">
+          Open source matters because continuity matters. ChatPDM is MIT licensed so it can be
+          inspected, extended, and maintained without ownership theater.
+        </p>
+
+        <div class="pdm-vision__continuity-grid">
+          @for (card of continuityCards; track card.title) {
+            <article class="pdm-vision__continuity-card">
+              <h3 class="pdm-vision__stage-title">{{ card.title }}</h3>
+              <p class="pdm-vision__copy">{{ card.copy }}</p>
+            </article>
+          }
+        </div>
+      </section>
+
+      <section class="pdm-vision__signature pdm-site-surface pdm-site-panel" aria-labelledby="pdm-vision-signature">
+        <p class="pdm-vision__section-label">Founder signature</p>
+        <p class="pdm-vision__signature-copy" id="pdm-vision-signature">
+          My name is Serhat Soruklu. I built ChatPDM as a long-term system, not a short-term
+          product. It is meant to be inspectable, extendable, and to continue existing beyond me.
+          That is why it is open source.
+        </p>
+      </section>
+
+      <section class="pdm-vision__closing pdm-site-surface pdm-site-panel" aria-labelledby="pdm-vision-closing">
+        <p class="pdm-vision__section-label">Closing</p>
+        <h2 class="pdm-vision__closing-line" id="pdm-vision-closing">
+          Scale comes after stability.
+        </h2>
+      </section>
+    </div>
+  </main>
+</div>

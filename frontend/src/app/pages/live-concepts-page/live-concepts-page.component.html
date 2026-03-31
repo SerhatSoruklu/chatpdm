@@ -1,0 +1,134 @@
+<div class="pdm-live-concepts">
+  <main class="pdm-live-concepts__main pdm-shell" aria-labelledby="pdm-live-concepts-title">
+    <div class="pdm-shell__frame pdm-live-concepts__frame">
+      <section class="pdm-live-concepts__hero pdm-site-surface pdm-site-panel">
+        <p class="pdm-live-concepts__eyebrow">Live concepts</p>
+        <h1 class="pdm-live-concepts__title" id="pdm-live-concepts-title">Live concepts</h1>
+        <p class="pdm-live-concepts__subtitle">
+          These concepts are currently admitted to the public runtime.
+        </p>
+      </section>
+
+      <section class="pdm-live-concepts__jump-shell pdm-site-surface pdm-site-panel" aria-labelledby="pdm-live-concepts-jump-title">
+        <div class="pdm-live-concepts__section-head">
+          <p class="pdm-live-concepts__section-label">Current live set</p>
+          <h2 class="pdm-live-concepts__section-title" id="pdm-live-concepts-jump-title">
+            Jump directly to any admitted concept.
+          </h2>
+        </div>
+
+        <div class="pdm-live-concepts__jump-row">
+          @for (conceptId of liveConceptIds; track conceptId) {
+            <button
+              class="pdm-live-concepts__jump-chip pdm-site-chip"
+              type="button"
+              [disabled]="catalogState().status !== 'ready'"
+              (click)="scrollToConcept(conceptId)"
+            >
+              {{ conceptId }}
+            </button>
+          }
+        </div>
+      </section>
+
+      @if (catalogState().status === 'loading') {
+        <section class="pdm-live-concepts__state-card pdm-site-surface pdm-site-panel" aria-live="polite">
+          <p class="pdm-live-concepts__section-label">Loading</p>
+          <h2 class="pdm-live-concepts__section-title">Loading the current live concept catalog.</h2>
+          <p class="pdm-live-concepts__copy">
+            The page is loading the admitted concept packets from the public runtime.
+          </p>
+        </section>
+      } @else if (catalogState().status === 'error') {
+        <section class="pdm-live-concepts__state-card pdm-live-concepts__state-card--error pdm-site-surface pdm-site-panel">
+          <p class="pdm-live-concepts__section-label">Catalog unavailable</p>
+          <h2 class="pdm-live-concepts__section-title">The live concept surface could not be loaded.</h2>
+          <p class="pdm-live-concepts__copy">{{ catalogState().errorMessage }}</p>
+        </section>
+      } @else {
+        <div class="pdm-live-concepts__catalog">
+          @for (concept of catalogState().concepts; track concept.resolution.conceptId) {
+            <section
+              class="pdm-live-concepts__concept pdm-site-surface pdm-site-panel"
+              [id]="conceptSectionId(concept.resolution.conceptId)"
+              [attr.aria-labelledby]="conceptSectionId(concept.resolution.conceptId) + '-title'"
+            >
+              <div class="pdm-live-concepts__concept-top">
+                <div>
+                  <p class="pdm-live-concepts__section-label">Live concept</p>
+                  <h2
+                    class="pdm-live-concepts__concept-title"
+                    [id]="conceptSectionId(concept.resolution.conceptId) + '-title'"
+                  >
+                    {{ concept.answer.title }}
+                  </h2>
+                  <p class="pdm-live-concepts__concept-subtitle">{{ concept.answer.shortDefinition }}</p>
+                </div>
+
+                <div class="pdm-live-concepts__meta-grid">
+                  <article class="pdm-live-concepts__meta-item">
+                    <span class="pdm-live-concepts__meta-label">Status</span>
+                    <span class="pdm-live-concepts__meta-value">Admitted to public runtime</span>
+                  </article>
+                  <article class="pdm-live-concepts__meta-item">
+                    <span class="pdm-live-concepts__meta-label">Runtime scope</span>
+                    <span class="pdm-live-concepts__meta-value">{{ scopeLabel(concept.resolution.conceptId) }}</span>
+                  </article>
+                </div>
+              </div>
+
+              <section class="pdm-live-concepts__content-block">
+                <p class="pdm-live-concepts__block-label">Core meaning</p>
+                <p class="pdm-live-concepts__copy">{{ concept.answer.coreMeaning }}</p>
+              </section>
+
+              <section class="pdm-live-concepts__content-block">
+                <p class="pdm-live-concepts__block-label">Full definition</p>
+                <div class="pdm-live-concepts__definition-stack">
+                  @for (paragraph of definitionParagraphs(concept.answer.fullDefinition); track paragraph) {
+                    <p class="pdm-live-concepts__copy">{{ paragraph }}</p>
+                  }
+                </div>
+              </section>
+
+              <div class="pdm-live-concepts__split">
+                <section class="pdm-live-concepts__content-block">
+                  <p class="pdm-live-concepts__block-label">Sources</p>
+                  <div class="pdm-live-concepts__source-list">
+                    @for (source of concept.answer.sources; track source.id) {
+                      <article class="pdm-live-concepts__source-card">
+                        <p class="pdm-live-concepts__source-title">{{ source.label }}</p>
+                        <p class="pdm-live-concepts__copy">{{ source.usedFor }}</p>
+                        <span class="pdm-site-chip">{{ sourceTypeLabel(source.type) }}</span>
+                      </article>
+                    }
+                  </div>
+                </section>
+
+                <section class="pdm-live-concepts__content-block">
+                  <p class="pdm-live-concepts__block-label">Related concepts</p>
+                  @if (visibleRelatedConcepts(concept).length > 0) {
+                    <div class="pdm-live-concepts__related-list">
+                      @for (relatedConcept of visibleRelatedConcepts(concept); track relatedConcept.conceptId) {
+                        <button
+                          class="pdm-live-concepts__related-card"
+                          type="button"
+                          (click)="scrollToConcept(relatedConcept.conceptId)"
+                        >
+                          <span class="pdm-live-concepts__related-title">{{ relatedConcept.title }}</span>
+                          <span class="pdm-live-concepts__related-copy">{{ relationLabel(relatedConcept.relationType) }}</span>
+                        </button>
+                      }
+                    </div>
+                  } @else {
+                    <p class="pdm-live-concepts__copy">No live related concepts are exposed on the current public surface.</p>
+                  }
+                </section>
+              </div>
+            </section>
+          }
+        </div>
+      }
+    </div>
+  </main>
+</div>

@@ -1,9 +1,15 @@
 import { Routes } from '@angular/router';
+import { AboutPageComponent } from './pages/about-page/about-page.component';
+import { ControlledComparisonsPageComponent } from './pages/controlled-comparisons-page/controlled-comparisons-page.component';
+import { HowItWorksPageComponent } from './pages/how-it-works-page/how-it-works-page.component';
 import { InspectIndexPageComponent } from './pages/inspect-index-page/inspect-index-page.component';
 import { LandingPageComponent } from './pages/landing/landing-page.component';
+import { LiveConceptsPageComponent } from './pages/live-concepts-page/live-concepts-page.component';
 import { PolicyPageComponent } from './pages/policy-page/policy-page.component';
 import { PublicPageComponent } from './pages/public-page/public-page.component';
+import { RuntimePageComponent } from './pages/runtime-page/runtime-page.component';
 import { TermsPageComponent } from './pages/terms-page/terms-page.component';
+import { VisionPageComponent } from './pages/vision-page/vision-page.component';
 import type { PolicySurfaceKey } from './policies/policy-surface.types';
 import { type SeoRegistryKey, seoRouteData } from './seo/seo.registry';
 
@@ -29,13 +35,38 @@ export const routes: Routes = [
   },
   {
     path: 'about',
+    component: AboutPageComponent,
+    data: seoRouteData('static.about'),
+  },
+  {
+    path: 'what-is-chatpdm',
     component: PublicPageComponent,
-    data: pageRouteData('about', 'static.about'),
+    data: pageRouteData('what-is-chatpdm', 'static.what-is-chatpdm'),
+  },
+  {
+    path: 'runtime',
+    component: RuntimePageComponent,
+    data: seoRouteData('static.runtime'),
+  },
+  {
+    path: 'live-concepts',
+    component: LiveConceptsPageComponent,
+    data: seoRouteData('static.live-concepts'),
+  },
+  {
+    path: 'controlled-comparisons',
+    component: ControlledComparisonsPageComponent,
+    data: seoRouteData('static.controlled-comparisons'),
   },
   {
     path: 'how-it-works',
-    component: PublicPageComponent,
-    data: pageRouteData('how-it-works', 'static.how-it-works'),
+    component: HowItWorksPageComponent,
+    data: seoRouteData('static.how-it-works'),
+  },
+  {
+    path: 'vision',
+    component: VisionPageComponent,
+    data: seoRouteData('static.vision'),
   },
   {
     path: 'faq',

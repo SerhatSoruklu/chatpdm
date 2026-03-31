@@ -20,7 +20,7 @@ function createCorsOptions(allowedOrigins) {
       callback(null, false);
     },
     credentials: true,
-    methods: ['GET', 'POST', 'OPTIONS'],
+    methods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Accept'],
     optionsSuccessStatus: 204,
     maxAge: 86400,

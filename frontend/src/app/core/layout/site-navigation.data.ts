@@ -6,7 +6,9 @@ export interface SiteNavItem {
 
 export const SITE_PRIMARY_NAV_ITEMS: readonly SiteNavItem[] = [
   { label: 'Home', route: '/', exact: true },
+  { label: 'Runtime', route: '/runtime' },
   { label: 'About', route: '/about' },
+  { label: 'Vision', route: '/vision' },
   { label: 'How it works', route: '/how-it-works' },
   { label: 'FAQ', route: '/faq' },
   { label: 'Docs', route: '/docs' },

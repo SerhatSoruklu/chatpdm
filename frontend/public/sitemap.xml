@@ -11,7 +11,32 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://chatpdm.com/what-is-chatpdm</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chatpdm.com/runtime</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://chatpdm.com/live-concepts</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://chatpdm.com/controlled-comparisons</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://chatpdm.com/how-it-works</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chatpdm.com/vision</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

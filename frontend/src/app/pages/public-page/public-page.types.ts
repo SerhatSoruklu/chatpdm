@@ -32,6 +32,7 @@ export interface PublicPageContent {
 
 export type PublicPageKey =
   | 'about'
+  | 'what-is-chatpdm'
   | 'how-it-works'
   | 'faq'
   | 'contact'
