@@ -262,5 +262,13 @@ function formatEvidence(
 }
 
 function formatCount(count: number, singular: string): string {
-  return `${count} ${count === 1 ? singular : `${singular}s`}`;
+  if (count === 1) {
+    return `${count} ${singular}`;
+  }
+
+  if (singular.endsWith('y') && !/[aeiou]y$/i.test(singular)) {
+    return `${count} ${singular.slice(0, -1)}ies`;
+  }
+
+  return `${count} ${singular}s`;
 }
