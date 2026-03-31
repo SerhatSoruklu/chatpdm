@@ -164,6 +164,19 @@
   line-height: 1.65;
 }
 
+.pdm-site-footer__credit-link {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.16em;
+  transition: opacity 160ms ease;
+}
+
+.pdm-site-footer__credit-link:hover,
+.pdm-site-footer__credit-link:focus-visible {
+  opacity: 0.72;
+}
+
 .pdm-site-footer__grid {
   display: grid;
   gap: 18px;
