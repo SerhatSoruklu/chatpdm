@@ -259,6 +259,11 @@
   line-height: 1.68;
 }
 
+.pdm-home__lead--scope {
+  margin-top: 2px;
+  opacity: 0.88;
+}
+
 .pdm-home__hero-query {
   display: grid;
   gap: 14px;
