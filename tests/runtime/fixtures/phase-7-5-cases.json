@@ -319,23 +319,64 @@
     "expectedSuggestions": []
   },
   {
-    "name": "authored_ambiguity_obligation",
+    "name": "rejected_obligation_exact",
     "input": "obligation",
     "expectedNormalizedQuery": "obligation",
-    "expectedType": "ambiguous_match",
-    "expectedMethod": "author_defined_disambiguation",
-    "expectedQueryType": "ambiguity_query",
-    "expectedInterpretation": {
-      "interpretationType": "ambiguous_selection",
-      "concepts": [
-        "duty",
-        "responsibility"
-      ]
-    },
-    "expectedCandidates": [
-      "duty",
-      "responsibility"
-    ]
+    "expectedType": "rejected_concept",
+    "expectedMethod": "rejection_registry",
+    "expectedQueryType": "exact_concept_query",
+    "expectedInterpretation": null,
+    "expectedConceptId": "obligation",
+    "expectedRejection": {
+      "status": "REJECTED",
+      "decisionType": "STRUCTURAL_REJECTION",
+      "finality": true
+    }
+  },
+  {
+    "name": "rejected_enforcement_exact",
+    "input": "enforcement",
+    "expectedNormalizedQuery": "enforcement",
+    "expectedType": "rejected_concept",
+    "expectedMethod": "rejection_registry",
+    "expectedQueryType": "exact_concept_query",
+    "expectedInterpretation": null,
+    "expectedConceptId": "enforcement",
+    "expectedRejection": {
+      "status": "REJECTED",
+      "decisionType": "STRUCTURAL_REJECTION",
+      "finality": true
+    }
+  },
+  {
+    "name": "rejected_enforcement_uppercase",
+    "input": "ENFORCEMENT",
+    "expectedNormalizedQuery": "enforcement",
+    "expectedType": "rejected_concept",
+    "expectedMethod": "rejection_registry",
+    "expectedQueryType": "exact_concept_query",
+    "expectedInterpretation": null,
+    "expectedConceptId": "enforcement",
+    "expectedRejection": {
+      "status": "REJECTED",
+      "decisionType": "STRUCTURAL_REJECTION",
+      "finality": true
+    }
+  },
+  {
+    "name": "rejected_obligation_canonical_id",
+    "input": "concept:obligation",
+    "expectedNormalizedQuery": "conceptobligation",
+    "expectedType": "rejected_concept",
+    "expectedMethod": "rejection_registry",
+    "expectedQueryType": "canonical_id_query",
+    "expectedInterpretation": null,
+    "expectedConceptId": "obligation",
+    "expectedRejection": {
+      "status": "REJECTED",
+      "decisionType": "STRUCTURAL_REJECTION",
+      "finality": true
+    }
   },
   {
     "name": "authored_suggestion_civic_duty",

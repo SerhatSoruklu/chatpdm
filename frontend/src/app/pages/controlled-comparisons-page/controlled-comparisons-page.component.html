@@ -1,0 +1,161 @@
+<div class="pdm-controlled-comparisons">
+  <main class="pdm-controlled-comparisons__main pdm-shell" aria-labelledby="pdm-controlled-comparisons-title">
+    <div class="pdm-shell__frame pdm-controlled-comparisons__frame">
+      <section class="pdm-controlled-comparisons__hero pdm-site-surface pdm-site-panel">
+        <p class="pdm-controlled-comparisons__eyebrow">Controlled comparisons</p>
+        <h1 class="pdm-controlled-comparisons__title" id="pdm-controlled-comparisons-title">
+          Controlled comparisons
+        </h1>
+        <p class="pdm-controlled-comparisons__subtitle">
+          Only authored, allowlisted comparison pairs are exposed in the public runtime.
+        </p>
+      </section>
+
+      <section class="pdm-controlled-comparisons__boundary pdm-site-surface pdm-site-panel">
+        <p class="pdm-controlled-comparisons__section-label">Boundary</p>
+        <h2 class="pdm-controlled-comparisons__section-title">
+          Comparison output exists only where the system has an admitted structural distinction.
+        </h2>
+      </section>
+
+      @if (pageState().status === 'loading') {
+        <section class="pdm-controlled-comparisons__state-card pdm-site-surface pdm-site-panel" aria-live="polite">
+          <p class="pdm-controlled-comparisons__section-label">Loading</p>
+          <h2 class="pdm-controlled-comparisons__section-title">Loading admitted comparison pairs.</h2>
+          <p class="pdm-controlled-comparisons__copy">
+            The page is checking the current public runtime allowlist and collecting only comparison pairs that resolve.
+          </p>
+        </section>
+      } @else if (pageState().status === 'error') {
+        <section class="pdm-controlled-comparisons__state-card pdm-controlled-comparisons__state-card--error pdm-site-surface pdm-site-panel">
+          <p class="pdm-controlled-comparisons__section-label">Catalog unavailable</p>
+          <h2 class="pdm-controlled-comparisons__section-title">The comparison catalog could not be loaded.</h2>
+          <p class="pdm-controlled-comparisons__copy">{{ pageState().errorMessage }}</p>
+        </section>
+      } @else {
+        <section class="pdm-controlled-comparisons__catalog-shell pdm-site-surface pdm-site-panel">
+          <div class="pdm-controlled-comparisons__section-head">
+            <p class="pdm-controlled-comparisons__section-label">Pair catalog</p>
+            <h2 class="pdm-controlled-comparisons__section-title">
+              {{ admittedPairCount() }} comparison pairs are admitted in the current public runtime.
+            </h2>
+          </div>
+
+          <div class="pdm-controlled-comparisons__catalog">
+            @for (pair of pageState().pairs; track pair.key) {
+              <section
+                class="pdm-controlled-comparisons__pair-card"
+                [id]="pairSectionId(pair.key)"
+                [attr.aria-labelledby]="pairSectionId(pair.key) + '-title'"
+              >
+                <div class="pdm-controlled-comparisons__pair-head">
+                  <div>
+                    <p class="pdm-controlled-comparisons__section-label">Admitted pair</p>
+                    <h3
+                      class="pdm-controlled-comparisons__pair-title"
+                      [id]="pairSectionId(pair.key) + '-title'"
+                    >
+                      {{ pair.title }}
+                    </h3>
+                    <p class="pdm-controlled-comparisons__pair-subtitle">{{ pair.oneLineDistinction }}</p>
+                  </div>
+                  <div class="pdm-controlled-comparisons__pair-tags">
+                    <span class="pdm-site-chip">Allowlisted</span>
+                    <span class="pdm-site-chip">Runtime comparison</span>
+                  </div>
+                </div>
+
+                <div class="pdm-controlled-comparisons__axes-grid">
+                  @for (axis of pair.axes; track axis.axis) {
+                    <article class="pdm-controlled-comparisons__axis-card">
+                      <p class="pdm-controlled-comparisons__axis-label">{{ axisLabel(axis.axis) }}</p>
+                      @if (comparisonAxisHasValues(axis)) {
+                        <div class="pdm-controlled-comparisons__axis-values">
+                          <div>
+                            <span class="pdm-controlled-comparisons__axis-side">
+                              {{ formatConceptLabel(pair.conceptA) }}
+                            </span>
+                            <p class="pdm-controlled-comparisons__copy">{{ comparisonAxisValue(axis, 'A') }}</p>
+                          </div>
+                          <div>
+                            <span class="pdm-controlled-comparisons__axis-side">
+                              {{ formatConceptLabel(pair.conceptB) }}
+                            </span>
+                            <p class="pdm-controlled-comparisons__copy">{{ comparisonAxisValue(axis, 'B') }}</p>
+                          </div>
+                        </div>
+                      } @else {
+                        <p class="pdm-controlled-comparisons__copy">{{ comparisonAxisStatement(axis) }}</p>
+                      }
+                    </article>
+                  }
+                </div>
+              </section>
+            }
+          </div>
+        </section>
+
+        <section class="pdm-controlled-comparisons__matrix-shell pdm-site-surface pdm-site-panel">
+          <div class="pdm-controlled-comparisons__section-head">
+            <p class="pdm-controlled-comparisons__section-label">Comparison matrix</p>
+            <h2 class="pdm-controlled-comparisons__section-title">
+              The matrix shows admitted and non-admitted space across the live concept set.
+            </h2>
+          </div>
+
+          <div class="pdm-controlled-comparisons__matrix-scroll">
+            <table class="pdm-controlled-comparisons__matrix" aria-label="Controlled comparison matrix">
+              <thead>
+                <tr>
+                  <th scope="col">Concept</th>
+                  @for (conceptId of liveConceptIds; track conceptId) {
+                    <th scope="col">{{ formatConceptLabel(conceptId) }}</th>
+                  }
+                </tr>
+              </thead>
+
+              <tbody>
+                @for (row of pageState().matrixRows; track $index; let rowIndex = $index) {
+                  <tr>
+                    <th scope="row">{{ formatConceptLabel(liveConceptIds[rowIndex]) }}</th>
+                    @for (cell of row; track cell.rowConceptId + ':' + cell.columnConceptId) {
+                      <td
+                        [class.pdm-controlled-comparisons__matrix-cell--diagonal]="cell.isDiagonal"
+                        [class.pdm-controlled-comparisons__matrix-cell--admitted]="cell.isAdmitted"
+                        [class.pdm-controlled-comparisons__matrix-cell--mirrored]="cell.isMirroredPair"
+                        [class.pdm-controlled-comparisons__matrix-cell--blocked]="!cell.isDiagonal && !cell.isAdmitted && !cell.isMirroredPair"
+                      >
+                        @if (cell.isDiagonal) {
+                          <span class="pdm-controlled-comparisons__matrix-symbol" aria-hidden="true">&mdash;</span>
+                        } @else if (cell.isAdmitted && cell.pairKey) {
+                          <button
+                            class="pdm-controlled-comparisons__matrix-link"
+                            type="button"
+                            (click)="scrollToPair(cell.pairKey)"
+                          >
+                            admitted
+                          </button>
+                        } @else if (cell.isMirroredPair) {
+                          <span class="pdm-controlled-comparisons__matrix-symbol">same pair</span>
+                        } @else {
+                          <span class="pdm-controlled-comparisons__matrix-symbol">refused</span>
+                        }
+                      </td>
+                    }
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="pdm-controlled-comparisons__closing pdm-site-surface pdm-site-panel">
+          <p class="pdm-controlled-comparisons__section-label">Refusal principle</p>
+          <h2 class="pdm-controlled-comparisons__section-title">
+            Pairs outside the allowlist are refused. Refusal is part of the comparison contract, not a missing feature.
+          </h2>
+        </section>
+      }
+    </div>
+  </main>
+</div>

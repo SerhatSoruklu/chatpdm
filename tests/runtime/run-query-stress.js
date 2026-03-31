@@ -89,6 +89,14 @@ function actualCanonicalFromAttempt(attempt) {
   return null;
 }
 
+function actualRejectedConceptIdFromAttempt(attempt) {
+  if (attempt.bodyJson?.type === 'rejected_concept') {
+    return attempt.bodyJson?.resolution?.conceptId ?? null;
+  }
+
+  return null;
+}
+
 function actualResolutionMethodFromAttempt(attempt) {
   if (attempt.status === 200 && typeof attempt.bodyJson?.resolution?.method === 'string') {
     return attempt.bodyJson.resolution.method;
@@ -108,6 +116,14 @@ function actualQueryTypeFromAttempt(attempt) {
 function actualInterpretationFromAttempt(attempt) {
   if (attempt.status === 200 && attempt.bodyJson && Object.hasOwn(attempt.bodyJson, 'interpretation')) {
     return attempt.bodyJson.interpretation;
+  }
+
+  return null;
+}
+
+function actualRejectionFromAttempt(attempt) {
+  if (attempt.status === 200 && attempt.bodyJson?.type === 'rejected_concept') {
+    return attempt.bodyJson.rejection ?? null;
   }
 
   return null;
@@ -194,6 +210,11 @@ function classifyModeMismatch(testCase, labels) {
     return;
   }
 
+  if (testCase.expectedMode === 'rejected_concept') {
+    labels.push('wrong_match');
+    return;
+  }
+
   labels.push('wrong_match');
 }
 
@@ -213,9 +234,11 @@ function evaluateCase(testCase, attempts) {
 
   const actualMode = actualModeFromAttempt(firstAttempt);
   const actualCanonical = actualCanonicalFromAttempt(firstAttempt);
+  const actualRejectedConceptId = actualRejectedConceptIdFromAttempt(firstAttempt);
   const actualMethod = actualResolutionMethodFromAttempt(firstAttempt);
   const actualQueryType = actualQueryTypeFromAttempt(firstAttempt);
   const actualInterpretation = actualInterpretationFromAttempt(firstAttempt);
+  const actualRejection = actualRejectionFromAttempt(firstAttempt);
   const actualComparison = actualComparisonFromAttempt(firstAttempt);
   const actualCandidates = actualCandidatesFromAttempt(firstAttempt);
   const actualSuggestions = actualSuggestionsFromAttempt(firstAttempt);
@@ -308,6 +331,30 @@ function evaluateCase(testCase, attempts) {
     }
   }
 
+  if (testCase.expectedMode === 'rejected_concept' && actualMode === 'rejected_concept') {
+    if (
+      typeof testCase.expectedRejectedConceptId === 'string'
+      && actualRejectedConceptId !== testCase.expectedRejectedConceptId
+    ) {
+      labels.push('wrong_match');
+      issues.push(
+        `expected rejected concept "${testCase.expectedRejectedConceptId}" but received "${actualRejectedConceptId}"`,
+      );
+      score = 0;
+    }
+
+    if (
+      Object.hasOwn(testCase, 'expectedRejection')
+      && !matchesSubset(actualRejection, testCase.expectedRejection)
+    ) {
+      labels.push('wrong_match');
+      issues.push(
+        `expected rejection subset ${stableStringify(testCase.expectedRejection)} but received ${stableStringify(actualRejection)}`,
+      );
+      score = 0;
+    }
+  }
+
   if (testCase.expectedMode === 'comparison' && actualMode === 'comparison') {
     if (
       Object.hasOwn(testCase, 'expectedComparison')
@@ -394,15 +441,19 @@ function evaluateCase(testCase, attempts) {
     notes: testCase.notes,
     expectedMode: testCase.expectedMode,
     expectedCanonical: testCase.expectedCanonical ?? null,
+    expectedRejectedConceptId: testCase.expectedRejectedConceptId ?? null,
     expectedQueryType: testCase.expectedQueryType ?? null,
     expectedInterpretation: testCase.expectedInterpretation ?? null,
+    expectedRejection: testCase.expectedRejection ?? null,
     expectedComparison: testCase.expectedComparison ?? null,
     expectedCandidates: testCase.expectedCandidates ?? [],
     expectedSuggestions: testCase.expectedSuggestions ?? [],
     actualMode,
     actualCanonical,
+    actualRejectedConceptId,
     actualQueryType,
     actualInterpretation,
+    actualRejection,
     actualComparison,
     actualCandidates,
     actualSuggestions,

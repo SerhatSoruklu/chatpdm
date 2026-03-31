@@ -182,6 +182,15 @@ function runCase(testCase) {
     );
   }
 
+  if (testCase.expectedType === 'rejected_concept') {
+    assert.equal(
+      firstResult.resolution.conceptId,
+      testCase.expectedConceptId,
+      `${testCase.name} rejected conceptId mismatch.`,
+    );
+    assertSubset(firstResult.rejection, testCase.expectedRejection, `${testCase.name} rejection`);
+  }
+
   if (testCase.expectedType === 'no_exact_match') {
     const actualSuggestions = firstResult.suggestions.map((suggestion) => ({
       conceptId: suggestion.conceptId,

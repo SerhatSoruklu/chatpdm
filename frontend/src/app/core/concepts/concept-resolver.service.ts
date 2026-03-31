@@ -4,7 +4,7 @@ import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { resolveApiOrigin } from '../api/api-origin';
-import { ResolveProductResponse } from './concept-resolver.types';
+import { ConceptDetailResponse, ResolveProductResponse } from './concept-resolver.types';
 
 @Injectable({ providedIn: 'root' })
 export class ConceptResolverService {
@@ -17,5 +17,11 @@ export class ConceptResolverService {
     return this.http.get<ResolveProductResponse>(`${resolveApiOrigin(this.document)}/api/v1/concepts/resolve`, {
       params,
     });
+  }
+
+  detail(conceptId: string): Observable<ConceptDetailResponse> {
+    return this.http.get<ConceptDetailResponse>(
+      `${resolveApiOrigin(this.document)}/api/v1/concepts/${encodeURIComponent(conceptId)}`,
+    );
   }
 }

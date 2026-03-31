@@ -1,6 +1,6 @@
 'use strict';
 
-const CONTRACT_VERSION = 'v1.3';
+const CONTRACT_VERSION = 'v1.4';
 const NORMALIZER_VERSION = '2026-03-27.v1';
 const MATCHER_VERSION = '2026-03-27.v3';
 const CONCEPT_SET_VERSION = '20260327.4';
@@ -61,6 +61,7 @@ const LEADING_FILLER_PHRASES = Object.freeze([
 
 const NO_EXACT_MATCH_MESSAGE = 'No exact canonical concept match was found for this query.';
 const AMBIGUOUS_MATCH_MESSAGE = 'Multiple canonical concepts match this query. Choose one to continue.';
+const REJECTED_CONCEPT_MESSAGE = 'This concept is structurally rejected under the current system state.';
 
 module.exports = {
   AMBIGUOUS_MATCH_MESSAGE,
@@ -75,5 +76,6 @@ module.exports = {
   NON_GOVERNANCE_HANDLING_REQUIRED,
   NO_EXACT_MATCH_MESSAGE,
   PUNCTUATION_CHARACTERS,
+  REJECTED_CONCEPT_MESSAGE,
   SEED_CONCEPT_IDS,
 };

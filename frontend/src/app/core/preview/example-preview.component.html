@@ -5,53 +5,87 @@
   <div class="pdm-example-preview__head">
     <div class="pdm-example-preview__head-copy">
       <p class="pdm-example-preview__eyebrow">Seeded runtime preview</p>
-      <h2 class="pdm-example-preview__title" id="pdm-example-preview-title">Comparison result</h2>
+      <h2 class="pdm-example-preview__title" id="pdm-example-preview-title">{{ previewTitle() }}</h2>
     </div>
 
-    <span class="pdm-example-preview__status">Resolved within scope</span>
+    <span
+      class="pdm-example-preview__status"
+      [class.pdm-example-preview__status--loading]="previewState().status === 'loading'"
+      [class.pdm-example-preview__status--error]="previewState().status === 'error'"
+    >
+      {{ previewStatus() }}
+    </span>
   </div>
 
-  <div class="pdm-example-preview__query-shell">
-    <p class="pdm-example-preview__micro-label">Query</p>
-    <p class="pdm-example-preview__query">authority vs power</p>
-  </div>
+  @if (previewState(); as state) {
+    @if (state.status === 'ready') {
+      <div class="pdm-example-preview__query-shell">
+        <p class="pdm-example-preview__micro-label">Query</p>
+        <p class="pdm-example-preview__query">{{ state.comparison.query }}</p>
+      </div>
 
-  <dl class="pdm-example-preview__comparison-list" aria-label="Resolved meanings">
-    <div class="pdm-example-preview__comparison-row">
-      <dt class="pdm-example-preview__term">authority</dt>
-      <dd class="pdm-example-preview__definition">legitimate right to direct decisions</dd>
-    </div>
+      <dl class="pdm-example-preview__comparison-list" aria-label="Resolved meanings">
+        <div class="pdm-example-preview__comparison-row">
+          <dt class="pdm-example-preview__term">{{ state.comparison.conceptA }}</dt>
+          <dd class="pdm-example-preview__definition">{{ state.comparison.conceptADefinition }}</dd>
+        </div>
 
-    <div class="pdm-example-preview__comparison-row">
-      <dt class="pdm-example-preview__term">power</dt>
-      <dd class="pdm-example-preview__definition">
-        ability to produce outcomes, with or without legitimacy
-      </dd>
-    </div>
-  </dl>
+        <div class="pdm-example-preview__comparison-row">
+          <dt class="pdm-example-preview__term">{{ state.comparison.conceptB }}</dt>
+          <dd class="pdm-example-preview__definition">{{ state.comparison.conceptBDefinition }}</dd>
+        </div>
+      </dl>
 
-  <section class="pdm-example-preview__trace" aria-labelledby="pdm-example-preview-trace-title">
-    <p class="pdm-example-preview__micro-label" id="pdm-example-preview-trace-title">
-      Trace and limits
-    </p>
+      <section class="pdm-example-preview__trace" aria-labelledby="pdm-example-preview-trace-title">
+        <p class="pdm-example-preview__micro-label" id="pdm-example-preview-trace-title">
+          Trace and limits
+        </p>
 
-    <div class="pdm-example-preview__trace-list">
-      <span class="pdm-example-preview__trace-chip">deterministic</span>
-      <span class="pdm-example-preview__trace-chip">source-backed</span>
-      <span class="pdm-example-preview__trace-chip">bounded scope</span>
-    </div>
-  </section>
+        <div class="pdm-example-preview__trace-list">
+          @for (chip of state.comparison.traceChips; track chip) {
+            <span class="pdm-example-preview__trace-chip">{{ chip }}</span>
+          }
+        </div>
 
-  <section class="pdm-example-preview__refusal" aria-labelledby="pdm-example-preview-refusal-title">
-    <div class="pdm-example-preview__refusal-head">
-      <p class="pdm-example-preview__micro-label" id="pdm-example-preview-refusal-title">
-        Unsupported example
-      </p>
+        @if (state.comparison.boundaryStatement) {
+          <p class="pdm-example-preview__trace-note">{{ state.comparison.boundaryStatement }}</p>
+        }
+      </section>
 
-      <span class="pdm-example-preview__refusal-status">Refused</span>
-    </div>
+      <section class="pdm-example-preview__refusal" aria-labelledby="pdm-example-preview-refusal-title">
+        <div class="pdm-example-preview__refusal-head">
+          <p class="pdm-example-preview__micro-label" id="pdm-example-preview-refusal-title">
+            Comparison refusal
+          </p>
 
-    <p class="pdm-example-preview__refusal-query">authority vs charisma</p>
-    <p class="pdm-example-preview__refusal-copy">Unsupported concept pair. No result returned.</p>
-  </section>
+          <span class="pdm-example-preview__refusal-status">Refused</span>
+        </div>
+
+        <p class="pdm-example-preview__refusal-query">{{ state.refusal.query }}</p>
+        <p class="pdm-example-preview__refusal-copy">{{ state.refusal.message }}</p>
+      </section>
+    } @else {
+      <div class="pdm-example-preview__query-shell">
+        <p class="pdm-example-preview__micro-label">Status</p>
+        <p class="pdm-example-preview__query">
+          {{ state.status === 'loading' ? 'Loading seeded queries' : 'Preview unavailable' }}
+        </p>
+      </div>
+
+      <section
+        class="pdm-example-preview__state-card"
+        [class.pdm-example-preview__state-card--error]="state.status === 'error'"
+        aria-live="polite"
+      >
+        <p class="pdm-example-preview__micro-label">Live resolver</p>
+        <p class="pdm-example-preview__state-copy">
+          @if (state.status === 'loading') {
+            Resolving seeded runtime examples from the current contract.
+          } @else {
+            {{ state.message }}
+          }
+        </p>
+      </section>
+    }
+  }
 </section>

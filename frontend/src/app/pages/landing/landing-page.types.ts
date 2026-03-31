@@ -1,5 +1,6 @@
 import type {
   AmbiguousMatchResponse,
+  ConceptDetailResponse,
   ComparisonResponse,
   ResolveProductResponse,
 } from '../../core/concepts/concept-resolver.types';
@@ -67,6 +68,7 @@ export interface ResolverEntry {
   submittedQuery: string;
   status: 'loading' | 'success' | 'error';
   response?: ResolveProductResponse;
+  detail?: ConceptDetailResponse | null;
   feedback?: EntryFeedbackState;
   errorMessage?: string;
 }

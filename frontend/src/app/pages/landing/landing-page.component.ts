@@ -11,11 +11,15 @@ import {
   AmbiguousMatchResponse,
   ComparisonAxis,
   ComparisonAxisValue,
+  ConceptDetailResponse,
   ConceptMatchResponse,
   ConceptSource,
+  GovernanceState,
   ReadingRegisters,
   NoExactMatchResponse,
+  RejectedConceptResponse,
   RelatedConcept,
+  ReviewState,
   ResolveProductResponse,
   Suggestion,
 } from '../../core/concepts/concept-resolver.types';
@@ -30,6 +34,12 @@ import {
   READING_LENS_TRUST_COPY,
   ReadingLensMode,
 } from '../../core/concepts/derived-explanation-reading-lens-ui.policy';
+import {
+  DETAIL_BACKED_CONCEPT_IDS,
+  LIVE_RUNTIME_CONCEPT_IDS,
+  REVIEWED_CONCEPT_IDS,
+  RUNTIME_SCOPE_BY_CONCEPT,
+} from '../../core/concepts/public-runtime.catalog';
 import { FeedbackService } from '../../core/feedback/feedback.service';
 import type {
   AmbiguousSelectionOrigin,
@@ -44,14 +54,13 @@ import type {
   SubmitQueryOptions,
 } from './landing-page.types';
 
-const LIVE_RUNTIME_CONCEPT_IDS = Object.freeze([
-  'authority',
-  'power',
-  'legitimacy',
-  'duty',
-  'responsibility',
-]);
 const LIVE_RUNTIME_CONCEPTS = new Set(LIVE_RUNTIME_CONCEPT_IDS);
+const REVIEWED_CONCEPTS = new Set(REVIEWED_CONCEPT_IDS);
+const DETAIL_BACKED_CONCEPTS = new Set(DETAIL_BACKED_CONCEPT_IDS);
+const REVIEWED_NOT_LIVE_ADMISSIONS = new Set<ReviewState['admission']>([
+  'phase1_passed',
+  'phase2_stable',
+]);
 
 const SCOPE_GROUPS: ScopeGroup[] = [
   {
@@ -122,14 +131,6 @@ const QUERY_ENTRY_MODES: QueryEntryMode[] = [
   { label: 'Canonical lookup', example: 'define legitimacy' },
   { label: 'Controlled comparison', example: 'authority vs power' },
 ];
-
-const RUNTIME_SCOPE_BY_CONCEPT = Object.freeze<Record<string, string>>({
-  authority: 'Governance v1',
-  power: 'Governance v1',
-  legitimacy: 'Governance v1',
-  duty: 'Governance v1',
-  responsibility: 'Core abstractions v1',
-});
 
 const HOMEPAGE_STEPS: HomepageStep[] = [
   {
@@ -208,6 +209,7 @@ export class LandingPageComponent {
   protected readonly homepageSteps = HOMEPAGE_STEPS;
   protected readonly referenceLinks = REFERENCE_LINKS;
   protected readonly liveRuntimeConceptIds = LIVE_RUNTIME_CONCEPT_IDS;
+  protected readonly reviewedConceptIds = REVIEWED_CONCEPT_IDS;
   protected readonly readingLensOptions = READING_LENS_OPTIONS;
   protected readonly readingLensTrustCopy = READING_LENS_TRUST_COPY;
   protected readonly readingLensFallbackCopy = READING_LENS_FALLBACK_COPY;
@@ -218,6 +220,7 @@ export class LandingPageComponent {
     0,
   );
   protected readonly activeReadingLens = signal<ReadingLensMode>('standard');
+  protected readonly validationTraceVisible = signal(false);
 
   protected async submitDraft(): Promise<void> {
     if (!this.canSubmitDraft()) {
@@ -237,6 +240,7 @@ export class LandingPageComponent {
     const submittedQuery = options.displayQuery ?? query.trim();
 
     this.activeReadingLens.set('standard');
+    this.validationTraceVisible.set(false);
     this.isSubmitting.set(true);
     this.activeEntry.set({
       submittedQuery,
@@ -245,11 +249,13 @@ export class LandingPageComponent {
 
     try {
       const response = await firstValueFrom(this.resolver.resolve(query));
+      const detail = await this.loadConceptDetail(query, response);
       this.activeEntry.set({
         submittedQuery,
         status: 'success',
         response,
-        feedback: this.buildFeedbackState(response, options.feedbackOrigin),
+        detail,
+        feedback: this.buildFeedbackState(response, detail, options.feedbackOrigin),
       });
       this.scheduleScrollToResult();
     } catch (error) {
@@ -304,6 +310,14 @@ export class LandingPageComponent {
     return LIVE_RUNTIME_CONCEPTS.has(concept);
   }
 
+  protected isKnownConceptDetail(concept: string): boolean {
+    return DETAIL_BACKED_CONCEPTS.has(concept);
+  }
+
+  protected isReviewedConcept(concept: string): boolean {
+    return REVIEWED_CONCEPTS.has(concept);
+  }
+
   protected fillStarterQuery(query: string): void {
     this.queryDraft.set(query);
   }
@@ -325,7 +339,7 @@ export class LandingPageComponent {
   }
 
   protected async submitScopedConcept(concept: string): Promise<void> {
-    if (!this.isLiveConcept(concept)) {
+    if (!this.isLiveConcept(concept) && !this.isKnownConceptDetail(concept)) {
       return;
     }
 
@@ -411,6 +425,8 @@ export class LandingPageComponent {
     switch (response.type) {
       case 'concept_match':
         return 'Exact canonical match';
+      case 'rejected_concept':
+        return 'Structurally rejected';
       case 'comparison':
         return 'Comparison mode';
       case 'ambiguous_match':
@@ -425,6 +441,10 @@ export class LandingPageComponent {
   protected executionStateLabel(response: ResolveProductResponse): string {
     if (response.type === 'concept_match' || response.type === 'comparison') {
       return 'Executable';
+    }
+
+    if (response.type === 'rejected_concept') {
+      return 'Rejected';
     }
 
     if (response.type === 'no_exact_match' && response.interpretation?.interpretationType === 'out_of_scope') {
@@ -497,6 +517,8 @@ export class LandingPageComponent {
         return 'Controlled comparison';
       case 'concept_match':
         return 'Canonical concept';
+      case 'rejected_concept':
+        return 'Governed refusal';
       case 'ambiguous_match':
         return 'Need a precise choice';
       case 'no_exact_match':
@@ -535,6 +557,8 @@ export class LandingPageComponent {
         return 'Ambiguous normalized alias';
       case 'no_exact_match':
         return 'No exact match';
+      case 'rejection_registry':
+        return 'Rejection registry';
       default:
         return method;
     }
@@ -586,8 +610,141 @@ export class LandingPageComponent {
     return response as NoExactMatchResponse;
   }
 
+  protected asRejectedConcept(response: ResolveProductResponse): RejectedConceptResponse {
+    return response as RejectedConceptResponse;
+  }
+
   protected asComparison(response: ResolveProductResponse): LandingComparisonResponse {
     return response as LandingComparisonResponse;
+  }
+
+  protected reviewAdmissionLabel(admission: ReviewState['admission']): string {
+    switch (admission) {
+      case 'blocked':
+        return 'Blocked';
+      case 'phase1_passed':
+        return 'Phase 1 Passed';
+      case 'phase2_stable':
+        return 'Phase 2 Stable';
+      default:
+        return admission;
+    }
+  }
+
+  protected reviewValidationLabel(detail: ConceptDetailResponse): string {
+    if (detail.reviewState?.validationSource === 'manual_review') {
+      return detail.governanceState.available ? 'Manual Review + System Checks' : 'Manual Review';
+    }
+
+    return 'System Checks';
+  }
+
+  protected isReviewedNotLive(detail: ConceptDetailResponse | null | undefined): boolean {
+    const admission = detail?.reviewState?.admission;
+    return admission ? REVIEWED_NOT_LIVE_ADMISSIONS.has(admission) : false;
+  }
+
+  protected noExactMatchStripLabel(detail: ConceptDetailResponse | null | undefined): string {
+    return this.isReviewedNotLive(detail) ? 'Runtime' : 'Resolution';
+  }
+
+  protected noExactMatchResolutionValue(
+    response: NoExactMatchResponse,
+    detail: ConceptDetailResponse | null | undefined,
+  ): string {
+    return this.isReviewedNotLive(detail) ? 'Not yet live' : this.resolutionTypeLabel(response);
+  }
+
+  protected noExactMatchExecutionValue(
+    response: NoExactMatchResponse,
+    detail: ConceptDetailResponse | null | undefined,
+  ): string {
+    return this.isReviewedNotLive(detail) ? 'Not admitted' : this.executionStateLabel(response);
+  }
+
+  protected noExactMatchResponseLabel(detail: ConceptDetailResponse | null | undefined): string {
+    return this.isReviewedNotLive(detail) ? 'Reviewed concept' : 'No exact match';
+  }
+
+  protected noExactMatchTitle(detail: ConceptDetailResponse | null | undefined): string {
+    switch (detail?.reviewState?.admission) {
+      case 'phase2_stable':
+        return 'Reviewed and stable, not yet live';
+      case 'phase1_passed':
+        return 'Reviewed, not yet live';
+      default:
+        return 'No canonical concept resolved';
+    }
+  }
+
+  protected noExactMatchBody(
+    response: NoExactMatchResponse,
+    detail: ConceptDetailResponse | null | undefined,
+  ): string {
+    switch (detail?.reviewState?.admission) {
+      case 'phase2_stable':
+        return 'This concept has passed internal review and remains stable, but is not yet admitted to the live public runtime.';
+      case 'phase1_passed':
+        return 'This concept has passed Phase 1 review but is not yet admitted to the live public runtime.';
+      default:
+        return response.message;
+    }
+  }
+
+  protected noExactMatchSupportCopy(detail: ConceptDetailResponse | null | undefined): string {
+    return this.isReviewedNotLive(detail)
+      ? 'Only live concepts resolve in the current public runtime.'
+      : 'No exact concept exists in the current authored set for this query.';
+  }
+
+  protected noExactMatchMetaChips(
+    response: NoExactMatchResponse,
+    detail: ConceptDetailResponse | null | undefined,
+  ): string[] {
+    if (this.isReviewedNotLive(detail)) {
+      return ['Review-backed', response.contractVersion];
+    }
+
+    return [
+      this.methodLabel(response.resolution.method),
+      this.queryTypeLabel(response.queryType),
+      response.contractVersion,
+    ];
+  }
+
+  protected validationTraceToggleLabel(): string {
+    return this.validationTraceVisible() ? 'Hide validation trace' : 'View validation trace';
+  }
+
+  protected toggleValidationTrace(): void {
+    this.validationTraceVisible.update((visible) => !visible);
+  }
+
+  protected validationTraceRows(detail: ConceptDetailResponse): Array<{ label: string; value: string }> {
+    const rows = [
+      {
+        label: 'Admission',
+        value: detail.reviewState ? this.reviewAdmissionLabel(detail.reviewState.admission) : 'Unavailable',
+      },
+      {
+        label: 'Validation source',
+        value: detail.reviewState?.validationSource === 'manual_review' ? 'Manual Review' : 'System Checks',
+      },
+      {
+        label: 'Last validated',
+        value: detail.reviewState?.lastValidatedAt ?? 'Unavailable',
+      },
+      {
+        label: 'Runtime source',
+        value: this.runtimeTraceSourceLabel(detail.governanceState),
+      },
+      {
+        label: 'Runtime state',
+        value: this.runtimeTraceStateLabel(detail.governanceState),
+      },
+    ];
+
+    return rows;
   }
 
   protected selectReadingLens(mode: ReadingLensMode): void {
@@ -659,8 +816,13 @@ export class LandingPageComponent {
 
   private buildFeedbackState(
     response: ResolveProductResponse,
+    detail: ConceptDetailResponse | null,
     feedbackOrigin?: AmbiguousSelectionOrigin,
   ): EntryFeedbackState | undefined {
+    if (detail?.reviewState) {
+      return undefined;
+    }
+
     if (response.type === 'concept_match') {
       if (feedbackOrigin?.kind === 'ambiguous_resolution') {
         return {
@@ -862,5 +1024,73 @@ export class LandingPageComponent {
     }
 
     return registers;
+  }
+
+  private async loadConceptDetail(
+    query: string,
+    response: ResolveProductResponse,
+  ): Promise<ConceptDetailResponse | null> {
+    const conceptId = this.detailConceptId(query, response);
+
+    if (!conceptId) {
+      return null;
+    }
+
+    try {
+      return await firstValueFrom(this.resolver.detail(conceptId));
+    } catch (error) {
+      if (error instanceof HttpErrorResponse && error.status === 404) {
+        return null;
+      }
+
+      return null;
+    }
+  }
+
+  private detailConceptId(query: string, response: ResolveProductResponse): string | null {
+    if (response.type === 'concept_match' || response.type === 'rejected_concept') {
+      return response.resolution.conceptId;
+    }
+
+    if (response.type !== 'no_exact_match') {
+      return null;
+    }
+
+    const trimmedQuery = query.trim();
+
+    if (!trimmedQuery) {
+      return null;
+    }
+
+    if (trimmedQuery.startsWith('concept:')) {
+      const conceptId = trimmedQuery.slice('concept:'.length).trim();
+      return conceptId || null;
+    }
+
+    if (this.canonicalLookupPattern.test(trimmedQuery)) {
+      return trimmedQuery.replace(/^define\s+/i, '').trim() || null;
+    }
+
+    if (this.directConceptPattern.test(trimmedQuery)) {
+      return trimmedQuery;
+    }
+
+    return null;
+  }
+
+  private runtimeTraceSourceLabel(governanceState: GovernanceState): string {
+    return governanceState.source === 'validator_artifact' ? 'Validator Artifact' : 'Unavailable';
+  }
+
+  private runtimeTraceStateLabel(governanceState: GovernanceState): string {
+    if (governanceState.systemValidationState) {
+      return governanceState.systemValidationState.replaceAll('_', ' ');
+    }
+
+    if (governanceState.trace.unavailableReason) {
+      return governanceState.trace.unavailableReason.replaceAll('_', ' ');
+    }
+
+    return 'Unavailable';
   }
 }

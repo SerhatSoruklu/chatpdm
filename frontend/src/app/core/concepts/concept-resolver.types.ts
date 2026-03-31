@@ -128,6 +128,29 @@ export interface GovernanceState {
   trace: GovernanceStateTrace;
 }
 
+export interface ReviewState {
+  admission: 'blocked' | 'phase1_passed' | 'phase2_stable';
+  lastValidatedAt: string;
+  validationSource: 'system' | 'manual_review';
+}
+
+export interface RejectionState {
+  status: 'REJECTED';
+  decisionType: 'STRUCTURAL_REJECTION';
+  finality: boolean;
+}
+
+export interface ConceptDetailResponse {
+  conceptId: string;
+  title: string | null;
+  shortDefinition: string | null;
+  coreMeaning: string | null;
+  fullDefinition: string | null;
+  governanceState: GovernanceState;
+  reviewState: ReviewState | null;
+  rejection: RejectionState | null;
+}
+
 export interface ConceptMatchResponse {
   type: 'concept_match';
   query: string;
@@ -177,6 +200,24 @@ export interface NoExactMatchResponse {
   };
   message: string;
   suggestions: Suggestion[];
+}
+
+export interface RejectedConceptResponse {
+  type: 'rejected_concept';
+  query: string;
+  normalizedQuery: string;
+  contractVersion: string;
+  normalizerVersion: string;
+  matcherVersion: string;
+  conceptSetVersion: string;
+  queryType: 'exact_concept_query' | 'canonical_id_query';
+  interpretation: null;
+  resolution: {
+    method: 'rejection_registry';
+    conceptId: string;
+  };
+  message: string;
+  rejection: RejectionState;
 }
 
 export interface AmbiguousCandidate {
@@ -239,6 +280,7 @@ export interface ComparisonResponse {
 
 export type ResolveProductResponse =
   | ConceptMatchResponse
+  | RejectedConceptResponse
   | NoExactMatchResponse
   | AmbiguousMatchResponse
   | ComparisonResponse;

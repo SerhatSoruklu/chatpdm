@@ -1,7 +1,7 @@
 {
   "query": "authority",
   "normalizedQuery": "authority",
-  "contractVersion": "v1.3",
+  "contractVersion": "v1.4",
   "normalizerVersion": "2026-03-27.v1",
   "matcherVersion": "2026-03-27.v3",
   "conceptSetVersion": "20260327.4",

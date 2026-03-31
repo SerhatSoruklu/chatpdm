@@ -1,0 +1,41 @@
+# Concept Detail Contract
+
+Route:
+
+- `GET /api/v1/concepts/:conceptId`
+
+Purpose:
+
+- return inspectable concept metadata for a normalized concept id
+- expose `governanceState` and `reviewState` as separate fields
+- allow detail lookup for authored concepts and lifecycle-tracked concepts that are not yet authored
+
+Response shape:
+
+```json
+{
+  "conceptId": "law",
+  "title": null,
+  "shortDefinition": null,
+  "coreMeaning": null,
+  "fullDefinition": null,
+  "governanceState": {
+    "...": "validator-derived runtime metadata"
+  },
+  "reviewState": {
+    "admission": "phase2_stable",
+    "lastValidatedAt": "2026-03-31T00:00:00Z",
+    "validationSource": "manual_review"
+  },
+  "rejection": null
+}
+```
+
+Rules:
+
+- `governanceState` remains validator-derived runtime metadata only
+- `reviewState` remains concept lifecycle/admission metadata only
+- `reviewState` is loaded from `data/concepts/review-states/`
+- `reviewState` must be `null` when no review-state artifact exists
+- `rejection` must be `null` unless the concept appears in `data/concepts/rejections/`
+- authored fields may be `null` when the concept has lifecycle evidence but no authored concept packet yet

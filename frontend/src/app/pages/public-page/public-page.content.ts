@@ -29,6 +29,37 @@ const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
       },
     ],
   },
+  'what-is-chatpdm': {
+    eyebrow: 'Definition',
+    title: 'ChatPDM is a deterministic reasoning system.',
+    intro:
+      'It resolves authored concepts into bounded outputs. It is not Product Data Management software, and it is not a CAD or engineering workflow tool.',
+    sections: [
+      {
+        title: 'What ChatPDM is',
+        paragraphs: [
+          'ChatPDM is a deterministic concept-resolution system. It works with authored concept structures, explicit refusal, and source-backed output instead of open-ended answer generation.',
+          'The system is designed for cases where meaning must stay stable enough to inspect, compare, and reuse without silent drift.',
+        ],
+      },
+      {
+        title: 'What ChatPDM is not',
+        bullets: [
+          'not Product Data Management software',
+          'not a CAD, BOM, or engineering workflow tool',
+          'not a chatbot or general-purpose text generator',
+          'not a knowledge base that tries to answer everything',
+        ],
+      },
+      {
+        title: 'Why the distinction matters',
+        paragraphs: [
+          'The term “PDM” is often read as Product Data Management. ChatPDM uses the name differently. It refers to a deterministic reasoning system with bounded concept resolution, not engineering document control.',
+          'That distinction matters because the public product surface, runtime behavior, and API contract belong to a different category entirely.',
+        ],
+      },
+    ],
+  },
   'how-it-works': {
     eyebrow: 'How it works',
     title: 'A bounded answer model with visible constraints.',
@@ -58,29 +89,98 @@ const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
     eyebrow: 'FAQ',
     title: 'Questions about scope, behavior, and direction.',
     intro:
-      'These answers define what the public beta is trying to do now, and what it intentionally does not claim yet.',
+      'This system does not attempt to answer everything. It defines what it can do, and refuses what it cannot.',
     sections: [
       {
-        title: 'Frequently asked questions',
+        title: 'System',
         questions: [
           {
             question: 'Is ChatPDM a chatbot?',
             answer:
-              'No. It is a deterministic meaning system with a bounded concept set and explicit refusal behavior outside that boundary.',
+              'No. It does not generate answers. ChatPDM resolves concepts within a bounded system and refuses when the structure does not support the request.',
           },
+          {
+            question: 'How is this different from AI systems?',
+            answer:
+              'Most AI systems generate likely answers. ChatPDM validates whether a concept can exist within a defined structure. The goal is not fluency. The goal is correctness under constraint.',
+          },
+          {
+            question: 'Does ChatPDM use probabilistic reasoning?',
+            answer:
+              'No. It does not generate outputs based on likelihood or pattern matching. All results are derived from defined concepts and explicit system rules.',
+          },
+          {
+            question: 'Is ChatPDM related to Product Data Management (PDM)?',
+            answer:
+              'No. ChatPDM is a deterministic reasoning system. It is not Product Data Management software, and it is not a CAD or engineering workflow tool.',
+          },
+          {
+            question: 'Why does the system refuse so often?',
+            answer:
+              'Refusal is part of the system. If a concept is out of scope, incomplete, or collapses into another concept, it is rejected instead of being dressed up as an answer.',
+          },
+        ],
+      },
+      {
+        title: 'Scope',
+        questions: [
           {
             question: 'Why is the live runtime smaller than the planned scope?',
             answer:
               'The public surface expands deliberately. ChatPDM keeps the live concept set narrower than the longer v1 scope until the structure proves itself.',
           },
           {
+            question: 'Why start with governance concepts?',
+            answer:
+              'Governance concepts carry high ambiguity and high impact. Terms such as authority, power, legitimacy, duty, and law are widely used but often structurally unclear. Stabilizing them creates a serious base for later expansion.',
+          },
+          {
+            question: 'Will the system expand beyond governance?',
+            answer:
+              'Yes, but only after stability is proven. Expansion is staged. New domains are introduced only when existing ones remain structurally reliable under use.',
+          },
+        ],
+      },
+      {
+        title: 'Boundaries',
+        questions: [
+          {
+            question: 'Does ChatPDM decide what is true?',
+            answer:
+              'No. It does not determine truth. It evaluates whether a concept is structurally valid within the system. Truth claims remain outside the current runtime scope.',
+          },
+          {
+            question: 'What happens if the system is wrong?',
+            answer:
+              'The system is designed to be inspectable and correctable. Concepts are reviewed, tested, and updated through controlled processes. Errors are treated as structural problems, not ignored outputs.',
+          },
+          {
+            question: 'Is this trying to control meaning?',
+            answer:
+              'No. The goal is not control, but clarity. ChatPDM does not dictate how people must use language. It provides a system where meaning is explicitly defined and testable.',
+          },
+          {
+            question: 'Why not just use a dictionary?',
+            answer:
+              'Dictionaries describe usage. ChatPDM enforces structure. It is designed to keep concepts distinct, bounded, and stable across use and interpretation.',
+          },
+          {
             question: 'Does the product try to answer everything?',
             answer:
               'No. It should classify the request honestly and refuse unsupported compositions instead of masking gaps with fluent output.',
           },
+          {
+            question: 'Why should I trust the system’s outputs?',
+            answer:
+              'Outputs are constrained by defined concepts and visible rules. The system does not infer or guess. Every result is either resolved within the current structure or explicitly refused. This makes its behavior inspectable, consistent, and bounded.',
+          },
         ],
       },
     ],
+    action: {
+      label: 'Open what ChatPDM is',
+      route: '/what-is-chatpdm',
+    },
   },
   contact: {
     eyebrow: 'Contact',
@@ -330,14 +430,23 @@ const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
   },
   docs: {
     eyebrow: 'Docs',
-    title: 'Product and architecture documentation index.',
+    title: 'Product and architecture documentation.',
     intro:
-      'The public docs surface explains product boundaries, runtime contracts, and the locked roadmap layers that govern later implementation without turning the site into a content farm.',
+      'This surface defines system boundaries, runtime behavior, and the structures that govern how ChatPDM operates.',
     sections: [
       {
-        title: 'Locked roadmap',
+        title: 'System roadmap',
         paragraphs: [
-          'The Legal Argument Validator Roadmap is now locked as a named product roadmap. The sequence is fixed so later implementation work cannot silently rename or reorder the phase structure. Detailed phase controls, entry gates, and implementation artifacts are maintained separately from the public roadmap to preserve naming stability and avoid roadmap drift.',
+          'The Legal Argument Validator roadmap defines how the system evolves.',
+          'The sequence is fixed. Phases are not reordered or renamed after definition. This prevents drift and preserves system integrity over time.',
+          'Detailed implementation controls, validation gates, and internal artifacts are maintained separately from this public surface.',
+        ],
+      },
+      {
+        title: 'What this roadmap represents',
+        paragraphs: [
+          'This is not a feature list.',
+          'It defines the order in which system capabilities are allowed to exist. Each phase depends on structural correctness in earlier phases.',
         ],
       },
       {
@@ -351,8 +460,8 @@ const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
           'E: Authority Registry and Citation Scope Law',
           'F: Mapping Engine and Synonym Governance',
           'G: Validation Kernel',
-          'H: Failure Codes, Trace, and Replay Artifact Support',
-          'I: Analyst Workbench UI',
+          'H: Failure Codes, Trace, and Replay',
+          'I: Analyst Workbench',
           'J: Report and Export Layer',
           'K: Governance and Promotion Controls',
           'L: Hardening, Audit, and Tenancy',
@@ -360,8 +469,11 @@ const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
       },
       {
         title: 'Planned surfaces',
+        paragraphs: [
+          'The system expands only when structure holds.',
+        ],
         bullets: [
-          'getting started and product boundary docs',
+          'getting started and product boundaries',
           'runtime and contract documentation',
           'architecture and authoring references',
         ],

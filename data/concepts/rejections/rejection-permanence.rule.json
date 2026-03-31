@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "ruleId": "concept-rejection-permanence",
+  "status": "ACTIVE",
+  "scope": "data/concepts/rejections",
+  "rule": "Rejected concepts recorded in this directory are permanent structural rejections under the current system state unless an explicit override record is authored.",
+  "prohibitions": [
+    "Rejected concepts must not be reintroduced as fresh candidates without an explicit override artifact.",
+    "Rejected concepts must not be aliased into accepted concepts.",
+    "Rejected concepts must not be silently reinterpreted in runtime."
+  ],
+  "overrideRequirement": "Any future reconsideration requires an explicit override artifact that names the rejected concept, states the reason for override, and supersedes the rejection record intentionally.",
+  "finalityDefault": true,
+  "recordedAt": "2026-03-31",
+  "systemVersionTag": "chatpdm-phase1-structural-rejection-v1"
+}

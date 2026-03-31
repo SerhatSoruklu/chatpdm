@@ -1,0 +1,121 @@
+<div class="pdm-about">
+  <main class="pdm-about__main pdm-shell" aria-labelledby="pdm-about-title">
+    <div class="pdm-shell__frame pdm-about__frame">
+      <section class="pdm-about__hero pdm-site-surface pdm-site-panel">
+        <p class="pdm-about__eyebrow">About</p>
+        <h1 class="pdm-about__title" id="pdm-about-title">
+          A system where concepts must pass before they exist.
+        </h1>
+        <p class="pdm-about__subtitle">
+          ChatPDM is a deterministic concept system. It does not generate answers. It admits
+          concepts only if they survive structural validation.
+        </p>
+      </section>
+
+      <section class="pdm-about__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-about-problem">
+        <div class="pdm-about__section-head">
+          <p class="pdm-about__section-label">Problem</p>
+          <h2 class="pdm-about__section-title" id="pdm-about-problem">Meaning fails when systems tolerate drift.</h2>
+        </div>
+        <p class="pdm-about__copy">
+          Most systems rely on language whose meaning shifts under pressure. Definitions blur,
+          boundaries soften, and the system continues even when the concept no longer holds. The
+          result is inconsistency, ambiguity, and structural drift.
+        </p>
+      </section>
+
+      <div class="pdm-about__split">
+        <section class="pdm-about__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-about-philosophy">
+          <div class="pdm-about__section-head">
+            <p class="pdm-about__section-label">System philosophy</p>
+            <h2 class="pdm-about__section-title" id="pdm-about-philosophy">Meaning is admitted only under constraint.</h2>
+          </div>
+
+          <ul class="pdm-about__list">
+            @for (point of philosophyPoints; track point) {
+              <li>{{ point }}</li>
+            }
+          </ul>
+        </section>
+
+        <section class="pdm-about__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-about-difference">
+          <div class="pdm-about__section-head">
+            <p class="pdm-about__section-label">What this is not</p>
+            <h2 class="pdm-about__section-title" id="pdm-about-difference">Not a broader answer surface.</h2>
+          </div>
+
+          <div class="pdm-about__difference-grid">
+            @for (block of differenceBlocks; track block.title) {
+              <article class="pdm-about__difference-card">
+                <p class="pdm-about__difference-title">{{ block.title }}</p>
+                <p class="pdm-about__difference-copy">{{ block.copy }}</p>
+              </article>
+            }
+          </div>
+        </section>
+      </div>
+
+      <section class="pdm-about__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-about-lifecycle">
+        <div class="pdm-about__section-head">
+          <p class="pdm-about__section-label">Concept lifecycle</p>
+          <h2 class="pdm-about__section-title" id="pdm-about-lifecycle">Controlled stages before runtime.</h2>
+        </div>
+
+        <div class="pdm-about__lifecycle-grid">
+          @for (stage of lifecycleStages; track stage.label) {
+            <article class="pdm-about__lifecycle-card">
+              <p class="pdm-about__lifecycle-label">{{ stage.label }}</p>
+              <h3 class="pdm-about__lifecycle-title">{{ stage.title }}</h3>
+              <p class="pdm-about__difference-copy">{{ stage.copy }}</p>
+            </article>
+          }
+        </div>
+      </section>
+
+      <div class="pdm-about__split">
+        <section class="pdm-about__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-about-domain">
+          <div class="pdm-about__section-head">
+            <p class="pdm-about__section-label">Domain scope</p>
+            <h2 class="pdm-about__section-title" id="pdm-about-domain">Current work stays grounded in governance.</h2>
+          </div>
+
+          <p class="pdm-about__copy">
+            The current system operates within governance concepts whose boundaries can be tested
+            and enforced.
+          </p>
+
+          <div class="pdm-about__chip-row" aria-label="Current governance concepts">
+            @for (concept of currentDomainConcepts; track concept) {
+              <span class="pdm-about__chip pdm-site-chip">{{ concept }}</span>
+            }
+          </div>
+        </section>
+
+        <section class="pdm-about__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-about-future">
+          <div class="pdm-about__section-head">
+            <p class="pdm-about__section-label">Future expansion</p>
+            <h2 class="pdm-about__section-title" id="pdm-about-future">Expansion remains domain-bound and deliberate.</h2>
+          </div>
+
+          <p class="pdm-about__copy">
+            Additional domains may be admitted later, but only when the same validation discipline
+            can be maintained.
+          </p>
+
+          <div class="pdm-about__chip-row" aria-label="Future domains">
+            @for (area of futureDomainAreas; track area) {
+              <span class="pdm-about__chip pdm-site-chip pdm-about__chip--future">{{ area }}</span>
+            }
+          </div>
+        </section>
+      </div>
+
+      <section class="pdm-about__closing pdm-site-surface pdm-site-panel" aria-labelledby="pdm-about-closing">
+        <p class="pdm-about__section-label">Closing</p>
+        <h2 class="pdm-about__closing-line" id="pdm-about-closing">
+          Clarity is not explanation. Clarity is what remains after ambiguity is removed.
+        </h2>
+      </section>
+    </div>
+  </main>
+</div>

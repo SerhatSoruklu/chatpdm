@@ -28,15 +28,16 @@ export class SiteFooterComponent {
     {
       title: 'Runtime',
       links: [
-        { label: 'Query runtime', route: '/', fragment: 'runtime' },
-        { label: 'Live concepts', route: '/', fragment: 'scope' },
-        { label: 'Controlled comparisons', route: '/', fragment: 'runtime' },
-        { label: 'Refusal behavior', route: '/', fragment: 'mechanism' },
+        { label: 'Query runtime', route: '/runtime', fragment: 'runtime-query' },
+        { label: 'Live concepts', route: '/live-concepts' },
+        { label: 'Controlled comparisons', route: '/controlled-comparisons' },
+        { label: 'Refusal behavior', route: '/runtime', fragment: 'runtime-refusal' },
       ],
     },
     {
       title: 'System',
       links: [
+        { label: 'What ChatPDM is', route: '/what-is-chatpdm' },
         { label: 'Scope model', route: '/docs' },
         { label: 'Resolution contract', route: '/api' },
         { label: 'Version policy', route: '/developers' },

@@ -1,7 +1,7 @@
 {
-  "query": "obligation",
-  "normalizedQuery": "obligation",
-  "contractVersion": "v1.3",
+  "query": "rights",
+  "normalizedQuery": "rights",
+  "contractVersion": "v1.4",
   "normalizerVersion": "2026-03-27.v1",
   "matcherVersion": "2026-03-27.v3",
   "conceptSetVersion": "20260327.4",
@@ -9,27 +9,34 @@
   "interpretation": {
     "interpretationType": "ambiguous_selection",
     "concepts": [
-      "duty",
-      "responsibility"
+      "rights",
+      "human-rights",
+      "legal-rights"
     ],
     "message": "This query matches multiple authored concepts and requires an explicit choice."
   },
   "type": "ambiguous_match",
   "resolution": {
-    "method": "author_defined_disambiguation"
+    "method": "ambiguous_alias"
   },
   "message": "Multiple canonical concepts match this query. Choose one to continue.",
   "candidates": [
     {
-      "conceptId": "duty",
-      "title": "Duty",
-      "shortDefinition": "Duty is required conduct owed by an actor under a rule, role, or obligation.",
-      "basis": "author_defined_disambiguation"
+      "conceptId": "rights",
+      "title": "Rights",
+      "shortDefinition": "Rights are recognized claims or entitlements that a person or group may hold.",
+      "basis": "shared_alias"
     },
     {
-      "conceptId": "responsibility",
-      "title": "Responsibility",
-      "shortDefinition": "Responsibility is answerable connection between an actor and attributable actions, roles, or outcomes.",
+      "conceptId": "human-rights",
+      "title": "Human Rights",
+      "shortDefinition": "Human rights are basic claims attached to persons by virtue of being human.",
+      "basis": "shared_alias"
+    },
+    {
+      "conceptId": "legal-rights",
+      "title": "Legal Rights",
+      "shortDefinition": "Legal rights are claims or protections recognized within a legal system.",
       "basis": "author_defined_disambiguation"
     }
   ]
