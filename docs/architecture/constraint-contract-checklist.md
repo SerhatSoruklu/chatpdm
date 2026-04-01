@@ -17,9 +17,9 @@ It enforces:
 
 A concept that fails any hard check must not be admitted.
 
-Companion prompt:
+Companion template:
 
-- [constraint-contract-audit-prompt.md](./constraint-contract-audit-prompt.md)
+- [constraint-contract-audit-template.md](./constraint-contract-audit-template.md)
 
 ## Phase 1. Definition Integrity
 
