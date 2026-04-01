@@ -6,7 +6,12 @@
   "matcherVersion": "2026-03-27.v3",
   "conceptSetVersion": "20260327.4",
   "queryType": "exact_concept_query",
-  "interpretation": null,
+  "interpretation": {
+    "interpretationType": "explicitly_rejected_concept",
+    "targetConceptId": "obligation",
+    "concepts": ["obligation"],
+    "message": "The concept \"obligation\" is explicitly rejected under the current system state."
+  },
   "type": "rejected_concept",
   "resolution": {
     "method": "rejection_registry",

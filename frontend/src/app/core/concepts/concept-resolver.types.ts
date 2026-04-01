@@ -13,7 +13,7 @@ export type QueryType =
   | 'relation_query'
   | 'role_or_actor_query'
   | 'unsupported_complex_query'
-  | 'invalid_input';
+  | 'invalid_query';
 
 export interface QueryInterpretation {
   interpretationType:
@@ -27,7 +27,11 @@ export interface QueryInterpretation {
     | 'scoped_clarification'
     | 'out_of_scope'
     | 'unsupported_complex'
-    | 'canonical_lookup_not_found';
+    | 'canonical_lookup_not_found'
+    | 'exact_concept_not_found'
+    | 'visible_only_public_concept'
+    | 'explicitly_rejected_concept'
+    | 'invalid_query';
   message: string;
   baseConcept?: string;
   modifier?: string;
@@ -129,7 +133,16 @@ export interface GovernanceState {
 }
 
 export interface ReviewState {
-  admission: 'blocked' | 'phase1_passed' | 'phase2_stable';
+  admission:
+    | 'blocked'
+    | 'phase1_passed'
+    | 'phase2_stable'
+    | 'pending_overlap_scan'
+    | 'overlap_scan_passed'
+    | 'overlap_scan_failed_conflict'
+    | 'overlap_scan_failed_duplicate'
+    | 'overlap_scan_failed_compression'
+    | 'overlap_scan_boundary_required';
   lastValidatedAt: string;
   validationSource: 'system' | 'manual_review';
 }
@@ -202,6 +215,43 @@ export interface NoExactMatchResponse {
   suggestions: Suggestion[];
 }
 
+export interface InvalidQueryResponse {
+  type: 'invalid_query';
+  query: string;
+  normalizedQuery: string;
+  contractVersion: string;
+  normalizerVersion: string;
+  matcherVersion: string;
+  conceptSetVersion: string;
+  queryType: 'invalid_query';
+  interpretation: QueryInterpretation;
+  resolution: {
+    method: 'invalid_query';
+  };
+  message: string;
+}
+
+export interface UnsupportedQueryTypeResponse {
+  type: 'unsupported_query_type';
+  query: string;
+  normalizedQuery: string;
+  contractVersion: string;
+  normalizerVersion: string;
+  matcherVersion: string;
+  conceptSetVersion: string;
+  queryType: 'relation_query' | 'role_or_actor_query' | 'unsupported_complex_query';
+  interpretation: QueryInterpretation;
+  resolution: {
+    method: 'unsupported_query_type';
+  };
+  message: string;
+}
+
+export type RefusalResponse =
+  | NoExactMatchResponse
+  | InvalidQueryResponse
+  | UnsupportedQueryTypeResponse;
+
 export interface RejectedConceptResponse {
   type: 'rejected_concept';
   query: string;
@@ -211,7 +261,11 @@ export interface RejectedConceptResponse {
   matcherVersion: string;
   conceptSetVersion: string;
   queryType: 'exact_concept_query' | 'canonical_id_query';
-  interpretation: null;
+  interpretation: QueryInterpretation & {
+    interpretationType: 'explicitly_rejected_concept';
+    targetConceptId: string;
+    concepts: string[];
+  };
   resolution: {
     method: 'rejection_registry';
     conceptId: string;
@@ -281,6 +335,6 @@ export interface ComparisonResponse {
 export type ResolveProductResponse =
   | ConceptMatchResponse
   | RejectedConceptResponse
-  | NoExactMatchResponse
+  | RefusalResponse
   | AmbiguousMatchResponse
   | ComparisonResponse;

@@ -22,6 +22,17 @@
   },
   "shortDefinition": "Duty is required conduct owed by an actor under a rule, role, or obligation.",
   "coreMeaning": "Duty functions by attaching a required line of conduct to a position, office, or binding norm. It concerns what must be done or refrained from, not who is answerable for all resulting outcomes.",
+  "structuralProfile": {
+    "function": "required conduct owed under a binding source",
+    "object": "conduct or restraint owed by an actor",
+    "sourceType": "rule, role, office, or obligation with binding force",
+    "actorRelation": "actor is bound as bearer of required conduct under the governing source",
+    "temporalRole": "pre-action requirement",
+    "enforcementRole": "may ground enforcement when required conduct is unmet",
+    "answerabilityRole": "does not assign answerability by itself",
+    "requiredConductRole": "defines required conduct directly",
+    "outcomeAttributionRole": "does not attribute outcomes by itself"
+  },
   "fullDefinition": "Duty is not identical to responsibility. Responsibility links an actor to answerability; duty specifies conduct that is owed under a rule, role, office, or obligation.\n\nIts internal structure joins requirement to an actor through a binding source. The concept therefore concerns directive obligation rather than mere preference or capacity.\n\nWithin a system, duty stabilizes expected conduct by marking what is required before action occurs. Whether failure produces broader responsibility is a further question, not the definition of duty itself.",
   "registers": {
     "standard": {

@@ -6,9 +6,11 @@ const path = require('node:path');
 const {
   GOVERNANCE_CORE_TRIAD,
   GOVERNANCE_SCOPE_MUST_PRESERVE_IN,
+  LIVE_CONCEPT_IDS,
   NON_GOVERNANCE_HANDLING_REQUIRED,
-  SEED_CONCEPT_IDS,
 } = require('./constants');
+const { validateBoundaryProofCatalog } = require('./concept-boundary-proof');
+const { normalizeConceptToProfile } = require('./concept-structural-profile');
 const { assertCanonicalStoreFreeOfAiMarkers } = require('../../lib/ai-governance-guard');
 
 const conceptsDirectory = path.resolve(__dirname, '../../../../data/concepts');
@@ -25,8 +27,10 @@ const PRIMARY_SOURCE_BY_CONCEPT = Object.freeze({
   authority: 'weber',
   power: 'lukes',
   legitimacy: 'beetham',
+  law: 'hart',
   responsibility: 'hart',
   duty: 'hohfeld',
+  violation: 'hart',
 });
 
 function assertNonEmptyString(value, fieldName, conceptId) {
@@ -77,6 +81,7 @@ function buildCanonicalConceptHashInput(concept) {
   delete canonicalConcept.createdAt;
   delete canonicalConcept.updatedAt;
   delete canonicalConcept.registers;
+  delete canonicalConcept.boundaryProofs;
   delete canonicalConcept.structureV3;
   return canonicalConcept;
 }
@@ -356,9 +361,11 @@ function validateConceptShape(concept, expectedConceptId) {
   assertArray(concept.aliases, 'aliases', expectedConceptId);
   assertArray(concept.normalizedAliases, 'normalizedAliases', expectedConceptId);
   validateComparisonShape(concept.comparison, expectedConceptId);
+  validateBoundaryProofCatalog(concept.boundaryProofs, expectedConceptId);
   validateScopeShape(concept.scope, expectedConceptId);
   validateGovernanceScopePolicy(concept, expectedConceptId);
   validateSourceIntegrity(concept, expectedConceptId);
+  normalizeConceptToProfile(concept);
 }
 
 function loadConceptFile(conceptId) {
@@ -373,7 +380,12 @@ function loadConceptFile(conceptId) {
 }
 
 function loadConceptSet() {
-  return SEED_CONCEPT_IDS.map(loadConceptFile);
+  const liveConcepts = LIVE_CONCEPT_IDS.map(loadConceptFile);
+  const { assertLiveConceptOverlapAdmissions } = require('./concept-overlap-admission-gate');
+
+  assertLiveConceptOverlapAdmissions(liveConcepts);
+
+  return liveConcepts;
 }
 
 function getConceptById(conceptId) {

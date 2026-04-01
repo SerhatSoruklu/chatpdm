@@ -16,11 +16,6 @@ export interface ScopeGroup {
   concepts: string[];
 }
 
-export interface StarterQuery {
-  label: string;
-  query: string;
-}
-
 export interface HomepageSignal {
   label: string;
 }
@@ -31,11 +26,18 @@ export interface HomepageStep {
   label: string;
   title: string;
   copy: string;
+  resultLine: string;
+  contractField: string;
 }
 
 export interface LinkAction {
   label: string;
   route: string;
+}
+
+export interface ReferenceLinkGroup {
+  label: string;
+  links: LinkAction[];
 }
 
 export interface FeedbackOption {

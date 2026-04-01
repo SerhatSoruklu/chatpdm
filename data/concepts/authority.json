@@ -37,6 +37,17 @@
   },
   "shortDefinition": "Authority is recognized standing to direct, decide, or govern within a governance order.",
   "coreMeaning": "Within the governance domain, authority works by giving a recognized role, office, or position the right to direct. It concerns who may direct, not what can be enforced or whether that standing is valid.",
+  "structuralProfile": {
+    "function": "recognized directive standing within a governance order",
+    "object": "directive acts, decisions, and governance direction",
+    "sourceType": "recognized role, office, or institutional standing",
+    "actorRelation": "actor or office holds recognized standing that may direct or decide",
+    "temporalRole": "standing before and during directive exercise",
+    "enforcementRole": "may structure who can issue binding direction without being enforcement itself",
+    "answerabilityRole": "does not assign answerability",
+    "requiredConductRole": "does not itself define required conduct",
+    "outcomeAttributionRole": "does not itself attribute outcomes"
+  },
   "fullDefinition": "Authority is not any ability to produce effects. In ChatPDM v1 it is defined within the governance domain as a structured right to issue direction, make decisions, or govern within a governance order.\n\nIts structure joins the right to direct to a recognized role, office, or position. The concept requires that this right attach to standing rather than to mere capacity.\n\nWithin governance structures, authority organizes who may decide, command, or settle matters. Questions of whether that standing is valid belong to legitimacy, while questions of what outcomes can be produced belong to power.",
   "registers": {
     "standard": {
@@ -156,6 +167,24 @@
           "statement": "authority is not power; power does not require authority"
         }
       ]
+    }
+  },
+  "boundaryProofs": {
+    "power": {
+      "notIdenticalTo": "power",
+      "boundaryStatement": "Authority concerns recognized standing to direct within a governance order, whereas power concerns effective capacity to produce outcomes whether or not recognized standing is present.",
+      "nonSubstitutionRule": "Do not substitute authority for power when the issue turns on what outcomes an actor can actually secure rather than on who holds recognized directive standing.",
+      "failureIfCollapsed": "If authority collapses into power, the system would treat recognized office and operative capacity as the same structure and would lose cases where one exists without the other.",
+      "validSeparationExample": "A court may retain authority to issue orders even when it lacks the practical capacity to secure immediate compliance on its own.",
+      "invalidCollapseExample": "Saying an armed faction has authority merely because it can force outcomes collapses power into authority."
+    },
+    "legitimacy": {
+      "notIdenticalTo": "legitimacy",
+      "boundaryStatement": "Authority concerns who holds recognized directive standing, whereas legitimacy concerns whether that standing or order counts as accepted or justified.",
+      "nonSubstitutionRule": "Do not substitute authority for legitimacy when the question is about valid standing or justified rule rather than about who may direct from a recognized office.",
+      "failureIfCollapsed": "If authority collapses into legitimacy, the system would assume every recognized office is valid and would lose contested-authority cases where standing persists while justification is disputed.",
+      "validSeparationExample": "A minister can continue to hold formal authority within the order even while the legitimacy of that office is openly challenged.",
+      "invalidCollapseExample": "Treating every office with directive standing as automatically legitimate collapses authority into legitimacy."
     }
   },
   "reviewMetadata": {

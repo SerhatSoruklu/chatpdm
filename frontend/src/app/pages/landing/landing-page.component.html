@@ -21,7 +21,7 @@
               Exact answers that don’t change or guess.
             </h1>
             <p class="pdm-home__support-line">
-              Search a concept. Get a precise answer within scope or an explicit refusal.
+              Enter any query. Get a precise answer within scope or an explicit refusal.
             </p>
             <p class="pdm-home__lead">
               Concepts here are tested, not explained.
@@ -51,13 +51,13 @@
                     autocapitalize="off"
                     autocomplete="off"
                     autofocus
-                    placeholder="Try: authority vs power"
+                    placeholder="Enter any query"
                   >
 
                   <span
                     class="pdm-tooltip-wrapper"
                     [attr.tabindex]="submitButtonTooltip() ? 0 : null"
-                    [attr.aria-label]="submitButtonTooltip() ? 'Resolve concept unavailable' : null"
+                    [attr.aria-label]="submitButtonTooltip() ? 'Resolve query unavailable' : null"
                     [pdmTooltip]="submitButtonTooltip() ?? ''"
                   >
                     <button
@@ -85,19 +85,6 @@
                   </span>
                 </div>
 
-                <div class="pdm-home__examples pdm-home__hero-examples" aria-label="Suggested queries">
-                  @for (example of starterQueries; track example.query) {
-                    <button
-                      class="pdm-home__example pdm-site-chip"
-                      type="button"
-                      [disabled]="isSubmitting()"
-                      (click)="fillStarterQuery(example.query)"
-                    >
-                      {{ example.label }}
-                    </button>
-                  }
-                </div>
-
                 <div class="pdm-home__hero-scope" aria-label="Visible concept groups">
                   <p class="pdm-home__micro-label">Current scope</p>
                   <div class="pdm-home__scope-chips pdm-home__scope-chips--hero">
@@ -108,14 +95,33 @@
                     }
                   </div>
 
-                  @if (reviewedConceptIds.length > 0) {
+                  @if (visibleOnlyConceptIds.length > 0) {
                     <div class="pdm-home__hero-scope-group">
-                      <p class="pdm-home__micro-label">Reviewed concepts</p>
-                      <p class="pdm-home__hero-scope-note">Not yet admitted to runtime</p>
+                      <p class="pdm-home__micro-label">Visible only</p>
+                      <p class="pdm-home__hero-scope-note">Inspectable through authored detail or review-state evidence. Not admitted to runtime.</p>
                       <div class="pdm-home__scope-chips pdm-home__scope-chips--hero">
-                        @for (concept of reviewedConceptIds; track concept) {
+                        @for (concept of visibleOnlyConceptIds; track concept) {
                           <button
-                            class="pdm-home__scope-chip pdm-home__scope-chip--reviewed pdm-site-chip"
+                            class="pdm-home__scope-chip pdm-home__scope-chip--visible pdm-site-chip"
+                            type="button"
+                            [disabled]="isSubmitting()"
+                            (click)="submitScopedConcept(concept)"
+                          >
+                            {{ concept }}
+                          </button>
+                        }
+                      </div>
+                    </div>
+                  }
+
+                  @if (rejectedConceptIds.length > 0) {
+                    <div class="pdm-home__hero-scope-group">
+                      <p class="pdm-home__micro-label">Explicitly rejected</p>
+                      <p class="pdm-home__hero-scope-note">Visible only as structural refusal.</p>
+                      <div class="pdm-home__scope-chips pdm-home__scope-chips--hero">
+                        @for (concept of rejectedConceptIds; track concept) {
+                          <button
+                            class="pdm-home__scope-chip pdm-home__scope-chip--rejected pdm-site-chip"
                             type="button"
                             [disabled]="isSubmitting()"
                             (click)="submitScopedConcept(concept)"
@@ -129,7 +135,7 @@
                 </div>
 
                 <p class="pdm-home__hero-guidance">
-                  Search or compare concepts from the visible concept groups above.
+                  Search or inspect the public concept states above.
                 </p>
               </div>
             </form>
@@ -536,7 +542,7 @@
                       </div>
                       <div class="pdm-home__resolution-item">
                         <span class="pdm-home__resolution-label">Scope</span>
-                        <span class="pdm-home__resolution-value">{{ runtimeScopeLabel(response) }}</span>
+                        <span class="pdm-home__resolution-value">{{ noExactMatchScopeValue(response, entry.detail) }}</span>
                       </div>
                       <div class="pdm-home__resolution-item">
                         <span class="pdm-home__resolution-label">Execution</span>
@@ -656,35 +662,39 @@
                   </section>
                 }
 
-                @if (response.type === 'no_exact_match') {
+                @if (
+                  response.type === 'no_exact_match'
+                  || response.type === 'invalid_query'
+                  || response.type === 'unsupported_query_type'
+                ) {
                   <section class="pdm-home__response-card pdm-site-surface">
                     <div class="pdm-home__resolution-strip" aria-label="Resolution status">
                       <div class="pdm-home__resolution-item">
                         <span class="pdm-home__resolution-label">{{ noExactMatchStripLabel(entry.detail) }}</span>
                         <span class="pdm-home__resolution-value">
-                          {{ noExactMatchResolutionValue(asNoExactMatch(response), entry.detail) }}
+                          {{ noExactMatchResolutionValue(asRefusal(response), entry.detail) }}
                         </span>
                       </div>
                       <div class="pdm-home__resolution-item">
                         <span class="pdm-home__resolution-label">Scope</span>
-                        <span class="pdm-home__resolution-value">{{ runtimeScopeLabel(response) }}</span>
+                        <span class="pdm-home__resolution-value">{{ noExactMatchScopeValue(response, entry.detail) }}</span>
                       </div>
                       <div class="pdm-home__resolution-item">
                         <span class="pdm-home__resolution-label">Execution</span>
                         <span class="pdm-home__resolution-value">
-                          {{ noExactMatchExecutionValue(asNoExactMatch(response), entry.detail) }}
+                          {{ noExactMatchExecutionValue(asRefusal(response), entry.detail) }}
                         </span>
                       </div>
                     </div>
 
                     <div class="pdm-home__response-head">
                       <div>
-                        <p class="pdm-home__micro-label">{{ noExactMatchResponseLabel(entry.detail) }}</p>
-                        <h3 class="pdm-home__response-title">{{ noExactMatchTitle(entry.detail) }}</h3>
+                        <p class="pdm-home__micro-label">{{ noExactMatchResponseLabel(asRefusal(response), entry.detail) }}</p>
+                        <h3 class="pdm-home__response-title">{{ noExactMatchTitle(asRefusal(response), entry.detail) }}</h3>
                       </div>
 
                       <div class="pdm-home__meta-row pdm-home__meta-row--tight">
-                        @for (chip of noExactMatchMetaChips(asNoExactMatch(response), entry.detail); track chip) {
+                        @for (chip of noExactMatchMetaChips(asRefusal(response), entry.detail); track chip) {
                           <span class="pdm-site-chip">{{ chip }}</span>
                         }
                       </div>
@@ -731,11 +741,36 @@
                       }
                     }
 
-                    <p class="pdm-home__body-copy">{{ noExactMatchBody(asNoExactMatch(response), entry.detail) }}</p>
+                    <p class="pdm-home__body-copy">{{ noExactMatchBody(asRefusal(response), entry.detail) }}</p>
 
-                    @if (asNoExactMatch(response).suggestions.length > 0) {
+                    @if (entry.detail; as detail) {
+                      @if (isVisibleOnlyDetail(detail)) {
+                        <section class="pdm-home__definition-lead" aria-label="Visible-only concept detail">
+                          <p class="pdm-home__micro-label">Short definition</p>
+                          <p class="pdm-home__definition-lead-copy">{{ detail.shortDefinition }}</p>
+                        </section>
+
+                        <div class="pdm-home__definition-sections">
+                          <section class="pdm-home__definition-section pdm-home__definition-section--core">
+                            <p class="pdm-home__micro-label">Core meaning</p>
+                            <p class="pdm-home__body-copy pdm-home__body-copy--secondary">{{ detail.coreMeaning }}</p>
+                          </section>
+
+                          @if (detail.fullDefinition) {
+                            <section class="pdm-home__definition-section pdm-home__definition-section--full">
+                              <p class="pdm-home__micro-label">Full definition</p>
+                              @for (paragraph of definitionParagraphs(detail.fullDefinition); track paragraph) {
+                                <p class="pdm-home__body-copy pdm-home__body-copy--tertiary">{{ paragraph }}</p>
+                              }
+                            </section>
+                          }
+                        </div>
+                      }
+                    }
+
+                    @if (refusalHasSuggestions(asRefusal(response))) {
                       <div class="pdm-home__action-grid">
-                        @for (suggestion of asNoExactMatch(response).suggestions; track suggestion.conceptId) {
+                        @for (suggestion of refusalSuggestions(asRefusal(response)); track suggestion.conceptId) {
                           <button
                             class="pdm-home__action-card pdm-site-surface"
                             type="button"
@@ -749,7 +784,7 @@
                       </div>
                     } @else {
                       <p class="pdm-home__support-copy">
-                        {{ noExactMatchSupportCopy(entry.detail) }}
+                        {{ noExactMatchSupportCopy(asRefusal(response), entry.detail) }}
                       </p>
                     }
 
@@ -814,12 +849,13 @@
               <h2 class="pdm-home__section-title" id="pdm-scope-title">Current runtime boundary</h2>
             </div>
             <p class="pdm-home__section-copy">
-              Only live concepts resolve in the public runtime. The wider v1 boundary stays visible so coverage is explicit.
+              Only live concepts resolve in runtime.<br>
+              All non-live inputs are refused.
             </p>
           </div>
 
           <div class="pdm-home__boundary-strip">
-            <p>Only these concepts are resolvable in the current runtime. All other inputs are refused.</p>
+            <p>Resolvable surface: live concepts only.</p>
           </div>
 
           <div class="pdm-home__scope-summary">
@@ -832,19 +868,19 @@
                 <p class="pdm-home__scope-value">{{ liveConceptCount }}</p>
                 <span class="pdm-home__scope-unit">concepts</span>
               </div>
-              <p class="pdm-home__support-copy">Authored canonical concepts currently queryable in the public runtime.</p>
+              <p class="pdm-home__support-copy">Queryable canonical concepts in runtime.</p>
             </article>
 
             <article class="pdm-home__scope-stat pdm-site-surface">
               <div class="pdm-home__scope-stat-head">
-                <p class="pdm-home__micro-label">Locked v1 scope</p>
+                <p class="pdm-home__micro-label">Visible scope (v1)</p>
                 <span class="pdm-home__scope-tag pdm-site-chip">visible</span>
               </div>
               <div class="pdm-home__scope-value-row">
                 <p class="pdm-home__scope-value">{{ scopedConceptCount }}</p>
                 <span class="pdm-home__scope-unit">concepts</span>
               </div>
-              <p class="pdm-home__support-copy">Visible concept coverage keeps public scope explicit instead of implied.</p>
+              <p class="pdm-home__support-copy">Visible surface includes visible-only and rejected concepts without implying runtime admission.</p>
             </article>
           </div>
 
@@ -867,18 +903,18 @@
                       >
                         {{ concept }}
                       </button>
-                    } @else if (isReviewedConcept(concept)) {
+                    } @else if (isVisibleOnlyConceptId(concept)) {
                       <button
-                        class="pdm-home__scope-chip pdm-home__scope-chip--reviewed pdm-site-chip"
+                        class="pdm-home__scope-chip pdm-home__scope-chip--visible pdm-site-chip"
                         type="button"
                         [disabled]="isSubmitting()"
                         (click)="submitScopedConcept(concept)"
                       >
                         {{ concept }}
                       </button>
-                    } @else if (isKnownConceptDetail(concept)) {
+                    } @else if (isRejectedConcept(concept)) {
                       <button
-                        class="pdm-home__scope-chip pdm-home__scope-chip--detail pdm-site-chip"
+                        class="pdm-home__scope-chip pdm-home__scope-chip--rejected pdm-site-chip"
                         type="button"
                         [disabled]="isSubmitting()"
                         (click)="submitScopedConcept(concept)"
@@ -901,17 +937,17 @@
         id="mechanism"
         aria-labelledby="pdm-steps-title"
       >
-        <div class="pdm-home__section-head">
+        <div class="pdm-home__section-head pdm-home__section-head--stacked">
           <div>
             <p class="pdm-home__section-label">Mechanism</p>
             <h2 class="pdm-home__section-title" id="pdm-steps-title">Normalization, routing, output</h2>
+            <p class="pdm-home__section-copy pdm-home__section-copy--attached">
+              The runtime normalizes the query, classifies its shape, then resolves or refuses.
+            </p>
           </div>
-          <p class="pdm-home__section-copy">
-            The runtime normalizes the query, classifies its shape, then resolves or refuses.
-          </p>
         </div>
 
-        <div class="pdm-home__steps-grid">
+        <div class="pdm-home__steps-grid pdm-home__steps-grid--pipeline">
           @for (step of homepageSteps; track step.id) {
             <article class="pdm-home__step-card pdm-site-surface">
               <div class="pdm-home__step-head">
@@ -920,6 +956,14 @@
               </div>
               <h3>{{ step.title }}</h3>
               <p>{{ step.copy }}</p>
+              <p class="pdm-home__step-result">
+                <span class="pdm-home__step-result-mark" aria-hidden="true">→</span>
+                <span>{{ step.resultLine }}</span>
+              </p>
+              <div class="pdm-home__step-anchor" aria-label="Runtime contract anchor">
+                <span class="pdm-home__micro-label">Contract anchor</span>
+                <span class="pdm-home__step-anchor-value pdm-mono">{{ step.contractField }}</span>
+              </div>
             </article>
           }
         </div>
@@ -931,23 +975,30 @@
         aria-labelledby="pdm-trust-title"
       >
         <div class="pdm-home__trust-shell pdm-site-surface pdm-site-panel">
-          <div class="pdm-home__section-head">
+          <div class="pdm-home__section-head pdm-home__section-head--stacked">
             <div>
               <p class="pdm-home__section-label">Reference surfaces</p>
               <h2 class="pdm-home__section-title" id="pdm-trust-title">Docs and API</h2>
+              <p class="pdm-home__section-copy pdm-home__section-copy--attached">
+                Browse system surfaces and contracts.
+              </p>
             </div>
-            <p class="pdm-home__section-copy">
-              Access response contracts, scope notes, and system references.
-            </p>
           </div>
 
-          <nav class="pdm-home__link-strip" aria-label="Reference links">
-            @for (link of referenceLinks; track link.route) {
-              <a class="pdm-home__link-action pdm-site-link-pill" [routerLink]="link.route">
-                {{ link.label }}
-              </a>
+          <div class="pdm-home__surface-groups" aria-label="Reference links">
+            @for (group of referenceSurfaceGroups; track group.label) {
+              <section class="pdm-home__surface-group" [attr.aria-label]="group.label">
+                <p class="pdm-home__micro-label">{{ group.label }}</p>
+                <nav class="pdm-home__link-strip pdm-home__link-strip--dense">
+                  @for (link of group.links; track link.route) {
+                    <a class="pdm-home__link-action pdm-site-link-pill" [routerLink]="link.route">
+                      {{ link.label }}
+                    </a>
+                  }
+                </nav>
+              </section>
             }
-          </nav>
+          </div>
         </div>
       </section>
     </div>

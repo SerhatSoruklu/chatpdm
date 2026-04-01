@@ -13,6 +13,7 @@ const {
   deriveSystemValidationState,
 } = require('./lib/register-validation/derive-governance-enforcement');
 const { evaluateEditDiscipline } = require('./lib/register-validation/edit-discipline');
+const { attachOverlapValidationResults } = require('./lib/register-validation/validate-overlap-enforcement');
 const { validateGovernanceLaws } = require('./lib/register-validation/validate-governance-laws');
 const { REGISTER_NAMES, ZONE_NAMES } = require('./lib/register-validation/validate-structure');
 const { validateConcept } = require('./lib/register-validation/validate-concept');
@@ -22,7 +23,12 @@ const goldenConceptsDirectory = path.resolve(__dirname, '../standards/golden-con
 const artifactDirectory = path.resolve(__dirname, '../artifacts');
 const artifactPath = path.join(artifactDirectory, 'register-validation-report.json');
 const artifactHistoryPath = path.join(artifactDirectory, 'register-validation-history.jsonl');
-const NON_CONCEPT_PACKET_FILES = new Set(['resolve-rules.json']);
+const NON_CONCEPT_PACKET_FILES = new Set([
+  'concept-admission-state.json',
+  'overlap-boundary-change-approvals.json',
+  'overlap-classification-snapshot.json',
+  'resolve-rules.json',
+]);
 const GOLDEN_CONCEPT_IDS = Object.freeze([
   'authority',
   'power',
@@ -234,6 +240,10 @@ function collectFailureCategories(conceptReports, governanceLawReport = null) {
 
   conceptReports.forEach((conceptReport) => {
     (conceptReport.v3?.failures || []).forEach((entry) => {
+      counts.set(entry.code, (counts.get(entry.code) || 0) + 1);
+    });
+
+    (conceptReport.overlap?.failures || []).forEach((entry) => {
       counts.set(entry.code, (counts.get(entry.code) || 0) + 1);
     });
 
@@ -939,6 +949,7 @@ function appendHistoryEntry(summary) {
   const historyEntry = {
     generatedAt: new Date().toISOString(),
     gitRevision: resolveGitRevision(),
+    overlap: summary.overlap,
     semantic: summary.semantic,
     v3: summary.v3,
     relations: summary.relations,
@@ -1088,6 +1099,20 @@ function printConceptSummary(conceptReport) {
       process.stdout.write(
         `    ~ nonBlockingWarnings: ${conceptReport.enforcement.nonBlockingWarnings.map((entry) => entry.code).join(', ')}\n`,
       );
+    }
+  }
+
+  if (conceptReport.overlap?.applicable) {
+    process.stdout.write(
+      `  overlap: ${conceptReport.overlap.passed ? 'PASS' : 'FAIL'} admission=${conceptReport.overlap.admission} comparisons=${conceptReport.overlap.comparedConceptIds.length}/${conceptReport.overlap.expectedComparisonTargetIds.length} targetSet=${conceptReport.overlap.targetSet}\n`,
+    );
+
+    if (conceptReport.overlap.failures.length > 0) {
+      conceptReport.overlap.failures.forEach((entry) => {
+        const target = entry.otherConceptId ? ` ${entry.otherConceptId}` : '';
+        const classification = entry.classification ? ` classification=${entry.classification}` : '';
+        process.stdout.write(`    - overlap ${entry.code}${target}${classification}: ${entry.detail}\n`);
+      });
     }
   }
 
@@ -1258,6 +1283,25 @@ function printEnforcementSummary(summary) {
   }
 }
 
+function printOverlapSummary(summary) {
+  if (!summary.overlap?.applicable) {
+    return;
+  }
+
+  process.stdout.write(
+    `OVERLAP targetSet=${summary.overlap.targetSet} liveConcepts=${summary.overlap.liveConceptIds.join(', ')} passing=${summary.overlap.passingConcepts} failing=${summary.overlap.failingConcepts}\n`,
+  );
+  process.stdout.write(
+    `OVERLAP statusCounts=${Object.entries(summary.overlap.statusCounts).map(([status, count]) => `${status}:${count}`).join(', ')}\n`,
+  );
+
+  if (Object.keys(summary.overlap.failureCategories).length > 0) {
+    process.stdout.write(
+      `OVERLAP failureCategories=${Object.entries(summary.overlap.failureCategories).map(([code, count]) => `${code}:${count}`).join(', ')}\n`,
+    );
+  }
+}
+
 function printEditDisciplineSummary(editDisciplineReport) {
   process.stdout.write(
     `EDIT_DISCIPLINE mode=${editDisciplineReport.mode} baseRef=${editDisciplineReport.baseRef} warnings=${editDisciplineReport.warningCount}\n`,
@@ -1307,6 +1351,7 @@ function main() {
   });
   const governanceLawReport = validateGovernanceLaws({ concepts });
   attachGovernanceLawResults(conceptReports, governanceLawReport);
+  const overlapSummary = attachOverlapValidationResults(conceptReports, concepts);
   const summary = {
     totalConcepts: conceptReports.length,
     goldenConceptCount: GOLDEN_CONCEPT_IDS.length,
@@ -1317,6 +1362,7 @@ function main() {
     failureCategories: collectFailureCategories(conceptReports, governanceLawReport),
     warningCategories: collectWarningCategories(conceptReports, governanceLawReport),
   };
+  summary.overlap = overlapSummary;
   summary.semantic = buildSemanticSummary(conceptReports);
   summary.v3 = buildV3Summary(conceptReports);
   summary.relations = buildRelationSummary(governanceLawReport);
@@ -1371,6 +1417,7 @@ function main() {
       results: governanceLawReport.lawChecks,
     },
     enforcement: summary.enforcement,
+    overlap: overlapSummary,
     concepts: conceptReports,
   };
 
@@ -1379,6 +1426,7 @@ function main() {
   printRelationSummary(summary);
   printLawSummary(summary);
   printEnforcementSummary(summary);
+  printOverlapSummary(summary);
   printSemanticSummary(summary);
   printTelemetrySummary(summary);
   printAuditSummary(summary);

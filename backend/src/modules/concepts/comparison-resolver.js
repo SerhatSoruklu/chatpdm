@@ -1,10 +1,14 @@
 'use strict';
 
+const { isLiveConceptId } = require('./admission-state');
+
 const COMPARISON_ALLOWLIST = Object.freeze([
   ['authority', 'power'],
   ['authority', 'legitimacy'],
+  ['duty', 'law'],
   ['power', 'legitimacy'],
   ['responsibility', 'duty'],
+  ['responsibility', 'violation'],
 ]);
 
 function normalizePair(conceptIds) {
@@ -45,6 +49,10 @@ function buildComparisonPayload(conceptIds, conceptIndex) {
 
 function resolveComparisonQuery(conceptIds, conceptIndex) {
   if (!Array.isArray(conceptIds) || conceptIds.length !== 2) {
+    return null;
+  }
+
+  if (!conceptIds.every((conceptId) => isLiveConceptId(conceptId))) {
     return null;
   }
 

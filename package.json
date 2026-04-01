@@ -20,6 +20,7 @@
     "validate:phase-1-mapping": "node ./backend/scripts/validate-phase-1-mapping.js",
     "validate:register-divergence": "npm --prefix ./backend run validate:register-divergence",
     "validate:registers": "node ./scripts/validate-registers.js",
+    "verify:overlap-ci-enforcement": "node ./scripts/verify-overlap-ci-enforcement.js",
     "diff:registers": "node ./scripts/diff-registers.js",
     "diff:concepts": "node ./scripts/diff-concepts.js",
     "scan:ai-governance": "node ./scripts/ai-governance-scan.js",

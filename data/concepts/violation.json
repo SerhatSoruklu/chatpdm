@@ -1,0 +1,159 @@
+{
+  "concept": "violation",
+  "conceptId": "violation",
+  "title": "Violation",
+  "version": 1,
+  "state": "published",
+  "previousVersion": null,
+  "createdAt": "2026-04-01T00:00:00Z",
+  "updatedAt": "2026-04-01T00:00:00Z",
+  "domain": "governance-structures",
+  "canonical": {
+    "invariant": "Violation is the state in which required conduct or required conditions under a duty are not satisfied at the point of assessment.",
+    "excludes": [
+      "answerability for the unmet state",
+      "sanction, punishment, or penalty",
+      "enforcement action or intention"
+    ],
+    "adjacent": {
+      "duty": "Duty defines what conduct or conditions are required; violation marks that those requirements are unmet at assessment.",
+      "responsibility": "Responsibility assigns who answers for the violated state; violation is the failed state itself.",
+      "law": "Law may ground duties whose failure counts as violation, but violation is not the norm source itself.",
+      "breach": "Breach depends on non-continuation of commitment, whereas violation depends on unmet duty."
+    }
+  },
+  "shortDefinition": "Violation is the state in which required conduct or required conditions under a duty are not satisfied at the point of assessment.",
+  "coreMeaning": "Violation is a structural failure state. It records that a duty-defined requirement is unmet when the required state is checked against the actual state at the relevant point of assessment. It is not an action description, not blame, and not the later response to failure.",
+  "structuralProfile": {
+    "function": "unmet duty-state at the point of assessment",
+    "object": "required conduct or conditions under an applicable duty",
+    "sourceType": "applicable duty and its relevant assessment point",
+    "actorRelation": "actor relation is indirect through the duty bearer rather than through answerability",
+    "temporalRole": "post-assessment failure state",
+    "enforcementRole": "pre-enforcement failure state",
+    "answerabilityRole": "does not assign answerability",
+    "requiredConductRole": "tests whether required conduct or conditions are satisfied",
+    "outcomeAttributionRole": "does not attribute outcomes to an actor"
+  },
+  "fullDefinition": "Violation is not identical to duty. Duty defines what conduct or conditions are required under a binding source; violation records that those requirements are not satisfied when assessed.\n\nViolation is also not responsibility. Responsibility concerns who is answerable for the violated state. Violation concerns the state of non-satisfaction itself, whether or not answerability has already been assigned.\n\nWithin a governance system, violation sits after duty and before sanction or enforcement. It exists when a duty is in force, the relevant assessment point has been reached, and the actual state fails to satisfy what the duty requires.",
+  "registers": {
+    "standard": {
+      "shortDefinition": "Violation is the state in which required conduct or required conditions under a duty are not satisfied at the point of assessment.",
+      "coreMeaning": "Violation is a structural failure state. It records that a duty-defined requirement is unmet when the required state is checked against the actual state at the relevant point of assessment. It is not an action description, not blame, and not the later response to failure.",
+      "fullDefinition": "Violation is not identical to duty. Duty defines what conduct or conditions are required under a binding source; violation records that those requirements are not satisfied when assessed.\n\nViolation is also not responsibility. Responsibility concerns who is answerable for the violated state. Violation concerns the state of non-satisfaction itself, whether or not answerability has already been assigned.\n\nWithin a governance system, violation sits after duty and before sanction or enforcement. It exists when a duty is in force, the relevant assessment point has been reached, and the actual state fails to satisfy what the duty requires."
+    },
+    "simplified": {
+      "shortDefinition": "Violation means a duty's required conduct or conditions are not met when checked.",
+      "coreMeaning": "Violation marks a failed duty-state. It does not describe intent, blame, or punishment. It records that what was required is not satisfied at the time the requirement is assessed.",
+      "fullDefinition": "Violation is not the same as duty, because duty says what is required. Violation says that the requirement was not met when checked.\n\nIt is also not responsibility, because responsibility asks who must answer for the failure. Violation marks the failure state itself.\n\nSo violation sits between duty and later response. It exists once a duty applies, the assessment point arrives, and the actual state does not satisfy the requirement."
+    },
+    "formal": {
+      "shortDefinition": "Violation is the determinate failure state in which duty-required conduct or conditions remain unsatisfied at the relevant point of assessment.",
+      "coreMeaning": "Within a governance order, violation functions as the determinate failure state produced when an applicable duty defines a required condition and the assessed actual state does not conform to that requirement. It is therefore distinct from answerability, sanction, enforcement, intention, or blame.",
+      "fullDefinition": "Violation is defined as the state of non-satisfaction that exists where a duty is in force, the relevant assessment point has been reached, and the actual state fails to satisfy the conduct or conditions that the duty requires. The concept is not reducible to duty, because duty supplies the requirement rather than the failure state, and it is not reducible to responsibility, because responsibility concerns who is answerable for the violated state. Violation accordingly occupies the intermediate structural role between duty and any subsequent assignment of answerability, sanction, or enforcement response."
+    }
+  },
+  "structureV3": {
+    "schemaVersion": 1,
+    "conceptFamily": "violation",
+    "violation": {
+      "sourceDuty": {
+        "type": "duty_condition",
+        "id": "applicable_duty",
+        "label": "Duty that defines the required conduct or conditions"
+      },
+      "assessment": {
+        "type": "state_check",
+        "description": "compare the required state under the duty against the actual state at the relevant point of assessment"
+      },
+      "trigger": {
+        "type": "mismatch",
+        "description": "violation exists when required state does not match actual state"
+      }
+    }
+  },
+  "contexts": [
+    {
+      "label": "legal",
+      "explanation": "Violation marks that a duty-backed legal requirement is unmet when assessed."
+    },
+    {
+      "label": "governance",
+      "explanation": "Violation records non-satisfaction of required conduct or conditions within a governance order."
+    },
+    {
+      "label": "institutional",
+      "explanation": "Violation marks failure state before answerability, sanction, or enforcement are assigned."
+    }
+  ],
+  "sourcePriority": [
+    "hart",
+    "oxford"
+  ],
+  "sources": [
+    {
+      "id": "hart",
+      "label": "H. L. A. Hart, Punishment and Responsibility",
+      "type": "book",
+      "usedFor": "structural grounding for violation as unmet duty-state prior to answerability or sanction"
+    },
+    {
+      "id": "oxford",
+      "label": "Oxford Languages",
+      "type": "dictionary",
+      "usedFor": "definition boundary for violation as a state of non-satisfaction rather than punishment or blame"
+    }
+  ],
+  "relatedConcepts": [
+    {
+      "conceptId": "duty",
+      "relationType": "prerequisite"
+    },
+    {
+      "conceptId": "responsibility",
+      "relationType": "contrast"
+    },
+    {
+      "conceptId": "law",
+      "relationType": "extension"
+    }
+  ],
+  "comparison": {},
+  "reviewMetadata": {
+    "what_it_is": [
+      "unmet-duty state",
+      "non-satisfaction at assessment",
+      "structural failure condition"
+    ],
+    "what_it_is_not": [
+      "answerability",
+      "punishment or sanction",
+      "enforcement action",
+      "intention or blame"
+    ],
+    "must_not_collapse_into": [
+      "duty",
+      "responsibility"
+    ],
+    "related_concepts": [
+      "duty",
+      "responsibility",
+      "law",
+      "breach"
+    ],
+    "contrast_prompts": [
+      "violation vs responsibility",
+      "violation vs duty",
+      "violation vs breach",
+      "what makes a state a violation"
+    ]
+  },
+  "aliases": [
+    "violation",
+    "what is violation",
+    "define violation"
+  ],
+  "normalizedAliases": [
+    "violation"
+  ]
+}

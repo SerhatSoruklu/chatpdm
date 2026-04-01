@@ -147,7 +147,7 @@ async function verifyConceptResolutionEndpoint(baseUrl) {
     `${baseUrl}/api/v1/concepts/resolve?q=${encodeURIComponent('unknown term')}`,
   );
   assert.equal(unsupported.status, 200, 'unsupported query should return 200 with explicit refusal.');
-  assert.equal(unsupported.body.type, 'no_exact_match', 'unsupported query should refuse as no_exact_match.');
+  assert.equal(unsupported.body.type, 'unsupported_query_type', 'unsupported query should refuse as unsupported_query_type.');
   assert.equal(
     unsupported.body.interpretation.interpretationType,
     'unsupported_complex',
@@ -164,15 +164,16 @@ async function verifyConceptDetailEndpoint(baseUrl) {
   assert.equal(typeof liveConcept.body.title, 'string', 'authority detail should include title.');
   assert.equal(liveConcept.body.reviewState, null, 'authority should expose null reviewState when absent.');
 
-  const reviewedNotLive = await request('GET', `${baseUrl}/api/v1/concepts/law`);
-  assert.equal(reviewedNotLive.status, 200, 'law detail should return 200.');
-  assert.equal(reviewedNotLive.body.conceptId, 'law', 'law detail conceptId mismatch.');
-  assert.equal(reviewedNotLive.body.reviewState.admission, 'phase2_stable', 'law reviewState mismatch.');
-  assert.equal(reviewedNotLive.body.title, null, 'law currently has no authored concept packet title.');
+  const law = await request('GET', `${baseUrl}/api/v1/concepts/law`);
+  assert.equal(law.status, 200, 'law detail should return 200.');
+  assert.equal(law.body.conceptId, 'law', 'law detail conceptId mismatch.');
+  assert.equal(law.body.reviewState.admission, 'phase2_stable', 'law reviewState mismatch.');
+  assert.equal(typeof law.body.title, 'string', 'law detail should include authored title.');
 
-  const blocked = await request('GET', `${baseUrl}/api/v1/concepts/violation`);
-  assert.equal(blocked.status, 200, 'violation detail should return 200.');
-  assert.equal(blocked.body.reviewState.admission, 'blocked', 'violation reviewState mismatch.');
+  const violation = await request('GET', `${baseUrl}/api/v1/concepts/violation`);
+  assert.equal(violation.status, 200, 'violation detail should return 200.');
+  assert.equal(violation.body.reviewState.admission, 'phase2_stable', 'violation reviewState mismatch.');
+  assert.equal(typeof violation.body.title, 'string', 'violation detail should include authored title.');
 
   const missing = await request('GET', `${baseUrl}/api/v1/concepts/not-a-real-concept`);
   assert.equal(missing.status, 404, 'unknown concept detail should return 404.');

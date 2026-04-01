@@ -56,6 +56,21 @@
                 }
               </div>
             }
+
+            @if (section.links; as links) {
+              <div class="pdm-page__link-list">
+                @for (link of links; track link.route + link.label + (link.fragment ?? '')) {
+                  <article class="pdm-page__link-card">
+                    <a class="pdm-page__link-route" [routerLink]="link.route" [fragment]="link.fragment">
+                      {{ link.label }}
+                    </a>
+                    @if (link.note; as note) {
+                      <p class="pdm-page__link-note">{{ note }}</p>
+                    }
+                  </article>
+                }
+              </div>
+            }
           </section>
         }
       </div>

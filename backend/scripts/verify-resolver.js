@@ -217,7 +217,7 @@ function main() {
     /non-empty string/,
     'empty string input should be rejected before product response generation.',
   );
-  process.stdout.write('PASS empty_string_invalid_input\n');
+  process.stdout.write('PASS empty_string_rejected_before_product_response\n');
 
   verifyReservedOverlayFieldsAreRejected();
 

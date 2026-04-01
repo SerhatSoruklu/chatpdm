@@ -7,8 +7,11 @@ import { LandingPageComponent } from './pages/landing/landing-page.component';
 import { LiveConceptsPageComponent } from './pages/live-concepts-page/live-concepts-page.component';
 import { PolicyPageComponent } from './pages/policy-page/policy-page.component';
 import { PublicPageComponent } from './pages/public-page/public-page.component';
+import { ReasoningStructurePageComponent } from './pages/reasoning-structure-page/reasoning-structure-page.component';
+import { ResolutionContractPageComponent } from './pages/resolution-contract-page/resolution-contract-page.component';
 import { RuntimePageComponent } from './pages/runtime-page/runtime-page.component';
 import { TermsPageComponent } from './pages/terms-page/terms-page.component';
+import { VersionPolicyPageComponent } from './pages/version-policy-page/version-policy-page.component';
 import { VisionPageComponent } from './pages/vision-page/vision-page.component';
 import type { PolicySurfaceKey } from './policies/policy-surface.types';
 import { type SeoRegistryKey, seoRouteData } from './seo/seo.registry';
@@ -67,6 +70,11 @@ export const routes: Routes = [
     path: 'vision',
     component: VisionPageComponent,
     data: seoRouteData('static.vision'),
+  },
+  {
+    path: 'reasoning-structure',
+    component: ReasoningStructurePageComponent,
+    data: seoRouteData('static.reasoning-structure'),
   },
   {
     path: 'faq',
@@ -164,9 +172,19 @@ export const routes: Routes = [
     data: pageRouteData('docs', 'docs.index'),
   },
   {
+    path: 'scope-model',
+    component: PublicPageComponent,
+    data: pageRouteData('scope-model', 'docs.scope-model'),
+  },
+  {
     path: 'developers',
     component: PublicPageComponent,
     data: pageRouteData('developers', 'developer.index'),
+  },
+  {
+    path: 'version-policy',
+    component: VersionPolicyPageComponent,
+    data: seoRouteData('docs.version-policy'),
   },
   {
     path: 'handbooks',
@@ -174,9 +192,49 @@ export const routes: Routes = [
     data: pageRouteData('handbooks', 'handbooks.index'),
   },
   {
+    path: 'handbooks/concept-authoring',
+    component: PublicPageComponent,
+    data: pageRouteData('handbooks-concept-authoring', 'handbooks.concept-authoring'),
+  },
+  {
+    path: 'handbooks/review-admission',
+    component: PublicPageComponent,
+    data: pageRouteData('handbooks-review-admission', 'handbooks.review-admission'),
+  },
+  {
+    path: 'handbooks/source-usage',
+    component: PublicPageComponent,
+    data: pageRouteData('handbooks-source-usage', 'handbooks.source-usage'),
+  },
+  {
+    path: 'handbooks/rejection-handling',
+    component: PublicPageComponent,
+    data: pageRouteData('handbooks-rejection-handling', 'handbooks.rejection-handling'),
+  },
+  {
+    path: 'handbooks/comparison-authoring',
+    component: PublicPageComponent,
+    data: pageRouteData('handbooks-comparison-authoring', 'handbooks.comparison-authoring'),
+  },
+  {
+    path: 'handbooks/runtime-discipline',
+    component: PublicPageComponent,
+    data: pageRouteData('handbooks-runtime-discipline', 'handbooks.runtime-discipline'),
+  },
+  {
+    path: 'source-model',
+    component: PublicPageComponent,
+    data: pageRouteData('source-model', 'docs.source-model'),
+  },
+  {
     path: 'api',
     component: TermsPageComponent,
     data: seoRouteData('api.index'),
+  },
+  {
+    path: 'resolution-contract',
+    component: ResolutionContractPageComponent,
+    data: seoRouteData('docs.resolution-contract'),
   },
   {
     path: '**',

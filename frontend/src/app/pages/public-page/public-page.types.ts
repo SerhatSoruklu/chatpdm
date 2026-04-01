@@ -8,6 +8,13 @@ export interface PublicPageAction {
   route: string;
 }
 
+export interface PublicPageLink {
+  label: string;
+  route: string;
+  note?: string;
+  fragment?: string;
+}
+
 export interface PublicPageContact {
   label: string;
   email: string;
@@ -20,6 +27,7 @@ export interface PublicPageSection {
   bullets?: readonly string[];
   questions?: readonly PublicPageQuestion[];
   contacts?: readonly PublicPageContact[];
+  links?: readonly PublicPageLink[];
 }
 
 export interface PublicPageContent {
@@ -41,7 +49,15 @@ export type PublicPageKey =
   | 'acceptable-use'
   | 'terms'
   | 'cookies'
+  | 'scope-model'
   | 'docs'
   | 'developers'
+  | 'source-model'
   | 'handbooks'
+  | 'handbooks-concept-authoring'
+  | 'handbooks-review-admission'
+  | 'handbooks-source-usage'
+  | 'handbooks-rejection-handling'
+  | 'handbooks-comparison-authoring'
+  | 'handbooks-runtime-discipline'
   | 'not-found';

@@ -27,21 +27,21 @@ function withTempReviewStateDirectory(fileMap, fn) {
   }
 }
 
-function verifyValidBlockedState() {
+function verifyValidPhase2StableViolationState() {
   const reviewState = getConceptReviewState('violation');
 
   assert.deepEqual(
     reviewState,
     {
       conceptId: 'violation',
-      admission: 'blocked',
-      lastValidatedAt: '2026-03-31T00:00:00Z',
+      admission: 'phase2_stable',
+      lastValidatedAt: '2026-04-01T00:00:00Z',
       validationSource: 'manual_review',
     },
     'violation review state mismatch.',
   );
 
-  process.stdout.write('PASS valid_blocked_review_state\n');
+  process.stdout.write('PASS valid_phase2_stable_violation_review_state\n');
 }
 
 function verifyValidPhase2StableState() {
@@ -85,6 +85,32 @@ function verifyValidPhase1PassedState() {
   });
 
   process.stdout.write('PASS valid_phase1_passed_review_state\n');
+}
+
+function verifyValidPendingOverlapScanState() {
+  withTempReviewStateDirectory({
+    'trust.review-state.json': {
+      conceptId: 'trust',
+      admission: 'pending_overlap_scan',
+      lastValidatedAt: '2026-04-01T08:00:00Z',
+      validationSource: 'system',
+    },
+  }, (directoryPath) => {
+    const reviewState = getConceptReviewState('trust', directoryPath);
+
+    assert.deepEqual(
+      reviewState,
+      {
+        conceptId: 'trust',
+        admission: 'pending_overlap_scan',
+        lastValidatedAt: '2026-04-01T08:00:00Z',
+        validationSource: 'system',
+      },
+      'pending_overlap_scan review state mismatch.',
+    );
+  });
+
+  process.stdout.write('PASS valid_pending_overlap_scan_review_state\n');
 }
 
 function verifyInvalidAdmissionRejected() {
@@ -141,8 +167,9 @@ function verifyGovernanceStateRemainsUntouched() {
 }
 
 function main() {
-  verifyValidBlockedState();
+  verifyValidPhase2StableViolationState();
   verifyValidPhase1PassedState();
+  verifyValidPendingOverlapScanState();
   verifyValidPhase2StableState();
   verifyInvalidAdmissionRejected();
   verifyMissingRequiredFieldsRejected();

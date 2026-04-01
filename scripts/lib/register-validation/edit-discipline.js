@@ -8,7 +8,11 @@ const { REGISTER_NAMES, ZONE_NAMES } = require('./validate-structure');
 
 const DEFAULT_MODE = 'warn';
 const conceptDirectory = path.resolve(__dirname, '../../../data/concepts');
-const NON_CONCEPT_PACKET_FILES = new Set(['resolve-rules.json']);
+const NON_CONCEPT_PACKET_FILES = new Set([
+  'overlap-boundary-change-approvals.json',
+  'overlap-classification-snapshot.json',
+  'resolve-rules.json',
+]);
 
 function runGit(args) {
   try {

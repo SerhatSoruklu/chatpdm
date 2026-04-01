@@ -18,14 +18,13 @@
         <div class="pdm-runtime__section-head">
           <p class="pdm-runtime__section-label">Live public runtime</p>
           <h2 class="pdm-runtime__section-title" id="pdm-runtime-query-title">
-            Submit a bounded concept query.
+            Submit a query.
           </h2>
         </div>
 
         <p class="pdm-runtime__copy">
-          Use a direct concept, canonical lookup, or allowlisted comparison. The runtime resolves
-          admitted concepts, shows reviewed lifecycle evidence where available, and refuses the rest
-          without guessing.
+          Submit any natural-language query. The runtime normalizes, classifies, then resolves
+          admitted concepts or refuses explicitly without guessing.
         </p>
 
         <form class="pdm-runtime__query-form" (ngSubmit)="submitDraft()">
@@ -38,7 +37,7 @@
               [ngModel]="queryDraft()"
               (ngModelChange)="queryDraft.set($event)"
               name="runtimeQuery"
-              placeholder="Try authority, define legitimacy, or authority vs power"
+              placeholder="Enter any query"
               autocomplete="off"
               spellcheck="false"
             />
@@ -80,14 +79,38 @@
             aria-labelledby="pdm-runtime-reviewed-title"
           >
             <div class="pdm-runtime__group-head">
-              <p class="pdm-runtime__group-label">Reviewed concepts</p>
-              <p class="pdm-runtime__group-note">Not yet admitted to runtime</p>
+              <p class="pdm-runtime__group-label">Visible only</p>
+              <p class="pdm-runtime__group-note">Inspectable through authored detail or review-state evidence. Not admitted to runtime.</p>
             </div>
 
             <div class="pdm-runtime__chip-row">
-              @for (concept of reviewedConceptIds; track concept) {
+              @for (concept of visibleOnlyConceptIds; track concept) {
                 <button
-                  class="pdm-runtime__chip pdm-runtime__chip--reviewed pdm-site-chip"
+                  class="pdm-runtime__chip pdm-runtime__chip--visible pdm-site-chip"
+                  type="button"
+                  [disabled]="isSubmitting()"
+                  (click)="submitScopedConcept(concept)"
+                >
+                  {{ concept }}
+                </button>
+              }
+            </div>
+          </section>
+
+          <section
+            class="pdm-runtime__group"
+            id="runtime-rejected"
+            aria-labelledby="pdm-runtime-rejected-title"
+          >
+            <div class="pdm-runtime__group-head">
+              <p class="pdm-runtime__group-label">Explicitly rejected</p>
+              <p class="pdm-runtime__group-note">Visible only as structural refusal</p>
+            </div>
+
+            <div class="pdm-runtime__chip-row">
+              @for (concept of rejectedConceptIds; track concept) {
+                <button
+                  class="pdm-runtime__chip pdm-runtime__chip--rejected pdm-site-chip"
                   type="button"
                   [disabled]="isSubmitting()"
                   (click)="submitScopedConcept(concept)"
@@ -99,25 +122,6 @@
           </section>
         </div>
 
-        <section
-          class="pdm-runtime__starter"
-          id="runtime-comparison"
-          aria-labelledby="pdm-runtime-starter-title"
-        >
-          <p class="pdm-runtime__group-label" id="pdm-runtime-starter-title">Supported query examples</p>
-          <div class="pdm-runtime__starter-row">
-            @for (option of starterQueryOptions; track option.query) {
-              <button
-                class="pdm-runtime__chip pdm-runtime__chip--starter pdm-site-chip"
-                type="button"
-                [disabled]="isSubmitting()"
-                (click)="submitStarterQuery(option.query)"
-              >
-                {{ option.label }}
-              </button>
-            }
-          </div>
-        </section>
       </section>
 
       <section
@@ -129,7 +133,7 @@
           <section class="pdm-runtime__state-card pdm-site-surface pdm-site-panel">
             <div class="pdm-runtime__section-head">
               <p class="pdm-runtime__section-label">Runtime state</p>
-              <h2 class="pdm-runtime__section-title">The public runtime separates live, reviewed, and refused states.</h2>
+              <h2 class="pdm-runtime__section-title">The public runtime separates live, visible-only, rejected, and refused states.</h2>
             </div>
 
             <div class="pdm-runtime__state-grid">
@@ -138,12 +142,16 @@
                 <p class="pdm-runtime__state-copy">Admitted concepts resolve with authored output.</p>
               </article>
               <article class="pdm-runtime__state-item">
-                <p class="pdm-runtime__state-label">Reviewed</p>
-                <p class="pdm-runtime__state-copy">Lifecycle evidence may be visible before runtime admission.</p>
+                <p class="pdm-runtime__state-label">Visible only</p>
+                <p class="pdm-runtime__state-copy">Authored concept detail may remain inspectable without runtime admission.</p>
+              </article>
+              <article class="pdm-runtime__state-item">
+                <p class="pdm-runtime__state-label">Rejected</p>
+                <p class="pdm-runtime__state-copy">Structurally rejected concepts remain visible only as refusal surfaces.</p>
               </article>
               <article class="pdm-runtime__state-item">
                 <p class="pdm-runtime__state-label">Refused</p>
-                <p class="pdm-runtime__state-copy">Blocked, unsupported, and non-allowlisted queries remain explicit refusals.</p>
+                <p class="pdm-runtime__state-copy">Unsupported and non-allowlisted queries remain explicit refusals.</p>
               </article>
             </div>
           </section>
@@ -405,6 +413,51 @@
                 }
               }
 
+              @case ('visible_only') {
+                @if (entry.detail; as detail) {
+                  <section class="pdm-runtime__result-card pdm-site-surface pdm-site-panel">
+                    <div class="pdm-runtime__meta-grid">
+                      <article class="pdm-runtime__meta-item">
+                        <span class="pdm-runtime__meta-label">Runtime</span>
+                        <span class="pdm-runtime__meta-value">Visible only</span>
+                      </article>
+                      <article class="pdm-runtime__meta-item">
+                        <span class="pdm-runtime__meta-label">Detail</span>
+                        <span class="pdm-runtime__meta-value">Inspectable</span>
+                      </article>
+                      <article class="pdm-runtime__meta-item">
+                        <span class="pdm-runtime__meta-label">Scope</span>
+                        <span class="pdm-runtime__meta-value">{{ visibleOnlyScopeLabel(detail) }}</span>
+                      </article>
+                    </div>
+
+                    <div class="pdm-runtime__result-head">
+                      <p class="pdm-runtime__section-label">Visible-only concept</p>
+                      <h2 class="pdm-runtime__result-title">{{ visibleOnlyTitle(detail) }}</h2>
+                      <p class="pdm-runtime__result-subtitle">{{ detail.shortDefinition }}</p>
+                    </div>
+
+                    <section class="pdm-runtime__content-block">
+                      <p class="pdm-runtime__block-label">Core meaning</p>
+                      <p class="pdm-runtime__copy">{{ visibleOnlyBody(detail) }}</p>
+                    </section>
+
+                    @if (detail.fullDefinition) {
+                      <section class="pdm-runtime__content-block">
+                        <p class="pdm-runtime__block-label">Full definition</p>
+                        <div class="pdm-runtime__definition-stack">
+                          @for (paragraph of definitionParagraphs(detail.fullDefinition); track paragraph) {
+                            <p class="pdm-runtime__copy">{{ paragraph }}</p>
+                          }
+                        </div>
+                      </section>
+                    }
+
+                    <p class="pdm-runtime__support">{{ visibleOnlySupportCopy() }}</p>
+                  </section>
+                }
+              }
+
               @case ('blocked') {
                 <section class="pdm-runtime__result-card pdm-runtime__result-card--blocked pdm-site-surface pdm-site-panel">
                   <div class="pdm-runtime__meta-grid">
@@ -437,12 +490,12 @@
                   </div>
 
                   <div class="pdm-runtime__result-head">
-                    <p class="pdm-runtime__section-label">Blocked concept</p>
+                    <p class="pdm-runtime__section-label">{{ blockedSectionLabel(response, entry.detail) }}</p>
                     <h2 class="pdm-runtime__result-title">{{ blockedTitle(entry.detail) }}</h2>
                     <p class="pdm-runtime__result-subtitle">{{ blockedBody(response, entry.detail) }}</p>
                   </div>
 
-                  <p class="pdm-runtime__support">Refusal is the correct public output for blocked concepts.</p>
+                  <p class="pdm-runtime__support">{{ blockedSupportCopy(response, entry.detail) }}</p>
 
                   @if (entry.detail?.reviewState) {
                     <button class="pdm-runtime__trace-toggle" type="button" (click)="toggleValidationTrace()">
@@ -484,19 +537,19 @@
 
                   <div class="pdm-runtime__result-head">
                     <p class="pdm-runtime__section-label">Refusal</p>
-                    <h2 class="pdm-runtime__result-title">{{ genericNoExactMatchTitle(asNoExactMatch(response)) }}</h2>
+                    <h2 class="pdm-runtime__result-title">{{ refusalTitle(asRefusal(response)) }}</h2>
                     <p class="pdm-runtime__result-subtitle">
-                      {{ noExactMatchPrimaryMessage(asNoExactMatch(response)) }}
+                      {{ refusalPrimaryMessage(asRefusal(response)) }}
                     </p>
                   </div>
 
-                  <p class="pdm-runtime__support">{{ noExactMatchSupportCopy(asNoExactMatch(response), entry.detail) }}</p>
+                  <p class="pdm-runtime__support">{{ refusalSupportCopy(asRefusal(response), entry.detail) }}</p>
 
-                  @if (asNoExactMatch(response).suggestions.length > 0) {
+                  @if (refusalHasSuggestions(asRefusal(response))) {
                     <section class="pdm-runtime__content-block">
                       <p class="pdm-runtime__block-label">Suggested concepts</p>
                       <div class="pdm-runtime__action-list">
-                        @for (suggestion of asNoExactMatch(response).suggestions; track suggestion.conceptId) {
+                        @for (suggestion of refusalSuggestions(asRefusal(response)); track suggestion.conceptId) {
                           <button
                             class="pdm-runtime__action-card"
                             type="button"

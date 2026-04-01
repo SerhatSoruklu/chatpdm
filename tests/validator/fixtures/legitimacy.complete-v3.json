@@ -37,6 +37,17 @@
   },
   "shortDefinition": "Legitimacy is accepted or justified validity of rule or standing within a governance order.",
   "coreMeaning": "Within the governance domain, legitimacy functions by marking a rule, office, or standing as valid rather than merely operative. It concerns what counts as justified or accepted, not who may direct or what can be made to happen.",
+  "structuralProfile": {
+    "function": "accepted or justified validity assessment of rule or standing",
+    "object": "rule, office, or standing within a governance order",
+    "sourceType": "acceptance, justification, or procedurally grounded validity",
+    "actorRelation": "actor, office, or rule is evaluated as valid rather than merely operative",
+    "temporalRole": "evaluative status applied to standing or rule",
+    "enforcementRole": "can justify compliance without being enforcement itself",
+    "answerabilityRole": "does not assign answerability",
+    "requiredConductRole": "does not define required conduct",
+    "outcomeAttributionRole": "does not attribute outcomes to an actor"
+  },
   "fullDefinition": "Legitimacy is not the same as authority or power. In ChatPDM v1 it is defined within the governance domain as accepted or justified validity of rule or standing within a governance order.\n\nIts internal composition joins acceptance or justification to a rule, office, institution, or governing order. The concept therefore evaluates standing rather than conferring directive right or operative capacity.\n\nWithin governance structures, legitimacy stabilizes obedience, trust, and continuity by making authority or power count as valid. Power may operate without it, and authority may exist while its legitimacy is contested.",
   "registers": {
     "standard": {

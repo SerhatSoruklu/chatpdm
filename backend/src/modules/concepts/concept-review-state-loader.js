@@ -4,10 +4,16 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const { normalizeQuery } = require('./normalizer');
+const { OVERLAP_ADMISSION_VALUES } = require('./concept-overlap-admission-gate');
 const { assertCanonicalStoreFreeOfAiMarkers } = require('../../lib/ai-governance-guard');
 
 const reviewStateDirectoryPath = path.resolve(__dirname, '../../../../data/concepts/review-states');
-const ALLOWED_ADMISSION_VALUES = Object.freeze(['blocked', 'phase1_passed', 'phase2_stable']);
+const ALLOWED_ADMISSION_VALUES = Object.freeze([
+  'blocked',
+  'phase1_passed',
+  'phase2_stable',
+  ...OVERLAP_ADMISSION_VALUES,
+]);
 const ALLOWED_VALIDATION_SOURCES = Object.freeze(['system', 'manual_review']);
 const ISO_8601_TIMESTAMP_PATTERN = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?(?:Z|[+-]\d{2}:\d{2})$/;
 

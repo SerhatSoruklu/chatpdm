@@ -4,11 +4,18 @@ const {
   AMBIGUOUS_MATCH_MESSAGE,
   CONCEPT_SET_VERSION,
   CONTRACT_VERSION,
+  INVALID_QUERY_MESSAGE,
   MATCHER_VERSION,
   NORMALIZER_VERSION,
   NO_EXACT_MATCH_MESSAGE,
   REJECTED_CONCEPT_MESSAGE,
+  UNSUPPORTED_QUERY_TYPE_MESSAGE,
 } = require('./constants');
+const {
+  VISIBLE_ONLY_PUBLIC_CONCEPT_IDS,
+  isLiveConceptId,
+  isVisibleOnlyConceptId,
+} = require('./admission-state');
 const {
   loadConceptSet,
 } = require('./concept-loader');
@@ -71,7 +78,12 @@ function buildRejectedConceptResponse(query, normalizedQuery, conceptId, queryTy
     matcherVersion: MATCHER_VERSION,
     conceptSetVersion: CONCEPT_SET_VERSION,
     queryType,
-    interpretation: null,
+    interpretation: {
+      interpretationType: 'explicitly_rejected_concept',
+      targetConceptId: conceptId,
+      concepts: [conceptId],
+      message: `The concept "${conceptId}" is explicitly rejected under the current system state.`,
+    },
     type: 'rejected_concept',
     resolution: {
       method: 'rejection_registry',
@@ -115,6 +127,89 @@ function buildValidationBlockedResponse(baseResponse, blockedConceptIds) {
   };
 }
 
+function escapePattern(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function detectVisibleOnlyConceptIds(normalizedQuery) {
+  if (typeof normalizedQuery !== 'string' || normalizedQuery.trim() === '') {
+    return [];
+  }
+
+  return VISIBLE_ONLY_PUBLIC_CONCEPT_IDS.filter((conceptId) => {
+    const pattern = new RegExp(`(^| )${escapePattern(conceptId)}( |$)`);
+    return pattern.test(normalizedQuery);
+  });
+}
+
+function buildVisibleOnlyConceptInterpretation({
+  targetConceptId = null,
+  concepts = [],
+  comparison = false,
+}) {
+  if (comparison) {
+    return {
+      interpretationType: 'visible_only_public_concept',
+      concepts,
+      message: 'This query refers to visible-only public concepts that are inspectable but not admitted to live runtime comparison.',
+    };
+  }
+
+  return {
+    interpretationType: 'visible_only_public_concept',
+    targetConceptId,
+    concepts: targetConceptId ? [targetConceptId] : concepts,
+    message: targetConceptId
+      ? `The concept "${targetConceptId}" is visible in public scope and detail, but it is not admitted to the live public runtime.`
+      : 'This concept is visible in public scope and detail, but it is not admitted to the live public runtime.',
+  };
+}
+
+function buildVisibleOnlyConceptResponse(baseResponse, interpretation) {
+  return {
+    ...baseResponse,
+    type: 'no_exact_match',
+    interpretation,
+    resolution: {
+      method: 'no_exact_match',
+    },
+    message: NO_EXACT_MATCH_MESSAGE,
+    suggestions: [],
+  };
+}
+
+function traceAdmissionBoundaryWarning(kind, conceptIds) {
+  if (process.env.NODE_ENV === 'production') {
+    return;
+  }
+
+  process.stderr.write(
+    `[chatpdm-runtime] admission boundary warning (${kind}): visible-only concept reached live-only path for ${conceptIds.join(', ')}\n`,
+  );
+}
+
+function buildInvalidQueryResponse(baseResponse) {
+  return {
+    ...baseResponse,
+    type: 'invalid_query',
+    resolution: {
+      method: 'invalid_query',
+    },
+    message: INVALID_QUERY_MESSAGE,
+  };
+}
+
+function buildUnsupportedQueryTypeResponse(baseResponse) {
+  return {
+    ...baseResponse,
+    type: 'unsupported_query_type',
+    resolution: {
+      method: 'unsupported_query_type',
+    },
+    message: UNSUPPORTED_QUERY_TYPE_MESSAGE,
+  };
+}
+
 function isBlockedConceptId(conceptId) {
   return getConceptRuntimeGovernanceState(conceptId).isBlocked;
 }
@@ -123,8 +218,22 @@ function filterActionableSuggestions(suggestions) {
   return suggestions.filter((suggestion) => !isBlockedConceptId(suggestion.conceptId));
 }
 
-function filterActionableRelatedConcepts(relatedConcepts) {
-  return relatedConcepts.filter((relatedConcept) => !isBlockedConceptId(relatedConcept.conceptId));
+function filterActionableRelatedConcepts(relatedConcepts, conceptIndex) {
+  return relatedConcepts.filter((relatedConcept) => {
+    if (isBlockedConceptId(relatedConcept.conceptId)) {
+      return false;
+    }
+
+    if (!conceptIndex.has(relatedConcept.conceptId)) {
+      if (isVisibleOnlyConceptId(relatedConcept.conceptId)) {
+        traceAdmissionBoundaryWarning('related_concept', [relatedConcept.conceptId]);
+      }
+
+      return false;
+    }
+
+    return true;
+  });
 }
 
 function filterActionableCandidates(candidates) {
@@ -166,6 +275,9 @@ function resolveConceptQuery(rawQuery) {
 
   const normalizedQuery = normalizeQuery(rawQuery);
   const canonicalId = extractCanonicalId(rawQuery);
+  const visibleOnlyCanonicalConceptId = canonicalId !== null && isVisibleOnlyConceptId(canonicalId)
+    ? canonicalId
+    : null;
   const rejectedConcept = getRejectedConceptRecord(canonicalId !== null ? canonicalId : normalizedQuery);
 
   if (rejectedConcept) {
@@ -200,6 +312,7 @@ function resolveConceptQuery(rawQuery) {
 
   const baseResponse = buildBaseResponse(rawQuery, normalizedQuery, queryClassification);
   let response;
+  const visibleOnlyMentionedConceptIds = detectVisibleOnlyConceptIds(normalizedQuery);
   const governanceScopeEnforcement = detectGovernanceScopeEnforcement({
     normalizedQuery,
     match,
@@ -222,7 +335,52 @@ function resolveConceptQuery(rawQuery) {
     return assertValidProductResponse(response);
   }
 
-  if (queryClassification.queryType === 'comparison_query') {
+  if (visibleOnlyCanonicalConceptId) {
+    response = buildVisibleOnlyConceptResponse(
+      baseResponse,
+      buildVisibleOnlyConceptInterpretation({
+        targetConceptId: visibleOnlyCanonicalConceptId,
+      }),
+    );
+
+    return assertValidProductResponse(response);
+  }
+
+  if (
+    queryClassification.queryType === 'exact_concept_query'
+    && isVisibleOnlyConceptId(normalizedQuery)
+  ) {
+    response = buildVisibleOnlyConceptResponse(
+      baseResponse,
+      buildVisibleOnlyConceptInterpretation({
+        targetConceptId: normalizedQuery,
+      }),
+    );
+
+    return assertValidProductResponse(response);
+  }
+
+  if (queryClassification.queryType === 'invalid_query') {
+    response = buildInvalidQueryResponse(baseResponse);
+  } else if (
+    queryClassification.queryType === 'role_or_actor_query'
+    || queryClassification.queryType === 'relation_query'
+    || queryClassification.queryType === 'unsupported_complex_query'
+  ) {
+    response = buildUnsupportedQueryTypeResponse(baseResponse);
+  } else if (queryClassification.queryType === 'comparison_query') {
+    if (visibleOnlyMentionedConceptIds.length > 0) {
+      response = buildVisibleOnlyConceptResponse(
+        baseResponse,
+        buildVisibleOnlyConceptInterpretation({
+          concepts: visibleOnlyMentionedConceptIds,
+          comparison: true,
+        }),
+      );
+
+      return assertValidProductResponse(response);
+    }
+
     const blockedConceptIds = (queryClassification.interpretation?.concepts ?? [])
       .filter((conceptId) => isBlockedConceptId(conceptId));
 
@@ -252,6 +410,18 @@ function resolveConceptQuery(rawQuery) {
       }
     }
   } else if (match.type === 'concept_match') {
+    if (!isLiveConceptId(match.concept.conceptId)) {
+      traceAdmissionBoundaryWarning('concept_match', [match.concept.conceptId]);
+      response = buildVisibleOnlyConceptResponse(
+        baseResponse,
+        buildVisibleOnlyConceptInterpretation({
+          targetConceptId: match.concept.conceptId,
+        }),
+      );
+
+      return assertValidProductResponse(response);
+    }
+
     const governanceState = getConceptRuntimeGovernanceState(match.concept.conceptId);
 
     traceGovernanceState(governanceState);
@@ -281,7 +451,7 @@ function resolveConceptQuery(rawQuery) {
             type: source.type,
             usedFor: source.usedFor,
           })),
-          relatedConcepts: filterActionableRelatedConcepts(match.concept.relatedConcepts).map((relatedConcept) => (
+          relatedConcepts: filterActionableRelatedConcepts(match.concept.relatedConcepts, conceptIndex).map((relatedConcept) => (
             buildRelatedConceptPayload(relatedConcept, conceptIndex)
           )),
         },

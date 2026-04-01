@@ -38,10 +38,11 @@ export class SiteFooterComponent {
       title: 'System',
       links: [
         { label: 'What ChatPDM is', route: '/what-is-chatpdm' },
-        { label: 'Scope model', route: '/docs' },
-        { label: 'Resolution contract', route: '/api' },
-        { label: 'Version policy', route: '/developers' },
-        { label: 'Source model', route: '/handbooks' },
+        { label: 'Reasoning structure', route: '/reasoning-structure' },
+        { label: 'Scope model', route: '/scope-model' },
+        { label: 'Resolution contract', route: '/resolution-contract' },
+        { label: 'Version policy', route: '/version-policy' },
+        { label: 'Source model', route: '/source-model' },
       ],
     },
     {

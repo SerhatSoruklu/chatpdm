@@ -17,6 +17,7 @@ import {
   GovernanceState,
   ReadingRegisters,
   NoExactMatchResponse,
+  RefusalResponse,
   RejectedConceptResponse,
   RelatedConcept,
   ReviewState,
@@ -37,8 +38,9 @@ import {
 import {
   DETAIL_BACKED_CONCEPT_IDS,
   LIVE_RUNTIME_CONCEPT_IDS,
-  REVIEWED_CONCEPT_IDS,
+  REJECTED_CONCEPT_IDS,
   RUNTIME_SCOPE_BY_CONCEPT,
+  VISIBLE_ONLY_PUBLIC_CONCEPT_IDS,
 } from '../../core/concepts/public-runtime.catalog';
 import { FeedbackService } from '../../core/feedback/feedback.service';
 import type {
@@ -48,75 +50,67 @@ import type {
   HomepageStep,
   LandingComparisonResponse,
   LinkAction,
+  ReferenceLinkGroup,
   ResolverEntry,
   ScopeGroup,
-  StarterQuery,
   SubmitQueryOptions,
 } from './landing-page.types';
 
-const LIVE_RUNTIME_CONCEPTS = new Set(LIVE_RUNTIME_CONCEPT_IDS);
-const REVIEWED_CONCEPTS = new Set(REVIEWED_CONCEPT_IDS);
-const DETAIL_BACKED_CONCEPTS = new Set(DETAIL_BACKED_CONCEPT_IDS);
+const LIVE_RUNTIME_CONCEPTS = new Set<string>(LIVE_RUNTIME_CONCEPT_IDS);
+const VISIBLE_ONLY_PUBLIC_CONCEPTS = new Set<string>(VISIBLE_ONLY_PUBLIC_CONCEPT_IDS);
+const REJECTED_CONCEPTS = new Set<string>(REJECTED_CONCEPT_IDS);
+const DETAIL_BACKED_CONCEPTS = new Set<string>(DETAIL_BACKED_CONCEPT_IDS);
 const REVIEWED_NOT_LIVE_ADMISSIONS = new Set<ReviewState['admission']>([
   'phase1_passed',
   'phase2_stable',
+  'pending_overlap_scan',
+  'overlap_scan_passed',
+  'overlap_scan_failed_conflict',
+  'overlap_scan_failed_duplicate',
+  'overlap_scan_failed_compression',
+  'overlap_scan_boundary_required',
 ]);
 
 const SCOPE_GROUPS: ScopeGroup[] = [
   {
     id: 'core-abstractions',
     title: 'Core abstractions',
-    concepts: ['meaning', 'truth', 'identity', 'freedom', 'equality', 'responsibility'],
+    concepts: ['responsibility'],
   },
   {
     id: 'relational-structures',
     title: 'Relational structures',
-    concepts: ['authority', 'power', 'legitimacy', 'consent', 'trust', 'recognition', 'conflict'],
+    concepts: ['authority', 'power', 'legitimacy'],
   },
   {
     id: 'governance-structures',
     title: 'Governance structures',
     concepts: [
       'law',
-      'justice',
-      'rights',
       'duty',
-      'institution',
-      'governance',
-      'accountability',
-      'hierarchy',
-      'sovereignty',
-      'order',
+      'obligation',
+      'enforcement',
+      'violation',
+    ],
+  },
+  {
+    id: 'interaction-primitives',
+    title: 'Interaction primitives',
+    concepts: [
+      'agreement',
+      'commitment',
+      'breach',
     ],
   },
 ];
 
-const STARTER_QUERIES: StarterQuery[] = [
-  { label: 'authority vs power', query: 'authority vs power' },
-  { label: 'authority', query: 'authority' },
-  { label: 'legitimacy', query: 'legitimacy' },
-  { label: 'duty', query: 'duty' },
-  { label: 'responsibility', query: 'responsibility' },
-];
-
 type QueryClassification =
   | 'empty'
-  | 'direct_concept'
-  | 'canonical_lookup'
-  | 'controlled_comparison'
-  | 'unsupported';
-
-interface QueryEntryMode {
-  label: string;
-  example: string;
-}
+  | 'ready';
 
 interface QueryAssessment {
   classification: QueryClassification;
-  status: 'idle' | 'valid' | 'invalid';
-  label: string;
-  line: string;
-  message: string;
+  status: 'idle' | 'valid';
   canSubmit: boolean;
 }
 
@@ -126,39 +120,58 @@ interface ActiveReadingFields {
   fullDefinition: string;
 }
 
-const QUERY_ENTRY_MODES: QueryEntryMode[] = [
-  { label: 'Direct concept', example: 'authority' },
-  { label: 'Canonical lookup', example: 'define legitimacy' },
-  { label: 'Controlled comparison', example: 'authority vs power' },
-];
-
 const HOMEPAGE_STEPS: HomepageStep[] = [
   {
     id: 'enter',
     sequence: '01',
     label: 'Input',
-    title: 'Input is normalized',
-    copy: 'Incoming queries are normalized inside the authored runtime.',
+    title: 'Normalize',
+    copy: 'Normalize the raw query into canonical form.',
+    resultLine: 'Produces canonical query',
+    contractField: 'normalizedQuery',
   },
   {
     id: 'classify',
     sequence: '02',
     label: 'Routing',
-    title: 'Query shape is classified',
-    copy: 'Query shape routes to canonical match, comparison, ambiguity, or refusal.',
+    title: 'Classify',
+    copy: 'Route the query into match, comparison, ambiguity, or refusal.',
+    resultLine: 'Determines query type',
+    contractField: 'queryType',
   },
   {
     id: 'return',
     sequence: '03',
     label: 'Output',
-    title: 'Runtime resolves or refuses',
-    copy: 'The system returns authored output or explicit refusal.',
+    title: 'Resolve / Refuse',
+    copy: 'Return a bounded result or explicit refusal.',
+    resultLine: 'Returns result or explicit refusal',
+    contractField: 'type',
   },
 ];
 
-const REFERENCE_LINKS: LinkAction[] = [
-  { label: 'Docs', route: '/docs' },
-  { label: 'API', route: '/api' },
+const REFERENCE_SURFACE_GROUPS: ReferenceLinkGroup[] = [
+  {
+    label: 'Runtime surfaces',
+    links: [
+      { label: 'Runtime', route: '/runtime' },
+      { label: 'Live concepts', route: '/live-concepts' },
+      { label: 'Controlled comparisons', route: '/controlled-comparisons' },
+      { label: 'Resolution contract', route: '/resolution-contract' },
+    ],
+  },
+  {
+    label: 'System',
+    links: [
+      { label: 'Scope model', route: '/scope-model' },
+      { label: 'Source model', route: '/source-model' },
+      { label: 'Version policy', route: '/version-policy' },
+    ],
+  },
+  {
+    label: 'Contracts',
+    links: [{ label: 'API', route: '/api' }],
+  },
 ];
 
 const CONCEPT_MATCH_FEEDBACK_OPTIONS: FeedbackOption[] = [
@@ -195,21 +208,16 @@ export class LandingPageComponent {
   private readonly resolver = inject(ConceptResolverService);
   private readonly aiTracking = inject(AiTrackingService);
   private readonly feedbackService = inject(FeedbackService);
-  private readonly directConceptPattern = /^[a-z]+(?:[ -][a-z]+){0,3}$/i;
-  private readonly canonicalLookupPattern = /^define\s+[a-z]+(?:[ -][a-z]+){0,3}$/i;
-  private readonly controlledComparisonPattern =
-    /^[a-z]+(?:[ -][a-z]+){0,3}\s+vs\s+[a-z]+(?:[ -][a-z]+){0,3}$/i;
 
   protected readonly queryDraft = signal('');
   protected readonly activeEntry = signal<ResolverEntry | null>(null);
   protected readonly isSubmitting = signal(false);
   protected readonly scopeGroups = SCOPE_GROUPS;
-  protected readonly starterQueries = STARTER_QUERIES;
-  protected readonly queryEntryModes = QUERY_ENTRY_MODES;
   protected readonly homepageSteps = HOMEPAGE_STEPS;
-  protected readonly referenceLinks = REFERENCE_LINKS;
+  protected readonly referenceSurfaceGroups = REFERENCE_SURFACE_GROUPS;
   protected readonly liveRuntimeConceptIds = LIVE_RUNTIME_CONCEPT_IDS;
-  protected readonly reviewedConceptIds = REVIEWED_CONCEPT_IDS;
+  protected readonly visibleOnlyConceptIds = VISIBLE_ONLY_PUBLIC_CONCEPT_IDS;
+  protected readonly rejectedConceptIds = REJECTED_CONCEPT_IDS;
   protected readonly readingLensOptions = READING_LENS_OPTIONS;
   protected readonly readingLensTrustCopy = READING_LENS_TRUST_COPY;
   protected readonly readingLensFallbackCopy = READING_LENS_FALLBACK_COPY;
@@ -310,16 +318,12 @@ export class LandingPageComponent {
     return LIVE_RUNTIME_CONCEPTS.has(concept);
   }
 
-  protected isKnownConceptDetail(concept: string): boolean {
-    return DETAIL_BACKED_CONCEPTS.has(concept);
+  protected isVisibleOnlyConceptId(concept: string): boolean {
+    return VISIBLE_ONLY_PUBLIC_CONCEPTS.has(concept);
   }
 
-  protected isReviewedConcept(concept: string): boolean {
-    return REVIEWED_CONCEPTS.has(concept);
-  }
-
-  protected fillStarterQuery(query: string): void {
-    this.queryDraft.set(query);
+  protected isRejectedConcept(concept: string): boolean {
+    return REJECTED_CONCEPTS.has(concept);
   }
 
   protected canSubmitDraft(): boolean {
@@ -335,11 +339,16 @@ export class LandingPageComponent {
       return null;
     }
 
-    return 'Enter a valid concept or structured query';
+    return 'Enter any query to continue';
   }
 
   protected async submitScopedConcept(concept: string): Promise<void> {
-    if (!this.isLiveConcept(concept) && !this.isKnownConceptDetail(concept)) {
+    if (
+      !this.isLiveConcept(concept)
+      && !this.isVisibleOnlyConceptId(concept)
+      && !this.isRejectedConcept(concept)
+      && !DETAIL_BACKED_CONCEPTS.has(concept)
+    ) {
       return;
     }
 
@@ -432,7 +441,11 @@ export class LandingPageComponent {
       case 'ambiguous_match':
         return 'Selection required';
       case 'no_exact_match':
-        return 'Refused';
+        return 'No exact match';
+      case 'invalid_query':
+        return 'Invalid query input';
+      case 'unsupported_query_type':
+        return 'Unsupported query type';
       default:
         return 'Resolution';
     }
@@ -445,6 +458,10 @@ export class LandingPageComponent {
 
     if (response.type === 'rejected_concept') {
       return 'Rejected';
+    }
+
+    if (response.type === 'invalid_query' || response.type === 'unsupported_query_type') {
+      return 'Refused';
     }
 
     if (response.type === 'no_exact_match' && response.interpretation?.interpretationType === 'out_of_scope') {
@@ -523,6 +540,10 @@ export class LandingPageComponent {
         return 'Need a precise choice';
       case 'no_exact_match':
         return 'No exact match';
+      case 'invalid_query':
+        return 'Invalid query input';
+      case 'unsupported_query_type':
+        return 'Unsupported query type';
       default:
         return 'Response';
     }
@@ -557,8 +578,12 @@ export class LandingPageComponent {
         return 'Ambiguous normalized alias';
       case 'no_exact_match':
         return 'No exact match';
+      case 'invalid_query':
+        return 'Invalid query';
       case 'rejection_registry':
         return 'Rejection registry';
+      case 'unsupported_query_type':
+        return 'Unsupported query type';
       default:
         return method;
     }
@@ -606,8 +631,8 @@ export class LandingPageComponent {
     return response as AmbiguousMatchResponse;
   }
 
-  protected asNoExactMatch(response: ResolveProductResponse): NoExactMatchResponse {
-    return response as NoExactMatchResponse;
+  protected asRefusal(response: ResolveProductResponse): RefusalResponse {
+    return response as RefusalResponse;
   }
 
   protected asRejectedConcept(response: ResolveProductResponse): RejectedConceptResponse {
@@ -626,6 +651,18 @@ export class LandingPageComponent {
         return 'Phase 1 Passed';
       case 'phase2_stable':
         return 'Phase 2 Stable';
+      case 'pending_overlap_scan':
+        return 'Pending Overlap Scan';
+      case 'overlap_scan_passed':
+        return 'Overlap Scan Passed';
+      case 'overlap_scan_failed_conflict':
+        return 'Overlap Scan Failed: Conflict';
+      case 'overlap_scan_failed_duplicate':
+        return 'Overlap Scan Failed: Duplicate';
+      case 'overlap_scan_failed_compression':
+        return 'Overlap Scan Failed: Compression';
+      case 'overlap_scan_boundary_required':
+        return 'Overlap Scan: Boundary Proof Required';
       default:
         return admission;
     }
@@ -644,43 +681,104 @@ export class LandingPageComponent {
     return admission ? REVIEWED_NOT_LIVE_ADMISSIONS.has(admission) : false;
   }
 
+  protected isVisibleOnlyDetail(detail: ConceptDetailResponse | null | undefined): boolean {
+    return detail?.conceptId ? VISIBLE_ONLY_PUBLIC_CONCEPTS.has(detail.conceptId) : false;
+  }
+
+  protected isVisibleOnlyRefusal(
+    response: RefusalResponse,
+    detail: ConceptDetailResponse | null | undefined,
+  ): boolean {
+    return this.isVisibleOnlyDetail(detail)
+      || response.interpretation?.interpretationType === 'visible_only_public_concept';
+  }
+
   protected noExactMatchStripLabel(detail: ConceptDetailResponse | null | undefined): string {
+    if (this.isVisibleOnlyDetail(detail)) {
+      return 'Public scope';
+    }
+
     return this.isReviewedNotLive(detail) ? 'Runtime' : 'Resolution';
   }
 
   protected noExactMatchResolutionValue(
-    response: NoExactMatchResponse,
+    response: RefusalResponse,
     detail: ConceptDetailResponse | null | undefined,
   ): string {
+    if (this.isVisibleOnlyRefusal(response, detail)) {
+      return 'Visible only';
+    }
+
     return this.isReviewedNotLive(detail) ? 'Not yet live' : this.resolutionTypeLabel(response);
   }
 
-  protected noExactMatchExecutionValue(
-    response: NoExactMatchResponse,
+  protected noExactMatchScopeValue(
+    response: ResolveProductResponse,
     detail: ConceptDetailResponse | null | undefined,
   ): string {
+    if (detail?.conceptId) {
+      return this.scopeLabelForConcept(detail.conceptId);
+    }
+
+    return this.runtimeScopeLabel(response);
+  }
+
+  protected noExactMatchExecutionValue(
+    response: RefusalResponse,
+    detail: ConceptDetailResponse | null | undefined,
+  ): string {
+    if (this.isVisibleOnlyRefusal(response, detail)) {
+      return 'Not admitted';
+    }
+
     return this.isReviewedNotLive(detail) ? 'Not admitted' : this.executionStateLabel(response);
   }
 
-  protected noExactMatchResponseLabel(detail: ConceptDetailResponse | null | undefined): string {
-    return this.isReviewedNotLive(detail) ? 'Reviewed concept' : 'No exact match';
+  protected noExactMatchResponseLabel(
+    response: RefusalResponse,
+    detail: ConceptDetailResponse | null | undefined,
+  ): string {
+    if (this.isVisibleOnlyRefusal(response, detail)) {
+      return 'Visible-only concept';
+    }
+
+    return this.isReviewedNotLive(detail) ? 'Reviewed concept' : this.resolutionTypeLabel(response);
   }
 
-  protected noExactMatchTitle(detail: ConceptDetailResponse | null | undefined): string {
+  protected noExactMatchTitle(
+    response: RefusalResponse,
+    detail: ConceptDetailResponse | null | undefined,
+  ): string {
+    if (this.isVisibleOnlyRefusal(response, detail)) {
+      return 'Visible in public scope, not live';
+    }
+
     switch (detail?.reviewState?.admission) {
       case 'phase2_stable':
         return 'Reviewed and stable, not yet live';
       case 'phase1_passed':
         return 'Reviewed, not yet live';
       default:
+        if (response.type === 'invalid_query') {
+          return 'Invalid query input';
+        }
+
+        if (response.type === 'unsupported_query_type') {
+          return 'Unsupported query type';
+        }
+
         return 'No canonical concept resolved';
     }
   }
 
   protected noExactMatchBody(
-    response: NoExactMatchResponse,
+    response: RefusalResponse,
     detail: ConceptDetailResponse | null | undefined,
   ): string {
+    if (this.isVisibleOnlyRefusal(response, detail)) {
+      return 'This concept is publicly visible and inspectable, but it is not admitted to the live public runtime.';
+    }
+
     switch (detail?.reviewState?.admission) {
       case 'phase2_stable':
         return 'This concept has passed internal review and remains stable, but is not yet admitted to the live public runtime.';
@@ -691,16 +789,37 @@ export class LandingPageComponent {
     }
   }
 
-  protected noExactMatchSupportCopy(detail: ConceptDetailResponse | null | undefined): string {
-    return this.isReviewedNotLive(detail)
-      ? 'Only live concepts resolve in the current public runtime.'
-      : 'No exact concept exists in the current authored set for this query.';
+  protected noExactMatchSupportCopy(
+    response: RefusalResponse,
+    detail: ConceptDetailResponse | null | undefined,
+  ): string {
+    if (this.isVisibleOnlyRefusal(response, detail)) {
+      return 'Visible-only concepts expose authored detail without entering live runtime resolution or comparison support.';
+    }
+
+    if (this.isReviewedNotLive(detail)) {
+      return 'Only live concepts resolve in the current public runtime.';
+    }
+
+    if (response.type === 'invalid_query') {
+      return 'The runtime does not infer missing meaning from noise input.';
+    }
+
+    if (response.type === 'unsupported_query_type') {
+      return 'This runtime supports exact concept resolution and allowlisted comparisons only.';
+    }
+
+    return 'No exact concept exists in the current authored set for this query.';
   }
 
   protected noExactMatchMetaChips(
-    response: NoExactMatchResponse,
+    response: RefusalResponse,
     detail: ConceptDetailResponse | null | undefined,
   ): string[] {
+    if (this.isVisibleOnlyRefusal(response, detail)) {
+      return ['Visible only', response.contractVersion];
+    }
+
     if (this.isReviewedNotLive(detail)) {
       return ['Review-backed', response.contractVersion];
     }
@@ -819,7 +938,7 @@ export class LandingPageComponent {
     detail: ConceptDetailResponse | null,
     feedbackOrigin?: AmbiguousSelectionOrigin,
   ): EntryFeedbackState | undefined {
-    if (detail?.reviewState) {
+    if (detail?.reviewState || this.isVisibleOnlyDetail(detail)) {
       return undefined;
     }
 
@@ -912,7 +1031,7 @@ export class LandingPageComponent {
   private describeError(error: unknown): string {
     if (error instanceof HttpErrorResponse) {
       if (error.status === 400) {
-        return 'Enter a concept query to continue.';
+        return 'Enter any non-empty query to continue.';
       }
 
       if (error.status === 0) {
@@ -924,59 +1043,18 @@ export class LandingPageComponent {
   }
 
   private classifyQuery(query: string): QueryAssessment {
-    const trimmedQuery = query.trim();
-
-    if (!trimmedQuery) {
+    if (!query.trim()) {
       return {
         classification: 'empty',
         status: 'idle',
-        label: 'Awaiting input',
-        line: 'Query type: Awaiting input',
-        message: 'Enter a concept, canonical lookup, or controlled comparison.',
         canSubmit: false,
       };
     }
 
-    if (this.controlledComparisonPattern.test(trimmedQuery)) {
-      return {
-        classification: 'controlled_comparison',
-        status: 'valid',
-        label: 'Controlled comparison',
-        line: 'Query type: Controlled comparison',
-        message: 'Structured comparison recognized for deterministic execution.',
-        canSubmit: true,
-      };
-    }
-
-    if (this.canonicalLookupPattern.test(trimmedQuery)) {
-      return {
-        classification: 'canonical_lookup',
-        status: 'valid',
-        label: 'Canonical lookup',
-        line: 'Query type: Canonical lookup',
-        message: 'Structured lookup recognized for deterministic execution.',
-        canSubmit: true,
-      };
-    }
-
-    if (this.directConceptPattern.test(trimmedQuery)) {
-      return {
-        classification: 'direct_concept',
-        status: 'valid',
-        label: 'Direct concept',
-        line: 'Query type: Direct concept',
-        message: 'Structured concept query recognized for deterministic execution.',
-        canSubmit: true,
-      };
-    }
-
     return {
-      classification: 'unsupported',
-      status: 'invalid',
-      label: 'Unsupported',
-      line: 'Query type: Unsupported -> will be refused',
-      message: 'This query is outside the current runtime scope.',
-      canSubmit: false,
+      classification: 'ready',
+      status: 'valid',
+      canSubmit: true,
     };
   }
 
@@ -1067,15 +1145,20 @@ export class LandingPageComponent {
       return conceptId || null;
     }
 
-    if (this.canonicalLookupPattern.test(trimmedQuery)) {
-      return trimmedQuery.replace(/^define\s+/i, '').trim() || null;
-    }
-
-    if (this.directConceptPattern.test(trimmedQuery)) {
-      return trimmedQuery;
+    const normalizedCandidate = response.normalizedQuery.trim();
+    if (DETAIL_BACKED_CONCEPTS.has(normalizedCandidate)) {
+      return normalizedCandidate;
     }
 
     return null;
+  }
+
+  protected refusalHasSuggestions(response: RefusalResponse): response is NoExactMatchResponse {
+    return response.type === 'no_exact_match' && response.suggestions.length > 0;
+  }
+
+  protected refusalSuggestions(response: RefusalResponse): Suggestion[] {
+    return response.type === 'no_exact_match' ? response.suggestions : [];
   }
 
   private runtimeTraceSourceLabel(governanceState: GovernanceState): string {

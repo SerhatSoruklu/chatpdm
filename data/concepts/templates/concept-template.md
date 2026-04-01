@@ -31,6 +31,18 @@
 
 ### `coreMeaning`
 
+### `structuralProfile`
+
+- `function`:
+- `object`:
+- `sourceType`:
+- `actorRelation`:
+- `temporalRole`:
+- `enforcementRole`:
+- `answerabilityRole`:
+- `requiredConductRole`:
+- `outcomeAttributionRole`:
+
 ### `fullDefinition`
 
 ### `registers.standard`
@@ -68,6 +80,16 @@
 - `conceptId`:
   `relationType`:
 
+### `boundaryProofs`
+
+- `relatedConceptId`:
+  - `notIdenticalTo`:
+  - `boundaryStatement`:
+  - `nonSubstitutionRule`:
+  - `failureIfCollapsed`:
+  - `validSeparationExample`:
+  - `invalidCollapseExample`:
+
 ### `reviewMetadata`
 
 - `what_it_is`:
@@ -92,6 +114,11 @@
 - `canonical.invariant` should state what the concept is without using register-specific scaffolding.
 - `canonical.excludes` should list what the concept must not collapse into.
 - `canonical.adjacent` should name nearby concepts and state the boundary against each one.
+- `structuralProfile.*` is the canonical comparison profile seed. Keep it explicit, deterministic, and independent of runtime prose parsing.
+- `reviewMetadata.must_not_collapse_into` becomes `forbiddenEquivalences[]` in the normalized structural profile.
+- `boundaryProofs.*` is required whenever structural comparison classifies a pair as `adjacent` or `requires_explicit_boundary_note`.
+- Each `boundaryProofs.<conceptId>.notIdenticalTo` value must exactly match the referenced concept id.
+- Boundary proof fields must be explicitly authored; placeholders, generic text, and omission fail validation.
 - `registers.standard.*` must exactly match the top-level canonical prose fields.
 - `registers.simplified.*` and `registers.formal.*` must be independently authored, not mechanically derived.
 - Use the published packets for `authority`, `power`, `legitimacy`, `duty`, and `responsibility` as the current reference standard for divergence quality.

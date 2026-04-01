@@ -15,6 +15,12 @@
       "$ref": "#/$defs/noExactMatchResponse"
     },
     {
+      "$ref": "#/$defs/invalidQueryResponse"
+    },
+    {
+      "$ref": "#/$defs/unsupportedQueryTypeResponse"
+    },
+    {
       "$ref": "#/$defs/ambiguousMatchResponse"
     },
     {
@@ -52,7 +58,8 @@
         "comparison_query",
         "relation_query",
         "role_or_actor_query",
-        "unsupported_complex_query"
+        "unsupported_complex_query",
+        "invalid_query"
       ]
     },
     "interpretationObject": {
@@ -75,6 +82,10 @@
             "validation_blocked",
             "unsupported_complex",
             "canonical_lookup_not_found",
+            "exact_concept_not_found",
+            "visible_only_public_concept",
+            "explicitly_rejected_concept",
+            "invalid_query",
             "out_of_scope",
             "scoped_clarification"
           ]
@@ -631,6 +642,30 @@
         }
       }
     },
+    "invalidQueryResolution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "method"
+      ],
+      "properties": {
+        "method": {
+          "const": "invalid_query"
+        }
+      }
+    },
+    "unsupportedQueryTypeResolution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "method"
+      ],
+      "properties": {
+        "method": {
+          "const": "unsupported_query_type"
+        }
+      }
+    },
     "rejectedConceptResolution": {
       "type": "object",
       "additionalProperties": false,
@@ -939,7 +974,32 @@
           ]
         },
         "interpretation": {
-          "type": "null"
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "interpretationType",
+            "message",
+            "targetConceptId",
+            "concepts"
+          ],
+          "properties": {
+            "interpretationType": {
+              "const": "explicitly_rejected_concept"
+            },
+            "message": {
+              "$ref": "#/$defs/stringValue"
+            },
+            "targetConceptId": {
+              "$ref": "#/$defs/stringValue"
+            },
+            "concepts": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "$ref": "#/$defs/stringValue"
+              }
+            }
+          }
         },
         "resolution": {
           "$ref": "#/$defs/rejectedConceptResolution"
@@ -1019,6 +1079,115 @@
           "items": {
             "$ref": "#/$defs/suggestionObject"
           }
+        }
+      }
+    },
+    "invalidQueryResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "query",
+        "normalizedQuery",
+        "contractVersion",
+        "normalizerVersion",
+        "matcherVersion",
+        "conceptSetVersion",
+        "queryType",
+        "interpretation",
+        "resolution",
+        "message"
+      ],
+      "properties": {
+        "type": {
+          "const": "invalid_query"
+        },
+        "query": {
+          "$ref": "#/$defs/stringValue"
+        },
+        "normalizedQuery": {
+          "$ref": "#/$defs/stringValue"
+        },
+        "contractVersion": {
+          "$ref": "#/$defs/contractVersionString"
+        },
+        "normalizerVersion": {
+          "$ref": "#/$defs/datedVersionString"
+        },
+        "matcherVersion": {
+          "$ref": "#/$defs/datedVersionString"
+        },
+        "conceptSetVersion": {
+          "$ref": "#/$defs/conceptSetVersionString"
+        },
+        "queryType": {
+          "const": "invalid_query"
+        },
+        "interpretation": {
+          "$ref": "#/$defs/interpretationObject"
+        },
+        "resolution": {
+          "$ref": "#/$defs/invalidQueryResolution"
+        },
+        "message": {
+          "const": "No recognizable concept or supported query structure was detected."
+        }
+      }
+    },
+    "unsupportedQueryTypeResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "query",
+        "normalizedQuery",
+        "contractVersion",
+        "normalizerVersion",
+        "matcherVersion",
+        "conceptSetVersion",
+        "queryType",
+        "interpretation",
+        "resolution",
+        "message"
+      ],
+      "properties": {
+        "type": {
+          "const": "unsupported_query_type"
+        },
+        "query": {
+          "$ref": "#/$defs/stringValue"
+        },
+        "normalizedQuery": {
+          "$ref": "#/$defs/stringValue"
+        },
+        "contractVersion": {
+          "$ref": "#/$defs/contractVersionString"
+        },
+        "normalizerVersion": {
+          "$ref": "#/$defs/datedVersionString"
+        },
+        "matcherVersion": {
+          "$ref": "#/$defs/datedVersionString"
+        },
+        "conceptSetVersion": {
+          "$ref": "#/$defs/conceptSetVersionString"
+        },
+        "queryType": {
+          "type": "string",
+          "enum": [
+            "relation_query",
+            "role_or_actor_query",
+            "unsupported_complex_query"
+          ]
+        },
+        "interpretation": {
+          "$ref": "#/$defs/interpretationObject"
+        },
+        "resolution": {
+          "$ref": "#/$defs/unsupportedQueryTypeResolution"
+        },
+        "message": {
+          "const": "This query has recognizable structure, but the current runtime does not support this query type yet."
         }
       }
     },

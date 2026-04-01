@@ -37,6 +37,17 @@
   },
   "shortDefinition": "Legitimacy is accepted or justified validity of rule or standing within a governance order.",
   "coreMeaning": "Within the governance domain, legitimacy functions by marking a rule, office, or standing as valid rather than merely operative. It concerns what counts as justified or accepted, not who may direct or what can be made to happen.",
+  "structuralProfile": {
+    "function": "accepted or justified validity assessment of rule or standing",
+    "object": "rule, office, or standing within a governance order",
+    "sourceType": "acceptance, justification, or procedurally grounded validity",
+    "actorRelation": "actor, office, or rule is evaluated as valid rather than merely operative",
+    "temporalRole": "evaluative status applied to standing or rule",
+    "enforcementRole": "can justify compliance without being enforcement itself",
+    "answerabilityRole": "does not assign answerability",
+    "requiredConductRole": "does not define required conduct",
+    "outcomeAttributionRole": "does not attribute outcomes to an actor"
+  },
   "fullDefinition": "Legitimacy is not the same as authority or power. In ChatPDM v1 it is defined within the governance domain as accepted or justified validity of rule or standing within a governance order.\n\nIts internal composition joins acceptance or justification to a rule, office, institution, or governing order. The concept therefore evaluates standing rather than conferring directive right or operative capacity.\n\nWithin governance structures, legitimacy stabilizes obedience, trust, and continuity by making authority or power count as valid. Power may operate without it, and authority may exist while its legitimacy is contested.",
   "registers": {
     "standard": {
@@ -138,6 +149,24 @@
           "statement": "legitimacy is not power; power may operate without legitimacy"
         }
       ]
+    }
+  },
+  "boundaryProofs": {
+    "authority": {
+      "notIdenticalTo": "authority",
+      "boundaryStatement": "Legitimacy concerns whether rule or standing counts as accepted or justified, whereas authority concerns the recognized standing that may direct within the order.",
+      "nonSubstitutionRule": "Do not substitute legitimacy for authority when the issue is who may direct from an office rather than whether that office or order counts as valid.",
+      "failureIfCollapsed": "If legitimacy collapses into authority, the system would treat recognized directive standing as automatically justified and would lose cases where authority persists under legitimacy dispute.",
+      "validSeparationExample": "A ruler may retain formal authority to issue commands while the legitimacy of the governing order is widely contested.",
+      "invalidCollapseExample": "Treating every recognized office as legitimate just because it has authority collapses legitimacy into authority."
+    },
+    "power": {
+      "notIdenticalTo": "power",
+      "boundaryStatement": "Legitimacy concerns accepted or justified validity, whereas power concerns effective capacity to produce outcomes or secure compliance within the order.",
+      "nonSubstitutionRule": "Do not substitute legitimacy for power when the issue is operative effect rather than whether a rule, office, or order counts as proper.",
+      "failureIfCollapsed": "If legitimacy collapses into power, the system would treat successful control as sufficient justification and would erase cases where effective rule lacks valid standing.",
+      "validSeparationExample": "An emergency junta may exercise substantial power while lacking legitimacy in the eyes of those subject to it.",
+      "invalidCollapseExample": "Calling a regime legitimate because it can impose order collapses legitimacy into power."
     }
   },
   "reviewMetadata": {

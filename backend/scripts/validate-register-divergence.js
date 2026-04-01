@@ -2,12 +2,17 @@
 
 const fs = require('node:fs');
 const path = require('node:path');
-const { SEED_CONCEPT_IDS } = require('../src/modules/concepts/constants');
+const { LIVE_CONCEPT_IDS } = require('../src/modules/concepts/constants');
 const { validateConceptShape } = require('../src/modules/concepts/concept-loader');
 const { validateRegisterDivergenceForConcept } = require('../src/modules/concepts/register-divergence-validator');
 
 const conceptsDirectory = path.resolve(__dirname, '../../data/concepts');
-const NON_CONCEPT_PACKET_FILES = new Set(['resolve-rules.json']);
+const NON_CONCEPT_PACKET_FILES = new Set([
+  'concept-admission-state.json',
+  'overlap-boundary-change-approvals.json',
+  'overlap-classification-snapshot.json',
+  'resolve-rules.json',
+]);
 
 function loadPublishedConceptPackets() {
   return fs.readdirSync(conceptsDirectory)
@@ -25,7 +30,7 @@ function loadPublishedConceptPackets() {
 
 function main() {
   const concepts = loadPublishedConceptPackets();
-  const activeConceptIds = new Set(SEED_CONCEPT_IDS);
+  const activeConceptIds = new Set(LIVE_CONCEPT_IDS);
   const inactivePublishedConceptIds = concepts
     .map((concept) => concept.conceptId)
     .filter((conceptId) => !activeConceptIds.has(conceptId));
@@ -72,7 +77,7 @@ function main() {
     `SUMMARY valid_register_counts={1:${validRegisterCount[1]},2:${validRegisterCount[2]},3:${validRegisterCount[3]}}\n`,
   );
   process.stdout.write(
-    `SUMMARY concept_inventory={published:${concepts.length},active:${SEED_CONCEPT_IDS.length},inactive_published:${inactivePublishedConceptIds.length}}\n`,
+    `SUMMARY concept_inventory={published:${concepts.length},active:${LIVE_CONCEPT_IDS.length},inactive_published:${inactivePublishedConceptIds.length}}\n`,
   );
 
   if (failureCategoryCounts.size > 0) {

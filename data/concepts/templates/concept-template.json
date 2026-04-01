@@ -15,6 +15,17 @@
   },
   "shortDefinition": "",
   "coreMeaning": "",
+  "structuralProfile": {
+    "function": "",
+    "object": "",
+    "sourceType": "",
+    "actorRelation": "",
+    "temporalRole": "",
+    "enforcementRole": "",
+    "answerabilityRole": "",
+    "requiredConductRole": "",
+    "outcomeAttributionRole": ""
+  },
   "fullDefinition": "",
   "registers": {
     "standard": {
@@ -53,6 +64,7 @@
       "relationType": ""
     }
   ],
+  "boundaryProofs": {},
   "reviewMetadata": {
     "what_it_is": [],
     "what_it_is_not": [],

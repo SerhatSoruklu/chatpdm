@@ -2,7 +2,9 @@ import type { PublicPageContent, PublicPageKey } from './public-page.types';
 import {
   SITE_HELLO_EMAIL,
   SITE_INFO_EMAIL,
+  SITE_LEGAL_EMAIL,
   SITE_POLICY_EMAIL,
+  SITE_SECURITY_EMAIL,
   SITE_SUPPORT_EMAIL,
 } from '../../core/layout/site-navigation.data';
 
@@ -184,42 +186,67 @@ const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
   },
   contact: {
     eyebrow: 'Contact',
-    title: 'Public contact workflow for the beta stage.',
+    title: 'Direct inboxes for product, policy, and support.',
     intro:
-      'ChatPDM is still publishing its stable public contact surface. This page marks the route that will hold product, research, and integration contact details.',
+      'Use the inbox that best matches the request. The contact surface stays simple on purpose: direct email routes, clear scope, and no form layer.',
     sections: [
       {
-        title: 'Current status',
+        title: 'How to use this page',
         paragraphs: [
-          'The direct contact workflow is still being formalized. Until that is published, ChatPDM remains a narrow public beta with a limited communication surface.',
+          'Choose the address that best matches the subject. This keeps product, support, policy, legal, and security traffic easier to route without adding a heavier intake system.',
+          'The listed inboxes currently feed the same managed contact workflow at contact@chatpdm.com.',
         ],
       },
       {
-        title: 'What this route will carry',
+        title: 'Inbox scope',
         bullets: [
-          'product and research contact details',
-          'integration or implementation inquiries',
-          'clear boundary notes for support expectations',
+          'use product and information inboxes for general contact and external inquiries',
+          'use support for runtime, route, and product-use questions',
+          'use policy and legal for governance, privacy, retention, and terms matters',
+          'use security only for vulnerability or security reporting',
         ],
       },
       {
-        title: 'Current inboxes',
+        title: 'Contact inboxes',
         contacts: [
           {
             label: 'Hello',
             email: SITE_HELLO_EMAIL,
-            note: 'General product introductions and first-contact outreach.',
+            note: 'General introductions, first contact, and broad product outreach.',
           },
           {
             label: 'Info',
             email: SITE_INFO_EMAIL,
-            note: 'Research, documentation, and general public inquiries.',
+            note: 'Research, documentation, media, and general public inquiries.',
+          },
+          {
+            label: 'Legal',
+            email: SITE_LEGAL_EMAIL,
+            note: 'Legal notices, contractual matters, and formal legal communication.',
+          },
+          {
+            label: 'Policy',
+            email: SITE_POLICY_EMAIL,
+            note: 'Privacy, data retention, cookies, and acceptable-use policy questions.',
+          },
+          {
+            label: 'Security',
+            email: SITE_SECURITY_EMAIL,
+            note: 'Security reporting, vulnerability disclosure, and responsible disclosure contact.',
           },
           {
             label: 'Support',
             email: SITE_SUPPORT_EMAIL,
-            note: 'Runtime questions, product support expectations, and route help.',
+            note: 'Runtime questions, route help, and product-use support.',
           },
+        ],
+      },
+      {
+        title: 'Current boundary',
+        bullets: [
+          'no contact form is used on this route',
+          'this page does not publish support-time guarantees',
+          'the contact surface remains email-first and low-friction',
         ],
       },
     ],
@@ -428,54 +455,236 @@ const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
       route: '/inspect/cookies',
     },
   },
-  docs: {
-    eyebrow: 'Docs',
-    title: 'Product and architecture documentation.',
+  'scope-model': {
+    eyebrow: 'Scope model',
+    title: 'Public scope and admission order.',
     intro:
-      'This surface defines system boundaries, runtime behavior, and the structures that govern how ChatPDM operates.',
+      'This surface defines what the current system is allowed to contain, what is live now, what remains reviewed or blocked, and how expansion is ordered.',
     sections: [
       {
-        title: 'System roadmap',
+        title: 'Public scope boundary',
         paragraphs: [
-          'The Legal Argument Validator roadmap defines how the system evolves.',
-          'The sequence is fixed. Phases are not reordered or renamed after definition. This prevents drift and preserves system integrity over time.',
-          'Detailed implementation controls, validation gates, and internal artifacts are maintained separately from this public surface.',
+          'The public system stays narrower than the wider concept map by design. Runtime admission is earned, not implied.',
         ],
-      },
-      {
-        title: 'What this roadmap represents',
-        paragraphs: [
-          'This is not a feature list.',
-          'It defines the order in which system capabilities are allowed to exist. Each phase depends on structural correctness in earlier phases.',
-        ],
-      },
-      {
-        title: 'Legal Argument Validator roadmap',
         bullets: [
-          'Pre-A: Scope Lock and Product Law',
-          'A: Matter and Document Intake',
-          'B: Segmentation and Source Anchors',
-          'C: Argument Extraction and Admissibility Gate',
-          'D: Concept Registry and Doctrine Loader',
-          'E: Authority Registry and Citation Scope Law',
-          'F: Mapping Engine and Synonym Governance',
-          'G: Validation Kernel',
-          'H: Failure Codes, Trace, and Replay',
-          'I: Analyst Workbench',
-          'J: Report and Export Layer',
-          'K: Governance and Promotion Controls',
-          'L: Hardening, Audit, and Tenancy',
+          'live concepts are admitted to the public runtime',
+          'visible-only concepts may remain inspectable without being live',
+          'rejected concepts remain visible only as structural refusal',
+          'unsupported inputs stay outside the runtime instead of being guessed into scope',
         ],
       },
       {
-        title: 'Planned surfaces',
+        title: 'Current live runtime',
+        paragraphs: [
+          'These concepts are currently admitted and queryable in the public runtime.',
+        ],
+        bullets: [
+          'authority',
+          'power',
+          'legitimacy',
+          'law',
+          'duty',
+          'violation',
+          'responsibility',
+        ],
+      },
+      {
+        title: 'Current visible-only public scope',
+        paragraphs: [
+          'These concepts are inspectable on the public surface but are not admitted to runtime resolution.',
+        ],
+        bullets: [
+          'agreement',
+          'commitment',
+          'breach',
+        ],
+      },
+      {
+        title: 'Current rejected public scope',
+        paragraphs: [
+          'These concepts remain visible only as explicit structural refusal surfaces.',
+        ],
+        bullets: [
+          'obligation',
+          'enforcement',
+        ],
+      },
+      {
+        title: 'Lifecycle and admission order',
+        paragraphs: [
+          'Not every known concept shares the same runtime status. Visible-only detail, review metadata, rejection state, and runtime admission remain separate, and progression remains ordered rather than assumed.',
+        ],
+        bullets: [
+          'visible-only public scope is a separate admission path from live runtime',
+          'review metadata is not the same as runtime admission',
+          'proposal is not the same as public scope',
+          'law: review-backed and admitted to the public runtime',
+          'violation: review-backed and admitted to the public runtime',
+        ],
+      },
+      {
+        title: 'Staged capability order',
+        paragraphs: [
+          'Expansion follows controlled order rather than coverage pressure. Capability order exists to protect runtime integrity before new surface area is exposed.',
+        ],
+        bullets: [
+          'scope is tightened before capability is broadened',
+          'runtime exposure follows structural validation, not demand for coverage',
+          'new surfaces are allowed only after earlier boundaries hold',
+        ],
+      },
+      {
+        title: 'Why the system stays narrow',
+        paragraphs: [
+          'Reliability comes before coverage. Refusal protects the runtime by keeping unsupported structure outside the trusted public surface.',
+        ],
+        bullets: [
+          'reliability before coverage',
+          'structure before expansion',
+          'refusal protects the runtime',
+        ],
+      },
+      {
+        title: 'Scope versus architecture',
+        paragraphs: [
+          'This page defines what the system permits and how it expands. It does not define how reasoning systems are structured internally.',
+          'Architectural reasoning models are described separately in /reasoning-structure.',
+        ],
+      },
+      {
+        title: 'Closing',
         paragraphs: [
           'The system expands only when structure holds.',
         ],
-        bullets: [
-          'getting started and product boundaries',
-          'runtime and contract documentation',
-          'architecture and authoring references',
+      },
+    ],
+  },
+  docs: {
+    eyebrow: 'Docs',
+    title: 'Documentation index.',
+    intro:
+      'Use this surface to inspect the public system in detail. It maps the current runtime, structure, contracts, and longer-form references without repeating the scope model.',
+    sections: [
+      {
+        title: 'Runtime surfaces',
+        links: [
+          {
+            label: 'Runtime',
+            route: '/runtime',
+            note: 'Query the live deterministic runtime and inspect current result behavior.',
+          },
+          {
+            label: 'Live concepts',
+            route: '/live-concepts',
+            note: 'Read the concepts currently admitted to the public runtime.',
+          },
+          {
+            label: 'Controlled comparisons',
+            route: '/controlled-comparisons',
+            note: 'Inspect the comparison pairs the runtime currently allows.',
+          },
+          {
+            label: 'Runtime refusal behavior',
+            route: '/runtime',
+            fragment: 'runtime-refusal',
+            note: 'Inspect refusal as a structured runtime outcome rather than an error state.',
+          },
+        ],
+      },
+      {
+        title: 'System structure',
+        links: [
+          {
+            label: 'About',
+            route: '/about',
+            note: 'Read the deterministic posture and authored-scope identity of the product.',
+          },
+          {
+            label: 'How it works',
+            route: '/how-it-works',
+            note: 'Inspect the validation path from input to bounded output.',
+          },
+          {
+            label: 'Reasoning structure',
+            route: '/reasoning-structure',
+            note: 'See how deterministic authority stays primary over any future advisory reasoning.',
+          },
+          {
+            label: 'Vision',
+            route: '/vision',
+            note: 'Read the longer-term infrastructure direction without changing current runtime truth.',
+          },
+          {
+            label: 'Scope model',
+            route: '/scope-model',
+            note: 'Inspect public boundary law, admission order, and current scope status.',
+          },
+        ],
+      },
+      {
+        title: 'Contracts and reference',
+        links: [
+          {
+            label: 'Resolution contract',
+            route: '/resolution-contract',
+            note: 'Inspect the stable semantic result states returned by the runtime and how review-state metadata stays separate from admission.',
+          },
+          {
+            label: 'Version policy',
+            route: '/version-policy',
+            note: 'Inspect the version ownership and change law that determine when runtime output identity is allowed to change.',
+          },
+          {
+            label: 'API',
+            route: '/api',
+            note: 'Inspect the HTTP transport contract, endpoint surface, and request or validation rules.',
+          },
+          {
+            label: 'Developer guidance',
+            route: '/developers',
+            note: 'Developer-facing route for integration guidance and system reference surfaces.',
+          },
+          {
+            label: 'Source model',
+            route: '/source-model',
+            note: 'Inspect how source material is admitted, constrained, and kept separate from runtime canon.',
+          },
+        ],
+      },
+      {
+        title: 'Longer-form guidance',
+        links: [
+          {
+            label: 'Developers',
+            route: '/developers',
+            note: 'Developer-oriented product, boundary, and integration guidance.',
+          },
+          {
+            label: 'Handbooks',
+            route: '/handbooks',
+            note: 'Operational guides for authoring, review, and disciplined change inside the system.',
+          },
+        ],
+      },
+      {
+        title: 'Policy and trust surfaces',
+        links: [
+          {
+            label: 'FAQ',
+            route: '/faq',
+            note: 'Clarify scope, refusal behavior, and trust boundaries in plain language.',
+          },
+          {
+            label: 'What ChatPDM is',
+            route: '/what-is-chatpdm',
+            note: 'Read the category definition and disambiguation from Product Data Management.',
+          },
+        ],
+      },
+      {
+        title: 'Closing',
+        paragraphs: [
+          'Start with the surface you need. Each page exposes a different part of the system.',
         ],
       },
     ],
@@ -496,18 +705,384 @@ const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
       },
     ],
   },
-  handbooks: {
-    eyebrow: 'Handbooks',
-    title: 'Longform operational and authoring guidance.',
+  'source-model': {
+    eyebrow: 'Source model',
+    title: 'Source governance for authored meaning.',
     intro:
-      'Handbooks will hold longer-form material that needs more structure than short product docs but should still live in the public ChatPDM system.',
+      'This page defines how source material is admitted, constrained, and used in ChatPDM.',
     sections: [
       {
-        title: 'Expected use',
+        title: 'Core principle',
+        paragraphs: [
+          'Sources do not become concepts automatically.',
+          'They are admitted only as structured input to authoring, review, and boundary testing.',
+          'Source material is evidence. Concept packets are the result.',
+        ],
+      },
+      {
+        title: 'Current source stance',
         bullets: [
-          'authoring guidance for concept work',
-          'system discipline and boundary notes',
-          'longform operational references',
+          'Published concepts use constrained, approved source grounding',
+          'Source priority is controlled and enforced',
+          'Published concept packets carry one primary grounding source and one dictionary boundary source',
+          'Review and rejection evidence remain separate from concept-packet grounding',
+          'Runtime serves authored concept packets, not raw source text',
+        ],
+      },
+      {
+        title: 'Source classes',
+        bullets: [
+          'Primary grounding source: used to define and constrain concept structure',
+          'Dictionary boundary source: used to stabilize definition boundaries',
+          'Review evidence: supports lifecycle validation and review state',
+          'Rejection evidence: supports structural rejection decisions',
+          'Internal authored source note: supports authoring but is not runtime canon',
+        ],
+      },
+      {
+        title: 'What sources may do',
+        bullets: [
+          'ground a concept boundary',
+          'support a distinction between concepts',
+          'support collapse testing',
+          'support review or rejection evidence',
+        ],
+      },
+      {
+        title: 'What sources may not do',
+        bullets: [
+          'auto-create a concept',
+          'bypass review or admission',
+          'define runtime canon directly',
+          'override deterministic system behavior',
+          'force runtime inclusion',
+        ],
+      },
+      {
+        title: 'Conflict handling',
+        paragraphs: [
+          'Conflicting source pressure must be resolved during authoring and review.',
+          'The runtime does not merge contradictory source claims into a single vague meaning.',
+        ],
+      },
+      {
+        title: 'Closing',
+        paragraphs: [
+          'Sources may inform the system. They do not bypass it.',
+        ],
+      },
+    ],
+  },
+  handbooks: {
+    eyebrow: 'Handbooks',
+    title: 'Guides for working with the system without breaking its structure.',
+    intro:
+      'Handbooks define how to work with ChatPDM safely. They are operational guides, not system explanations or policy surfaces.',
+    sections: [
+      {
+        title: 'Core principle',
+        paragraphs: [
+          'The system is deterministic and bounded.',
+          'All contributions must preserve structure, separation, and refusal behavior.',
+        ],
+      },
+      {
+        title: 'Handbook categories',
+        links: [
+          {
+            label: 'Concept authoring',
+            route: '/handbooks/concept-authoring',
+            note: 'Define concepts without collapse and enforce structural boundaries.',
+          },
+          {
+            label: 'Review and admission',
+            route: '/handbooks/review-admission',
+            note: 'Move work toward publication only after boundary, fit, and non-collapse checks hold.',
+          },
+          {
+            label: 'Source usage',
+            route: '/handbooks/source-usage',
+            note: 'Use source material as evidence without letting it bypass authored discipline.',
+          },
+          {
+            label: 'Rejection handling',
+            route: '/handbooks/rejection-handling',
+            note: 'Reject concepts and structures cleanly when they weaken clarity or stability.',
+          },
+          {
+            label: 'Comparison authoring',
+            route: '/handbooks/comparison-authoring',
+            note: 'Define allowed comparisons without weakening distinction or runtime trust.',
+          },
+          {
+            label: 'Runtime discipline',
+            route: '/handbooks/runtime-discipline',
+            note: 'Preserve refusal behavior, scope boundaries, and canonical runtime meaning during change.',
+          },
+        ],
+      },
+      {
+        title: 'What handbooks are not',
+        bullets: [
+          'not system explanations',
+          'not runtime output',
+          'not policy definitions',
+          'not concept content',
+        ],
+      },
+      {
+        title: 'Closing',
+        paragraphs: [
+          'These guides exist to preserve system integrity during change.',
+        ],
+      },
+    ],
+  },
+  'handbooks-concept-authoring': {
+    eyebrow: 'Handbooks',
+    title: 'Concept authoring',
+    intro:
+      'Define concepts without collapse.',
+    sections: [
+      {
+        title: 'Core rule',
+        bullets: [
+          'a concept must remain distinct under pressure',
+          'a concept that collapses into a nearby concept is not ready',
+          'runtime compensation is not a substitute for weak authoring',
+        ],
+      },
+      {
+        title: 'Required components',
+        bullets: [
+          'shortDefinition',
+          'coreMeaning',
+          'fullDefinition',
+          'boundary statements through excludes and adjacent boundaries',
+        ],
+      },
+      {
+        title: 'Must define',
+        bullets: [
+          'what the concept is',
+          'what the concept is not',
+          'which adjacent concepts must remain separate',
+        ],
+      },
+      {
+        title: 'Collapse checks',
+        bullets: [
+          'does it reduce to another concept under pressure',
+          'does it duplicate an existing concept structurally',
+          'can the same shortDefinition or mechanism survive a title swap',
+        ],
+      },
+      {
+        title: 'Failure conditions',
+        bullets: [
+          'vague definition',
+          'synonym collapse',
+          'boundary overlap',
+          'unsupported or decorative source grounding',
+        ],
+      },
+      {
+        title: 'Output rule',
+        bullets: [
+          'concept packets are the only runtime truth',
+          'draft authoring notes do not define runtime meaning',
+        ],
+      },
+    ],
+  },
+  'handbooks-review-admission': {
+    eyebrow: 'Handbooks',
+    title: 'Review and admission',
+    intro:
+      'Concepts must pass structure before becoming live.',
+    sections: [
+      {
+        title: 'Lifecycle states',
+        bullets: [
+          'blocked',
+          'phase1_passed',
+          'phase2_stable',
+          'pending_overlap_scan',
+          'overlap_scan_passed',
+          'overlap_scan_failed_conflict',
+          'overlap_scan_failed_duplicate',
+          'overlap_scan_failed_compression',
+          'overlap_scan_boundary_required',
+          'runtime',
+        ],
+      },
+      {
+        title: 'Phase 1 requirements',
+        bullets: [
+          'boundary clarity',
+          'non-collapse against nearby concepts',
+          'pressure-term grounding where structural wording depends on it',
+        ],
+      },
+      {
+        title: 'Phase 2 requirements',
+        bullets: [
+          'stable definitions',
+          'consistent structure across authored registers',
+          'validated relationships and adjacent boundaries',
+        ],
+      },
+      {
+        title: 'Admission rule',
+        bullets: [
+          'only structurally stable concepts enter runtime',
+          'overlap scan must pass before a concept can move into the live set',
+          'review state does not imply runtime admission by itself',
+        ],
+      },
+      {
+        title: 'Rejection rule',
+        bullets: [
+          'unresolved ambiguity blocks admission',
+          'unresolved collapse risk blocks admission',
+          'overlap conflicts, duplicates, and compression now block admission',
+          'weak source grounding blocks admission',
+        ],
+      },
+      {
+        title: 'Output rule',
+        bullets: [
+          'runtime reflects admitted concepts only',
+          'reviewed or blocked concepts remain outside the live runtime unless admitted',
+        ],
+      },
+    ],
+  },
+  'handbooks-source-usage': {
+    eyebrow: 'Handbooks',
+    title: 'Source usage',
+    intro:
+      'Use sources without allowing them to control the system.',
+    sections: [
+      {
+        title: 'Core rule',
+        bullets: [
+          'sources inform authoring, not runtime directly',
+          'source material is evidence, not runtime canon',
+        ],
+      },
+      {
+        title: 'Allowed uses',
+        bullets: [
+          'ground boundaries',
+          'support distinctions between concepts',
+          'support collapse testing',
+        ],
+      },
+      {
+        title: 'Not allowed',
+        bullets: [
+          'define canon directly',
+          'bypass review',
+          'force inclusion',
+          'override deterministic runtime behavior',
+        ],
+      },
+      {
+        title: 'Source hierarchy',
+        bullets: [
+          'primary grounding source',
+          'dictionary boundary source',
+          'review and rejection evidence',
+        ],
+      },
+      {
+        title: 'Workflow',
+        bullets: [
+          'source',
+          'source note',
+          'concept authoring',
+          'concept packet',
+          'runtime',
+        ],
+      },
+      {
+        title: 'Output rule',
+        bullets: [
+          'runtime serves authored packets, not raw source material',
+          'source notes and raw excerpts do not define public output directly',
+        ],
+      },
+      {
+        title: 'Current status',
+        paragraphs: [
+          'This handbook defines operating rules only. It does not expose internal source files or raw evidence directly.',
+        ],
+      },
+    ],
+  },
+  'handbooks-rejection-handling': {
+    eyebrow: 'Handbooks',
+    title: 'Rejection handling',
+    intro:
+      'This handbook route will hold the operational guide for rejecting concepts or structures cleanly when they weaken the system.',
+    sections: [
+      {
+        title: 'Current scope',
+        bullets: [
+          'document structural failure clearly',
+          'preserve rejection as a valid outcome',
+          'avoid weakening boundaries to avoid rejection',
+        ],
+      },
+      {
+        title: 'Current status',
+        paragraphs: [
+          'This is a handbook stub. Full operational guide content has not been published yet.',
+        ],
+      },
+    ],
+  },
+  'handbooks-comparison-authoring': {
+    eyebrow: 'Handbooks',
+    title: 'Comparison authoring',
+    intro:
+      'This handbook route will hold the operational guide for defining allowed comparisons without weakening distinction or trust.',
+    sections: [
+      {
+        title: 'Current scope',
+        bullets: [
+          'allow only structurally meaningful comparisons',
+          'protect pairwise distinction under stress',
+          'block weak or decorative comparison pairs',
+        ],
+      },
+      {
+        title: 'Current status',
+        paragraphs: [
+          'This is a handbook stub. Full operational guide content has not been published yet.',
+        ],
+      },
+    ],
+  },
+  'handbooks-runtime-discipline': {
+    eyebrow: 'Handbooks',
+    title: 'Runtime discipline',
+    intro:
+      'This handbook route will hold the operational guide for preserving refusal behavior, scope boundaries, and canonical runtime meaning during change.',
+    sections: [
+      {
+        title: 'Current scope',
+        bullets: [
+          'preserve refusal as part of correctness',
+          'avoid leaking non-canonical meaning into runtime',
+          'respect current public scope and admission boundaries',
+        ],
+      },
+      {
+        title: 'Current status',
+        paragraphs: [
+          'This is a handbook stub. Full operational guide content has not been published yet.',
         ],
       },
     ],
