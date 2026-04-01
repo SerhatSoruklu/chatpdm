@@ -1,20 +1,20 @@
-# Constraint Contract Drift Template
+# Constraint Contract Drift Prompt
 
 ## Purpose
 
-Use this template to run drift detection and regression analysis on a ChatPDM concept or concept family against previously approved snapshots and constraint contracts.
+Use this prompt to run drift detection and regression analysis on a ChatPDM concept or concept family against previously approved snapshots and constraint contracts.
 
-This template is not for re-validation.
+This prompt is not for re-validation.
 
 It is for consistency-over-time auditing against the approved baseline.
 
 Companion controls:
 
 - [constraint-contract-checklist.md](./constraint-contract-checklist.md)
-- [constraint-contract-audit-template.md](./constraint-contract-audit-template.md)
-- [constraint-contract-repair-template.md](./constraint-contract-repair-template.md)
+- [constraint-contract-audit-prompt.md](./constraint-contract-audit-prompt.md)
+- [constraint-contract-repair-prompt.md](./constraint-contract-repair-prompt.md)
 
-## Template
+## Prompt
 
 ```text
 Task

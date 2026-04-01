@@ -1,19 +1,19 @@
-# Constraint Contract Repair Template
+# Constraint Contract Repair Prompt
 
 ## Purpose
 
-Use this template to run a targeted structural repair of a concept or concept family in ChatPDM after a Constraint Contract audit has identified specific failures.
+Use this prompt to run a targeted structural repair of a concept or concept family in ChatPDM after a Constraint Contract audit has identified specific failures.
 
-This template is not for rewriting.
+This prompt is not for rewriting.
 
 It is for surgical correction of failing structural layers only.
 
 Companion controls:
 
 - [constraint-contract-checklist.md](./constraint-contract-checklist.md)
-- [constraint-contract-audit-template.md](./constraint-contract-audit-template.md)
+- [constraint-contract-audit-prompt.md](./constraint-contract-audit-prompt.md)
 
-## Template
+## Prompt
 
 ```text
 Task
