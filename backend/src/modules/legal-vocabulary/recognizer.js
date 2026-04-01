@@ -4,6 +4,7 @@ const {
   EMPTY_NORMALIZED_QUERY,
 } = require('../concepts/constants');
 const {
+  deriveRoutingText,
   normalizeQuery,
 } = require('../concepts/normalizer');
 const {
@@ -23,8 +24,9 @@ function assertNormalizedQueryValue(normalizedQuery) {
 
 function recognizeLegalVocabulary(normalizedQuery) {
   assertNormalizedQueryValue(normalizedQuery);
+  const routingQuery = deriveRoutingText(normalizedQuery);
 
-  if (normalizedQuery === EMPTY_NORMALIZED_QUERY) {
+  if (routingQuery === EMPTY_NORMALIZED_QUERY) {
     return {
       recognized: false,
       type: 'unknown',
@@ -32,7 +34,7 @@ function recognizeLegalVocabulary(normalizedQuery) {
   }
 
   const registry = loadLegalVocabularyRegistry();
-  const record = registry.recordsByTerm.get(normalizedQuery);
+  const record = registry.recordsByTerm.get(routingQuery);
 
   if (!record) {
     return {

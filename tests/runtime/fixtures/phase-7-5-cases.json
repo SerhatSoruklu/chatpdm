@@ -10,6 +10,16 @@
     "expectedConceptId": "authority"
   },
   {
+    "name": "authority_exact_with_trailing_punctuation",
+    "input": "authority?",
+    "expectedNormalizedQuery": "authority?",
+    "expectedType": "concept_match",
+    "expectedMethod": "exact_alias",
+    "expectedQueryType": "exact_concept_query",
+    "expectedInterpretation": null,
+    "expectedConceptId": "authority"
+  },
+  {
     "name": "power_exact",
     "input": "power",
     "expectedNormalizedQuery": "power",
@@ -73,9 +83,40 @@
     "expectedSuggestions": []
   },
   {
+    "name": "violation_exact_with_trailing_punctuation",
+    "input": "violation?",
+    "expectedNormalizedQuery": "violation?",
+    "expectedType": "no_exact_match",
+    "expectedMethod": "no_exact_match",
+    "expectedQueryType": "exact_concept_query",
+    "expectedInterpretation": {
+      "interpretationType": "visible_only_public_concept",
+      "targetConceptId": "violation"
+    },
+    "expectedSuggestions": []
+  },
+  {
     "name": "defeasibility_exact_rejected",
     "input": "defeasibility",
     "expectedNormalizedQuery": "defeasibility",
+    "expectedType": "rejected_concept",
+    "expectedMethod": "rejection_registry",
+    "expectedQueryType": "exact_concept_query",
+    "expectedInterpretation": {
+      "interpretationType": "explicitly_rejected_concept",
+      "targetConceptId": "defeasibility"
+    },
+    "expectedConceptId": "defeasibility",
+    "expectedRejection": {
+      "status": "REJECTED",
+      "decisionType": "STRUCTURAL_REJECTION",
+      "finality": true
+    }
+  },
+  {
+    "name": "defeasibility_exact_rejected_with_trailing_punctuation",
+    "input": "defeasibility?",
+    "expectedNormalizedQuery": "defeasibility?",
     "expectedType": "rejected_concept",
     "expectedMethod": "rejection_registry",
     "expectedQueryType": "exact_concept_query",
@@ -106,6 +147,17 @@
       "status": "REJECTED",
       "decisionType": "STRUCTURAL_REJECTION",
       "finality": true
+    }
+  },
+  {
+    "name": "mens_rea_unsupported_exact",
+    "input": "mens rea",
+    "expectedNormalizedQuery": "mens rea",
+    "expectedType": "unsupported_query_type",
+    "expectedMethod": "unsupported_query_type",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedInterpretation": {
+      "interpretationType": "unsupported_complex"
     }
   },
   {
@@ -416,6 +468,19 @@
     "expectedSuggestions": []
   },
   {
+    "name": "out_of_scope_commitment_exact_with_trailing_punctuation",
+    "input": "commitment?",
+    "expectedNormalizedQuery": "commitment?",
+    "expectedType": "no_exact_match",
+    "expectedMethod": "out_of_scope",
+    "expectedQueryType": "exact_concept_query",
+    "expectedInterpretation": {
+      "interpretationType": "out_of_scope",
+      "targetConceptId": "commitment"
+    },
+    "expectedSuggestions": []
+  },
+  {
     "name": "out_of_scope_promise_exact",
     "input": "promise",
     "expectedNormalizedQuery": "promise",
@@ -499,6 +564,24 @@
     "name": "rejected_obligation_exact",
     "input": "obligation",
     "expectedNormalizedQuery": "obligation",
+    "expectedType": "rejected_concept",
+    "expectedMethod": "rejection_registry",
+    "expectedQueryType": "exact_concept_query",
+    "expectedInterpretation": {
+      "interpretationType": "explicitly_rejected_concept",
+      "targetConceptId": "obligation"
+    },
+    "expectedConceptId": "obligation",
+    "expectedRejection": {
+      "status": "REJECTED",
+      "decisionType": "STRUCTURAL_REJECTION",
+      "finality": true
+    }
+  },
+  {
+    "name": "rejected_obligation_exact_with_trailing_punctuation",
+    "input": "obligation?",
+    "expectedNormalizedQuery": "obligation?",
     "expectedType": "rejected_concept",
     "expectedMethod": "rejection_registry",
     "expectedQueryType": "exact_concept_query",

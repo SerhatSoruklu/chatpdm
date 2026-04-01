@@ -5,6 +5,7 @@ const {
   isVisibleOnlyConceptId,
 } = require('./admission-state');
 const {
+  deriveRoutingText,
   normalizeQuery,
 } = require('./normalizer');
 const {
@@ -60,20 +61,21 @@ function assertVocabularyRecognitionShape(vocabularyRecognition) {
 function resolveAdmissionState(normalizedQuery, vocabularyRecognition = null) {
   assertNormalizedQueryValue(normalizedQuery);
   assertVocabularyRecognitionShape(vocabularyRecognition);
+  const routingQuery = deriveRoutingText(normalizedQuery);
 
-  if (isLiveConceptId(normalizedQuery)) {
+  if (isLiveConceptId(routingQuery)) {
     return {
       admission_state: ADMISSION_STATES.LIVE,
     };
   }
 
-  if (isVisibleOnlyConceptId(normalizedQuery)) {
+  if (isVisibleOnlyConceptId(routingQuery)) {
     return {
       admission_state: ADMISSION_STATES.VISIBLE_ONLY,
     };
   }
 
-  if (getRejectedConceptRecord(normalizedQuery)) {
+  if (getRejectedConceptRecord(routingQuery)) {
     return {
       admission_state: ADMISSION_STATES.REJECTED,
     };

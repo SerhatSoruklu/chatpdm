@@ -1,5 +1,7 @@
 'use strict';
 
+const { deriveRoutingText } = require('./normalizer');
+
 const OUT_OF_SCOPE_INTERACTION_CONCEPT_IDS = Object.freeze([
   'commitment',
   'promise',
@@ -34,8 +36,10 @@ function extractMentionedOutOfScopeInteractionConceptIds(normalizedQuery) {
     return [];
   }
 
+  const routingQuery = deriveRoutingText(normalizedQuery);
+
   return OUT_OF_SCOPE_INTERACTION_CONCEPT_IDS.filter((conceptId) => (
-    hasWholeWord(normalizedQuery, conceptId)
+    hasWholeWord(routingQuery, conceptId)
   ));
 }
 
@@ -44,7 +48,9 @@ function hasGovernanceKernelAnchor(normalizedQuery) {
     return false;
   }
 
-  return GOVERNANCE_KERNEL_ANCHOR_TERMS.some((anchor) => hasWholeWord(normalizedQuery, anchor));
+  const routingQuery = deriveRoutingText(normalizedQuery);
+
+  return GOVERNANCE_KERNEL_ANCHOR_TERMS.some((anchor) => hasWholeWord(routingQuery, anchor));
 }
 
 function detectOutOfScopeInteractionQuery(normalizedQuery) {

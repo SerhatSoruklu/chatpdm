@@ -11,6 +11,7 @@ const {
   EMPTY_NORMALIZED_QUERY,
 } = require('../concepts/constants');
 const {
+  deriveRoutingText,
   normalizeQuery,
 } = require('../concepts/normalizer');
 
@@ -91,14 +92,14 @@ function registerTerm(recordsByTerm, countsByClassification, term, classificatio
 
 function buildRecognizedSurfaceForms(rawTerm) {
   const surfaceForms = new Set();
-  const normalizedTerm = normalizeQuery(rawTerm);
+  const normalizedTerm = deriveRoutingText(normalizeQuery(rawTerm));
 
   if (normalizedTerm !== EMPTY_NORMALIZED_QUERY) {
     surfaceForms.add(normalizedTerm);
   }
 
   if (rawTerm.includes('_')) {
-    const spacedVariant = normalizeQuery(rawTerm.replaceAll('_', ' '));
+    const spacedVariant = deriveRoutingText(normalizeQuery(rawTerm.replaceAll('_', ' ')));
     if (spacedVariant !== EMPTY_NORMALIZED_QUERY) {
       surfaceForms.add(spacedVariant);
     }

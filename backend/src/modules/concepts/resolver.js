@@ -26,7 +26,7 @@ const { loadResolveRules } = require('./resolve-rules-loader');
 const { getRejectedConceptRecord } = require('./rejection-registry-loader');
 const { assertSingleRuntimeResolutionState } = require('./runtime-resolution-state');
 const { matchQuery } = require('./matcher');
-const { extractCanonicalId, normalizeQuery } = require('./normalizer');
+const { deriveRoutingText, extractCanonicalId, normalizeQuery } = require('./normalizer');
 const { classifyQueryShape } = require('./query-shape-classifier');
 const { resolveComparisonQuery } = require('./comparison-resolver');
 const { detectGovernanceScopeEnforcement } = require('./governance-scope-enforcer');
@@ -139,9 +139,11 @@ function detectVisibleOnlyConceptIds(normalizedQuery) {
     return [];
   }
 
+  const routingQuery = deriveRoutingText(normalizedQuery);
+
   return VISIBLE_ONLY_PUBLIC_CONCEPT_IDS.filter((conceptId) => {
     const pattern = new RegExp(`(^| )${escapePattern(conceptId)}( |$)`);
-    return pattern.test(normalizedQuery);
+    return pattern.test(routingQuery);
   });
 }
 
@@ -293,11 +295,12 @@ function resolveConceptQuery(rawQuery) {
   }
 
   const normalizedQuery = normalizeQuery(rawQuery);
+  const routingQuery = deriveRoutingText(normalizedQuery);
   const canonicalId = extractCanonicalId(rawQuery);
   const visibleOnlyCanonicalConceptId = canonicalId !== null && isVisibleOnlyConceptId(canonicalId)
     ? canonicalId
     : null;
-  const rejectedConcept = getRejectedConceptRecord(canonicalId !== null ? canonicalId : normalizedQuery);
+  const rejectedConcept = getRejectedConceptRecord(canonicalId !== null ? canonicalId : routingQuery);
 
   if (rejectedConcept) {
     const response = buildRejectedConceptResponse(
@@ -354,7 +357,7 @@ function resolveConceptQuery(rawQuery) {
   }
 
   const interactionBoundaryQuery = detectOutOfScopeInteractionQuery(
-    canonicalId !== null ? canonicalId : normalizedQuery,
+    canonicalId !== null ? canonicalId : routingQuery,
   );
 
   if (interactionBoundaryQuery) {
@@ -390,12 +393,12 @@ function resolveConceptQuery(rawQuery) {
 
   if (
     queryClassification.queryType === 'exact_concept_query'
-    && isVisibleOnlyConceptId(normalizedQuery)
+    && isVisibleOnlyConceptId(routingQuery)
   ) {
     response = buildVisibleOnlyConceptResponse(
       baseResponse,
       buildVisibleOnlyConceptInterpretation({
-        targetConceptId: normalizedQuery,
+        targetConceptId: routingQuery,
       }),
     );
 

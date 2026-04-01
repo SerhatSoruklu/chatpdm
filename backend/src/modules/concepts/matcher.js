@@ -1,7 +1,7 @@
 'use strict';
 
 const { EMPTY_NORMALIZED_QUERY } = require('./constants');
-const { extractCanonicalId, normalizeQuery } = require('./normalizer');
+const { deriveRoutingText, extractCanonicalId, normalizeQuery } = require('./normalizer');
 
 function pushCandidate(map, key, concept) {
   if (!map.has(key)) {
@@ -17,7 +17,7 @@ function buildExactAliasIndex(concepts) {
   for (const concept of concepts) {
     const seenKeys = new Set();
     for (const alias of concept.aliases) {
-      const aliasKey = normalizeQuery(alias);
+      const aliasKey = deriveRoutingText(normalizeQuery(alias));
       if (seenKeys.has(aliasKey)) {
         continue;
       }
@@ -36,7 +36,7 @@ function buildNormalizedAliasIndex(concepts) {
   for (const concept of concepts) {
     const seenKeys = new Set();
     for (const normalizedAlias of concept.normalizedAliases) {
-      const aliasKey = normalizeQuery(normalizedAlias);
+      const aliasKey = deriveRoutingText(normalizeQuery(normalizedAlias));
       if (seenKeys.has(aliasKey)) {
         continue;
       }
@@ -49,9 +49,9 @@ function buildNormalizedAliasIndex(concepts) {
   return normalizedAliasIndex;
 }
 
-function findAuthorDefinedDisambiguation({ normalizedQuery, concepts, resolveRules }) {
+function findAuthorDefinedDisambiguation({ routingQuery, concepts, resolveRules }) {
   const rule = resolveRules.authorDefinedDisambiguations.find(
-    (candidate) => candidate.normalizedQuery === normalizedQuery,
+    (candidate) => deriveRoutingText(candidate.normalizedQuery) === routingQuery,
   );
 
   if (!rule) {
@@ -74,9 +74,9 @@ function findAuthorDefinedDisambiguation({ normalizedQuery, concepts, resolveRul
   };
 }
 
-function findAuthorDefinedSuggestions({ normalizedQuery, concepts, resolveRules }) {
+function findAuthorDefinedSuggestions({ routingQuery, concepts, resolveRules }) {
   const rule = resolveRules.authorDefinedSuggestions.find(
-    (candidate) => candidate.normalizedQuery === normalizedQuery,
+    (candidate) => deriveRoutingText(candidate.normalizedQuery) === routingQuery,
   );
 
   if (!rule) {
@@ -128,7 +128,9 @@ function buildNoExactMatch(suggestions = []) {
 }
 
 function matchQuery({ rawQuery, normalizedQuery, concepts, resolveRules }) {
-  if (normalizedQuery === EMPTY_NORMALIZED_QUERY) {
+  const routingQuery = deriveRoutingText(normalizedQuery);
+
+  if (routingQuery === EMPTY_NORMALIZED_QUERY) {
     return buildNoExactMatch([]);
   }
 
@@ -137,7 +139,7 @@ function matchQuery({ rawQuery, normalizedQuery, concepts, resolveRules }) {
     if (canonicalId === '') {
       return buildNoExactMatch(findAuthorDefinedSuggestions({
         rawQuery,
-        normalizedQuery,
+        routingQuery,
         concepts,
         resolveRules,
       }));
@@ -150,13 +152,13 @@ function matchQuery({ rawQuery, normalizedQuery, concepts, resolveRules }) {
 
     return buildNoExactMatch(findAuthorDefinedSuggestions({
       rawQuery,
-      normalizedQuery,
+      routingQuery,
       concepts,
       resolveRules,
     }));
   }
 
-  const exactAliasMatches = buildExactAliasIndex(concepts).get(normalizedQuery) || [];
+  const exactAliasMatches = buildExactAliasIndex(concepts).get(routingQuery) || [];
   if (exactAliasMatches.length === 1) {
     return buildConceptMatch('exact_alias', exactAliasMatches[0]);
   }
@@ -165,7 +167,7 @@ function matchQuery({ rawQuery, normalizedQuery, concepts, resolveRules }) {
     return buildAmbiguousResult('ambiguous_alias', 'shared_alias', exactAliasMatches);
   }
 
-  const normalizedAliasMatches = buildNormalizedAliasIndex(concepts).get(normalizedQuery) || [];
+  const normalizedAliasMatches = buildNormalizedAliasIndex(concepts).get(routingQuery) || [];
   if (normalizedAliasMatches.length === 1) {
     return buildConceptMatch('normalized_alias', normalizedAliasMatches[0]);
   }
@@ -180,7 +182,7 @@ function matchQuery({ rawQuery, normalizedQuery, concepts, resolveRules }) {
 
   const authorDefinedDisambiguation = findAuthorDefinedDisambiguation({
     rawQuery,
-    normalizedQuery,
+    routingQuery,
     concepts,
     resolveRules,
   });
@@ -200,7 +202,7 @@ function matchQuery({ rawQuery, normalizedQuery, concepts, resolveRules }) {
 
   const suggestions = findAuthorDefinedSuggestions({
     rawQuery,
-    normalizedQuery,
+    routingQuery,
     concepts,
     resolveRules,
   });

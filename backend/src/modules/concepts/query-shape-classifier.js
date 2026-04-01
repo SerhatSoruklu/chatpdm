@@ -3,7 +3,12 @@
 const {
   EMPTY_NORMALIZED_QUERY,
 } = require('./constants');
-const { extractCanonicalId, findLeadingFillerPhrase, normalizeQuery } = require('./normalizer');
+const {
+  deriveRoutingText,
+  extractCanonicalId,
+  findLeadingFillerPhrase,
+  normalizeQuery,
+} = require('./normalizer');
 
 const COMPARISON_KEYWORDS = Object.freeze([
   ' vs ',
@@ -72,10 +77,12 @@ function buildTermEntries(concepts) {
     ]);
 
     for (const term of terms) {
-      if (term !== EMPTY_NORMALIZED_QUERY && term.trim() !== '') {
+      const routingTerm = deriveRoutingText(term);
+
+      if (routingTerm !== EMPTY_NORMALIZED_QUERY && routingTerm.trim() !== '') {
         entries.push({
           conceptId: concept.conceptId,
-          term,
+          term: routingTerm,
         });
       }
     }
@@ -348,17 +355,18 @@ function classifyQueryShape({ rawQuery, normalizedQuery, concepts, resolveRules,
     };
   }
 
+  const routingQuery = deriveRoutingText(normalizedQuery);
   const termEntries = buildTermEntries(concepts);
-  const mentionedConcepts = detectMentionedConcepts(normalizedQuery, termEntries);
+  const mentionedConcepts = detectMentionedConcepts(routingQuery, termEntries);
 
-  if (isClearlyInvalidQuery(rawQuery, normalizedQuery, mentionedConcepts)) {
+  if (isClearlyInvalidQuery(rawQuery, routingQuery, mentionedConcepts)) {
     return {
       queryType: 'invalid_query',
       interpretation: buildInvalidQueryInterpretation(),
     };
   }
 
-  const roleQuery = detectRoleOrActor(normalizedQuery, mentionedConcepts);
+  const roleQuery = detectRoleOrActor(routingQuery, mentionedConcepts);
   if (roleQuery) {
     return {
       queryType: 'role_or_actor_query',
@@ -366,7 +374,7 @@ function classifyQueryShape({ rawQuery, normalizedQuery, concepts, resolveRules,
     };
   }
 
-  const comparisonQuery = detectComparison(normalizedQuery, mentionedConcepts);
+  const comparisonQuery = detectComparison(routingQuery, mentionedConcepts);
   if (comparisonQuery) {
     return {
       queryType: 'comparison_query',
@@ -374,7 +382,7 @@ function classifyQueryShape({ rawQuery, normalizedQuery, concepts, resolveRules,
     };
   }
 
-  const relationQuery = detectRelation(normalizedQuery, mentionedConcepts);
+  const relationQuery = detectRelation(routingQuery, mentionedConcepts);
   if (relationQuery) {
     return {
       queryType: 'relation_query',
@@ -382,14 +390,14 @@ function classifyQueryShape({ rawQuery, normalizedQuery, concepts, resolveRules,
     };
   }
 
-  if (isExactConceptLookupCandidate(rawQuery, normalizedQuery)) {
+  if (isExactConceptLookupCandidate(rawQuery, routingQuery)) {
     return {
       queryType: 'exact_concept_query',
-      interpretation: buildExactConceptNotFoundInterpretation(normalizedQuery),
+      interpretation: buildExactConceptNotFoundInterpretation(routingQuery),
     };
   }
 
-  if (normalizedQuery === EMPTY_NORMALIZED_QUERY) {
+  if (routingQuery === EMPTY_NORMALIZED_QUERY) {
     return {
       queryType: 'unsupported_complex_query',
       interpretation: buildUnsupportedInterpretation(),

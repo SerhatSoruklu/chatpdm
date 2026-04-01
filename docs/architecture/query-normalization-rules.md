@@ -12,6 +12,8 @@ That separation exists for three reasons:
 
 `normalizedQuery` exists so the system can resolve authored concepts against one inspectable, deterministic key.
 
+ChatPDM now also derives an internal routing form from `normalizedQuery` for matcher and boundary use. That routing form exists to restore deterministic token matching when users add edge punctuation such as `authority?` or `obligation?`, without changing the observable `normalizedQuery` contract.
+
 This layer must be versioned because it is one of the main risk surfaces for hidden non-determinism. A small change in trimming, filler stripping, or matching precedence can change product outcomes without changing the visible interface.
 
 “Same input, same output” is too vague for ChatPDM.
@@ -68,6 +70,26 @@ The v1 normalizer is a strict ordered pipeline. The order is part of the system 
 
 Punctuation is preserved in Phase 0. Normalization standardizes surface form, but it does not delete non-word characters in order to force an exact concept key.
 
+## 3.1 Routing Text
+
+Matching and boundary detection use a derived routing form in addition to `normalizedQuery`.
+
+Rules:
+
+- routing text is derived from `normalizedQuery`, not from raw input directly
+- routing text strips punctuation only at token edges
+- routing text preserves internal semantic punctuation such as hyphens
+- routing text does not replace words, reorder tokens, or infer meaning
+- `normalizedQuery` remains the observable contract field in resolver responses
+
+Example:
+
+- raw query: `authority?`
+- `normalizedQuery`: `authority?`
+- routing text: `authority`
+
+This keeps Phase 0 punctuation preservation intact while restoring deterministic exact-token routing.
+
 ### Normalization rules
 
 - No regex-based interpretation beyond these exact operations unless explicitly documented in a later version.
@@ -100,8 +122,8 @@ Matching uses strict precedence. Later stages must not override earlier successf
 ### Required precedence
 
 1. canonical_id lookup when raw `query` starts with the exact prefix `concept:`
-2. exact alias match on `normalizedQuery` against the authored alias table in the current `conceptSetVersion`
-3. normalized alias match on `normalizedQuery` against the authored normalized alias table in the current `conceptSetVersion`
+2. exact alias match on routing text derived from `normalizedQuery` against the authored alias table in the current `conceptSetVersion`
+3. normalized alias match on routing text derived from `normalizedQuery` against the authored normalized alias table in the current `conceptSetVersion`
 4. authored explicit disambiguation rules
 5. authored deterministic suggestion lookup
 6. `no_exact_match`
@@ -143,7 +165,7 @@ If the substring after `concept:` is empty:
 
 ### Exact alias match
 
-Exact alias match compares `normalizedQuery` to the primary authored alias table inside the current `conceptSetVersion`.
+Exact alias match compares routing text derived from `normalizedQuery` to the primary authored alias table inside the current `conceptSetVersion`.
 
 This stage exists for published alias entries that are already stored in final lookup form and can resolve directly without any secondary normalization mapping.
 
@@ -153,7 +175,7 @@ If more than one concept matches, ambiguity rules apply.
 
 ### Normalized alias match
 
-Normalized alias match compares `normalizedQuery` to the published normalized alias table in the current `conceptSetVersion`.
+Normalized alias match compares routing text derived from `normalizedQuery` to the published normalized alias table in the current `conceptSetVersion`.
 
 This stage exists because some published inputs need to resolve through a separately authored normalized alias table rather than the primary alias table.
 
