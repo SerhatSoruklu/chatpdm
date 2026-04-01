@@ -140,6 +140,20 @@
           "condition": "The query asks authority to stand in a relation not admitted by the authority contract.",
           "reason": "This authority contract admits only recognized-standing relations inside the governance cluster."
         }
+      ],
+      "contractIncompletes": [
+        {
+          "code": "AUTHORITY_CONTRACT_INCOMPLETE",
+          "condition": "The authority constraint contract is missing a required structural element or cannot be resolved for validation.",
+          "reason": "Authority must expose a complete directive-standing contract before admission or runtime use."
+        }
+      ],
+      "runtimeBoundaries": [
+        {
+          "code": "AUTHORITY_NON_LIVE_CONCEPT",
+          "condition": "An authority packet or authority-like claim is referenced for runtime use without live admission.",
+          "reason": "Only live-admitted authority may participate in runtime matching or comparison."
+        }
       ]
     },
     "resolutionRules": {

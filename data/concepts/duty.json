@@ -125,6 +125,20 @@
           "condition": "The query asks duty to stand in a relation not admitted by the duty contract.",
           "reason": "This duty contract admits only required-conduct relations inside the governance family."
         }
+      ],
+      "contractIncompletes": [
+        {
+          "code": "DUTY_CONTRACT_INCOMPLETE",
+          "condition": "The duty constraint contract is missing a required structural element or cannot be resolved for validation.",
+          "reason": "Duty must expose a complete required-conduct contract before admission or runtime use."
+        }
+      ],
+      "runtimeBoundaries": [
+        {
+          "code": "DUTY_NON_LIVE_CONCEPT",
+          "condition": "A duty packet or duty-like claim is referenced for runtime use without live admission.",
+          "reason": "Only live-admitted duty may participate in runtime matching or comparison."
+        }
       ]
     },
     "resolutionRules": {

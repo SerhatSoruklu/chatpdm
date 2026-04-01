@@ -125,6 +125,20 @@
           "condition": "The query asks violation to stand in a relation not admitted by the violation contract.",
           "reason": "This violation contract admits only duty-breach relations inside the governance family."
         }
+      ],
+      "contractIncompletes": [
+        {
+          "code": "VIOLATION_CONTRACT_INCOMPLETE",
+          "condition": "The violation constraint contract is missing a required structural element or cannot be resolved for validation.",
+          "reason": "Violation must expose a complete unmet-duty-state contract before admission or runtime use."
+        }
+      ],
+      "runtimeBoundaries": [
+        {
+          "code": "VIOLATION_NON_LIVE_CONCEPT",
+          "condition": "A violation packet or violation-like claim is referenced for runtime use without live admission.",
+          "reason": "Only live-admitted violation may participate in runtime matching or comparison."
+        }
       ]
     },
     "resolutionRules": {

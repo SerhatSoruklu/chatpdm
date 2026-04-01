@@ -140,6 +140,20 @@
           "condition": "The query asks power to stand in a relation not admitted by the power contract.",
           "reason": "This power contract admits only operative-capacity relations inside the governance cluster."
         }
+      ],
+      "contractIncompletes": [
+        {
+          "code": "POWER_CONTRACT_INCOMPLETE",
+          "condition": "The power constraint contract is missing a required structural element or cannot be resolved for validation.",
+          "reason": "Power must expose a complete operative-capacity contract before admission or runtime use."
+        }
+      ],
+      "runtimeBoundaries": [
+        {
+          "code": "POWER_NON_LIVE_CONCEPT",
+          "condition": "A power packet or power-like claim is referenced for runtime use without live admission.",
+          "reason": "Only live-admitted power may participate in runtime matching or comparison."
+        }
       ]
     },
     "resolutionRules": {

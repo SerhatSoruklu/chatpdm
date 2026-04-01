@@ -18,8 +18,8 @@ It is a structural lens used to:
 
 The system is currently understood as:
 
-Constraints=35%  
-Safety/Hardening=25%  
+Hierarchy / Constraints=35%  
+Safety / Hardening=25%  
 Structure/Loader=20%  
 Runtime Behavior=12%  
 Context=8%  
@@ -28,9 +28,9 @@ Context=8%
 
 ## Layer Definitions
 
-### 1. Constraints (30%)
+### 1. Hierarchy / Constraints (35%)
 
-Defines what is structurally possible.
+Defines what is structurally possible and enforces the ordering of truth and authority within the system.
 
 Includes:
 
@@ -42,7 +42,7 @@ Includes:
 
 Role:
 
-- ontology core
+- ontology and authority core
 - prevents drift and overlap
 - defines system truth boundaries
 
@@ -89,7 +89,7 @@ This layer is currently highly coupled and carries multiple responsibilities.
 
 ---
 
-### 4. Runtime Behavior (15%)
+### 4. Runtime Behavior (12%)
 
 Executes deterministic resolution.
 
@@ -113,7 +113,7 @@ Constraint:
 
 ---
 
-### 5. Context (10%)
+### 5. Context (8%)
 
 Routes and shapes query handling without altering truth.
 
@@ -131,18 +131,32 @@ Role:
 - controls access, not meaning
 
 Note:
-This layer is intentionally thin and should not override constraints.
+This layer is intentionally thin and must never override or reinterpret constraints.
 
 ---
 
 ## System Flow
+
+Concept Packets + Contracts + Snapshots
+↓
+Structure / Loader (validation + admission)
+↓
+Live Concept Set
+↓
+Context Layer (query classification + scope)
+↓
+Runtime Behavior (resolver)
+↓
+Single Deterministic Output
 
 ---
 
 ## Core Principles
 
 - Constraints are not a feature. Constraints are the system.
+- No layer may bypass a higher-order constraint or safety mechanism.
 - No single concept is allowed to absorb the system.
+- Systems collapse when a single layer or concept absorbs responsibilities beyond its boundary.
 - Ambiguity spreads across the system; explicitness isolates it.
 - Real systems get simpler as you understand them.
 - Refusal is part of correctness, not failure.

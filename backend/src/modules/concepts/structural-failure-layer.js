@@ -3,6 +3,9 @@
 const STRUCTURAL_FAILURE_KINDS = Object.freeze([
   'invariant_breach',
   'ontological_impossibility',
+  'contract_incomplete',
+  'unsupported_relation',
+  'non_live_concept',
   'contract_violation',
 ]);
 
@@ -14,9 +17,22 @@ function assertPlainResult(result) {
 
 function classifyConstraintContractFailure(result) {
   assertPlainResult(result);
+  const resultCode = typeof result.code === 'string' ? result.code.trim() : '';
 
   if (result.resolution === 'valid') {
     return null;
+  }
+
+  if (/_CONTRACT_INCOMPLETE$/.test(resultCode)) {
+    return 'contract_incomplete';
+  }
+
+  if (/_UNSUPPORTED_RELATION$/.test(resultCode)) {
+    return 'unsupported_relation';
+  }
+
+  if (/_NON_LIVE_CONCEPT$/.test(resultCode)) {
+    return 'non_live_concept';
   }
 
   if (result.resolution === 'invalid' || result.resolution === 'refused') {
@@ -24,7 +40,7 @@ function classifyConstraintContractFailure(result) {
   }
 
   if (result.resolution === 'conflict') {
-    if (typeof result.code === 'string' && /_(IDENTITY|SOURCE)_KIND_MISMATCH$/.test(result.code)) {
+    if (/_(IDENTITY|SOURCE)_KIND_MISMATCH$/.test(resultCode)) {
       return 'ontological_impossibility';
     }
 

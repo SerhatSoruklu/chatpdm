@@ -14,6 +14,10 @@ const {
   loadGovernanceDomainLock,
   validateConstraintContractShape,
 } = require('../src/modules/concepts/constraint-contract');
+const {
+  STRUCTURAL_FAILURE_KINDS,
+  classifyConstraintContractFailure,
+} = require('../src/modules/concepts/structural-failure-layer');
 
 const exclusionMatrixPath = path.resolve(
   __dirname,
@@ -83,6 +87,8 @@ function verifyConceptContractStructure(conceptId, expected) {
       invariantIds: contract.invariants.map((entry) => entry.id),
       invariantFailureCodes: contract.structuralFailures.invariantBreaches.map((entry) => entry.code),
       refusalCodes: contract.structuralFailures.refusals.map((entry) => entry.code),
+      contractIncompleteCodes: contract.structuralFailures.contractIncompletes?.map((entry) => entry.code) ?? null,
+      runtimeBoundaryCodes: contract.structuralFailures.runtimeBoundaries?.map((entry) => entry.code) ?? null,
     },
     expected,
     `${conceptId} constraint contract structure mismatch.`,
@@ -134,6 +140,8 @@ function verifyConductFamilyContractStructures() {
       'DUTY_OUT_OF_SCOPE_TOPIC',
       'DUTY_UNSUPPORTED_RELATION',
     ],
+    contractIncompleteCodes: ['DUTY_CONTRACT_INCOMPLETE'],
+    runtimeBoundaryCodes: ['DUTY_NON_LIVE_CONCEPT'],
   });
 
   verifyConceptContractStructure('responsibility', {
@@ -167,6 +175,8 @@ function verifyConductFamilyContractStructures() {
       'RESPONSIBILITY_OUT_OF_SCOPE_TOPIC',
       'RESPONSIBILITY_UNSUPPORTED_RELATION',
     ],
+    contractIncompleteCodes: ['RESPONSIBILITY_CONTRACT_INCOMPLETE'],
+    runtimeBoundaryCodes: ['RESPONSIBILITY_NON_LIVE_CONCEPT'],
   });
 
   verifyConceptContractStructure('violation', {
@@ -201,6 +211,8 @@ function verifyConductFamilyContractStructures() {
       'VIOLATION_OUT_OF_SCOPE_TOPIC',
       'VIOLATION_UNSUPPORTED_RELATION',
     ],
+    contractIncompleteCodes: ['VIOLATION_CONTRACT_INCOMPLETE'],
+    runtimeBoundaryCodes: ['VIOLATION_NON_LIVE_CONCEPT'],
   });
 
   process.stdout.write('PASS governance_conduct_family_contract_structures\n');
@@ -438,6 +450,58 @@ function verifyFamilyPressureTests() {
   process.stdout.write('PASS governance_conduct_family_pressure\n');
 }
 
+function verifyStructuralFailureCoverage() {
+  const { duty, responsibility, violation } = getFamilyArtifacts();
+  const familyConcepts = [duty, responsibility, violation];
+
+  ['contract_incomplete', 'unsupported_relation', 'non_live_concept'].forEach((kind) => {
+    assert.equal(
+      STRUCTURAL_FAILURE_KINDS.includes(kind),
+      true,
+      `structural failure kinds must include ${kind}.`,
+    );
+  });
+
+  familyConcepts.forEach((concept) => {
+    const contractLabel = concept.conceptId.toUpperCase();
+    const contractIncomplete = concept.constraintContract.structuralFailures.contractIncompletes[0];
+    const nonLiveConcept = concept.constraintContract.structuralFailures.runtimeBoundaries[0];
+    const unsupportedRelation = concept.constraintContract.structuralFailures.refusals.find((entry) => (
+      entry.code === `${contractLabel}_UNSUPPORTED_RELATION`
+    ));
+
+    assert.equal(
+      classifyConstraintContractFailure({
+        resolution: 'invalid',
+        code: contractIncomplete.code,
+        message: contractIncomplete.reason,
+      }),
+      'contract_incomplete',
+      `${concept.conceptId} contract-incomplete failure must map to contract_incomplete.`,
+    );
+    assert.equal(
+      classifyConstraintContractFailure({
+        resolution: 'refused',
+        code: unsupportedRelation.code,
+        message: unsupportedRelation.reason,
+      }),
+      'unsupported_relation',
+      `${concept.conceptId} unsupported relation must map to unsupported_relation.`,
+    );
+    assert.equal(
+      classifyConstraintContractFailure({
+        resolution: 'refused',
+        code: nonLiveConcept.code,
+        message: nonLiveConcept.reason,
+      }),
+      'non_live_concept',
+      `${concept.conceptId} non-live misuse must map to non_live_concept.`,
+    );
+  });
+
+  process.stdout.write('PASS governance_conduct_family_structural_failure_coverage\n');
+}
+
 function verifyFamilySnapshot() {
   const snapshot = loadJson(familySnapshotPath);
   const storedRelationshipSnapshot = loadStoredConceptRelationshipSnapshot();
@@ -498,6 +562,7 @@ function main() {
   verifyPairwiseExclusionMatrix();
   verifyTemporalAndFunctionalSeparation();
   verifyFamilyPressureTests();
+  verifyStructuralFailureCoverage();
   verifyFamilySnapshot();
 }
 

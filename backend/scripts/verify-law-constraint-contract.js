@@ -9,6 +9,10 @@ const {
   loadGovernanceDomainLock,
   validateConstraintContractShape,
 } = require('../src/modules/concepts/constraint-contract');
+const {
+  STRUCTURAL_FAILURE_KINDS,
+  classifyConstraintContractFailure,
+} = require('../src/modules/concepts/structural-failure-layer');
 
 function getLawArtifacts() {
   const law = getConceptById('law');
@@ -122,6 +126,16 @@ function verifyLawConstraintContractStructure() {
       'LAW_UNSUPPORTED_RELATION',
     ],
     'law refusal codes mismatch.',
+  );
+  assert.deepEqual(
+    contract.structuralFailures.contractIncompletes?.map((entry) => entry.code),
+    ['LAW_CONTRACT_INCOMPLETE'],
+    'law contract-incomplete codes mismatch.',
+  );
+  assert.deepEqual(
+    contract.structuralFailures.runtimeBoundaries?.map((entry) => entry.code),
+    ['LAW_NON_LIVE_CONCEPT'],
+    'law runtime-boundary codes mismatch.',
   );
 
   const relationTargetIds = [
@@ -293,6 +307,60 @@ function verifyConflictCases() {
   process.stdout.write('PASS law_constraint_contract_conflict_cases\n');
 }
 
+function verifyStructuralFailureCoverage() {
+  const { contract } = getLawArtifacts();
+  const contractIncomplete = contract.structuralFailures.contractIncompletes[0];
+  const nonLiveConcept = contract.structuralFailures.runtimeBoundaries[0];
+  const unsupportedRelation = contract.structuralFailures.refusals.find((entry) => (
+    entry.code === 'LAW_UNSUPPORTED_RELATION'
+  ));
+
+  assert.equal(
+    STRUCTURAL_FAILURE_KINDS.includes('contract_incomplete'),
+    true,
+    'structural failure kinds must include contract_incomplete.',
+  );
+  assert.equal(
+    STRUCTURAL_FAILURE_KINDS.includes('unsupported_relation'),
+    true,
+    'structural failure kinds must include unsupported_relation.',
+  );
+  assert.equal(
+    STRUCTURAL_FAILURE_KINDS.includes('non_live_concept'),
+    true,
+    'structural failure kinds must include non_live_concept.',
+  );
+  assert.equal(
+    classifyConstraintContractFailure({
+      resolution: 'invalid',
+      code: contractIncomplete.code,
+      message: contractIncomplete.reason,
+    }),
+    'contract_incomplete',
+    'law contract-incomplete failure must map to contract_incomplete.',
+  );
+  assert.equal(
+    classifyConstraintContractFailure({
+      resolution: 'refused',
+      code: unsupportedRelation.code,
+      message: unsupportedRelation.reason,
+    }),
+    'unsupported_relation',
+    'law unsupported relation must map to unsupported_relation.',
+  );
+  assert.equal(
+    classifyConstraintContractFailure({
+      resolution: 'refused',
+      code: nonLiveConcept.code,
+      message: nonLiveConcept.reason,
+    }),
+    'non_live_concept',
+    'law non-live misuse must map to non_live_concept.',
+  );
+
+  process.stdout.write('PASS law_constraint_contract_structural_failure_coverage\n');
+}
+
 function main() {
   verifyGovernanceDomainLock();
   verifyLawConstraintContractStructure();
@@ -300,6 +368,7 @@ function main() {
   verifyInvalidCases();
   verifyRefusalCases();
   verifyConflictCases();
+  verifyStructuralFailureCoverage();
   process.stdout.write('ChatPDM law constraint-contract verification passed.\n');
 }
 
