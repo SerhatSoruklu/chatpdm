@@ -1,10 +1,10 @@
-# Constraint Contract Audit Prompt
+# Constraint Contract Audit Template
 
 ## Purpose
 
-Use this prompt to run a strict, adversarial validation audit of a concept or concept family in ChatPDM against the Constraint Contract Checklist.
+Use this template to run a strict, adversarial validation audit of a concept or concept family in ChatPDM against the Constraint Contract Checklist.
 
-This prompt is not for explanation.
+This template is not for explanation.
 
 It is for admission and runtime safety judgment.
 
@@ -12,7 +12,7 @@ Companion control:
 
 - [constraint-contract-checklist.md](./constraint-contract-checklist.md)
 
-## Prompt
+## Template
 
 ```text
 Task
