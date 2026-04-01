@@ -20,11 +20,11 @@ function clone(value) {
   return JSON.parse(JSON.stringify(value));
 }
 
-function buildObligationProfile() {
+function buildBoundaryCandidateProfile() {
   return validateConceptStructuralProfile({
-    conceptId: 'obligation',
+    conceptId: 'binding-condition-candidate',
     domain: 'governance-structures',
-    coreMeaning: 'Obligation marks a binding condition that places conduct under owed force before the conduct line is finalized as duty.',
+    coreMeaning: 'The candidate marks a binding condition that places conduct under owed force before the conduct line is finalized as duty.',
     function: 'binding condition that places conduct under owed force',
     object: 'conduct or restraint owed by an actor',
     sourceType: 'rule, role, office, or obligation with binding force',
@@ -36,8 +36,8 @@ function buildObligationProfile() {
     outcomeAttributionRole: 'does not attribute outcomes by itself',
     forbiddenEquivalences: ['duty', 'responsibility'],
     boundaryNotes: [
-      'duty: obligation marks the binding condition; duty marks the conduct owed under that condition.',
-      'responsibility: obligation concerns binding force before answerability; responsibility concerns answerability after attribution.',
+      'duty: the candidate marks the binding condition; duty marks the conduct owed under that condition.',
+      'responsibility: the candidate concerns binding force before answerability; responsibility concerns answerability after attribution.',
     ],
   });
 }
@@ -55,22 +55,22 @@ function verifyDutyResponsibilityDistinct() {
   process.stdout.write('PASS concept_profile_comparison_duty_vs_responsibility\n');
 }
 
-function verifyObligationDutyBoundaryRequirement() {
-  const obligation = buildObligationProfile();
+function verifyBoundaryCandidateDutyRequirement() {
+  const candidate = buildBoundaryCandidateProfile();
   const duty = getLiveProfile('duty');
-  const result = compareConceptProfiles(obligation, duty);
+  const result = compareConceptProfiles(candidate, duty);
 
-  assert.equal(result.otherConceptId, 'duty', 'obligation vs duty otherConceptId mismatch.');
+  assert.equal(result.otherConceptId, 'duty', 'boundary candidate vs duty otherConceptId mismatch.');
   assert.equal(
     result.classification,
     'requires_explicit_boundary_note',
-    'obligation vs duty should require an explicit boundary note.',
+    'boundary candidate vs duty should require an explicit boundary note.',
   );
-  assert.equal(result.requiredBoundaryProof, true, 'obligation vs duty should require boundary proof.');
-  assert.equal(result.collidingFields.includes('domain'), true, 'obligation vs duty must collide on domain.');
-  assert.equal(result.collidingFields.includes('object'), true, 'obligation vs duty must collide on object.');
+  assert.equal(result.requiredBoundaryProof, true, 'boundary candidate vs duty should require boundary proof.');
+  assert.equal(result.collidingFields.includes('domain'), true, 'boundary candidate vs duty must collide on domain.');
+  assert.equal(result.collidingFields.includes('object'), true, 'boundary candidate vs duty must collide on object.');
 
-  process.stdout.write('PASS concept_profile_comparison_obligation_vs_duty\n');
+  process.stdout.write('PASS concept_profile_comparison_boundary_candidate_vs_duty\n');
 }
 
 function verifyAuthorityPowerAdjacent() {
@@ -91,19 +91,19 @@ function verifyAuthorityPowerAdjacent() {
 }
 
 function verifyIdenticalMockProfilesDuplicate() {
-  const left = buildObligationProfile();
+  const left = buildBoundaryCandidateProfile();
   const right = validateConceptStructuralProfile({
     ...clone(left),
-    conceptId: 'obligation-shadow',
+    conceptId: 'binding-condition-candidate-shadow',
     forbiddenEquivalences: ['duty', 'responsibility'],
     boundaryNotes: [
-      'duty: shadow obligation intentionally mirrors the original profile for duplication testing.',
+      'duty: the shadow candidate intentionally mirrors the original profile for duplication testing.',
     ],
   });
 
   const result = compareConceptProfiles(left, right);
 
-  assert.equal(result.otherConceptId, 'obligation-shadow', 'duplicate mock otherConceptId mismatch.');
+  assert.equal(result.otherConceptId, 'binding-condition-candidate-shadow', 'duplicate mock otherConceptId mismatch.');
   assert.equal(result.classification, 'duplicate_candidate', 'identical mock profiles must be duplicate candidates.');
   assert.equal(result.requiredBoundaryProof, false, 'duplicate candidate should not ask for boundary proof.');
   assert.deepEqual(
@@ -116,9 +116,9 @@ function verifyIdenticalMockProfilesDuplicate() {
 }
 
 function verifyCandidateAgainstAllLiveConcepts() {
-  const obligation = buildObligationProfile();
+  const candidate = buildBoundaryCandidateProfile();
   const liveProfiles = buildLiveConceptProfiles();
-  const results = compareProfileAgainstLiveConcepts(obligation, liveProfiles);
+  const results = compareProfileAgainstLiveConcepts(candidate, liveProfiles);
 
   assert.equal(results.length, LIVE_CONCEPT_IDS.length, 'candidate must be compared against every live concept.');
   assert.deepEqual(
@@ -140,7 +140,7 @@ function verifyCandidateAgainstAllLiveConcepts() {
 
 function main() {
   verifyDutyResponsibilityDistinct();
-  verifyObligationDutyBoundaryRequirement();
+  verifyBoundaryCandidateDutyRequirement();
   verifyAuthorityPowerAdjacent();
   verifyIdenticalMockProfilesDuplicate();
   verifyCandidateAgainstAllLiveConcepts();

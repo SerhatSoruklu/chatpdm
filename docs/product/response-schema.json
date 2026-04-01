@@ -12,6 +12,9 @@
       "$ref": "#/$defs/rejectedConceptResponse"
     },
     {
+      "$ref": "#/$defs/vocabularyDetectedResponse"
+    },
+    {
       "$ref": "#/$defs/noExactMatchResponse"
     },
     {
@@ -675,6 +678,18 @@
         }
       }
     },
+    "vocabularyDetectedResolution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "method"
+      ],
+      "properties": {
+        "method": {
+          "const": "vocabulary_guard"
+        }
+      }
+    },
     "rejectionObject": {
       "type": "object",
       "additionalProperties": false,
@@ -692,6 +707,110 @@
         },
         "finality": {
           "type": "boolean"
+        }
+      }
+    },
+    "vocabularyClassificationType": {
+      "type": "string",
+      "enum": [
+        "legal_term",
+        "informal_term",
+        "ambiguous_term"
+      ]
+    },
+    "vocabularyRelationsObject": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "closestConcept": {
+          "$ref": "#/$defs/stringValue"
+        },
+        "contrastWith": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/stringValue"
+          }
+        },
+        "relatedConcepts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/stringValue"
+          }
+        }
+      }
+    },
+    "vocabularySystemFlagsObject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "isCoreConcept",
+        "usableInResolver",
+        "reasoningAllowed"
+      ],
+      "properties": {
+        "isCoreConcept": {
+          "const": false
+        },
+        "usableInResolver": {
+          "const": false
+        },
+        "reasoningAllowed": {
+          "const": false
+        }
+      }
+    },
+    "vocabularyClassificationResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "input",
+        "normalizedInput",
+        "matched",
+        "term",
+        "classification",
+        "relations",
+        "systemFlags"
+      ],
+      "properties": {
+        "input": {
+          "$ref": "#/$defs/stringValue"
+        },
+        "normalizedInput": {
+          "$ref": "#/$defs/stringValue"
+        },
+        "matched": {
+          "type": "boolean"
+        },
+        "term": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "classification": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "legal_term",
+            "informal_term",
+            "ambiguous_term",
+            null
+          ]
+        },
+        "relations": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/vocabularyRelationsObject"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "systemFlags": {
+          "$ref": "#/$defs/vocabularySystemFlagsObject"
         }
       }
     },
@@ -1002,6 +1121,70 @@
         },
         "rejection": {
           "$ref": "#/$defs/rejectionObject"
+        }
+      }
+    },
+    "vocabularyDetectedResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "finalState",
+        "query",
+        "normalizedQuery",
+        "contractVersion",
+        "normalizerVersion",
+        "matcherVersion",
+        "conceptSetVersion",
+        "queryType",
+        "interpretation",
+        "resolution",
+        "message",
+        "vocabulary"
+      ],
+      "properties": {
+        "type": {
+          "const": "VOCABULARY_DETECTED"
+        },
+        "finalState": {
+          "const": "refused"
+        },
+        "query": {
+          "$ref": "#/$defs/stringValue"
+        },
+        "normalizedQuery": {
+          "$ref": "#/$defs/stringValue"
+        },
+        "contractVersion": {
+          "$ref": "#/$defs/contractVersionString"
+        },
+        "normalizerVersion": {
+          "$ref": "#/$defs/datedVersionString"
+        },
+        "matcherVersion": {
+          "$ref": "#/$defs/datedVersionString"
+        },
+        "conceptSetVersion": {
+          "$ref": "#/$defs/conceptSetVersionString"
+        },
+        "queryType": {
+          "type": "string",
+          "enum": [
+            "exact_concept_query",
+            "canonical_id_query"
+          ]
+        },
+        "interpretation": {
+          "type": "null"
+        },
+        "resolution": {
+          "$ref": "#/$defs/vocabularyDetectedResolution"
+        },
+        "message": {
+          "const": "Recognized term is not a core system concept and is excluded from resolution."
+        },
+        "vocabulary": {
+          "$ref": "#/$defs/vocabularyClassificationResult"
         }
       }
     },

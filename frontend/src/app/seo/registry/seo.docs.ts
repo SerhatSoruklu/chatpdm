@@ -41,4 +41,12 @@ export const seoDocsEntries = {
     sitemapChangeFrequency: 'monthly',
     sitemapPriority: 0.67,
   },
+  'docs.vocabulary-boundary': {
+    title: 'Vocabulary Boundary - ChatPDM',
+    description: 'Public boundary index for recognized legal vocabulary outside the live ChatPDM runtime ontology.',
+    canonicalPath: '/vocabulary',
+    includeInSitemap: true,
+    sitemapChangeFrequency: 'monthly',
+    sitemapPriority: 0.66,
+  },
 } satisfies SeoRegistryFamily;

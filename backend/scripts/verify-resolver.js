@@ -148,6 +148,31 @@ function runCase(testCase) {
     assert.equal(firstResult.queryType, testCase.expectedQueryType, `${testCase.name} queryType mismatch.`);
   }
 
+  if (testCase.expectedType === 'VOCABULARY_DETECTED') {
+    assert.equal(
+      firstResult.finalState,
+      testCase.expectedFinalState ?? 'refused',
+      `${testCase.name} finalState mismatch.`,
+    );
+    assertSubset(firstResult.vocabulary, testCase.expectedVocabulary, `${testCase.name} vocabulary`);
+    assert.equal(
+      Object.prototype.hasOwnProperty.call(firstResult, 'answer'),
+      false,
+      `${testCase.name} must not expose a concept answer payload.`,
+    );
+    assert.equal(
+      Object.prototype.hasOwnProperty.call(firstResult, 'rejection'),
+      false,
+      `${testCase.name} must not expose rejection registry payload.`,
+    );
+  } else {
+    assert.equal(
+      Object.prototype.hasOwnProperty.call(firstResult, 'vocabulary'),
+      false,
+      `${testCase.name} must not expose a vocabulary payload.`,
+    );
+  }
+
   if (testCase.expectedInterpretation === null) {
     assert.equal(firstResult.interpretation, null, `${testCase.name} interpretation should be null.`);
   } else if (testCase.expectedInterpretation) {

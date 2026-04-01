@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, computed, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 
 import { ConceptResolverService } from '../../core/concepts/concept-resolver.service';
@@ -42,7 +43,9 @@ import {
   RUNTIME_SCOPE_BY_CONCEPT,
   VISIBLE_ONLY_PUBLIC_CONCEPT_IDS,
 } from '../../core/concepts/public-runtime.catalog';
+import { VocabularyPanelComponent } from '../../core/concepts/vocabulary-panel/vocabulary-panel.component';
 import { FeedbackService } from '../../core/feedback/feedback.service';
+import type { VocabularyBoundaryResolvedState } from '../../core/vocabulary/vocabulary-boundary.types';
 import type {
   AmbiguousSelectionOrigin,
   EntryFeedbackState,
@@ -55,10 +58,14 @@ import type {
   ScopeGroup,
   SubmitQueryOptions,
 } from './landing-page.types';
+import { VOCABULARY_BOUNDARY_HOME_NOTE } from '../vocabulary-page/vocabulary-page.model';
 
 const LIVE_RUNTIME_CONCEPTS = new Set<string>(LIVE_RUNTIME_CONCEPT_IDS);
 const VISIBLE_ONLY_PUBLIC_CONCEPTS = new Set<string>(VISIBLE_ONLY_PUBLIC_CONCEPT_IDS);
-const REJECTED_CONCEPTS = new Set<string>(REJECTED_CONCEPT_IDS);
+const VOCABULARY_TERM_IDS = new Set<string>(['obligation', 'liability', 'jurisdiction']);
+const REJECTED_CONCEPTS = new Set<string>(
+  REJECTED_CONCEPT_IDS.filter((conceptId) => !VOCABULARY_TERM_IDS.has(conceptId)),
+);
 const DETAIL_BACKED_CONCEPTS = new Set<string>(DETAIL_BACKED_CONCEPT_IDS);
 const REVIEWED_NOT_LIVE_ADMISSIONS = new Set<ReviewState['admission']>([
   'visible_only_derived',
@@ -102,6 +109,13 @@ const SCOPE_GROUPS: ScopeGroup[] = [
     ],
   },
 ];
+
+const FILTERED_SCOPE_GROUPS: ScopeGroup[] = SCOPE_GROUPS
+  .map((group) => ({
+    ...group,
+    concepts: group.concepts.filter((conceptId) => !VOCABULARY_TERM_IDS.has(conceptId)),
+  }))
+  .filter((group) => group.concepts.length > 0);
 
 type QueryClassification =
   | 'empty'
@@ -199,35 +213,63 @@ const NO_EXACT_MATCH_FEEDBACK_OPTIONS: FeedbackOption[] = [
     AiAdvisoryComponent,
     ExamplePreviewComponent,
     PdmTooltipDirective,
+    VocabularyPanelComponent,
   ],
   templateUrl: './landing-page.component.html',
   styleUrl: './landing-page.component.css',
 })
 export class LandingPageComponent {
+  private readonly route = inject(ActivatedRoute);
+  private readonly routeData = toSignal(this.route.data, {
+    initialValue: this.route.snapshot.data,
+  });
   private readonly resolver = inject(ConceptResolverService);
   private readonly aiTracking = inject(AiTrackingService);
   private readonly feedbackService = inject(FeedbackService);
+  private readonly countFormatter = new Intl.NumberFormat('en-US');
 
   protected readonly queryDraft = signal('');
   protected readonly activeEntry = signal<ResolverEntry | null>(null);
   protected readonly isSubmitting = signal(false);
-  protected readonly scopeGroups = SCOPE_GROUPS;
+  protected readonly scopeGroups = FILTERED_SCOPE_GROUPS;
   protected readonly homepageSteps = HOMEPAGE_STEPS;
   protected readonly referenceSurfaceGroups = REFERENCE_SURFACE_GROUPS;
   protected readonly liveRuntimeConceptIds = LIVE_RUNTIME_CONCEPT_IDS;
   protected readonly visibleOnlyConceptIds = VISIBLE_ONLY_PUBLIC_CONCEPT_IDS;
-  protected readonly rejectedConceptIds = REJECTED_CONCEPT_IDS;
+  protected readonly rejectedConceptIds = REJECTED_CONCEPT_IDS.filter(
+    (conceptId) => !VOCABULARY_TERM_IDS.has(conceptId),
+  );
   protected readonly readingLensOptions = READING_LENS_OPTIONS;
   protected readonly readingLensTrustCopy = READING_LENS_TRUST_COPY;
   protected readonly readingLensFallbackCopy = READING_LENS_FALLBACK_COPY;
   protected readonly queryAssessment = computed(() => this.classifyQuery(this.queryDraft()));
   protected readonly liveConceptCount = LIVE_RUNTIME_CONCEPTS.size;
-  protected readonly scopedConceptCount = SCOPE_GROUPS.reduce(
-    (count, group) => count + group.concepts.length,
-    0,
-  );
+  protected readonly vocabularyBoundaryState = computed(() => (
+    this.routeData()['vocabularyBoundary'] as VocabularyBoundaryResolvedState | undefined
+  ) ?? {
+    status: 'error',
+    data: null,
+    errorMessage: 'The vocabulary boundary could not be loaded from the public API.',
+  } satisfies VocabularyBoundaryResolvedState);
+  protected readonly publishedConceptPacketCount = computed(() => {
+    const state = this.vocabularyBoundaryState();
+    return state.status === 'ready' ? state.data.surfaceCounts.publishedConceptPackets : null;
+  });
+  protected readonly recognizedVocabularyCount = computed(() => {
+    const state = this.vocabularyBoundaryState();
+    return state.status === 'ready' ? state.data.total : null;
+  });
+  protected readonly vocabularyBoundaryHomeNote = VOCABULARY_BOUNDARY_HOME_NOTE;
   protected readonly activeReadingLens = signal<ReadingLensMode>('standard');
   protected readonly validationTraceVisible = signal(false);
+
+  protected formatBoundaryCount(value: number | null): string {
+    if (typeof value !== 'number') {
+      return '—';
+    }
+
+    return this.countFormatter.format(value);
+  }
 
   protected async submitDraft(): Promise<void> {
     if (!this.canSubmitDraft()) {
@@ -433,6 +475,8 @@ export class LandingPageComponent {
     switch (response.type) {
       case 'concept_match':
         return 'Exact canonical match';
+      case 'VOCABULARY_DETECTED':
+        return 'Vocabulary detected';
       case 'rejected_concept':
         return 'Structurally rejected';
       case 'comparison':
@@ -453,6 +497,10 @@ export class LandingPageComponent {
   protected executionStateLabel(response: ResolveProductResponse): string {
     if (response.type === 'concept_match' || response.type === 'comparison') {
       return 'Executable';
+    }
+
+    if (response.type === 'VOCABULARY_DETECTED') {
+      return 'Excluded';
     }
 
     if (response.type === 'rejected_concept') {
@@ -533,6 +581,8 @@ export class LandingPageComponent {
         return 'Controlled comparison';
       case 'concept_match':
         return 'Canonical concept';
+      case 'VOCABULARY_DETECTED':
+        return 'Vocabulary insight';
       case 'rejected_concept':
         return 'Governed refusal';
       case 'ambiguous_match':
@@ -581,6 +631,8 @@ export class LandingPageComponent {
         return 'Invalid query';
       case 'rejection_registry':
         return 'Rejection registry';
+      case 'vocabulary_guard':
+        return 'Vocabulary guard';
       case 'unsupported_query_type':
         return 'Unsupported query type';
       default:
@@ -743,6 +795,10 @@ export class LandingPageComponent {
     response: RefusalResponse,
     detail: ConceptDetailResponse | null | undefined,
   ): string {
+    if (response.type === 'VOCABULARY_DETECTED') {
+      return 'Vocabulary insight';
+    }
+
     if (this.isVisibleOnlyRefusal(response, detail)) {
       return 'Visible-only concept';
     }
@@ -754,6 +810,10 @@ export class LandingPageComponent {
     response: RefusalResponse,
     detail: ConceptDetailResponse | null | undefined,
   ): string {
+    if (response.type === 'VOCABULARY_DETECTED') {
+      return 'Recognized term, excluded from resolution';
+    }
+
     if (this.isVisibleOnlyRefusal(response, detail)) {
       if (this.isDerivedVisibleOnlyDetail(detail)) {
         return 'Derived concept, inspectable only';
@@ -784,6 +844,10 @@ export class LandingPageComponent {
     response: RefusalResponse,
     detail: ConceptDetailResponse | null | undefined,
   ): string {
+    if (response.type === 'VOCABULARY_DETECTED') {
+      return response.message;
+    }
+
     if (this.isVisibleOnlyRefusal(response, detail)) {
       if (this.isDerivedVisibleOnlyDetail(detail)) {
         return 'Violation remains inspectable as a derived concept computed from duty evaluation, but it is not admitted to the live public runtime.';
@@ -806,6 +870,10 @@ export class LandingPageComponent {
     response: RefusalResponse,
     detail: ConceptDetailResponse | null | undefined,
   ): string {
+    if (response.type === 'VOCABULARY_DETECTED') {
+      return 'Vocabulary can be classified and displayed, but it never enters deterministic resolution.';
+    }
+
     if (this.isVisibleOnlyRefusal(response, detail)) {
       if (this.isDerivedVisibleOnlyDetail(detail)) {
         return 'Derived concepts remain visible only for inspection and explanation; they do not enter live runtime resolution or comparison support.';
@@ -833,6 +901,10 @@ export class LandingPageComponent {
     response: RefusalResponse,
     detail: ConceptDetailResponse | null | undefined,
   ): string[] {
+    if (response.type === 'VOCABULARY_DETECTED') {
+      return ['Vocabulary only', response.contractVersion];
+    }
+
     if (this.isVisibleOnlyRefusal(response, detail)) {
       return ['Visible only', response.contractVersion];
     }

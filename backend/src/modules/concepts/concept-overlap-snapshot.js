@@ -6,10 +6,7 @@ const path = require('node:path');
 const { compareConceptProfiles } = require('./concept-profile-comparator');
 const { buildConceptOverlapInspectionReport } = require('./concept-overlap-report-service');
 const { getConceptById } = require('./concept-loader');
-const {
-  normalizeConceptToProfile,
-  validateConceptStructuralProfile,
-} = require('./concept-structural-profile');
+const { normalizeConceptToProfile } = require('./concept-structural-profile');
 
 const overlapSnapshotPath = path.resolve(
   __dirname,
@@ -79,28 +76,6 @@ function getLiveProfile(conceptId) {
   return concept;
 }
 
-function buildObligationProfile() {
-  return validateConceptStructuralProfile({
-    conceptId: 'obligation',
-    domain: 'governance-structures',
-    coreMeaning: 'Obligation marks a binding condition that places conduct under owed force before the conduct line is finalized as duty.',
-    function: 'binding condition that places conduct under owed force',
-    object: 'conduct or restraint owed by an actor',
-    sourceType: 'rule, role, office, or obligation with binding force',
-    actorRelation: 'actor stands under a binding condition that can make conduct owed',
-    temporalRole: 'pre-duty binding condition',
-    enforcementRole: 'exposes the actor to later enforcement if the owed condition is carried into duty and unmet',
-    answerabilityRole: 'does not assign answerability by itself',
-    requiredConductRole: 'conditions required conduct without fixing the final conduct line by itself',
-    outcomeAttributionRole: 'does not attribute outcomes by itself',
-    forbiddenEquivalences: ['duty', 'responsibility'],
-    boundaryNotes: [
-      'duty: obligation marks the binding condition; duty marks the conduct owed under that condition.',
-      'responsibility: obligation concerns binding force before answerability; responsibility concerns answerability after attribution.',
-    ],
-  });
-}
-
 function createRegressionPairEntry(caseId, conceptId, otherConceptId, classification) {
   return {
     scope: 'regression_pair',
@@ -117,7 +92,6 @@ function buildRegressionPairSnapshotEntries() {
   const authority = normalizeConceptToProfile(getLiveProfile('authority'));
   const power = normalizeConceptToProfile(getLiveProfile('power'));
   const legitimacy = normalizeConceptToProfile(getLiveProfile('legitimacy'));
-  const obligation = buildObligationProfile();
 
   return [
     createRegressionPairEntry(
@@ -125,18 +99,6 @@ function buildRegressionPairSnapshotEntries() {
       'duty',
       'responsibility',
       compareConceptProfiles(duty, responsibility).classification,
-    ),
-    createRegressionPairEntry(
-      'obligation_vs_duty',
-      'obligation',
-      'duty',
-      compareConceptProfiles(obligation, duty).classification,
-    ),
-    createRegressionPairEntry(
-      'obligation_vs_responsibility',
-      'obligation',
-      'responsibility',
-      compareConceptProfiles(obligation, responsibility).classification,
     ),
     createRegressionPairEntry(
       'authority_vs_power',

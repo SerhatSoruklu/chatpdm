@@ -1,0 +1,48 @@
+@if (shouldRender() && vocabulary(); as vocabulary) {
+  <section
+    class="pdm-vocabulary-panel pdm-site-surface"
+    aria-label="Vocabulary insight"
+    data-testid="vocabulary-panel"
+  >
+    <div class="pdm-vocabulary-panel__head">
+      <p class="pdm-vocabulary-panel__eyebrow">Vocabulary Insight</p>
+      <h3 class="pdm-vocabulary-panel__title">Recognized term outside the core resolver</h3>
+    </div>
+
+    <dl class="pdm-vocabulary-panel__grid">
+      <div class="pdm-vocabulary-panel__row">
+        <dt>Recognized term</dt>
+        <dd>{{ vocabulary.term }}</dd>
+      </div>
+
+      <div class="pdm-vocabulary-panel__row">
+        <dt>Classification</dt>
+        <dd>{{ classificationLabel(vocabulary.classification) }}</dd>
+      </div>
+
+      @if (vocabulary.relations?.closestConcept) {
+        <div class="pdm-vocabulary-panel__row">
+          <dt>Closest system concept</dt>
+          <dd>{{ vocabulary.relations?.closestConcept }}</dd>
+        </div>
+      }
+
+      <div class="pdm-vocabulary-panel__row">
+        <dt>Status</dt>
+        <dd>Not a core system concept</dd>
+      </div>
+
+      <div class="pdm-vocabulary-panel__row">
+        <dt>Reasoning status</dt>
+        <dd>Excluded from deterministic reasoning</dd>
+      </div>
+
+      <div class="pdm-vocabulary-panel__row">
+        <dt>Resolution status</dt>
+        <dd>Excluded from resolution engine</dd>
+      </div>
+    </dl>
+
+    <p class="pdm-vocabulary-panel__warning">{{ warningText }}</p>
+  </section>
+}

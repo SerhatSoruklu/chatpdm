@@ -666,6 +666,7 @@
                   response.type === 'no_exact_match'
                   || response.type === 'invalid_query'
                   || response.type === 'unsupported_query_type'
+                  || response.type === 'VOCABULARY_DETECTED'
                 ) {
                   <section class="pdm-home__response-card pdm-site-surface">
                     <div class="pdm-home__resolution-strip" aria-label="Resolution status">
@@ -821,6 +822,8 @@
                     }
                   </section>
                 }
+
+                <app-vocabulary-panel [response]="response" />
                 }
               }
             } @else {
@@ -861,28 +864,42 @@
           <div class="pdm-home__scope-summary">
             <article class="pdm-home__scope-stat pdm-site-surface">
               <div class="pdm-home__scope-stat-head">
-                <p class="pdm-home__micro-label">Live runtime</p>
+                <p class="pdm-home__micro-label">Published concept packets</p>
+                <span class="pdm-home__scope-tag pdm-site-chip">catalog</span>
+              </div>
+              <div class="pdm-home__scope-value-row">
+                <p class="pdm-home__scope-value">{{ formatBoundaryCount(publishedConceptPacketCount()) }}</p>
+                <span class="pdm-home__scope-unit">packets</span>
+              </div>
+              <p class="pdm-home__support-copy">Published authored packets on the current public concept surface.</p>
+            </article>
+
+            <article class="pdm-home__scope-stat pdm-site-surface">
+              <div class="pdm-home__scope-stat-head">
+                <p class="pdm-home__micro-label">Current runtime boundary</p>
                 <span class="pdm-home__scope-tag pdm-site-chip">active</span>
               </div>
               <div class="pdm-home__scope-value-row">
                 <p class="pdm-home__scope-value">{{ liveConceptCount }}</p>
                 <span class="pdm-home__scope-unit">concepts</span>
               </div>
-              <p class="pdm-home__support-copy">Queryable canonical concepts in runtime.</p>
+              <p class="pdm-home__support-copy">Only these live concepts resolve in public runtime.</p>
             </article>
 
             <article class="pdm-home__scope-stat pdm-site-surface">
               <div class="pdm-home__scope-stat-head">
-                <p class="pdm-home__micro-label">Visible scope (v1)</p>
-                <span class="pdm-home__scope-tag pdm-site-chip">visible</span>
+                <p class="pdm-home__micro-label">Recognized legal vocabulary terms</p>
+                <span class="pdm-home__scope-tag pdm-site-chip">boundary</span>
               </div>
               <div class="pdm-home__scope-value-row">
-                <p class="pdm-home__scope-value">{{ scopedConceptCount }}</p>
-                <span class="pdm-home__scope-unit">concepts</span>
+                <p class="pdm-home__scope-value">{{ formatBoundaryCount(recognizedVocabularyCount()) }}</p>
+                <span class="pdm-home__scope-unit">terms</span>
               </div>
-              <p class="pdm-home__support-copy">Visible surface includes visible-only and rejected concepts without implying runtime admission.</p>
+              <p class="pdm-home__support-copy">Recognized vocabulary stays outside runtime ontology admission.</p>
             </article>
           </div>
+
+          <p class="pdm-home__boundary-note">{{ vocabularyBoundaryHomeNote }}</p>
 
           <div class="pdm-home__scope-groups">
             @for (group of scopeGroups; track group.id) {

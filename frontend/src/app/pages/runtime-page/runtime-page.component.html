@@ -8,6 +8,12 @@
           Query the live public runtime. Concepts resolve only if they are admitted and within
           scope.
         </p>
+        <div class="pdm-runtime__boundary-link-shell">
+          <p class="pdm-runtime__boundary-link-copy">
+            Current runtime boundary: {{ liveConceptCount }} live concepts
+          </p>
+          <a class="pdm-runtime__boundary-link" routerLink="/vocabulary">View vocabulary boundary</a>
+        </div>
       </section>
 
       <section
@@ -591,6 +597,8 @@
                 </section>
               }
             }
+
+            <app-vocabulary-panel [response]="response" />
           }
         }
       </section>

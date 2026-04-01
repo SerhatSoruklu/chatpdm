@@ -1,0 +1,71 @@
+{
+  "obligation": {
+    "input": "obligation",
+    "normalizedInput": "obligation",
+    "matched": true,
+    "term": "obligation",
+    "classification": "legal_term",
+    "relations": {
+      "closestConcept": "duty",
+      "contrastWith": [
+        "responsibility"
+      ],
+      "relatedConcepts": [
+        "duty"
+      ]
+    },
+    "systemFlags": {
+      "isCoreConcept": false,
+      "usableInResolver": false,
+      "reasoningAllowed": false
+    }
+  },
+  "liability": {
+    "input": "liability",
+    "normalizedInput": "liability",
+    "matched": true,
+    "term": "liability",
+    "classification": "legal_term",
+    "relations": {
+      "contrastWith": [
+        "responsibility",
+        "violation"
+      ],
+      "relatedConcepts": [
+        "responsibility",
+        "violation"
+      ]
+    },
+    "systemFlags": {
+      "isCoreConcept": false,
+      "usableInResolver": false,
+      "reasoningAllowed": false
+    }
+  },
+  "jurisdiction": {
+    "input": "jurisdiction",
+    "normalizedInput": "jurisdiction",
+    "matched": true,
+    "term": "jurisdiction",
+    "classification": "legal_term",
+    "relations": null,
+    "systemFlags": {
+      "isCoreConcept": false,
+      "usableInResolver": false,
+      "reasoningAllowed": false
+    }
+  },
+  "unknown": {
+    "input": "invented legal moonword",
+    "normalizedInput": "invented legal moonword",
+    "matched": false,
+    "term": null,
+    "classification": null,
+    "relations": null,
+    "systemFlags": {
+      "isCoreConcept": false,
+      "usableInResolver": false,
+      "reasoningAllowed": false
+    }
+  }
+}

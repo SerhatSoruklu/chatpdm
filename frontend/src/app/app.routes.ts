@@ -13,6 +13,8 @@ import { RuntimePageComponent } from './pages/runtime-page/runtime-page.componen
 import { TermsPageComponent } from './pages/terms-page/terms-page.component';
 import { VersionPolicyPageComponent } from './pages/version-policy-page/version-policy-page.component';
 import { VisionPageComponent } from './pages/vision-page/vision-page.component';
+import { VocabularyPageComponent } from './pages/vocabulary-page/vocabulary-page.component';
+import { vocabularyBoundaryResolver } from './core/vocabulary/vocabulary-boundary.resolver';
 import type { PolicySurfaceKey } from './policies/policy-surface.types';
 import { type SeoRegistryKey, seoRouteData } from './seo/seo.registry';
 
@@ -35,6 +37,9 @@ export const routes: Routes = [
     path: '',
     component: LandingPageComponent,
     data: seoRouteData('static.home'),
+    resolve: {
+      vocabularyBoundary: vocabularyBoundaryResolver,
+    },
   },
   {
     path: 'about',
@@ -235,6 +240,14 @@ export const routes: Routes = [
     path: 'resolution-contract',
     component: ResolutionContractPageComponent,
     data: seoRouteData('docs.resolution-contract'),
+  },
+  {
+    path: 'vocabulary',
+    component: VocabularyPageComponent,
+    data: seoRouteData('docs.vocabulary-boundary'),
+    resolve: {
+      vocabularyBoundary: vocabularyBoundaryResolver,
+    },
   },
   {
     path: '**',

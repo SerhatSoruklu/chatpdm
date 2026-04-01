@@ -561,40 +561,66 @@
     "expectedSuggestions": []
   },
   {
-    "name": "rejected_obligation_exact",
+    "name": "vocabulary_obligation_exact",
     "input": "obligation",
     "expectedNormalizedQuery": "obligation",
-    "expectedType": "rejected_concept",
-    "expectedMethod": "rejection_registry",
+    "expectedType": "VOCABULARY_DETECTED",
+    "expectedMethod": "vocabulary_guard",
     "expectedQueryType": "exact_concept_query",
-    "expectedInterpretation": {
-      "interpretationType": "explicitly_rejected_concept",
-      "targetConceptId": "obligation"
+    "expectedInterpretation": null,
+    "expectedVocabulary": {
+      "input": "obligation",
+      "normalizedInput": "obligation",
+      "matched": true,
+      "term": "obligation",
+      "classification": "legal_term",
+      "relations": {
+        "closestConcept": "duty",
+        "contrastWith": [
+          "responsibility"
+        ],
+        "relatedConcepts": [
+          "duty"
+        ]
+      },
+      "systemFlags": {
+        "isCoreConcept": false,
+        "usableInResolver": false,
+        "reasoningAllowed": false
+      }
     },
-    "expectedConceptId": "obligation",
-    "expectedRejection": {
-      "status": "REJECTED",
-      "decisionType": "STRUCTURAL_REJECTION",
-      "finality": true
-    }
+    "expectedFinalState": "refused"
   },
   {
-    "name": "rejected_obligation_exact_with_trailing_punctuation",
+    "name": "vocabulary_obligation_exact_with_trailing_punctuation",
     "input": "obligation?",
     "expectedNormalizedQuery": "obligation?",
-    "expectedType": "rejected_concept",
-    "expectedMethod": "rejection_registry",
+    "expectedType": "VOCABULARY_DETECTED",
+    "expectedMethod": "vocabulary_guard",
     "expectedQueryType": "exact_concept_query",
-    "expectedInterpretation": {
-      "interpretationType": "explicitly_rejected_concept",
-      "targetConceptId": "obligation"
+    "expectedInterpretation": null,
+    "expectedVocabulary": {
+      "input": "obligation",
+      "normalizedInput": "obligation",
+      "matched": true,
+      "term": "obligation",
+      "classification": "legal_term",
+      "relations": {
+        "closestConcept": "duty",
+        "contrastWith": [
+          "responsibility"
+        ],
+        "relatedConcepts": [
+          "duty"
+        ]
+      },
+      "systemFlags": {
+        "isCoreConcept": false,
+        "usableInResolver": false,
+        "reasoningAllowed": false
+      }
     },
-    "expectedConceptId": "obligation",
-    "expectedRejection": {
-      "status": "REJECTED",
-      "decisionType": "STRUCTURAL_REJECTION",
-      "finality": true
-    }
+    "expectedFinalState": "refused"
   },
   {
     "name": "rejected_enforcement_exact",
@@ -651,76 +677,113 @@
     }
   },
   {
-    "name": "rejected_liability_exact",
+    "name": "vocabulary_liability_exact",
     "input": "liability",
     "expectedNormalizedQuery": "liability",
-    "expectedType": "rejected_concept",
-    "expectedMethod": "rejection_registry",
+    "expectedType": "VOCABULARY_DETECTED",
+    "expectedMethod": "vocabulary_guard",
     "expectedQueryType": "exact_concept_query",
-    "expectedInterpretation": {
-      "interpretationType": "explicitly_rejected_concept",
-      "targetConceptId": "liability"
+    "expectedInterpretation": null,
+    "expectedVocabulary": {
+      "input": "liability",
+      "normalizedInput": "liability",
+      "matched": true,
+      "term": "liability",
+      "classification": "legal_term",
+      "relations": {
+        "contrastWith": [
+          "responsibility",
+          "violation"
+        ],
+        "relatedConcepts": [
+          "responsibility",
+          "violation"
+        ]
+      },
+      "systemFlags": {
+        "isCoreConcept": false,
+        "usableInResolver": false,
+        "reasoningAllowed": false
+      }
     },
-    "expectedConceptId": "liability",
-    "expectedRejection": {
-      "status": "REJECTED",
-      "decisionType": "STRUCTURAL_REJECTION",
-      "finality": true
-    }
+    "expectedFinalState": "refused"
   },
   {
-    "name": "rejected_jurisdiction_exact",
+    "name": "vocabulary_jurisdiction_exact",
     "input": "jurisdiction",
     "expectedNormalizedQuery": "jurisdiction",
-    "expectedType": "rejected_concept",
-    "expectedMethod": "rejection_registry",
+    "expectedType": "VOCABULARY_DETECTED",
+    "expectedMethod": "vocabulary_guard",
     "expectedQueryType": "exact_concept_query",
-    "expectedInterpretation": {
-      "interpretationType": "explicitly_rejected_concept",
-      "targetConceptId": "jurisdiction"
+    "expectedInterpretation": null,
+    "expectedVocabulary": {
+      "input": "jurisdiction",
+      "normalizedInput": "jurisdiction",
+      "matched": true,
+      "term": "jurisdiction",
+      "classification": "legal_term",
+      "relations": null,
+      "systemFlags": {
+        "isCoreConcept": false,
+        "usableInResolver": false,
+        "reasoningAllowed": false
+      }
     },
-    "expectedConceptId": "jurisdiction",
-    "expectedRejection": {
-      "status": "REJECTED",
-      "decisionType": "STRUCTURAL_REJECTION",
-      "finality": true
-    }
+    "expectedFinalState": "refused"
   },
   {
-    "name": "rejected_jurisdiction_prompt_exact",
+    "name": "vocabulary_jurisdiction_prompt_exact",
     "input": "what is jurisdiction",
     "expectedNormalizedQuery": "jurisdiction",
-    "expectedType": "rejected_concept",
-    "expectedMethod": "rejection_registry",
+    "expectedType": "VOCABULARY_DETECTED",
+    "expectedMethod": "vocabulary_guard",
     "expectedQueryType": "exact_concept_query",
-    "expectedInterpretation": {
-      "interpretationType": "explicitly_rejected_concept",
-      "targetConceptId": "jurisdiction"
+    "expectedInterpretation": null,
+    "expectedVocabulary": {
+      "input": "jurisdiction",
+      "normalizedInput": "jurisdiction",
+      "matched": true,
+      "term": "jurisdiction",
+      "classification": "legal_term",
+      "relations": null,
+      "systemFlags": {
+        "isCoreConcept": false,
+        "usableInResolver": false,
+        "reasoningAllowed": false
+      }
     },
-    "expectedConceptId": "jurisdiction",
-    "expectedRejection": {
-      "status": "REJECTED",
-      "decisionType": "STRUCTURAL_REJECTION",
-      "finality": true
-    }
+    "expectedFinalState": "refused"
   },
   {
-    "name": "rejected_obligation_canonical_id",
+    "name": "vocabulary_obligation_canonical_id",
     "input": "concept:obligation",
     "expectedNormalizedQuery": "concept:obligation",
-    "expectedType": "rejected_concept",
-    "expectedMethod": "rejection_registry",
+    "expectedType": "VOCABULARY_DETECTED",
+    "expectedMethod": "vocabulary_guard",
     "expectedQueryType": "canonical_id_query",
-    "expectedInterpretation": {
-      "interpretationType": "explicitly_rejected_concept",
-      "targetConceptId": "obligation"
+    "expectedInterpretation": null,
+    "expectedVocabulary": {
+      "input": "obligation",
+      "normalizedInput": "obligation",
+      "matched": true,
+      "term": "obligation",
+      "classification": "legal_term",
+      "relations": {
+        "closestConcept": "duty",
+        "contrastWith": [
+          "responsibility"
+        ],
+        "relatedConcepts": [
+          "duty"
+        ]
+      },
+      "systemFlags": {
+        "isCoreConcept": false,
+        "usableInResolver": false,
+        "reasoningAllowed": false
+      }
     },
-    "expectedConceptId": "obligation",
-    "expectedRejection": {
-      "status": "REJECTED",
-      "decisionType": "STRUCTURAL_REJECTION",
-      "finality": true
-    }
+    "expectedFinalState": "refused"
   },
   {
     "name": "authored_suggestion_civic_duty",

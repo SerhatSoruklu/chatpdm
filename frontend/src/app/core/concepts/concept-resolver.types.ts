@@ -149,6 +149,33 @@ export interface RejectionState {
   finality: boolean;
 }
 
+export type VocabularyClassificationType =
+  | 'legal_term'
+  | 'informal_term'
+  | 'ambiguous_term';
+
+export interface VocabularyRelations {
+  closestConcept?: string;
+  contrastWith?: string[];
+  relatedConcepts?: string[];
+}
+
+export interface VocabularySystemFlags {
+  isCoreConcept: false;
+  usableInResolver: false;
+  reasoningAllowed: false;
+}
+
+export interface VocabularyClassificationResult {
+  input: string;
+  normalizedInput: string;
+  matched: boolean;
+  term: string | null;
+  classification: VocabularyClassificationType | null;
+  relations: VocabularyRelations | null;
+  systemFlags: VocabularySystemFlags;
+}
+
 export interface ConceptDetailResponse {
   conceptId: string;
   title: string | null;
@@ -243,10 +270,29 @@ export interface UnsupportedQueryTypeResponse {
   message: string;
 }
 
+export interface VocabularyDetectedResponse {
+  type: 'VOCABULARY_DETECTED';
+  query: string;
+  normalizedQuery: string;
+  contractVersion: string;
+  normalizerVersion: string;
+  matcherVersion: string;
+  conceptSetVersion: string;
+  queryType: 'exact_concept_query' | 'canonical_id_query';
+  finalState: 'refused';
+  interpretation: null;
+  resolution: {
+    method: 'vocabulary_guard';
+  };
+  message: string;
+  vocabulary: VocabularyClassificationResult;
+}
+
 export type RefusalResponse =
   | NoExactMatchResponse
   | InvalidQueryResponse
-  | UnsupportedQueryTypeResponse;
+  | UnsupportedQueryTypeResponse
+  | VocabularyDetectedResponse;
 
 export interface RejectedConceptResponse {
   type: 'rejected_concept';

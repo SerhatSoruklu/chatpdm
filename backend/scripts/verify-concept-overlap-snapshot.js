@@ -80,18 +80,18 @@ function verifyApprovedChangeIsRecognizedExplicitly() {
   const storedSnapshot = clone(buildCurrentConceptRelationshipSnapshot());
   mutateSnapshotEntry(
     storedSnapshot,
-    (entry) => entry.scope === 'regression_pair' && entry.caseId === 'obligation_vs_duty',
-    'adjacent',
+    (entry) => entry.scope === 'regression_pair' && entry.caseId === 'authority_vs_power',
+    'distinct',
   );
 
   const approval = validateBoundaryChangeApproval({
     scope: 'regression_pair',
-    caseId: 'obligation_vs_duty',
-    conceptId: 'obligation',
-    otherConceptId: 'duty',
-    previousClassification: 'adjacent',
-    newClassification: 'requires_explicit_boundary_note',
-    reason: 'Approved regression restoration for obligation duty boundary classification.',
+    caseId: 'authority_vs_power',
+    conceptId: 'authority',
+    otherConceptId: 'power',
+    previousClassification: 'distinct',
+    newClassification: 'adjacent',
+    reason: 'Approved regression restoration for authority power boundary classification.',
     approvedBy: 'test-harness',
     approvedAt: '2026-04-01T00:00:00Z',
   });
@@ -119,22 +119,6 @@ function verifyRegressionPairsRemainFrozen() {
     ).classification,
     'distinct',
     'duty vs responsibility regression classification mismatch.',
-  );
-  assert.equal(
-    findSnapshotEntry(
-      storedSnapshot,
-      (entry) => entry.scope === 'regression_pair' && entry.caseId === 'obligation_vs_duty',
-    ).classification,
-    'requires_explicit_boundary_note',
-    'obligation vs duty regression classification mismatch.',
-  );
-  assert.equal(
-    findSnapshotEntry(
-      storedSnapshot,
-      (entry) => entry.scope === 'regression_pair' && entry.caseId === 'obligation_vs_responsibility',
-    ).classification,
-    'distinct',
-    'obligation vs responsibility regression classification mismatch.',
   );
   assert.equal(
     findSnapshotEntry(
