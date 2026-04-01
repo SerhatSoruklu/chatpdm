@@ -1,6 +1,9 @@
 'use strict';
 
-const { EMPTY_NORMALIZED_QUERY } = require('./constants');
+const {
+  EMPTY_NORMALIZED_QUERY,
+  LEADING_FILLER_PHRASES,
+} = require('./constants');
 const { extractCanonicalId, normalizeQuery } = require('./normalizer');
 
 const COMPARISON_KEYWORDS = Object.freeze([
@@ -28,6 +31,7 @@ const ROLE_PREFIXES = Object.freeze([
 ]);
 
 const NON_SUBTYPE_PREFIXES = Object.freeze([
+  'what happens ',
   'why ',
   'how ',
   'when ',
@@ -195,6 +199,13 @@ function buildUnsupportedInterpretation() {
   };
 }
 
+function buildInvalidQueryInterpretation() {
+  return {
+    interpretationType: 'invalid_query',
+    message: 'No recognizable concept or supported query structure was detected.',
+  };
+}
+
 function buildCanonicalLookupNotFoundInterpretation(targetConceptId) {
   if (targetConceptId === '') {
     return {
@@ -208,6 +219,99 @@ function buildCanonicalLookupNotFoundInterpretation(targetConceptId) {
     targetConceptId,
     message: `This query uses direct canonical lookup, but no authored concept exists for "${targetConceptId}".`,
   };
+}
+
+function buildExactConceptNotFoundInterpretation(targetConceptId) {
+  if (targetConceptId === '') {
+    return {
+      interpretationType: 'exact_concept_not_found',
+      message: 'This query points to a concept lookup, but no authored canonical concept was identified.',
+    };
+  }
+
+  return {
+    interpretationType: 'exact_concept_not_found',
+    targetConceptId,
+    message: `No authored canonical concept exists for "${targetConceptId}".`,
+  };
+}
+
+function canonicalizeRawQuery(rawQuery) {
+  return rawQuery.trim().toLowerCase().replace(/\s+/g, ' ');
+}
+
+function isSingleToken(normalizedQuery) {
+  return !normalizedQuery.includes(' ');
+}
+
+function uniqueCharacterCount(value) {
+  return new Set(value).size;
+}
+
+function hasRecognizableQueryPrefix(rawQuery) {
+  return (
+    LEADING_FILLER_PHRASES.some((prefix) => rawQuery.startsWith(prefix))
+    || NON_SUBTYPE_PREFIXES.some((prefix) => rawQuery.startsWith(prefix))
+    || ROLE_PREFIXES.some((prefix) => rawQuery.startsWith(prefix))
+  );
+}
+
+function looksLikeContinuousNoise(token) {
+  if (!/^[a-z]+$/.test(token) || token.length < 10) {
+    return false;
+  }
+
+  const uniqueChars = uniqueCharacterCount(token);
+  const hasNoVowels = !/[aeiouy]/.test(token);
+  const hasRepeatedRun = /(.)\1{4,}/.test(token);
+
+  if (hasNoVowels && uniqueChars <= 4) {
+    return true;
+  }
+
+  if (hasRepeatedRun && uniqueChars <= 3) {
+    return true;
+  }
+
+  return uniqueChars <= 2;
+}
+
+function isClearlyInvalidQuery(rawQuery, normalizedQuery, mentionedConcepts) {
+  if (normalizedQuery === EMPTY_NORMALIZED_QUERY) {
+    return true;
+  }
+
+  if (mentionedConcepts.length > 0) {
+    return false;
+  }
+
+  const canonicalizedRawQuery = canonicalizeRawQuery(rawQuery);
+  if (
+    hasRecognizableQueryPrefix(canonicalizedRawQuery)
+    || COMPARISON_KEYWORDS.some((keyword) => normalizedQuery.includes(keyword))
+    || RELATION_KEYWORDS.some((keyword) => normalizedQuery.includes(keyword))
+  ) {
+    return false;
+  }
+
+  if (!isSingleToken(normalizedQuery)) {
+    return false;
+  }
+
+  return looksLikeContinuousNoise(normalizedQuery);
+}
+
+function isExactConceptLookupCandidate(rawQuery, normalizedQuery) {
+  if (normalizedQuery === EMPTY_NORMALIZED_QUERY) {
+    return false;
+  }
+
+  const canonicalizedRawQuery = canonicalizeRawQuery(rawQuery);
+  if (LEADING_FILLER_PHRASES.some((prefix) => canonicalizedRawQuery.startsWith(prefix))) {
+    return true;
+  }
+
+  return /^[a-z]+(?:-[a-z]+)*$/.test(normalizedQuery);
 }
 
 function detectComparison(normalizedQuery, mentionedConcepts) {
@@ -279,8 +383,8 @@ function detectBroaderTopicSuggestion(normalizedQuery, resolveRules) {
 function classifyQueryShape({ rawQuery, normalizedQuery, concepts, resolveRules, match }) {
   if (typeof rawQuery !== 'string' || rawQuery.length === 0) {
     return {
-      queryType: 'invalid_input',
-      interpretation: null,
+      queryType: 'invalid_query',
+      interpretation: buildInvalidQueryInterpretation(),
     };
   }
 
@@ -310,6 +414,13 @@ function classifyQueryShape({ rawQuery, normalizedQuery, concepts, resolveRules,
 
   const termEntries = buildTermEntries(concepts);
   const mentionedConcepts = detectMentionedConcepts(normalizedQuery, termEntries);
+
+  if (isClearlyInvalidQuery(rawQuery, normalizedQuery, mentionedConcepts)) {
+    return {
+      queryType: 'invalid_query',
+      interpretation: buildInvalidQueryInterpretation(),
+    };
+  }
 
   const roleQuery = detectRoleOrActor(normalizedQuery, mentionedConcepts);
   if (roleQuery) {
@@ -351,6 +462,13 @@ function classifyQueryShape({ rawQuery, normalizedQuery, concepts, resolveRules,
     return {
       queryType: 'broader_topic_query',
       interpretation: buildBroaderTopicInterpretation(broaderTopic.baseConcept),
+    };
+  }
+
+  if (isExactConceptLookupCandidate(rawQuery, normalizedQuery)) {
+    return {
+      queryType: 'exact_concept_query',
+      interpretation: buildExactConceptNotFoundInterpretation(normalizedQuery),
     };
   }
 

@@ -1,0 +1,27 @@
+{
+  "liveConceptIds": [
+    "authority",
+    "power",
+    "legitimacy",
+    "law",
+    "duty",
+    "violation",
+    "responsibility"
+  ],
+  "visibleOnlyPublicConceptIds": [
+    "agreement",
+    "commitment",
+    "breach"
+  ],
+  "rejectedConceptIds": [
+    "obligation",
+    "enforcement"
+  ],
+  "detailBackedConceptIds": [
+    "agreement",
+    "commitment",
+    "breach",
+    "obligation",
+    "enforcement"
+  ]
+}

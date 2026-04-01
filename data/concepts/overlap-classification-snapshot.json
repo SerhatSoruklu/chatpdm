@@ -1,0 +1,575 @@
+{
+  "snapshotVersion": 1,
+  "authoredPairs": [
+    {
+      "scope": "authored_pair",
+      "conceptId": "agreement",
+      "otherConceptId": "authority",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "agreement",
+      "otherConceptId": "breach",
+      "classification": "conflicting"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "agreement",
+      "otherConceptId": "commitment",
+      "classification": "requires_explicit_boundary_note"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "agreement",
+      "otherConceptId": "duty",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "agreement",
+      "otherConceptId": "law",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "agreement",
+      "otherConceptId": "legitimacy",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "agreement",
+      "otherConceptId": "power",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "agreement",
+      "otherConceptId": "responsibility",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "agreement",
+      "otherConceptId": "violation",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "authority",
+      "otherConceptId": "agreement",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "authority",
+      "otherConceptId": "breach",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "authority",
+      "otherConceptId": "commitment",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "authority",
+      "otherConceptId": "duty",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "authority",
+      "otherConceptId": "law",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "authority",
+      "otherConceptId": "legitimacy",
+      "classification": "adjacent"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "authority",
+      "otherConceptId": "power",
+      "classification": "adjacent"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "authority",
+      "otherConceptId": "responsibility",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "authority",
+      "otherConceptId": "violation",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "breach",
+      "otherConceptId": "agreement",
+      "classification": "conflicting"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "breach",
+      "otherConceptId": "authority",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "breach",
+      "otherConceptId": "commitment",
+      "classification": "requires_explicit_boundary_note"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "breach",
+      "otherConceptId": "duty",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "breach",
+      "otherConceptId": "law",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "breach",
+      "otherConceptId": "legitimacy",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "breach",
+      "otherConceptId": "power",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "breach",
+      "otherConceptId": "responsibility",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "breach",
+      "otherConceptId": "violation",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "commitment",
+      "otherConceptId": "agreement",
+      "classification": "requires_explicit_boundary_note"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "commitment",
+      "otherConceptId": "authority",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "commitment",
+      "otherConceptId": "breach",
+      "classification": "requires_explicit_boundary_note"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "commitment",
+      "otherConceptId": "duty",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "commitment",
+      "otherConceptId": "law",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "commitment",
+      "otherConceptId": "legitimacy",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "commitment",
+      "otherConceptId": "power",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "commitment",
+      "otherConceptId": "responsibility",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "commitment",
+      "otherConceptId": "violation",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "duty",
+      "otherConceptId": "agreement",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "duty",
+      "otherConceptId": "authority",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "duty",
+      "otherConceptId": "breach",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "duty",
+      "otherConceptId": "commitment",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "duty",
+      "otherConceptId": "law",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "duty",
+      "otherConceptId": "legitimacy",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "duty",
+      "otherConceptId": "power",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "duty",
+      "otherConceptId": "responsibility",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "duty",
+      "otherConceptId": "violation",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "law",
+      "otherConceptId": "agreement",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "law",
+      "otherConceptId": "authority",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "law",
+      "otherConceptId": "breach",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "law",
+      "otherConceptId": "commitment",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "law",
+      "otherConceptId": "duty",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "law",
+      "otherConceptId": "legitimacy",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "law",
+      "otherConceptId": "power",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "law",
+      "otherConceptId": "responsibility",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "law",
+      "otherConceptId": "violation",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "legitimacy",
+      "otherConceptId": "agreement",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "legitimacy",
+      "otherConceptId": "authority",
+      "classification": "adjacent"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "legitimacy",
+      "otherConceptId": "breach",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "legitimacy",
+      "otherConceptId": "commitment",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "legitimacy",
+      "otherConceptId": "duty",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "legitimacy",
+      "otherConceptId": "law",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "legitimacy",
+      "otherConceptId": "power",
+      "classification": "requires_explicit_boundary_note"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "legitimacy",
+      "otherConceptId": "responsibility",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "legitimacy",
+      "otherConceptId": "violation",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "power",
+      "otherConceptId": "agreement",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "power",
+      "otherConceptId": "authority",
+      "classification": "adjacent"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "power",
+      "otherConceptId": "breach",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "power",
+      "otherConceptId": "commitment",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "power",
+      "otherConceptId": "duty",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "power",
+      "otherConceptId": "law",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "power",
+      "otherConceptId": "legitimacy",
+      "classification": "requires_explicit_boundary_note"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "power",
+      "otherConceptId": "responsibility",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "power",
+      "otherConceptId": "violation",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "responsibility",
+      "otherConceptId": "agreement",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "responsibility",
+      "otherConceptId": "authority",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "responsibility",
+      "otherConceptId": "breach",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "responsibility",
+      "otherConceptId": "commitment",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "responsibility",
+      "otherConceptId": "duty",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "responsibility",
+      "otherConceptId": "law",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "responsibility",
+      "otherConceptId": "legitimacy",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "responsibility",
+      "otherConceptId": "power",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "responsibility",
+      "otherConceptId": "violation",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "violation",
+      "otherConceptId": "agreement",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "violation",
+      "otherConceptId": "authority",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "violation",
+      "otherConceptId": "breach",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "violation",
+      "otherConceptId": "commitment",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "violation",
+      "otherConceptId": "duty",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "violation",
+      "otherConceptId": "law",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "violation",
+      "otherConceptId": "legitimacy",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "violation",
+      "otherConceptId": "power",
+      "classification": "distinct"
+    },
+    {
+      "scope": "authored_pair",
+      "conceptId": "violation",
+      "otherConceptId": "responsibility",
+      "classification": "distinct"
+    }
+  ],
+  "regressionPairs": [
+    {
+      "scope": "regression_pair",
+      "caseId": "authority_vs_power",
+      "conceptId": "authority",
+      "otherConceptId": "power",
+      "classification": "adjacent"
+    },
+    {
+      "scope": "regression_pair",
+      "caseId": "duty_vs_responsibility",
+      "conceptId": "duty",
+      "otherConceptId": "responsibility",
+      "classification": "distinct"
+    },
+    {
+      "scope": "regression_pair",
+      "caseId": "legitimacy_vs_authority",
+      "conceptId": "legitimacy",
+      "otherConceptId": "authority",
+      "classification": "adjacent"
+    },
+    {
+      "scope": "regression_pair",
+      "caseId": "obligation_vs_duty",
+      "conceptId": "obligation",
+      "otherConceptId": "duty",
+      "classification": "requires_explicit_boundary_note"
+    }
+  ]
+}

@@ -1,0 +1,130 @@
+{
+  "concept": "breach",
+  "conceptId": "breach",
+  "title": "Breach",
+  "version": 1,
+  "state": "published",
+  "previousVersion": null,
+  "createdAt": "2026-04-01T00:00:00Z",
+  "updatedAt": "2026-04-01T00:00:00Z",
+  "domain": "interaction-primitives",
+  "canonical": {
+    "invariant": "Breach is the state in which a commitment is not carried forward within the interaction frame.",
+    "excludes": [
+      "governance-layer failure",
+      "answerability or blame",
+      "sanction or enforcement response"
+    ],
+    "adjacent": {
+      "commitment": "Commitment establishes carried-forward terms; breach marks that commitment-continuation is no longer carried forward within the interaction structure.",
+      "violation": "Violation depends on unmet duty, whereas breach depends on non-continuation of commitment.",
+      "sanction": "Breach is the state of non-continuation; sanction is a possible governance response external to that state."
+    }
+  },
+  "shortDefinition": "Breach is the state in which a commitment is not carried forward within the interaction frame.",
+  "coreMeaning": "Breach marks failure at the interaction layer after commitment has already been taken up. It does not establish governance status, assign answerability, or trigger governance consequences. It records only that what was taken up as commitment is no longer being carried forward within the interaction structure. It is failure of continuation within interaction, not failure of governance status or enforcement.",
+  "structuralProfile": {
+    "function": "interaction-layer non-continuation of commitment",
+    "object": "commitment continuation within an interaction frame",
+    "sourceType": "prior commitment carried within the interaction frame",
+    "actorRelation": "participants no longer carry forward a prior commitment within the interaction structure",
+    "temporalRole": "post-commitment failure state",
+    "enforcementRole": "outside governance enforcement by itself",
+    "answerabilityRole": "does not assign answerability",
+    "requiredConductRole": "does not define required conduct",
+    "outcomeAttributionRole": "does not attribute outcomes to an actor"
+  },
+  "fullDefinition": "Breach depends on commitment, because commitment carries settled terms forward within an interaction frame and breach exists only when that carried-forward commitment is no longer continued within the interaction structure.\n\nBreach is therefore not violation, because violation depends on unmet duty whereas breach depends on non-continuation of commitment. It remains an interaction-layer failure state and does not presuppose governance status, blame attribution, or sanctioning response.\n\nThe concept accordingly remains non-governance and non-blaming. It does not assign fault, responsibility, or liability, but marks only the state of interaction-layer non-continuation after commitment has been taken up.",
+  "registers": {
+    "standard": {
+      "shortDefinition": "Breach is the state in which a commitment is not carried forward within the interaction frame.",
+      "coreMeaning": "Breach marks failure at the interaction layer after commitment has already been taken up. It does not establish governance status, assign answerability, or trigger governance consequences. It records only that what was taken up as commitment is no longer being carried forward within the interaction structure. It is failure of continuation within interaction, not failure of governance status or enforcement.",
+      "fullDefinition": "Breach depends on commitment, because commitment carries settled terms forward within an interaction frame and breach exists only when that carried-forward commitment is no longer continued within the interaction structure.\n\nBreach is therefore not violation, because violation depends on unmet duty whereas breach depends on non-continuation of commitment. It remains an interaction-layer failure state and does not presuppose governance status, blame attribution, or sanctioning response.\n\nThe concept accordingly remains non-governance and non-blaming. It does not assign fault, responsibility, or liability, but marks only the state of interaction-layer non-continuation after commitment has been taken up."
+    },
+    "simplified": {
+      "shortDefinition": "Breach means a commitment is no longer carried forward within the interaction frame.",
+      "coreMeaning": "Breach means the commitment stops being carried forward. It is not governance failure, blame, or punishment. It only marks that the continuation has stopped.",
+      "fullDefinition": "Breach comes after commitment. It exists when the commitment is no longer carried forward inside the interaction structure.\n\nThat does not make breach violation, because violation depends on unmet duty while breach depends on non-continuation of commitment. It also does not make breach responsibility or sanction, because those belong to answerability and response.\n\nBreach stays interaction-layer only."
+    },
+    "formal": {
+      "shortDefinition": "Breach is the interaction-layer state in which a commitment is no longer carried forward within the interaction frame.",
+      "coreMeaning": "Breach is defined as the interaction-layer failure state that exists when commitment-continuation ceases within an interaction structure after commitment has already been taken up. It therefore remains distinct from governance-layer failure, answerability, blame, or sanctioning response.",
+      "fullDefinition": "Breach is defined as the interaction-layer state in which a commitment is no longer carried forward within the interaction frame. The concept depends on prior commitment and therefore remains within the interaction layer rather than the governance layer of duty, blame, or sanction.\n\nBreach is distinct from violation because violation depends on unmet duty, whereas breach depends on non-continuation of commitment within interaction. It is likewise distinct from sanction because sanction is a possible governance response to a state of failure rather than the failure state itself.\n\nThe concept therefore remains free of blame assignment and governance attribution. It does not attach fault, responsibility, or liability. Its structural role is limited to interaction-layer non-continuation after commitment has been taken up."
+    }
+  },
+  "contexts": [
+    {
+      "label": "interaction",
+      "explanation": "Breach records interaction-layer non-continuation after commitment has been taken up."
+    },
+    {
+      "label": "continuation failure",
+      "explanation": "Breach marks the state in which commitment-continuation has stopped."
+    },
+    {
+      "label": "pre-governance",
+      "explanation": "Breach can exist without governance because it depends on commitment rather than on governance status."
+    }
+  ],
+  "sourcePriority": [
+    "north",
+    "oxford"
+  ],
+  "sources": [
+    {
+      "id": "north",
+      "label": "Douglass C. North, Institutions, Institutional Change and Economic Performance",
+      "type": "book",
+      "usedFor": "structural grounding for interaction-layer failure distinct from governance-layer failure"
+    },
+    {
+      "id": "oxford",
+      "label": "Oxford Languages",
+      "type": "dictionary",
+      "usedFor": "definition boundary for breach as non-continuation rather than violation or sanction"
+    }
+  ],
+  "relatedConcepts": [
+    {
+      "conceptId": "violation",
+      "relationType": "contrast"
+    }
+  ],
+  "comparison": {},
+  "reviewMetadata": {
+    "what_it_is": [
+      "failure of commitment",
+      "interaction-layer failure state",
+      "state of non-continuation"
+    ],
+    "what_it_is_not": [
+      "duty failure",
+      "governance-layer failure",
+      "sanction",
+      "enforcement",
+      "fault or liability"
+    ],
+    "must_not_collapse_into": [
+      "violation",
+      "responsibility",
+      "sanction"
+    ],
+    "related_concepts": [
+      "commitment",
+      "violation"
+    ],
+    "contrast_prompts": [
+      "breach vs violation",
+      "breach vs sanction",
+      "what makes a state a breach"
+    ]
+  },
+  "aliases": [
+    "breach",
+    "what is breach",
+    "define breach"
+  ],
+  "normalizedAliases": [
+    "breach"
+  ]
+}

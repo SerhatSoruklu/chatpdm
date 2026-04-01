@@ -75,6 +75,14 @@ export const seoStaticEntries = {
     sitemapChangeFrequency: 'monthly',
     sitemapPriority: 0.7,
   },
+  'static.reasoning-structure': {
+    title: 'Reasoning Structure - ChatPDM',
+    description: 'Inspect the deterministic-first reasoning architecture behind ChatPDM and the bounded future layers that may exist only in subordinate roles.',
+    canonicalPath: '/reasoning-structure',
+    includeInSitemap: true,
+    sitemapChangeFrequency: 'monthly',
+    sitemapPriority: 0.69,
+  },
   'static.contact': {
     title: 'Contact - ChatPDM',
     description: 'Follow the public contact route for product, research, and implementation questions as the ChatPDM beta expands.',

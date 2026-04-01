@@ -1,0 +1,313 @@
+:host {
+  display: block;
+}
+
+.pdm-version-policy {
+  position: relative;
+  min-height: 100%;
+}
+
+.pdm-version-policy__main {
+  justify-content: center;
+  padding: 28px 18px 56px;
+}
+
+.pdm-version-policy__frame {
+  display: grid;
+  gap: 18px;
+}
+
+.pdm-version-policy__hero,
+.pdm-version-policy__section,
+.pdm-version-policy__guarantee,
+.pdm-version-policy__closing {
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.97), rgba(255, 255, 255, 0.84)),
+    rgba(255, 255, 255, 0.9);
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.04),
+    0 14px 34px rgba(15, 23, 42, 0.06);
+}
+
+.pdm-version-policy__hero {
+  padding: 28px 22px 24px;
+  border-radius: 32px;
+}
+
+.pdm-version-policy__section,
+.pdm-version-policy__guarantee,
+.pdm-version-policy__closing {
+  padding: 22px 20px;
+  border-radius: 28px;
+}
+
+.pdm-version-policy__eyebrow,
+.pdm-version-policy__section-label,
+.pdm-version-policy__field,
+.pdm-version-policy__label,
+.pdm-version-policy__ownership-field,
+.pdm-version-policy__trigger-version,
+.pdm-version-policy__tuple-item {
+  margin: 0;
+  color: #2563eb;
+  font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pdm-version-policy__title {
+  margin: 0;
+  max-width: 36rem;
+  color: #0f172a;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: clamp(2.35rem, 5vw, 3.2rem);
+  font-weight: 700;
+  line-height: 0.98;
+  letter-spacing: -0.05em;
+}
+
+.pdm-version-policy__intro,
+.pdm-version-policy__copy,
+.pdm-version-policy__ownership-copy,
+.pdm-version-policy__trigger-why,
+.pdm-version-policy__declaration-value,
+.pdm-version-policy__table td,
+.pdm-version-policy__plain-list {
+  color: #475569;
+  font-weight: 400;
+  line-height: 1.72;
+}
+
+.pdm-version-policy__intro {
+  max-width: 46rem;
+  margin: 16px 0 0;
+}
+
+.pdm-version-policy__section-title {
+  margin: 10px 0 0;
+  max-width: 42rem;
+  color: #0f172a;
+  font-size: 1.55rem;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.pdm-version-policy__copy {
+  margin: 12px 0 0;
+  max-width: 48rem;
+}
+
+.pdm-version-policy__copy--strong {
+  color: #0f172a;
+  font-size: 1.08rem;
+  font-weight: 600;
+}
+
+.pdm-version-policy__layer-grid,
+.pdm-version-policy__class-grid,
+.pdm-version-policy__declaration-grid,
+.pdm-version-policy__trigger-cards {
+  display: grid;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.pdm-version-policy__layer-card,
+.pdm-version-policy__class-card,
+.pdm-version-policy__declaration-card,
+.pdm-version-policy__trigger-card {
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.pdm-version-policy__layer-card,
+.pdm-version-policy__class-card,
+.pdm-version-policy__declaration-card,
+.pdm-version-policy__trigger-card {
+  padding: 18px 16px;
+}
+
+.pdm-version-policy__layer-block + .pdm-version-policy__layer-block {
+  margin-top: 14px;
+}
+
+.pdm-version-policy__label {
+  margin-top: 10px;
+  color: #64748b;
+  font-size: 0.72rem;
+}
+
+.pdm-version-policy__ownership-list,
+.pdm-version-policy__plain-list {
+  margin: 16px 0 0;
+  padding-left: 18px;
+}
+
+.pdm-version-policy__ownership-list li + li,
+.pdm-version-policy__plain-list li + li {
+  margin-top: 8px;
+}
+
+.pdm-version-policy__ownership-field {
+  margin-right: 10px;
+  color: #0f172a;
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+
+.pdm-version-policy__trigger-change,
+.pdm-version-policy__class-title {
+  margin: 0;
+  color: #0f172a;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.pdm-version-policy__trigger-version {
+  margin-top: 10px;
+  color: #2563eb;
+  font-size: 0.72rem;
+}
+
+.pdm-version-policy__trigger-why {
+  margin: 10px 0 0;
+}
+
+.pdm-version-policy__table-shell {
+  display: none;
+  margin-top: 18px;
+  overflow-x: auto;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.pdm-version-policy__table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+}
+
+.pdm-version-policy__table th,
+.pdm-version-policy__table td {
+  padding: 16px 18px;
+  vertical-align: top;
+  text-align: left;
+  border-top: 1px solid rgba(226, 232, 240, 0.82);
+}
+
+.pdm-version-policy__table thead th {
+  border-top: none;
+  color: #64748b;
+  font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pdm-version-policy__table tbody th {
+  width: 18rem;
+  color: #0f172a;
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+}
+
+.pdm-version-policy__tuple-shell {
+  display: grid;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.pdm-version-policy__tuple-item {
+  padding: 12px 14px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.pdm-version-policy__declaration-value {
+  margin: 10px 0 0;
+  color: #0f172a;
+  font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.pdm-version-policy__closing-line {
+  margin: 0;
+  color: #0f172a;
+  font-size: 1.18rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+@media (min-width: 600px) {
+  .pdm-version-policy__main {
+    padding: 36px 28px 72px;
+  }
+
+  .pdm-version-policy__tuple-shell {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 840px) {
+  .pdm-version-policy__main {
+    padding: 44px 32px 88px;
+  }
+
+  .pdm-version-policy__layer-grid,
+  .pdm-version-policy__class-grid,
+  .pdm-version-policy__declaration-grid,
+  .pdm-version-policy__trigger-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pdm-version-policy__table-shell {
+    display: block;
+  }
+
+  .pdm-version-policy__trigger-cards {
+    display: none;
+  }
+
+  .pdm-version-policy__tuple-shell {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1200px) {
+  .pdm-version-policy__main {
+    padding: 52px 40px 96px;
+  }
+
+  .pdm-version-policy__layer-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pdm-version-policy__class-grid,
+  .pdm-version-policy__declaration-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .pdm-version-policy__tuple-shell {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1440px) {
+  .pdm-version-policy__main {
+    padding: 60px 48px 104px;
+  }
+}

@@ -87,8 +87,7 @@ ChatPDM v1 product responses allow only:
 - `relation_query`
 - `role_or_actor_query`
 - `unsupported_complex_query`
-
-The classifier also uses `invalid_input` internally for rejected non-product requests, but that value does not appear in a product response because invalid requests are handled outside this contract.
+- `invalid_query`
 
 ### Shared `interpretation` boundary
 
@@ -111,11 +110,19 @@ Rules:
 - `canonical_id`
 - `no_exact_match`
 - `out_of_scope`
+- `invalid_query`
+- `unsupported_query_type`
 - `ambiguous_alias`
 - `ambiguous_normalized_alias`
 - `author_defined_disambiguation`
 
 Each response type may use only the subset documented in its own section.
+
+## Admission Boundary Invariant
+
+The resolver matches `LIVE_CONCEPT_IDS` only.
+
+Visible-only concepts may be publicly listed and inspectable through concept detail, but they are never resolver-admitted or comparison-admitted unless they are explicitly promoted into `LIVE_CONCEPT_IDS`.
 
 ## Canonical Payload Boundary
 
@@ -188,7 +195,11 @@ Allowed `queryType` values:
 
 `interpretation`:
 
-- must be `null`
+- must be a deterministic interpretation object with:
+  - `interpretationType = "explicitly_rejected_concept"`
+  - `targetConceptId`
+  - `concepts`
+  - `message`
 
 `resolution` object:
 
@@ -470,6 +481,7 @@ Interpretation patterns allowed in this response type include:
 
 - validator-law blocked canonical concept
 - canonical lookup failure
+- visible-only public concept not admitted to live runtime
 - broader-topic hint
 - narrower subtype hint
 - governance-scope out-of-scope refusal
@@ -628,9 +640,10 @@ The following contract decisions are locked for Phase 10:
 - `queryType` is a required top-level field on every product response
 - `interpretation` is a required top-level field on every product response
 - `interpretation` is structured guidance, not reasoning output
-- `invalid_input` remains outside the product response contract
+- `invalid_query` is a first-class product refusal type
 - `concept_match` keeps `interpretation: null`
-- `no_exact_match` and `ambiguous_match` must keep deterministic interpretation objects
+- `rejected_concept` must keep `interpretation.interpretationType = "explicitly_rejected_concept"`
+- `no_exact_match`, `invalid_query`, `unsupported_query_type`, and `ambiguous_match` must keep deterministic interpretation objects
 - query-shape classification must not invent new canonical concepts
 - allowlisted comparison queries may return deterministic comparison output
 - relation and actor queries remain refusal-first in the current runtime

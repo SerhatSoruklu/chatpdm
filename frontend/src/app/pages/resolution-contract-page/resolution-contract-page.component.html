@@ -1,0 +1,172 @@
+<div class="pdm-resolution">
+  <main class="pdm-resolution__main pdm-shell" aria-labelledby="pdm-resolution-title">
+    <div class="pdm-shell__frame pdm-resolution__frame">
+      <header class="pdm-resolution__hero pdm-site-surface pdm-site-panel">
+        <p class="pdm-resolution__eyebrow">Resolution contract</p>
+        <h1 class="pdm-resolution__title" id="pdm-resolution-title">Resolution contract</h1>
+        <p class="pdm-resolution__intro">
+          This page defines the stable public result shapes returned by the ChatPDM runtime.
+        </p>
+      </header>
+
+      <section class="pdm-resolution__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-resolution-purpose-title">
+        <p class="pdm-resolution__section-label">Contract purpose</p>
+        <h2 class="pdm-resolution__section-title" id="pdm-resolution-purpose-title">
+          Structured result states, not freeform answers.
+        </h2>
+        <p class="pdm-resolution__copy">
+          The runtime does not generate answers. It returns structured resolution states with declared meaning and stable boundaries.
+        </p>
+        <p class="pdm-resolution__copy">
+          This page describes semantic output behavior. HTTP transport and endpoint details remain separate on the API surface.
+        </p>
+      </section>
+
+      <section class="pdm-resolution__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-resolution-states-title">
+        <p class="pdm-resolution__section-label">Resolution states</p>
+        <h2 class="pdm-resolution__section-title" id="pdm-resolution-states-title">Closed runtime outcome vocabulary.</h2>
+
+        <div class="pdm-resolution__state-grid">
+          @for (state of resolutionStates; track state.type) {
+            <article class="pdm-resolution__state-card">
+              <p class="pdm-resolution__state-type">{{ state.type }}</p>
+
+              <div class="pdm-resolution__state-block">
+                <p class="pdm-resolution__state-label">Occurs when</p>
+                <ul class="pdm-resolution__list">
+                  @for (item of state.when; track item) {
+                    <li>{{ item }}</li>
+                  }
+                </ul>
+              </div>
+
+              <div class="pdm-resolution__state-block">
+                <p class="pdm-resolution__state-label">Guarantees</p>
+                <ul class="pdm-resolution__list">
+                  @for (item of state.guarantees; track item) {
+                    <li>{{ item }}</li>
+                  }
+                </ul>
+              </div>
+
+              <div class="pdm-resolution__state-block">
+                <p class="pdm-resolution__state-label">Does not guarantee</p>
+                <ul class="pdm-resolution__list">
+                  @for (item of state.doesNotGuarantee; track item) {
+                    <li>{{ item }}</li>
+                  }
+                </ul>
+              </div>
+            </article>
+          }
+        </div>
+      </section>
+
+      <section class="pdm-resolution__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-resolution-fields-title">
+        <p class="pdm-resolution__section-label">Stable fields</p>
+        <h2 class="pdm-resolution__section-title" id="pdm-resolution-fields-title">Public fields and presence rules.</h2>
+
+        <div class="pdm-resolution__field-cards">
+          @for (field of stableFields; track field.field) {
+            <article class="pdm-resolution__field-card">
+              <p class="pdm-resolution__field-name">{{ field.field }}</p>
+              <p class="pdm-resolution__field-copy">{{ field.meaning }}</p>
+              <p class="pdm-resolution__field-presence">{{ field.presence }}</p>
+            </article>
+          }
+        </div>
+
+        <div class="pdm-resolution__table-shell">
+          <table class="pdm-resolution__table">
+            <thead>
+              <tr>
+                <th scope="col">Field</th>
+                <th scope="col">Meaning</th>
+                <th scope="col">Stability / presence</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (field of stableFields; track field.field) {
+                <tr>
+                  <th scope="row">{{ field.field }}</th>
+                  <td>{{ field.meaning }}</td>
+                  <td>{{ field.presence }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="pdm-resolution__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-resolution-refusal-title">
+        <p class="pdm-resolution__section-label">Refusal contract</p>
+        <h2 class="pdm-resolution__section-title" id="pdm-resolution-refusal-title">Explicit refusal is valid output.</h2>
+        <p class="pdm-resolution__copy">
+          Refusal is part of the runtime contract. If a query cannot be resolved within the current system, the runtime returns that limit explicitly rather than approximating beyond scope.
+        </p>
+        <ul class="pdm-resolution__list pdm-resolution__list--compact">
+          @for (principle of refusalPrinciples; track principle) {
+            <li>{{ principle }}</li>
+          }
+        </ul>
+      </section>
+
+      <section class="pdm-resolution__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-resolution-review-title">
+        <p class="pdm-resolution__section-label">Visible-only detail</p>
+        <h2 class="pdm-resolution__section-title" id="pdm-resolution-review-title">Detail visibility does not equal runtime admission.</h2>
+        <p class="pdm-resolution__copy">
+          Some concepts may expose authored concept detail or <code>reviewState</code> through the detail surface even when the public resolver still returns <code>no_exact_match</code>.
+        </p>
+        <ul class="pdm-resolution__list pdm-resolution__list--compact">
+          @for (truth of reviewStateTruths; track truth) {
+            <li>{{ truth }}</li>
+          }
+        </ul>
+      </section>
+
+      <section class="pdm-resolution__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-resolution-examples-title">
+        <p class="pdm-resolution__section-label">Examples</p>
+        <h2 class="pdm-resolution__section-title" id="pdm-resolution-examples-title">Fixed trace-like contract examples.</h2>
+
+        <div class="pdm-resolution__example-grid">
+          @for (example of examples; track example.query + example.type) {
+            <article class="pdm-resolution__example-card">
+              <div class="pdm-resolution__example-row">
+                <span class="pdm-resolution__example-key">query</span>
+                <span class="pdm-resolution__example-value">{{ example.query }}</span>
+              </div>
+              <div class="pdm-resolution__example-row">
+                <span class="pdm-resolution__example-key">type</span>
+                <span class="pdm-resolution__example-value pdm-resolution__example-value--mono">
+                  {{ example.type }}
+                </span>
+              </div>
+              <div class="pdm-resolution__example-row">
+                <span class="pdm-resolution__example-key">queryType</span>
+                <span class="pdm-resolution__example-value pdm-resolution__example-value--mono">
+                  {{ example.queryType }}
+                </span>
+              </div>
+              @if (example.reviewState; as reviewState) {
+                <div class="pdm-resolution__example-row">
+                  <span class="pdm-resolution__example-key">reviewState</span>
+                  <span class="pdm-resolution__example-value pdm-resolution__example-value--mono">
+                    {{ reviewStateLabel(reviewState) }}
+                  </span>
+                </div>
+              }
+              <div class="pdm-resolution__example-row pdm-resolution__example-row--stacked">
+                <span class="pdm-resolution__example-key">Meaning</span>
+                <span class="pdm-resolution__example-value">{{ example.meaning }}</span>
+              </div>
+            </article>
+          }
+        </div>
+      </section>
+
+      <section class="pdm-resolution__closing pdm-site-surface pdm-site-panel" aria-label="Resolution contract closing line">
+        <p class="pdm-resolution__closing-line">Every runtime result is bounded before it is exposed.</p>
+      </section>
+    </div>
+  </main>
+</div>

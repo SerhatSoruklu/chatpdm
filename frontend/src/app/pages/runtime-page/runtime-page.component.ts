@@ -16,15 +16,18 @@ import {
   ConceptSource,
   GovernanceState,
   NoExactMatchResponse,
+  RefusalResponse,
   RelatedConcept,
   ResolveProductResponse,
   ReviewState,
   Suggestion,
 } from '../../core/concepts/concept-resolver.types';
 import {
+  DETAIL_BACKED_CONCEPT_IDS,
   LIVE_RUNTIME_CONCEPT_IDS,
-  REVIEWED_CONCEPT_IDS,
+  REJECTED_CONCEPT_IDS,
   RUNTIME_SCOPE_BY_CONCEPT,
+  VISIBLE_ONLY_PUBLIC_CONCEPT_IDS,
 } from '../../core/concepts/public-runtime.catalog';
 import { FeedbackService } from '../../core/feedback/feedback.service';
 import type {
@@ -36,18 +39,15 @@ import type {
 const REVIEWED_NOT_LIVE_ADMISSIONS = new Set<ReviewState['admission']>([
   'phase1_passed',
   'phase2_stable',
+  'pending_overlap_scan',
+  'overlap_scan_passed',
+  'overlap_scan_failed_conflict',
+  'overlap_scan_failed_duplicate',
+  'overlap_scan_failed_compression',
+  'overlap_scan_boundary_required',
 ]);
-
-const STARTER_QUERY_OPTIONS = Object.freeze([
-  {
-    label: 'authority vs power',
-    query: 'authority vs power',
-  },
-  {
-    label: 'define legitimacy',
-    query: 'define legitimacy',
-  },
-]);
+const DETAIL_BACKED_CONCEPTS = new Set(DETAIL_BACKED_CONCEPT_IDS);
+const VISIBLE_ONLY_PUBLIC_CONCEPTS = new Set(VISIBLE_ONLY_PUBLIC_CONCEPT_IDS);
 
 const CONCEPT_MATCH_FEEDBACK_OPTIONS = [
   { value: 'clear', label: 'Clear' },
@@ -67,22 +67,20 @@ const NO_EXACT_MATCH_FEEDBACK_OPTIONS = [
 
 type QueryClassification =
   | 'empty'
-  | 'direct_concept'
-  | 'canonical_lookup'
-  | 'controlled_comparison'
-  | 'unsupported';
+  | 'ready';
 
 type RuntimeDisplayState =
   | 'concept_match'
   | 'comparison'
   | 'ambiguous_match'
   | 'reviewed_not_live'
+  | 'visible_only'
   | 'blocked'
   | 'refused';
 
 interface RuntimeQueryAssessment {
   classification: QueryClassification;
-  status: 'idle' | 'valid' | 'invalid';
+  status: 'idle' | 'valid';
   label: string;
   message: string;
   canSubmit: boolean;
@@ -129,7 +127,7 @@ interface RefusalBoundaryState {
 }
 
 interface RefusalAtlasEntry {
-  key: 'not_admitted' | 'blocked' | 'comparison_not_allowlisted' | 'unsupported_composition';
+  key: 'visible_only' | 'not_admitted' | 'blocked' | 'comparison_not_allowlisted' | 'unsupported_composition';
   query: string;
   classLabel: string;
   classMeaning: string;
@@ -148,10 +146,10 @@ interface RefusalBehaviorState {
 }
 
 const REFUSAL_ATLAS_QUERIES = Object.freeze([
-  'law',
-  'violation',
+  'obligation',
+  'what is charisma',
   'authority vs duty',
-  'who should hold legitimate authority in a democracy',
+  'who creates law?',
 ]);
 
 const REFUSAL_BOUNDARY_STATES = Object.freeze<RefusalBoundaryState[]>([
@@ -160,12 +158,12 @@ const REFUSAL_BOUNDARY_STATES = Object.freeze<RefusalBoundaryState[]>([
     copy: 'Admitted concepts resolve with authored output.',
   },
   {
-    label: 'Reviewed',
-    copy: 'Lifecycle evidence can exist before runtime admission.',
+    label: 'Visible only',
+    copy: 'Authored concept detail may stay inspectable without runtime admission.',
   },
   {
-    label: 'Blocked',
-    copy: 'Concept is prevented from entering public runtime.',
+    label: 'Rejected',
+    copy: 'Structurally rejected concepts remain visible as refusal surfaces only.',
   },
   {
     label: 'Unsupported',
@@ -183,10 +181,6 @@ const REFUSAL_BOUNDARY_STATES = Object.freeze<RefusalBoundaryState[]>([
 export class RuntimePageComponent implements OnInit {
   private readonly resolver = inject(ConceptResolverService);
   private readonly feedbackService = inject(FeedbackService);
-  private readonly directConceptPattern = /^[a-z]+(?:[ -][a-z]+){0,3}$/i;
-  private readonly canonicalLookupPattern = /^define\s+[a-z]+(?:[ -][a-z]+){0,3}$/i;
-  private readonly controlledComparisonPattern =
-    /^[a-z]+(?:[ -][a-z]+){0,3}\s+vs\s+[a-z]+(?:[ -][a-z]+){0,3}$/i;
 
   protected readonly queryDraft = signal('');
   protected readonly isSubmitting = signal(false);
@@ -198,8 +192,8 @@ export class RuntimePageComponent implements OnInit {
   });
   protected readonly refusalBoundaryStates = REFUSAL_BOUNDARY_STATES;
   protected readonly liveConceptIds = LIVE_RUNTIME_CONCEPT_IDS;
-  protected readonly reviewedConceptIds = REVIEWED_CONCEPT_IDS;
-  protected readonly starterQueryOptions = STARTER_QUERY_OPTIONS;
+  protected readonly visibleOnlyConceptIds = VISIBLE_ONLY_PUBLIC_CONCEPT_IDS;
+  protected readonly rejectedConceptIds = REJECTED_CONCEPT_IDS;
   protected readonly queryAssessment = computed(() => this.classifyQuery(this.queryDraft()));
 
   ngOnInit(): void {
@@ -229,6 +223,10 @@ export class RuntimePageComponent implements OnInit {
 
     if (this.isReviewedNotLive(entry.detail)) {
       return 'reviewed_not_live';
+    }
+
+    if (this.isVisibleOnlyConcept(entry.detail)) {
+      return 'visible_only';
     }
 
     if (this.isBlockedConcept(entry.response, entry.detail)) {
@@ -293,10 +291,6 @@ export class RuntimePageComponent implements OnInit {
     await this.submitQuery(conceptId, {
       displayQuery: this.formatConceptLabel(conceptId),
     });
-  }
-
-  protected async submitStarterQuery(query: string): Promise<void> {
-    await this.submitQuery(query);
   }
 
   protected async resolveSuggestedConcept(suggestion: Suggestion): Promise<void> {
@@ -368,7 +362,11 @@ export class RuntimePageComponent implements OnInit {
       case 'rejected_concept':
         return 'Structurally rejected';
       case 'no_exact_match':
-        return 'Refused';
+        return 'No exact match';
+      case 'invalid_query':
+        return 'Invalid query input';
+      case 'unsupported_query_type':
+        return 'Unsupported query type';
       default:
         return 'Resolution';
     }
@@ -381,6 +379,10 @@ export class RuntimePageComponent implements OnInit {
 
     if (response.type === 'rejected_concept') {
       return 'Rejected';
+    }
+
+    if (response.type === 'invalid_query' || response.type === 'unsupported_query_type') {
+      return 'Refused';
     }
 
     if (response.type === 'no_exact_match' && response.interpretation?.interpretationType === 'out_of_scope') {
@@ -413,6 +415,18 @@ export class RuntimePageComponent implements OnInit {
         return 'Phase 1 Passed';
       case 'phase2_stable':
         return 'Phase 2 Stable';
+      case 'pending_overlap_scan':
+        return 'Pending Overlap Scan';
+      case 'overlap_scan_passed':
+        return 'Overlap Scan Passed';
+      case 'overlap_scan_failed_conflict':
+        return 'Overlap Scan Failed: Conflict';
+      case 'overlap_scan_failed_duplicate':
+        return 'Overlap Scan Failed: Duplicate';
+      case 'overlap_scan_failed_compression':
+        return 'Overlap Scan Failed: Compression';
+      case 'overlap_scan_boundary_required':
+        return 'Overlap Scan: Boundary Proof Required';
       default:
         return admission;
     }
@@ -479,10 +493,36 @@ export class RuntimePageComponent implements OnInit {
     return 'This concept has passed Phase 1 review but is not yet admitted to the live public runtime.';
   }
 
+  protected visibleOnlyTitle(detail: ConceptDetailResponse): string {
+    return detail.title ?? this.formatConceptLabel(detail.conceptId);
+  }
+
+  protected visibleOnlyBody(detail: ConceptDetailResponse): string {
+    return detail.coreMeaning
+      ?? 'This concept is publicly visible and inspectable, but it is not admitted to the live public runtime.';
+  }
+
+  protected visibleOnlySupportCopy(): string {
+    return 'Visible-only concepts expose authored detail without entering live runtime resolution or comparison support.';
+  }
+
+  protected visibleOnlyScopeLabel(detail: ConceptDetailResponse): string {
+    return this.scopeLabelForConcept(detail.conceptId);
+  }
+
   protected blockedTitle(detail: ConceptDetailResponse | null | undefined): string {
     return detail?.reviewState?.admission === 'blocked'
       ? 'Blocked before runtime admission'
       : 'Structurally rejected';
+  }
+
+  protected blockedSectionLabel(
+    response: NoExactMatchResponse | ResolveProductResponse,
+    detail: ConceptDetailResponse | null | undefined,
+  ): string {
+    return detail?.reviewState?.admission === 'blocked' || response.type !== 'rejected_concept'
+      ? 'Blocked concept'
+      : 'Rejected concept';
   }
 
   protected blockedBody(
@@ -497,10 +537,23 @@ export class RuntimePageComponent implements OnInit {
       return response.message;
     }
 
-    return this.noExactMatchPrimaryMessage(response as NoExactMatchResponse);
+    return this.refusalPrimaryMessage(response as RefusalResponse);
+  }
+
+  protected blockedSupportCopy(
+    response: NoExactMatchResponse | ResolveProductResponse,
+    detail: ConceptDetailResponse | null | undefined,
+  ): string {
+    return detail?.reviewState?.admission === 'blocked'
+      ? 'Refusal is the correct public output for blocked concepts.'
+      : 'Refusal is the correct public output for structurally rejected concepts.';
   }
 
   protected genericNoExactMatchTitle(response: NoExactMatchResponse): string {
+    if (response.interpretation?.interpretationType === 'visible_only_public_concept') {
+      return 'Visible in public scope, not live';
+    }
+
     if (response.interpretation?.interpretationType === 'comparison_not_supported') {
       return 'Comparison pair not admitted';
     }
@@ -512,20 +565,44 @@ export class RuntimePageComponent implements OnInit {
     return 'No canonical concept resolved';
   }
 
-  protected noExactMatchPrimaryMessage(response: NoExactMatchResponse): string {
+  protected refusalTitle(response: RefusalResponse): string {
+    if (response.type === 'invalid_query') {
+      return 'Invalid query input';
+    }
+
+    if (response.type === 'unsupported_query_type') {
+      return 'Unsupported query type';
+    }
+
+    return this.genericNoExactMatchTitle(response);
+  }
+
+  protected refusalPrimaryMessage(response: RefusalResponse): string {
     return response.interpretation?.message ?? response.message;
   }
 
-  protected noExactMatchSupportCopy(
-    response: NoExactMatchResponse,
+  protected refusalSupportCopy(
+    response: RefusalResponse,
     detail: ConceptDetailResponse | null | undefined,
   ): string {
+    if (this.isVisibleOnlyRefusal(response, detail)) {
+      return this.visibleOnlySupportCopy();
+    }
+
     if (this.isReviewedNotLive(detail)) {
       return 'Only live concepts resolve in the current public runtime.';
     }
 
     if (this.isBlockedConcept(response, detail)) {
       return 'Blocked concepts do not enter the live public runtime.';
+    }
+
+    if (response.type === 'invalid_query') {
+      return 'The runtime does not infer missing meaning from noise input.';
+    }
+
+    if (response.type === 'unsupported_query_type') {
+      return 'This runtime supports exact concept resolution and allowlisted comparisons only.';
     }
 
     if (response.interpretation?.interpretationType === 'comparison_not_supported') {
@@ -551,8 +628,12 @@ export class RuntimePageComponent implements OnInit {
         return 'Ambiguous normalized alias';
       case 'no_exact_match':
         return 'No exact match';
+      case 'invalid_query':
+        return 'Invalid query';
       case 'rejection_registry':
         return 'Rejection registry';
+      case 'unsupported_query_type':
+        return 'Unsupported query type';
       default:
         return method;
     }
@@ -628,8 +709,8 @@ export class RuntimePageComponent implements OnInit {
     return response as AmbiguousMatchResponse;
   }
 
-  protected asNoExactMatch(response: ResolveProductResponse): NoExactMatchResponse {
-    return response as NoExactMatchResponse;
+  protected asRefusal(response: ResolveProductResponse): RefusalResponse {
+    return response as RefusalResponse;
   }
 
   protected comparisonAxisHasValues(axis: ComparisonAxis): axis is ComparisonAxisValue {
@@ -658,64 +739,22 @@ export class RuntimePageComponent implements OnInit {
   }
 
   private classifyQuery(query: string): RuntimeQueryAssessment {
-    const trimmedQuery = query.trim();
-
-    if (!trimmedQuery) {
+    if (!query.trim()) {
       return {
         classification: 'empty',
         status: 'idle',
         label: 'Awaiting input',
-        message: 'Enter a concept, canonical lookup, or allowlisted comparison.',
+        message: 'Enter any query. The runtime will normalize, classify, then resolve or refuse.',
         canSubmit: false,
       };
     }
 
-    if (trimmedQuery.startsWith('concept:')) {
-      return {
-        classification: 'direct_concept',
-        status: 'valid',
-        label: 'Direct concept',
-        message: 'Internal canonical lookup will resolve through the live runtime path.',
-        canSubmit: true,
-      };
-    }
-
-    if (this.controlledComparisonPattern.test(trimmedQuery)) {
-      return {
-        classification: 'controlled_comparison',
-        status: 'valid',
-        label: 'Controlled comparison',
-        message: 'Structured comparison recognized for deterministic execution.',
-        canSubmit: true,
-      };
-    }
-
-    if (this.canonicalLookupPattern.test(trimmedQuery)) {
-      return {
-        classification: 'canonical_lookup',
-        status: 'valid',
-        label: 'Canonical lookup',
-        message: 'Structured lookup recognized for deterministic execution.',
-        canSubmit: true,
-      };
-    }
-
-    if (this.directConceptPattern.test(trimmedQuery)) {
-      return {
-        classification: 'direct_concept',
-        status: 'valid',
-        label: 'Direct concept',
-        message: 'Structured concept query recognized for deterministic execution.',
-        canSubmit: true,
-      };
-    }
-
     return {
-      classification: 'unsupported',
-      status: 'invalid',
-      label: 'Unsupported',
-      message: 'This input does not match a supported runtime query form.',
-      canSubmit: false,
+      classification: 'ready',
+      status: 'valid',
+      label: 'Ready to classify',
+      message: 'This input will be normalized, classified, then resolved or refused.',
+      canSubmit: true,
     };
   }
 
@@ -726,6 +765,19 @@ export class RuntimePageComponent implements OnInit {
   private isReviewedNotLive(detail: ConceptDetailResponse | null | undefined): boolean {
     const admission = detail?.reviewState?.admission;
     return admission ? REVIEWED_NOT_LIVE_ADMISSIONS.has(admission) : false;
+  }
+
+  private isVisibleOnlyConcept(detail: ConceptDetailResponse | null | undefined): boolean {
+    return detail?.conceptId ? VISIBLE_ONLY_PUBLIC_CONCEPTS.has(detail.conceptId) : false;
+  }
+
+  private isVisibleOnlyRefusal(
+    response: RefusalResponse | ResolveProductResponse,
+    detail: ConceptDetailResponse | null | undefined,
+  ): boolean {
+    return this.isVisibleOnlyConcept(detail)
+      || (response.type === 'no_exact_match'
+        && response.interpretation?.interpretationType === 'visible_only_public_concept');
   }
 
   private isBlockedConcept(
@@ -753,12 +805,53 @@ export class RuntimePageComponent implements OnInit {
     });
   }
 
+  private detailConceptId(query: string, response: ResolveProductResponse): string | null {
+    if (response.type === 'concept_match' || response.type === 'rejected_concept') {
+      return response.resolution.conceptId;
+    }
+
+    if (response.type !== 'no_exact_match') {
+      return null;
+    }
+
+    const trimmedQuery = query.trim();
+
+    if (!trimmedQuery) {
+      return null;
+    }
+
+    if (trimmedQuery.startsWith('concept:')) {
+      const conceptId = trimmedQuery.slice('concept:'.length).trim();
+      return conceptId || null;
+    }
+
+    const normalizedCandidate = response.normalizedQuery.trim();
+    if (DETAIL_BACKED_CONCEPTS.has(normalizedCandidate)) {
+      return normalizedCandidate;
+    }
+
+    return null;
+  }
+
+  protected refusalHasSuggestions(response: RefusalResponse): response is NoExactMatchResponse {
+    return response.type === 'no_exact_match' && response.suggestions.length > 0;
+  }
+
+  protected refusalSuggestions(response: RefusalResponse): Suggestion[] {
+    return response.type === 'no_exact_match' ? response.suggestions : [];
+  }
+
   private buildFeedbackState(
     response: ResolveProductResponse,
     detail: ConceptDetailResponse | null,
     feedbackOrigin?: AmbiguousSelectionOrigin,
   ): RuntimeFeedbackState | undefined {
-    if (detail?.reviewState) {
+    if (
+      detail?.reviewState
+      || this.isVisibleOnlyConcept(detail)
+      || (response.type === 'no_exact_match'
+        && response.interpretation?.interpretationType === 'visible_only_public_concept')
+    ) {
       return undefined;
     }
 
@@ -833,7 +926,7 @@ export class RuntimePageComponent implements OnInit {
   private describeError(error: unknown): string {
     if (error instanceof HttpErrorResponse) {
       if (error.status === 400) {
-        return 'Enter a concept query to continue.';
+        return 'Enter any non-empty query to continue.';
       }
 
       if (error.status === 0) {
@@ -912,6 +1005,21 @@ export class RuntimePageComponent implements OnInit {
     response: ResolveProductResponse,
     detail: ConceptDetailResponse | null,
   ): RefusalAtlasEntry {
+    if (response.type === 'no_exact_match' && response.interpretation?.interpretationType === 'visible_only_public_concept') {
+      return {
+        key: 'visible_only',
+        query,
+        classLabel: 'Visible-only concept',
+        classMeaning: 'The concept is publicly visible and inspectable, but it is not admitted to the live public runtime.',
+        outcome: 'visible_only',
+        interpretation: response.interpretation.interpretationType,
+        reason: response.interpretation.message,
+        queryType: response.queryType,
+        resolution: response.resolution.method,
+        message: response.interpretation.message,
+      };
+    }
+
     if (this.isReviewedNotLive(detail)) {
       return {
         key: 'not_admitted',
@@ -960,9 +1068,11 @@ export class RuntimePageComponent implements OnInit {
     return {
       key: 'unsupported_composition',
       query,
-      classLabel: 'Unsupported composition',
-      classMeaning: 'The query uses a request form the current runtime does not admit.',
-      outcome: 'unsupported',
+      classLabel: response.type === 'invalid_query' ? 'Invalid query input' : 'Unsupported composition',
+      classMeaning: response.type === 'invalid_query'
+        ? 'No recognizable concept or supported query structure was detected.'
+        : 'The query uses a request form the current runtime does not admit.',
+      outcome: response.type === 'invalid_query' ? 'invalid_query' : 'unsupported',
       interpretation: response.type === 'no_exact_match'
         ? (response.interpretation?.interpretationType ?? response.queryType)
         : response.type,
@@ -1002,37 +1112,6 @@ export class RuntimePageComponent implements OnInit {
 
       return null;
     }
-  }
-
-  private detailConceptId(query: string, response: ResolveProductResponse): string | null {
-    if (response.type === 'concept_match' || response.type === 'rejected_concept') {
-      return response.resolution.conceptId;
-    }
-
-    if (response.type !== 'no_exact_match') {
-      return null;
-    }
-
-    const trimmedQuery = query.trim();
-
-    if (!trimmedQuery) {
-      return null;
-    }
-
-    if (trimmedQuery.startsWith('concept:')) {
-      const conceptId = trimmedQuery.slice('concept:'.length).trim();
-      return conceptId || null;
-    }
-
-    if (this.canonicalLookupPattern.test(trimmedQuery)) {
-      return trimmedQuery.replace(/^define\s+/i, '').trim() || null;
-    }
-
-    if (this.directConceptPattern.test(trimmedQuery)) {
-      return trimmedQuery;
-    }
-
-    return null;
   }
 
   private runtimeTraceSourceLabel(governanceState: GovernanceState): string {

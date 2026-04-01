@@ -42,7 +42,12 @@ function parseArguments(argv) {
 function loadPublishedConceptIds() {
   return fs.readdirSync(conceptsDirectory)
     .filter((fileName) => fileName.endsWith('.json'))
-    .filter((fileName) => fileName !== 'resolve-rules.json')
+    .filter((fileName) => ![
+      'concept-admission-state.json',
+      'overlap-boundary-change-approvals.json',
+      'overlap-classification-snapshot.json',
+      'resolve-rules.json',
+    ].includes(fileName))
     .map((fileName) => path.basename(fileName, '.json'))
     .sort();
 }

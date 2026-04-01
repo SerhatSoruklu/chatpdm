@@ -1,18 +1,12 @@
 'use strict';
 
-const CONTRACT_VERSION = 'v1.4';
+const { LIVE_CONCEPT_IDS } = require('./admission-state');
+
+const CONTRACT_VERSION = 'v1.5';
 const NORMALIZER_VERSION = '2026-03-27.v1';
 const MATCHER_VERSION = '2026-03-27.v3';
-const CONCEPT_SET_VERSION = '20260327.4';
+const CONCEPT_SET_VERSION = '20260401.2';
 const EMPTY_NORMALIZED_QUERY = '__empty__';
-
-const SEED_CONCEPT_IDS = Object.freeze([
-  'authority',
-  'power',
-  'legitimacy',
-  'responsibility',
-  'duty',
-]);
 
 const GOVERNANCE_CORE_TRIAD = Object.freeze([
   'authority',
@@ -60,6 +54,8 @@ const LEADING_FILLER_PHRASES = Object.freeze([
 ]);
 
 const NO_EXACT_MATCH_MESSAGE = 'No exact canonical concept match was found for this query.';
+const INVALID_QUERY_MESSAGE = 'No recognizable concept or supported query structure was detected.';
+const UNSUPPORTED_QUERY_TYPE_MESSAGE = 'This query has recognizable structure, but the current runtime does not support this query type yet.';
 const AMBIGUOUS_MATCH_MESSAGE = 'Multiple canonical concepts match this query. Choose one to continue.';
 const REJECTED_CONCEPT_MESSAGE = 'This concept is structurally rejected under the current system state.';
 
@@ -70,6 +66,7 @@ module.exports = {
   EMPTY_NORMALIZED_QUERY,
   GOVERNANCE_CORE_TRIAD,
   GOVERNANCE_SCOPE_MUST_PRESERVE_IN,
+  INVALID_QUERY_MESSAGE,
   LEADING_FILLER_PHRASES,
   MATCHER_VERSION,
   NORMALIZER_VERSION,
@@ -77,5 +74,6 @@ module.exports = {
   NO_EXACT_MATCH_MESSAGE,
   PUNCTUATION_CHARACTERS,
   REJECTED_CONCEPT_MESSAGE,
-  SEED_CONCEPT_IDS,
+  LIVE_CONCEPT_IDS,
+  UNSUPPORTED_QUERY_TYPE_MESSAGE,
 };

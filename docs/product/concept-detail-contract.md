@@ -36,6 +36,7 @@ Rules:
 - `governanceState` remains validator-derived runtime metadata only
 - `reviewState` remains concept lifecycle/admission metadata only
 - `reviewState` is loaded from `data/concepts/review-states/`
+- `reviewState.admission` may include overlap-scan lifecycle states such as `pending_overlap_scan`, `overlap_scan_passed`, `overlap_scan_failed_conflict`, `overlap_scan_failed_duplicate`, `overlap_scan_failed_compression`, and `overlap_scan_boundary_required`
 - `reviewState` must be `null` when no review-state artifact exists
 - `rejection` must be `null` unless the concept appears in `data/concepts/rejections/`
 - authored fields may be `null` when the concept has lifecycle evidence but no authored concept packet yet

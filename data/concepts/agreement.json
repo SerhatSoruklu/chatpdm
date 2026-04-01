@@ -1,0 +1,134 @@
+{
+  "concept": "agreement",
+  "conceptId": "agreement",
+  "title": "Agreement",
+  "version": 1,
+  "state": "published",
+  "previousVersion": null,
+  "createdAt": "2026-04-01T00:00:00Z",
+  "updatedAt": "2026-04-01T00:00:00Z",
+  "domain": "interaction-primitives",
+  "canonical": {
+    "invariant": "Agreement is the state in which terms or conditions are settled within an interaction frame.",
+    "excludes": [
+      "binding normative source",
+      "required conduct",
+      "directive standing or answerability"
+    ],
+    "adjacent": {
+      "commitment": "Agreement provides a settled interaction structure that commitment may take up.",
+      "law": "Agreement stabilizes interaction terms; law binds normative rules.",
+      "duty": "Agreement settles terms or conditions; duty specifies conduct that is required."
+    }
+  },
+  "shortDefinition": "Agreement is the state in which terms or conditions are settled within an interaction frame.",
+  "coreMeaning": "Agreement marks that terms or conditions are settled at the interaction layer. It does not create governance force, owed conduct, or answerability. Its role is to stabilize interaction terms that commitment may later take up without becoming law, duty, authority, or responsibility.",
+  "structuralProfile": {
+    "function": "interaction-layer settlement of terms or conditions",
+    "object": "terms or conditions within an interaction frame",
+    "sourceType": "interactional settlement between participants",
+    "actorRelation": "participants settle shared terms without creating governance standing, duty, or answerability",
+    "temporalRole": "pre-commitment settlement state",
+    "enforcementRole": "outside governance enforcement by itself",
+    "answerabilityRole": "does not assign answerability",
+    "requiredConductRole": "does not define required conduct",
+    "outcomeAttributionRole": "does not attribute outcomes to an actor"
+  },
+  "fullDefinition": "Agreement belongs to the interaction layer rather than the governance layer. It settles terms or conditions within an interaction frame without making them binding normative rules, required conduct, or assigned answerability.\n\nAgreement therefore does not collapse into law, because law binds normative rules within a governance order. It does not collapse into duty, because duty concerns conduct that is required. It does not collapse into authority or responsibility, because it neither grants standing nor assigns answerability.\n\nAgreement may later be recognized, evaluated, or incorporated by governance, but that later connection does not change what agreement is. Its structural role is to stabilize interaction terms before commitment, not to generate governance status by itself.",
+  "registers": {
+    "standard": {
+      "shortDefinition": "Agreement is the state in which terms or conditions are settled within an interaction frame.",
+      "coreMeaning": "Agreement marks that terms or conditions are settled at the interaction layer. It does not create governance force, owed conduct, or answerability. Its role is to stabilize interaction terms that commitment may later take up without becoming law, duty, authority, or responsibility.",
+      "fullDefinition": "Agreement belongs to the interaction layer rather than the governance layer. It settles terms or conditions within an interaction frame without making them binding normative rules, required conduct, or assigned answerability.\n\nAgreement therefore does not collapse into law, because law binds normative rules within a governance order. It does not collapse into duty, because duty concerns conduct that is required. It does not collapse into authority or responsibility, because it neither grants standing nor assigns answerability.\n\nAgreement may later be recognized, evaluated, or incorporated by governance, but that later connection does not change what agreement is. Its structural role is to stabilize interaction terms before commitment, not to generate governance status by itself."
+    },
+    "simplified": {
+      "shortDefinition": "Agreement means terms or conditions are settled within an interaction frame.",
+      "coreMeaning": "Agreement fixes the interaction terms without making them binding rules or required conduct. It sits before commitment and stays outside governance by itself.",
+      "fullDefinition": "Agreement marks that terms or conditions are settled inside an interaction frame. It does not make those terms law, duty, or authority.\n\nThat is why agreement is not the same as required conduct, binding rule, or answerability. It only stabilizes the interaction terms.\n\nGovernance may later recognize or evaluate an agreement, but agreement itself remains an interaction-layer state."
+    },
+    "formal": {
+      "shortDefinition": "Agreement is the interaction-layer state in which terms or conditions stand as settled within an interaction frame.",
+      "coreMeaning": "Within the relevant system, agreement functions as the interaction-layer settlement of terms or conditions within a shared frame of interaction. It therefore remains distinct from governance concepts that bind rules, require conduct, confer standing, or attach answerability to an actor or outcome.",
+      "fullDefinition": "Agreement is defined as the interaction-layer state in which terms or conditions stand as settled within an interaction frame. The concept therefore remains interaction-layer rather than governance-layer in both source and function. It does not bind normative rules, require conduct, grant directive standing, or attach answerability to a participant.\n\nAgreement is accordingly distinct from law, which binds normative rules within a governance order, from duty, which specifies conduct that is required, and from responsibility, which concerns answerability for attributable action, omission, or outcome. Its structural role is to stabilize interaction terms that commitment may later take up while remaining non-binding and non-governance by itself.\n\nAny later recognition, evaluation, or incorporation by governance is external to the definition of agreement and must not be collapsed back into the concept itself."
+    }
+  },
+  "contexts": [
+    {
+      "label": "interaction",
+      "explanation": "Agreement settles terms or conditions within an interaction frame without becoming governance force."
+    },
+    {
+      "label": "coordination",
+      "explanation": "Agreement stabilizes shared terms so later interaction can proceed on a settled structure."
+    },
+    {
+      "label": "pre-commitment",
+      "explanation": "Agreement sits before commitment by settling the terms commitment may take up."
+    }
+  ],
+  "sourcePriority": [
+    "north",
+    "oxford"
+  ],
+  "sources": [
+    {
+      "id": "north",
+      "label": "Douglass C. North, Institutions, Institutional Change and Economic Performance",
+      "type": "book",
+      "usedFor": "structural grounding for interaction-layer settlement distinct from governance binding"
+    },
+    {
+      "id": "oxford",
+      "label": "Oxford Languages",
+      "type": "dictionary",
+      "usedFor": "definition boundary for agreement as settled terms rather than law or duty"
+    }
+  ],
+  "relatedConcepts": [
+    {
+      "conceptId": "law",
+      "relationType": "contrast"
+    },
+    {
+      "conceptId": "duty",
+      "relationType": "contrast"
+    }
+  ],
+  "comparison": {},
+  "reviewMetadata": {
+    "what_it_is": [
+      "settled terms",
+      "interaction-layer state",
+      "pre-commitment structure"
+    ],
+    "what_it_is_not": [
+      "binding law",
+      "required conduct",
+      "directive standing",
+      "answerability"
+    ],
+    "must_not_collapse_into": [
+      "law",
+      "duty"
+    ],
+    "related_concepts": [
+      "commitment",
+      "law",
+      "duty",
+      "consent"
+    ],
+    "contrast_prompts": [
+      "agreement vs law",
+      "agreement vs duty",
+      "agreement and consent"
+    ]
+  },
+  "aliases": [
+    "agreement",
+    "what is agreement",
+    "define agreement"
+  ],
+  "normalizedAliases": [
+    "agreement"
+  ]
+}

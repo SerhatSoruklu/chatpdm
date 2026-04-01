@@ -131,7 +131,6 @@
 .pdm-runtime__query-form,
 .pdm-runtime__catalog,
 .pdm-runtime__chip-row,
-.pdm-runtime__starter-row,
 .pdm-runtime__meta-grid,
 .pdm-runtime__state-grid,
 .pdm-runtime__result-split,
@@ -249,8 +248,7 @@
   line-height: 1.6;
 }
 
-.pdm-runtime__chip-row,
-.pdm-runtime__starter-row {
+.pdm-runtime__chip-row {
   display: flex;
   flex-wrap: wrap;
 }
@@ -284,15 +282,33 @@
   border-color: rgba(37, 99, 235, 0.28);
 }
 
-.pdm-runtime__chip--reviewed {
-  border-color: rgba(183, 144, 54, 0.34);
-  background: #f8ecd1;
-  color: #8c6917;
+.pdm-runtime__chip--reviewed,
+.pdm-runtime__chip--visible {
+  border-color: rgba(148, 163, 184, 0.22);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(248, 250, 255, 0.86)),
+    rgba(255, 255, 255, 0.84);
+  color: #475569;
 }
 
 .pdm-runtime__chip--reviewed:hover:not(:disabled),
-.pdm-runtime__chip--reviewed:focus-visible:not(:disabled) {
-  border-color: rgba(183, 144, 54, 0.5);
+.pdm-runtime__chip--reviewed:focus-visible:not(:disabled),
+.pdm-runtime__chip--visible:hover:not(:disabled),
+.pdm-runtime__chip--visible:focus-visible:not(:disabled) {
+  border-color: rgba(148, 163, 184, 0.28);
+}
+
+.pdm-runtime__chip--rejected {
+  border-color: rgba(190, 24, 93, 0.18);
+  background:
+    linear-gradient(180deg, rgba(255, 241, 242, 0.96), rgba(255, 228, 230, 0.9)),
+    rgba(255, 241, 242, 0.84);
+  color: #9f1239;
+}
+
+.pdm-runtime__chip--rejected:hover:not(:disabled),
+.pdm-runtime__chip--rejected:focus-visible:not(:disabled) {
+  border-color: rgba(190, 24, 93, 0.26);
 }
 
 .pdm-runtime__chip--starter {

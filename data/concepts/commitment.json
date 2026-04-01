@@ -1,0 +1,133 @@
+{
+  "concept": "commitment",
+  "conceptId": "commitment",
+  "title": "Commitment",
+  "version": 1,
+  "state": "published",
+  "previousVersion": null,
+  "createdAt": "2026-04-01T00:00:00Z",
+  "updatedAt": "2026-04-01T00:00:00Z",
+  "domain": "interaction-primitives",
+  "canonical": {
+    "invariant": "Commitment is the state in which settled terms or conditions are taken up for continuation within an interaction frame.",
+    "excludes": [
+      "law or duty",
+      "governance status",
+      "answerability or blame"
+    ],
+    "adjacent": {
+      "agreement": "Agreement settles the terms or conditions; commitment takes those terms forward.",
+      "duty": "Commitment carries terms forward within interaction; duty belongs to governance as conduct set under governance structure.",
+      "responsibility": "Commitment concerns continuation within interaction; responsibility concerns answerability."
+    }
+  },
+  "shortDefinition": "Commitment is the state in which settled terms or conditions are taken up for continuation within an interaction frame.",
+  "coreMeaning": "Commitment marks that settled terms are no longer merely in place as agreement, but are carried forward as an ongoing interaction structure. It remains an interaction-layer state rather than a governance category. Its role is taken-up continuation, not duty, law, or answerability.",
+  "structuralProfile": {
+    "function": "interaction-layer continuation of settled terms or conditions",
+    "object": "settled terms taken up for continuation",
+    "sourceType": "prior agreement or settled terms within an interaction frame",
+    "actorRelation": "participants carry forward settled terms without converting them into governance status",
+    "temporalRole": "post-agreement continuation state",
+    "enforcementRole": "outside governance enforcement by itself",
+    "answerabilityRole": "does not assign answerability",
+    "requiredConductRole": "does not define required conduct",
+    "outcomeAttributionRole": "does not attribute outcomes to an actor"
+  },
+  "fullDefinition": "Commitment sits after agreement and before any possible governance uptake. Agreement settles terms or conditions. Commitment takes those settled terms up for continuation within the interaction frame without thereby turning them into law, duty, authority, or responsibility.\n\nCommitment does not collapse into duty, because duty concerns conduct set under governance structure. Commitment instead carries terms forward without becoming that governance category. Nor does commitment collapse into responsibility, because it does not assign answerability, blame, or liability.\n\nCommitment may later connect to duty if governance formalizes what has been taken up, but that later transition is possible rather than automatic. The concept itself remains interaction-layer continuation rather than governance status.",
+  "registers": {
+    "standard": {
+      "shortDefinition": "Commitment is the state in which settled terms or conditions are taken up for continuation within an interaction frame.",
+      "coreMeaning": "Commitment marks that settled terms are no longer merely in place as agreement, but are carried forward as an ongoing interaction structure. It remains an interaction-layer state rather than a governance category. Its role is taken-up continuation, not duty, law, or answerability.",
+      "fullDefinition": "Commitment sits after agreement and before any possible governance uptake. Agreement settles terms or conditions. Commitment takes those settled terms up for continuation within the interaction frame without thereby turning them into law, duty, authority, or responsibility.\n\nCommitment does not collapse into duty, because duty concerns conduct set under governance structure. Commitment instead carries terms forward without becoming that governance category. Nor does commitment collapse into responsibility, because it does not assign answerability, blame, or liability.\n\nCommitment may later connect to duty if governance formalizes what has been taken up, but that later transition is possible rather than automatic. The concept itself remains interaction-layer continuation rather than governance status."
+    },
+    "simplified": {
+      "shortDefinition": "Commitment means settled terms are taken up for continuation within an interaction frame.",
+      "coreMeaning": "Commitment carries settled terms forward without turning them into law, duty, or answerability. It stays in the interaction layer and does not assign blame.",
+      "fullDefinition": "Commitment comes after agreement. It means settled terms are taken up and carried forward inside the interaction frame.\n\nThat does not make them duty, because duty belongs to governance as conduct set under governance structure. It also does not make them responsibility, because responsibility is answerability.\n\nCommitment may later be formalized by governance, but that later step is outside the concept itself."
+    },
+    "formal": {
+      "shortDefinition": "Commitment is the interaction-layer continuation state through which settled terms or conditions remain actively taken up within an interaction frame.",
+      "coreMeaning": "Within the relevant system, commitment functions as the interaction-layer uptake and continuation of settled terms or conditions after agreement has already stabilized them. It therefore remains distinct from duty, law, and responsibility, because it carries terms forward without creating governance status or answerability.",
+      "fullDefinition": "Commitment is defined as the interaction-layer state in which settled terms or conditions are taken up for continuation within an interaction frame. The concept occupies the space between agreement, which settles terms, and any later governance uptake that might formalize them. It does not itself create law, duty, governance status, or answerability.\n\nCommitment is accordingly distinct from duty, which concerns conduct set under governance structure, and from responsibility, which concerns answerability for attributable action, omission, or outcome. Commitment instead marks the carried-forward continuation of settled terms within interaction without converting that continuation into a governance category.\n\nAny later formalization into duty is a possible transition external to the definition of commitment and remains outside the concept itself."
+    }
+  },
+  "contexts": [
+    {
+      "label": "interaction",
+      "explanation": "Commitment carries settled terms forward within the interaction layer."
+    },
+    {
+      "label": "continuation",
+      "explanation": "Commitment marks ongoing continuation of terms that have already been settled."
+    },
+    {
+      "label": "pre-governance",
+      "explanation": "Commitment can connect to governance later without being governance by itself."
+    }
+  ],
+  "sourcePriority": [
+    "north",
+    "oxford"
+  ],
+  "sources": [
+    {
+      "id": "north",
+      "label": "Douglass C. North, Institutions, Institutional Change and Economic Performance",
+      "type": "book",
+      "usedFor": "structural grounding for interaction-layer continuation distinct from governance force"
+    },
+    {
+      "id": "oxford",
+      "label": "Oxford Languages",
+      "type": "dictionary",
+      "usedFor": "definition boundary for commitment as continuation rather than duty or responsibility"
+    }
+  ],
+  "relatedConcepts": [
+    {
+      "conceptId": "duty",
+      "relationType": "contrast"
+    },
+    {
+      "conceptId": "responsibility",
+      "relationType": "contrast"
+    }
+  ],
+  "comparison": {},
+  "reviewMetadata": {
+    "what_it_is": [
+      "taken-up continuation",
+      "interaction-layer structure",
+      "post-agreement state"
+    ],
+    "what_it_is_not": [
+      "law or duty",
+      "governance status",
+      "answerability"
+    ],
+    "must_not_collapse_into": [
+      "duty",
+      "responsibility",
+      "agreement"
+    ],
+    "related_concepts": [
+      "agreement",
+      "duty",
+      "responsibility"
+    ],
+    "contrast_prompts": [
+      "commitment vs duty",
+      "commitment vs responsibility",
+      "agreement and commitment"
+    ]
+  },
+  "aliases": [
+    "commitment",
+    "what is commitment",
+    "define commitment"
+  ],
+  "normalizedAliases": [
+    "commitment"
+  ]
+}

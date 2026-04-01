@@ -1,0 +1,164 @@
+<div class="pdm-version-policy">
+  <main class="pdm-version-policy__main pdm-shell" aria-labelledby="pdm-version-policy-title">
+    <div class="pdm-shell__frame pdm-version-policy__frame">
+      <header class="pdm-version-policy__hero pdm-site-surface pdm-site-panel">
+        <p class="pdm-version-policy__eyebrow">Version policy</p>
+        <h1 class="pdm-version-policy__title" id="pdm-version-policy-title">Version policy</h1>
+        <p class="pdm-version-policy__intro">
+          This page defines how runtime behavior is versioned and when a change is allowed to alter output.
+        </p>
+      </header>
+
+      <section class="pdm-version-policy__guarantee pdm-site-surface pdm-site-panel" aria-labelledby="pdm-version-policy-guarantee-title">
+        <p class="pdm-version-policy__section-label">Core guarantee</p>
+        <h2 class="pdm-version-policy__section-title" id="pdm-version-policy-guarantee-title">
+          Same declared versions, same runtime outcome.
+        </h2>
+        <p class="pdm-version-policy__copy pdm-version-policy__copy--strong">
+          If query, normalization, matcher logic, concept set, and contract version remain the same, the runtime outcome must remain the same.
+        </p>
+      </section>
+
+      <section class="pdm-version-policy__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-version-policy-layers-title">
+        <p class="pdm-version-policy__section-label">Version layers</p>
+        <h2 class="pdm-version-policy__section-title" id="pdm-version-policy-layers-title">
+          Controlled version surfaces.
+        </h2>
+
+        <div class="pdm-version-policy__layer-grid">
+          @for (layer of versionLayers; track layer.field) {
+            <article class="pdm-version-policy__layer-card">
+              <p class="pdm-version-policy__field">{{ layer.field }}</p>
+              <div class="pdm-version-policy__layer-block">
+                <p class="pdm-version-policy__label">Controls</p>
+                <p class="pdm-version-policy__copy">{{ layer.controls }}</p>
+              </div>
+              <div class="pdm-version-policy__layer-block">
+                <p class="pdm-version-policy__label">Changes when</p>
+                <p class="pdm-version-policy__copy">{{ layer.changesWhen }}</p>
+              </div>
+            </article>
+          }
+        </div>
+      </section>
+
+      <section class="pdm-version-policy__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-version-policy-ownership-title">
+        <p class="pdm-version-policy__section-label">Version ownership</p>
+        <h2 class="pdm-version-policy__section-title" id="pdm-version-policy-ownership-title">
+          Each version field owns a different kind of change.
+        </h2>
+        <ul class="pdm-version-policy__ownership-list">
+          @for (row of versionOwnership; track row.field) {
+            <li>
+              <span class="pdm-version-policy__ownership-field">{{ row.field }}</span>
+              <span class="pdm-version-policy__ownership-copy">{{ row.ownership }}</span>
+            </li>
+          }
+        </ul>
+      </section>
+
+      <section class="pdm-version-policy__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-version-policy-matrix-title">
+        <p class="pdm-version-policy__section-label">Change trigger matrix</p>
+        <h2 class="pdm-version-policy__section-title" id="pdm-version-policy-matrix-title">
+          A changed behavior must version the layer that owns it.
+        </h2>
+
+        <div class="pdm-version-policy__trigger-cards">
+          @for (row of changeTriggers; track row.change) {
+            <article class="pdm-version-policy__trigger-card">
+              <p class="pdm-version-policy__trigger-change">{{ row.change }}</p>
+              <p class="pdm-version-policy__trigger-version">{{ row.version }}</p>
+              <p class="pdm-version-policy__trigger-why">{{ row.why }}</p>
+            </article>
+          }
+        </div>
+
+        <div class="pdm-version-policy__table-shell">
+          <table class="pdm-version-policy__table">
+            <thead>
+              <tr>
+                <th scope="col">Change</th>
+                <th scope="col">Which version must change</th>
+                <th scope="col">Why</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (row of changeTriggers; track row.change) {
+                <tr>
+                  <th scope="row">{{ row.change }}</th>
+                  <td>{{ row.version }}</td>
+                  <td>{{ row.why }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="pdm-version-policy__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-version-policy-classes-title">
+        <p class="pdm-version-policy__section-label">Stability classes</p>
+        <h2 class="pdm-version-policy__section-title" id="pdm-version-policy-classes-title">
+          Not all change belongs to the same layer.
+        </h2>
+
+        <div class="pdm-version-policy__class-grid">
+          @for (item of stabilityClasses; track item.title) {
+            <article class="pdm-version-policy__class-card">
+              <p class="pdm-version-policy__class-title">{{ item.title }}</p>
+              <p class="pdm-version-policy__copy">{{ item.copy }}</p>
+            </article>
+          }
+        </div>
+      </section>
+
+      <section class="pdm-version-policy__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-version-policy-replay-title">
+        <p class="pdm-version-policy__section-label">Replay / citation rule</p>
+        <h2 class="pdm-version-policy__section-title" id="pdm-version-policy-replay-title">
+          A runtime result is identified by its declared tuple.
+        </h2>
+        <p class="pdm-version-policy__copy">
+          A result can only be cited or replayed precisely when the identifying tuple remains intact.
+        </p>
+        <p class="pdm-version-policy__copy">
+          Transport and debug metadata sit outside this tuple and do not define output identity.
+        </p>
+        <div class="pdm-version-policy__tuple-shell">
+          @for (field of replayTuple; track field) {
+            <div class="pdm-version-policy__tuple-item">{{ field }}</div>
+          }
+        </div>
+      </section>
+
+      <section class="pdm-version-policy__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-version-policy-not-mean-title">
+        <p class="pdm-version-policy__section-label">What versioning does not mean</p>
+        <h2 class="pdm-version-policy__section-title" id="pdm-version-policy-not-mean-title">
+          Versioning exists to preserve traceability.
+        </h2>
+        <ul class="pdm-version-policy__plain-list">
+          @for (item of nonMeanings; track item) {
+            <li>{{ item }}</li>
+          }
+        </ul>
+      </section>
+
+      <section class="pdm-version-policy__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-version-policy-current-title">
+        <p class="pdm-version-policy__section-label">Current live declarations</p>
+        <h2 class="pdm-version-policy__section-title" id="pdm-version-policy-current-title">
+          Current declared runtime versions.
+        </h2>
+        <div class="pdm-version-policy__declaration-grid">
+          @for (row of currentDeclarations; track row.field) {
+            <article class="pdm-version-policy__declaration-card">
+              <p class="pdm-version-policy__field">{{ row.field }}</p>
+              <p class="pdm-version-policy__declaration-value">{{ row.value }}</p>
+            </article>
+          }
+        </div>
+      </section>
+
+      <section class="pdm-version-policy__closing pdm-site-surface pdm-site-panel" aria-label="Version policy closing line">
+        <p class="pdm-version-policy__closing-line">Behavior may evolve. Untracked change is not allowed.</p>
+      </section>
+    </div>
+  </main>
+</div>

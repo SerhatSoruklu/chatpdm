@@ -1,0 +1,202 @@
+<div class="pdm-reasoning">
+  <main class="pdm-reasoning__main pdm-shell" aria-labelledby="pdm-reasoning-title">
+    <div class="pdm-shell__frame pdm-reasoning__frame">
+      <section class="pdm-reasoning__hero pdm-site-surface pdm-site-panel">
+        <p class="pdm-reasoning__eyebrow">Reasoning structure</p>
+        <h1 class="pdm-reasoning__title" id="pdm-reasoning-title">Reasoning structure</h1>
+        <p class="pdm-reasoning__subtitle">
+          The current system is deterministic first. Future reasoning layers may be added only if
+          they remain subordinate to deterministic validation and never weaken runtime guarantees.
+        </p>
+      </section>
+
+      <div class="pdm-reasoning__split">
+        <section
+          class="pdm-reasoning__section pdm-site-surface pdm-site-panel"
+          aria-labelledby="pdm-reasoning-current-state"
+        >
+          <div class="pdm-reasoning__section-head">
+            <p class="pdm-reasoning__section-label">Current state</p>
+            <h2 class="pdm-reasoning__section-title" id="pdm-reasoning-current-state">
+              One authoritative layer is live today.
+            </h2>
+          </div>
+
+          <ul class="pdm-reasoning__truth-list">
+            @for (truth of activeTruths; track truth) {
+              <li>{{ truth }}</li>
+            }
+          </ul>
+
+          <div class="pdm-reasoning__status-row">
+            <span class="pdm-reasoning__status-chip pdm-site-chip">Deterministic main core</span>
+            <span class="pdm-reasoning__status-chip pdm-site-chip pdm-reasoning__status-chip--active">
+              Active now
+            </span>
+          </div>
+        </section>
+
+        <section
+          class="pdm-reasoning__rule pdm-site-surface pdm-site-panel"
+          aria-labelledby="pdm-reasoning-core-rule"
+        >
+          <p class="pdm-reasoning__section-label">Core rule</p>
+          <h2 class="pdm-reasoning__rule-line" id="pdm-reasoning-core-rule">
+            No lower reasoning layer may override a stricter layer above it.
+          </h2>
+          <p class="pdm-reasoning__copy">
+            Deterministic validation remains sovereign. Any future reasoning mode may complement,
+            inspect, or clarify, but it may never define canon or bypass refusal.
+          </p>
+        </section>
+      </div>
+
+      <section
+        class="pdm-reasoning__section pdm-site-surface pdm-site-panel"
+        aria-labelledby="pdm-reasoning-table"
+      >
+        <div class="pdm-reasoning__section-head">
+          <p class="pdm-reasoning__section-label">Reasoning table</p>
+          <h2 class="pdm-reasoning__section-title" id="pdm-reasoning-table">
+            Bounded roles, bounded authority.
+          </h2>
+        </div>
+
+        <div class="pdm-reasoning__layer-cards" aria-label="Reasoning layer cards">
+          @for (layer of reasoningLayers; track layer.label) {
+            <article class="pdm-reasoning__layer-card" [attr.data-tone]="layer.tone">
+              <div class="pdm-reasoning__layer-head">
+                <h3 class="pdm-reasoning__layer-title">{{ layer.label }}</h3>
+                <div class="pdm-reasoning__layer-status">
+                  <p class="pdm-reasoning__layer-status-title">{{ layer.statusTitle }}</p>
+                  <p class="pdm-reasoning__layer-status-note">{{ layer.statusNote }}</p>
+                </div>
+              </div>
+
+              <dl class="pdm-reasoning__layer-meta">
+                <div>
+                  <dt>Role</dt>
+                  <dd>{{ layer.role }}</dd>
+                </div>
+                <div>
+                  <dt>What it is good at</dt>
+                  <dd>{{ layer.goodAt }}</dd>
+                </div>
+                <div>
+                  <dt>What it must never do</dt>
+                  <dd>{{ layer.mustNeverDo }}</dd>
+                </div>
+              </dl>
+            </article>
+          }
+        </div>
+
+        <div class="pdm-reasoning__table-shell" aria-label="Reasoning layer table">
+          <table class="pdm-reasoning__table">
+            <thead>
+              <tr>
+                <th scope="col">Layer</th>
+                <th scope="col">Role</th>
+                <th scope="col">What it is good at</th>
+                <th scope="col">What it must never do</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (layer of reasoningLayers; track layer.label) {
+                <tr [attr.data-tone]="layer.tone">
+                  <th scope="row">{{ layer.label }}</th>
+                  <td>{{ layer.role }}</td>
+                  <td>{{ layer.goodAt }}</td>
+                  <td>{{ layer.mustNeverDo }}</td>
+                  <td>
+                    <p class="pdm-reasoning__table-status-title">{{ layer.statusTitle }}</p>
+                    <p class="pdm-reasoning__table-status-note">{{ layer.statusNote }}</p>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section
+        class="pdm-reasoning__section pdm-site-surface pdm-site-panel"
+        aria-labelledby="pdm-reasoning-hierarchy"
+      >
+        <div class="pdm-reasoning__section-head">
+          <p class="pdm-reasoning__section-label">Authority hierarchy</p>
+          <h2 class="pdm-reasoning__section-title" id="pdm-reasoning-hierarchy">
+            Priority is strict, not negotiated.
+          </h2>
+        </div>
+
+        <div class="pdm-reasoning__priority-grid">
+          @for (step of prioritySteps; track step.rank) {
+            <article class="pdm-reasoning__priority-card" [attr.data-tone]="step.tone">
+              <p class="pdm-reasoning__priority-rank">{{ step.rank }}</p>
+              <h3 class="pdm-reasoning__priority-title">{{ step.title }}</h3>
+              <p class="pdm-reasoning__copy">{{ step.copy }}</p>
+            </article>
+          }
+        </div>
+
+        <p class="pdm-reasoning__hierarchy-note">
+          No lower layer may overrule a stricter layer above it.
+        </p>
+      </section>
+
+      <section
+        class="pdm-reasoning__section pdm-site-surface pdm-site-panel"
+        aria-labelledby="pdm-reasoning-deterministic-first"
+      >
+        <div class="pdm-reasoning__section-head">
+          <p class="pdm-reasoning__section-label">Why deterministic comes first</p>
+          <h2 class="pdm-reasoning__section-title" id="pdm-reasoning-deterministic-first">
+            Flexibility is only safe after invariants hold.
+          </h2>
+        </div>
+
+        <div class="pdm-reasoning__reason-grid">
+          @for (reason of deterministicReasons; track reason.title) {
+            <article class="pdm-reasoning__reason-card">
+              <h3 class="pdm-reasoning__reason-title">{{ reason.title }}</h3>
+              <p class="pdm-reasoning__copy">{{ reason.copy }}</p>
+            </article>
+          }
+        </div>
+      </section>
+
+      <section
+        class="pdm-reasoning__section pdm-site-surface pdm-site-panel"
+        aria-labelledby="pdm-reasoning-future"
+      >
+        <div class="pdm-reasoning__section-head">
+          <p class="pdm-reasoning__section-label">Future direction</p>
+          <h2 class="pdm-reasoning__section-title" id="pdm-reasoning-future">
+            Any expansion remains conditional.
+          </h2>
+        </div>
+
+        <p class="pdm-reasoning__copy">
+          Future reasoning layers are possible, but they will be introduced only if they preserve
+          determinism, refusal integrity, and traceability. Expansion is conditional, not automatic.
+        </p>
+        <p class="pdm-reasoning__copy">
+          Advisory reasoning, if it appears later, will live on separate surfaces. It will not be
+          mixed into runtime outputs or allowed to rewrite canonical meaning.
+        </p>
+      </section>
+
+      <section
+        class="pdm-reasoning__closing pdm-site-surface pdm-site-panel"
+        aria-labelledby="pdm-reasoning-closing"
+      >
+        <p class="pdm-reasoning__section-label">Closing</p>
+        <h2 class="pdm-reasoning__closing-line" id="pdm-reasoning-closing">
+          Flexibility may be added later. Validity must come first.
+        </h2>
+      </section>
+    </div>
+  </main>
+</div>

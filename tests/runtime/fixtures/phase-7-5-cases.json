@@ -50,6 +50,26 @@
     "expectedConceptId": "duty"
   },
   {
+    "name": "law_exact",
+    "input": "law",
+    "expectedNormalizedQuery": "law",
+    "expectedType": "concept_match",
+    "expectedMethod": "exact_alias",
+    "expectedQueryType": "exact_concept_query",
+    "expectedInterpretation": null,
+    "expectedConceptId": "law"
+  },
+  {
+    "name": "violation_exact",
+    "input": "violation",
+    "expectedNormalizedQuery": "violation",
+    "expectedType": "concept_match",
+    "expectedMethod": "exact_alias",
+    "expectedQueryType": "exact_concept_query",
+    "expectedInterpretation": null,
+    "expectedConceptId": "violation"
+  },
+  {
     "name": "authority_non_governance_epistemic_refusal",
     "input": "epistemic authority",
     "expectedNormalizedQuery": "epistemic authority",
@@ -263,37 +283,34 @@
     "name": "whitespace_only",
     "input": "   ",
     "expectedNormalizedQuery": "__empty__",
-    "expectedType": "no_exact_match",
-    "expectedMethod": "no_exact_match",
-    "expectedQueryType": "unsupported_complex_query",
+    "expectedType": "invalid_query",
+    "expectedMethod": "invalid_query",
+    "expectedQueryType": "invalid_query",
     "expectedInterpretation": {
-      "interpretationType": "unsupported_complex"
-    },
-    "expectedSuggestions": []
+      "interpretationType": "invalid_query"
+    }
   },
   {
     "name": "punctuation_only",
     "input": "???",
     "expectedNormalizedQuery": "__empty__",
-    "expectedType": "no_exact_match",
-    "expectedMethod": "no_exact_match",
-    "expectedQueryType": "unsupported_complex_query",
+    "expectedType": "invalid_query",
+    "expectedMethod": "invalid_query",
+    "expectedQueryType": "invalid_query",
     "expectedInterpretation": {
-      "interpretationType": "unsupported_complex"
-    },
-    "expectedSuggestions": []
+      "interpretationType": "invalid_query"
+    }
   },
   {
     "name": "filler_and_punctuation_only",
     "input": "what is ???",
     "expectedNormalizedQuery": "__empty__",
-    "expectedType": "no_exact_match",
-    "expectedMethod": "no_exact_match",
-    "expectedQueryType": "unsupported_complex_query",
+    "expectedType": "invalid_query",
+    "expectedMethod": "invalid_query",
+    "expectedQueryType": "invalid_query",
     "expectedInterpretation": {
-      "interpretationType": "unsupported_complex"
-    },
-    "expectedSuggestions": []
+      "interpretationType": "invalid_query"
+    }
   },
   {
     "name": "canonical_id_success",
@@ -319,13 +336,68 @@
     "expectedSuggestions": []
   },
   {
+    "name": "visible_only_agreement_exact",
+    "input": "agreement",
+    "expectedNormalizedQuery": "agreement",
+    "expectedType": "no_exact_match",
+    "expectedMethod": "no_exact_match",
+    "expectedQueryType": "exact_concept_query",
+    "expectedInterpretation": {
+      "interpretationType": "visible_only_public_concept",
+      "targetConceptId": "agreement"
+    },
+    "expectedSuggestions": []
+  },
+  {
+    "name": "visible_only_agreement_prompt_exact",
+    "input": "what is agreement?",
+    "expectedNormalizedQuery": "agreement",
+    "expectedType": "no_exact_match",
+    "expectedMethod": "no_exact_match",
+    "expectedQueryType": "exact_concept_query",
+    "expectedInterpretation": {
+      "interpretationType": "visible_only_public_concept",
+      "targetConceptId": "agreement"
+    },
+    "expectedSuggestions": []
+  },
+  {
+    "name": "visible_only_commitment_exact",
+    "input": "commitment",
+    "expectedNormalizedQuery": "commitment",
+    "expectedType": "no_exact_match",
+    "expectedMethod": "no_exact_match",
+    "expectedQueryType": "exact_concept_query",
+    "expectedInterpretation": {
+      "interpretationType": "visible_only_public_concept",
+      "targetConceptId": "commitment"
+    },
+    "expectedSuggestions": []
+  },
+  {
+    "name": "visible_only_breach_exact",
+    "input": "breach",
+    "expectedNormalizedQuery": "breach",
+    "expectedType": "no_exact_match",
+    "expectedMethod": "no_exact_match",
+    "expectedQueryType": "exact_concept_query",
+    "expectedInterpretation": {
+      "interpretationType": "visible_only_public_concept",
+      "targetConceptId": "breach"
+    },
+    "expectedSuggestions": []
+  },
+  {
     "name": "rejected_obligation_exact",
     "input": "obligation",
     "expectedNormalizedQuery": "obligation",
     "expectedType": "rejected_concept",
     "expectedMethod": "rejection_registry",
     "expectedQueryType": "exact_concept_query",
-    "expectedInterpretation": null,
+    "expectedInterpretation": {
+      "interpretationType": "explicitly_rejected_concept",
+      "targetConceptId": "obligation"
+    },
     "expectedConceptId": "obligation",
     "expectedRejection": {
       "status": "REJECTED",
@@ -340,7 +412,10 @@
     "expectedType": "rejected_concept",
     "expectedMethod": "rejection_registry",
     "expectedQueryType": "exact_concept_query",
-    "expectedInterpretation": null,
+    "expectedInterpretation": {
+      "interpretationType": "explicitly_rejected_concept",
+      "targetConceptId": "enforcement"
+    },
     "expectedConceptId": "enforcement",
     "expectedRejection": {
       "status": "REJECTED",
@@ -355,7 +430,10 @@
     "expectedType": "rejected_concept",
     "expectedMethod": "rejection_registry",
     "expectedQueryType": "exact_concept_query",
-    "expectedInterpretation": null,
+    "expectedInterpretation": {
+      "interpretationType": "explicitly_rejected_concept",
+      "targetConceptId": "enforcement"
+    },
     "expectedConceptId": "enforcement",
     "expectedRejection": {
       "status": "REJECTED",
@@ -370,7 +448,10 @@
     "expectedType": "rejected_concept",
     "expectedMethod": "rejection_registry",
     "expectedQueryType": "canonical_id_query",
-    "expectedInterpretation": null,
+    "expectedInterpretation": {
+      "interpretationType": "explicitly_rejected_concept",
+      "targetConceptId": "obligation"
+    },
     "expectedConceptId": "obligation",
     "expectedRejection": {
       "status": "REJECTED",
@@ -401,12 +482,11 @@
     "name": "unknown_term",
     "input": "unknown term",
     "expectedNormalizedQuery": "unknown term",
-    "expectedType": "no_exact_match",
-    "expectedMethod": "no_exact_match",
+    "expectedType": "unsupported_query_type",
+    "expectedMethod": "unsupported_query_type",
     "expectedQueryType": "unsupported_complex_query",
     "expectedInterpretation": {
       "interpretationType": "unsupported_complex"
-    },
-    "expectedSuggestions": []
+    }
   }
 ]

@@ -31,6 +31,7 @@ Published concept packets must carry:
 - authored `registers.standard`
 - authored `registers.simplified`
 - authored `registers.formal`
+- authored `boundaryProofs` when structural comparison requires explicit separation
 
 `registers.standard` must match the top-level canonical prose exactly.
 
@@ -109,6 +110,18 @@ The `canonical` block defines the invariant meaning anchor for all three registe
 - `canonical.invariant`
 - `canonical.excludes`
 - `canonical.adjacent`
+
+`boundaryProofs` is the explicit separation layer for structurally adjacent concepts.
+It is not auto-generated, and it is validated as authored packet content.
+When comparison classifies a pair as `adjacent` or `requires_explicit_boundary_note`,
+the candidate packet must carry a structured proof with:
+
+- `notIdenticalTo`
+- `boundaryStatement`
+- `nonSubstitutionRule`
+- `failureIfCollapsed`
+- `validSeparationExample`
+- `invalidCollapseExample`
 
 This folder is not a dumping ground for ideas, loose notes, or speculative concepts.
 

@@ -37,6 +37,17 @@
   },
   "shortDefinition": "Authority is recognized standing to direct, decide, or govern within a governance order.",
   "coreMeaning": "Within the governance domain, authority works by giving a recognized role, office, or position the right to direct. It concerns who may direct, not what can be enforced or whether that standing is valid.",
+  "structuralProfile": {
+    "function": "recognized directive standing within a governance order",
+    "object": "directive acts, decisions, and governance direction",
+    "sourceType": "recognized role, office, or institutional standing",
+    "actorRelation": "actor or office holds recognized standing that may direct or decide",
+    "temporalRole": "standing before and during directive exercise",
+    "enforcementRole": "may structure who can issue binding direction without being enforcement itself",
+    "answerabilityRole": "does not assign answerability",
+    "requiredConductRole": "does not itself define required conduct",
+    "outcomeAttributionRole": "does not itself attribute outcomes"
+  },
   "fullDefinition": "Authority is not any ability to produce effects. In ChatPDM v1 it is defined within the governance domain as a structured right to issue direction, make decisions, or govern within a governance order.\n\nIts structure joins the right to direct to a recognized role, office, or position. The concept requires that this right attach to standing rather than to mere capacity.\n\nWithin governance structures, authority organizes who may decide, command, or settle matters. Questions of whether that standing is valid belong to legitimacy, while questions of what outcomes can be produced belong to power.",
   "registers": {
     "standard": {
