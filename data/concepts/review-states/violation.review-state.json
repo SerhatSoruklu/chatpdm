@@ -1,6 +1,6 @@
 {
   "conceptId": "violation",
-  "admission": "phase2_stable",
+  "admission": "visible_only_derived",
   "lastValidatedAt": "2026-04-01T00:00:00Z",
   "validationSource": "manual_review"
 }

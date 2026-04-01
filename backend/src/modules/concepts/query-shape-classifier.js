@@ -2,9 +2,13 @@
 
 const {
   EMPTY_NORMALIZED_QUERY,
-  LEADING_FILLER_PHRASES,
 } = require('./constants');
-const { extractCanonicalId, normalizeQuery } = require('./normalizer');
+const {
+  deriveRoutingText,
+  extractCanonicalId,
+  findLeadingFillerPhrase,
+  normalizeQuery,
+} = require('./normalizer');
 
 const COMPARISON_KEYWORDS = Object.freeze([
   ' vs ',
@@ -73,10 +77,12 @@ function buildTermEntries(concepts) {
     ]);
 
     for (const term of terms) {
-      if (term !== EMPTY_NORMALIZED_QUERY && term.trim() !== '') {
+      const routingTerm = deriveRoutingText(term);
+
+      if (routingTerm !== EMPTY_NORMALIZED_QUERY && routingTerm.trim() !== '') {
         entries.push({
           conceptId: concept.conceptId,
-          term,
+          term: routingTerm,
         });
       }
     }
@@ -107,62 +113,11 @@ function detectMentionedConcepts(normalizedQuery, termEntries) {
     .map(([conceptId]) => conceptId);
 }
 
-function findConceptById(concepts, conceptId) {
-  return concepts.find((concept) => concept.conceptId === conceptId) || null;
-}
-
-function findSubtypeCandidate(normalizedQuery, concepts, termEntries) {
-  for (const entry of termEntries) {
-    if (
-      normalizedQuery === entry.term
-      || !normalizedQuery.endsWith(` ${entry.term}`)
-    ) {
-      continue;
-    }
-
-    const modifier = normalizedQuery.slice(0, -entry.term.length).trim();
-
-    if (
-      modifier === ''
-      || NON_SUBTYPE_PREFIXES.some((prefix) => modifier.startsWith(prefix.trim()))
-      || COMPARISON_KEYWORDS.some((keyword) => ` ${modifier} `.includes(keyword))
-      || RELATION_KEYWORDS.some((keyword) => ` ${modifier} `.includes(keyword))
-      || ROLE_PREFIXES.some((prefix) => modifier.startsWith(prefix.trim()))
-    ) {
-      continue;
-    }
-
-    return {
-      concept: findConceptById(concepts, entry.conceptId),
-      modifier,
-    };
-  }
-
-  return null;
-}
-
 function buildAmbiguityInterpretation(match) {
   return {
     interpretationType: 'ambiguous_selection',
     concepts: match.candidates.map((candidate) => candidate.conceptId),
     message: 'This query matches multiple authored concepts and requires an explicit choice.',
-  };
-}
-
-function buildSubtypeInterpretation(baseConceptId, modifier) {
-  return {
-    interpretationType: 'narrower_subtype',
-    baseConcept: baseConceptId,
-    modifier,
-    message: `This appears to be a narrower or domain-specific form of "${baseConceptId}" based on the modifier "${modifier}". No authored concept exists yet.`,
-  };
-}
-
-function buildBroaderTopicInterpretation(baseConceptId) {
-  return {
-    interpretationType: 'broader_topic',
-    baseConcept: baseConceptId,
-    message: `This query does not match an authored concept exactly. The current runtime can only point to the broader authored concept "${baseConceptId}".`,
   };
 }
 
@@ -192,11 +147,17 @@ function buildRoleInterpretation(baseConcept, actorTerm = 'who') {
   };
 }
 
-function buildUnsupportedInterpretation() {
-  return {
+function buildUnsupportedInterpretation(concepts = []) {
+  const interpretation = {
     interpretationType: 'unsupported_complex',
     message: 'This query does not match a supported concept query form in the current runtime.',
   };
+
+  if (Array.isArray(concepts) && concepts.length > 0) {
+    interpretation.concepts = concepts;
+  }
+
+  return interpretation;
 }
 
 function buildInvalidQueryInterpretation() {
@@ -250,7 +211,7 @@ function uniqueCharacterCount(value) {
 
 function hasRecognizableQueryPrefix(rawQuery) {
   return (
-    LEADING_FILLER_PHRASES.some((prefix) => rawQuery.startsWith(prefix))
+    findLeadingFillerPhrase(rawQuery) !== null
     || NON_SUBTYPE_PREFIXES.some((prefix) => rawQuery.startsWith(prefix))
     || ROLE_PREFIXES.some((prefix) => rawQuery.startsWith(prefix))
   );
@@ -307,7 +268,7 @@ function isExactConceptLookupCandidate(rawQuery, normalizedQuery) {
   }
 
   const canonicalizedRawQuery = canonicalizeRawQuery(rawQuery);
-  if (LEADING_FILLER_PHRASES.some((prefix) => canonicalizedRawQuery.startsWith(prefix))) {
+  if (findLeadingFillerPhrase(canonicalizedRawQuery) !== null) {
     return true;
   }
 
@@ -362,24 +323,6 @@ function detectRoleOrActor(normalizedQuery, mentionedConcepts) {
   };
 }
 
-function detectBroaderTopicSuggestion(normalizedQuery, resolveRules) {
-  const rule = resolveRules.authorDefinedSuggestions.find(
-    (candidate) => candidate.normalizedQuery === normalizedQuery,
-  );
-
-  if (!rule || rule.suggestions.length === 0) {
-    return null;
-  }
-
-  if (!rule.suggestions.every((suggestion) => suggestion.reason === 'broader_topic')) {
-    return null;
-  }
-
-  return {
-    baseConcept: rule.suggestions[0].conceptId,
-  };
-}
-
 function classifyQueryShape({ rawQuery, normalizedQuery, concepts, resolveRules, match }) {
   if (typeof rawQuery !== 'string' || rawQuery.length === 0) {
     return {
@@ -412,17 +355,18 @@ function classifyQueryShape({ rawQuery, normalizedQuery, concepts, resolveRules,
     };
   }
 
+  const routingQuery = deriveRoutingText(normalizedQuery);
   const termEntries = buildTermEntries(concepts);
-  const mentionedConcepts = detectMentionedConcepts(normalizedQuery, termEntries);
+  const mentionedConcepts = detectMentionedConcepts(routingQuery, termEntries);
 
-  if (isClearlyInvalidQuery(rawQuery, normalizedQuery, mentionedConcepts)) {
+  if (isClearlyInvalidQuery(rawQuery, routingQuery, mentionedConcepts)) {
     return {
       queryType: 'invalid_query',
       interpretation: buildInvalidQueryInterpretation(),
     };
   }
 
-  const roleQuery = detectRoleOrActor(normalizedQuery, mentionedConcepts);
+  const roleQuery = detectRoleOrActor(routingQuery, mentionedConcepts);
   if (roleQuery) {
     return {
       queryType: 'role_or_actor_query',
@@ -430,7 +374,7 @@ function classifyQueryShape({ rawQuery, normalizedQuery, concepts, resolveRules,
     };
   }
 
-  const comparisonQuery = detectComparison(normalizedQuery, mentionedConcepts);
+  const comparisonQuery = detectComparison(routingQuery, mentionedConcepts);
   if (comparisonQuery) {
     return {
       queryType: 'comparison_query',
@@ -438,7 +382,7 @@ function classifyQueryShape({ rawQuery, normalizedQuery, concepts, resolveRules,
     };
   }
 
-  const relationQuery = detectRelation(normalizedQuery, mentionedConcepts);
+  const relationQuery = detectRelation(routingQuery, mentionedConcepts);
   if (relationQuery) {
     return {
       queryType: 'relation_query',
@@ -446,33 +390,14 @@ function classifyQueryShape({ rawQuery, normalizedQuery, concepts, resolveRules,
     };
   }
 
-  const subtypeCandidate = findSubtypeCandidate(normalizedQuery, concepts, termEntries);
-  if (subtypeCandidate?.concept) {
-    return {
-      queryType: 'subtype_query',
-      interpretation: buildSubtypeInterpretation(
-        subtypeCandidate.concept.conceptId,
-        subtypeCandidate.modifier,
-      ),
-    };
-  }
-
-  const broaderTopic = detectBroaderTopicSuggestion(normalizedQuery, resolveRules);
-  if (broaderTopic) {
-    return {
-      queryType: 'broader_topic_query',
-      interpretation: buildBroaderTopicInterpretation(broaderTopic.baseConcept),
-    };
-  }
-
-  if (isExactConceptLookupCandidate(rawQuery, normalizedQuery)) {
+  if (isExactConceptLookupCandidate(rawQuery, routingQuery)) {
     return {
       queryType: 'exact_concept_query',
-      interpretation: buildExactConceptNotFoundInterpretation(normalizedQuery),
+      interpretation: buildExactConceptNotFoundInterpretation(routingQuery),
     };
   }
 
-  if (normalizedQuery === EMPTY_NORMALIZED_QUERY) {
+  if (routingQuery === EMPTY_NORMALIZED_QUERY) {
     return {
       queryType: 'unsupported_complex_query',
       interpretation: buildUnsupportedInterpretation(),
@@ -481,7 +406,7 @@ function classifyQueryShape({ rawQuery, normalizedQuery, concepts, resolveRules,
 
   return {
     queryType: 'unsupported_complex_query',
-    interpretation: buildUnsupportedInterpretation(),
+    interpretation: buildUnsupportedInterpretation(mentionedConcepts),
   };
 }
 

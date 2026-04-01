@@ -5,23 +5,28 @@
     "legitimacy",
     "law",
     "duty",
-    "violation",
     "responsibility"
   ],
   "visibleOnlyPublicConceptIds": [
-    "agreement",
-    "commitment",
-    "breach"
+    "violation",
+    "agreement"
   ],
   "rejectedConceptIds": [
     "obligation",
-    "enforcement"
+    "enforcement",
+    "claim",
+    "liability",
+    "jurisdiction",
+    "defeasibility"
   ],
   "detailBackedConceptIds": [
+    "violation",
     "agreement",
-    "commitment",
-    "breach",
     "obligation",
-    "enforcement"
+    "enforcement",
+    "claim",
+    "liability",
+    "jurisdiction",
+    "defeasibility"
   ]
 }

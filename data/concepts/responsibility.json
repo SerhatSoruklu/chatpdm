@@ -47,10 +47,6 @@
       {
         "relationType": "may_answer_for_breach_of",
         "targetConceptId": "duty"
-      },
-      {
-        "relationType": "may_answer_for",
-        "targetConceptId": "violation"
       }
     ],
     "forbiddenRelations": [
@@ -83,8 +79,8 @@
         "statement": "Responsibility applies when conduct, omission, or outcome is attributable and answerability is in question."
       },
       {
-        "id": "responsibility_may_follow_violation_without_defining_it",
-        "statement": "Responsibility may follow violation without defining the violated conduct or the violated state."
+        "id": "responsibility_may_follow_duty_failure_without_defining_it",
+        "statement": "Responsibility may follow evaluated duty failure without defining the required conduct or the failed state itself."
       }
     ],
     "structuralFailures": {
@@ -238,32 +234,9 @@
     {
       "conceptId": "authority",
       "relationType": "extension"
-    },
-    {
-      "conceptId": "violation",
-      "relationType": "contrast"
     }
   ],
-  "comparison": {
-    "violation": {
-      "axes": [
-        {
-          "axis": "core_nature",
-          "A": "answerable connection between an actor and attributable action or outcome",
-          "B": "state in which required conduct or conditions under a duty are not satisfied at assessment"
-        },
-        {
-          "axis": "depends_on",
-          "A": "an actor to whom answerability can attach",
-          "B": "an applicable duty and an unmet required state"
-        },
-        {
-          "axis": "not_equivalent",
-          "statement": "responsibility is not violation; responsibility assigns answerability for a violated state, while violation is the unmet-duty state itself"
-        }
-      ]
-    }
-  },
+  "comparison": {},
   "reviewMetadata": {
     "what_it_is": [
       "answerable connection",
@@ -281,12 +254,10 @@
     "related_concepts": [
       "duty",
       "authority",
-      "power",
-      "violation"
+      "power"
     ],
     "contrast_prompts": [
       "responsibility vs duty",
-      "responsibility vs violation",
       "responsibility without duty",
       "what makes someone responsible"
     ]

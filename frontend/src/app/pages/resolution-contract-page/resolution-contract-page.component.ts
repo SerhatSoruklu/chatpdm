@@ -241,10 +241,10 @@ export class ResolutionContractPageComponent {
     },
     {
       query: 'violation',
-      type: 'concept_match',
+      type: 'no_exact_match',
       queryType: 'exact_concept_query',
-      reviewState: 'phase2_stable',
-      meaning: 'Single admitted concept resolved with authored canonical output while review metadata remains available on the detail surface.',
+      reviewState: 'visible_only_derived',
+      meaning: 'Derived authored detail remains inspectable on the detail surface while the public runtime refuses primitive resolution.',
     },
     {
       query: 'agreement',
@@ -280,6 +280,8 @@ export class ResolutionContractPageComponent {
     switch (reviewState) {
       case 'blocked':
         return 'blocked';
+      case 'visible_only_derived':
+        return 'visible_only_derived';
       case 'phase1_passed':
         return 'phase1_passed';
       case 'phase2_stable':

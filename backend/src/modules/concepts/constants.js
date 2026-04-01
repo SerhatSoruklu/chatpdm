@@ -2,9 +2,9 @@
 
 const { LIVE_CONCEPT_IDS } = require('./admission-state');
 
-const CONTRACT_VERSION = 'v1.5';
-const NORMALIZER_VERSION = '2026-03-27.v1';
-const MATCHER_VERSION = '2026-03-27.v3';
+const CONTRACT_VERSION = 'v1.6';
+const NORMALIZER_VERSION = '2026-04-01.v2';
+const MATCHER_VERSION = '2026-04-01.v4';
 const CONCEPT_SET_VERSION = '20260401.2';
 const EMPTY_NORMALIZED_QUERY = '__empty__';
 
@@ -27,30 +27,12 @@ const NON_GOVERNANCE_HANDLING_REQUIRED = Object.freeze([
   'out_of_scope_refusal',
 ]);
 
-const PUNCTUATION_CHARACTERS = Object.freeze([
-  '.',
-  '!',
-  '?',
-  ',',
-  ';',
-  ':',
-  '(',
-  ')',
-  '[',
-  ']',
-  '{',
-  '}',
-  '"',
-  '\'',
-]);
-
 const LEADING_FILLER_PHRASES = Object.freeze([
-  'what is ',
-  'what are ',
-  'define ',
-  'meaning of ',
-  'explain ',
-  'tell me about ',
+  'what is',
+  'define',
+  'explain',
+  'tell me',
+  'can you',
 ]);
 
 const NO_EXACT_MATCH_MESSAGE = 'No exact canonical concept match was found for this query.';
@@ -72,7 +54,6 @@ module.exports = {
   NORMALIZER_VERSION,
   NON_GOVERNANCE_HANDLING_REQUIRED,
   NO_EXACT_MATCH_MESSAGE,
-  PUNCTUATION_CHARACTERS,
   REJECTED_CONCEPT_MESSAGE,
   LIVE_CONCEPT_IDS,
   UNSUPPORTED_QUERY_TYPE_MESSAGE,

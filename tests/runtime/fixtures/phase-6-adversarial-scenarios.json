@@ -1,0 +1,122 @@
+[
+  {
+    "name": "conflicting_duties",
+    "input": "duty A requires X, duty B requires NOT X",
+    "expectedFinalState": "refused",
+    "expectedType": "NO_MATCH"
+  },
+  {
+    "name": "indirect_rejected_concept",
+    "input": "who enforces law if authority fails",
+    "expectedFinalState": "refused",
+    "expectedType": "NO_MATCH"
+  },
+  {
+    "name": "vocab_leakage",
+    "input": "mens rea liability jurisdiction",
+    "expectedFinalState": "refused",
+    "expectedType": "NO_MATCH"
+  },
+  {
+    "name": "mixed_concepts",
+    "input": "authority responsibility duty",
+    "expectedFinalState": "refused",
+    "expectedType": "NO_MATCH"
+  },
+  {
+    "name": "self_reference",
+    "input": "authority defines its own authority",
+    "expectedFinalState": "refused",
+    "expectedType": "NO_MATCH"
+  },
+  {
+    "name": "underdetermined",
+    "input": "who is responsible when no actor exists",
+    "expectedFinalState": "refused",
+    "expectedType": "NO_MATCH"
+  },
+  {
+    "name": "authority_without_legitimacy",
+    "input": "authority without legitimacy",
+    "expectedFinalState": "refused",
+    "expectedType": "NO_MATCH",
+    "risk": "authority-legitimacy separation pressure"
+  },
+  {
+    "name": "authority_valid_without_legitimacy",
+    "input": "is authority valid without legitimacy",
+    "expectedFinalState": "refused",
+    "expectedType": "NO_MATCH",
+    "risk": "implicit validation rule creation"
+  },
+  {
+    "name": "conflicting_duties_no_priority_rule",
+    "input": "duty to disclose and duty to keep secret same information",
+    "expectedFinalState": "refused",
+    "expectedType": "NO_MATCH",
+    "risk": "conflicting duties without priority"
+  },
+  {
+    "name": "contradictory_duties_question",
+    "input": "what happens when two duties contradict each other",
+    "expectedFinalState": "refused",
+    "expectedType": "NO_MATCH",
+    "risk": "forced resolution inference"
+  },
+  {
+    "name": "responsibility_without_actor_question",
+    "input": "who is responsible if no actor exists",
+    "expectedFinalState": "refused",
+    "expectedType": "NO_MATCH",
+    "risk": "responsibility without attribution"
+  },
+  {
+    "name": "responsibility_without_actor_structure",
+    "input": "can responsibility exist without an actor",
+    "expectedFinalState": "refused",
+    "expectedType": "NO_MATCH",
+    "risk": "responsibility structure expansion"
+  },
+  {
+    "name": "law_without_enforceable_authority",
+    "input": "law exists but no authority can enforce it",
+    "expectedFinalState": "refused",
+    "expectedType": "NO_MATCH",
+    "risk": "law-authority-power separation"
+  },
+  {
+    "name": "law_valid_without_enforcement",
+    "input": "is law still valid if it cannot be enforced",
+    "expectedFinalState": "refused",
+    "expectedType": "NO_MATCH",
+    "risk": "validity vs enforcement confusion"
+  },
+  {
+    "name": "retroactive_legitimacy_mutation",
+    "input": "action was legitimate then later declared illegitimate",
+    "expectedFinalState": "refused",
+    "expectedType": "NO_MATCH",
+    "risk": "temporal legitimacy mutation"
+  },
+  {
+    "name": "retroactive_legitimacy_rewrite",
+    "input": "can legitimacy change after an action is completed",
+    "expectedFinalState": "refused",
+    "expectedType": "NO_MATCH",
+    "risk": "retroactive legitimacy rewrite"
+  },
+  {
+    "name": "authority_creates_its_own_legitimacy",
+    "input": "authority creates its own legitimacy",
+    "expectedFinalState": "refused",
+    "expectedType": "NO_MATCH",
+    "risk": "self-referential authority loop"
+  },
+  {
+    "name": "self_negating_duty",
+    "input": "duty that cancels itself",
+    "expectedFinalState": "refused",
+    "expectedType": "NO_MATCH",
+    "risk": "self-negating structure"
+  }
+]

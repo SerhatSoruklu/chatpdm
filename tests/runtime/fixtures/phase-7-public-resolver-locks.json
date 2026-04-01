@@ -1,0 +1,223 @@
+[
+  {
+    "name": "resolver_authority_exact",
+    "input": "authority",
+    "expected": {
+      "normalizedQuery": "authority",
+      "type": "concept_match",
+      "queryType": "exact_concept_query",
+      "resolution": {
+        "method": "exact_alias",
+        "conceptId": "authority",
+        "conceptVersion": 1
+      },
+      "interpretation": null
+    }
+  },
+  {
+    "name": "resolver_authority_exact_with_trailing_punctuation",
+    "input": "authority?",
+    "expected": {
+      "normalizedQuery": "authority?",
+      "type": "concept_match",
+      "queryType": "exact_concept_query",
+      "resolution": {
+        "method": "exact_alias",
+        "conceptId": "authority",
+        "conceptVersion": 1
+      },
+      "interpretation": null
+    }
+  },
+  {
+    "name": "resolver_obligation_rejected",
+    "input": "obligation",
+    "expected": {
+      "normalizedQuery": "obligation",
+      "type": "rejected_concept",
+      "queryType": "exact_concept_query",
+      "message": "This concept is structurally rejected under the current system state.",
+      "resolution": {
+        "method": "rejection_registry",
+        "conceptId": "obligation"
+      },
+      "interpretation": {
+        "interpretationType": "explicitly_rejected_concept",
+        "targetConceptId": "obligation",
+        "concepts": [
+          "obligation"
+        ],
+        "message": "The concept \"obligation\" is explicitly rejected under the current system state."
+      },
+      "rejection": {
+        "status": "REJECTED",
+        "decisionType": "STRUCTURAL_REJECTION",
+        "finality": true
+      }
+    }
+  },
+  {
+    "name": "resolver_obligation_rejected_with_trailing_punctuation",
+    "input": "obligation?",
+    "expected": {
+      "normalizedQuery": "obligation?",
+      "type": "rejected_concept",
+      "queryType": "exact_concept_query",
+      "message": "This concept is structurally rejected under the current system state.",
+      "resolution": {
+        "method": "rejection_registry",
+        "conceptId": "obligation"
+      },
+      "interpretation": {
+        "interpretationType": "explicitly_rejected_concept",
+        "targetConceptId": "obligation",
+        "concepts": [
+          "obligation"
+        ],
+        "message": "The concept \"obligation\" is explicitly rejected under the current system state."
+      },
+      "rejection": {
+        "status": "REJECTED",
+        "decisionType": "STRUCTURAL_REJECTION",
+        "finality": true
+      }
+    }
+  },
+  {
+    "name": "resolver_defeasibility_rejected",
+    "input": "defeasibility",
+    "expected": {
+      "normalizedQuery": "defeasibility",
+      "type": "rejected_concept",
+      "queryType": "exact_concept_query",
+      "message": "This concept is structurally rejected under the current system state.",
+      "resolution": {
+        "method": "rejection_registry",
+        "conceptId": "defeasibility"
+      },
+      "interpretation": {
+        "interpretationType": "explicitly_rejected_concept",
+        "targetConceptId": "defeasibility",
+        "concepts": [
+          "defeasibility"
+        ],
+        "message": "The concept \"defeasibility\" is explicitly rejected under the current system state."
+      },
+      "rejection": {
+        "status": "REJECTED",
+        "decisionType": "STRUCTURAL_REJECTION",
+        "finality": true
+      }
+    }
+  },
+  {
+    "name": "resolver_defeasibility_rejected_with_trailing_punctuation",
+    "input": "defeasibility?",
+    "expected": {
+      "normalizedQuery": "defeasibility?",
+      "type": "rejected_concept",
+      "queryType": "exact_concept_query",
+      "message": "This concept is structurally rejected under the current system state.",
+      "resolution": {
+        "method": "rejection_registry",
+        "conceptId": "defeasibility"
+      },
+      "interpretation": {
+        "interpretationType": "explicitly_rejected_concept",
+        "targetConceptId": "defeasibility",
+        "concepts": [
+          "defeasibility"
+        ],
+        "message": "The concept \"defeasibility\" is explicitly rejected under the current system state."
+      },
+      "rejection": {
+        "status": "REJECTED",
+        "decisionType": "STRUCTURAL_REJECTION",
+        "finality": true
+      }
+    }
+  },
+  {
+    "name": "resolver_violation_visible_only",
+    "input": "violation",
+    "expected": {
+      "normalizedQuery": "violation",
+      "type": "no_exact_match",
+      "queryType": "exact_concept_query",
+      "message": "No exact canonical concept match was found for this query.",
+      "resolution": {
+        "method": "no_exact_match"
+      },
+      "interpretation": {
+        "interpretationType": "visible_only_public_concept",
+        "targetConceptId": "violation",
+        "concepts": [
+          "violation"
+        ],
+        "message": "The concept \"violation\" is inspectable as a derived concept computed from duty evaluation, but it is not admitted to the live public runtime."
+      },
+      "suggestions": []
+    }
+  },
+  {
+    "name": "resolver_mens_rea_unsupported",
+    "input": "mens rea",
+    "expected": {
+      "normalizedQuery": "mens rea",
+      "type": "unsupported_query_type",
+      "queryType": "unsupported_complex_query",
+      "message": "This query has recognizable structure, but the current runtime does not support this query type yet.",
+      "resolution": {
+        "method": "unsupported_query_type"
+      },
+      "interpretation": {
+        "interpretationType": "unsupported_complex",
+        "message": "This query does not match a supported concept query form in the current runtime."
+      }
+    }
+  },
+  {
+    "name": "resolver_commitment_out_of_scope",
+    "input": "commitment",
+    "expected": {
+      "normalizedQuery": "commitment",
+      "type": "no_exact_match",
+      "queryType": "exact_concept_query",
+      "message": "No exact canonical concept match was found for this query.",
+      "resolution": {
+        "method": "out_of_scope"
+      },
+      "interpretation": {
+        "interpretationType": "out_of_scope",
+        "targetConceptId": "commitment",
+        "concepts": [
+          "commitment"
+        ],
+        "message": "This term belongs to a pre-governance interaction layer and remains outside the ChatPDM governance kernel unless explicitly anchored to law or duty."
+      },
+      "suggestions": []
+    }
+  },
+  {
+    "name": "resolver_commitment_out_of_scope_with_trailing_punctuation",
+    "input": "commitment?",
+    "expected": {
+      "normalizedQuery": "commitment?",
+      "type": "no_exact_match",
+      "queryType": "exact_concept_query",
+      "message": "No exact canonical concept match was found for this query.",
+      "resolution": {
+        "method": "out_of_scope"
+      },
+      "interpretation": {
+        "interpretationType": "out_of_scope",
+        "targetConceptId": "commitment",
+        "concepts": [
+          "commitment"
+        ],
+        "message": "This term belongs to a pre-governance interaction layer and remains outside the ChatPDM governance kernel unless explicitly anchored to law or duty."
+      },
+      "suggestions": []
+    }
+  }
+]

@@ -144,6 +144,16 @@ Rules:
 
 Assume `main` is protected and publish work through a branch-first workflow.
 
+Protected branch expectations for `main`:
+
+- pull request required before merge
+- no direct pushes to `main`
+- signed commits required on the protected-branch path
+- linear history required
+- no force pushes
+- no deletion path
+- do not assume admin bypass
+
 - When the user says `commit`, create a local commit only.
 - When the user says `push to git`, do not push directly to `main`.
 - Use a feature branch for publication. If work started on `main`, create a branch before pushing.
@@ -151,6 +161,12 @@ Assume `main` is protected and publish work through a branch-first workflow.
 - If the user wants merge-ready publication, open a pull request instead of attempting a direct push to `main`.
 - Do not force-push unless the user explicitly requests it and branch protections allow it.
 - Prefer linear-history-compatible workflows. Avoid merge commits when rebasing or squashing is the protected-branch expectation.
+- Prefer squash or rebase merge paths for `main` when a merge style choice exists.
+- If the user asks for `push to git` and `deploy`, adapt by:
+  - pushing the feature branch
+  - opening or preparing the pull request when requested
+  - validating the branch and deploy surface
+  - never bypassing protected-branch rules to deploy through `main`
 
 ## Validation and Push Safety
 

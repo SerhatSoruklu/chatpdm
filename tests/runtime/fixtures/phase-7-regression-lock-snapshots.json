@@ -1,0 +1,716 @@
+[
+  {
+    "name": "authority_live_valid_lock",
+    "input": "authority",
+    "expected": {
+      "raw_query": "authority",
+      "normalized_query": "authority",
+      "vocabulary_recognition": {
+        "recognized": false,
+        "type": "unknown"
+      },
+      "admission_state": "LIVE",
+      "resolution_output": {
+        "type": "LIVE_RESOLUTION",
+        "payload": {
+          "query": "authority",
+          "normalizedQuery": "authority",
+          "contractVersion": "v1.6",
+          "normalizerVersion": "2026-04-01.v2",
+          "matcherVersion": "2026-04-01.v4",
+          "conceptSetVersion": "20260401.2",
+          "queryType": "exact_concept_query",
+          "interpretation": null,
+          "type": "concept_match",
+          "resolution": {
+            "method": "exact_alias",
+            "conceptId": "authority",
+            "conceptVersion": 1
+          },
+          "answer": {
+            "title": "Authority",
+            "shortDefinition": "Authority is recognized standing to direct, decide, or govern within a governance order.",
+            "coreMeaning": "Within the governance domain, authority works by giving a recognized role, office, or position the right to direct. It concerns who may direct, not what can be enforced or whether that standing is valid.",
+            "fullDefinition": "Authority is not any ability to produce effects. In ChatPDM v1 it is defined within the governance domain as a structured right to issue direction, make decisions, or govern within a governance order.\n\nIts structure joins the right to direct to a recognized role, office, or position. The concept requires that this right attach to standing rather than to mere capacity.\n\nWithin governance structures, authority organizes who may decide, command, or settle matters. Questions of whether that standing is valid belong to legitimacy, while questions of what outcomes can be produced belong to power.",
+            "governanceState": {
+              "source": "validator_artifact",
+              "available": true,
+              "validationState": "fully_validated",
+              "v3Status": "passing",
+              "relationStatus": "passing",
+              "lawStatus": "passing",
+              "enforcementStatus": "passing",
+              "systemValidationState": "law_validated",
+              "isBlocked": false,
+              "isStructurallyIncomplete": false,
+              "isFullyValidated": true,
+              "isActionable": true,
+              "trace": {
+                "conceptId": "authority",
+                "validatorSource": "validator_artifact",
+                "unavailableReason": null,
+                "relationSource": "authored",
+                "lawSource": "authored",
+                "relationDataPresent": true,
+                "dataSource": "authored_relation_packets"
+              }
+            },
+            "registers": {
+              "readOnly": true,
+              "canonicalBinding": {
+                "conceptId": "authority",
+                "conceptVersion": 1,
+                "canonicalHash": "8a747e670282bc46334fc54aa72e59c5f85c88d5786437a43b0605b48e6a7025"
+              },
+              "validation": {
+                "availableModes": [
+                  "standard",
+                  "simplified",
+                  "formal"
+                ],
+                "modes": {
+                  "standard": {
+                    "status": "available",
+                    "reasons": []
+                  },
+                  "simplified": {
+                    "status": "available",
+                    "reasons": []
+                  },
+                  "formal": {
+                    "status": "available",
+                    "reasons": []
+                  }
+                }
+              },
+              "standard": {
+                "shortDefinition": "Authority is recognized standing to direct, decide, or govern within a governance order.",
+                "coreMeaning": "Within the governance domain, authority works by giving a recognized role, office, or position the right to direct. It concerns who may direct, not what can be enforced or whether that standing is valid.",
+                "fullDefinition": "Authority is not any ability to produce effects. In ChatPDM v1 it is defined within the governance domain as a structured right to issue direction, make decisions, or govern within a governance order.\n\nIts structure joins the right to direct to a recognized role, office, or position. The concept requires that this right attach to standing rather than to mere capacity.\n\nWithin governance structures, authority organizes who may decide, command, or settle matters. Questions of whether that standing is valid belong to legitimacy, while questions of what outcomes can be produced belong to power."
+              },
+              "simplified": {
+                "shortDefinition": "Authority is the recognized right to direct, decide, or govern in a governing order.",
+                "coreMeaning": "In governance, authority marks who may direct from a recognized role or office. It is about who has the right to decide, not about force or validity.",
+                "fullDefinition": "Authority is not power. It is the recognized right to direct from a role, office, or post in a governing order.\n\nIt is about recognized status, not force. Power can exist without authority. Authority can exist while legitimacy is disputed.\n\nSo authority tells us who may decide or command. Legitimacy asks whether that status is valid. Power asks what outcomes can actually be produced."
+              },
+              "formal": {
+                "shortDefinition": "Authority is the recognized standing that makes directive acts institutionally operative within a governance order.",
+                "coreMeaning": "Within the governance domain, authority assigns directive competence to a recognized role, office, or position within the order. It identifies who may direct or determine, rather than what effects can be produced or whether that standing is valid.",
+                "fullDefinition": "Authority is defined, within the governance domain, as the recognized standing to issue direction, make determinations, or govern within a governance order. The concept requires that the right to direct attach to role, office, or position and count as institutionally operative rather than as mere capacity. Authority is distinct from power, which concerns produced outcomes, and from legitimacy, which concerns whether that standing is valid."
+              }
+            },
+            "contexts": [
+              {
+                "label": "governance",
+                "appliesTo": [
+                  "governance"
+                ]
+              },
+              {
+                "label": "legal",
+                "appliesTo": [
+                  "legal"
+                ]
+              },
+              {
+                "label": "institutional",
+                "appliesTo": [
+                  "institutional"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "weber",
+                "label": "Max Weber, Economy and Society",
+                "type": "book",
+                "usedFor": "structural distinction between recognized rule-bound command and mere power"
+              },
+              {
+                "id": "oxford",
+                "label": "Oxford Languages",
+                "type": "dictionary",
+                "usedFor": "definition boundary for recognized right to direct or decide"
+              }
+            ],
+            "relatedConcepts": [
+              {
+                "conceptId": "power",
+                "title": "Power",
+                "relationType": "contrast"
+              },
+              {
+                "conceptId": "legitimacy",
+                "title": "Legitimacy",
+                "relationType": "contrast"
+              }
+            ]
+          }
+        }
+      },
+      "final_output": {
+        "state": "valid",
+        "type": "LIVE_RESOLUTION",
+        "payload": {
+          "query": "authority",
+          "normalizedQuery": "authority",
+          "contractVersion": "v1.6",
+          "normalizerVersion": "2026-04-01.v2",
+          "matcherVersion": "2026-04-01.v4",
+          "conceptSetVersion": "20260401.2",
+          "queryType": "exact_concept_query",
+          "interpretation": null,
+          "type": "concept_match",
+          "resolution": {
+            "method": "exact_alias",
+            "conceptId": "authority",
+            "conceptVersion": 1
+          },
+          "answer": {
+            "title": "Authority",
+            "shortDefinition": "Authority is recognized standing to direct, decide, or govern within a governance order.",
+            "coreMeaning": "Within the governance domain, authority works by giving a recognized role, office, or position the right to direct. It concerns who may direct, not what can be enforced or whether that standing is valid.",
+            "fullDefinition": "Authority is not any ability to produce effects. In ChatPDM v1 it is defined within the governance domain as a structured right to issue direction, make decisions, or govern within a governance order.\n\nIts structure joins the right to direct to a recognized role, office, or position. The concept requires that this right attach to standing rather than to mere capacity.\n\nWithin governance structures, authority organizes who may decide, command, or settle matters. Questions of whether that standing is valid belong to legitimacy, while questions of what outcomes can be produced belong to power.",
+            "governanceState": {
+              "source": "validator_artifact",
+              "available": true,
+              "validationState": "fully_validated",
+              "v3Status": "passing",
+              "relationStatus": "passing",
+              "lawStatus": "passing",
+              "enforcementStatus": "passing",
+              "systemValidationState": "law_validated",
+              "isBlocked": false,
+              "isStructurallyIncomplete": false,
+              "isFullyValidated": true,
+              "isActionable": true,
+              "trace": {
+                "conceptId": "authority",
+                "validatorSource": "validator_artifact",
+                "unavailableReason": null,
+                "relationSource": "authored",
+                "lawSource": "authored",
+                "relationDataPresent": true,
+                "dataSource": "authored_relation_packets"
+              }
+            },
+            "registers": {
+              "readOnly": true,
+              "canonicalBinding": {
+                "conceptId": "authority",
+                "conceptVersion": 1,
+                "canonicalHash": "8a747e670282bc46334fc54aa72e59c5f85c88d5786437a43b0605b48e6a7025"
+              },
+              "validation": {
+                "availableModes": [
+                  "standard",
+                  "simplified",
+                  "formal"
+                ],
+                "modes": {
+                  "standard": {
+                    "status": "available",
+                    "reasons": []
+                  },
+                  "simplified": {
+                    "status": "available",
+                    "reasons": []
+                  },
+                  "formal": {
+                    "status": "available",
+                    "reasons": []
+                  }
+                }
+              },
+              "standard": {
+                "shortDefinition": "Authority is recognized standing to direct, decide, or govern within a governance order.",
+                "coreMeaning": "Within the governance domain, authority works by giving a recognized role, office, or position the right to direct. It concerns who may direct, not what can be enforced or whether that standing is valid.",
+                "fullDefinition": "Authority is not any ability to produce effects. In ChatPDM v1 it is defined within the governance domain as a structured right to issue direction, make decisions, or govern within a governance order.\n\nIts structure joins the right to direct to a recognized role, office, or position. The concept requires that this right attach to standing rather than to mere capacity.\n\nWithin governance structures, authority organizes who may decide, command, or settle matters. Questions of whether that standing is valid belong to legitimacy, while questions of what outcomes can be produced belong to power."
+              },
+              "simplified": {
+                "shortDefinition": "Authority is the recognized right to direct, decide, or govern in a governing order.",
+                "coreMeaning": "In governance, authority marks who may direct from a recognized role or office. It is about who has the right to decide, not about force or validity.",
+                "fullDefinition": "Authority is not power. It is the recognized right to direct from a role, office, or post in a governing order.\n\nIt is about recognized status, not force. Power can exist without authority. Authority can exist while legitimacy is disputed.\n\nSo authority tells us who may decide or command. Legitimacy asks whether that status is valid. Power asks what outcomes can actually be produced."
+              },
+              "formal": {
+                "shortDefinition": "Authority is the recognized standing that makes directive acts institutionally operative within a governance order.",
+                "coreMeaning": "Within the governance domain, authority assigns directive competence to a recognized role, office, or position within the order. It identifies who may direct or determine, rather than what effects can be produced or whether that standing is valid.",
+                "fullDefinition": "Authority is defined, within the governance domain, as the recognized standing to issue direction, make determinations, or govern within a governance order. The concept requires that the right to direct attach to role, office, or position and count as institutionally operative rather than as mere capacity. Authority is distinct from power, which concerns produced outcomes, and from legitimacy, which concerns whether that standing is valid."
+              }
+            },
+            "contexts": [
+              {
+                "label": "governance",
+                "appliesTo": [
+                  "governance"
+                ]
+              },
+              {
+                "label": "legal",
+                "appliesTo": [
+                  "legal"
+                ]
+              },
+              {
+                "label": "institutional",
+                "appliesTo": [
+                  "institutional"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "id": "weber",
+                "label": "Max Weber, Economy and Society",
+                "type": "book",
+                "usedFor": "structural distinction between recognized rule-bound command and mere power"
+              },
+              {
+                "id": "oxford",
+                "label": "Oxford Languages",
+                "type": "dictionary",
+                "usedFor": "definition boundary for recognized right to direct or decide"
+              }
+            ],
+            "relatedConcepts": [
+              {
+                "conceptId": "power",
+                "title": "Power",
+                "relationType": "contrast"
+              },
+              {
+                "conceptId": "legitimacy",
+                "title": "Legitimacy",
+                "relationType": "contrast"
+              }
+            ]
+          }
+        }
+      },
+      "phase_path": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  },
+  {
+    "name": "defeasibility_rejected_refused_lock",
+    "input": "defeasibility",
+    "expected": {
+      "raw_query": "defeasibility",
+      "normalized_query": "defeasibility",
+      "vocabulary_recognition": {
+        "recognized": true,
+        "type": "vocab",
+        "classification": "rejected_candidate"
+      },
+      "admission_state": "REJECTED",
+      "resolution_output": {
+        "type": "STRUCTURAL_REJECTION",
+        "payload": {
+          "query": "defeasibility",
+          "normalizedQuery": "defeasibility",
+          "contractVersion": "v1.6",
+          "normalizerVersion": "2026-04-01.v2",
+          "matcherVersion": "2026-04-01.v4",
+          "conceptSetVersion": "20260401.2",
+          "queryType": "exact_concept_query",
+          "interpretation": {
+            "interpretationType": "explicitly_rejected_concept",
+            "targetConceptId": "defeasibility",
+            "concepts": [
+              "defeasibility"
+            ],
+            "message": "The concept \"defeasibility\" is explicitly rejected under the current system state."
+          },
+          "type": "rejected_concept",
+          "resolution": {
+            "method": "rejection_registry",
+            "conceptId": "defeasibility"
+          },
+          "message": "This concept is structurally rejected under the current system state.",
+          "rejection": {
+            "status": "REJECTED",
+            "decisionType": "STRUCTURAL_REJECTION",
+            "finality": true
+          }
+        }
+      },
+      "final_output": {
+        "state": "refused",
+        "type": "STRUCTURAL_REJECTION",
+        "payload": {
+          "query": "defeasibility",
+          "normalizedQuery": "defeasibility",
+          "contractVersion": "v1.6",
+          "normalizerVersion": "2026-04-01.v2",
+          "matcherVersion": "2026-04-01.v4",
+          "conceptSetVersion": "20260401.2",
+          "queryType": "exact_concept_query",
+          "interpretation": {
+            "interpretationType": "explicitly_rejected_concept",
+            "targetConceptId": "defeasibility",
+            "concepts": [
+              "defeasibility"
+            ],
+            "message": "The concept \"defeasibility\" is explicitly rejected under the current system state."
+          },
+          "type": "rejected_concept",
+          "resolution": {
+            "method": "rejection_registry",
+            "conceptId": "defeasibility"
+          },
+          "message": "This concept is structurally rejected under the current system state.",
+          "rejection": {
+            "status": "REJECTED",
+            "decisionType": "STRUCTURAL_REJECTION",
+            "finality": true
+          }
+        }
+      },
+      "phase_path": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  },
+  {
+    "name": "mens_rea_vocab_classified_lock",
+    "input": "mens rea",
+    "expected": {
+      "raw_query": "mens rea",
+      "normalized_query": "mens rea",
+      "vocabulary_recognition": {
+        "recognized": true,
+        "type": "vocab",
+        "classification": "derived"
+      },
+      "admission_state": "NOT_A_CONCEPT",
+      "resolution_output": {
+        "type": "VOCAB_CLASSIFICATION",
+        "payload": {
+          "recognized": true,
+          "type": "vocab",
+          "classification": "derived"
+        }
+      },
+      "final_output": {
+        "state": "classified",
+        "type": "VOCAB_CLASSIFICATION",
+        "payload": {
+          "recognized": true,
+          "type": "vocab",
+          "classification": "derived"
+        }
+      },
+      "phase_path": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  },
+  {
+    "name": "asdfgh_no_match_refused_lock",
+    "input": "asdfgh",
+    "expected": {
+      "raw_query": "asdfgh",
+      "normalized_query": "asdfgh",
+      "vocabulary_recognition": {
+        "recognized": false,
+        "type": "unknown"
+      },
+      "admission_state": "NOT_A_CONCEPT",
+      "resolution_output": {
+        "type": "NO_MATCH",
+        "payload": {
+          "normalized_query": "asdfgh"
+        }
+      },
+      "final_output": {
+        "state": "refused",
+        "type": "NO_MATCH",
+        "payload": {
+          "normalized_query": "asdfgh"
+        }
+      },
+      "phase_path": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  },
+  {
+    "name": "commitment_out_of_scope_refused_lock",
+    "input": "commitment",
+    "expected": {
+      "raw_query": "commitment",
+      "normalized_query": "commitment",
+      "vocabulary_recognition": {
+        "recognized": true,
+        "type": "vocab",
+        "classification": "derived"
+      },
+      "admission_state": "NOT_A_CONCEPT",
+      "resolution_output": {
+        "type": "NO_MATCH",
+        "payload": {
+          "normalized_query": "commitment",
+          "reason": "out_of_scope_interaction_construct"
+        }
+      },
+      "final_output": {
+        "state": "refused",
+        "type": "NO_MATCH",
+        "payload": {
+          "normalized_query": "commitment",
+          "reason": "out_of_scope_interaction_construct"
+        }
+      },
+      "phase_path": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  },
+  {
+    "name": "promise_out_of_scope_refused_lock",
+    "input": "promise",
+    "expected": {
+      "raw_query": "promise",
+      "normalized_query": "promise",
+      "vocabulary_recognition": {
+        "recognized": true,
+        "type": "vocab",
+        "classification": "derived"
+      },
+      "admission_state": "NOT_A_CONCEPT",
+      "resolution_output": {
+        "type": "NO_MATCH",
+        "payload": {
+          "normalized_query": "promise",
+          "reason": "out_of_scope_interaction_construct"
+        }
+      },
+      "final_output": {
+        "state": "refused",
+        "type": "NO_MATCH",
+        "payload": {
+          "normalized_query": "promise",
+          "reason": "out_of_scope_interaction_construct"
+        }
+      },
+      "phase_path": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  },
+  {
+    "name": "undertaking_out_of_scope_refused_lock",
+    "input": "undertaking",
+    "expected": {
+      "raw_query": "undertaking",
+      "normalized_query": "undertaking",
+      "vocabulary_recognition": {
+        "recognized": true,
+        "type": "vocab",
+        "classification": "derived"
+      },
+      "admission_state": "NOT_A_CONCEPT",
+      "resolution_output": {
+        "type": "NO_MATCH",
+        "payload": {
+          "normalized_query": "undertaking",
+          "reason": "out_of_scope_interaction_construct"
+        }
+      },
+      "final_output": {
+        "state": "refused",
+        "type": "NO_MATCH",
+        "payload": {
+          "normalized_query": "undertaking",
+          "reason": "out_of_scope_interaction_construct"
+        }
+      },
+      "phase_path": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  },
+  {
+    "name": "breach_out_of_scope_refused_lock",
+    "input": "breach",
+    "expected": {
+      "raw_query": "breach",
+      "normalized_query": "breach",
+      "vocabulary_recognition": {
+        "recognized": true,
+        "type": "vocab",
+        "classification": "derived"
+      },
+      "admission_state": "NOT_A_CONCEPT",
+      "resolution_output": {
+        "type": "NO_MATCH",
+        "payload": {
+          "normalized_query": "breach",
+          "reason": "out_of_scope_interaction_construct"
+        }
+      },
+      "final_output": {
+        "state": "refused",
+        "type": "NO_MATCH",
+        "payload": {
+          "normalized_query": "breach",
+          "reason": "out_of_scope_interaction_construct"
+        }
+      },
+      "phase_path": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  },
+  {
+    "name": "breach_of_duty_anchored_refused_lock",
+    "input": "breach of duty",
+    "expected": {
+      "raw_query": "breach of duty",
+      "normalized_query": "breach of duty",
+      "vocabulary_recognition": {
+        "recognized": true,
+        "type": "vocab",
+        "classification": "derived"
+      },
+      "admission_state": "NOT_A_CONCEPT",
+      "resolution_output": {
+        "type": "NO_MATCH",
+        "payload": {
+          "normalized_query": "breach of duty",
+          "reason": "anchored_interaction_construct_requires_governance_path"
+        }
+      },
+      "final_output": {
+        "state": "refused",
+        "type": "NO_MATCH",
+        "payload": {
+          "normalized_query": "breach of duty",
+          "reason": "anchored_interaction_construct_requires_governance_path"
+        }
+      },
+      "phase_path": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  },
+  {
+    "name": "breach_of_law_bound_duty_anchored_refused_lock",
+    "input": "breach of law-bound duty",
+    "expected": {
+      "raw_query": "breach of law-bound duty",
+      "normalized_query": "breach of law-bound duty",
+      "vocabulary_recognition": {
+        "recognized": false,
+        "type": "unknown"
+      },
+      "admission_state": "NOT_A_CONCEPT",
+      "resolution_output": {
+        "type": "NO_MATCH",
+        "payload": {
+          "normalized_query": "breach of law-bound duty",
+          "reason": "anchored_interaction_construct_requires_governance_path"
+        }
+      },
+      "final_output": {
+        "state": "refused",
+        "type": "NO_MATCH",
+        "payload": {
+          "normalized_query": "breach of law-bound duty",
+          "reason": "anchored_interaction_construct_requires_governance_path"
+        }
+      },
+      "phase_path": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  },
+  {
+    "name": "breach_of_contract_out_of_scope_refused_lock",
+    "input": "breach of contract",
+    "expected": {
+      "raw_query": "breach of contract",
+      "normalized_query": "breach of contract",
+      "vocabulary_recognition": {
+        "recognized": true,
+        "type": "vocab",
+        "classification": "derived"
+      },
+      "admission_state": "NOT_A_CONCEPT",
+      "resolution_output": {
+        "type": "NO_MATCH",
+        "payload": {
+          "normalized_query": "breach of contract",
+          "reason": "out_of_scope_interaction_construct"
+        }
+      },
+      "final_output": {
+        "state": "refused",
+        "type": "NO_MATCH",
+        "payload": {
+          "normalized_query": "breach of contract",
+          "reason": "out_of_scope_interaction_construct"
+        }
+      },
+      "phase_path": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  }
+]

@@ -518,6 +518,10 @@ function buildConstraintContractSummary(conceptSource) {
     ...contract.allowedRelations.map((entry) => entry.targetConceptId),
     ...contract.forbiddenRelations.map((entry) => entry.targetConceptId),
   ].sort(sortStrings);
+  const liveKernelTargetIds = [
+    ...requiredRelations.map((entry) => entry.targetConceptId),
+    ...contract.allowedRelations.map((entry) => entry.targetConceptId),
+  ].sort(sortStrings);
 
   return deepFreeze({
     conceptId,
@@ -537,6 +541,7 @@ function buildConstraintContractSummary(conceptSource) {
       .map((entry) => entry.targetConceptId)
       .sort(sortStrings),
     relationTargetIds,
+    liveKernelTargetIds,
   });
 }
 
@@ -550,7 +555,7 @@ function assertConstraintContractTargetsWithinLiveKernel(
 
   const summary = buildConstraintContractSummary(conceptSource);
   const liveConceptIdSet = new Set(liveConceptIds);
-  const invalidTargetIds = summary.relationTargetIds
+  const invalidTargetIds = summary.liveKernelTargetIds
     .filter((targetConceptId) => !liveConceptIdSet.has(targetConceptId));
 
   if (invalidTargetIds.length > 0) {

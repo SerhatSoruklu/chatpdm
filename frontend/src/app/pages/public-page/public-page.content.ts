@@ -484,7 +484,6 @@ const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
           'legitimacy',
           'law',
           'duty',
-          'violation',
           'responsibility',
         ],
       },
@@ -492,11 +491,11 @@ const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
         title: 'Current visible-only public scope',
         paragraphs: [
           'These concepts are inspectable on the public surface but are not admitted to runtime resolution.',
+          'Pre-governance interaction terms such as commitment, promise, undertaking, and unanchored breach remain outside the governance ontology unless anchored to law or duty.',
         ],
         bullets: [
+          'violation (derived from duty evaluation)',
           'agreement',
-          'commitment',
-          'breach',
         ],
       },
       {
@@ -519,7 +518,7 @@ const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
           'review metadata is not the same as runtime admission',
           'proposal is not the same as public scope',
           'law: review-backed and admitted to the public runtime',
-          'violation: review-backed and admitted to the public runtime',
+          'violation: review-backed, derived from duty evaluation, and visible only in public scope',
         ],
       },
       {
@@ -905,6 +904,7 @@ const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
         title: 'Lifecycle states',
         bullets: [
           'blocked',
+          'visible_only_derived',
           'phase1_passed',
           'phase2_stable',
           'pending_overlap_scan',

@@ -41,7 +41,7 @@ function invokeRoute(handler, req) {
   });
 }
 
-async function verifyViolationReturnsPhase2StableAuthoredDetail() {
+async function verifyViolationReturnsDerivedVisibleOnlyDetail() {
   const handler = getRouteHandler('/:conceptId');
   const { statusCode, body } = await invokeRoute(handler, {
     params: { conceptId: 'violation' },
@@ -49,12 +49,12 @@ async function verifyViolationReturnsPhase2StableAuthoredDetail() {
 
   assert.equal(statusCode, 200, 'violation detail should return 200.');
   assert.equal(body.conceptId, 'violation', 'violation detail conceptId mismatch.');
-  assert.equal(body.reviewState.admission, 'phase2_stable', 'violation reviewState admission mismatch.');
+  assert.equal(body.reviewState.admission, 'visible_only_derived', 'violation reviewState admission mismatch.');
   assert.equal(typeof body.title, 'string', 'violation detail should include authored title.');
   assert.equal(typeof body.shortDefinition, 'string', 'violation detail should include authored shortDefinition.');
   assert.equal(body.rejection, null, 'violation should not expose rejection metadata.');
 
-  process.stdout.write('PASS concept_detail_violation_phase2_stable_authored_detail\n');
+  process.stdout.write('PASS concept_detail_violation_visible_only_derived_detail\n');
 }
 
 async function verifyLawReturnsPhase2StableReviewState() {
@@ -106,7 +106,7 @@ async function verifyMissingReviewStateDoesNotCrash() {
 }
 
 async function main() {
-  await verifyViolationReturnsPhase2StableAuthoredDetail();
+  await verifyViolationReturnsDerivedVisibleOnlyDetail();
   await verifyLawReturnsPhase2StableReviewState();
   await verifyGovernanceStateRemainsUnchangedAlongsideReviewState();
   await verifyMissingReviewStateDoesNotCrash();

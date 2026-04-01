@@ -7,8 +7,6 @@ export type QueryType =
   | 'exact_concept_query'
   | 'canonical_id_query'
   | 'ambiguity_query'
-  | 'broader_topic_query'
-  | 'subtype_query'
   | 'comparison_query'
   | 'relation_query'
   | 'role_or_actor_query'
@@ -17,8 +15,6 @@ export type QueryType =
 
 export interface QueryInterpretation {
   interpretationType:
-    | 'narrower_subtype'
-    | 'broader_topic'
     | 'comparison_not_supported'
     | 'relation_not_supported'
     | 'role_or_actor_not_supported'
@@ -34,7 +30,6 @@ export interface QueryInterpretation {
     | 'invalid_query';
   message: string;
   baseConcept?: string;
-  modifier?: string;
   concepts?: string[];
   relationTerm?: string;
   actorTerm?: string;
@@ -135,6 +130,7 @@ export interface GovernanceState {
 export interface ReviewState {
   admission:
     | 'blocked'
+    | 'visible_only_derived'
     | 'phase1_passed'
     | 'phase2_stable'
     | 'pending_overlap_scan'

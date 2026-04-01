@@ -1,207 +1,3417 @@
 [
-  {"id":"direct-authority-01","bucket":"direct_canonical_queries","query":"authority","expectedCanonical":"authority","expectedMode":"concept_match","checks":["deterministic_repeatability","no_collapse_authority_power","no_collapse_authority_legitimacy"],"notes":"Baseline authority resolution."},
-  {"id":"direct-power-01","bucket":"direct_canonical_queries","query":"power","expectedCanonical":"power","expectedMode":"concept_match","checks":["deterministic_repeatability","no_collapse_authority_power","preserve_distinction_power_legitimacy"],"notes":"Baseline power resolution."},
-  {"id":"direct-legitimacy-01","bucket":"direct_canonical_queries","query":"legitimacy","expectedCanonical":"legitimacy","expectedMode":"concept_match","checks":["deterministic_repeatability","no_collapse_authority_legitimacy","preserve_distinction_power_legitimacy"],"notes":"Baseline legitimacy resolution."},
-  {"id":"direct-responsibility-01","bucket":"direct_canonical_queries","query":"responsibility","expectedCanonical":"responsibility","expectedMode":"concept_match","checks":["deterministic_repeatability","preserve_distinction_responsibility_duty"],"notes":"Baseline responsibility resolution."},
-  {"id":"direct-duty-01","bucket":"direct_canonical_queries","query":"duty","expectedCanonical":"duty","expectedMode":"concept_match","checks":["deterministic_repeatability","preserve_distinction_responsibility_duty"],"notes":"Baseline duty resolution."},
-  {"id":"direct-authority-02","bucket":"direct_canonical_queries","query":"what is authority","expectedCanonical":"authority","expectedMode":"concept_match","checks":["deterministic_repeatability","no_collapse_authority_power","no_collapse_authority_legitimacy"],"notes":"Filler stripping should preserve authority."},
-  {"id":"direct-power-02","bucket":"direct_canonical_queries","query":"define power","expectedCanonical":"power","expectedMode":"concept_match","checks":["deterministic_repeatability","no_collapse_authority_power","preserve_distinction_power_legitimacy"],"notes":"Definition prompt should still hit power."},
-  {"id":"direct-legitimacy-02","bucket":"direct_canonical_queries","query":"meaning of legitimacy","expectedCanonical":"legitimacy","expectedMode":"concept_match","checks":["deterministic_repeatability","no_collapse_authority_legitimacy","preserve_distinction_power_legitimacy"],"notes":"Meaning prefix should preserve legitimacy."},
-  {"id":"direct-responsibility-02","bucket":"direct_canonical_queries","query":"what is responsibility","expectedCanonical":"responsibility","expectedMode":"concept_match","checks":["deterministic_repeatability","preserve_distinction_responsibility_duty"],"notes":"Question form should preserve responsibility."},
-  {"id":"direct-duty-02","bucket":"direct_canonical_queries","query":"explain duty","expectedCanonical":"duty","expectedMode":"concept_match","checks":["deterministic_repeatability","preserve_distinction_responsibility_duty"],"notes":"Explain prompt should preserve duty."},
-
-  {"id":"governance-scope-authority-01","bucket":"governance_scope_clear_refusals","query":"epistemic authority","expectedCanonical":null,"expectedMode":"no_exact_match","expectedMethod":"out_of_scope","expectedQueryType":"subtype_query","expectedNormalizedQuery":"epistemic authority","expectedInterpretation":{"interpretationType":"out_of_scope","concept":"authority","domain":"governance","message":"This concept is defined within the governance domain in ChatPDM and does not cover the requested usage."},"expectedSuggestions":[],"checks":["deterministic_repeatability","stable_no_match","governance_scope_enforced"],"notes":"Non-governance authority usage must not resolve to the governance-scoped canonical concept."},
-  {"id":"governance-scope-authority-02","bucket":"governance_scope_clear_refusals","query":"parental authority","expectedCanonical":null,"expectedMode":"no_exact_match","expectedMethod":"out_of_scope","expectedQueryType":"subtype_query","expectedNormalizedQuery":"parental authority","expectedInterpretation":{"interpretationType":"out_of_scope","concept":"authority","domain":"governance","message":"This concept is defined within the governance domain in ChatPDM and does not cover the requested usage."},"expectedSuggestions":[],"checks":["deterministic_repeatability","stable_no_match","governance_scope_enforced"],"notes":"Parental authority must remain out of scope for the governance canonical packet."},
-  {"id":"governance-scope-authority-03","bucket":"governance_scope_clear_refusals","query":"professional authority","expectedCanonical":null,"expectedMode":"no_exact_match","expectedMethod":"out_of_scope","expectedQueryType":"subtype_query","expectedNormalizedQuery":"professional authority","expectedInterpretation":{"interpretationType":"out_of_scope","concept":"authority","domain":"governance","message":"This concept is defined within the governance domain in ChatPDM and does not cover the requested usage."},"expectedSuggestions":[],"checks":["deterministic_repeatability","stable_no_match","governance_scope_enforced"],"notes":"Professional authority must not silently map to governance-scoped authority."},
-  {"id":"governance-scope-authority-04","bucket":"governance_scope_clear_refusals","query":"charismatic authority","expectedCanonical":null,"expectedMode":"no_exact_match","expectedMethod":"out_of_scope","expectedQueryType":"subtype_query","expectedNormalizedQuery":"charismatic authority","expectedInterpretation":{"interpretationType":"out_of_scope","concept":"authority","domain":"governance","message":"This concept is defined within the governance domain in ChatPDM and does not cover the requested usage."},"expectedSuggestions":[],"checks":["deterministic_repeatability","stable_no_match","governance_scope_enforced"],"notes":"Charismatic authority must stay outside the governance-scoped canonical packet."},
-  {"id":"governance-scope-authority-05","bucket":"governance_scope_clear_refusals","query":"moral authority","expectedCanonical":null,"expectedMode":"no_exact_match","expectedMethod":"out_of_scope","expectedQueryType":"subtype_query","expectedNormalizedQuery":"moral authority","expectedInterpretation":{"interpretationType":"out_of_scope","concept":"authority","domain":"governance","message":"This concept is defined within the governance domain in ChatPDM and does not cover the requested usage."},"expectedSuggestions":[],"checks":["deterministic_repeatability","stable_no_match","governance_scope_enforced"],"notes":"Moral authority must resolve through governance-scope refusal rather than generic no-match."},
-  {"id":"governance-scope-power-01","bucket":"governance_scope_clear_refusals","query":"electrical power","expectedCanonical":null,"expectedMode":"no_exact_match","expectedMethod":"out_of_scope","expectedQueryType":"subtype_query","expectedNormalizedQuery":"electrical power","expectedInterpretation":{"interpretationType":"out_of_scope","concept":"power","domain":"governance","message":"This concept is defined within the governance domain in ChatPDM and does not cover the requested usage."},"expectedSuggestions":[],"checks":["deterministic_repeatability","stable_no_match","governance_scope_enforced"],"notes":"Electrical power must not resolve to governance-scoped power."},
-  {"id":"governance-scope-power-02","bucket":"governance_scope_clear_refusals","query":"statistical power","expectedCanonical":null,"expectedMode":"no_exact_match","expectedMethod":"out_of_scope","expectedQueryType":"subtype_query","expectedNormalizedQuery":"statistical power","expectedInterpretation":{"interpretationType":"out_of_scope","concept":"power","domain":"governance","message":"This concept is defined within the governance domain in ChatPDM and does not cover the requested usage."},"expectedSuggestions":[],"checks":["deterministic_repeatability","stable_no_match","governance_scope_enforced"],"notes":"Statistical power must remain outside the governance packet."},
-  {"id":"governance-scope-power-03","bucket":"governance_scope_clear_refusals","query":"computing power","expectedCanonical":null,"expectedMode":"no_exact_match","expectedMethod":"out_of_scope","expectedQueryType":"subtype_query","expectedNormalizedQuery":"computing power","expectedInterpretation":{"interpretationType":"out_of_scope","concept":"power","domain":"governance","message":"This concept is defined within the governance domain in ChatPDM and does not cover the requested usage."},"expectedSuggestions":[],"checks":["deterministic_repeatability","stable_no_match","governance_scope_enforced"],"notes":"Computing power must remain outside the governance packet."},
-  {"id":"governance-scope-power-04","bucket":"governance_scope_clear_refusals","query":"magical power","expectedCanonical":null,"expectedMode":"no_exact_match","expectedMethod":"out_of_scope","expectedQueryType":"subtype_query","expectedNormalizedQuery":"magical power","expectedInterpretation":{"interpretationType":"out_of_scope","concept":"power","domain":"governance","message":"This concept is defined within the governance domain in ChatPDM and does not cover the requested usage."},"expectedSuggestions":[],"checks":["deterministic_repeatability","stable_no_match","governance_scope_enforced"],"notes":"Magical power must remain outside the governance packet."},
-  {"id":"governance-scope-power-05","bucket":"governance_scope_clear_refusals","query":"physical power","expectedCanonical":null,"expectedMode":"no_exact_match","expectedMethod":"out_of_scope","expectedQueryType":"subtype_query","expectedNormalizedQuery":"physical power","expectedInterpretation":{"interpretationType":"out_of_scope","concept":"power","domain":"governance","message":"This concept is defined within the governance domain in ChatPDM and does not cover the requested usage."},"expectedSuggestions":[],"checks":["deterministic_repeatability","stable_no_match","governance_scope_enforced"],"notes":"Physical power must resolve through governance-scope refusal rather than generic subtype no-match."},
-  {"id":"governance-scope-legitimacy-01","bucket":"governance_scope_clear_refusals","query":"artistic legitimacy","expectedCanonical":null,"expectedMode":"no_exact_match","expectedMethod":"out_of_scope","expectedQueryType":"subtype_query","expectedNormalizedQuery":"artistic legitimacy","expectedInterpretation":{"interpretationType":"out_of_scope","concept":"legitimacy","domain":"governance","message":"This concept is defined within the governance domain in ChatPDM and does not cover the requested usage."},"expectedSuggestions":[],"checks":["deterministic_repeatability","stable_no_match","governance_scope_enforced"],"notes":"Artistic legitimacy must refuse against the governance-scoped concept."},
-  {"id":"governance-scope-legitimacy-02","bucket":"governance_scope_clear_refusals","query":"religious legitimacy","expectedCanonical":null,"expectedMode":"no_exact_match","expectedMethod":"out_of_scope","expectedQueryType":"subtype_query","expectedNormalizedQuery":"religious legitimacy","expectedInterpretation":{"interpretationType":"out_of_scope","concept":"legitimacy","domain":"governance","message":"This concept is defined within the governance domain in ChatPDM and does not cover the requested usage."},"expectedSuggestions":[],"checks":["deterministic_repeatability","stable_no_match","governance_scope_enforced"],"notes":"Religious legitimacy must refuse against the governance-scoped concept."},
-  {"id":"governance-scope-legitimacy-03","bucket":"governance_scope_clear_refusals","query":"social legitimacy","expectedCanonical":null,"expectedMode":"no_exact_match","expectedMethod":"out_of_scope","expectedQueryType":"subtype_query","expectedNormalizedQuery":"social legitimacy","expectedInterpretation":{"interpretationType":"out_of_scope","concept":"legitimacy","domain":"governance","message":"This concept is defined within the governance domain in ChatPDM and does not cover the requested usage."},"expectedSuggestions":[],"checks":["deterministic_repeatability","stable_no_match","governance_scope_enforced"],"notes":"Social legitimacy must refuse against the governance-scoped concept."},
-  {"id":"governance-scope-legitimacy-04","bucket":"governance_scope_clear_refusals","query":"moral legitimacy","expectedCanonical":null,"expectedMode":"no_exact_match","expectedMethod":"out_of_scope","expectedQueryType":"subtype_query","expectedNormalizedQuery":"moral legitimacy","expectedInterpretation":{"interpretationType":"out_of_scope","concept":"legitimacy","domain":"governance","message":"This concept is defined within the governance domain in ChatPDM and does not cover the requested usage."},"expectedSuggestions":[],"checks":["deterministic_repeatability","stable_no_match","governance_scope_enforced"],"notes":"Moral legitimacy must resolve through governance-scope refusal rather than generic no-match."},
-
-  {"id":"governance-scope-mixed-01","bucket":"governance_scope_mixed_queries","query":"authority in science","expectedCanonical":null,"expectedMode":"no_exact_match","expectedMethod":"no_exact_match","expectedQueryType":"unsupported_complex_query","expectedNormalizedQuery":"authority in science","expectedInterpretation":{"interpretationType":"unsupported_complex"},"expectedSuggestions":[],"checks":["deterministic_repeatability","stable_no_match","governance_scope_enforced"],"notes":"Mixed non-governance framing must not silently universalize authority into the governance packet."},
-  {"id":"governance-scope-mixed-02","bucket":"governance_scope_mixed_queries","query":"power in physics","expectedCanonical":null,"expectedMode":"no_exact_match","expectedMethod":"no_exact_match","expectedQueryType":"unsupported_complex_query","expectedNormalizedQuery":"power in physics","expectedInterpretation":{"interpretationType":"unsupported_complex"},"expectedSuggestions":[],"checks":["deterministic_repeatability","stable_no_match","governance_scope_enforced"],"notes":"Physics phrasing must not silently universalize governance-scoped power."},
-  {"id":"governance-scope-mixed-03","bucket":"governance_scope_mixed_queries","query":"legitimacy in art","expectedCanonical":null,"expectedMode":"no_exact_match","expectedMethod":"no_exact_match","expectedQueryType":"unsupported_complex_query","expectedNormalizedQuery":"legitimacy in art","expectedInterpretation":{"interpretationType":"unsupported_complex"},"expectedSuggestions":[],"checks":["deterministic_repeatability","stable_no_match","governance_scope_enforced"],"notes":"Art phrasing must not silently universalize governance-scoped legitimacy."},
-  {"id":"governance-scope-mixed-04","bucket":"governance_scope_mixed_queries","query":"moral authority in government","expectedCanonical":null,"expectedMode":"no_exact_match","expectedMethod":"no_exact_match","expectedQueryType":"unsupported_complex_query","expectedNormalizedQuery":"moral authority in government","expectedInterpretation":{"interpretationType":"unsupported_complex"},"expectedSuggestions":[],"checks":["deterministic_repeatability","stable_no_match","governance_scope_enforced"],"notes":"Mixed governance wording without a supported runtime shape must still avoid silent authority resolution."},
-  {"id":"governance-scope-mixed-05","bucket":"governance_scope_mixed_queries","query":"political legitimacy vs artistic legitimacy","expectedCanonical":null,"expectedMode":"no_exact_match","expectedMethod":"out_of_scope","expectedQueryType":"comparison_query","expectedNormalizedQuery":"political legitimacy vs artistic legitimacy","expectedInterpretation":{"interpretationType":"scoped_clarification","concept":"legitimacy","domain":"governance","message":"This concept is governance-scoped in ChatPDM. Clarify a governance-domain usage to continue."},"expectedSuggestions":[],"checks":["deterministic_repeatability","stable_no_match","governance_scope_enforced"],"notes":"Mixed governance and non-governance comparison phrasing should clarify scope rather than silently compare."},
-  {"id":"governance-scope-mixed-06","bucket":"governance_scope_mixed_queries","query":"professional authority and governance","expectedCanonical":null,"expectedMode":"no_exact_match","expectedMethod":"no_exact_match","expectedQueryType":"unsupported_complex_query","expectedNormalizedQuery":"professional authority and governance","expectedInterpretation":{"interpretationType":"unsupported_complex"},"expectedSuggestions":[],"checks":["deterministic_repeatability","stable_no_match","governance_scope_enforced"],"notes":"Mixed authority phrasing without a supported shape must still avoid silent governance resolution."},
-  {"id":"governance-scope-mixed-07","bucket":"governance_scope_mixed_queries","query":"electrical power and state power","expectedCanonical":null,"expectedMode":"no_exact_match","expectedMethod":"out_of_scope","expectedQueryType":"subtype_query","expectedNormalizedQuery":"electrical power and state power","expectedInterpretation":{"interpretationType":"scoped_clarification","concept":"power","domain":"governance","message":"This concept is governance-scoped in ChatPDM. Clarify a governance-domain usage to continue."},"expectedSuggestions":[],"checks":["deterministic_repeatability","stable_no_match","governance_scope_enforced"],"notes":"Mixed power phrasing should clarify scope rather than silently universalize power."},
-  {"id":"governance-scope-mixed-08","bucket":"governance_scope_mixed_queries","query":"legitimacy outside government","expectedCanonical":null,"expectedMode":"no_exact_match","expectedMethod":"no_exact_match","expectedQueryType":"unsupported_complex_query","expectedNormalizedQuery":"legitimacy outside government","expectedInterpretation":{"interpretationType":"unsupported_complex"},"expectedSuggestions":[],"checks":["deterministic_repeatability","stable_no_match","governance_scope_enforced"],"notes":"Negative governance phrasing must not silently resolve legitimacy."},
-  {"id":"governance-scope-mixed-09","bucket":"governance_scope_mixed_queries","query":"authority beyond governance","expectedCanonical":null,"expectedMode":"no_exact_match","expectedMethod":"no_exact_match","expectedQueryType":"unsupported_complex_query","expectedNormalizedQuery":"authority beyond governance","expectedInterpretation":{"interpretationType":"unsupported_complex"},"expectedSuggestions":[],"checks":["deterministic_repeatability","stable_no_match","governance_scope_enforced"],"notes":"Beyond-governance wording must not silently map authority back into the governance packet."},
-  {"id":"governance-scope-mixed-10","bucket":"governance_scope_mixed_queries","query":"power not politics","expectedCanonical":null,"expectedMode":"no_exact_match","expectedMethod":"no_exact_match","expectedQueryType":"unsupported_complex_query","expectedNormalizedQuery":"power not politics","expectedInterpretation":{"interpretationType":"unsupported_complex"},"expectedSuggestions":[],"checks":["deterministic_repeatability","stable_no_match","governance_scope_enforced"],"notes":"Anti-governance wording must not silently map power to the governance packet."},
-
-  {"id":"governance-scope-regression-01","bucket":"governance_scope_regression_queries","query":"authority","expectedCanonical":"authority","expectedMode":"concept_match","expectedQueryType":"exact_concept_query","expectedNormalizedQuery":"authority","checks":["deterministic_repeatability","no_collapse_authority_power","no_collapse_authority_legitimacy"],"notes":"Governance-scoped authority baseline must remain unchanged."},
-  {"id":"governance-scope-regression-02","bucket":"governance_scope_regression_queries","query":"power","expectedCanonical":"power","expectedMode":"concept_match","expectedQueryType":"exact_concept_query","expectedNormalizedQuery":"power","checks":["deterministic_repeatability","no_collapse_authority_power","preserve_distinction_power_legitimacy"],"notes":"Governance-scoped power baseline must remain unchanged."},
-  {"id":"governance-scope-regression-03","bucket":"governance_scope_regression_queries","query":"legitimacy","expectedCanonical":"legitimacy","expectedMode":"concept_match","expectedQueryType":"exact_concept_query","expectedNormalizedQuery":"legitimacy","checks":["deterministic_repeatability","no_collapse_authority_legitimacy","preserve_distinction_power_legitimacy"],"notes":"Governance-scoped legitimacy baseline must remain unchanged."},
-  {"id":"governance-scope-regression-04","bucket":"governance_scope_regression_queries","query":"authority vs power","expectedCanonical":null,"expectedMode":"comparison","expectedQueryType":"comparison_query","expectedNormalizedQuery":"authority vs power","expectedComparison":{"conceptA":"authority","conceptB":"power"},"checks":["deterministic_repeatability","strict_schema_output","no_collapse_authority_power"],"notes":"Authority-power comparison must remain unchanged under governance-scope enforcement."},
-  {"id":"governance-scope-regression-05","bucket":"governance_scope_regression_queries","query":"authority vs legitimacy","expectedCanonical":null,"expectedMode":"comparison","expectedQueryType":"comparison_query","expectedNormalizedQuery":"authority vs legitimacy","expectedComparison":{"conceptA":"authority","conceptB":"legitimacy"},"checks":["deterministic_repeatability","strict_schema_output","no_collapse_authority_legitimacy"],"notes":"Authority-legitimacy comparison must remain unchanged under governance-scope enforcement."},
-  {"id":"governance-scope-regression-06","bucket":"governance_scope_regression_queries","query":"power vs legitimacy","expectedCanonical":null,"expectedMode":"comparison","expectedQueryType":"comparison_query","expectedNormalizedQuery":"power vs legitimacy","expectedComparison":{"conceptA":"legitimacy","conceptB":"power"},"checks":["deterministic_repeatability","strict_schema_output","preserve_distinction_power_legitimacy"],"notes":"Power-legitimacy comparison must remain unchanged under governance-scope enforcement."},
-  {"id":"governance-scope-regression-07","bucket":"governance_scope_regression_queries","query":"is authority the same as power","expectedCanonical":null,"expectedMode":"comparison","expectedQueryType":"comparison_query","expectedNormalizedQuery":"is authority the same as power","expectedComparison":{"conceptA":"authority","conceptB":"power"},"checks":["deterministic_repeatability","strict_schema_output","no_collapse_authority_power"],"notes":"Same-as comparison phrasing must remain unchanged."},
-  {"id":"governance-scope-regression-08","bucket":"governance_scope_regression_queries","query":"authority vs trust","expectedCanonical":null,"expectedMode":"no_exact_match","expectedMethod":"no_exact_match","expectedQueryType":"comparison_query","expectedNormalizedQuery":"authority vs trust","expectedInterpretation":{"interpretationType":"comparison_not_supported","concepts":["authority"]},"expectedSuggestions":[],"checks":["deterministic_repeatability","no_forced_match","no_boundary_leak"],"notes":"Unsupported governance comparison must remain an honest refusal."},
-
-  {"id":"normalized-authority-01","bucket":"normalized_canonical_queries","query":"AUTHORITY","expectedCanonical":"authority","expectedMode":"concept_match","checks":["deterministic_repeatability","no_collapse_authority_power","no_collapse_authority_legitimacy"],"notes":"Case normalization should preserve authority."},
-  {"id":"normalized-power-01","bucket":"normalized_canonical_queries","query":"Power!!!","expectedCanonical":"power","expectedMode":"concept_match","checks":["deterministic_repeatability","no_collapse_authority_power","preserve_distinction_power_legitimacy"],"notes":"Punctuation stripping should preserve power."},
-  {"id":"normalized-legitimacy-01","bucket":"normalized_canonical_queries","query":"  legitimacy  ","expectedCanonical":"legitimacy","expectedMode":"concept_match","checks":["deterministic_repeatability","no_collapse_authority_legitimacy","preserve_distinction_power_legitimacy"],"notes":"Trim should preserve legitimacy."},
-  {"id":"normalized-responsibility-01","bucket":"normalized_canonical_queries","query":"responsibility???","expectedCanonical":"responsibility","expectedMode":"concept_match","checks":["deterministic_repeatability","preserve_distinction_responsibility_duty"],"notes":"Punctuation stripping should preserve responsibility."},
-  {"id":"normalized-duty-01","bucket":"normalized_canonical_queries","query":"duty!!!","expectedCanonical":"duty","expectedMode":"concept_match","checks":["deterministic_repeatability","preserve_distinction_responsibility_duty"],"notes":"Punctuation stripping should preserve duty."},
-  {"id":"normalized-authority-02","bucket":"normalized_canonical_queries","query":"Tell me about authority","expectedCanonical":"authority","expectedMode":"concept_match","checks":["deterministic_repeatability","no_collapse_authority_power","no_collapse_authority_legitimacy"],"notes":"Long filler phrase should preserve authority."},
-  {"id":"normalized-power-02","bucket":"normalized_canonical_queries","query":"WHAT ARE POWER","expectedCanonical":"power","expectedMode":"concept_match","checks":["deterministic_repeatability","no_collapse_authority_power","preserve_distinction_power_legitimacy"],"notes":"Odd plural prompt should still normalize to power."},
-  {"id":"normalized-legitimacy-02","bucket":"normalized_canonical_queries","query":"explain legitimacy","expectedCanonical":"legitimacy","expectedMode":"concept_match","checks":["deterministic_repeatability","no_collapse_authority_legitimacy","preserve_distinction_power_legitimacy"],"notes":"Explain prompt should preserve legitimacy."},
-  {"id":"normalized-responsibility-02","bucket":"normalized_canonical_queries","query":"define responsibility","expectedCanonical":"responsibility","expectedMode":"concept_match","checks":["deterministic_repeatability","preserve_distinction_responsibility_duty"],"notes":"Definition prompt should preserve responsibility."},
-  {"id":"normalized-duty-02","bucket":"normalized_canonical_queries","query":"meaning of duty","expectedCanonical":"duty","expectedMode":"concept_match","checks":["deterministic_repeatability","preserve_distinction_responsibility_duty"],"notes":"Meaning prefix should preserve duty."},
-
-  {"id":"canonical-id-authority","bucket":"canonical_id_queries","query":"concept:authority","expectedCanonical":"authority","expectedMode":"concept_match","expectedNormalizedQuery":"conceptauthority","checks":["deterministic_repeatability","raw_canonical_id_only"],"notes":"Canonical ID should bypass alias lookup."},
-  {"id":"canonical-id-power","bucket":"canonical_id_queries","query":"concept:power","expectedCanonical":"power","expectedMode":"concept_match","expectedNormalizedQuery":"conceptpower","checks":["deterministic_repeatability","raw_canonical_id_only"],"notes":"Canonical ID should resolve power."},
-  {"id":"canonical-id-legitimacy","bucket":"canonical_id_queries","query":"concept:legitimacy","expectedCanonical":"legitimacy","expectedMode":"concept_match","expectedNormalizedQuery":"conceptlegitimacy","checks":["deterministic_repeatability","raw_canonical_id_only"],"notes":"Canonical ID should resolve legitimacy."},
-  {"id":"canonical-id-responsibility","bucket":"canonical_id_queries","query":"concept:responsibility","expectedCanonical":"responsibility","expectedMode":"concept_match","expectedNormalizedQuery":"conceptresponsibility","checks":["deterministic_repeatability","raw_canonical_id_only"],"notes":"Canonical ID should resolve responsibility."},
-  {"id":"canonical-id-duty","bucket":"canonical_id_queries","query":"concept:duty","expectedCanonical":"duty","expectedMode":"concept_match","expectedNormalizedQuery":"conceptduty","checks":["deterministic_repeatability","raw_canonical_id_only"],"notes":"Canonical ID should resolve duty."},
-  {"id":"canonical-id-missing","bucket":"canonical_id_queries","query":"concept:missing-id","expectedCanonical":null,"expectedMode":"no_exact_match","expectedNormalizedQuery":"conceptmissing-id","checks":["deterministic_repeatability","raw_canonical_id_only","stable_no_match"],"notes":"Missing canonical ID must not fall through to alias matching."},
-  {"id":"canonical-id-uppercase","bucket":"canonical_id_queries","query":"concept:AUTHORITY","expectedCanonical":null,"expectedMode":"no_exact_match","expectedNormalizedQuery":"conceptauthority","checks":["deterministic_repeatability","raw_canonical_id_only","stable_no_match"],"notes":"Canonical ID matching is raw and case-sensitive."},
-  {"id":"canonical-id-empty","bucket":"canonical_id_queries","query":"concept:","expectedCanonical":null,"expectedMode":"no_exact_match","expectedNormalizedQuery":"concept","checks":["deterministic_repeatability","raw_canonical_id_only","stable_no_match"],"notes":"Empty canonical ID should return honest no-match."},
-  {"id":"canonical-id-leading-space","bucket":"canonical_id_queries","query":" concept:authority","expectedCanonical":null,"expectedMode":"no_exact_match","expectedNormalizedQuery":"conceptauthority","checks":["deterministic_repeatability","raw_canonical_id_only","stable_no_match"],"notes":"Leading space should block raw canonical branch."},
-  {"id":"canonical-id-space-after-colon","bucket":"canonical_id_queries","query":"concept: duty","expectedCanonical":null,"expectedMode":"no_exact_match","expectedNormalizedQuery":"concept duty","checks":["deterministic_repeatability","raw_canonical_id_only","stable_no_match"],"notes":"Whitespace inside canonical ID should not resolve."},
-
-  {"id":"rejected-obligation-01","bucket":"rejected_concept_queries","query":"obligation","expectedCanonical":null,"expectedRejectedConceptId":"obligation","expectedMode":"rejected_concept","expectedQueryType":"exact_concept_query","expectedNormalizedQuery":"obligation","expectedRejection":{"status":"REJECTED","decisionType":"STRUCTURAL_REJECTION","finality":true},"checks":["deterministic_repeatability","strict_schema_output","no_auto_pick"],"notes":"Exact rejected concept query must surface the rejection registry before ambiguity routing."},
-  {"id":"rejected-obligation-02","bucket":"rejected_concept_queries","query":"OBLIGATION","expectedCanonical":null,"expectedRejectedConceptId":"obligation","expectedMode":"rejected_concept","expectedQueryType":"exact_concept_query","expectedNormalizedQuery":"obligation","expectedRejection":{"status":"REJECTED","decisionType":"STRUCTURAL_REJECTION","finality":true},"checks":["deterministic_repeatability","strict_schema_output","no_auto_pick"],"notes":"Case normalization must still hit the rejection registry."},
-  {"id":"rejected-obligation-03","bucket":"rejected_concept_queries","query":"obligation???","expectedCanonical":null,"expectedRejectedConceptId":"obligation","expectedMode":"rejected_concept","expectedQueryType":"exact_concept_query","expectedNormalizedQuery":"obligation","expectedRejection":{"status":"REJECTED","decisionType":"STRUCTURAL_REJECTION","finality":true},"checks":["deterministic_repeatability","strict_schema_output","no_auto_pick"],"notes":"Punctuation stripping must still hit the rejection registry."},
-  {"id":"rejected-obligation-04","bucket":"rejected_concept_queries","query":"what is obligation","expectedCanonical":null,"expectedRejectedConceptId":"obligation","expectedMode":"rejected_concept","expectedQueryType":"exact_concept_query","expectedNormalizedQuery":"obligation","expectedRejection":{"status":"REJECTED","decisionType":"STRUCTURAL_REJECTION","finality":true},"checks":["deterministic_repeatability","strict_schema_output","no_auto_pick"],"notes":"Filler stripping must still hit the rejection registry."},
-  {"id":"rejected-obligation-05","bucket":"rejected_concept_queries","query":"define obligation","expectedCanonical":null,"expectedRejectedConceptId":"obligation","expectedMode":"rejected_concept","expectedQueryType":"exact_concept_query","expectedNormalizedQuery":"obligation","expectedRejection":{"status":"REJECTED","decisionType":"STRUCTURAL_REJECTION","finality":true},"checks":["deterministic_repeatability","strict_schema_output","no_auto_pick"],"notes":"Definition-form queries must not fall through to authored ambiguity."},
-  {"id":"rejected-obligation-06","bucket":"rejected_concept_queries","query":"tell me about obligation","expectedCanonical":null,"expectedRejectedConceptId":"obligation","expectedMode":"rejected_concept","expectedQueryType":"exact_concept_query","expectedNormalizedQuery":"obligation","expectedRejection":{"status":"REJECTED","decisionType":"STRUCTURAL_REJECTION","finality":true},"checks":["deterministic_repeatability","strict_schema_output","no_auto_pick"],"notes":"Long filler queries must still be rejected first-class."},
-  {"id":"rejected-obligation-07","bucket":"rejected_concept_queries","query":"meaning of obligation","expectedCanonical":null,"expectedRejectedConceptId":"obligation","expectedMode":"rejected_concept","expectedQueryType":"exact_concept_query","expectedNormalizedQuery":"obligation","expectedRejection":{"status":"REJECTED","decisionType":"STRUCTURAL_REJECTION","finality":true},"checks":["deterministic_repeatability","strict_schema_output","no_auto_pick"],"notes":"Meaning-prefix queries must still be rejected first-class."},
-  {"id":"rejected-obligation-08","bucket":"rejected_concept_queries","query":"explain obligation","expectedCanonical":null,"expectedRejectedConceptId":"obligation","expectedMode":"rejected_concept","expectedQueryType":"exact_concept_query","expectedNormalizedQuery":"obligation","expectedRejection":{"status":"REJECTED","decisionType":"STRUCTURAL_REJECTION","finality":true},"checks":["deterministic_repeatability","strict_schema_output","no_auto_pick"],"notes":"Explain-prefix queries must still be rejected first-class."},
-  {"id":"rejected-obligation-09","bucket":"rejected_concept_queries","query":"what are obligation","expectedCanonical":null,"expectedRejectedConceptId":"obligation","expectedMode":"rejected_concept","expectedQueryType":"exact_concept_query","expectedNormalizedQuery":"obligation","expectedRejection":{"status":"REJECTED","decisionType":"STRUCTURAL_REJECTION","finality":true},"checks":["deterministic_repeatability","strict_schema_output","no_auto_pick"],"notes":"Odd plural filler must still normalize into the same rejection target."},
-  {"id":"rejected-obligation-10","bucket":"rejected_concept_queries","query":"  obligation  ","expectedCanonical":null,"expectedRejectedConceptId":"obligation","expectedMode":"rejected_concept","expectedQueryType":"exact_concept_query","expectedNormalizedQuery":"obligation","expectedRejection":{"status":"REJECTED","decisionType":"STRUCTURAL_REJECTION","finality":true},"checks":["deterministic_repeatability","strict_schema_output","no_auto_pick"],"notes":"Trimmed queries must still resolve through the rejection registry."},
-
-  {"id":"suggestion-civic-duty-01","bucket":"controlled_suggestion_queries","query":"civic duty","expectedCanonical":null,"expectedMode":"no_exact_match","expectedSuggestions":[{"conceptId":"duty","reason":"broader_topic"}],"checks":["deterministic_repeatability","stable_no_match","use_authored_suggestion_only"],"notes":"Baseline authored suggestion case."},
-  {"id":"suggestion-civic-duty-02","bucket":"controlled_suggestion_queries","query":"CIVIC DUTY","expectedCanonical":null,"expectedMode":"no_exact_match","expectedSuggestions":[{"conceptId":"duty","reason":"broader_topic"}],"checks":["deterministic_repeatability","stable_no_match","use_authored_suggestion_only"],"notes":"Case normalization should preserve authored suggestion."},
-  {"id":"suggestion-civic-duty-03","bucket":"controlled_suggestion_queries","query":"civic duty???","expectedCanonical":null,"expectedMode":"no_exact_match","expectedSuggestions":[{"conceptId":"duty","reason":"broader_topic"}],"checks":["deterministic_repeatability","stable_no_match","use_authored_suggestion_only"],"notes":"Punctuation stripping should preserve authored suggestion."},
-  {"id":"suggestion-civic-duty-04","bucket":"controlled_suggestion_queries","query":"what is civic duty","expectedCanonical":null,"expectedMode":"no_exact_match","expectedSuggestions":[{"conceptId":"duty","reason":"broader_topic"}],"checks":["deterministic_repeatability","stable_no_match","use_authored_suggestion_only"],"notes":"Question form should preserve authored suggestion."},
-  {"id":"suggestion-civic-duty-05","bucket":"controlled_suggestion_queries","query":"define civic duty","expectedCanonical":null,"expectedMode":"no_exact_match","expectedSuggestions":[{"conceptId":"duty","reason":"broader_topic"}],"checks":["deterministic_repeatability","stable_no_match","use_authored_suggestion_only"],"notes":"Definition form should preserve authored suggestion."},
-  {"id":"suggestion-civic-duty-06","bucket":"controlled_suggestion_queries","query":"tell me about civic duty","expectedCanonical":null,"expectedMode":"no_exact_match","expectedSuggestions":[{"conceptId":"duty","reason":"broader_topic"}],"checks":["deterministic_repeatability","stable_no_match","use_authored_suggestion_only"],"notes":"Long filler should preserve authored suggestion."},
-  {"id":"suggestion-civic-duty-07","bucket":"controlled_suggestion_queries","query":"meaning of civic duty","expectedCanonical":null,"expectedMode":"no_exact_match","expectedSuggestions":[{"conceptId":"duty","reason":"broader_topic"}],"checks":["deterministic_repeatability","stable_no_match","use_authored_suggestion_only"],"notes":"Meaning prefix should preserve authored suggestion."},
-  {"id":"suggestion-civic-duty-08","bucket":"controlled_suggestion_queries","query":"explain civic duty","expectedCanonical":null,"expectedMode":"no_exact_match","expectedSuggestions":[{"conceptId":"duty","reason":"broader_topic"}],"checks":["deterministic_repeatability","stable_no_match","use_authored_suggestion_only"],"notes":"Explain prefix should preserve authored suggestion."},
-  {"id":"suggestion-civic-duty-09","bucket":"controlled_suggestion_queries","query":"what are civic duty","expectedCanonical":null,"expectedMode":"no_exact_match","expectedSuggestions":[{"conceptId":"duty","reason":"broader_topic"}],"checks":["deterministic_repeatability","stable_no_match","use_authored_suggestion_only"],"notes":"Odd plural prompt should still preserve authored suggestion."},
-  {"id":"suggestion-civic-duty-10","bucket":"controlled_suggestion_queries","query":"civic  duty","expectedCanonical":null,"expectedMode":"no_exact_match","expectedSuggestions":[{"conceptId":"duty","reason":"broader_topic"}],"checks":["deterministic_repeatability","stable_no_match","use_authored_suggestion_only"],"notes":"Whitespace collapse should preserve authored suggestion."},
-
-  {"id":"contrast-authority-power-01","bucket":"pairwise_contrast_queries","query":"authority vs power","expectedCanonical":null,"expectedMode":"comparison","expectedQueryType":"comparison_query","expectedNormalizedQuery":"authority vs power","expectedComparison":{"conceptA":"authority","conceptB":"power","axes":[{"axis":"core_nature"},{"axis":"depends_on"},{"axis":"not_equivalent","statement":"authority is not power; power does not require authority"}]},"checks":["deterministic_repeatability","strict_schema_output","no_collapse_authority_power"],"notes":"Allowlisted comparison should return the authored authority-power contrast."},
-  {"id":"contrast-authority-legitimacy-01","bucket":"pairwise_contrast_queries","query":"authority vs legitimacy","expectedCanonical":null,"expectedMode":"comparison","expectedQueryType":"comparison_query","expectedNormalizedQuery":"authority vs legitimacy","expectedComparison":{"conceptA":"authority","conceptB":"legitimacy","axes":[{"axis":"core_nature"},{"axis":"depends_on"},{"axis":"not_equivalent","statement":"authority is not legitimacy; a role may have authority while its legitimacy is contested"}]},"checks":["deterministic_repeatability","strict_schema_output","no_collapse_authority_legitimacy"],"notes":"Allowlisted comparison should return the authored authority-legitimacy contrast."},
-  {"id":"contrast-power-legitimacy-01","bucket":"pairwise_contrast_queries","query":"power vs legitimacy","expectedCanonical":null,"expectedMode":"comparison","expectedQueryType":"comparison_query","expectedNormalizedQuery":"power vs legitimacy","expectedComparison":{"conceptA":"legitimacy","conceptB":"power","axes":[{"axis":"core_nature"},{"axis":"depends_on"},{"axis":"not_equivalent","statement":"legitimacy is not power; power may operate without legitimacy"}]},"checks":["deterministic_repeatability","strict_schema_output","preserve_distinction_power_legitimacy"],"notes":"Allowlisted comparison should return the authored power-legitimacy contrast."},
-  {"id":"contrast-consent-authority-01","bucket":"pairwise_contrast_queries","query":"consent vs authority","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","no_forced_match","manual_boundary_review"],"notes":"Unsupported cluster pair should refuse honestly."},
-  {"id":"contrast-trust-legitimacy-01","bucket":"pairwise_contrast_queries","query":"trust vs legitimacy","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","no_forced_match","manual_boundary_review"],"notes":"Unsupported cluster pair should refuse honestly."},
-  {"id":"contrast-responsibility-duty-01","bucket":"pairwise_contrast_queries","query":"responsibility vs duty","expectedCanonical":null,"expectedMode":"comparison","expectedQueryType":"comparison_query","expectedNormalizedQuery":"responsibility vs duty","expectedComparison":{"conceptA":"duty","conceptB":"responsibility","axes":[{"axis":"core_nature"},{"axis":"depends_on"},{"axis":"not_equivalent","statement":"duty is not responsibility; required conduct does not by itself settle answerability"}]},"checks":["deterministic_repeatability","strict_schema_output","preserve_distinction_responsibility_duty"],"notes":"Allowlisted comparison should return the authored responsibility-duty contrast."},
-  {"id":"contrast-law-legitimacy-01","bucket":"pairwise_contrast_queries","query":"law vs legitimacy","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","no_forced_match","manual_boundary_review"],"notes":"Unsupported cluster pair should refuse honestly."},
-  {"id":"contrast-power-authority-or-01","bucket":"pairwise_contrast_queries","query":"power or authority","expectedCanonical":null,"expectedMode":"comparison","expectedQueryType":"comparison_query","expectedNormalizedQuery":"power or authority","expectedComparison":{"conceptA":"authority","conceptB":"power","axes":[{"axis":"core_nature"},{"axis":"depends_on"},{"axis":"not_equivalent","statement":"authority is not power; power does not require authority"}]},"checks":["deterministic_repeatability","strict_schema_output","no_collapse_authority_power"],"notes":"Disjunctive phrasing should still resolve to the authored authority-power comparison."},
-  {"id":"contrast-legitimacy-authority-or-01","bucket":"pairwise_contrast_queries","query":"legitimacy or authority","expectedCanonical":null,"expectedMode":"comparison","expectedQueryType":"comparison_query","expectedNormalizedQuery":"legitimacy or authority","expectedComparison":{"conceptA":"authority","conceptB":"legitimacy","axes":[{"axis":"core_nature"},{"axis":"depends_on"},{"axis":"not_equivalent","statement":"authority is not legitimacy; a role may have authority while its legitimacy is contested"}]},"checks":["deterministic_repeatability","strict_schema_output","no_collapse_authority_legitimacy"],"notes":"Disjunctive phrasing should still resolve to the authored authority-legitimacy comparison."},
-  {"id":"contrast-duty-responsibility-and-01","bucket":"pairwise_contrast_queries","query":"duty and responsibility","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","no_forced_match","preserve_distinction_responsibility_duty"],"notes":"Conjunctive phrasing should not collapse the pair."},
-
-  {"id":"indirect-power-legitimacy-01","bucket":"indirect_semantic_queries","query":"can power exist without legitimacy","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","no_forced_match","preserve_distinction_power_legitimacy"],"notes":"Indirect semantic phrasing should refuse rather than guess."},
-  {"id":"indirect-authority-legitimacy-01","bucket":"indirect_semantic_queries","query":"authority without legitimacy","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","no_forced_match","no_collapse_authority_legitimacy"],"notes":"Should not force either concept from a relation query."},
-  {"id":"indirect-obedience-authority-01","bucket":"indirect_semantic_queries","query":"why obey authority","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","no_forced_match","manual_boundary_review"],"notes":"Why-questions should not be guessed into canonical definitions."},
-  {"id":"indirect-legitimate-no-authority-01","bucket":"indirect_semantic_queries","query":"legitimate but no authority","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","no_forced_match","no_collapse_authority_legitimacy"],"notes":"Boundary probe should refuse honestly."},
-  {"id":"indirect-law-legitimacy-01","bucket":"indirect_semantic_queries","query":"law without legitimacy","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","no_forced_match","manual_boundary_review"],"notes":"Unsupported cluster relation should refuse honestly."},
-  {"id":"indirect-trust-legitimacy-01","bucket":"indirect_semantic_queries","query":"trusted but not legitimate","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","no_forced_match","manual_boundary_review"],"notes":"Trust and legitimacy should not collapse under adjective pressure."},
-  {"id":"indirect-power-authority-01","bucket":"indirect_semantic_queries","query":"power without authority","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","no_forced_match","no_collapse_authority_power"],"notes":"Boundary probe should refuse honestly."},
-  {"id":"indirect-responsibility-duty-01","bucket":"indirect_semantic_queries","query":"responsibility without duty","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","no_forced_match","preserve_distinction_responsibility_duty"],"notes":"Boundary probe should refuse honestly."},
-  {"id":"indirect-consent-pressure-01","bucket":"indirect_semantic_queries","query":"consent under pressure","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","no_forced_match","manual_boundary_review"],"notes":"Unsupported cluster concept should refuse honestly."},
-  {"id":"indirect-law-legitimacy-02","bucket":"indirect_semantic_queries","query":"is all law legitimate","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","no_forced_match","manual_boundary_review"],"notes":"Legality versus legitimacy probe should refuse honestly."},
-
-  {"id":"cluster-gap-consent-01","bucket":"unsupported_cluster_and_cascade_queries","query":"consent","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","stable_no_match","no_forced_match"],"notes":"Direct unsupported cluster node should not force a nearby concept."},
-  {"id":"cluster-gap-consent-02","bucket":"unsupported_cluster_and_cascade_queries","query":"what is consent","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","stable_no_match","no_forced_match"],"notes":"Question form for unsupported node should refuse honestly."},
-  {"id":"cluster-gap-trust-01","bucket":"unsupported_cluster_and_cascade_queries","query":"trust","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","stable_no_match","no_forced_match"],"notes":"Direct unsupported cluster node should refuse honestly."},
-  {"id":"cluster-gap-trust-02","bucket":"unsupported_cluster_and_cascade_queries","query":"define trust","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","stable_no_match","no_forced_match"],"notes":"Definition form for unsupported node should refuse honestly."},
-  {"id":"cluster-gap-law-01","bucket":"unsupported_cluster_and_cascade_queries","query":"law","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","stable_no_match","no_forced_match"],"notes":"Direct unsupported cluster node should refuse honestly."},
-  {"id":"cluster-gap-law-02","bucket":"unsupported_cluster_and_cascade_queries","query":"meaning of law","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","stable_no_match","no_forced_match"],"notes":"Meaning form for unsupported node should refuse honestly."},
-  {"id":"cascade-influence-01","bucket":"unsupported_cluster_and_cascade_queries","query":"influence","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","stable_no_match","cascade_probe"],"notes":"Candidate concept probe should refuse honestly."},
-  {"id":"cascade-influence-02","bucket":"unsupported_cluster_and_cascade_queries","query":"influence vs power","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","no_forced_match","cascade_probe"],"notes":"Candidate concept comparison probe should refuse honestly."},
-  {"id":"cascade-influence-03","bucket":"unsupported_cluster_and_cascade_queries","query":"influence without authority","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","no_forced_match","cascade_probe"],"notes":"Candidate concept relation probe should refuse honestly."},
-  {"id":"cascade-influence-04","bucket":"unsupported_cluster_and_cascade_queries","query":"who has influence","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","no_forced_match","cascade_probe"],"notes":"Candidate concept why/who probe should refuse honestly."},
-
-  {"id":"collapse-authority-power-01","bucket":"adversarial_collapse_queries","query":"authority is just power","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","no_forced_match","no_collapse_authority_power"],"notes":"False equivalence should not force a concept."},
-  {"id":"collapse-power-authority-01","bucket":"adversarial_collapse_queries","query":"power is legitimate authority","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","no_forced_match","no_collapse_authority_power","no_collapse_authority_legitimacy"],"notes":"Compound false equivalence should not force a concept."},
-  {"id":"collapse-legitimacy-trust-01","bucket":"adversarial_collapse_queries","query":"legitimacy is just trust","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","no_forced_match","manual_boundary_review"],"notes":"Trust/legitimacy false equivalence should refuse honestly."},
-  {"id":"collapse-duty-responsibility-01","bucket":"adversarial_collapse_queries","query":"duty is basically responsibility","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","no_forced_match","preserve_distinction_responsibility_duty"],"notes":"Duty/responsibility false equivalence should refuse honestly."},
-  {"id":"collapse-law-legitimacy-01","bucket":"adversarial_collapse_queries","query":"all law is legitimate","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","no_forced_match","manual_boundary_review"],"notes":"Law/legitimacy false equivalence should refuse honestly."},
-  {"id":"collapse-authority-force-01","bucket":"adversarial_collapse_queries","query":"authority equals force","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","no_forced_match","no_collapse_authority_power"],"notes":"Authority/force collapse attempt should refuse honestly."},
-  {"id":"collapse-power-authority-02","bucket":"adversarial_collapse_queries","query":"power means authority","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","no_forced_match","no_collapse_authority_power"],"notes":"Power/authority collapse attempt should refuse honestly."},
-  {"id":"collapse-legitimacy-obedience-01","bucket":"adversarial_collapse_queries","query":"legitimacy means obedience","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","no_forced_match","no_collapse_authority_legitimacy"],"notes":"Legitimacy/obedience collapse attempt should refuse honestly."},
-  {"id":"collapse-trust-legitimacy-02","bucket":"adversarial_collapse_queries","query":"trust proves legitimacy","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","no_forced_match","manual_boundary_review"],"notes":"Trust/legitimacy collapse attempt should refuse honestly."},
-  {"id":"collapse-responsibility-duty-02","bucket":"adversarial_collapse_queries","query":"responsibility is just what you must do","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","no_forced_match","preserve_distinction_responsibility_duty"],"notes":"Responsibility/duty collapse attempt should refuse honestly."},
-
-  {"id":"sloppy-auth-01","bucket":"sloppy_typo_noise_queries","query":"auth","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","stable_no_match","no_forced_match"],"notes":"Abbreviated fragment should not guess authority."},
-  {"id":"sloppy-legit-01","bucket":"sloppy_typo_noise_queries","query":"legit","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","stable_no_match","no_forced_match"],"notes":"Abbreviated fragment should not guess legitimacy."},
-  {"id":"sloppy-respo-01","bucket":"sloppy_typo_noise_queries","query":"respo","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","stable_no_match","no_forced_match"],"notes":"Abbreviated fragment should not guess responsibility."},
-  {"id":"sloppy-duty-01","bucket":"sloppy_typo_noise_queries","query":"duty??","expectedCanonical":"duty","expectedMode":"concept_match","checks":["deterministic_repeatability","preserve_distinction_responsibility_duty"],"notes":"Supported concept with noise should still resolve."},
-  {"id":"sloppy-authority-01","bucket":"sloppy_typo_noise_queries","query":"authority pls","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","no_forced_match","no_collapse_authority_power"],"notes":"Extra colloquial token should not force a match."},
-  {"id":"sloppy-authority-02","bucket":"sloppy_typo_noise_queries","query":"what is the authority thing","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","no_forced_match","no_collapse_authority_power"],"notes":"Loose phrase should not guess authority."},
-  {"id":"sloppy-power-01","bucket":"sloppy_typo_noise_queries","query":"power thing","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","no_forced_match","no_collapse_authority_power"],"notes":"Loose phrase should not guess power."},
-  {"id":"sloppy-legitimacy-01","bucket":"sloppy_typo_noise_queries","query":"define legitimacy now","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","no_forced_match","no_collapse_authority_legitimacy"],"notes":"Trailing imperative token should not force legitimacy."},
-  {"id":"sloppy-authority-03","bucket":"sloppy_typo_noise_queries","query":"whats authority","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","no_forced_match","no_collapse_authority_power"],"notes":"Unsupported filler form should refuse honestly."},
-  {"id":"sloppy-authority-04","bucket":"sloppy_typo_noise_queries","query":"??authority??","expectedCanonical":"authority","expectedMode":"concept_match","checks":["deterministic_repeatability","no_collapse_authority_power","no_collapse_authority_legitimacy"],"notes":"Punctuation-wrapped authority should still resolve."},
-
-  {"id":"typo-authority-01","bucket":"typo_noise_queries","query":"autority","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","stable_no_match","no_forced_match"],"notes":"No fuzzy recovery for authority typo."},
-  {"id":"typo-power-01","bucket":"typo_noise_queries","query":"pwer","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","stable_no_match","no_forced_match"],"notes":"No fuzzy recovery for power typo."},
-  {"id":"typo-legitimacy-01","bucket":"typo_noise_queries","query":"legitamacy","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","stable_no_match","no_forced_match"],"notes":"No fuzzy recovery for legitimacy typo."},
-  {"id":"typo-responsibility-01","bucket":"typo_noise_queries","query":"responsiblity","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","stable_no_match","no_forced_match"],"notes":"No fuzzy recovery for responsibility typo."},
-  {"id":"typo-duty-01","bucket":"typo_noise_queries","query":"dutie","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","stable_no_match","no_forced_match"],"notes":"No fuzzy recovery for duty typo."},
-  {"id":"typo-civic-duty-01","bucket":"typo_noise_queries","query":"civic-duty","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","stable_no_match","no_forced_match"],"notes":"Hyphenated near-miss should not trigger authored suggestion."},
-  {"id":"typo-obligation-01","bucket":"typo_noise_queries","query":"oblgation","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","stable_no_match","no_forced_match"],"notes":"Ambiguity control should not activate on misspelling."},
-  {"id":"typo-concept-authority-01","bucket":"typo_noise_queries","query":"concept authority","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","stable_no_match","raw_canonical_id_only"],"notes":"Missing colon should not activate canonical ID mode."},
-  {"id":"typo-legitimacy-02","bucket":"typo_noise_queries","query":"legitimacy???!!!","expectedCanonical":"legitimacy","expectedMode":"concept_match","checks":["deterministic_repeatability","no_collapse_authority_legitimacy","preserve_distinction_power_legitimacy"],"notes":"Heavy punctuation around legitimacy should still resolve."},
-  {"id":"typo-power-02","bucket":"typo_noise_queries","query":"[power]","expectedCanonical":"power","expectedMode":"concept_match","checks":["deterministic_repeatability","no_collapse_authority_power","preserve_distinction_power_legitimacy"],"notes":"Bracketed power should still resolve."},
-
-  {"id":"garbage-empty-01","bucket":"garbage_refusal_queries","query":"","expectedCanonical":null,"expectedMode":"invalid_input","checks":["deterministic_repeatability","reject_garbage_input"],"notes":"Literal empty string must be rejected at the API boundary."},
-  {"id":"garbage-space-01","bucket":"garbage_refusal_queries","query":" ","expectedCanonical":null,"expectedMode":"no_exact_match","expectedNormalizedQuery":"__empty__","checks":["deterministic_repeatability","stable_no_match","reject_garbage_input"],"notes":"Single-space input should enter the empty normalized path."},
-  {"id":"garbage-space-02","bucket":"garbage_refusal_queries","query":"   ","expectedCanonical":null,"expectedMode":"no_exact_match","expectedNormalizedQuery":"__empty__","checks":["deterministic_repeatability","stable_no_match","reject_garbage_input"],"notes":"Whitespace-only input should enter the empty normalized path."},
-  {"id":"garbage-punctuation-01","bucket":"garbage_refusal_queries","query":"???","expectedCanonical":null,"expectedMode":"no_exact_match","expectedNormalizedQuery":"__empty__","checks":["deterministic_repeatability","stable_no_match","reject_garbage_input"],"notes":"Punctuation-only input should enter the empty normalized path."},
-  {"id":"garbage-punctuation-02","bucket":"garbage_refusal_queries","query":"what is ???","expectedCanonical":null,"expectedMode":"no_exact_match","expectedNormalizedQuery":"__empty__","checks":["deterministic_repeatability","stable_no_match","reject_garbage_input"],"notes":"Filler plus punctuation should still reach the empty path."},
-  {"id":"garbage-punctuation-03","bucket":"garbage_refusal_queries","query":"....","expectedCanonical":null,"expectedMode":"no_exact_match","expectedNormalizedQuery":"__empty__","checks":["deterministic_repeatability","stable_no_match","reject_garbage_input"],"notes":"Dots only should enter the empty normalized path."},
-  {"id":"garbage-punctuation-04","bucket":"garbage_refusal_queries","query":";;;;","expectedCanonical":null,"expectedMode":"no_exact_match","expectedNormalizedQuery":"__empty__","checks":["deterministic_repeatability","stable_no_match","reject_garbage_input"],"notes":"Semicolons only should enter the empty normalized path."},
-  {"id":"garbage-brackets-01","bucket":"garbage_refusal_queries","query":"[]{}()","expectedCanonical":null,"expectedMode":"no_exact_match","expectedNormalizedQuery":"__empty__","checks":["deterministic_repeatability","stable_no_match","reject_garbage_input"],"notes":"Bracket-only input should enter the empty normalized path."},
-  {"id":"garbage-random-01","bucket":"garbage_refusal_queries","query":"asdfghjkl","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","stable_no_match","reject_garbage_input"],"notes":"Random letter string should refuse honestly."},
-  {"id":"garbage-law-noise-01","bucket":"garbage_refusal_queries","query":"!! law !!","expectedCanonical":null,"expectedMode":"no_exact_match","checks":["deterministic_repeatability","stable_no_match","manual_boundary_review"],"notes":"Signal-bearing but unsupported query should still refuse honestly."},
-
-  {"id":"shape-subtype-01","bucket":"query_shape_subtype_queries","query":"political authority","expectedCanonical":null,"expectedMode":"no_exact_match","expectedQueryType":"subtype_query","expectedNormalizedQuery":"political authority","expectedInterpretation":{"interpretationType":"narrower_subtype","baseConcept":"authority","modifier":"political"},"expectedSuggestions":[],"checks":["deterministic_repeatability","stable_no_match","no_boundary_leak"],"notes":"Modifier plus authored concept should classify as subtype-shaped no-match."},
-  {"id":"shape-subtype-02","bucket":"query_shape_subtype_queries","query":"legal responsibility","expectedCanonical":null,"expectedMode":"no_exact_match","expectedQueryType":"subtype_query","expectedNormalizedQuery":"legal responsibility","expectedInterpretation":{"interpretationType":"narrower_subtype","baseConcept":"responsibility","modifier":"legal"},"expectedSuggestions":[],"checks":["deterministic_repeatability","stable_no_match","no_boundary_leak"],"notes":"Domain modifier should not force a new concept."},
-  {"id":"shape-subtype-03","bucket":"query_shape_subtype_queries","query":"political legitimacy","expectedCanonical":null,"expectedMode":"no_exact_match","expectedQueryType":"subtype_query","expectedNormalizedQuery":"political legitimacy","expectedInterpretation":{"interpretationType":"narrower_subtype","baseConcept":"legitimacy","modifier":"political"},"expectedSuggestions":[],"checks":["deterministic_repeatability","stable_no_match","no_boundary_leak"],"notes":"Subtype-shaped legitimacy query should stay refusal-first."},
-  {"id":"shape-subtype-04","bucket":"query_shape_subtype_queries","query":"public duty","expectedCanonical":null,"expectedMode":"no_exact_match","expectedQueryType":"subtype_query","expectedNormalizedQuery":"public duty","expectedInterpretation":{"interpretationType":"narrower_subtype","baseConcept":"duty","modifier":"public"},"expectedSuggestions":[],"checks":["deterministic_repeatability","stable_no_match","no_boundary_leak"],"notes":"Public modifier should be treated as narrower duty phrasing, not guessed content."},
-  {"id":"shape-subtype-05","bucket":"query_shape_subtype_queries","query":"coercive power","expectedCanonical":null,"expectedMode":"no_exact_match","expectedQueryType":"subtype_query","expectedNormalizedQuery":"coercive power","expectedInterpretation":{"interpretationType":"narrower_subtype","baseConcept":"power","modifier":"coercive"},"expectedSuggestions":[],"checks":["deterministic_repeatability","stable_no_match","no_boundary_leak"],"notes":"Subtype-shaped power phrasing should remain non-compositional."},
-  {"id":"shape-subtype-06","bucket":"query_shape_subtype_queries","query":"military duty","expectedCanonical":null,"expectedMode":"no_exact_match","expectedQueryType":"subtype_query","expectedNormalizedQuery":"military duty","expectedInterpretation":{"interpretationType":"narrower_subtype","baseConcept":"duty","modifier":"military"},"expectedSuggestions":[],"checks":["deterministic_repeatability","stable_no_match","no_boundary_leak"],"notes":"Duty specialization should be recognized without inventing a canonical subtype."},
-
-  {"id":"shape-comparison-01","bucket":"query_shape_comparison_queries","query":"authority vs power","expectedCanonical":null,"expectedMode":"comparison","expectedQueryType":"comparison_query","expectedNormalizedQuery":"authority vs power","expectedComparison":{"conceptA":"authority","conceptB":"power","axes":[{"axis":"core_nature"},{"axis":"depends_on"},{"axis":"not_equivalent","statement":"authority is not power; power does not require authority"}]},"checks":["deterministic_repeatability","strict_schema_output","no_collapse_authority_power"],"notes":"Comparison should now return the authored allowlisted pair."},
-  {"id":"shape-comparison-02","bucket":"query_shape_comparison_queries","query":"authority versus legitimacy","expectedCanonical":null,"expectedMode":"comparison","expectedQueryType":"comparison_query","expectedNormalizedQuery":"authority versus legitimacy","expectedComparison":{"conceptA":"authority","conceptB":"legitimacy","axes":[{"axis":"core_nature"},{"axis":"depends_on"},{"axis":"not_equivalent","statement":"authority is not legitimacy; a role may have authority while its legitimacy is contested"}]},"checks":["deterministic_repeatability","strict_schema_output","no_collapse_authority_legitimacy"],"notes":"Versus phrasing should resolve to the authored authority-legitimacy comparison."},
-  {"id":"shape-comparison-03","bucket":"query_shape_comparison_queries","query":"power or authority","expectedCanonical":null,"expectedMode":"comparison","expectedQueryType":"comparison_query","expectedNormalizedQuery":"power or authority","expectedComparison":{"conceptA":"authority","conceptB":"power"},"checks":["deterministic_repeatability","strict_schema_output","no_collapse_authority_power"],"notes":"Disjunctive comparison should return the same normalized pair payload."},
-  {"id":"shape-comparison-04","bucket":"query_shape_comparison_queries","query":"legitimacy or power","expectedCanonical":null,"expectedMode":"comparison","expectedQueryType":"comparison_query","expectedNormalizedQuery":"legitimacy or power","expectedComparison":{"conceptA":"legitimacy","conceptB":"power","axes":[{"axis":"core_nature"},{"axis":"depends_on"},{"axis":"not_equivalent","statement":"legitimacy is not power; power may operate without legitimacy"}]},"checks":["deterministic_repeatability","strict_schema_output","preserve_distinction_power_legitimacy"],"notes":"Allowlisted legitimacy-power comparison should be normalized and deterministic."},
-  {"id":"shape-comparison-05","bucket":"query_shape_comparison_queries","query":"responsibility vs duty","expectedCanonical":null,"expectedMode":"comparison","expectedQueryType":"comparison_query","expectedNormalizedQuery":"responsibility vs duty","expectedComparison":{"conceptA":"duty","conceptB":"responsibility","axes":[{"axis":"core_nature"},{"axis":"depends_on"},{"axis":"not_equivalent","statement":"duty is not responsibility; required conduct does not by itself settle answerability"}]},"checks":["deterministic_repeatability","strict_schema_output","preserve_distinction_responsibility_duty"],"notes":"Boundary pair should resolve only through its authored comparison axes."},
-  {"id":"shape-comparison-06","bucket":"query_shape_comparison_queries","query":"power versus legitimacy","expectedCanonical":null,"expectedMode":"comparison","expectedQueryType":"comparison_query","expectedNormalizedQuery":"power versus legitimacy","expectedComparison":{"conceptA":"legitimacy","conceptB":"power"},"checks":["deterministic_repeatability","strict_schema_output","preserve_distinction_power_legitimacy"],"notes":"Power and legitimacy should remain distinct under the authored comparison payload."},
-  {"id":"shape-comparison-07","bucket":"query_shape_comparison_queries","query":"power vs authority","expectedCanonical":null,"expectedMode":"comparison","expectedQueryType":"comparison_query","expectedNormalizedQuery":"power vs authority","expectedComparison":{"conceptA":"authority","conceptB":"power"},"checks":["deterministic_repeatability","strict_schema_output","no_collapse_authority_power"],"notes":"Order-flipped comparison should normalize to the same payload."},
-  {"id":"shape-comparison-08","bucket":"query_shape_comparison_queries","query":"authority vs trust","expectedCanonical":null,"expectedMode":"no_exact_match","expectedQueryType":"comparison_query","expectedNormalizedQuery":"authority vs trust","expectedInterpretation":{"interpretationType":"comparison_not_supported","concepts":["authority"]},"expectedSuggestions":[],"checks":["deterministic_repeatability","no_forced_match","no_boundary_leak"],"notes":"Missing authored concept in a comparison must refuse cleanly."},
-  {"id":"shape-comparison-09","bucket":"query_shape_comparison_queries","query":"authority vs power vs legitimacy","expectedCanonical":null,"expectedMode":"no_exact_match","expectedQueryType":"comparison_query","expectedNormalizedQuery":"authority vs power vs legitimacy","expectedInterpretation":{"interpretationType":"comparison_not_supported","concepts":["authority","power","legitimacy"]},"expectedSuggestions":[],"checks":["deterministic_repeatability","no_forced_match","no_boundary_leak"],"notes":"Comparison queries with more than two concepts must refuse."},
-  {"id":"shape-comparison-10","bucket":"query_shape_comparison_queries","query":"is authority the same as power","expectedCanonical":null,"expectedMode":"comparison","expectedQueryType":"comparison_query","expectedNormalizedQuery":"is authority the same as power","expectedComparison":{"conceptA":"authority","conceptB":"power"},"checks":["deterministic_repeatability","strict_schema_output","no_collapse_authority_power"],"notes":"Same-as phrasing should classify and resolve through the authored comparison payload."},
-
-  {"id":"shape-relation-01","bucket":"query_shape_relation_queries","query":"power without legitimacy","expectedCanonical":null,"expectedMode":"no_exact_match","expectedQueryType":"relation_query","expectedNormalizedQuery":"power without legitimacy","expectedInterpretation":{"interpretationType":"relation_not_supported","concepts":["power","legitimacy"],"relationTerm":"without"},"expectedSuggestions":[],"checks":["deterministic_repeatability","no_forced_match","preserve_distinction_power_legitimacy"],"notes":"Relation classification should acknowledge the pair without answering it."},
-  {"id":"shape-relation-02","bucket":"query_shape_relation_queries","query":"authority without legitimacy","expectedCanonical":null,"expectedMode":"no_exact_match","expectedQueryType":"relation_query","expectedNormalizedQuery":"authority without legitimacy","expectedInterpretation":{"interpretationType":"relation_not_supported","concepts":["authority","legitimacy"],"relationTerm":"without"},"expectedSuggestions":[],"checks":["deterministic_repeatability","no_forced_match","no_collapse_authority_legitimacy"],"notes":"Authority-legitimacy relation should remain refusal-first."},
-  {"id":"shape-relation-03","bucket":"query_shape_relation_queries","query":"legitimacy without power","expectedCanonical":null,"expectedMode":"no_exact_match","expectedQueryType":"relation_query","expectedNormalizedQuery":"legitimacy without power","expectedInterpretation":{"interpretationType":"relation_not_supported","concepts":["legitimacy","power"],"relationTerm":"without"},"expectedSuggestions":[],"checks":["deterministic_repeatability","no_forced_match","preserve_distinction_power_legitimacy"],"notes":"Reversed relation ordering should stay deterministic."},
-  {"id":"shape-relation-04","bucket":"query_shape_relation_queries","query":"power against authority","expectedCanonical":null,"expectedMode":"no_exact_match","expectedQueryType":"relation_query","expectedNormalizedQuery":"power against authority","expectedInterpretation":{"interpretationType":"relation_not_supported","concepts":["power","authority"],"relationTerm":"against"},"expectedSuggestions":[],"checks":["deterministic_repeatability","no_forced_match","no_collapse_authority_power"],"notes":"Adversarial relation wording should still classify cleanly."},
-  {"id":"shape-relation-05","bucket":"query_shape_relation_queries","query":"responsibility without duty","expectedCanonical":null,"expectedMode":"no_exact_match","expectedQueryType":"relation_query","expectedNormalizedQuery":"responsibility without duty","expectedInterpretation":{"interpretationType":"relation_not_supported","concepts":["responsibility","duty"],"relationTerm":"without"},"expectedSuggestions":[],"checks":["deterministic_repeatability","no_forced_match","preserve_distinction_responsibility_duty"],"notes":"Boundary pair should remain explicit under relation phrasing."},
-  {"id":"shape-relation-06","bucket":"query_shape_relation_queries","query":"duty under authority","expectedCanonical":null,"expectedMode":"no_exact_match","expectedQueryType":"relation_query","expectedNormalizedQuery":"duty under authority","expectedInterpretation":{"interpretationType":"relation_not_supported","concepts":["duty","authority"],"relationTerm":"under"},"expectedSuggestions":[],"checks":["deterministic_repeatability","no_forced_match","no_boundary_leak"],"notes":"Relation keyword detection should work outside the main watch pairs too."},
-
-  {"id":"shape-role-01","bucket":"query_shape_role_actor_queries","query":"who holds authority","expectedCanonical":null,"expectedMode":"no_exact_match","expectedQueryType":"role_or_actor_query","expectedNormalizedQuery":"who holds authority","expectedInterpretation":{"interpretationType":"role_or_actor_not_supported","baseConcept":"authority","actorTerm":"who holds"},"expectedSuggestions":[],"checks":["deterministic_repeatability","stable_no_match","no_boundary_leak"],"notes":"Holder query should be classified explicitly."},
-  {"id":"shape-role-02","bucket":"query_shape_role_actor_queries","query":"who has power","expectedCanonical":null,"expectedMode":"no_exact_match","expectedQueryType":"role_or_actor_query","expectedNormalizedQuery":"who has power","expectedInterpretation":{"interpretationType":"role_or_actor_not_supported","baseConcept":"power","actorTerm":"who has"},"expectedSuggestions":[],"checks":["deterministic_repeatability","stable_no_match","no_boundary_leak"],"notes":"Actor query should not be treated as concept resolution."},
-  {"id":"shape-role-03","bucket":"query_shape_role_actor_queries","query":"who has legitimacy","expectedCanonical":null,"expectedMode":"no_exact_match","expectedQueryType":"role_or_actor_query","expectedNormalizedQuery":"who has legitimacy","expectedInterpretation":{"interpretationType":"role_or_actor_not_supported","baseConcept":"legitimacy","actorTerm":"who has"},"expectedSuggestions":[],"checks":["deterministic_repeatability","stable_no_match","no_boundary_leak"],"notes":"Legitimacy holder query should remain within actor-query refusal."},
-  {"id":"shape-role-04","bucket":"query_shape_role_actor_queries","query":"who holds responsibility","expectedCanonical":null,"expectedMode":"no_exact_match","expectedQueryType":"role_or_actor_query","expectedNormalizedQuery":"who holds responsibility","expectedInterpretation":{"interpretationType":"role_or_actor_not_supported","baseConcept":"responsibility","actorTerm":"who holds"},"expectedSuggestions":[],"checks":["deterministic_repeatability","stable_no_match","no_boundary_leak"],"notes":"Responsibility actor phrasing should not be misread as subtype."},
-  {"id":"shape-role-05","bucket":"query_shape_role_actor_queries","query":"who decides duty","expectedCanonical":null,"expectedMode":"no_exact_match","expectedQueryType":"role_or_actor_query","expectedNormalizedQuery":"who decides duty","expectedInterpretation":{"interpretationType":"role_or_actor_not_supported","baseConcept":"duty","actorTerm":"who decides"},"expectedSuggestions":[],"checks":["deterministic_repeatability","stable_no_match","no_boundary_leak"],"notes":"Role-query detection should cover other supported actor prefixes."},
-  {"id":"shape-role-06","bucket":"query_shape_role_actor_queries","query":"who governs authority","expectedCanonical":null,"expectedMode":"no_exact_match","expectedQueryType":"role_or_actor_query","expectedNormalizedQuery":"who governs authority","expectedInterpretation":{"interpretationType":"role_or_actor_not_supported","baseConcept":"authority","actorTerm":"who governs"},"expectedSuggestions":[],"checks":["deterministic_repeatability","stable_no_match","no_boundary_leak"],"notes":"Governance phrasing should stay inside the actor-query bucket."},
-
-  {"id":"shape-unsupported-01","bucket":"query_shape_unsupported_queries","query":"why authority","expectedCanonical":null,"expectedMode":"no_exact_match","expectedQueryType":"unsupported_complex_query","expectedNormalizedQuery":"why authority","expectedInterpretation":{"interpretationType":"unsupported_complex"},"expectedSuggestions":[],"checks":["deterministic_repeatability","stable_no_match","no_forced_match"],"notes":"Why-question should not be misread as a subtype."},
-  {"id":"shape-unsupported-02","bucket":"query_shape_unsupported_queries","query":"how power","expectedCanonical":null,"expectedMode":"no_exact_match","expectedQueryType":"unsupported_complex_query","expectedNormalizedQuery":"how power","expectedInterpretation":{"interpretationType":"unsupported_complex"},"expectedSuggestions":[],"checks":["deterministic_repeatability","stable_no_match","no_forced_match"],"notes":"How-question should remain unsupported, not subtype-shaped."},
-  {"id":"shape-unsupported-03","bucket":"query_shape_unsupported_queries","query":"tell me authority","expectedCanonical":null,"expectedMode":"no_exact_match","expectedQueryType":"unsupported_complex_query","expectedNormalizedQuery":"tell me authority","expectedInterpretation":{"interpretationType":"unsupported_complex"},"expectedSuggestions":[],"checks":["deterministic_repeatability","stable_no_match","no_forced_match"],"notes":"Loose imperative phrasing should stay unsupported."},
-  {"id":"shape-unsupported-04","bucket":"query_shape_unsupported_queries","query":"how duty","expectedCanonical":null,"expectedMode":"no_exact_match","expectedQueryType":"unsupported_complex_query","expectedNormalizedQuery":"how duty","expectedInterpretation":{"interpretationType":"unsupported_complex"},"expectedSuggestions":[],"checks":["deterministic_repeatability","stable_no_match","no_forced_match"],"notes":"Unsupported interrogative phrasing should not be treated as subtype or actor query."},
-  {"id":"shape-unsupported-05","bucket":"query_shape_unsupported_queries","query":"can legitimacy fail","expectedCanonical":null,"expectedMode":"no_exact_match","expectedQueryType":"unsupported_complex_query","expectedNormalizedQuery":"can legitimacy fail","expectedInterpretation":{"interpretationType":"unsupported_complex"},"expectedSuggestions":[],"checks":["deterministic_repeatability","stable_no_match","no_forced_match"],"notes":"Modal question should remain unsupported complex."},
-  {"id":"shape-unsupported-06","bucket":"query_shape_unsupported_queries","query":"where responsibility","expectedCanonical":null,"expectedMode":"no_exact_match","expectedQueryType":"unsupported_complex_query","expectedNormalizedQuery":"where responsibility","expectedInterpretation":{"interpretationType":"unsupported_complex"},"expectedSuggestions":[],"checks":["deterministic_repeatability","stable_no_match","no_forced_match"],"notes":"Location-style question should remain unsupported complex."}
+  {
+    "id": "direct-authority-01",
+    "bucket": "direct_canonical_queries",
+    "query": "authority",
+    "expectedCanonical": "authority",
+    "expectedMode": "concept_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_collapse_authority_power",
+      "no_collapse_authority_legitimacy"
+    ],
+    "notes": "Baseline authority resolution."
+  },
+  {
+    "id": "direct-power-01",
+    "bucket": "direct_canonical_queries",
+    "query": "power",
+    "expectedCanonical": "power",
+    "expectedMode": "concept_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_collapse_authority_power",
+      "preserve_distinction_power_legitimacy"
+    ],
+    "notes": "Baseline power resolution."
+  },
+  {
+    "id": "direct-legitimacy-01",
+    "bucket": "direct_canonical_queries",
+    "query": "legitimacy",
+    "expectedCanonical": "legitimacy",
+    "expectedMode": "concept_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_collapse_authority_legitimacy",
+      "preserve_distinction_power_legitimacy"
+    ],
+    "notes": "Baseline legitimacy resolution."
+  },
+  {
+    "id": "direct-responsibility-01",
+    "bucket": "direct_canonical_queries",
+    "query": "responsibility",
+    "expectedCanonical": "responsibility",
+    "expectedMode": "concept_match",
+    "checks": [
+      "deterministic_repeatability",
+      "preserve_distinction_responsibility_duty"
+    ],
+    "notes": "Baseline responsibility resolution."
+  },
+  {
+    "id": "direct-duty-01",
+    "bucket": "direct_canonical_queries",
+    "query": "duty",
+    "expectedCanonical": "duty",
+    "expectedMode": "concept_match",
+    "checks": [
+      "deterministic_repeatability",
+      "preserve_distinction_responsibility_duty"
+    ],
+    "notes": "Baseline duty resolution."
+  },
+  {
+    "id": "direct-authority-02",
+    "bucket": "direct_canonical_queries",
+    "query": "what is authority",
+    "expectedCanonical": "authority",
+    "expectedMode": "concept_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_collapse_authority_power",
+      "no_collapse_authority_legitimacy"
+    ],
+    "notes": "Filler stripping should preserve authority."
+  },
+  {
+    "id": "direct-power-02",
+    "bucket": "direct_canonical_queries",
+    "query": "define power",
+    "expectedCanonical": "power",
+    "expectedMode": "concept_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_collapse_authority_power",
+      "preserve_distinction_power_legitimacy"
+    ],
+    "notes": "Definition prompt should still hit power."
+  },
+  {
+    "id": "direct-legitimacy-02",
+    "bucket": "direct_canonical_queries",
+    "query": "meaning of legitimacy",
+    "expectedCanonical": "legitimacy",
+    "expectedMode": "concept_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_collapse_authority_legitimacy",
+      "preserve_distinction_power_legitimacy"
+    ],
+    "notes": "Meaning prefix should preserve legitimacy."
+  },
+  {
+    "id": "direct-responsibility-02",
+    "bucket": "direct_canonical_queries",
+    "query": "what is responsibility",
+    "expectedCanonical": "responsibility",
+    "expectedMode": "concept_match",
+    "checks": [
+      "deterministic_repeatability",
+      "preserve_distinction_responsibility_duty"
+    ],
+    "notes": "Question form should preserve responsibility."
+  },
+  {
+    "id": "direct-duty-02",
+    "bucket": "direct_canonical_queries",
+    "query": "explain duty",
+    "expectedCanonical": "duty",
+    "expectedMode": "concept_match",
+    "checks": [
+      "deterministic_repeatability",
+      "preserve_distinction_responsibility_duty"
+    ],
+    "notes": "Explain prompt should preserve duty."
+  },
+  {
+    "id": "rejected-defeasibility-01",
+    "bucket": "rejected_concept_queries",
+    "query": "defeasibility",
+    "expectedCanonical": "defeasibility",
+    "expectedMode": "rejected_concept",
+    "expectedMethod": "rejection_registry",
+    "expectedQueryType": "exact_concept_query",
+    "expectedNormalizedQuery": "defeasibility",
+    "expectedInterpretation": {
+      "interpretationType": "explicitly_rejected_concept",
+      "targetConceptId": "defeasibility"
+    },
+    "checks": [
+      "deterministic_repeatability",
+      "rejection_registry_wins"
+    ],
+    "notes": "Standalone defeasibility must resolve through explicit structural rejection, not no-match or heuristic framing."
+  },
+  {
+    "id": "rejected-defeasibility-02",
+    "bucket": "rejected_concept_queries",
+    "query": "what is defeasibility",
+    "expectedCanonical": "defeasibility",
+    "expectedMode": "rejected_concept",
+    "expectedMethod": "rejection_registry",
+    "expectedQueryType": "exact_concept_query",
+    "expectedNormalizedQuery": "defeasibility",
+    "expectedInterpretation": {
+      "interpretationType": "explicitly_rejected_concept",
+      "targetConceptId": "defeasibility"
+    },
+    "checks": [
+      "deterministic_repeatability",
+      "rejection_registry_wins"
+    ],
+    "notes": "Question-form defeasibility must resolve through explicit structural rejection before any unmatched-query shaping."
+  },
+  {
+    "id": "governance-scope-authority-01",
+    "bucket": "governance_scope_clear_refusals",
+    "query": "epistemic authority",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedMethod": "out_of_scope",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedNormalizedQuery": "epistemic authority",
+    "expectedInterpretation": {
+      "interpretationType": "out_of_scope",
+      "concept": "authority",
+      "domain": "governance",
+      "message": "This concept is defined within the governance domain in ChatPDM and does not cover the requested usage."
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "governance_scope_enforced"
+    ],
+    "notes": "Non-governance authority usage must not resolve to the governance-scoped canonical concept."
+  },
+  {
+    "id": "governance-scope-authority-02",
+    "bucket": "governance_scope_clear_refusals",
+    "query": "parental authority",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedMethod": "out_of_scope",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedNormalizedQuery": "parental authority",
+    "expectedInterpretation": {
+      "interpretationType": "out_of_scope",
+      "concept": "authority",
+      "domain": "governance",
+      "message": "This concept is defined within the governance domain in ChatPDM and does not cover the requested usage."
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "governance_scope_enforced"
+    ],
+    "notes": "Parental authority must remain out of scope for the governance canonical packet."
+  },
+  {
+    "id": "governance-scope-authority-03",
+    "bucket": "governance_scope_clear_refusals",
+    "query": "professional authority",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedMethod": "out_of_scope",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedNormalizedQuery": "professional authority",
+    "expectedInterpretation": {
+      "interpretationType": "out_of_scope",
+      "concept": "authority",
+      "domain": "governance",
+      "message": "This concept is defined within the governance domain in ChatPDM and does not cover the requested usage."
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "governance_scope_enforced"
+    ],
+    "notes": "Professional authority must not silently map to governance-scoped authority."
+  },
+  {
+    "id": "governance-scope-authority-04",
+    "bucket": "governance_scope_clear_refusals",
+    "query": "charismatic authority",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedMethod": "out_of_scope",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedNormalizedQuery": "charismatic authority",
+    "expectedInterpretation": {
+      "interpretationType": "out_of_scope",
+      "concept": "authority",
+      "domain": "governance",
+      "message": "This concept is defined within the governance domain in ChatPDM and does not cover the requested usage."
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "governance_scope_enforced"
+    ],
+    "notes": "Charismatic authority must stay outside the governance-scoped canonical packet."
+  },
+  {
+    "id": "governance-scope-authority-05",
+    "bucket": "governance_scope_clear_refusals",
+    "query": "moral authority",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedMethod": "out_of_scope",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedNormalizedQuery": "moral authority",
+    "expectedInterpretation": {
+      "interpretationType": "out_of_scope",
+      "concept": "authority",
+      "domain": "governance",
+      "message": "This concept is defined within the governance domain in ChatPDM and does not cover the requested usage."
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "governance_scope_enforced"
+    ],
+    "notes": "Moral authority must resolve through governance-scope refusal rather than generic no-match."
+  },
+  {
+    "id": "governance-scope-power-01",
+    "bucket": "governance_scope_clear_refusals",
+    "query": "electrical power",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedMethod": "out_of_scope",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedNormalizedQuery": "electrical power",
+    "expectedInterpretation": {
+      "interpretationType": "out_of_scope",
+      "concept": "power",
+      "domain": "governance",
+      "message": "This concept is defined within the governance domain in ChatPDM and does not cover the requested usage."
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "governance_scope_enforced"
+    ],
+    "notes": "Electrical power must not resolve to governance-scoped power."
+  },
+  {
+    "id": "governance-scope-power-02",
+    "bucket": "governance_scope_clear_refusals",
+    "query": "statistical power",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedMethod": "out_of_scope",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedNormalizedQuery": "statistical power",
+    "expectedInterpretation": {
+      "interpretationType": "out_of_scope",
+      "concept": "power",
+      "domain": "governance",
+      "message": "This concept is defined within the governance domain in ChatPDM and does not cover the requested usage."
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "governance_scope_enforced"
+    ],
+    "notes": "Statistical power must remain outside the governance packet."
+  },
+  {
+    "id": "governance-scope-power-03",
+    "bucket": "governance_scope_clear_refusals",
+    "query": "computing power",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedMethod": "out_of_scope",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedNormalizedQuery": "computing power",
+    "expectedInterpretation": {
+      "interpretationType": "out_of_scope",
+      "concept": "power",
+      "domain": "governance",
+      "message": "This concept is defined within the governance domain in ChatPDM and does not cover the requested usage."
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "governance_scope_enforced"
+    ],
+    "notes": "Computing power must remain outside the governance packet."
+  },
+  {
+    "id": "governance-scope-power-04",
+    "bucket": "governance_scope_clear_refusals",
+    "query": "magical power",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedMethod": "out_of_scope",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedNormalizedQuery": "magical power",
+    "expectedInterpretation": {
+      "interpretationType": "out_of_scope",
+      "concept": "power",
+      "domain": "governance",
+      "message": "This concept is defined within the governance domain in ChatPDM and does not cover the requested usage."
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "governance_scope_enforced"
+    ],
+    "notes": "Magical power must remain outside the governance packet."
+  },
+  {
+    "id": "governance-scope-power-05",
+    "bucket": "governance_scope_clear_refusals",
+    "query": "physical power",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedMethod": "out_of_scope",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedNormalizedQuery": "physical power",
+    "expectedInterpretation": {
+      "interpretationType": "out_of_scope",
+      "concept": "power",
+      "domain": "governance",
+      "message": "This concept is defined within the governance domain in ChatPDM and does not cover the requested usage."
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "governance_scope_enforced"
+    ],
+    "notes": "Physical power must resolve through governance-scope refusal rather than generic subtype no-match."
+  },
+  {
+    "id": "governance-scope-legitimacy-01",
+    "bucket": "governance_scope_clear_refusals",
+    "query": "artistic legitimacy",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedMethod": "out_of_scope",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedNormalizedQuery": "artistic legitimacy",
+    "expectedInterpretation": {
+      "interpretationType": "out_of_scope",
+      "concept": "legitimacy",
+      "domain": "governance",
+      "message": "This concept is defined within the governance domain in ChatPDM and does not cover the requested usage."
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "governance_scope_enforced"
+    ],
+    "notes": "Artistic legitimacy must refuse against the governance-scoped concept."
+  },
+  {
+    "id": "governance-scope-legitimacy-02",
+    "bucket": "governance_scope_clear_refusals",
+    "query": "religious legitimacy",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedMethod": "out_of_scope",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedNormalizedQuery": "religious legitimacy",
+    "expectedInterpretation": {
+      "interpretationType": "out_of_scope",
+      "concept": "legitimacy",
+      "domain": "governance",
+      "message": "This concept is defined within the governance domain in ChatPDM and does not cover the requested usage."
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "governance_scope_enforced"
+    ],
+    "notes": "Religious legitimacy must refuse against the governance-scoped concept."
+  },
+  {
+    "id": "governance-scope-legitimacy-03",
+    "bucket": "governance_scope_clear_refusals",
+    "query": "social legitimacy",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedMethod": "out_of_scope",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedNormalizedQuery": "social legitimacy",
+    "expectedInterpretation": {
+      "interpretationType": "out_of_scope",
+      "concept": "legitimacy",
+      "domain": "governance",
+      "message": "This concept is defined within the governance domain in ChatPDM and does not cover the requested usage."
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "governance_scope_enforced"
+    ],
+    "notes": "Social legitimacy must refuse against the governance-scoped concept."
+  },
+  {
+    "id": "governance-scope-legitimacy-04",
+    "bucket": "governance_scope_clear_refusals",
+    "query": "moral legitimacy",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedMethod": "out_of_scope",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedNormalizedQuery": "moral legitimacy",
+    "expectedInterpretation": {
+      "interpretationType": "out_of_scope",
+      "concept": "legitimacy",
+      "domain": "governance",
+      "message": "This concept is defined within the governance domain in ChatPDM and does not cover the requested usage."
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "governance_scope_enforced"
+    ],
+    "notes": "Moral legitimacy must resolve through governance-scope refusal rather than generic no-match."
+  },
+  {
+    "id": "governance-scope-mixed-01",
+    "bucket": "governance_scope_mixed_queries",
+    "query": "authority in science",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedMethod": "no_exact_match",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedNormalizedQuery": "authority in science",
+    "expectedInterpretation": {
+      "interpretationType": "unsupported_complex"
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "governance_scope_enforced"
+    ],
+    "notes": "Mixed non-governance framing must not silently universalize authority into the governance packet."
+  },
+  {
+    "id": "governance-scope-mixed-02",
+    "bucket": "governance_scope_mixed_queries",
+    "query": "power in physics",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedMethod": "no_exact_match",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedNormalizedQuery": "power in physics",
+    "expectedInterpretation": {
+      "interpretationType": "unsupported_complex"
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "governance_scope_enforced"
+    ],
+    "notes": "Physics phrasing must not silently universalize governance-scoped power."
+  },
+  {
+    "id": "governance-scope-mixed-03",
+    "bucket": "governance_scope_mixed_queries",
+    "query": "legitimacy in art",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedMethod": "no_exact_match",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedNormalizedQuery": "legitimacy in art",
+    "expectedInterpretation": {
+      "interpretationType": "unsupported_complex"
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "governance_scope_enforced"
+    ],
+    "notes": "Art phrasing must not silently universalize governance-scoped legitimacy."
+  },
+  {
+    "id": "governance-scope-mixed-04",
+    "bucket": "governance_scope_mixed_queries",
+    "query": "moral authority in government",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedMethod": "no_exact_match",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedNormalizedQuery": "moral authority in government",
+    "expectedInterpretation": {
+      "interpretationType": "unsupported_complex"
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "governance_scope_enforced"
+    ],
+    "notes": "Mixed governance wording without a supported runtime shape must still avoid silent authority resolution."
+  },
+  {
+    "id": "governance-scope-mixed-05",
+    "bucket": "governance_scope_mixed_queries",
+    "query": "political legitimacy vs artistic legitimacy",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedMethod": "out_of_scope",
+    "expectedQueryType": "comparison_query",
+    "expectedNormalizedQuery": "political legitimacy vs artistic legitimacy",
+    "expectedInterpretation": {
+      "interpretationType": "scoped_clarification",
+      "concept": "legitimacy",
+      "domain": "governance",
+      "message": "This concept is governance-scoped in ChatPDM. Clarify a governance-domain usage to continue."
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "governance_scope_enforced"
+    ],
+    "notes": "Mixed governance and non-governance comparison phrasing should clarify scope rather than silently compare."
+  },
+  {
+    "id": "governance-scope-mixed-06",
+    "bucket": "governance_scope_mixed_queries",
+    "query": "professional authority and governance",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedMethod": "no_exact_match",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedNormalizedQuery": "professional authority and governance",
+    "expectedInterpretation": {
+      "interpretationType": "unsupported_complex"
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "governance_scope_enforced"
+    ],
+    "notes": "Mixed authority phrasing without a supported shape must still avoid silent governance resolution."
+  },
+  {
+    "id": "governance-scope-mixed-07",
+    "bucket": "governance_scope_mixed_queries",
+    "query": "electrical power and state power",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedMethod": "out_of_scope",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedNormalizedQuery": "electrical power and state power",
+    "expectedInterpretation": {
+      "interpretationType": "scoped_clarification",
+      "concept": "power",
+      "domain": "governance",
+      "message": "This concept is governance-scoped in ChatPDM. Clarify a governance-domain usage to continue."
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "governance_scope_enforced"
+    ],
+    "notes": "Mixed power phrasing should clarify scope rather than silently universalize power."
+  },
+  {
+    "id": "governance-scope-mixed-08",
+    "bucket": "governance_scope_mixed_queries",
+    "query": "legitimacy outside government",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedMethod": "no_exact_match",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedNormalizedQuery": "legitimacy outside government",
+    "expectedInterpretation": {
+      "interpretationType": "unsupported_complex"
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "governance_scope_enforced"
+    ],
+    "notes": "Negative governance phrasing must not silently resolve legitimacy."
+  },
+  {
+    "id": "governance-scope-mixed-09",
+    "bucket": "governance_scope_mixed_queries",
+    "query": "authority beyond governance",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedMethod": "no_exact_match",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedNormalizedQuery": "authority beyond governance",
+    "expectedInterpretation": {
+      "interpretationType": "unsupported_complex"
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "governance_scope_enforced"
+    ],
+    "notes": "Beyond-governance wording must not silently map authority back into the governance packet."
+  },
+  {
+    "id": "governance-scope-mixed-10",
+    "bucket": "governance_scope_mixed_queries",
+    "query": "power not politics",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedMethod": "no_exact_match",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedNormalizedQuery": "power not politics",
+    "expectedInterpretation": {
+      "interpretationType": "unsupported_complex"
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "governance_scope_enforced"
+    ],
+    "notes": "Anti-governance wording must not silently map power to the governance packet."
+  },
+  {
+    "id": "governance-scope-regression-01",
+    "bucket": "governance_scope_regression_queries",
+    "query": "authority",
+    "expectedCanonical": "authority",
+    "expectedMode": "concept_match",
+    "expectedQueryType": "exact_concept_query",
+    "expectedNormalizedQuery": "authority",
+    "checks": [
+      "deterministic_repeatability",
+      "no_collapse_authority_power",
+      "no_collapse_authority_legitimacy"
+    ],
+    "notes": "Governance-scoped authority baseline must remain unchanged."
+  },
+  {
+    "id": "governance-scope-regression-02",
+    "bucket": "governance_scope_regression_queries",
+    "query": "power",
+    "expectedCanonical": "power",
+    "expectedMode": "concept_match",
+    "expectedQueryType": "exact_concept_query",
+    "expectedNormalizedQuery": "power",
+    "checks": [
+      "deterministic_repeatability",
+      "no_collapse_authority_power",
+      "preserve_distinction_power_legitimacy"
+    ],
+    "notes": "Governance-scoped power baseline must remain unchanged."
+  },
+  {
+    "id": "governance-scope-regression-03",
+    "bucket": "governance_scope_regression_queries",
+    "query": "legitimacy",
+    "expectedCanonical": "legitimacy",
+    "expectedMode": "concept_match",
+    "expectedQueryType": "exact_concept_query",
+    "expectedNormalizedQuery": "legitimacy",
+    "checks": [
+      "deterministic_repeatability",
+      "no_collapse_authority_legitimacy",
+      "preserve_distinction_power_legitimacy"
+    ],
+    "notes": "Governance-scoped legitimacy baseline must remain unchanged."
+  },
+  {
+    "id": "governance-scope-regression-04",
+    "bucket": "governance_scope_regression_queries",
+    "query": "authority vs power",
+    "expectedCanonical": null,
+    "expectedMode": "comparison",
+    "expectedQueryType": "comparison_query",
+    "expectedNormalizedQuery": "authority vs power",
+    "expectedComparison": {
+      "conceptA": "authority",
+      "conceptB": "power"
+    },
+    "checks": [
+      "deterministic_repeatability",
+      "strict_schema_output",
+      "no_collapse_authority_power"
+    ],
+    "notes": "Authority-power comparison must remain unchanged under governance-scope enforcement."
+  },
+  {
+    "id": "governance-scope-regression-05",
+    "bucket": "governance_scope_regression_queries",
+    "query": "authority vs legitimacy",
+    "expectedCanonical": null,
+    "expectedMode": "comparison",
+    "expectedQueryType": "comparison_query",
+    "expectedNormalizedQuery": "authority vs legitimacy",
+    "expectedComparison": {
+      "conceptA": "authority",
+      "conceptB": "legitimacy"
+    },
+    "checks": [
+      "deterministic_repeatability",
+      "strict_schema_output",
+      "no_collapse_authority_legitimacy"
+    ],
+    "notes": "Authority-legitimacy comparison must remain unchanged under governance-scope enforcement."
+  },
+  {
+    "id": "governance-scope-regression-06",
+    "bucket": "governance_scope_regression_queries",
+    "query": "power vs legitimacy",
+    "expectedCanonical": null,
+    "expectedMode": "comparison",
+    "expectedQueryType": "comparison_query",
+    "expectedNormalizedQuery": "power vs legitimacy",
+    "expectedComparison": {
+      "conceptA": "legitimacy",
+      "conceptB": "power"
+    },
+    "checks": [
+      "deterministic_repeatability",
+      "strict_schema_output",
+      "preserve_distinction_power_legitimacy"
+    ],
+    "notes": "Power-legitimacy comparison must remain unchanged under governance-scope enforcement."
+  },
+  {
+    "id": "governance-scope-regression-07",
+    "bucket": "governance_scope_regression_queries",
+    "query": "is authority the same as power",
+    "expectedCanonical": null,
+    "expectedMode": "comparison",
+    "expectedQueryType": "comparison_query",
+    "expectedNormalizedQuery": "is authority the same as power",
+    "expectedComparison": {
+      "conceptA": "authority",
+      "conceptB": "power"
+    },
+    "checks": [
+      "deterministic_repeatability",
+      "strict_schema_output",
+      "no_collapse_authority_power"
+    ],
+    "notes": "Same-as comparison phrasing must remain unchanged."
+  },
+  {
+    "id": "governance-scope-regression-08",
+    "bucket": "governance_scope_regression_queries",
+    "query": "authority vs trust",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedMethod": "no_exact_match",
+    "expectedQueryType": "comparison_query",
+    "expectedNormalizedQuery": "authority vs trust",
+    "expectedInterpretation": {
+      "interpretationType": "comparison_not_supported",
+      "concepts": [
+        "authority"
+      ]
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "no_forced_match",
+      "no_boundary_leak"
+    ],
+    "notes": "Unsupported governance comparison must remain an honest refusal."
+  },
+  {
+    "id": "normalized-authority-01",
+    "bucket": "normalized_canonical_queries",
+    "query": "AUTHORITY",
+    "expectedCanonical": "authority",
+    "expectedMode": "concept_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_collapse_authority_power",
+      "no_collapse_authority_legitimacy"
+    ],
+    "notes": "Case normalization should preserve authority."
+  },
+  {
+    "id": "normalized-power-01",
+    "bucket": "normalized_canonical_queries",
+    "query": "Power!!!",
+    "expectedCanonical": "power",
+    "expectedMode": "concept_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_collapse_authority_power",
+      "preserve_distinction_power_legitimacy"
+    ],
+    "notes": "Punctuation stripping should preserve power."
+  },
+  {
+    "id": "normalized-legitimacy-01",
+    "bucket": "normalized_canonical_queries",
+    "query": "  legitimacy  ",
+    "expectedCanonical": "legitimacy",
+    "expectedMode": "concept_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_collapse_authority_legitimacy",
+      "preserve_distinction_power_legitimacy"
+    ],
+    "notes": "Trim should preserve legitimacy."
+  },
+  {
+    "id": "normalized-responsibility-01",
+    "bucket": "normalized_canonical_queries",
+    "query": "responsibility???",
+    "expectedCanonical": "responsibility",
+    "expectedMode": "concept_match",
+    "checks": [
+      "deterministic_repeatability",
+      "preserve_distinction_responsibility_duty"
+    ],
+    "notes": "Punctuation stripping should preserve responsibility."
+  },
+  {
+    "id": "normalized-duty-01",
+    "bucket": "normalized_canonical_queries",
+    "query": "duty!!!",
+    "expectedCanonical": "duty",
+    "expectedMode": "concept_match",
+    "checks": [
+      "deterministic_repeatability",
+      "preserve_distinction_responsibility_duty"
+    ],
+    "notes": "Punctuation stripping should preserve duty."
+  },
+  {
+    "id": "normalized-authority-02",
+    "bucket": "normalized_canonical_queries",
+    "query": "Tell me about authority",
+    "expectedCanonical": "authority",
+    "expectedMode": "concept_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_collapse_authority_power",
+      "no_collapse_authority_legitimacy"
+    ],
+    "notes": "Long filler phrase should preserve authority."
+  },
+  {
+    "id": "normalized-power-02",
+    "bucket": "normalized_canonical_queries",
+    "query": "WHAT ARE POWER",
+    "expectedCanonical": "power",
+    "expectedMode": "concept_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_collapse_authority_power",
+      "preserve_distinction_power_legitimacy"
+    ],
+    "notes": "Odd plural prompt should still normalize to power."
+  },
+  {
+    "id": "normalized-legitimacy-02",
+    "bucket": "normalized_canonical_queries",
+    "query": "explain legitimacy",
+    "expectedCanonical": "legitimacy",
+    "expectedMode": "concept_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_collapse_authority_legitimacy",
+      "preserve_distinction_power_legitimacy"
+    ],
+    "notes": "Explain prompt should preserve legitimacy."
+  },
+  {
+    "id": "normalized-responsibility-02",
+    "bucket": "normalized_canonical_queries",
+    "query": "define responsibility",
+    "expectedCanonical": "responsibility",
+    "expectedMode": "concept_match",
+    "checks": [
+      "deterministic_repeatability",
+      "preserve_distinction_responsibility_duty"
+    ],
+    "notes": "Definition prompt should preserve responsibility."
+  },
+  {
+    "id": "normalized-duty-02",
+    "bucket": "normalized_canonical_queries",
+    "query": "meaning of duty",
+    "expectedCanonical": "duty",
+    "expectedMode": "concept_match",
+    "checks": [
+      "deterministic_repeatability",
+      "preserve_distinction_responsibility_duty"
+    ],
+    "notes": "Meaning prefix should preserve duty."
+  },
+  {
+    "id": "canonical-id-authority",
+    "bucket": "canonical_id_queries",
+    "query": "concept:authority",
+    "expectedCanonical": "authority",
+    "expectedMode": "concept_match",
+    "expectedNormalizedQuery": "conceptauthority",
+    "checks": [
+      "deterministic_repeatability",
+      "raw_canonical_id_only"
+    ],
+    "notes": "Canonical ID should bypass alias lookup."
+  },
+  {
+    "id": "canonical-id-power",
+    "bucket": "canonical_id_queries",
+    "query": "concept:power",
+    "expectedCanonical": "power",
+    "expectedMode": "concept_match",
+    "expectedNormalizedQuery": "conceptpower",
+    "checks": [
+      "deterministic_repeatability",
+      "raw_canonical_id_only"
+    ],
+    "notes": "Canonical ID should resolve power."
+  },
+  {
+    "id": "canonical-id-legitimacy",
+    "bucket": "canonical_id_queries",
+    "query": "concept:legitimacy",
+    "expectedCanonical": "legitimacy",
+    "expectedMode": "concept_match",
+    "expectedNormalizedQuery": "conceptlegitimacy",
+    "checks": [
+      "deterministic_repeatability",
+      "raw_canonical_id_only"
+    ],
+    "notes": "Canonical ID should resolve legitimacy."
+  },
+  {
+    "id": "canonical-id-responsibility",
+    "bucket": "canonical_id_queries",
+    "query": "concept:responsibility",
+    "expectedCanonical": "responsibility",
+    "expectedMode": "concept_match",
+    "expectedNormalizedQuery": "conceptresponsibility",
+    "checks": [
+      "deterministic_repeatability",
+      "raw_canonical_id_only"
+    ],
+    "notes": "Canonical ID should resolve responsibility."
+  },
+  {
+    "id": "canonical-id-duty",
+    "bucket": "canonical_id_queries",
+    "query": "concept:duty",
+    "expectedCanonical": "duty",
+    "expectedMode": "concept_match",
+    "expectedNormalizedQuery": "conceptduty",
+    "checks": [
+      "deterministic_repeatability",
+      "raw_canonical_id_only"
+    ],
+    "notes": "Canonical ID should resolve duty."
+  },
+  {
+    "id": "canonical-id-missing",
+    "bucket": "canonical_id_queries",
+    "query": "concept:missing-id",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedNormalizedQuery": "conceptmissing-id",
+    "checks": [
+      "deterministic_repeatability",
+      "raw_canonical_id_only",
+      "stable_no_match"
+    ],
+    "notes": "Missing canonical ID must not fall through to alias matching."
+  },
+  {
+    "id": "canonical-id-uppercase",
+    "bucket": "canonical_id_queries",
+    "query": "concept:AUTHORITY",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedNormalizedQuery": "conceptauthority",
+    "checks": [
+      "deterministic_repeatability",
+      "raw_canonical_id_only",
+      "stable_no_match"
+    ],
+    "notes": "Canonical ID matching is raw and case-sensitive."
+  },
+  {
+    "id": "canonical-id-empty",
+    "bucket": "canonical_id_queries",
+    "query": "concept:",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedNormalizedQuery": "concept",
+    "checks": [
+      "deterministic_repeatability",
+      "raw_canonical_id_only",
+      "stable_no_match"
+    ],
+    "notes": "Empty canonical ID should return honest no-match."
+  },
+  {
+    "id": "canonical-id-leading-space",
+    "bucket": "canonical_id_queries",
+    "query": " concept:authority",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedNormalizedQuery": "conceptauthority",
+    "checks": [
+      "deterministic_repeatability",
+      "raw_canonical_id_only",
+      "stable_no_match"
+    ],
+    "notes": "Leading space should block raw canonical branch."
+  },
+  {
+    "id": "canonical-id-space-after-colon",
+    "bucket": "canonical_id_queries",
+    "query": "concept: duty",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedNormalizedQuery": "concept duty",
+    "checks": [
+      "deterministic_repeatability",
+      "raw_canonical_id_only",
+      "stable_no_match"
+    ],
+    "notes": "Whitespace inside canonical ID should not resolve."
+  },
+  {
+    "id": "rejected-obligation-01",
+    "bucket": "rejected_concept_queries",
+    "query": "obligation",
+    "expectedCanonical": null,
+    "expectedRejectedConceptId": "obligation",
+    "expectedMode": "rejected_concept",
+    "expectedQueryType": "exact_concept_query",
+    "expectedNormalizedQuery": "obligation",
+    "expectedRejection": {
+      "status": "REJECTED",
+      "decisionType": "STRUCTURAL_REJECTION",
+      "finality": true
+    },
+    "checks": [
+      "deterministic_repeatability",
+      "strict_schema_output",
+      "no_auto_pick"
+    ],
+    "notes": "Exact rejected concept query must surface the rejection registry before ambiguity routing."
+  },
+  {
+    "id": "rejected-obligation-02",
+    "bucket": "rejected_concept_queries",
+    "query": "OBLIGATION",
+    "expectedCanonical": null,
+    "expectedRejectedConceptId": "obligation",
+    "expectedMode": "rejected_concept",
+    "expectedQueryType": "exact_concept_query",
+    "expectedNormalizedQuery": "obligation",
+    "expectedRejection": {
+      "status": "REJECTED",
+      "decisionType": "STRUCTURAL_REJECTION",
+      "finality": true
+    },
+    "checks": [
+      "deterministic_repeatability",
+      "strict_schema_output",
+      "no_auto_pick"
+    ],
+    "notes": "Case normalization must still hit the rejection registry."
+  },
+  {
+    "id": "rejected-obligation-03",
+    "bucket": "rejected_concept_queries",
+    "query": "obligation???",
+    "expectedCanonical": null,
+    "expectedRejectedConceptId": "obligation",
+    "expectedMode": "rejected_concept",
+    "expectedQueryType": "exact_concept_query",
+    "expectedNormalizedQuery": "obligation",
+    "expectedRejection": {
+      "status": "REJECTED",
+      "decisionType": "STRUCTURAL_REJECTION",
+      "finality": true
+    },
+    "checks": [
+      "deterministic_repeatability",
+      "strict_schema_output",
+      "no_auto_pick"
+    ],
+    "notes": "Punctuation stripping must still hit the rejection registry."
+  },
+  {
+    "id": "rejected-obligation-04",
+    "bucket": "rejected_concept_queries",
+    "query": "what is obligation",
+    "expectedCanonical": null,
+    "expectedRejectedConceptId": "obligation",
+    "expectedMode": "rejected_concept",
+    "expectedQueryType": "exact_concept_query",
+    "expectedNormalizedQuery": "obligation",
+    "expectedRejection": {
+      "status": "REJECTED",
+      "decisionType": "STRUCTURAL_REJECTION",
+      "finality": true
+    },
+    "checks": [
+      "deterministic_repeatability",
+      "strict_schema_output",
+      "no_auto_pick"
+    ],
+    "notes": "Filler stripping must still hit the rejection registry."
+  },
+  {
+    "id": "rejected-obligation-05",
+    "bucket": "rejected_concept_queries",
+    "query": "define obligation",
+    "expectedCanonical": null,
+    "expectedRejectedConceptId": "obligation",
+    "expectedMode": "rejected_concept",
+    "expectedQueryType": "exact_concept_query",
+    "expectedNormalizedQuery": "obligation",
+    "expectedRejection": {
+      "status": "REJECTED",
+      "decisionType": "STRUCTURAL_REJECTION",
+      "finality": true
+    },
+    "checks": [
+      "deterministic_repeatability",
+      "strict_schema_output",
+      "no_auto_pick"
+    ],
+    "notes": "Definition-form queries must not fall through to authored ambiguity."
+  },
+  {
+    "id": "rejected-obligation-06",
+    "bucket": "rejected_concept_queries",
+    "query": "tell me about obligation",
+    "expectedCanonical": null,
+    "expectedRejectedConceptId": "obligation",
+    "expectedMode": "rejected_concept",
+    "expectedQueryType": "exact_concept_query",
+    "expectedNormalizedQuery": "obligation",
+    "expectedRejection": {
+      "status": "REJECTED",
+      "decisionType": "STRUCTURAL_REJECTION",
+      "finality": true
+    },
+    "checks": [
+      "deterministic_repeatability",
+      "strict_schema_output",
+      "no_auto_pick"
+    ],
+    "notes": "Long filler queries must still be rejected first-class."
+  },
+  {
+    "id": "rejected-obligation-07",
+    "bucket": "rejected_concept_queries",
+    "query": "meaning of obligation",
+    "expectedCanonical": null,
+    "expectedRejectedConceptId": "obligation",
+    "expectedMode": "rejected_concept",
+    "expectedQueryType": "exact_concept_query",
+    "expectedNormalizedQuery": "obligation",
+    "expectedRejection": {
+      "status": "REJECTED",
+      "decisionType": "STRUCTURAL_REJECTION",
+      "finality": true
+    },
+    "checks": [
+      "deterministic_repeatability",
+      "strict_schema_output",
+      "no_auto_pick"
+    ],
+    "notes": "Meaning-prefix queries must still be rejected first-class."
+  },
+  {
+    "id": "rejected-obligation-08",
+    "bucket": "rejected_concept_queries",
+    "query": "explain obligation",
+    "expectedCanonical": null,
+    "expectedRejectedConceptId": "obligation",
+    "expectedMode": "rejected_concept",
+    "expectedQueryType": "exact_concept_query",
+    "expectedNormalizedQuery": "obligation",
+    "expectedRejection": {
+      "status": "REJECTED",
+      "decisionType": "STRUCTURAL_REJECTION",
+      "finality": true
+    },
+    "checks": [
+      "deterministic_repeatability",
+      "strict_schema_output",
+      "no_auto_pick"
+    ],
+    "notes": "Explain-prefix queries must still be rejected first-class."
+  },
+  {
+    "id": "rejected-obligation-09",
+    "bucket": "rejected_concept_queries",
+    "query": "what are obligation",
+    "expectedCanonical": null,
+    "expectedRejectedConceptId": "obligation",
+    "expectedMode": "rejected_concept",
+    "expectedQueryType": "exact_concept_query",
+    "expectedNormalizedQuery": "obligation",
+    "expectedRejection": {
+      "status": "REJECTED",
+      "decisionType": "STRUCTURAL_REJECTION",
+      "finality": true
+    },
+    "checks": [
+      "deterministic_repeatability",
+      "strict_schema_output",
+      "no_auto_pick"
+    ],
+    "notes": "Odd plural filler must still normalize into the same rejection target."
+  },
+  {
+    "id": "rejected-obligation-10",
+    "bucket": "rejected_concept_queries",
+    "query": "  obligation  ",
+    "expectedCanonical": null,
+    "expectedRejectedConceptId": "obligation",
+    "expectedMode": "rejected_concept",
+    "expectedQueryType": "exact_concept_query",
+    "expectedNormalizedQuery": "obligation",
+    "expectedRejection": {
+      "status": "REJECTED",
+      "decisionType": "STRUCTURAL_REJECTION",
+      "finality": true
+    },
+    "checks": [
+      "deterministic_repeatability",
+      "strict_schema_output",
+      "no_auto_pick"
+    ],
+    "notes": "Trimmed queries must still resolve through the rejection registry."
+  },
+  {
+    "id": "rejected-claim-01",
+    "bucket": "rejected_concept_queries",
+    "query": "claim",
+    "expectedCanonical": null,
+    "expectedRejectedConceptId": "claim",
+    "expectedMode": "rejected_concept",
+    "expectedQueryType": "exact_concept_query",
+    "expectedNormalizedQuery": "claim",
+    "expectedRejection": {
+      "status": "REJECTED",
+      "decisionType": "STRUCTURAL_REJECTION",
+      "finality": true
+    },
+    "checks": [
+      "deterministic_repeatability",
+      "strict_schema_output",
+      "no_auto_pick"
+    ],
+    "notes": "Exact rejected concept query must surface the rejection registry for claim."
+  },
+  {
+    "id": "rejected-claim-02",
+    "bucket": "rejected_concept_queries",
+    "query": "CLAIM",
+    "expectedCanonical": null,
+    "expectedRejectedConceptId": "claim",
+    "expectedMode": "rejected_concept",
+    "expectedQueryType": "exact_concept_query",
+    "expectedNormalizedQuery": "claim",
+    "expectedRejection": {
+      "status": "REJECTED",
+      "decisionType": "STRUCTURAL_REJECTION",
+      "finality": true
+    },
+    "checks": [
+      "deterministic_repeatability",
+      "strict_schema_output",
+      "no_auto_pick"
+    ],
+    "notes": "Case normalization must still hit the rejection registry for claim."
+  },
+  {
+    "id": "rejected-liability-01",
+    "bucket": "rejected_concept_queries",
+    "query": "liability",
+    "expectedCanonical": null,
+    "expectedRejectedConceptId": "liability",
+    "expectedMode": "rejected_concept",
+    "expectedQueryType": "exact_concept_query",
+    "expectedNormalizedQuery": "liability",
+    "expectedRejection": {
+      "status": "REJECTED",
+      "decisionType": "STRUCTURAL_REJECTION",
+      "finality": true
+    },
+    "checks": [
+      "deterministic_repeatability",
+      "strict_schema_output",
+      "no_auto_pick"
+    ],
+    "notes": "Exact rejected concept query must surface the rejection registry for liability."
+  },
+  {
+    "id": "rejected-liability-02",
+    "bucket": "rejected_concept_queries",
+    "query": "LIABILITY",
+    "expectedCanonical": null,
+    "expectedRejectedConceptId": "liability",
+    "expectedMode": "rejected_concept",
+    "expectedQueryType": "exact_concept_query",
+    "expectedNormalizedQuery": "liability",
+    "expectedRejection": {
+      "status": "REJECTED",
+      "decisionType": "STRUCTURAL_REJECTION",
+      "finality": true
+    },
+    "checks": [
+      "deterministic_repeatability",
+      "strict_schema_output",
+      "no_auto_pick"
+    ],
+    "notes": "Case normalization must still hit the rejection registry for liability."
+  },
+  {
+    "id": "rejected-jurisdiction-01",
+    "bucket": "rejected_concept_queries",
+    "query": "jurisdiction",
+    "expectedCanonical": null,
+    "expectedRejectedConceptId": "jurisdiction",
+    "expectedMode": "rejected_concept",
+    "expectedQueryType": "exact_concept_query",
+    "expectedNormalizedQuery": "jurisdiction",
+    "expectedRejection": {
+      "status": "REJECTED",
+      "decisionType": "STRUCTURAL_REJECTION",
+      "finality": true
+    },
+    "checks": [
+      "deterministic_repeatability",
+      "strict_schema_output",
+      "no_auto_pick"
+    ],
+    "notes": "Exact rejected concept query must surface the rejection registry for jurisdiction."
+  },
+  {
+    "id": "rejected-jurisdiction-02",
+    "bucket": "rejected_concept_queries",
+    "query": "what is jurisdiction",
+    "expectedCanonical": null,
+    "expectedRejectedConceptId": "jurisdiction",
+    "expectedMode": "rejected_concept",
+    "expectedQueryType": "exact_concept_query",
+    "expectedNormalizedQuery": "jurisdiction",
+    "expectedRejection": {
+      "status": "REJECTED",
+      "decisionType": "STRUCTURAL_REJECTION",
+      "finality": true
+    },
+    "checks": [
+      "deterministic_repeatability",
+      "strict_schema_output",
+      "no_auto_pick"
+    ],
+    "notes": "Filler stripping must still hit the rejection registry for jurisdiction."
+  },
+  {
+    "id": "suggestion-civic-duty-01",
+    "bucket": "controlled_suggestion_queries",
+    "query": "civic duty",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedSuggestions": [
+      {
+        "conceptId": "duty",
+        "reason": "broader_topic"
+      }
+    ],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "use_authored_suggestion_only"
+    ],
+    "notes": "Baseline authored suggestion case."
+  },
+  {
+    "id": "suggestion-civic-duty-02",
+    "bucket": "controlled_suggestion_queries",
+    "query": "CIVIC DUTY",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedSuggestions": [
+      {
+        "conceptId": "duty",
+        "reason": "broader_topic"
+      }
+    ],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "use_authored_suggestion_only"
+    ],
+    "notes": "Case normalization should preserve authored suggestion."
+  },
+  {
+    "id": "suggestion-civic-duty-03",
+    "bucket": "controlled_suggestion_queries",
+    "query": "civic duty???",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedSuggestions": [
+      {
+        "conceptId": "duty",
+        "reason": "broader_topic"
+      }
+    ],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "use_authored_suggestion_only"
+    ],
+    "notes": "Punctuation stripping should preserve authored suggestion."
+  },
+  {
+    "id": "suggestion-civic-duty-04",
+    "bucket": "controlled_suggestion_queries",
+    "query": "what is civic duty",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedSuggestions": [
+      {
+        "conceptId": "duty",
+        "reason": "broader_topic"
+      }
+    ],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "use_authored_suggestion_only"
+    ],
+    "notes": "Question form should preserve authored suggestion."
+  },
+  {
+    "id": "suggestion-civic-duty-05",
+    "bucket": "controlled_suggestion_queries",
+    "query": "define civic duty",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedSuggestions": [
+      {
+        "conceptId": "duty",
+        "reason": "broader_topic"
+      }
+    ],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "use_authored_suggestion_only"
+    ],
+    "notes": "Definition form should preserve authored suggestion."
+  },
+  {
+    "id": "suggestion-civic-duty-06",
+    "bucket": "controlled_suggestion_queries",
+    "query": "tell me about civic duty",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedSuggestions": [
+      {
+        "conceptId": "duty",
+        "reason": "broader_topic"
+      }
+    ],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "use_authored_suggestion_only"
+    ],
+    "notes": "Long filler should preserve authored suggestion."
+  },
+  {
+    "id": "suggestion-civic-duty-07",
+    "bucket": "controlled_suggestion_queries",
+    "query": "meaning of civic duty",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedSuggestions": [
+      {
+        "conceptId": "duty",
+        "reason": "broader_topic"
+      }
+    ],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "use_authored_suggestion_only"
+    ],
+    "notes": "Meaning prefix should preserve authored suggestion."
+  },
+  {
+    "id": "suggestion-civic-duty-08",
+    "bucket": "controlled_suggestion_queries",
+    "query": "explain civic duty",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedSuggestions": [
+      {
+        "conceptId": "duty",
+        "reason": "broader_topic"
+      }
+    ],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "use_authored_suggestion_only"
+    ],
+    "notes": "Explain prefix should preserve authored suggestion."
+  },
+  {
+    "id": "suggestion-civic-duty-09",
+    "bucket": "controlled_suggestion_queries",
+    "query": "what are civic duty",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedSuggestions": [
+      {
+        "conceptId": "duty",
+        "reason": "broader_topic"
+      }
+    ],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "use_authored_suggestion_only"
+    ],
+    "notes": "Odd plural prompt should still preserve authored suggestion."
+  },
+  {
+    "id": "suggestion-civic-duty-10",
+    "bucket": "controlled_suggestion_queries",
+    "query": "civic  duty",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedSuggestions": [
+      {
+        "conceptId": "duty",
+        "reason": "broader_topic"
+      }
+    ],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "use_authored_suggestion_only"
+    ],
+    "notes": "Whitespace collapse should preserve authored suggestion."
+  },
+  {
+    "id": "contrast-authority-power-01",
+    "bucket": "pairwise_contrast_queries",
+    "query": "authority vs power",
+    "expectedCanonical": null,
+    "expectedMode": "comparison",
+    "expectedQueryType": "comparison_query",
+    "expectedNormalizedQuery": "authority vs power",
+    "expectedComparison": {
+      "conceptA": "authority",
+      "conceptB": "power",
+      "axes": [
+        {
+          "axis": "core_nature"
+        },
+        {
+          "axis": "depends_on"
+        },
+        {
+          "axis": "not_equivalent",
+          "statement": "authority is not power; power does not require authority"
+        }
+      ]
+    },
+    "checks": [
+      "deterministic_repeatability",
+      "strict_schema_output",
+      "no_collapse_authority_power"
+    ],
+    "notes": "Allowlisted comparison should return the authored authority-power contrast."
+  },
+  {
+    "id": "contrast-authority-legitimacy-01",
+    "bucket": "pairwise_contrast_queries",
+    "query": "authority vs legitimacy",
+    "expectedCanonical": null,
+    "expectedMode": "comparison",
+    "expectedQueryType": "comparison_query",
+    "expectedNormalizedQuery": "authority vs legitimacy",
+    "expectedComparison": {
+      "conceptA": "authority",
+      "conceptB": "legitimacy",
+      "axes": [
+        {
+          "axis": "core_nature"
+        },
+        {
+          "axis": "depends_on"
+        },
+        {
+          "axis": "not_equivalent",
+          "statement": "authority is not legitimacy; a role may have authority while its legitimacy is contested"
+        }
+      ]
+    },
+    "checks": [
+      "deterministic_repeatability",
+      "strict_schema_output",
+      "no_collapse_authority_legitimacy"
+    ],
+    "notes": "Allowlisted comparison should return the authored authority-legitimacy contrast."
+  },
+  {
+    "id": "contrast-power-legitimacy-01",
+    "bucket": "pairwise_contrast_queries",
+    "query": "power vs legitimacy",
+    "expectedCanonical": null,
+    "expectedMode": "comparison",
+    "expectedQueryType": "comparison_query",
+    "expectedNormalizedQuery": "power vs legitimacy",
+    "expectedComparison": {
+      "conceptA": "legitimacy",
+      "conceptB": "power",
+      "axes": [
+        {
+          "axis": "core_nature"
+        },
+        {
+          "axis": "depends_on"
+        },
+        {
+          "axis": "not_equivalent",
+          "statement": "legitimacy is not power; power may operate without legitimacy"
+        }
+      ]
+    },
+    "checks": [
+      "deterministic_repeatability",
+      "strict_schema_output",
+      "preserve_distinction_power_legitimacy"
+    ],
+    "notes": "Allowlisted comparison should return the authored power-legitimacy contrast."
+  },
+  {
+    "id": "contrast-consent-authority-01",
+    "bucket": "pairwise_contrast_queries",
+    "query": "consent vs authority",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_forced_match",
+      "manual_boundary_review"
+    ],
+    "notes": "Unsupported cluster pair should refuse honestly."
+  },
+  {
+    "id": "contrast-trust-legitimacy-01",
+    "bucket": "pairwise_contrast_queries",
+    "query": "trust vs legitimacy",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_forced_match",
+      "manual_boundary_review"
+    ],
+    "notes": "Unsupported cluster pair should refuse honestly."
+  },
+  {
+    "id": "contrast-responsibility-duty-01",
+    "bucket": "pairwise_contrast_queries",
+    "query": "responsibility vs duty",
+    "expectedCanonical": null,
+    "expectedMode": "comparison",
+    "expectedQueryType": "comparison_query",
+    "expectedNormalizedQuery": "responsibility vs duty",
+    "expectedComparison": {
+      "conceptA": "duty",
+      "conceptB": "responsibility",
+      "axes": [
+        {
+          "axis": "core_nature"
+        },
+        {
+          "axis": "depends_on"
+        },
+        {
+          "axis": "not_equivalent",
+          "statement": "duty is not responsibility; required conduct does not by itself settle answerability"
+        }
+      ]
+    },
+    "checks": [
+      "deterministic_repeatability",
+      "strict_schema_output",
+      "preserve_distinction_responsibility_duty"
+    ],
+    "notes": "Allowlisted comparison should return the authored responsibility-duty contrast."
+  },
+  {
+    "id": "contrast-law-legitimacy-01",
+    "bucket": "pairwise_contrast_queries",
+    "query": "law vs legitimacy",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_forced_match",
+      "manual_boundary_review"
+    ],
+    "notes": "Unsupported cluster pair should refuse honestly."
+  },
+  {
+    "id": "contrast-power-authority-or-01",
+    "bucket": "pairwise_contrast_queries",
+    "query": "power or authority",
+    "expectedCanonical": null,
+    "expectedMode": "comparison",
+    "expectedQueryType": "comparison_query",
+    "expectedNormalizedQuery": "power or authority",
+    "expectedComparison": {
+      "conceptA": "authority",
+      "conceptB": "power",
+      "axes": [
+        {
+          "axis": "core_nature"
+        },
+        {
+          "axis": "depends_on"
+        },
+        {
+          "axis": "not_equivalent",
+          "statement": "authority is not power; power does not require authority"
+        }
+      ]
+    },
+    "checks": [
+      "deterministic_repeatability",
+      "strict_schema_output",
+      "no_collapse_authority_power"
+    ],
+    "notes": "Disjunctive phrasing should still resolve to the authored authority-power comparison."
+  },
+  {
+    "id": "contrast-legitimacy-authority-or-01",
+    "bucket": "pairwise_contrast_queries",
+    "query": "legitimacy or authority",
+    "expectedCanonical": null,
+    "expectedMode": "comparison",
+    "expectedQueryType": "comparison_query",
+    "expectedNormalizedQuery": "legitimacy or authority",
+    "expectedComparison": {
+      "conceptA": "authority",
+      "conceptB": "legitimacy",
+      "axes": [
+        {
+          "axis": "core_nature"
+        },
+        {
+          "axis": "depends_on"
+        },
+        {
+          "axis": "not_equivalent",
+          "statement": "authority is not legitimacy; a role may have authority while its legitimacy is contested"
+        }
+      ]
+    },
+    "checks": [
+      "deterministic_repeatability",
+      "strict_schema_output",
+      "no_collapse_authority_legitimacy"
+    ],
+    "notes": "Disjunctive phrasing should still resolve to the authored authority-legitimacy comparison."
+  },
+  {
+    "id": "contrast-duty-responsibility-and-01",
+    "bucket": "pairwise_contrast_queries",
+    "query": "duty and responsibility",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_forced_match",
+      "preserve_distinction_responsibility_duty"
+    ],
+    "notes": "Conjunctive phrasing should not collapse the pair."
+  },
+  {
+    "id": "indirect-power-legitimacy-01",
+    "bucket": "indirect_semantic_queries",
+    "query": "can power exist without legitimacy",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_forced_match",
+      "preserve_distinction_power_legitimacy"
+    ],
+    "notes": "Indirect semantic phrasing should refuse rather than guess."
+  },
+  {
+    "id": "indirect-authority-legitimacy-01",
+    "bucket": "indirect_semantic_queries",
+    "query": "authority without legitimacy",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_forced_match",
+      "no_collapse_authority_legitimacy"
+    ],
+    "notes": "Should not force either concept from a relation query."
+  },
+  {
+    "id": "indirect-obedience-authority-01",
+    "bucket": "indirect_semantic_queries",
+    "query": "why obey authority",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_forced_match",
+      "manual_boundary_review"
+    ],
+    "notes": "Why-questions should not be guessed into canonical definitions."
+  },
+  {
+    "id": "indirect-legitimate-no-authority-01",
+    "bucket": "indirect_semantic_queries",
+    "query": "legitimate but no authority",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_forced_match",
+      "no_collapse_authority_legitimacy"
+    ],
+    "notes": "Boundary probe should refuse honestly."
+  },
+  {
+    "id": "indirect-law-legitimacy-01",
+    "bucket": "indirect_semantic_queries",
+    "query": "law without legitimacy",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_forced_match",
+      "manual_boundary_review"
+    ],
+    "notes": "Unsupported cluster relation should refuse honestly."
+  },
+  {
+    "id": "indirect-trust-legitimacy-01",
+    "bucket": "indirect_semantic_queries",
+    "query": "trusted but not legitimate",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_forced_match",
+      "manual_boundary_review"
+    ],
+    "notes": "Trust and legitimacy should not collapse under adjective pressure."
+  },
+  {
+    "id": "indirect-power-authority-01",
+    "bucket": "indirect_semantic_queries",
+    "query": "power without authority",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_forced_match",
+      "no_collapse_authority_power"
+    ],
+    "notes": "Boundary probe should refuse honestly."
+  },
+  {
+    "id": "indirect-responsibility-duty-01",
+    "bucket": "indirect_semantic_queries",
+    "query": "responsibility without duty",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_forced_match",
+      "preserve_distinction_responsibility_duty"
+    ],
+    "notes": "Boundary probe should refuse honestly."
+  },
+  {
+    "id": "indirect-consent-pressure-01",
+    "bucket": "indirect_semantic_queries",
+    "query": "consent under pressure",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_forced_match",
+      "manual_boundary_review"
+    ],
+    "notes": "Unsupported cluster concept should refuse honestly."
+  },
+  {
+    "id": "indirect-law-legitimacy-02",
+    "bucket": "indirect_semantic_queries",
+    "query": "is all law legitimate",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_forced_match",
+      "manual_boundary_review"
+    ],
+    "notes": "Legality versus legitimacy probe should refuse honestly."
+  },
+  {
+    "id": "cluster-gap-consent-01",
+    "bucket": "unsupported_cluster_and_cascade_queries",
+    "query": "consent",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "no_forced_match"
+    ],
+    "notes": "Direct unsupported cluster node should not force a nearby concept."
+  },
+  {
+    "id": "cluster-gap-consent-02",
+    "bucket": "unsupported_cluster_and_cascade_queries",
+    "query": "what is consent",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "no_forced_match"
+    ],
+    "notes": "Question form for unsupported node should refuse honestly."
+  },
+  {
+    "id": "cluster-gap-trust-01",
+    "bucket": "unsupported_cluster_and_cascade_queries",
+    "query": "trust",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "no_forced_match"
+    ],
+    "notes": "Direct unsupported cluster node should refuse honestly."
+  },
+  {
+    "id": "cluster-gap-trust-02",
+    "bucket": "unsupported_cluster_and_cascade_queries",
+    "query": "define trust",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "no_forced_match"
+    ],
+    "notes": "Definition form for unsupported node should refuse honestly."
+  },
+  {
+    "id": "cluster-gap-law-01",
+    "bucket": "unsupported_cluster_and_cascade_queries",
+    "query": "law",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "no_forced_match"
+    ],
+    "notes": "Direct unsupported cluster node should refuse honestly."
+  },
+  {
+    "id": "cluster-gap-law-02",
+    "bucket": "unsupported_cluster_and_cascade_queries",
+    "query": "meaning of law",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "no_forced_match"
+    ],
+    "notes": "Meaning form for unsupported node should refuse honestly."
+  },
+  {
+    "id": "cascade-influence-01",
+    "bucket": "unsupported_cluster_and_cascade_queries",
+    "query": "influence",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "cascade_probe"
+    ],
+    "notes": "Candidate concept probe should refuse honestly."
+  },
+  {
+    "id": "cascade-influence-02",
+    "bucket": "unsupported_cluster_and_cascade_queries",
+    "query": "influence vs power",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_forced_match",
+      "cascade_probe"
+    ],
+    "notes": "Candidate concept comparison probe should refuse honestly."
+  },
+  {
+    "id": "cascade-influence-03",
+    "bucket": "unsupported_cluster_and_cascade_queries",
+    "query": "influence without authority",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_forced_match",
+      "cascade_probe"
+    ],
+    "notes": "Candidate concept relation probe should refuse honestly."
+  },
+  {
+    "id": "cascade-influence-04",
+    "bucket": "unsupported_cluster_and_cascade_queries",
+    "query": "who has influence",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_forced_match",
+      "cascade_probe"
+    ],
+    "notes": "Candidate concept why/who probe should refuse honestly."
+  },
+  {
+    "id": "collapse-authority-power-01",
+    "bucket": "adversarial_collapse_queries",
+    "query": "authority is just power",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_forced_match",
+      "no_collapse_authority_power"
+    ],
+    "notes": "False equivalence should not force a concept."
+  },
+  {
+    "id": "collapse-power-authority-01",
+    "bucket": "adversarial_collapse_queries",
+    "query": "power is legitimate authority",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_forced_match",
+      "no_collapse_authority_power",
+      "no_collapse_authority_legitimacy"
+    ],
+    "notes": "Compound false equivalence should not force a concept."
+  },
+  {
+    "id": "collapse-legitimacy-trust-01",
+    "bucket": "adversarial_collapse_queries",
+    "query": "legitimacy is just trust",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_forced_match",
+      "manual_boundary_review"
+    ],
+    "notes": "Trust/legitimacy false equivalence should refuse honestly."
+  },
+  {
+    "id": "collapse-duty-responsibility-01",
+    "bucket": "adversarial_collapse_queries",
+    "query": "duty is basically responsibility",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_forced_match",
+      "preserve_distinction_responsibility_duty"
+    ],
+    "notes": "Duty/responsibility false equivalence should refuse honestly."
+  },
+  {
+    "id": "collapse-law-legitimacy-01",
+    "bucket": "adversarial_collapse_queries",
+    "query": "all law is legitimate",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_forced_match",
+      "manual_boundary_review"
+    ],
+    "notes": "Law/legitimacy false equivalence should refuse honestly."
+  },
+  {
+    "id": "collapse-authority-force-01",
+    "bucket": "adversarial_collapse_queries",
+    "query": "authority equals force",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_forced_match",
+      "no_collapse_authority_power"
+    ],
+    "notes": "Authority/force collapse attempt should refuse honestly."
+  },
+  {
+    "id": "collapse-power-authority-02",
+    "bucket": "adversarial_collapse_queries",
+    "query": "power means authority",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_forced_match",
+      "no_collapse_authority_power"
+    ],
+    "notes": "Power/authority collapse attempt should refuse honestly."
+  },
+  {
+    "id": "collapse-legitimacy-obedience-01",
+    "bucket": "adversarial_collapse_queries",
+    "query": "legitimacy means obedience",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_forced_match",
+      "no_collapse_authority_legitimacy"
+    ],
+    "notes": "Legitimacy/obedience collapse attempt should refuse honestly."
+  },
+  {
+    "id": "collapse-trust-legitimacy-02",
+    "bucket": "adversarial_collapse_queries",
+    "query": "trust proves legitimacy",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_forced_match",
+      "manual_boundary_review"
+    ],
+    "notes": "Trust/legitimacy collapse attempt should refuse honestly."
+  },
+  {
+    "id": "collapse-responsibility-duty-02",
+    "bucket": "adversarial_collapse_queries",
+    "query": "responsibility is just what you must do",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_forced_match",
+      "preserve_distinction_responsibility_duty"
+    ],
+    "notes": "Responsibility/duty collapse attempt should refuse honestly."
+  },
+  {
+    "id": "sloppy-auth-01",
+    "bucket": "sloppy_typo_noise_queries",
+    "query": "auth",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "no_forced_match"
+    ],
+    "notes": "Abbreviated fragment should not guess authority."
+  },
+  {
+    "id": "sloppy-legit-01",
+    "bucket": "sloppy_typo_noise_queries",
+    "query": "legit",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "no_forced_match"
+    ],
+    "notes": "Abbreviated fragment should not guess legitimacy."
+  },
+  {
+    "id": "sloppy-respo-01",
+    "bucket": "sloppy_typo_noise_queries",
+    "query": "respo",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "no_forced_match"
+    ],
+    "notes": "Abbreviated fragment should not guess responsibility."
+  },
+  {
+    "id": "sloppy-duty-01",
+    "bucket": "sloppy_typo_noise_queries",
+    "query": "duty??",
+    "expectedCanonical": "duty",
+    "expectedMode": "concept_match",
+    "checks": [
+      "deterministic_repeatability",
+      "preserve_distinction_responsibility_duty"
+    ],
+    "notes": "Supported concept with noise should still resolve."
+  },
+  {
+    "id": "sloppy-authority-01",
+    "bucket": "sloppy_typo_noise_queries",
+    "query": "authority pls",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_forced_match",
+      "no_collapse_authority_power"
+    ],
+    "notes": "Extra colloquial token should not force a match."
+  },
+  {
+    "id": "sloppy-authority-02",
+    "bucket": "sloppy_typo_noise_queries",
+    "query": "what is the authority thing",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_forced_match",
+      "no_collapse_authority_power"
+    ],
+    "notes": "Loose phrase should not guess authority."
+  },
+  {
+    "id": "sloppy-power-01",
+    "bucket": "sloppy_typo_noise_queries",
+    "query": "power thing",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_forced_match",
+      "no_collapse_authority_power"
+    ],
+    "notes": "Loose phrase should not guess power."
+  },
+  {
+    "id": "sloppy-legitimacy-01",
+    "bucket": "sloppy_typo_noise_queries",
+    "query": "define legitimacy now",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_forced_match",
+      "no_collapse_authority_legitimacy"
+    ],
+    "notes": "Trailing imperative token should not force legitimacy."
+  },
+  {
+    "id": "sloppy-authority-03",
+    "bucket": "sloppy_typo_noise_queries",
+    "query": "whats authority",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_forced_match",
+      "no_collapse_authority_power"
+    ],
+    "notes": "Unsupported filler form should refuse honestly."
+  },
+  {
+    "id": "sloppy-authority-04",
+    "bucket": "sloppy_typo_noise_queries",
+    "query": "??authority??",
+    "expectedCanonical": "authority",
+    "expectedMode": "concept_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_collapse_authority_power",
+      "no_collapse_authority_legitimacy"
+    ],
+    "notes": "Punctuation-wrapped authority should still resolve."
+  },
+  {
+    "id": "typo-authority-01",
+    "bucket": "typo_noise_queries",
+    "query": "autority",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "no_forced_match"
+    ],
+    "notes": "No fuzzy recovery for authority typo."
+  },
+  {
+    "id": "typo-power-01",
+    "bucket": "typo_noise_queries",
+    "query": "pwer",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "no_forced_match"
+    ],
+    "notes": "No fuzzy recovery for power typo."
+  },
+  {
+    "id": "typo-legitimacy-01",
+    "bucket": "typo_noise_queries",
+    "query": "legitamacy",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "no_forced_match"
+    ],
+    "notes": "No fuzzy recovery for legitimacy typo."
+  },
+  {
+    "id": "typo-responsibility-01",
+    "bucket": "typo_noise_queries",
+    "query": "responsiblity",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "no_forced_match"
+    ],
+    "notes": "No fuzzy recovery for responsibility typo."
+  },
+  {
+    "id": "typo-duty-01",
+    "bucket": "typo_noise_queries",
+    "query": "dutie",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "no_forced_match"
+    ],
+    "notes": "No fuzzy recovery for duty typo."
+  },
+  {
+    "id": "typo-civic-duty-01",
+    "bucket": "typo_noise_queries",
+    "query": "civic-duty",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "no_forced_match"
+    ],
+    "notes": "Hyphenated near-miss should not trigger authored suggestion."
+  },
+  {
+    "id": "typo-obligation-01",
+    "bucket": "typo_noise_queries",
+    "query": "oblgation",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "no_forced_match"
+    ],
+    "notes": "Ambiguity control should not activate on misspelling."
+  },
+  {
+    "id": "typo-concept-authority-01",
+    "bucket": "typo_noise_queries",
+    "query": "concept authority",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "raw_canonical_id_only"
+    ],
+    "notes": "Missing colon should not activate canonical ID mode."
+  },
+  {
+    "id": "typo-legitimacy-02",
+    "bucket": "typo_noise_queries",
+    "query": "legitimacy???!!!",
+    "expectedCanonical": "legitimacy",
+    "expectedMode": "concept_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_collapse_authority_legitimacy",
+      "preserve_distinction_power_legitimacy"
+    ],
+    "notes": "Heavy punctuation around legitimacy should still resolve."
+  },
+  {
+    "id": "typo-power-02",
+    "bucket": "typo_noise_queries",
+    "query": "[power]",
+    "expectedCanonical": "power",
+    "expectedMode": "concept_match",
+    "checks": [
+      "deterministic_repeatability",
+      "no_collapse_authority_power",
+      "preserve_distinction_power_legitimacy"
+    ],
+    "notes": "Bracketed power should still resolve."
+  },
+  {
+    "id": "garbage-empty-01",
+    "bucket": "garbage_refusal_queries",
+    "query": "",
+    "expectedCanonical": null,
+    "expectedMode": "invalid_input",
+    "checks": [
+      "deterministic_repeatability",
+      "reject_garbage_input"
+    ],
+    "notes": "Literal empty string must be rejected at the API boundary."
+  },
+  {
+    "id": "garbage-space-01",
+    "bucket": "garbage_refusal_queries",
+    "query": " ",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedNormalizedQuery": "__empty__",
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "reject_garbage_input"
+    ],
+    "notes": "Single-space input should enter the empty normalized path."
+  },
+  {
+    "id": "garbage-space-02",
+    "bucket": "garbage_refusal_queries",
+    "query": "   ",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedNormalizedQuery": "__empty__",
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "reject_garbage_input"
+    ],
+    "notes": "Whitespace-only input should enter the empty normalized path."
+  },
+  {
+    "id": "garbage-punctuation-01",
+    "bucket": "garbage_refusal_queries",
+    "query": "???",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedNormalizedQuery": "__empty__",
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "reject_garbage_input"
+    ],
+    "notes": "Punctuation-only input should enter the empty normalized path."
+  },
+  {
+    "id": "garbage-punctuation-02",
+    "bucket": "garbage_refusal_queries",
+    "query": "what is ???",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedNormalizedQuery": "__empty__",
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "reject_garbage_input"
+    ],
+    "notes": "Filler plus punctuation should still reach the empty path."
+  },
+  {
+    "id": "garbage-punctuation-03",
+    "bucket": "garbage_refusal_queries",
+    "query": "....",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedNormalizedQuery": "__empty__",
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "reject_garbage_input"
+    ],
+    "notes": "Dots only should enter the empty normalized path."
+  },
+  {
+    "id": "garbage-punctuation-04",
+    "bucket": "garbage_refusal_queries",
+    "query": ";;;;",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedNormalizedQuery": "__empty__",
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "reject_garbage_input"
+    ],
+    "notes": "Semicolons only should enter the empty normalized path."
+  },
+  {
+    "id": "garbage-brackets-01",
+    "bucket": "garbage_refusal_queries",
+    "query": "[]{}()",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedNormalizedQuery": "__empty__",
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "reject_garbage_input"
+    ],
+    "notes": "Bracket-only input should enter the empty normalized path."
+  },
+  {
+    "id": "garbage-random-01",
+    "bucket": "garbage_refusal_queries",
+    "query": "asdfghjkl",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "reject_garbage_input"
+    ],
+    "notes": "Random letter string should refuse honestly."
+  },
+  {
+    "id": "garbage-law-noise-01",
+    "bucket": "garbage_refusal_queries",
+    "query": "!! law !!",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "manual_boundary_review"
+    ],
+    "notes": "Signal-bearing but unsupported query should still refuse honestly."
+  },
+  {
+    "id": "shape-subtype-01",
+    "bucket": "query_shape_subtype_queries",
+    "query": "political authority",
+    "expectedCanonical": null,
+    "expectedMode": "unsupported_query_type",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedNormalizedQuery": "political authority",
+    "expectedInterpretation": {
+      "interpretationType": "unsupported_complex",
+      "concepts": [
+        "authority"
+      ]
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "no_boundary_leak"
+    ],
+    "notes": "Modifier plus authored concept should classify as subtype-shaped no-match.",
+    "expectedMethod": "unsupported_query_type"
+  },
+  {
+    "id": "shape-subtype-02",
+    "bucket": "query_shape_subtype_queries",
+    "query": "legal responsibility",
+    "expectedCanonical": null,
+    "expectedMode": "unsupported_query_type",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedNormalizedQuery": "legal responsibility",
+    "expectedInterpretation": {
+      "interpretationType": "unsupported_complex",
+      "concepts": [
+        "responsibility"
+      ]
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "no_boundary_leak"
+    ],
+    "notes": "Domain modifier should not force a new concept.",
+    "expectedMethod": "unsupported_query_type"
+  },
+  {
+    "id": "shape-subtype-03",
+    "bucket": "query_shape_subtype_queries",
+    "query": "political legitimacy",
+    "expectedCanonical": null,
+    "expectedMode": "unsupported_query_type",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedNormalizedQuery": "political legitimacy",
+    "expectedInterpretation": {
+      "interpretationType": "unsupported_complex",
+      "concepts": [
+        "legitimacy"
+      ]
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "no_boundary_leak"
+    ],
+    "notes": "Subtype-shaped legitimacy query should stay refusal-first.",
+    "expectedMethod": "unsupported_query_type"
+  },
+  {
+    "id": "shape-subtype-04",
+    "bucket": "query_shape_subtype_queries",
+    "query": "public duty",
+    "expectedCanonical": null,
+    "expectedMode": "unsupported_query_type",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedNormalizedQuery": "public duty",
+    "expectedInterpretation": {
+      "interpretationType": "unsupported_complex",
+      "concepts": [
+        "duty"
+      ]
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "no_boundary_leak"
+    ],
+    "notes": "Public modifier should be treated as narrower duty phrasing, not guessed content.",
+    "expectedMethod": "unsupported_query_type"
+  },
+  {
+    "id": "shape-subtype-05",
+    "bucket": "query_shape_subtype_queries",
+    "query": "coercive power",
+    "expectedCanonical": null,
+    "expectedMode": "unsupported_query_type",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedNormalizedQuery": "coercive power",
+    "expectedInterpretation": {
+      "interpretationType": "unsupported_complex",
+      "concepts": [
+        "power"
+      ]
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "no_boundary_leak"
+    ],
+    "notes": "Subtype-shaped power phrasing should remain non-compositional.",
+    "expectedMethod": "unsupported_query_type"
+  },
+  {
+    "id": "shape-subtype-06",
+    "bucket": "query_shape_subtype_queries",
+    "query": "military duty",
+    "expectedCanonical": null,
+    "expectedMode": "unsupported_query_type",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedNormalizedQuery": "military duty",
+    "expectedInterpretation": {
+      "interpretationType": "unsupported_complex",
+      "concepts": [
+        "duty"
+      ]
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "no_boundary_leak"
+    ],
+    "notes": "Duty specialization should be recognized without inventing a canonical subtype.",
+    "expectedMethod": "unsupported_query_type"
+  },
+  {
+    "id": "shape-comparison-01",
+    "bucket": "query_shape_comparison_queries",
+    "query": "authority vs power",
+    "expectedCanonical": null,
+    "expectedMode": "comparison",
+    "expectedQueryType": "comparison_query",
+    "expectedNormalizedQuery": "authority vs power",
+    "expectedComparison": {
+      "conceptA": "authority",
+      "conceptB": "power",
+      "axes": [
+        {
+          "axis": "core_nature"
+        },
+        {
+          "axis": "depends_on"
+        },
+        {
+          "axis": "not_equivalent",
+          "statement": "authority is not power; power does not require authority"
+        }
+      ]
+    },
+    "checks": [
+      "deterministic_repeatability",
+      "strict_schema_output",
+      "no_collapse_authority_power"
+    ],
+    "notes": "Comparison should now return the authored allowlisted pair."
+  },
+  {
+    "id": "shape-comparison-02",
+    "bucket": "query_shape_comparison_queries",
+    "query": "authority versus legitimacy",
+    "expectedCanonical": null,
+    "expectedMode": "comparison",
+    "expectedQueryType": "comparison_query",
+    "expectedNormalizedQuery": "authority versus legitimacy",
+    "expectedComparison": {
+      "conceptA": "authority",
+      "conceptB": "legitimacy",
+      "axes": [
+        {
+          "axis": "core_nature"
+        },
+        {
+          "axis": "depends_on"
+        },
+        {
+          "axis": "not_equivalent",
+          "statement": "authority is not legitimacy; a role may have authority while its legitimacy is contested"
+        }
+      ]
+    },
+    "checks": [
+      "deterministic_repeatability",
+      "strict_schema_output",
+      "no_collapse_authority_legitimacy"
+    ],
+    "notes": "Versus phrasing should resolve to the authored authority-legitimacy comparison."
+  },
+  {
+    "id": "shape-comparison-03",
+    "bucket": "query_shape_comparison_queries",
+    "query": "power or authority",
+    "expectedCanonical": null,
+    "expectedMode": "comparison",
+    "expectedQueryType": "comparison_query",
+    "expectedNormalizedQuery": "power or authority",
+    "expectedComparison": {
+      "conceptA": "authority",
+      "conceptB": "power"
+    },
+    "checks": [
+      "deterministic_repeatability",
+      "strict_schema_output",
+      "no_collapse_authority_power"
+    ],
+    "notes": "Disjunctive comparison should return the same normalized pair payload."
+  },
+  {
+    "id": "shape-comparison-04",
+    "bucket": "query_shape_comparison_queries",
+    "query": "legitimacy or power",
+    "expectedCanonical": null,
+    "expectedMode": "comparison",
+    "expectedQueryType": "comparison_query",
+    "expectedNormalizedQuery": "legitimacy or power",
+    "expectedComparison": {
+      "conceptA": "legitimacy",
+      "conceptB": "power",
+      "axes": [
+        {
+          "axis": "core_nature"
+        },
+        {
+          "axis": "depends_on"
+        },
+        {
+          "axis": "not_equivalent",
+          "statement": "legitimacy is not power; power may operate without legitimacy"
+        }
+      ]
+    },
+    "checks": [
+      "deterministic_repeatability",
+      "strict_schema_output",
+      "preserve_distinction_power_legitimacy"
+    ],
+    "notes": "Allowlisted legitimacy-power comparison should be normalized and deterministic."
+  },
+  {
+    "id": "shape-comparison-05",
+    "bucket": "query_shape_comparison_queries",
+    "query": "responsibility vs duty",
+    "expectedCanonical": null,
+    "expectedMode": "comparison",
+    "expectedQueryType": "comparison_query",
+    "expectedNormalizedQuery": "responsibility vs duty",
+    "expectedComparison": {
+      "conceptA": "duty",
+      "conceptB": "responsibility",
+      "axes": [
+        {
+          "axis": "core_nature"
+        },
+        {
+          "axis": "depends_on"
+        },
+        {
+          "axis": "not_equivalent",
+          "statement": "duty is not responsibility; required conduct does not by itself settle answerability"
+        }
+      ]
+    },
+    "checks": [
+      "deterministic_repeatability",
+      "strict_schema_output",
+      "preserve_distinction_responsibility_duty"
+    ],
+    "notes": "Boundary pair should resolve only through its authored comparison axes."
+  },
+  {
+    "id": "shape-comparison-06",
+    "bucket": "query_shape_comparison_queries",
+    "query": "power versus legitimacy",
+    "expectedCanonical": null,
+    "expectedMode": "comparison",
+    "expectedQueryType": "comparison_query",
+    "expectedNormalizedQuery": "power versus legitimacy",
+    "expectedComparison": {
+      "conceptA": "legitimacy",
+      "conceptB": "power"
+    },
+    "checks": [
+      "deterministic_repeatability",
+      "strict_schema_output",
+      "preserve_distinction_power_legitimacy"
+    ],
+    "notes": "Power and legitimacy should remain distinct under the authored comparison payload."
+  },
+  {
+    "id": "shape-comparison-07",
+    "bucket": "query_shape_comparison_queries",
+    "query": "power vs authority",
+    "expectedCanonical": null,
+    "expectedMode": "comparison",
+    "expectedQueryType": "comparison_query",
+    "expectedNormalizedQuery": "power vs authority",
+    "expectedComparison": {
+      "conceptA": "authority",
+      "conceptB": "power"
+    },
+    "checks": [
+      "deterministic_repeatability",
+      "strict_schema_output",
+      "no_collapse_authority_power"
+    ],
+    "notes": "Order-flipped comparison should normalize to the same payload."
+  },
+  {
+    "id": "shape-comparison-08",
+    "bucket": "query_shape_comparison_queries",
+    "query": "authority vs trust",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedQueryType": "comparison_query",
+    "expectedNormalizedQuery": "authority vs trust",
+    "expectedInterpretation": {
+      "interpretationType": "comparison_not_supported",
+      "concepts": [
+        "authority"
+      ]
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "no_forced_match",
+      "no_boundary_leak"
+    ],
+    "notes": "Missing authored concept in a comparison must refuse cleanly."
+  },
+  {
+    "id": "shape-comparison-09",
+    "bucket": "query_shape_comparison_queries",
+    "query": "authority vs power vs legitimacy",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedQueryType": "comparison_query",
+    "expectedNormalizedQuery": "authority vs power vs legitimacy",
+    "expectedInterpretation": {
+      "interpretationType": "comparison_not_supported",
+      "concepts": [
+        "authority",
+        "power",
+        "legitimacy"
+      ]
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "no_forced_match",
+      "no_boundary_leak"
+    ],
+    "notes": "Comparison queries with more than two concepts must refuse."
+  },
+  {
+    "id": "shape-comparison-10",
+    "bucket": "query_shape_comparison_queries",
+    "query": "is authority the same as power",
+    "expectedCanonical": null,
+    "expectedMode": "comparison",
+    "expectedQueryType": "comparison_query",
+    "expectedNormalizedQuery": "is authority the same as power",
+    "expectedComparison": {
+      "conceptA": "authority",
+      "conceptB": "power"
+    },
+    "checks": [
+      "deterministic_repeatability",
+      "strict_schema_output",
+      "no_collapse_authority_power"
+    ],
+    "notes": "Same-as phrasing should classify and resolve through the authored comparison payload."
+  },
+  {
+    "id": "shape-relation-01",
+    "bucket": "query_shape_relation_queries",
+    "query": "power without legitimacy",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedQueryType": "relation_query",
+    "expectedNormalizedQuery": "power without legitimacy",
+    "expectedInterpretation": {
+      "interpretationType": "relation_not_supported",
+      "concepts": [
+        "power",
+        "legitimacy"
+      ],
+      "relationTerm": "without"
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "no_forced_match",
+      "preserve_distinction_power_legitimacy"
+    ],
+    "notes": "Relation classification should acknowledge the pair without answering it."
+  },
+  {
+    "id": "shape-relation-02",
+    "bucket": "query_shape_relation_queries",
+    "query": "authority without legitimacy",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedQueryType": "relation_query",
+    "expectedNormalizedQuery": "authority without legitimacy",
+    "expectedInterpretation": {
+      "interpretationType": "relation_not_supported",
+      "concepts": [
+        "authority",
+        "legitimacy"
+      ],
+      "relationTerm": "without"
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "no_forced_match",
+      "no_collapse_authority_legitimacy"
+    ],
+    "notes": "Authority-legitimacy relation should remain refusal-first."
+  },
+  {
+    "id": "shape-relation-03",
+    "bucket": "query_shape_relation_queries",
+    "query": "legitimacy without power",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedQueryType": "relation_query",
+    "expectedNormalizedQuery": "legitimacy without power",
+    "expectedInterpretation": {
+      "interpretationType": "relation_not_supported",
+      "concepts": [
+        "legitimacy",
+        "power"
+      ],
+      "relationTerm": "without"
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "no_forced_match",
+      "preserve_distinction_power_legitimacy"
+    ],
+    "notes": "Reversed relation ordering should stay deterministic."
+  },
+  {
+    "id": "shape-relation-04",
+    "bucket": "query_shape_relation_queries",
+    "query": "power against authority",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedQueryType": "relation_query",
+    "expectedNormalizedQuery": "power against authority",
+    "expectedInterpretation": {
+      "interpretationType": "relation_not_supported",
+      "concepts": [
+        "power",
+        "authority"
+      ],
+      "relationTerm": "against"
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "no_forced_match",
+      "no_collapse_authority_power"
+    ],
+    "notes": "Adversarial relation wording should still classify cleanly."
+  },
+  {
+    "id": "shape-relation-05",
+    "bucket": "query_shape_relation_queries",
+    "query": "responsibility without duty",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedQueryType": "relation_query",
+    "expectedNormalizedQuery": "responsibility without duty",
+    "expectedInterpretation": {
+      "interpretationType": "relation_not_supported",
+      "concepts": [
+        "responsibility",
+        "duty"
+      ],
+      "relationTerm": "without"
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "no_forced_match",
+      "preserve_distinction_responsibility_duty"
+    ],
+    "notes": "Boundary pair should remain explicit under relation phrasing."
+  },
+  {
+    "id": "shape-relation-06",
+    "bucket": "query_shape_relation_queries",
+    "query": "duty under authority",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedQueryType": "relation_query",
+    "expectedNormalizedQuery": "duty under authority",
+    "expectedInterpretation": {
+      "interpretationType": "relation_not_supported",
+      "concepts": [
+        "duty",
+        "authority"
+      ],
+      "relationTerm": "under"
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "no_forced_match",
+      "no_boundary_leak"
+    ],
+    "notes": "Relation keyword detection should work outside the main watch pairs too."
+  },
+  {
+    "id": "shape-role-01",
+    "bucket": "query_shape_role_actor_queries",
+    "query": "who holds authority",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedQueryType": "role_or_actor_query",
+    "expectedNormalizedQuery": "who holds authority",
+    "expectedInterpretation": {
+      "interpretationType": "role_or_actor_not_supported",
+      "baseConcept": "authority",
+      "actorTerm": "who holds"
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "no_boundary_leak"
+    ],
+    "notes": "Holder query should be classified explicitly."
+  },
+  {
+    "id": "shape-role-02",
+    "bucket": "query_shape_role_actor_queries",
+    "query": "who has power",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedQueryType": "role_or_actor_query",
+    "expectedNormalizedQuery": "who has power",
+    "expectedInterpretation": {
+      "interpretationType": "role_or_actor_not_supported",
+      "baseConcept": "power",
+      "actorTerm": "who has"
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "no_boundary_leak"
+    ],
+    "notes": "Actor query should not be treated as concept resolution."
+  },
+  {
+    "id": "shape-role-03",
+    "bucket": "query_shape_role_actor_queries",
+    "query": "who has legitimacy",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedQueryType": "role_or_actor_query",
+    "expectedNormalizedQuery": "who has legitimacy",
+    "expectedInterpretation": {
+      "interpretationType": "role_or_actor_not_supported",
+      "baseConcept": "legitimacy",
+      "actorTerm": "who has"
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "no_boundary_leak"
+    ],
+    "notes": "Legitimacy holder query should remain within actor-query refusal."
+  },
+  {
+    "id": "shape-role-04",
+    "bucket": "query_shape_role_actor_queries",
+    "query": "who holds responsibility",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedQueryType": "role_or_actor_query",
+    "expectedNormalizedQuery": "who holds responsibility",
+    "expectedInterpretation": {
+      "interpretationType": "role_or_actor_not_supported",
+      "baseConcept": "responsibility",
+      "actorTerm": "who holds"
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "no_boundary_leak"
+    ],
+    "notes": "Responsibility actor phrasing should not be misread as subtype."
+  },
+  {
+    "id": "shape-role-05",
+    "bucket": "query_shape_role_actor_queries",
+    "query": "who decides duty",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedQueryType": "role_or_actor_query",
+    "expectedNormalizedQuery": "who decides duty",
+    "expectedInterpretation": {
+      "interpretationType": "role_or_actor_not_supported",
+      "baseConcept": "duty",
+      "actorTerm": "who decides"
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "no_boundary_leak"
+    ],
+    "notes": "Role-query detection should cover other supported actor prefixes."
+  },
+  {
+    "id": "shape-role-06",
+    "bucket": "query_shape_role_actor_queries",
+    "query": "who governs authority",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedQueryType": "role_or_actor_query",
+    "expectedNormalizedQuery": "who governs authority",
+    "expectedInterpretation": {
+      "interpretationType": "role_or_actor_not_supported",
+      "baseConcept": "authority",
+      "actorTerm": "who governs"
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "no_boundary_leak"
+    ],
+    "notes": "Governance phrasing should stay inside the actor-query bucket."
+  },
+  {
+    "id": "shape-unsupported-01",
+    "bucket": "query_shape_unsupported_queries",
+    "query": "why authority",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedNormalizedQuery": "why authority",
+    "expectedInterpretation": {
+      "interpretationType": "unsupported_complex"
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "no_forced_match"
+    ],
+    "notes": "Why-question should not be misread as a subtype."
+  },
+  {
+    "id": "shape-unsupported-02",
+    "bucket": "query_shape_unsupported_queries",
+    "query": "how power",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedNormalizedQuery": "how power",
+    "expectedInterpretation": {
+      "interpretationType": "unsupported_complex"
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "no_forced_match"
+    ],
+    "notes": "How-question should remain unsupported, not subtype-shaped."
+  },
+  {
+    "id": "shape-unsupported-03",
+    "bucket": "query_shape_unsupported_queries",
+    "query": "tell me authority",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedNormalizedQuery": "tell me authority",
+    "expectedInterpretation": {
+      "interpretationType": "unsupported_complex"
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "no_forced_match"
+    ],
+    "notes": "Loose imperative phrasing should stay unsupported."
+  },
+  {
+    "id": "shape-unsupported-04",
+    "bucket": "query_shape_unsupported_queries",
+    "query": "how duty",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedNormalizedQuery": "how duty",
+    "expectedInterpretation": {
+      "interpretationType": "unsupported_complex"
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "no_forced_match"
+    ],
+    "notes": "Unsupported interrogative phrasing should not be treated as subtype or actor query."
+  },
+  {
+    "id": "shape-unsupported-05",
+    "bucket": "query_shape_unsupported_queries",
+    "query": "can legitimacy fail",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedNormalizedQuery": "can legitimacy fail",
+    "expectedInterpretation": {
+      "interpretationType": "unsupported_complex"
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "no_forced_match"
+    ],
+    "notes": "Modal question should remain unsupported complex."
+  },
+  {
+    "id": "shape-unsupported-06",
+    "bucket": "query_shape_unsupported_queries",
+    "query": "where responsibility",
+    "expectedCanonical": null,
+    "expectedMode": "no_exact_match",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedNormalizedQuery": "where responsibility",
+    "expectedInterpretation": {
+      "interpretationType": "unsupported_complex"
+    },
+    "expectedSuggestions": [],
+    "checks": [
+      "deterministic_repeatability",
+      "stable_no_match",
+      "no_forced_match"
+    ],
+    "notes": "Location-style question should remain unsupported complex."
+  }
 ]

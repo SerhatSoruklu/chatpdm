@@ -1,11 +1,12 @@
 'use strict';
 
-const OVERRIDABLE_CONCEPT_ID = 'violation';
+const OVERRIDABLE_CONCEPT_ID = null;
 const OVERRIDE_REASON = 'manual_review';
 const OVERRIDE_SCOPE = 'concept_unlock';
 const OVERRIDE_ACTOR_ROLE = 'admin';
 const OVERRIDE_APPROVAL_TOKEN = 'LLGS_ADMIN_OVERRIDE_V1';
 const INVALID_OVERRIDE_REASON = 'invalid_override_object';
+const OVERRIDE_DISABLED_REASON = 'concept_unlock_override_disabled';
 const ISO_8601_TIMESTAMP_PATTERN = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?(?:Z|[+-]\d{2}:\d{2})$/;
 const REQUIRED_OVERRIDE_KEYS = Object.freeze([
   'actorRole',
@@ -125,15 +126,14 @@ function applyOverride(override) {
   }
 
   const result = Object.freeze({
-    status: 'override_applied',
-    effect: 'concept_unlocked',
-    conceptId: OVERRIDABLE_CONCEPT_ID,
+    status: 'override_rejected',
+    reason: OVERRIDE_DISABLED_REASON,
   });
 
   logOverrideAttempt({
     timestamp: override.timestamp,
     status: result.status,
-    reason: null,
+    reason: result.reason,
     conceptId: OVERRIDABLE_CONCEPT_ID,
   });
 
@@ -151,6 +151,7 @@ function clearOverrideAttemptLog() {
 module.exports = {
   CONCEPT_UNLOCK_OVERRIDE_TEMPLATE,
   INVALID_OVERRIDE_REASON,
+  OVERRIDE_DISABLED_REASON,
   OVERRIDABLE_CONCEPT_ID,
   OVERRIDE_ACTOR_ROLE,
   OVERRIDE_APPROVAL_TOKEN,

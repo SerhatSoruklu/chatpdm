@@ -172,7 +172,7 @@ async function verifyConceptDetailEndpoint(baseUrl) {
 
   const violation = await request('GET', `${baseUrl}/api/v1/concepts/violation`);
   assert.equal(violation.status, 200, 'violation detail should return 200.');
-  assert.equal(violation.body.reviewState.admission, 'phase2_stable', 'violation reviewState mismatch.');
+  assert.equal(violation.body.reviewState.admission, 'visible_only_derived', 'violation reviewState mismatch.');
   assert.equal(typeof violation.body.title, 'string', 'violation detail should include authored title.');
 
   const missing = await request('GET', `${baseUrl}/api/v1/concepts/not-a-real-concept`);

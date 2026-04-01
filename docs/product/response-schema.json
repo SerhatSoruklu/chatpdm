@@ -53,8 +53,6 @@
         "exact_concept_query",
         "canonical_id_query",
         "ambiguity_query",
-        "broader_topic_query",
-        "subtype_query",
         "comparison_query",
         "relation_query",
         "role_or_actor_query",
@@ -73,8 +71,6 @@
         "interpretationType": {
           "type": "string",
           "enum": [
-            "narrower_subtype",
-            "broader_topic",
             "comparison_not_supported",
             "relation_not_supported",
             "role_or_actor_not_supported",
@@ -94,9 +90,6 @@
           "$ref": "#/$defs/stringValue"
         },
         "baseConcept": {
-          "$ref": "#/$defs/stringValue"
-        },
-        "modifier": {
           "$ref": "#/$defs/stringValue"
         },
         "concepts": {
@@ -1057,8 +1050,6 @@
             "exact_concept_query",
             "canonical_id_query",
             "ambiguity_query",
-            "broader_topic_query",
-            "subtype_query",
             "comparison_query",
             "relation_query",
             "role_or_actor_query",

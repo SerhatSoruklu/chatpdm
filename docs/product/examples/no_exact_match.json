@@ -1,16 +1,17 @@
 {
   "query": "civic duty",
   "normalizedQuery": "civic duty",
-  "contractVersion": "v1.4",
+  "contractVersion": "v1.6",
   "normalizerVersion": "2026-03-27.v1",
-  "matcherVersion": "2026-03-27.v3",
+  "matcherVersion": "2026-04-01.v4",
   "conceptSetVersion": "20260327.4",
-  "queryType": "subtype_query",
+  "queryType": "unsupported_complex_query",
   "interpretation": {
-    "interpretationType": "narrower_subtype",
-    "baseConcept": "duty",
-    "modifier": "civic",
-    "message": "This appears to be a narrower or domain-specific form of \"duty\" based on the modifier \"civic\". No authored concept exists yet."
+    "interpretationType": "unsupported_complex",
+    "message": "This query does not match a supported concept query form in the current runtime.",
+    "concepts": [
+      "duty"
+    ]
   },
   "type": "no_exact_match",
   "resolution": {

@@ -3,17 +3,24 @@
 const {
   EMPTY_NORMALIZED_QUERY,
   LEADING_FILLER_PHRASES,
-  PUNCTUATION_CHARACTERS,
 } = require('./constants');
 
-function escapeForCharClass(character) {
-  return /[\\\-\]\[]/.test(character) ? `\\${character}` : character;
-}
+const EDGE_PUNCTUATION_PATTERN = /^[\p{P}\p{S}]+|[\p{P}\p{S}]+$/gu;
+const WORDLIKE_TOKEN_PATTERN = /[\p{L}\p{N}]/u;
 
-const punctuationPattern = new RegExp(
-  `[${PUNCTUATION_CHARACTERS.map(escapeForCharClass).join('')}]`,
-  'g',
-);
+function findLeadingFillerPhrase(normalizedQuery) {
+  if (typeof normalizedQuery !== 'string' || normalizedQuery.trim() === '') {
+    return null;
+  }
+
+  return LEADING_FILLER_PHRASES.find((phrase) => (
+    normalizedQuery.startsWith(phrase)
+    && (
+      normalizedQuery.length === phrase.length
+      || normalizedQuery.charAt(phrase.length) === ' '
+    )
+  )) ?? null;
+}
 
 function normalizeQuery(rawQuery) {
   if (typeof rawQuery !== 'string') {
@@ -23,9 +30,8 @@ function normalizeQuery(rawQuery) {
   let normalizedQuery = rawQuery.trim();
   normalizedQuery = normalizedQuery.toLowerCase();
   normalizedQuery = normalizedQuery.replace(/\s+/g, ' ');
-  normalizedQuery = normalizedQuery.replace(punctuationPattern, '');
 
-  const matchingPrefix = LEADING_FILLER_PHRASES.find((prefix) => normalizedQuery.startsWith(prefix));
+  const matchingPrefix = findLeadingFillerPhrase(normalizedQuery);
   if (matchingPrefix) {
     normalizedQuery = normalizedQuery.slice(matchingPrefix.length);
   }
@@ -33,6 +39,47 @@ function normalizeQuery(rawQuery) {
   normalizedQuery = normalizedQuery.trim();
 
   return normalizedQuery === '' ? EMPTY_NORMALIZED_QUERY : normalizedQuery;
+}
+
+function trimTokenEdgePunctuation(token) {
+  if (typeof token !== 'string' || token === '') {
+    return token;
+  }
+
+  const strippedToken = token.replace(EDGE_PUNCTUATION_PATTERN, '');
+
+  if (!WORDLIKE_TOKEN_PATTERN.test(strippedToken)) {
+    return token;
+  }
+
+  return strippedToken;
+}
+
+function deriveRoutingText(normalizedQuery) {
+  if (typeof normalizedQuery !== 'string') {
+    throw new TypeError('Expected normalizedQuery to be a string.');
+  }
+
+  if (normalizedQuery === EMPTY_NORMALIZED_QUERY) {
+    return EMPTY_NORMALIZED_QUERY;
+  }
+
+  if (normalizeQuery(normalizedQuery) !== normalizedQuery) {
+    throw new Error('Expected deriveRoutingText() to receive an already-normalized query value.');
+  }
+
+  const routingQuery = normalizedQuery
+    .split(' ')
+    .map((token) => trimTokenEdgePunctuation(token))
+    .join(' ')
+    .trim()
+    .replace(/\s+/g, ' ');
+
+  return routingQuery === '' ? EMPTY_NORMALIZED_QUERY : routingQuery;
+}
+
+function normalizeQueryForRouting(rawQuery) {
+  return deriveRoutingText(normalizeQuery(rawQuery));
 }
 
 function extractCanonicalId(rawQuery) {
@@ -44,6 +91,9 @@ function extractCanonicalId(rawQuery) {
 }
 
 module.exports = {
+  deriveRoutingText,
   extractCanonicalId,
+  findLeadingFillerPhrase,
   normalizeQuery,
+  normalizeQueryForRouting,
 };

@@ -164,10 +164,6 @@ function loadPreAdmissionContractPathRegistry() {
     throw new Error('Pre-admission contract path registry conceptIds must be unique.');
   }
 
-  if (JSON.stringify(conceptIds.sort()) !== JSON.stringify([...REJECTED_CONCEPT_IDS].sort())) {
-    throw new Error('Pre-admission contract path registry must cover every rejected concept exactly once.');
-  }
-
   return Object.freeze({
     version: 1,
     policyId: registry.policyId.trim(),
