@@ -220,6 +220,6 @@
 @media (max-width: 839px) {
   .pdm-vocabulary-page__term-list {
     column-width: auto;
-    columns: 1;
+    column-count: 1;
   }
 }
