@@ -121,6 +121,20 @@
           "condition": "The query asks responsibility to stand in a relation not admitted by the responsibility contract.",
           "reason": "This responsibility contract admits only answerability relations inside the governance family."
         }
+      ],
+      "contractIncompletes": [
+        {
+          "code": "RESPONSIBILITY_CONTRACT_INCOMPLETE",
+          "condition": "The responsibility constraint contract is missing a required structural element or cannot be resolved for validation.",
+          "reason": "Responsibility must expose a complete answerability contract before admission or runtime use."
+        }
+      ],
+      "runtimeBoundaries": [
+        {
+          "code": "RESPONSIBILITY_NON_LIVE_CONCEPT",
+          "condition": "A responsibility packet or responsibility-like claim is referenced for runtime use without live admission.",
+          "reason": "Only live-admitted responsibility may participate in runtime matching or comparison."
+        }
       ]
     },
     "resolutionRules": {

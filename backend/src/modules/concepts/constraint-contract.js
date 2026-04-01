@@ -385,7 +385,7 @@ function validateConstraintContractShape(contract, conceptId) {
 
   assertUnexpectedFields(
     contract.structuralFailures,
-    ['invariantBreaches', 'refusals'],
+    ['invariantBreaches', 'refusals', 'contractIncompletes', 'runtimeBoundaries'],
     `Concept "${conceptId}" constraintContract.structuralFailures`,
   );
 
@@ -414,6 +414,49 @@ function validateConstraintContractShape(contract, conceptId) {
       `Concept "${conceptId}"`,
     )
   ));
+  let contractIncompletes = null;
+  if (contract.structuralFailures.contractIncompletes !== undefined) {
+    assertArray(
+      contract.structuralFailures.contractIncompletes,
+      'constraintContract.structuralFailures.contractIncompletes',
+      `Concept "${conceptId}"`,
+    );
+    if (contract.structuralFailures.contractIncompletes.length === 0) {
+      throw new Error(
+        `Concept "${conceptId}" constraintContract.structuralFailures.contractIncompletes must include at least one entry when declared.`,
+      );
+    }
+
+    contractIncompletes = contract.structuralFailures.contractIncompletes.map((entry, index) => (
+      validateStructuralFailureEntry(
+        entry,
+        `constraintContract.structuralFailures.contractIncompletes[${index}]`,
+        `Concept "${conceptId}"`,
+      )
+    ));
+  }
+
+  let runtimeBoundaries = null;
+  if (contract.structuralFailures.runtimeBoundaries !== undefined) {
+    assertArray(
+      contract.structuralFailures.runtimeBoundaries,
+      'constraintContract.structuralFailures.runtimeBoundaries',
+      `Concept "${conceptId}"`,
+    );
+    if (contract.structuralFailures.runtimeBoundaries.length === 0) {
+      throw new Error(
+        `Concept "${conceptId}" constraintContract.structuralFailures.runtimeBoundaries must include at least one entry when declared.`,
+      );
+    }
+
+    runtimeBoundaries = contract.structuralFailures.runtimeBoundaries.map((entry, index) => (
+      validateStructuralFailureEntry(
+        entry,
+        `constraintContract.structuralFailures.runtimeBoundaries[${index}]`,
+        `Concept "${conceptId}"`,
+      )
+    ));
+  }
 
   if (!isPlainObject(contract.resolutionRules)) {
     throw new Error(`Concept "${conceptId}" constraintContract.resolutionRules must be an object.`);
@@ -450,6 +493,8 @@ function validateConstraintContractShape(contract, conceptId) {
     structuralFailures: {
       invariantBreaches,
       refusals,
+      ...(contractIncompletes ? { contractIncompletes } : {}),
+      ...(runtimeBoundaries ? { runtimeBoundaries } : {}),
     },
     resolutionRules,
   });

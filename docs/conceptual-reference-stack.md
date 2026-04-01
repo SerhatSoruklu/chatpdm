@@ -82,6 +82,7 @@ References complement these existing controls:
 
 - [concept-writing-standard.md](/home/serhat/code/chatpdm/docs/architecture/concept-writing-standard.md)
 - [concept-review-checklist.md](/home/serhat/code/chatpdm/docs/architecture/concept-review-checklist.md)
+- [constraint-contract-checklist.md](/home/serhat/code/chatpdm/docs/architecture/constraint-contract-checklist.md)
 - [v1-concept-scope.md](/home/serhat/code/chatpdm/docs/architecture/v1-concept-scope.md)
 
 They do not replace those controls.

@@ -136,6 +136,20 @@
           "condition": "The query asks law to stand in a relation not admitted by the law contract.",
           "reason": "This law contract admits only a small source-like relation set."
         }
+      ],
+      "contractIncompletes": [
+        {
+          "code": "LAW_CONTRACT_INCOMPLETE",
+          "condition": "The law constraint contract is missing a required structural element or cannot be resolved for validation.",
+          "reason": "Law must expose a complete source-like contract before admission or runtime use."
+        }
+      ],
+      "runtimeBoundaries": [
+        {
+          "code": "LAW_NON_LIVE_CONCEPT",
+          "condition": "A law packet or law-like claim is referenced for runtime use without live admission.",
+          "reason": "Only live-admitted law may participate in runtime matching or comparison."
+        }
       ]
     },
     "resolutionRules": {

@@ -140,6 +140,20 @@
           "condition": "The query asks legitimacy to stand in a relation not admitted by the legitimacy contract.",
           "reason": "This legitimacy contract admits only validity-assessment relations inside the governance cluster."
         }
+      ],
+      "contractIncompletes": [
+        {
+          "code": "LEGITIMACY_CONTRACT_INCOMPLETE",
+          "condition": "The legitimacy constraint contract is missing a required structural element or cannot be resolved for validation.",
+          "reason": "Legitimacy must expose a complete validity-assessment contract before admission or runtime use."
+        }
+      ],
+      "runtimeBoundaries": [
+        {
+          "code": "LEGITIMACY_NON_LIVE_CONCEPT",
+          "condition": "A legitimacy packet or legitimacy-like claim is referenced for runtime use without live admission.",
+          "reason": "Only live-admitted legitimacy may participate in runtime matching or comparison."
+        }
       ]
     },
     "resolutionRules": {
