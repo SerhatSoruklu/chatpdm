@@ -23,6 +23,7 @@ const { getConceptRuntimeGovernanceState } = require('./concept-validation-state
 const { buildReadingRegistersForConcept } = require('./reading-registers');
 const { loadResolveRules } = require('./resolve-rules-loader');
 const { getRejectedConceptRecord } = require('./rejection-registry-loader');
+const { assertSingleRuntimeResolutionState } = require('./runtime-resolution-state');
 const { matchQuery } = require('./matcher');
 const { extractCanonicalId, normalizeQuery } = require('./normalizer');
 const { classifyQueryShape } = require('./query-shape-classifier');
@@ -210,6 +211,12 @@ function buildUnsupportedQueryTypeResponse(baseResponse) {
   };
 }
 
+function finalizeResolvedResponse(response) {
+  assertSingleRuntimeResolutionState(response);
+  assertDeterministicPathFreeOfAiMarkers(response, 'Concept resolver response');
+  return assertValidProductResponse(response);
+}
+
 function isBlockedConceptId(conceptId) {
   return getConceptRuntimeGovernanceState(conceptId).isBlocked;
 }
@@ -289,8 +296,7 @@ function resolveConceptQuery(rawQuery) {
       rejectedConcept,
     );
 
-    assertDeterministicPathFreeOfAiMarkers(response, 'Concept resolver response');
-    return assertValidProductResponse(response);
+    return finalizeResolvedResponse(response);
   }
 
   const concepts = loadConceptSet();
@@ -332,7 +338,7 @@ function resolveConceptQuery(rawQuery) {
       suggestions: [],
     };
 
-    return assertValidProductResponse(response);
+    return finalizeResolvedResponse(response);
   }
 
   if (visibleOnlyCanonicalConceptId) {
@@ -343,7 +349,7 @@ function resolveConceptQuery(rawQuery) {
       }),
     );
 
-    return assertValidProductResponse(response);
+    return finalizeResolvedResponse(response);
   }
 
   if (
@@ -357,7 +363,7 @@ function resolveConceptQuery(rawQuery) {
       }),
     );
 
-    return assertValidProductResponse(response);
+    return finalizeResolvedResponse(response);
   }
 
   if (queryClassification.queryType === 'invalid_query') {
@@ -378,7 +384,7 @@ function resolveConceptQuery(rawQuery) {
         }),
       );
 
-      return assertValidProductResponse(response);
+      return finalizeResolvedResponse(response);
     }
 
     const blockedConceptIds = (queryClassification.interpretation?.concepts ?? [])
@@ -419,7 +425,7 @@ function resolveConceptQuery(rawQuery) {
         }),
       );
 
-      return assertValidProductResponse(response);
+      return finalizeResolvedResponse(response);
     }
 
     const governanceState = getConceptRuntimeGovernanceState(match.concept.conceptId);
@@ -489,8 +495,7 @@ function resolveConceptQuery(rawQuery) {
     };
   }
 
-  assertDeterministicPathFreeOfAiMarkers(response, 'Concept resolver response');
-  return assertValidProductResponse(response);
+  return finalizeResolvedResponse(response);
 }
 
 module.exports = {

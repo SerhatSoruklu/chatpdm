@@ -6,7 +6,7 @@
   "state": "published",
   "previousVersion": null,
   "createdAt": "2026-03-30T00:00:00Z",
-  "updatedAt": "2026-03-30T00:00:00Z",
+  "updatedAt": "2026-04-01T00:00:00Z",
   "domain": "relational-structures",
   "canonical": {
     "invariant": "Authority is recognized standing to direct, decide, or govern within a governance order.",
@@ -47,6 +47,124 @@
     "answerabilityRole": "does not assign answerability",
     "requiredConductRole": "does not itself define required conduct",
     "outcomeAttributionRole": "does not itself attribute outcomes"
+  },
+  "constraintContract": {
+    "version": 1,
+    "domainLockRef": "governance-domain-lock.v1",
+    "templateRole": "family_seed_directive_standing",
+    "expectedIdentityKind": "recognized_directive_standing",
+    "requiredFields": [
+      "domain",
+      "identityKind",
+      "governanceOrder"
+    ],
+    "allowedRelations": [
+      {
+        "relationType": "is_structured_by",
+        "targetConceptId": "law"
+      },
+      {
+        "relationType": "may_channel",
+        "targetConceptId": "power"
+      },
+      {
+        "relationType": "is_evaluated_by",
+        "targetConceptId": "legitimacy"
+      }
+    ],
+    "forbiddenRelations": [
+      {
+        "relationType": "equivalent_to",
+        "targetConceptId": "power",
+        "failureCode": "AUTHORITY_COLLAPSES_TO_POWER"
+      },
+      {
+        "relationType": "equivalent_to",
+        "targetConceptId": "legitimacy",
+        "failureCode": "AUTHORITY_COLLAPSES_TO_LEGITIMACY"
+      }
+    ],
+    "invariants": [
+      {
+        "id": "authority_is_recognized_directive_standing",
+        "statement": "Authority is recognized directive standing within a governance order."
+      },
+      {
+        "id": "authority_is_not_operative_capacity",
+        "statement": "Authority is not the operative capacity that produces outcomes."
+      },
+      {
+        "id": "authority_is_not_validity_assessment",
+        "statement": "Authority is not the accepted or justified validity of rule or standing."
+      },
+      {
+        "id": "authority_can_exist_without_effective_control",
+        "statement": "Authority can remain recognized standing even when effective control is weak or absent."
+      },
+      {
+        "id": "authority_can_persist_while_legitimacy_is_contested",
+        "statement": "Authority can persist while the legitimacy of the office or order is contested."
+      }
+    ],
+    "structuralFailures": {
+      "invariantBreaches": [
+        {
+          "code": "AUTHORITY_IDENTITY_KIND_MISMATCH",
+          "condition": "An authority claim assigns authority a non-standing identity within the governance domain.",
+          "reason": "Authority must remain recognized directive standing."
+        },
+        {
+          "code": "AUTHORITY_COLLAPSES_TO_POWER",
+          "condition": "An authority claim treats authority as operative capacity or as equivalent to power.",
+          "reason": "Authority must not collapse into power."
+        },
+        {
+          "code": "AUTHORITY_COLLAPSES_TO_LEGITIMACY",
+          "condition": "An authority claim treats authority as justified validity or as equivalent to legitimacy.",
+          "reason": "Authority must not collapse into legitimacy."
+        }
+      ],
+      "refusals": [
+        {
+          "code": "AUTHORITY_NON_GOVERNANCE_DOMAIN",
+          "condition": "The requested usage is outside the governance domain.",
+          "reason": "Authority is locked to governance-domain meaning in ChatPDM v1."
+        },
+        {
+          "code": "AUTHORITY_OUT_OF_SCOPE_TOPIC",
+          "condition": "The requested usage is listed as out of scope in the governance domain lock.",
+          "reason": "The governance domain lock excludes that topic from the authority contract."
+        },
+        {
+          "code": "AUTHORITY_UNSUPPORTED_RELATION",
+          "condition": "The query asks authority to stand in a relation not admitted by the authority contract.",
+          "reason": "This authority contract admits only recognized-standing relations inside the governance cluster."
+        }
+      ]
+    },
+    "resolutionRules": {
+      "valid": [
+        "All required fields are present and non-empty.",
+        "domain equals governance.",
+        "identityKind equals recognized_directive_standing.",
+        "If relationType is present, the relation-target pair is listed in allowedRelations."
+      ],
+      "invalid": [
+        "A required field is missing or empty.",
+        "relationType is present without relatedConceptId.",
+        "relatedConceptId is present without relationType."
+      ],
+      "conflict": [
+        "The claim assigns authority an identity other than recognized directive standing.",
+        "The claim collapses authority into power or legitimacy.",
+        "The claim asserts a forbidden equivalent_to relation."
+      ],
+      "refused": [
+        "The requested usage is outside the governance domain lock.",
+        "The requested topic is explicitly out of scope.",
+        "The requested relation is not admitted by the authority contract."
+      ]
+    }
   },
   "fullDefinition": "Authority is not any ability to produce effects. In ChatPDM v1 it is defined within the governance domain as a structured right to issue direction, make decisions, or govern within a governance order.\n\nIts structure joins the right to direct to a recognized role, office, or position. The concept requires that this right attach to standing rather than to mere capacity.\n\nWithin governance structures, authority organizes who may decide, command, or settle matters. Questions of whether that standing is valid belong to legitimacy, while questions of what outcomes can be produced belong to power.",
   "registers": {

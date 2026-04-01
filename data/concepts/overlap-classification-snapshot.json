@@ -570,6 +570,13 @@
       "conceptId": "obligation",
       "otherConceptId": "duty",
       "classification": "requires_explicit_boundary_note"
+    },
+    {
+      "scope": "regression_pair",
+      "caseId": "obligation_vs_responsibility",
+      "conceptId": "obligation",
+      "otherConceptId": "responsibility",
+      "classification": "distinct"
     }
   ]
 }

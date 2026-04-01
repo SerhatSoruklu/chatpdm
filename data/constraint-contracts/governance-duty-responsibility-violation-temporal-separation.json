@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "familyId": "governance-duty-responsibility-violation.v1",
+  "separation": {
+    "duty": {
+      "temporalRole": "pre-action requirement",
+      "functionalRole": "defines required conduct or restraint under a binding source",
+      "existsWhen": "a binding governance source places conduct or restraint under requirement before assessment or breach"
+    },
+    "responsibility": {
+      "temporalRole": "post-attribution answerability",
+      "functionalRole": "assigns who can be called to account for attributable conduct, omission, role, or outcome",
+      "existsWhen": "conduct, omission, role, or outcome is attributable to an actor and answerability is in question"
+    },
+    "violation": {
+      "temporalRole": "post-assessment breach state",
+      "functionalRole": "records that duty-required conduct or conditions are unmet at the relevant assessment point",
+      "existsWhen": "an applicable duty is in force, the relevant assessment point has been reached, and the actual state fails to satisfy what the duty requires"
+    }
+  }
+}

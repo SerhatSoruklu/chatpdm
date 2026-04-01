@@ -34,6 +34,7 @@ function buildConflictingConceptCandidate() {
   candidate.registers.standard.shortDefinition = candidate.shortDefinition;
   candidate.registers.standard.coreMeaning = candidate.coreMeaning;
   candidate.registers.standard.fullDefinition = candidate.fullDefinition;
+  candidate.constraintContract.expectedIdentityKind = 'agenda_shaping_leverage';
   candidate.structuralProfile.function = 'agenda-shaping leverage within a governance order';
   candidate.structuralProfile.object = 'agenda leverage around directive activity';
   candidate.structuralProfile.temporalRole = 'operative during agenda formation';
@@ -69,7 +70,49 @@ function buildAdjacentConceptWithoutProof() {
   candidate.registers.standard.shortDefinition = candidate.shortDefinition;
   candidate.registers.standard.coreMeaning = candidate.coreMeaning;
   candidate.registers.standard.fullDefinition = candidate.fullDefinition;
+  candidate.constraintContract.expectedIdentityKind = 'transitional_outcome_capacity';
   candidate.structuralProfile.temporalRole = 'transition from latent leverage into operative outcome production';
+  delete candidate.boundaryProofs;
+  return candidate;
+}
+
+function buildContractDuplicateConceptCandidate() {
+  const candidate = clone(getLiveConcept('authority'));
+  candidate.conceptId = 'directive-office-shadow';
+  candidate.concept = 'directive-office-shadow';
+  candidate.title = 'Directive Office Shadow';
+  candidate.canonical.invariant = 'Directive office shadow is a governance-layer standing that settles internal direction without becoming a new runtime concept role.';
+  candidate.canonical.adjacent = {
+    power: 'Power concerns capacity to produce outcomes, not recognized standing to direct.',
+    legitimacy: 'Legitimacy concerns valid standing, not the standing role itself.',
+  };
+  candidate.shortDefinition = 'Directive office shadow is a governance-layer standing that settles internal direction without becoming a new runtime concept role.';
+  candidate.coreMeaning = 'Directive office shadow marks a claimed governance standing that remains distinct in profile wording but still claims the same contract role as authority.';
+  candidate.fullDefinition = 'Directive office shadow marks a claimed governance standing that remains distinct in profile wording but still claims the same contract role as authority. The overlap gate must block it because the contract role is already occupied inside the live kernel.';
+  candidate.registers.standard.shortDefinition = candidate.shortDefinition;
+  candidate.registers.standard.coreMeaning = candidate.coreMeaning;
+  candidate.registers.standard.fullDefinition = candidate.fullDefinition;
+  candidate.structuralProfile.function = 'recognized dispute-settlement standing within a governance order';
+  candidate.structuralProfile.object = 'settlement acts and directional settlement authority';
+  candidate.structuralProfile.actorRelation = 'actor or office holds recognized standing to settle directional disputes';
+  candidate.structuralProfile.temporalRole = 'standing during adjudicative settlement';
+  delete candidate.boundaryProofs;
+  return candidate;
+}
+
+function buildMissingContractCandidate() {
+  const candidate = clone(getLiveConcept('law'));
+  candidate.conceptId = 'law-shadow';
+  candidate.concept = 'law-shadow';
+  candidate.title = 'Law Shadow';
+  candidate.canonical.invariant = 'Law shadow is a claimed governance source-like concept used only to verify contract-presence blocking.';
+  candidate.shortDefinition = 'Law shadow is a claimed governance source-like concept used only to verify contract-presence blocking.';
+  candidate.coreMeaning = 'Law shadow keeps a valid authored shape while intentionally removing the constraint contract so the overlap gate must fail closed.';
+  candidate.fullDefinition = 'Law shadow keeps a valid authored shape while intentionally removing the constraint contract so the overlap gate must fail closed before any admission decision can be treated as safe.';
+  candidate.registers.standard.shortDefinition = candidate.shortDefinition;
+  candidate.registers.standard.coreMeaning = candidate.coreMeaning;
+  candidate.registers.standard.fullDefinition = candidate.fullDefinition;
+  delete candidate.constraintContract;
   delete candidate.boundaryProofs;
   return candidate;
 }
@@ -94,6 +137,24 @@ function verifyDuplicateConceptBlocked(liveConcepts) {
   process.stdout.write('PASS concept_overlap_admission_duplicate_concept_blocked\n');
 }
 
+function verifyContractDuplicateConceptBlocked(liveConcepts) {
+  const report = evaluateConceptOverlapAdmission(buildContractDuplicateConceptCandidate(), liveConcepts);
+
+  assert.equal(report.admission, 'overlap_scan_failed_duplicate', 'contract-duplicate concept must fail overlap admission.');
+  assert.equal(report.blocking, true, 'contract-duplicate concept must block admission.');
+  assert.equal(
+    report.blockingResults.some((result) => (
+      result.classification === 'duplicate_candidate'
+      && result.signalSource === 'constraint_contract'
+      && result.structuralFailureKind === 'ontological_impossibility'
+    )),
+    true,
+    'contract-duplicate concept must expose a constraint-contract duplicate result.',
+  );
+
+  process.stdout.write('PASS concept_overlap_admission_contract_duplicate_blocked\n');
+}
+
 function verifyAdjacentConceptWithoutProofBlocked(liveConcepts) {
   const report = evaluateConceptOverlapAdmission(buildAdjacentConceptWithoutProof(), liveConcepts);
 
@@ -102,6 +163,20 @@ function verifyAdjacentConceptWithoutProofBlocked(liveConcepts) {
   assert.equal(report.blockingResults.some((result) => result.requiredBoundaryProof), true, 'adjacent concept must surface a boundary-proof requirement.');
 
   process.stdout.write('PASS concept_overlap_admission_adjacent_without_proof_blocked\n');
+}
+
+function verifyMissingConstraintContractBlocked(liveConcepts) {
+  const report = evaluateConceptOverlapAdmission(buildMissingContractCandidate(), liveConcepts);
+
+  assert.equal(report.admission, 'overlap_scan_failed_conflict', 'missing constraint contract must fail as a blocking conflict.');
+  assert.equal(report.blocking, true, 'missing constraint contract must block admission.');
+  assert.deepEqual(
+    report.structuralFailureKinds,
+    ['contract_violation'],
+    'missing constraint contract must map to contract_violation.',
+  );
+
+  process.stdout.write('PASS concept_overlap_admission_missing_constraint_contract_blocked\n');
 }
 
 function verifyValidConceptPasses(liveConcepts) {
@@ -126,7 +201,9 @@ function main() {
   const liveConcepts = loadConceptSet();
   verifyConflictingConceptBlocked(liveConcepts);
   verifyDuplicateConceptBlocked(liveConcepts);
+  verifyContractDuplicateConceptBlocked(liveConcepts);
   verifyAdjacentConceptWithoutProofBlocked(liveConcepts);
+  verifyMissingConstraintContractBlocked(liveConcepts);
   verifyValidConceptPasses(liveConcepts);
   process.stdout.write('ChatPDM concept overlap admission gate verification passed.\n');
 }

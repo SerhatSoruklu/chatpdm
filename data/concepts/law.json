@@ -34,6 +34,134 @@
     "requiredConductRole": "can ground required conduct without being the conduct itself",
     "outcomeAttributionRole": "does not attribute outcomes to an actor"
   },
+  "constraintContract": {
+    "version": 1,
+    "domainLockRef": "governance-domain-lock.v1",
+    "templateRole": "template_seeding_source_like",
+    "expectedSourceKind": "binding_normative_source",
+    "requiredFields": [
+      "domain",
+      "sourceKind",
+      "governanceOrder"
+    ],
+    "allowedRelations": [
+      {
+        "relationType": "grounds",
+        "targetConceptId": "duty"
+      },
+      {
+        "relationType": "structures",
+        "targetConceptId": "authority"
+      },
+      {
+        "relationType": "is_evaluated_by",
+        "targetConceptId": "legitimacy"
+      }
+    ],
+    "forbiddenRelations": [
+      {
+        "relationType": "equivalent_to",
+        "targetConceptId": "duty",
+        "failureCode": "LAW_COLLAPSES_TO_DUTY"
+      },
+      {
+        "relationType": "equivalent_to",
+        "targetConceptId": "authority",
+        "failureCode": "LAW_COLLAPSES_TO_AUTHORITY"
+      },
+      {
+        "relationType": "equivalent_to",
+        "targetConceptId": "legitimacy",
+        "failureCode": "LAW_COLLAPSES_TO_LEGITIMACY"
+      }
+    ],
+    "invariants": [
+      {
+        "id": "law_is_binding_normative_source",
+        "statement": "Law is a binding normative source within a governance order."
+      },
+      {
+        "id": "law_is_not_required_conduct",
+        "statement": "Law is not the conduct owed under a binding source."
+      },
+      {
+        "id": "law_is_not_directive_standing",
+        "statement": "Law is not recognized standing to direct or govern."
+      },
+      {
+        "id": "law_is_not_justified_validity",
+        "statement": "Law is not the justified validity of a rule, office, or standing."
+      },
+      {
+        "id": "law_remains_source_when_contested",
+        "statement": "Law can remain law when it is violated or its legitimacy is contested."
+      }
+    ],
+    "structuralFailures": {
+      "invariantBreaches": [
+        {
+          "code": "LAW_SOURCE_KIND_MISMATCH",
+          "condition": "A governance-domain law claim assigns law a non-source role.",
+          "reason": "Law must remain the binding normative source layer."
+        },
+        {
+          "code": "LAW_COLLAPSES_TO_DUTY",
+          "condition": "A law claim treats law as owed conduct rather than the source that can make conduct owed.",
+          "reason": "Law must not collapse into duty."
+        },
+        {
+          "code": "LAW_COLLAPSES_TO_AUTHORITY",
+          "condition": "A law claim treats law as recognized standing rather than the source that can define or limit standing.",
+          "reason": "Law must not collapse into authority."
+        },
+        {
+          "code": "LAW_COLLAPSES_TO_LEGITIMACY",
+          "condition": "A law claim treats law as justified validity rather than a binding rule-source that can itself be contested.",
+          "reason": "Law must not collapse into legitimacy."
+        }
+      ],
+      "refusals": [
+        {
+          "code": "LAW_NON_GOVERNANCE_DOMAIN",
+          "condition": "The requested usage is outside the governance domain.",
+          "reason": "Law is locked to governance-domain meaning in ChatPDM v1."
+        },
+        {
+          "code": "LAW_OUT_OF_SCOPE_TOPIC",
+          "condition": "The requested usage is listed as out of scope in the governance domain lock.",
+          "reason": "The governance domain lock excludes that topic from the law contract."
+        },
+        {
+          "code": "LAW_UNSUPPORTED_RELATION",
+          "condition": "The query asks law to stand in a relation not admitted by the law contract.",
+          "reason": "This law contract admits only a small source-like relation set."
+        }
+      ]
+    },
+    "resolutionRules": {
+      "valid": [
+        "All required fields are present and non-empty.",
+        "domain equals governance.",
+        "sourceKind equals binding_normative_source.",
+        "If relationType is present, the relation-target pair is listed in allowedRelations."
+      ],
+      "invalid": [
+        "A required field is missing or empty.",
+        "relationType is present without relatedConceptId.",
+        "relatedConceptId is present without relationType."
+      ],
+      "conflict": [
+        "The claim assigns law a non-source role inside the governance domain.",
+        "The claim collapses law into duty, authority, or legitimacy.",
+        "The claim asserts a forbidden equivalent_to relation."
+      ],
+      "refused": [
+        "The requested usage is outside the governance domain lock.",
+        "The requested topic is explicitly out of scope.",
+        "The requested relation is not admitted by the law contract."
+      ]
+    }
+  },
   "fullDefinition": "Law is not identical to duty, authority, or legitimacy. Duty concerns conduct owed under a binding source. Authority concerns recognized standing to direct. Legitimacy concerns whether a rule, office, or standing is justified.\n\nLaw instead operates as the binding normative source within a governance order. It establishes the rules and conditions under which conduct can become owed, offices can be structured, and institutional acts can count as valid within the order.\n\nLaw can exist as law even when it is violated, weakly enforced, or contested in legitimacy. Its role is to bind and structure the order, not to guarantee obedience, standing, or justification.",
   "registers": {
     "standard": {

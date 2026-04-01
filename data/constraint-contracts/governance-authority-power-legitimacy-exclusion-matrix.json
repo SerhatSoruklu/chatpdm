@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "familyId": "governance-authority-power-legitimacy.v1",
+  "conceptIds": [
+    "authority",
+    "power",
+    "legitimacy"
+  ],
+  "pairs": [
+    {
+      "pairId": "authority_vs_power",
+      "leftConceptId": "authority",
+      "rightConceptId": "power",
+      "distinction": "Authority is recognized directive standing; power is operative capacity to produce outcomes.",
+      "cannotCoexist": [
+        "The same governance claim cannot treat recognized directive standing and operative outcome capacity as the same identity slot.",
+        "An equivalent_to relation between authority and power is not admitted."
+      ],
+      "conflictCauses": [
+        "An authority claim assigns identityKind operative_outcome_capacity.",
+        "A power claim assigns identityKind recognized_directive_standing.",
+        "A claim asserts equivalent_to between authority and power."
+      ]
+    },
+    {
+      "pairId": "authority_vs_legitimacy",
+      "leftConceptId": "authority",
+      "rightConceptId": "legitimacy",
+      "distinction": "Authority identifies who may direct; legitimacy evaluates whether rule or standing counts as valid.",
+      "cannotCoexist": [
+        "The same governance claim cannot treat recognized directive standing and accepted validity as the same identity slot.",
+        "An equivalent_to relation between authority and legitimacy is not admitted."
+      ],
+      "conflictCauses": [
+        "An authority claim assigns identityKind accepted_justified_validity.",
+        "A legitimacy claim assigns identityKind recognized_directive_standing.",
+        "A claim asserts equivalent_to between authority and legitimacy."
+      ]
+    },
+    {
+      "pairId": "power_vs_legitimacy",
+      "leftConceptId": "power",
+      "rightConceptId": "legitimacy",
+      "distinction": "Power is operative capacity; legitimacy is accepted or justified validity.",
+      "cannotCoexist": [
+        "The same governance claim cannot treat operative outcome capacity and accepted validity as the same identity slot.",
+        "An equivalent_to relation between power and legitimacy is not admitted."
+      ],
+      "conflictCauses": [
+        "A power claim assigns identityKind accepted_justified_validity.",
+        "A legitimacy claim assigns identityKind operative_outcome_capacity.",
+        "A claim asserts equivalent_to between power and legitimacy."
+      ]
+    }
+  ]
+}

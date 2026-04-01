@@ -131,6 +131,14 @@ function verifyRegressionPairsRemainFrozen() {
   assert.equal(
     findSnapshotEntry(
       storedSnapshot,
+      (entry) => entry.scope === 'regression_pair' && entry.caseId === 'obligation_vs_responsibility',
+    ).classification,
+    'distinct',
+    'obligation vs responsibility regression classification mismatch.',
+  );
+  assert.equal(
+    findSnapshotEntry(
+      storedSnapshot,
       (entry) => entry.scope === 'regression_pair' && entry.caseId === 'authority_vs_power',
     ).classification,
     'adjacent',

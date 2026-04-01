@@ -35,6 +35,123 @@
     "requiredConductRole": "tests whether required conduct or conditions are satisfied",
     "outcomeAttributionRole": "does not attribute outcomes to an actor"
   },
+  "constraintContract": {
+    "version": 1,
+    "domainLockRef": "governance-domain-lock.v1",
+    "templateRole": "family_seed_breach_state",
+    "expectedIdentityKind": "unmet_duty_state",
+    "requiredFields": [
+      "domain",
+      "identityKind",
+      "governanceOrder"
+    ],
+    "requiredRelations": [
+      {
+        "relationType": "breaches",
+        "targetConceptId": "duty"
+      }
+    ],
+    "allowedRelations": [
+      {
+        "relationType": "breaches",
+        "targetConceptId": "duty"
+      }
+    ],
+    "forbiddenRelations": [
+      {
+        "relationType": "equivalent_to",
+        "targetConceptId": "duty",
+        "failureCode": "VIOLATION_COLLAPSES_TO_DUTY"
+      },
+      {
+        "relationType": "equivalent_to",
+        "targetConceptId": "responsibility",
+        "failureCode": "VIOLATION_COLLAPSES_TO_RESPONSIBILITY"
+      }
+    ],
+    "invariants": [
+      {
+        "id": "violation_is_unmet_duty_state",
+        "statement": "Violation is the assessed state in which duty-required conduct or conditions are unmet."
+      },
+      {
+        "id": "violation_requires_applicable_duty",
+        "statement": "Violation cannot exist unless an applicable duty defines what requirement was unmet."
+      },
+      {
+        "id": "violation_occurs_after_duty_at_assessment",
+        "statement": "Violation occurs only after duty is in force and the relevant assessment point has been reached."
+      },
+      {
+        "id": "violation_is_not_answerability",
+        "statement": "Violation does not assign answerability for the unmet state."
+      },
+      {
+        "id": "violation_precedes_sanction_or_enforcement",
+        "statement": "Violation sits before sanction, punishment, or enforcement response."
+      }
+    ],
+    "structuralFailures": {
+      "invariantBreaches": [
+        {
+          "code": "VIOLATION_IDENTITY_KIND_MISMATCH",
+          "condition": "A violation claim assigns violation a non-breach identity within the governance domain.",
+          "reason": "Violation must remain the unmet duty-state."
+        },
+        {
+          "code": "VIOLATION_COLLAPSES_TO_DUTY",
+          "condition": "A violation claim treats violation as required conduct or as equivalent to duty.",
+          "reason": "Violation must not collapse into duty."
+        },
+        {
+          "code": "VIOLATION_COLLAPSES_TO_RESPONSIBILITY",
+          "condition": "A violation claim treats violation as answerability or as equivalent to responsibility.",
+          "reason": "Violation must not collapse into responsibility."
+        }
+      ],
+      "refusals": [
+        {
+          "code": "VIOLATION_NON_GOVERNANCE_DOMAIN",
+          "condition": "The requested usage is outside the governance domain.",
+          "reason": "Violation is locked to governance-domain meaning in ChatPDM v1."
+        },
+        {
+          "code": "VIOLATION_OUT_OF_SCOPE_TOPIC",
+          "condition": "The requested usage is listed as out of scope in the governance domain lock.",
+          "reason": "The governance domain lock excludes that topic from the violation contract."
+        },
+        {
+          "code": "VIOLATION_UNSUPPORTED_RELATION",
+          "condition": "The query asks violation to stand in a relation not admitted by the violation contract.",
+          "reason": "This violation contract admits only duty-breach relations inside the governance family."
+        }
+      ]
+    },
+    "resolutionRules": {
+      "valid": [
+        "All required fields are present and non-empty.",
+        "domain equals governance.",
+        "identityKind equals unmet_duty_state.",
+        "A declared required relation is present and matches breaches -> duty."
+      ],
+      "invalid": [
+        "A required field is missing or empty.",
+        "relationType is present without relatedConceptId.",
+        "relatedConceptId is present without relationType.",
+        "A declared required relation is missing or does not match breaches -> duty."
+      ],
+      "conflict": [
+        "The claim assigns violation an identity other than unmet duty state.",
+        "The claim collapses violation into duty or responsibility.",
+        "The claim asserts a forbidden equivalent_to relation."
+      ],
+      "refused": [
+        "The requested usage is outside the governance domain lock.",
+        "The requested topic is explicitly out of scope.",
+        "The requested relation is not admitted by the violation contract."
+      ]
+    }
+  },
   "fullDefinition": "Violation is not identical to duty. Duty defines what conduct or conditions are required under a binding source; violation records that those requirements are not satisfied when assessed.\n\nViolation is also not responsibility. Responsibility concerns who is answerable for the violated state. Violation concerns the state of non-satisfaction itself, whether or not answerability has already been assigned.\n\nWithin a governance system, violation sits after duty and before sanction or enforcement. It exists when a duty is in force, the relevant assessment point has been reached, and the actual state fails to satisfy what the duty requires.",
   "registers": {
     "standard": {

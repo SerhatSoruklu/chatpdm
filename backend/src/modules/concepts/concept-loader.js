@@ -10,6 +10,10 @@ const {
   NON_GOVERNANCE_HANDLING_REQUIRED,
 } = require('./constants');
 const { validateBoundaryProofCatalog } = require('./concept-boundary-proof');
+const {
+  assertLiveConceptConstraintContractIntegration: assertLiveConstraintContracts,
+  validateConstraintContractShape,
+} = require('./constraint-contract');
 const { normalizeConceptToProfile } = require('./concept-structural-profile');
 const { assertCanonicalStoreFreeOfAiMarkers } = require('../../lib/ai-governance-guard');
 
@@ -82,6 +86,7 @@ function buildCanonicalConceptHashInput(concept) {
   delete canonicalConcept.updatedAt;
   delete canonicalConcept.registers;
   delete canonicalConcept.boundaryProofs;
+  delete canonicalConcept.constraintContract;
   delete canonicalConcept.structureV3;
   return canonicalConcept;
 }
@@ -362,6 +367,7 @@ function validateConceptShape(concept, expectedConceptId) {
   assertArray(concept.normalizedAliases, 'normalizedAliases', expectedConceptId);
   validateComparisonShape(concept.comparison, expectedConceptId);
   validateBoundaryProofCatalog(concept.boundaryProofs, expectedConceptId);
+  validateConstraintContractShape(concept.constraintContract, expectedConceptId);
   validateScopeShape(concept.scope, expectedConceptId);
   validateGovernanceScopePolicy(concept, expectedConceptId);
   validateSourceIntegrity(concept, expectedConceptId);
@@ -382,8 +388,13 @@ function loadConceptFile(conceptId) {
 function loadConceptSet() {
   const liveConcepts = LIVE_CONCEPT_IDS.map(loadConceptFile);
   const { assertLiveConceptOverlapAdmissions } = require('./concept-overlap-admission-gate');
+  const {
+    assertStoredConceptRelationshipSnapshotAuthority,
+  } = require('./concept-overlap-snapshot');
 
+  assertLiveConstraintContracts(liveConcepts);
   assertLiveConceptOverlapAdmissions(liveConcepts);
+  assertStoredConceptRelationshipSnapshotAuthority();
 
   return liveConcepts;
 }
