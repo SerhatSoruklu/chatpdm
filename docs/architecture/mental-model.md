@@ -18,11 +18,11 @@ It is a structural lens used to:
 
 The system is currently understood as:
 
-Constraints      30%  
-Safety/Hardening 25%  
-Structure/Loader 20%  
-Runtime Behavior 15%  
-Context          10%  
+Constraints=35%  
+Safety/Hardening=25%  
+Structure/Loader=20%  
+Runtime Behavior=12%  
+Context=8%  
 
 ---
 
@@ -33,6 +33,7 @@ Context          10%
 Defines what is structurally possible.
 
 Includes:
+
 - concept contracts
 - structural profiles
 - admission state (live / visible_only / rejected)
@@ -40,6 +41,7 @@ Includes:
 - relation constraints
 
 Role:
+
 - ontology core
 - prevents drift and overlap
 - defines system truth boundaries
@@ -51,6 +53,7 @@ Role:
 Prevents structural collapse and invalid states.
 
 Includes:
+
 - overlap admission gate
 - frozen relationship snapshots
 - refusal-first enforcement
@@ -58,6 +61,7 @@ Includes:
 - regression checks
 
 Role:
+
 - system protection layer
 - ensures concepts survive pressure
 - blocks invalid or unsafe configurations
@@ -69,12 +73,14 @@ Role:
 Controls system boot and admission.
 
 Includes:
+
 - concept-loader
 - contract validation
 - admission firewall
 - snapshot enforcement at load-time
 
 Role:
+
 - gatekeeper of the live system
 - ensures only valid, approved structures enter runtime
 
@@ -88,16 +94,19 @@ This layer is currently highly coupled and carries multiple responsibilities.
 Executes deterministic resolution.
 
 Includes:
+
 - resolver
 - response-type mapping
 - runtime state assignment
 - single-outcome enforcement
 
 Role:
+
 - produces final system outputs
 - enforces deterministic behavior
 
 Constraint:
+
 - same input -> same output
 - no blended results
 - no fallback guessing
@@ -109,12 +118,14 @@ Constraint:
 Routes and shapes query handling without altering truth.
 
 Includes:
+
 - query-shape classification
 - governance scope enforcement
 - comparison allowlisting
 - admission-state checks
 
 Role:
+
 - selects relevant constraints
 - determines response path
 - controls access, not meaning
@@ -125,7 +136,6 @@ This layer is intentionally thin and should not override constraints.
 ---
 
 ## System Flow
-
 
 ---
 

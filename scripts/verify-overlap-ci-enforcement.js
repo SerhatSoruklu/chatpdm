@@ -50,11 +50,36 @@ function verifyCurrentConceptSetProducesOverlapReports(concepts) {
 
   assert.equal(overlapSummary.failingConcepts, 0, 'current concept set should pass overlap CI enforcement.');
   conceptReports.forEach((conceptReport) => {
-    assert.equal(conceptReport.overlap.reportPresent, true, `${conceptReport.conceptId} overlap report must exist.`);
     assert.equal(conceptReport.overlap.profilePresent, true, `${conceptReport.conceptId} structural profile must be present.`);
+
+    if (conceptReport.overlap.applicable) {
+      assert.equal(conceptReport.overlap.reportPresent, true, `${conceptReport.conceptId} overlap report must exist.`);
+      return;
+    }
+
+    assert.equal(conceptReport.overlap.reportPresent, false, `${conceptReport.conceptId} overlap report must be skipped when overlap enforcement is not applicable.`);
   });
 
   process.stdout.write('PASS overlap_ci_current_concept_set_reports_present\n');
+}
+
+function verifyVisibleOnlyInteractionConceptsAreSkipped(concepts) {
+  const conceptReports = concepts.map((concept) => ({
+    conceptId: concept.conceptId,
+    passed: true,
+  }));
+  attachOverlapValidationResults(conceptReports, concepts);
+
+  ['agreement', 'breach', 'commitment'].forEach((conceptId) => {
+    const report = conceptReports.find((entry) => entry.conceptId === conceptId)?.overlap;
+    assert.notEqual(report, undefined, `Missing overlap report for ${conceptId}.`);
+    assert.equal(report.applicable, false, `${conceptId} overlap enforcement should be skipped.`);
+    assert.equal(report.admission, 'not_applicable', `${conceptId} overlap admission should be not_applicable.`);
+    assert.equal(report.reportPresent, false, `${conceptId} should not be forced through live overlap comparison.`);
+    assert.equal(report.profilePresent, true, `${conceptId} should still carry a structural profile.`);
+  });
+
+  process.stdout.write('PASS overlap_ci_visible_only_interaction_concepts_skipped\n');
 }
 
 function verifyMissingStructuralProfileFails(concepts, liveConceptSet) {
@@ -98,6 +123,7 @@ function verifyMissingBoundaryProofFails(concepts, liveConceptSet) {
   candidate.conceptId = 'power-transition';
   candidate.concept = 'power-transition';
   candidate.title = 'Power Transition';
+  candidate.constraintContract.expectedIdentityKind = 'power-transition-kind';
   candidate.canonical.invariant = 'Power transition is effective capacity to produce outcomes as it moves from latent leverage into operative exercise within governance.';
   candidate.shortDefinition = 'Power transition is effective capacity to produce outcomes as it moves from latent leverage into operative exercise within governance.';
   candidate.coreMeaning = 'Power transition marks the same outcome-producing capacity as power while assigning it a different temporal position between latent leverage and fully operative exercise.';
@@ -135,6 +161,7 @@ function main() {
   const liveConceptSet = buildLiveConceptSet(concepts);
 
   verifyCurrentConceptSetProducesOverlapReports(concepts);
+  verifyVisibleOnlyInteractionConceptsAreSkipped(concepts);
   verifyMissingStructuralProfileFails(concepts, liveConceptSet);
   verifyComparisonReportMissingFails(concepts);
   verifyMissingBoundaryProofFails(concepts, liveConceptSet);

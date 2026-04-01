@@ -1,10 +1,16 @@
 'use strict';
 
 const { REASON_CODES } = require('./reason-codes');
-const { LIVE_CONCEPT_IDS } = require('../../../backend/src/modules/concepts/admission-state');
+const {
+  LIVE_CONCEPT_IDS,
+  isLiveConceptId,
+} = require('../../../backend/src/modules/concepts/admission-state');
+const { loadGovernanceDomainLock } = require('../../../backend/src/modules/concepts/constraint-contract');
 const { evaluateConceptOverlapAdmission } = require('../../../backend/src/modules/concepts/concept-overlap-admission-gate');
 const { normalizeConceptToProfile } = require('../../../backend/src/modules/concepts/concept-structural-profile');
 const { validateConceptShape } = require('../../../backend/src/modules/concepts/concept-loader');
+
+const GOVERNANCE_DOMAIN_LOCK = loadGovernanceDomainLock();
 
 function countBy(items, selector) {
   const counts = new Map();
@@ -73,6 +79,22 @@ function expectedComparisonTargetIds(conceptId, liveConceptIds) {
   return liveConceptIds.filter((otherConceptId) => otherConceptId !== conceptId);
 }
 
+function isOverlapEnforcementApplicable(concept) {
+  if (!concept || typeof concept !== 'object') {
+    return false;
+  }
+
+  if (isLiveConceptId(concept.conceptId)) {
+    return true;
+  }
+
+  if (concept.constraintContract && typeof concept.constraintContract === 'object') {
+    return true;
+  }
+
+  return GOVERNANCE_DOMAIN_LOCK.conceptPacketDomainIds.includes(String(concept.domain || '').trim());
+}
+
 function deriveUnsafeFailures(admissionReport) {
   if (admissionReport.admission === 'overlap_scan_failed_conflict') {
     return admissionReport.blockingResults.map((result) => createFailure(
@@ -121,6 +143,7 @@ function validateConceptOverlapReport(concept, liveConceptSet) {
   const failures = [];
   let profile = null;
   let admissionReport = null;
+  const applicable = isOverlapEnforcementApplicable(concept);
 
   try {
     validateConceptShape(concept, concept.conceptId);
@@ -135,13 +158,15 @@ function validateConceptOverlapReport(concept, liveConceptSet) {
   if (!profile) {
     return freezeJson({
       conceptId: concept.conceptId,
-      applicable: true,
-      targetSet: 'live_concepts',
+      applicable,
+      targetSet: applicable ? 'live_concepts' : 'not_applicable',
       passed: false,
       profilePresent: false,
       reportPresent: false,
-      admission: 'pending_overlap_scan',
-      expectedComparisonTargetIds: expectedComparisonTargetIds(concept.conceptId, liveConceptSet.liveConceptIds),
+      admission: applicable ? 'pending_overlap_scan' : 'not_applicable',
+      expectedComparisonTargetIds: applicable
+        ? expectedComparisonTargetIds(concept.conceptId, liveConceptSet.liveConceptIds)
+        : [],
       comparedConceptIds: [],
       forbiddenEquivalenceCoverage: {
         required: [],
@@ -149,6 +174,27 @@ function validateConceptOverlapReport(concept, liveConceptSet) {
         missing: [],
       },
       failures,
+      results: [],
+    });
+  }
+
+  if (!applicable) {
+    return freezeJson({
+      conceptId: concept.conceptId,
+      applicable: false,
+      targetSet: 'not_applicable',
+      passed: true,
+      profilePresent: true,
+      reportPresent: false,
+      admission: 'not_applicable',
+      expectedComparisonTargetIds: [],
+      comparedConceptIds: [],
+      forbiddenEquivalenceCoverage: {
+        required: [],
+        covered: [],
+        missing: [],
+      },
+      failures: [],
       results: [],
     });
   }
