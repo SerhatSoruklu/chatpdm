@@ -1,0 +1,125 @@
+<div class="pdm-vocabulary-page">
+  <main class="pdm-vocabulary-page__main pdm-shell" aria-labelledby="pdm-vocabulary-page-title">
+    <div class="pdm-shell__frame pdm-vocabulary-page__frame">
+      <section class="pdm-vocabulary-page__hero pdm-site-surface pdm-site-panel">
+        <p class="pdm-vocabulary-page__eyebrow">Boundary index</p>
+        <h1 class="pdm-vocabulary-page__title" id="pdm-vocabulary-page-title">Vocabulary Boundary</h1>
+        <p class="pdm-vocabulary-page__subtitle">
+          Recognized legal vocabulary outside the core runtime ontology.
+        </p>
+        <p class="pdm-vocabulary-page__hero-metric">
+          @if (boundaryData(); as data) {
+            {{ formatCount(data.total) }} recognized legal vocabulary terms
+          } @else {
+            Boundary index unavailable.
+          }
+        </p>
+      </section>
+
+      <section class="pdm-vocabulary-page__warning pdm-site-surface pdm-site-panel" aria-label="Vocabulary warning">
+        <p class="pdm-vocabulary-page__warning-label">Warning</p>
+        <p class="pdm-vocabulary-page__warning-copy">{{ warningText }}</p>
+      </section>
+
+      <section class="pdm-vocabulary-page__stats pdm-site-surface pdm-site-panel" aria-labelledby="pdm-vocabulary-page-stats-title">
+        <div class="pdm-vocabulary-page__section-head">
+          <p class="pdm-vocabulary-page__section-label">Public counts</p>
+          <h2 class="pdm-vocabulary-page__section-title" id="pdm-vocabulary-page-stats-title">
+            Boundary counts stay separate from runtime admission.
+          </h2>
+        </div>
+
+        <div class="pdm-vocabulary-page__stats-grid">
+          <article class="pdm-vocabulary-page__stat">
+            <p class="pdm-vocabulary-page__stat-label">Published concept packets</p>
+            <p class="pdm-vocabulary-page__stat-value">
+              {{ formatCount(boundaryData()?.surfaceCounts?.publishedConceptPackets) }}
+            </p>
+          </article>
+
+          <article class="pdm-vocabulary-page__stat">
+            <p class="pdm-vocabulary-page__stat-label">Current runtime boundary</p>
+            <p class="pdm-vocabulary-page__stat-value">
+              {{ formatCount(boundaryData()?.surfaceCounts?.liveRuntimeConcepts) }}
+            </p>
+          </article>
+
+          <article class="pdm-vocabulary-page__stat">
+            <p class="pdm-vocabulary-page__stat-label">Recognized legal vocabulary terms</p>
+            <p class="pdm-vocabulary-page__stat-value">{{ formatCount(boundaryData()?.total) }}</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="pdm-vocabulary-page__buckets pdm-site-surface pdm-site-panel" aria-labelledby="pdm-vocabulary-page-buckets-title">
+        <div class="pdm-vocabulary-page__section-head">
+          <p class="pdm-vocabulary-page__section-label">Registry buckets</p>
+          <h2 class="pdm-vocabulary-page__section-title" id="pdm-vocabulary-page-buckets-title">
+            Recognized vocabulary remains categorized without entering ontology admission.
+          </h2>
+        </div>
+
+        <div class="pdm-vocabulary-page__bucket-grid">
+          @for (bucket of bucketRows(); track bucket.key) {
+            <article class="pdm-vocabulary-page__bucket">
+              <p class="pdm-vocabulary-page__bucket-label">{{ bucket.label }}</p>
+              <p class="pdm-vocabulary-page__bucket-value">{{ formatCount(bucket.count) }}</p>
+            </article>
+          }
+        </div>
+      </section>
+
+      <section class="pdm-vocabulary-page__list-shell pdm-site-surface pdm-site-panel" aria-labelledby="pdm-vocabulary-page-list-title">
+        <div class="pdm-vocabulary-page__section-head">
+          <p class="pdm-vocabulary-page__section-label">Vocabulary list</p>
+          <h2 class="pdm-vocabulary-page__section-title" id="pdm-vocabulary-page-list-title">
+            All recognized vocabulary terms in the current boundary registry.
+          </h2>
+        </div>
+
+        <p class="pdm-vocabulary-page__list-note">{{ listNote }}</p>
+
+        <div class="pdm-vocabulary-page__search-shell">
+          <label class="pdm-vocabulary-page__search-label" for="pdm-vocabulary-search">Search vocabulary terms</label>
+          <input
+            id="pdm-vocabulary-search"
+            class="pdm-vocabulary-page__search-input"
+            type="search"
+            [ngModel]="searchQuery()"
+            (ngModelChange)="searchQuery.set($event)"
+            placeholder="Search plain vocabulary terms"
+            autocomplete="off"
+            spellcheck="false"
+          />
+          <p class="pdm-vocabulary-page__search-count">
+            @if (boundaryData(); as data) {
+              Showing {{ formatCount(filteredTerms().length) }} of {{ formatCount(data.total) }} terms
+            } @else {
+              Boundary index unavailable.
+            }
+          </p>
+        </div>
+
+        @if (boundaryState().status === 'error') {
+          <section class="pdm-vocabulary-page__state-card pdm-vocabulary-page__state-card--error">
+            <p class="pdm-vocabulary-page__state-title">Boundary index unavailable</p>
+            <p class="pdm-vocabulary-page__state-copy">{{ boundaryErrorMessage() }}</p>
+          </section>
+        } @else if (filteredTerms().length === 0) {
+          <section class="pdm-vocabulary-page__state-card">
+            <p class="pdm-vocabulary-page__state-title">No terms matched the current search.</p>
+            <p class="pdm-vocabulary-page__state-copy">
+              Try a broader search string or clear the filter to inspect the full boundary list.
+            </p>
+          </section>
+        } @else {
+          <ul class="pdm-vocabulary-page__term-list" aria-label="Recognized legal vocabulary terms">
+            @for (term of filteredTerms(); track term) {
+              <li class="pdm-vocabulary-page__term">{{ term }}</li>
+            }
+          </ul>
+        }
+      </section>
+    </div>
+  </main>
+</div>

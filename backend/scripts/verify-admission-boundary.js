@@ -27,12 +27,12 @@ function verifyAdmissionAuthorityPartitions() {
   );
   assert.deepEqual(
     REJECTED_CONCEPT_IDS,
-    ['obligation', 'enforcement', 'claim', 'liability', 'jurisdiction', 'defeasibility'],
+    ['enforcement', 'claim', 'defeasibility'],
     'REJECTED_CONCEPT_IDS mismatch.',
   );
   assert.deepEqual(
     DETAIL_BACKED_CONCEPT_IDS,
-    ['violation', 'agreement', 'obligation', 'enforcement', 'claim', 'liability', 'jurisdiction', 'defeasibility'],
+    ['violation', 'agreement', 'enforcement', 'claim', 'defeasibility'],
     'DETAIL_BACKED_CONCEPT_IDS mismatch.',
   );
 
@@ -153,6 +153,34 @@ function verifyRejectedConceptDetailAvailability() {
   process.stdout.write('PASS admission_boundary_rejected_detail_available\n');
 }
 
+function verifyVocabularyTermsRemainOutsideRuntimeAdmission() {
+  const liveConceptSetIds = loadConceptSet().map((concept) => concept.conceptId);
+
+  ['obligation', 'liability', 'jurisdiction'].forEach((conceptId) => {
+    assert.equal(isLiveConceptId(conceptId), false, `${conceptId} should not be live.`);
+    assert.equal(isVisibleOnlyConceptId(conceptId), false, `${conceptId} should not be visible-only.`);
+    assert.equal(isRejectedConceptId(conceptId), false, `${conceptId} should not be rejected.`);
+    assert.equal(isDetailBackedConceptId(conceptId), false, `${conceptId} should not be detail-backed.`);
+    assert.equal(liveConceptSetIds.includes(conceptId), false, `${conceptId} should not enter the live concept set.`);
+
+    const response = resolveConceptQuery(conceptId);
+    assert.equal(response.type, 'VOCABULARY_DETECTED', `${conceptId} should refuse through the vocabulary boundary.`);
+    assert.equal(response.finalState, 'refused', `${conceptId} vocabulary refusal finalState mismatch.`);
+    assert.equal(response.vocabulary?.term, conceptId, `${conceptId} vocabulary term mismatch.`);
+    assert.deepEqual(
+      response.vocabulary?.systemFlags,
+      {
+        isCoreConcept: false,
+        usableInResolver: false,
+        reasoningAllowed: false,
+      },
+      `${conceptId} vocabulary systemFlags mismatch.`,
+    );
+  });
+
+  process.stdout.write('PASS admission_boundary_vocabulary_terms_stay_outside_runtime_admission\n');
+}
+
 function verifyVisibleOnlyComparisonRefusal() {
   const cases = [
     { query: 'agreement vs violation', expectedConcepts: ['violation', 'agreement'] },
@@ -234,6 +262,7 @@ function main() {
   verifyLiveConceptSetUsesLiveOnlyAdmission();
   verifyVisibleOnlyDetailAvailability();
   verifyRejectedConceptDetailAvailability();
+  verifyVocabularyTermsRemainOutsideRuntimeAdmission();
   verifyVisibleOnlyExactRuntimeRefusal();
   verifyOutOfScopeInteractionRuntimeRefusal();
   verifyVisibleOnlyComparisonRefusal();

@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 
 import { ConceptResolverService } from '../../core/concepts/concept-resolver.service';
@@ -29,6 +30,7 @@ import {
   RUNTIME_SCOPE_BY_CONCEPT,
   VISIBLE_ONLY_PUBLIC_CONCEPT_IDS,
 } from '../../core/concepts/public-runtime.catalog';
+import { VocabularyPanelComponent } from '../../core/concepts/vocabulary-panel/vocabulary-panel.component';
 import { FeedbackService } from '../../core/feedback/feedback.service';
 import type {
   FeedbackResponseType,
@@ -49,6 +51,7 @@ const REVIEWED_NOT_LIVE_ADMISSIONS = new Set<ReviewState['admission']>([
 ]);
 const DETAIL_BACKED_CONCEPTS = new Set(DETAIL_BACKED_CONCEPT_IDS);
 const VISIBLE_ONLY_PUBLIC_CONCEPTS = new Set(VISIBLE_ONLY_PUBLIC_CONCEPT_IDS);
+const VOCABULARY_TERM_IDS = new Set<string>(['obligation', 'liability', 'jurisdiction']);
 
 const CONCEPT_MATCH_FEEDBACK_OPTIONS = [
   { value: 'clear', label: 'Clear' },
@@ -128,7 +131,13 @@ interface RefusalBoundaryState {
 }
 
 interface RefusalAtlasEntry {
-  key: 'visible_only' | 'not_admitted' | 'blocked' | 'comparison_not_allowlisted' | 'unsupported_composition';
+  key:
+    | 'visible_only'
+    | 'not_admitted'
+    | 'blocked'
+    | 'vocabulary'
+    | 'comparison_not_allowlisted'
+    | 'unsupported_composition';
   query: string;
   classLabel: string;
   classMeaning: string;
@@ -175,7 +184,7 @@ const REFUSAL_BOUNDARY_STATES = Object.freeze<RefusalBoundaryState[]>([
 @Component({
   selector: 'app-runtime-page',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink, VocabularyPanelComponent],
   templateUrl: './runtime-page.component.html',
   styleUrl: './runtime-page.component.css',
 })
@@ -194,8 +203,11 @@ export class RuntimePageComponent implements OnInit {
   protected readonly refusalBoundaryStates = REFUSAL_BOUNDARY_STATES;
   protected readonly liveConceptIds = LIVE_RUNTIME_CONCEPT_IDS;
   protected readonly visibleOnlyConceptIds = VISIBLE_ONLY_PUBLIC_CONCEPT_IDS;
-  protected readonly rejectedConceptIds = REJECTED_CONCEPT_IDS;
+  protected readonly rejectedConceptIds = REJECTED_CONCEPT_IDS.filter(
+    (conceptId) => !VOCABULARY_TERM_IDS.has(conceptId),
+  );
   protected readonly queryAssessment = computed(() => this.classifyQuery(this.queryDraft()));
+  protected readonly liveConceptCount = LIVE_RUNTIME_CONCEPT_IDS.length;
 
   ngOnInit(): void {
     void this.loadRefusalBehavior();
@@ -360,6 +372,8 @@ export class RuntimePageComponent implements OnInit {
         return 'Allowlisted comparison';
       case 'ambiguous_match':
         return 'Selection required';
+      case 'VOCABULARY_DETECTED':
+        return 'Vocabulary detected';
       case 'rejected_concept':
         return 'Structurally rejected';
       case 'no_exact_match':
@@ -376,6 +390,10 @@ export class RuntimePageComponent implements OnInit {
   protected executionStateLabel(response: ResolveProductResponse): string {
     if (response.type === 'concept_match' || response.type === 'comparison') {
       return 'Executable';
+    }
+
+    if (response.type === 'VOCABULARY_DETECTED') {
+      return 'Excluded';
     }
 
     if (response.type === 'rejected_concept') {
@@ -585,6 +603,10 @@ export class RuntimePageComponent implements OnInit {
   }
 
   protected refusalTitle(response: RefusalResponse): string {
+    if (response.type === 'VOCABULARY_DETECTED') {
+      return 'Recognized term, excluded from resolution';
+    }
+
     if (response.type === 'invalid_query') {
       return 'Invalid query input';
     }
@@ -604,6 +626,10 @@ export class RuntimePageComponent implements OnInit {
     response: RefusalResponse,
     detail: ConceptDetailResponse | null | undefined,
   ): string {
+    if (response.type === 'VOCABULARY_DETECTED') {
+      return 'Vocabulary can be classified and displayed, but it never enters deterministic resolution.';
+    }
+
     if (this.isVisibleOnlyRefusal(response, detail)) {
       return this.visibleOnlySupportCopy(detail ?? undefined);
     }
@@ -651,6 +677,8 @@ export class RuntimePageComponent implements OnInit {
         return 'Invalid query';
       case 'rejection_registry':
         return 'Rejection registry';
+      case 'vocabulary_guard':
+        return 'Vocabulary guard';
       case 'unsupported_query_type':
         return 'Unsupported query type';
       default:
@@ -1066,6 +1094,21 @@ export class RuntimePageComponent implements OnInit {
         queryType: response.queryType,
         resolution: this.refusalResolutionMethod(response),
         message: response.interpretation?.message ?? this.refusalMessage(response),
+      };
+    }
+
+    if (response.type === 'VOCABULARY_DETECTED') {
+      return {
+        key: 'vocabulary',
+        query,
+        classLabel: 'Vocabulary detected',
+        classMeaning: 'The term is recognized, classified, and kept outside the core resolver.',
+        outcome: 'vocabulary_refused',
+        interpretation: 'vocabulary_only',
+        reason: response.message,
+        queryType: response.queryType,
+        resolution: response.resolution.method,
+        message: response.message,
       };
     }
 

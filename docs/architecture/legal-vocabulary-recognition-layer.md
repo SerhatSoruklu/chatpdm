@@ -58,16 +58,16 @@ The recognition layer returns one of two shapes:
 
 ## Runtime Boundary
 
-Phase 1 does not change the public resolver contract in this step.
+Recognition remains boundary-only.
 
 That means:
 
-- no new product response type has been added
-- the current concept resolver does not yet emit vocabulary responses
-- explicit rejected concepts still belong to the rejection registry
+- explicit rejected concepts still belong to the rejection registry and keep rejection precedence
 - live and visible-only concepts still follow the admission-state path
+- exact recognized vocabulary lookups may emit `VOCABULARY_DETECTED`
+- unsupported query shapes involving recognized vocabulary may still emit other refusal outputs such as `unsupported_query_type`
 
-This implementation provides the authored registry and the callable recognition function needed for later routing work.
+See [vocabulary-boundary-contract.md](/home/serhat/code/chatpdm/docs/architecture/vocabulary-boundary-contract.md) for the enforced runtime boundary rules.
 
 ## Dataset
 

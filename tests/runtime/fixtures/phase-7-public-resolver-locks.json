@@ -30,56 +30,74 @@
     }
   },
   {
-    "name": "resolver_obligation_rejected",
+    "name": "resolver_obligation_vocabulary_refusal",
     "input": "obligation",
     "expected": {
       "normalizedQuery": "obligation",
-      "type": "rejected_concept",
+      "type": "VOCABULARY_DETECTED",
+      "finalState": "refused",
       "queryType": "exact_concept_query",
-      "message": "This concept is structurally rejected under the current system state.",
+      "message": "Recognized term is not a core system concept and is excluded from resolution.",
       "resolution": {
-        "method": "rejection_registry",
-        "conceptId": "obligation"
+        "method": "vocabulary_guard"
       },
-      "interpretation": {
-        "interpretationType": "explicitly_rejected_concept",
-        "targetConceptId": "obligation",
-        "concepts": [
-          "obligation"
-        ],
-        "message": "The concept \"obligation\" is explicitly rejected under the current system state."
-      },
-      "rejection": {
-        "status": "REJECTED",
-        "decisionType": "STRUCTURAL_REJECTION",
-        "finality": true
+      "interpretation": null,
+      "vocabulary": {
+        "input": "obligation",
+        "normalizedInput": "obligation",
+        "matched": true,
+        "term": "obligation",
+        "classification": "legal_term",
+        "relations": {
+          "closestConcept": "duty",
+          "contrastWith": [
+            "responsibility"
+          ],
+          "relatedConcepts": [
+            "duty"
+          ]
+        },
+        "systemFlags": {
+          "isCoreConcept": false,
+          "usableInResolver": false,
+          "reasoningAllowed": false
+        }
       }
     }
   },
   {
-    "name": "resolver_obligation_rejected_with_trailing_punctuation",
+    "name": "resolver_obligation_vocabulary_refusal_with_trailing_punctuation",
     "input": "obligation?",
     "expected": {
       "normalizedQuery": "obligation?",
-      "type": "rejected_concept",
+      "type": "VOCABULARY_DETECTED",
+      "finalState": "refused",
       "queryType": "exact_concept_query",
-      "message": "This concept is structurally rejected under the current system state.",
+      "message": "Recognized term is not a core system concept and is excluded from resolution.",
       "resolution": {
-        "method": "rejection_registry",
-        "conceptId": "obligation"
+        "method": "vocabulary_guard"
       },
-      "interpretation": {
-        "interpretationType": "explicitly_rejected_concept",
-        "targetConceptId": "obligation",
-        "concepts": [
-          "obligation"
-        ],
-        "message": "The concept \"obligation\" is explicitly rejected under the current system state."
-      },
-      "rejection": {
-        "status": "REJECTED",
-        "decisionType": "STRUCTURAL_REJECTION",
-        "finality": true
+      "interpretation": null,
+      "vocabulary": {
+        "input": "obligation",
+        "normalizedInput": "obligation",
+        "matched": true,
+        "term": "obligation",
+        "classification": "legal_term",
+        "relations": {
+          "closestConcept": "duty",
+          "contrastWith": [
+            "responsibility"
+          ],
+          "relatedConcepts": [
+            "duty"
+          ]
+        },
+        "systemFlags": {
+          "isCoreConcept": false,
+          "usableInResolver": false,
+          "reasoningAllowed": false
+        }
       }
     }
   },

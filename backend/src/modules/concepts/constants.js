@@ -2,7 +2,7 @@
 
 const { LIVE_CONCEPT_IDS } = require('./admission-state');
 
-const CONTRACT_VERSION = 'v1.6';
+const CONTRACT_VERSION = 'v1.7';
 const NORMALIZER_VERSION = '2026-04-01.v2';
 const MATCHER_VERSION = '2026-04-01.v4';
 const CONCEPT_SET_VERSION = '20260401.2';
@@ -40,6 +40,7 @@ const INVALID_QUERY_MESSAGE = 'No recognizable concept or supported query struct
 const UNSUPPORTED_QUERY_TYPE_MESSAGE = 'This query has recognizable structure, but the current runtime does not support this query type yet.';
 const AMBIGUOUS_MATCH_MESSAGE = 'Multiple canonical concepts match this query. Choose one to continue.';
 const REJECTED_CONCEPT_MESSAGE = 'This concept is structurally rejected under the current system state.';
+const VOCABULARY_DETECTED_MESSAGE = 'Recognized term is not a core system concept and is excluded from resolution.';
 
 module.exports = {
   AMBIGUOUS_MATCH_MESSAGE,
@@ -57,4 +58,5 @@ module.exports = {
   REJECTED_CONCEPT_MESSAGE,
   LIVE_CONCEPT_IDS,
   UNSUPPORTED_QUERY_TYPE_MESSAGE,
+  VOCABULARY_DETECTED_MESSAGE,
 };

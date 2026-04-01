@@ -1,0 +1,73 @@
+:host {
+  display: block;
+}
+
+.pdm-vocabulary-panel {
+  display: grid;
+  gap: 14px;
+  padding: 18px 20px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 24px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(248, 250, 252, 0.88)),
+    rgba(255, 255, 255, 0.88);
+  box-shadow: 0 14px 36px rgba(15, 23, 42, 0.04);
+}
+
+.pdm-vocabulary-panel__head {
+  display: grid;
+  gap: 6px;
+}
+
+.pdm-vocabulary-panel__eyebrow,
+.pdm-vocabulary-panel__row dt {
+  margin: 0;
+  color: #64748b;
+  font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pdm-vocabulary-panel__title {
+  margin: 0;
+  color: #0f172a;
+  font-size: clamp(1.08rem, 1.4vw, 1.2rem);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.pdm-vocabulary-panel__grid {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+}
+
+.pdm-vocabulary-panel__row {
+  display: grid;
+  gap: 4px;
+  padding: 10px 12px;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 16px;
+  background: rgba(248, 250, 252, 0.78);
+}
+
+.pdm-vocabulary-panel__row dd {
+  margin: 0;
+  color: #334155;
+  font-size: 0.98rem;
+  line-height: 1.55;
+}
+
+.pdm-vocabulary-panel__warning {
+  margin: 0;
+  padding: 12px 14px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 16px;
+  background: rgba(241, 245, 249, 0.9);
+  color: #475569;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}

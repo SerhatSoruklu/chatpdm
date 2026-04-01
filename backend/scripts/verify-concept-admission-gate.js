@@ -19,9 +19,10 @@ function verifyExactAdmissionStates() {
     ['promise', recognizeLegalVocabulary('promise'), ADMISSION_STATES.NOT_A_CONCEPT],
     ['undertaking', recognizeLegalVocabulary('undertaking'), ADMISSION_STATES.NOT_A_CONCEPT],
     ['breach', recognizeLegalVocabulary('breach'), ADMISSION_STATES.NOT_A_CONCEPT],
-    ['liability', recognizeLegalVocabulary('liability'), ADMISSION_STATES.REJECTED],
+    ['obligation', recognizeLegalVocabulary('obligation'), ADMISSION_STATES.NOT_A_CONCEPT],
+    ['liability', recognizeLegalVocabulary('liability'), ADMISSION_STATES.NOT_A_CONCEPT],
     ['defeasibility', recognizeLegalVocabulary('defeasibility'), ADMISSION_STATES.REJECTED],
-    ['jurisdiction', recognizeLegalVocabulary('jurisdiction'), ADMISSION_STATES.REJECTED],
+    ['jurisdiction', recognizeLegalVocabulary('jurisdiction'), ADMISSION_STATES.NOT_A_CONCEPT],
     ['mens rea', recognizeLegalVocabulary('mens rea'), ADMISSION_STATES.NOT_A_CONCEPT],
     ['burden of proof', recognizeLegalVocabulary('burden of proof'), ADMISSION_STATES.NOT_A_CONCEPT],
     ['public authority', recognizeLegalVocabulary('public authority'), ADMISSION_STATES.NOT_A_CONCEPT],
@@ -41,13 +42,13 @@ function verifyExactAdmissionStates() {
 
 function verifyRejectedPrecedence() {
   assert.deepEqual(
-    resolveAdmissionState('liability', {
+    resolveAdmissionState('defeasibility', {
       recognized: true,
       type: 'vocab',
       classification: 'rejected_candidate',
     }),
     { admission_state: ADMISSION_STATES.REJECTED },
-    'rejected concepts must win before vocabulary classification.',
+    'rejected concepts must still win before vocabulary classification when the concept remains rejected.',
   );
 
   process.stdout.write('PASS concept_admission_gate_rejected_precedence\n');
