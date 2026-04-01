@@ -7,12 +7,12 @@ ChatPDM preserves the raw query, but it does not use the raw query as the canoni
 That separation exists for three reasons:
 
 - the raw query is needed for auditability and response echo
-- the resolution layer needs a stable key that is not sensitive to casing, filler phrases, or punctuation noise
+- the resolution layer needs a stable key that is not sensitive to casing, surrounding whitespace, or a small closed list of filler phrases
 - silent drift in normalization or matching can break determinism even when the visible query appears unchanged
 
 `normalizedQuery` exists so the system can resolve authored concepts against one inspectable, deterministic key.
 
-This layer must be versioned because it is one of the main risk surfaces for hidden non-determinism. A small change in trimming, punctuation removal, or matching precedence can change product outcomes without changing the visible interface.
+This layer must be versioned because it is one of the main risk surfaces for hidden non-determinism. A small change in trimming, filler stripping, or matching precedence can change product outcomes without changing the visible interface.
 
 “Same input, same output” is too vague for ChatPDM.
 
@@ -28,7 +28,6 @@ ChatPDM v1 includes:
 - lowercasing
 - trimming
 - whitespace collapse
-- closed-list punctuation removal
 - closed-list leading filler phrase stripping
 - canonical_id lookup
 - exact alias matching
@@ -58,32 +57,16 @@ The v1 normalizer is a strict ordered pipeline. The order is part of the system 
 2. Trim leading and trailing whitespace.
 3. Convert the full string to lowercase.
 4. Collapse all internal whitespace runs to a single space.
-5. Remove the following punctuation characters wherever they appear:
-   - `.`
-   - `!`
-   - `?`
-   - `,`
-   - `;`
-   - `:`
-   - `(`
-   - `)`
-   - `[`
-   - `]`
-   - `{`
-   - `}`
-   - `"`
-   - `'`
-6. Strip one leading filler phrase only, if present, using exact prefix match against this closed list:
-   - <code>what is </code>
-   - <code>what are </code>
-   - <code>define </code>
-   - <code>meaning of </code>
-   - <code>explain </code>
-   - <code>tell me about </code>
-7. Trim again after filler stripping.
-8. The final result is `normalizedQuery`.
+5. Strip one leading filler phrase only, if present, using exact prefix match against this closed list:
+   - <code>what is</code>
+   - <code>define</code>
+   - <code>explain</code>
+   - <code>tell me</code>
+   - <code>can you</code>
+6. Trim again after filler stripping.
+7. The final result is `normalizedQuery`.
 
-The punctuation removal rule is intentionally coarse in v1. ChatPDM accepts some lexical flattening here in exchange for rule simplicity, inspectability, and deterministic behavior.
+Punctuation is preserved in Phase 0. Normalization standardizes surface form, but it does not delete non-word characters in order to force an exact concept key.
 
 ### Normalization rules
 
@@ -92,6 +75,7 @@ The punctuation removal rule is intentionally coarse in v1. ChatPDM accepts some
 - No transliteration.
 - No accent folding.
 - No synonym replacement.
+- No punctuation deletion.
 - Non-ASCII characters are preserved as-is in v1.
 - Any change to this pipeline or the filler phrase list requires a `normalizerVersion` bump.
 
@@ -288,7 +272,7 @@ is a regression.
 
 | Version field | Bump when |
 | --- | --- |
-| `normalizerVersion` | any change affecting `normalizedQuery` output, including punctuation handling, filler stripping, empty-after-normalization behavior, or reserved sentinel behavior |
+| `normalizerVersion` | any change affecting `normalizedQuery` output, including filler stripping, punctuation preservation, empty-after-normalization behavior, or reserved sentinel behavior |
 | `matcherVersion` | any change affecting precedence, resolution behavior, ambiguity handling, suggestion behavior, or deterministic ordering |
 | `conceptSetVersion` | any change to published concepts, aliases, contexts, sources, related concepts, or authored disambiguation/suggestion mappings |
 | `contractVersion` | any change to response shape or field semantics |

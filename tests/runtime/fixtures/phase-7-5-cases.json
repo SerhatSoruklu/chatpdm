@@ -63,11 +63,50 @@
     "name": "violation_exact",
     "input": "violation",
     "expectedNormalizedQuery": "violation",
-    "expectedType": "concept_match",
-    "expectedMethod": "exact_alias",
+    "expectedType": "no_exact_match",
+    "expectedMethod": "no_exact_match",
     "expectedQueryType": "exact_concept_query",
-    "expectedInterpretation": null,
-    "expectedConceptId": "violation"
+    "expectedInterpretation": {
+      "interpretationType": "visible_only_public_concept",
+      "targetConceptId": "violation"
+    },
+    "expectedSuggestions": []
+  },
+  {
+    "name": "defeasibility_exact_rejected",
+    "input": "defeasibility",
+    "expectedNormalizedQuery": "defeasibility",
+    "expectedType": "rejected_concept",
+    "expectedMethod": "rejection_registry",
+    "expectedQueryType": "exact_concept_query",
+    "expectedInterpretation": {
+      "interpretationType": "explicitly_rejected_concept",
+      "targetConceptId": "defeasibility"
+    },
+    "expectedConceptId": "defeasibility",
+    "expectedRejection": {
+      "status": "REJECTED",
+      "decisionType": "STRUCTURAL_REJECTION",
+      "finality": true
+    }
+  },
+  {
+    "name": "defeasibility_question_rejected",
+    "input": "what is defeasibility",
+    "expectedNormalizedQuery": "defeasibility",
+    "expectedType": "rejected_concept",
+    "expectedMethod": "rejection_registry",
+    "expectedQueryType": "exact_concept_query",
+    "expectedInterpretation": {
+      "interpretationType": "explicitly_rejected_concept",
+      "targetConceptId": "defeasibility"
+    },
+    "expectedConceptId": "defeasibility",
+    "expectedRejection": {
+      "status": "REJECTED",
+      "decisionType": "STRUCTURAL_REJECTION",
+      "finality": true
+    }
   },
   {
     "name": "authority_non_governance_epistemic_refusal",
@@ -75,7 +114,7 @@
     "expectedNormalizedQuery": "epistemic authority",
     "expectedType": "no_exact_match",
     "expectedMethod": "out_of_scope",
-    "expectedQueryType": "subtype_query",
+    "expectedQueryType": "unsupported_complex_query",
     "expectedInterpretation": {
       "interpretationType": "out_of_scope",
       "concept": "authority",
@@ -90,7 +129,7 @@
     "expectedNormalizedQuery": "parental authority",
     "expectedType": "no_exact_match",
     "expectedMethod": "out_of_scope",
-    "expectedQueryType": "subtype_query",
+    "expectedQueryType": "unsupported_complex_query",
     "expectedInterpretation": {
       "interpretationType": "out_of_scope",
       "concept": "authority",
@@ -105,7 +144,7 @@
     "expectedNormalizedQuery": "professional authority",
     "expectedType": "no_exact_match",
     "expectedMethod": "out_of_scope",
-    "expectedQueryType": "subtype_query",
+    "expectedQueryType": "unsupported_complex_query",
     "expectedInterpretation": {
       "interpretationType": "out_of_scope",
       "concept": "authority",
@@ -120,7 +159,7 @@
     "expectedNormalizedQuery": "charismatic authority",
     "expectedType": "no_exact_match",
     "expectedMethod": "out_of_scope",
-    "expectedQueryType": "subtype_query",
+    "expectedQueryType": "unsupported_complex_query",
     "expectedInterpretation": {
       "interpretationType": "out_of_scope",
       "concept": "authority",
@@ -135,7 +174,7 @@
     "expectedNormalizedQuery": "moral authority",
     "expectedType": "no_exact_match",
     "expectedMethod": "out_of_scope",
-    "expectedQueryType": "subtype_query",
+    "expectedQueryType": "unsupported_complex_query",
     "expectedInterpretation": {
       "interpretationType": "out_of_scope",
       "concept": "authority",
@@ -150,7 +189,7 @@
     "expectedNormalizedQuery": "electrical power",
     "expectedType": "no_exact_match",
     "expectedMethod": "out_of_scope",
-    "expectedQueryType": "subtype_query",
+    "expectedQueryType": "unsupported_complex_query",
     "expectedInterpretation": {
       "interpretationType": "out_of_scope",
       "concept": "power",
@@ -165,7 +204,7 @@
     "expectedNormalizedQuery": "statistical power",
     "expectedType": "no_exact_match",
     "expectedMethod": "out_of_scope",
-    "expectedQueryType": "subtype_query",
+    "expectedQueryType": "unsupported_complex_query",
     "expectedInterpretation": {
       "interpretationType": "out_of_scope",
       "concept": "power",
@@ -180,7 +219,7 @@
     "expectedNormalizedQuery": "computing power",
     "expectedType": "no_exact_match",
     "expectedMethod": "out_of_scope",
-    "expectedQueryType": "subtype_query",
+    "expectedQueryType": "unsupported_complex_query",
     "expectedInterpretation": {
       "interpretationType": "out_of_scope",
       "concept": "power",
@@ -195,7 +234,7 @@
     "expectedNormalizedQuery": "magical power",
     "expectedType": "no_exact_match",
     "expectedMethod": "out_of_scope",
-    "expectedQueryType": "subtype_query",
+    "expectedQueryType": "unsupported_complex_query",
     "expectedInterpretation": {
       "interpretationType": "out_of_scope",
       "concept": "power",
@@ -210,7 +249,7 @@
     "expectedNormalizedQuery": "physical power",
     "expectedType": "no_exact_match",
     "expectedMethod": "out_of_scope",
-    "expectedQueryType": "subtype_query",
+    "expectedQueryType": "unsupported_complex_query",
     "expectedInterpretation": {
       "interpretationType": "out_of_scope",
       "concept": "power",
@@ -225,7 +264,7 @@
     "expectedNormalizedQuery": "artistic legitimacy",
     "expectedType": "no_exact_match",
     "expectedMethod": "out_of_scope",
-    "expectedQueryType": "subtype_query",
+    "expectedQueryType": "unsupported_complex_query",
     "expectedInterpretation": {
       "interpretationType": "out_of_scope",
       "concept": "legitimacy",
@@ -240,7 +279,7 @@
     "expectedNormalizedQuery": "religious legitimacy",
     "expectedType": "no_exact_match",
     "expectedMethod": "out_of_scope",
-    "expectedQueryType": "subtype_query",
+    "expectedQueryType": "unsupported_complex_query",
     "expectedInterpretation": {
       "interpretationType": "out_of_scope",
       "concept": "legitimacy",
@@ -255,7 +294,7 @@
     "expectedNormalizedQuery": "social legitimacy",
     "expectedType": "no_exact_match",
     "expectedMethod": "out_of_scope",
-    "expectedQueryType": "subtype_query",
+    "expectedQueryType": "unsupported_complex_query",
     "expectedInterpretation": {
       "interpretationType": "out_of_scope",
       "concept": "legitimacy",
@@ -270,7 +309,7 @@
     "expectedNormalizedQuery": "moral legitimacy",
     "expectedType": "no_exact_match",
     "expectedMethod": "out_of_scope",
-    "expectedQueryType": "subtype_query",
+    "expectedQueryType": "unsupported_complex_query",
     "expectedInterpretation": {
       "interpretationType": "out_of_scope",
       "concept": "legitimacy",
@@ -293,29 +332,31 @@
   {
     "name": "punctuation_only",
     "input": "???",
-    "expectedNormalizedQuery": "__empty__",
-    "expectedType": "invalid_query",
-    "expectedMethod": "invalid_query",
-    "expectedQueryType": "invalid_query",
+    "expectedNormalizedQuery": "???",
+    "expectedType": "unsupported_query_type",
+    "expectedMethod": "unsupported_query_type",
+    "expectedQueryType": "unsupported_complex_query",
     "expectedInterpretation": {
-      "interpretationType": "invalid_query"
+      "interpretationType": "unsupported_complex"
     }
   },
   {
     "name": "filler_and_punctuation_only",
     "input": "what is ???",
-    "expectedNormalizedQuery": "__empty__",
-    "expectedType": "invalid_query",
-    "expectedMethod": "invalid_query",
-    "expectedQueryType": "invalid_query",
+    "expectedNormalizedQuery": "???",
+    "expectedType": "no_exact_match",
+    "expectedMethod": "no_exact_match",
+    "expectedQueryType": "exact_concept_query",
     "expectedInterpretation": {
-      "interpretationType": "invalid_query"
-    }
+      "interpretationType": "exact_concept_not_found",
+      "targetConceptId": "???"
+    },
+    "expectedSuggestions": []
   },
   {
     "name": "canonical_id_success",
     "input": "concept:authority",
-    "expectedNormalizedQuery": "conceptauthority",
+    "expectedNormalizedQuery": "concept:authority",
     "expectedType": "concept_match",
     "expectedMethod": "canonical_id",
     "expectedQueryType": "canonical_id_query",
@@ -325,7 +366,7 @@
   {
     "name": "canonical_id_failure",
     "input": "concept:missing-id",
-    "expectedNormalizedQuery": "conceptmissing-id",
+    "expectedNormalizedQuery": "concept:missing-id",
     "expectedType": "no_exact_match",
     "expectedMethod": "no_exact_match",
     "expectedQueryType": "canonical_id_query",
@@ -350,7 +391,7 @@
   },
   {
     "name": "visible_only_agreement_prompt_exact",
-    "input": "what is agreement?",
+    "input": "what is agreement",
     "expectedNormalizedQuery": "agreement",
     "expectedType": "no_exact_match",
     "expectedMethod": "no_exact_match",
@@ -362,27 +403,94 @@
     "expectedSuggestions": []
   },
   {
-    "name": "visible_only_commitment_exact",
+    "name": "out_of_scope_commitment_exact",
     "input": "commitment",
     "expectedNormalizedQuery": "commitment",
     "expectedType": "no_exact_match",
-    "expectedMethod": "no_exact_match",
+    "expectedMethod": "out_of_scope",
     "expectedQueryType": "exact_concept_query",
     "expectedInterpretation": {
-      "interpretationType": "visible_only_public_concept",
+      "interpretationType": "out_of_scope",
       "targetConceptId": "commitment"
     },
     "expectedSuggestions": []
   },
   {
-    "name": "visible_only_breach_exact",
+    "name": "out_of_scope_promise_exact",
+    "input": "promise",
+    "expectedNormalizedQuery": "promise",
+    "expectedType": "no_exact_match",
+    "expectedMethod": "out_of_scope",
+    "expectedQueryType": "exact_concept_query",
+    "expectedInterpretation": {
+      "interpretationType": "out_of_scope",
+      "targetConceptId": "promise"
+    },
+    "expectedSuggestions": []
+  },
+  {
+    "name": "out_of_scope_undertaking_exact",
+    "input": "undertaking",
+    "expectedNormalizedQuery": "undertaking",
+    "expectedType": "no_exact_match",
+    "expectedMethod": "out_of_scope",
+    "expectedQueryType": "exact_concept_query",
+    "expectedInterpretation": {
+      "interpretationType": "out_of_scope",
+      "targetConceptId": "undertaking"
+    },
+    "expectedSuggestions": []
+  },
+  {
+    "name": "out_of_scope_breach_exact",
     "input": "breach",
     "expectedNormalizedQuery": "breach",
     "expectedType": "no_exact_match",
-    "expectedMethod": "no_exact_match",
+    "expectedMethod": "out_of_scope",
     "expectedQueryType": "exact_concept_query",
     "expectedInterpretation": {
-      "interpretationType": "visible_only_public_concept",
+      "interpretationType": "out_of_scope",
+      "targetConceptId": "breach"
+    },
+    "expectedSuggestions": []
+  },
+  {
+    "name": "unsupported_breach_of_duty",
+    "input": "breach of duty",
+    "expectedNormalizedQuery": "breach of duty",
+    "expectedType": "unsupported_query_type",
+    "expectedMethod": "unsupported_query_type",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedInterpretation": {
+      "interpretationType": "unsupported_complex",
+      "concepts": [
+        "duty"
+      ]
+    }
+  },
+  {
+    "name": "unsupported_breach_of_law_bound_duty",
+    "input": "breach of law-bound duty",
+    "expectedNormalizedQuery": "breach of law-bound duty",
+    "expectedType": "unsupported_query_type",
+    "expectedMethod": "unsupported_query_type",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedInterpretation": {
+      "interpretationType": "unsupported_complex",
+      "concepts": [
+        "duty"
+      ]
+    }
+  },
+  {
+    "name": "out_of_scope_breach_of_contract",
+    "input": "breach of contract",
+    "expectedNormalizedQuery": "breach of contract",
+    "expectedType": "no_exact_match",
+    "expectedMethod": "out_of_scope",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedInterpretation": {
+      "interpretationType": "out_of_scope",
       "targetConceptId": "breach"
     },
     "expectedSuggestions": []
@@ -442,9 +550,81 @@
     }
   },
   {
+    "name": "rejected_claim_exact",
+    "input": "claim",
+    "expectedNormalizedQuery": "claim",
+    "expectedType": "rejected_concept",
+    "expectedMethod": "rejection_registry",
+    "expectedQueryType": "exact_concept_query",
+    "expectedInterpretation": {
+      "interpretationType": "explicitly_rejected_concept",
+      "targetConceptId": "claim"
+    },
+    "expectedConceptId": "claim",
+    "expectedRejection": {
+      "status": "REJECTED",
+      "decisionType": "STRUCTURAL_REJECTION",
+      "finality": true
+    }
+  },
+  {
+    "name": "rejected_liability_exact",
+    "input": "liability",
+    "expectedNormalizedQuery": "liability",
+    "expectedType": "rejected_concept",
+    "expectedMethod": "rejection_registry",
+    "expectedQueryType": "exact_concept_query",
+    "expectedInterpretation": {
+      "interpretationType": "explicitly_rejected_concept",
+      "targetConceptId": "liability"
+    },
+    "expectedConceptId": "liability",
+    "expectedRejection": {
+      "status": "REJECTED",
+      "decisionType": "STRUCTURAL_REJECTION",
+      "finality": true
+    }
+  },
+  {
+    "name": "rejected_jurisdiction_exact",
+    "input": "jurisdiction",
+    "expectedNormalizedQuery": "jurisdiction",
+    "expectedType": "rejected_concept",
+    "expectedMethod": "rejection_registry",
+    "expectedQueryType": "exact_concept_query",
+    "expectedInterpretation": {
+      "interpretationType": "explicitly_rejected_concept",
+      "targetConceptId": "jurisdiction"
+    },
+    "expectedConceptId": "jurisdiction",
+    "expectedRejection": {
+      "status": "REJECTED",
+      "decisionType": "STRUCTURAL_REJECTION",
+      "finality": true
+    }
+  },
+  {
+    "name": "rejected_jurisdiction_prompt_exact",
+    "input": "what is jurisdiction",
+    "expectedNormalizedQuery": "jurisdiction",
+    "expectedType": "rejected_concept",
+    "expectedMethod": "rejection_registry",
+    "expectedQueryType": "exact_concept_query",
+    "expectedInterpretation": {
+      "interpretationType": "explicitly_rejected_concept",
+      "targetConceptId": "jurisdiction"
+    },
+    "expectedConceptId": "jurisdiction",
+    "expectedRejection": {
+      "status": "REJECTED",
+      "decisionType": "STRUCTURAL_REJECTION",
+      "finality": true
+    }
+  },
+  {
     "name": "rejected_obligation_canonical_id",
     "input": "concept:obligation",
-    "expectedNormalizedQuery": "conceptobligation",
+    "expectedNormalizedQuery": "concept:obligation",
     "expectedType": "rejected_concept",
     "expectedMethod": "rejection_registry",
     "expectedQueryType": "canonical_id_query",
@@ -465,11 +645,12 @@
     "expectedNormalizedQuery": "civic duty",
     "expectedType": "no_exact_match",
     "expectedMethod": "no_exact_match",
-    "expectedQueryType": "subtype_query",
+    "expectedQueryType": "unsupported_complex_query",
     "expectedInterpretation": {
-      "interpretationType": "narrower_subtype",
-      "baseConcept": "duty",
-      "modifier": "civic"
+      "interpretationType": "unsupported_complex",
+      "concepts": [
+        "duty"
+      ]
     },
     "expectedSuggestions": [
       {
@@ -477,6 +658,35 @@
         "reason": "broader_topic"
       }
     ]
+  },
+  {
+    "name": "mixed_concepts_do_not_coerce_base_concept",
+    "input": "duty responsibility",
+    "expectedNormalizedQuery": "duty responsibility",
+    "expectedType": "unsupported_query_type",
+    "expectedMethod": "unsupported_query_type",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedInterpretation": {
+      "interpretationType": "unsupported_complex",
+      "concepts": [
+        "duty",
+        "responsibility"
+      ]
+    }
+  },
+  {
+    "name": "phrase_ending_known_concept_does_not_bind_base_concept",
+    "input": "public duty",
+    "expectedNormalizedQuery": "public duty",
+    "expectedType": "unsupported_query_type",
+    "expectedMethod": "unsupported_query_type",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedInterpretation": {
+      "interpretationType": "unsupported_complex",
+      "concepts": [
+        "duty"
+      ]
+    }
   },
   {
     "name": "unknown_term",

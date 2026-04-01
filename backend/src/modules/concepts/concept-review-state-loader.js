@@ -10,6 +10,7 @@ const { assertCanonicalStoreFreeOfAiMarkers } = require('../../lib/ai-governance
 const reviewStateDirectoryPath = path.resolve(__dirname, '../../../../data/concepts/review-states');
 const ALLOWED_ADMISSION_VALUES = Object.freeze([
   'blocked',
+  'visible_only_derived',
   'phase1_passed',
   'phase2_stable',
   ...OVERLAP_ADMISSION_VALUES,

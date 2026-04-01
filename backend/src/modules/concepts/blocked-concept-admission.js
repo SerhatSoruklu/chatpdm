@@ -9,7 +9,7 @@ const {
 function buildBlockedConceptAdmissionResponse(conceptId) {
   return Object.freeze({
     status: 'concept_blocked',
-    reason: 'override_required',
+    reason: 'override_not_supported',
     conceptId,
   });
 }
@@ -20,6 +20,10 @@ function evaluateBlockedConceptAdmission(conceptId, override = null) {
   }
 
   const normalizedConceptId = normalizeQuery(conceptId);
+
+  if (OVERRIDABLE_CONCEPT_ID === null) {
+    return buildBlockedConceptAdmissionResponse(normalizedConceptId);
+  }
 
   if (normalizedConceptId !== OVERRIDABLE_CONCEPT_ID) {
     throw new TypeError(

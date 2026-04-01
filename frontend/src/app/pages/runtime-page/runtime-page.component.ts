@@ -37,6 +37,7 @@ import type {
 } from '../../core/feedback/feedback.types';
 
 const REVIEWED_NOT_LIVE_ADMISSIONS = new Set<ReviewState['admission']>([
+  'visible_only_derived',
   'phase1_passed',
   'phase2_stable',
   'pending_overlap_scan',
@@ -411,6 +412,8 @@ export class RuntimePageComponent implements OnInit {
     switch (admission) {
       case 'blocked':
         return 'Blocked';
+      case 'visible_only_derived':
+        return 'Derived from duty evaluation';
       case 'phase1_passed':
         return 'Phase 1 Passed';
       case 'phase2_stable':
@@ -478,6 +481,10 @@ export class RuntimePageComponent implements OnInit {
   }
 
   protected reviewedNotLiveTitle(detail: ConceptDetailResponse): string {
+    if (detail.reviewState?.admission === 'visible_only_derived') {
+      return 'Derived concept, inspectable only';
+    }
+
     if (detail.reviewState?.admission === 'phase2_stable') {
       return 'Reviewed and stable, not yet live';
     }
@@ -486,6 +493,10 @@ export class RuntimePageComponent implements OnInit {
   }
 
   protected reviewedNotLiveBody(detail: ConceptDetailResponse): string {
+    if (detail.reviewState?.admission === 'visible_only_derived') {
+      return 'This concept is derived from duty evaluation and remains inspectable without entering the live public runtime.';
+    }
+
     if (detail.reviewState?.admission === 'phase2_stable') {
       return 'This concept has passed internal review and remains stable, but is not yet admitted to the live public runtime.';
     }
@@ -498,11 +509,19 @@ export class RuntimePageComponent implements OnInit {
   }
 
   protected visibleOnlyBody(detail: ConceptDetailResponse): string {
+    if (detail.reviewState?.admission === 'visible_only_derived') {
+      return 'Violation is a derived failure-state surface computed from duty evaluation. It remains inspectable and explainable, but it is not admitted as a live primitive in the public runtime.';
+    }
+
     return detail.coreMeaning
       ?? 'This concept is publicly visible and inspectable, but it is not admitted to the live public runtime.';
   }
 
-  protected visibleOnlySupportCopy(): string {
+  protected visibleOnlySupportCopy(detail?: ConceptDetailResponse): string {
+    if (detail?.reviewState?.admission === 'visible_only_derived') {
+      return 'Derived concepts remain visible only for inspection and explanation; they do not enter live runtime resolution or comparison support.';
+    }
+
     return 'Visible-only concepts expose authored detail without entering live runtime resolution or comparison support.';
   }
 
@@ -586,7 +605,7 @@ export class RuntimePageComponent implements OnInit {
     detail: ConceptDetailResponse | null | undefined,
   ): string {
     if (this.isVisibleOnlyRefusal(response, detail)) {
-      return this.visibleOnlySupportCopy();
+      return this.visibleOnlySupportCopy(detail ?? undefined);
     }
 
     if (this.isReviewedNotLive(detail)) {

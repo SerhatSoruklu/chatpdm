@@ -27,21 +27,21 @@ function withTempReviewStateDirectory(fileMap, fn) {
   }
 }
 
-function verifyValidPhase2StableViolationState() {
+function verifyValidVisibleOnlyDerivedViolationState() {
   const reviewState = getConceptReviewState('violation');
 
   assert.deepEqual(
     reviewState,
     {
       conceptId: 'violation',
-      admission: 'phase2_stable',
+      admission: 'visible_only_derived',
       lastValidatedAt: '2026-04-01T00:00:00Z',
       validationSource: 'manual_review',
     },
     'violation review state mismatch.',
   );
 
-  process.stdout.write('PASS valid_phase2_stable_violation_review_state\n');
+  process.stdout.write('PASS valid_visible_only_derived_violation_review_state\n');
 }
 
 function verifyValidPhase2StableState() {
@@ -167,7 +167,7 @@ function verifyGovernanceStateRemainsUntouched() {
 }
 
 function main() {
-  verifyValidPhase2StableViolationState();
+  verifyValidVisibleOnlyDerivedViolationState();
   verifyValidPhase1PassedState();
   verifyValidPendingOverlapScanState();
   verifyValidPhase2StableState();

@@ -81,8 +81,6 @@ ChatPDM v1 product responses allow only:
 - `exact_concept_query`
 - `canonical_id_query`
 - `ambiguity_query`
-- `broader_topic_query`
-- `subtype_query`
 - `comparison_query`
 - `relation_query`
 - `role_or_actor_query`
@@ -97,6 +95,8 @@ Rules:
 
 - `interpretation` must never contain generated explanation beyond the closed meaning of the detected query shape.
 - `interpretation` must not invent new canonical concepts.
+- `interpretation` must not infer a `baseConcept` for unmatched input unless that base concept is already explicit in the supported query shape itself.
+- `interpretation` must not frame unmatched input as a subtype, broader topic, or narrowed form of a canonical concept through heuristic analysis.
 - `interpretation` must not simulate comparison, relation analysis, or actor resolution.
 - `interpretation` may be `null` only when the query already resolves directly to one canonical concept without extra shape explanation.
 - Any arrays inside `interpretation` must be deterministic and version-stable.
@@ -443,8 +443,6 @@ Allowed `queryType` values:
 - `exact_concept_query`
 - `canonical_id_query`
 - `ambiguity_query`
-- `broader_topic_query`
-- `subtype_query`
 - `comparison_query`
 - `relation_query`
 - `role_or_actor_query`
@@ -477,13 +475,21 @@ Allowed `reason` values:
 - `broader_topic`
 - `related_concept`
 
+`broader_topic` suggestions are non-semantic guidance only.
+
+They must:
+
+- come from authored mappings only
+- remain suggestion metadata rather than interpretation framing
+- not create a `baseConcept` or subtype reading for the unmatched query
+- not influence resolver concept selection
+
 Interpretation patterns allowed in this response type include:
 
 - validator-law blocked canonical concept
 - canonical lookup failure
 - visible-only public concept not admitted to live runtime
-- broader-topic hint
-- narrower subtype hint
+  Derived concepts that are fully computable from admitted primitives must use this visible-only refusal surface rather than live concept matching. `violation` is the canonical v1 example.
 - governance-scope out-of-scope refusal
 - governance-scope clarification
 - unsupported comparison

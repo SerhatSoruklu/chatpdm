@@ -51,25 +51,16 @@
     "name": "comparison_violation_responsibility",
     "input": "is violation the same as responsibility",
     "expectedNormalizedQuery": "is violation the same as responsibility",
-    "expectedType": "comparison",
+    "expectedType": "no_exact_match",
+    "expectedMethod": "no_exact_match",
     "expectedQueryType": "comparison_query",
-    "expectedInterpretation": null,
-    "expectedComparison": {
-      "conceptA": "responsibility",
-      "conceptB": "violation",
-      "axes": [
-        {
-          "axis": "core_nature"
-        },
-        {
-          "axis": "depends_on"
-        },
-        {
-          "axis": "not_equivalent",
-          "statement": "responsibility is not violation; responsibility assigns answerability for a violated state, while violation is the unmet-duty state itself"
-        }
+    "expectedInterpretation": {
+      "interpretationType": "visible_only_public_concept",
+      "concepts": [
+        "violation"
       ]
-    }
+    },
+    "expectedSuggestions": []
   },
   {
     "name": "comparison_missing_concept_refusal",
@@ -87,48 +78,43 @@
     "expectedSuggestions": []
   },
   {
-    "name": "comparison_visible_only_agreement_commitment_refusal",
+    "name": "comparison_out_of_scope_agreement_commitment_refusal",
     "input": "agreement vs commitment",
     "expectedNormalizedQuery": "agreement vs commitment",
     "expectedType": "no_exact_match",
-    "expectedMethod": "no_exact_match",
+    "expectedMethod": "out_of_scope",
     "expectedQueryType": "comparison_query",
     "expectedInterpretation": {
-      "interpretationType": "visible_only_public_concept",
-      "concepts": [
-        "agreement",
-        "commitment"
-      ]
+      "interpretationType": "out_of_scope",
+      "targetConceptId": "commitment"
     },
     "expectedSuggestions": []
   },
   {
-    "name": "comparison_visible_only_commitment_duty_refusal",
+    "name": "comparison_anchored_commitment_duty_refusal",
     "input": "commitment vs duty",
     "expectedNormalizedQuery": "commitment vs duty",
     "expectedType": "no_exact_match",
     "expectedMethod": "no_exact_match",
     "expectedQueryType": "comparison_query",
     "expectedInterpretation": {
-      "interpretationType": "visible_only_public_concept",
+      "interpretationType": "comparison_not_supported",
       "concepts": [
-        "commitment"
+        "duty"
       ]
     },
     "expectedSuggestions": []
   },
   {
-    "name": "comparison_visible_only_breach_violation_refusal",
+    "name": "comparison_out_of_scope_breach_violation_refusal",
     "input": "breach vs violation",
     "expectedNormalizedQuery": "breach vs violation",
     "expectedType": "no_exact_match",
-    "expectedMethod": "no_exact_match",
+    "expectedMethod": "out_of_scope",
     "expectedQueryType": "comparison_query",
     "expectedInterpretation": {
-      "interpretationType": "visible_only_public_concept",
-      "concepts": [
-        "breach"
-      ]
+      "interpretationType": "out_of_scope",
+      "targetConceptId": "breach"
     },
     "expectedSuggestions": []
   },

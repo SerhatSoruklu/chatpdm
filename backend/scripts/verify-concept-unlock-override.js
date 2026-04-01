@@ -4,6 +4,7 @@ const assert = require('node:assert/strict');
 const {
   CONCEPT_UNLOCK_OVERRIDE_TEMPLATE,
   INVALID_OVERRIDE_REASON,
+  OVERRIDE_DISABLED_REASON,
   OVERRIDABLE_CONCEPT_ID,
   OVERRIDE_APPROVAL_TOKEN,
   applyOverride,
@@ -67,17 +68,16 @@ function verifyValidOverride() {
   assert.deepEqual(
     result,
     {
-      status: 'override_applied',
-      effect: 'concept_unlocked',
-      conceptId: OVERRIDABLE_CONCEPT_ID,
+      status: 'override_rejected',
+      reason: OVERRIDE_DISABLED_REASON,
     },
-    'valid override should apply cleanly.',
+    'valid-looking override should still be rejected when no concept unlock path is supported.',
   );
   assert.match(captured, /\[chatpdm-concepts] override-attempt /, 'valid override should write a log line.');
-  assert.match(captured, /"status":"override_applied"/, 'valid override log line should include applied status.');
-  assertSingleLogEntry('override_applied', null);
+  assert.match(captured, /"status":"override_rejected"/, 'valid override log line should include rejected status.');
+  assertSingleLogEntry('override_rejected', OVERRIDE_DISABLED_REASON);
 
-  process.stdout.write('PASS valid_override_applies\n');
+  process.stdout.write('PASS valid_override_rejected_when_unlock_disabled\n');
 }
 
 function verifyInvalidApprovalToken() {

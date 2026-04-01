@@ -3,17 +3,21 @@
 const {
   EMPTY_NORMALIZED_QUERY,
   LEADING_FILLER_PHRASES,
-  PUNCTUATION_CHARACTERS,
 } = require('./constants');
 
-function escapeForCharClass(character) {
-  return /[\\\-\]\[]/.test(character) ? `\\${character}` : character;
-}
+function findLeadingFillerPhrase(normalizedQuery) {
+  if (typeof normalizedQuery !== 'string' || normalizedQuery.trim() === '') {
+    return null;
+  }
 
-const punctuationPattern = new RegExp(
-  `[${PUNCTUATION_CHARACTERS.map(escapeForCharClass).join('')}]`,
-  'g',
-);
+  return LEADING_FILLER_PHRASES.find((phrase) => (
+    normalizedQuery.startsWith(phrase)
+    && (
+      normalizedQuery.length === phrase.length
+      || normalizedQuery.charAt(phrase.length) === ' '
+    )
+  )) ?? null;
+}
 
 function normalizeQuery(rawQuery) {
   if (typeof rawQuery !== 'string') {
@@ -23,9 +27,8 @@ function normalizeQuery(rawQuery) {
   let normalizedQuery = rawQuery.trim();
   normalizedQuery = normalizedQuery.toLowerCase();
   normalizedQuery = normalizedQuery.replace(/\s+/g, ' ');
-  normalizedQuery = normalizedQuery.replace(punctuationPattern, '');
 
-  const matchingPrefix = LEADING_FILLER_PHRASES.find((prefix) => normalizedQuery.startsWith(prefix));
+  const matchingPrefix = findLeadingFillerPhrase(normalizedQuery);
   if (matchingPrefix) {
     normalizedQuery = normalizedQuery.slice(matchingPrefix.length);
   }
@@ -45,5 +48,6 @@ function extractCanonicalId(rawQuery) {
 
 module.exports = {
   extractCanonicalId,
+  findLeadingFillerPhrase,
   normalizeQuery,
 };

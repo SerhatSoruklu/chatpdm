@@ -97,7 +97,6 @@ function verifyConceptContractStructure(conceptId, expected) {
   [
     ...(contract.requiredRelations ?? []),
     ...contract.allowedRelations,
-    ...contract.forbiddenRelations,
   ].forEach((entry) => {
     assert.equal(
       LIVE_CONCEPT_IDS.includes(entry.targetConceptId),
@@ -116,7 +115,6 @@ function verifyConductFamilyContractStructures() {
     requiredRelations: null,
     allowedRelations: [
       { relationType: 'is_grounded_in', targetConceptId: 'law' },
-      { relationType: 'may_be_breached_as', targetConceptId: 'violation' },
       { relationType: 'may_ground_answerability_in', targetConceptId: 'responsibility' },
     ],
     forbiddenRelations: [
@@ -152,7 +150,6 @@ function verifyConductFamilyContractStructures() {
     requiredRelations: null,
     allowedRelations: [
       { relationType: 'may_answer_for_breach_of', targetConceptId: 'duty' },
-      { relationType: 'may_answer_for', targetConceptId: 'violation' },
     ],
     forbiddenRelations: [
       { relationType: 'equivalent_to', targetConceptId: 'duty', failureCode: 'RESPONSIBILITY_COLLAPSES_TO_DUTY' },
@@ -163,7 +160,7 @@ function verifyConductFamilyContractStructures() {
       'responsibility_is_not_required_conduct',
       'responsibility_is_not_breach_state',
       'responsibility_applies_after_attribution_is_in_question',
-      'responsibility_may_follow_violation_without_defining_it',
+      'responsibility_may_follow_duty_failure_without_defining_it',
     ],
     invariantFailureCodes: [
       'RESPONSIBILITY_IDENTITY_KIND_MISMATCH',
@@ -288,12 +285,12 @@ function verifyFamilyPressureTests() {
     message: 'Duty contract input satisfies the governance-domain identity rules.',
   });
 
-  runCase('responsibility_valid_answer_for_violation', responsibility, {
+  runCase('responsibility_valid_answer_for_duty_breach', responsibility, {
     domain: 'governance',
     identityKind: 'answerable_attribution',
     governanceOrder: 'constitutional_order',
-    relationType: 'may_answer_for',
-    relatedConceptId: 'violation',
+    relationType: 'may_answer_for_breach_of',
+    relatedConceptId: 'duty',
   }, {
     resolution: 'valid',
     code: 'RESPONSIBILITY_CONTRACT_VALID',

@@ -61,6 +61,7 @@ const VISIBLE_ONLY_PUBLIC_CONCEPTS = new Set<string>(VISIBLE_ONLY_PUBLIC_CONCEPT
 const REJECTED_CONCEPTS = new Set<string>(REJECTED_CONCEPT_IDS);
 const DETAIL_BACKED_CONCEPTS = new Set<string>(DETAIL_BACKED_CONCEPT_IDS);
 const REVIEWED_NOT_LIVE_ADMISSIONS = new Set<ReviewState['admission']>([
+  'visible_only_derived',
   'phase1_passed',
   'phase2_stable',
   'pending_overlap_scan',
@@ -98,8 +99,6 @@ const SCOPE_GROUPS: ScopeGroup[] = [
     title: 'Interaction primitives',
     concepts: [
       'agreement',
-      'commitment',
-      'breach',
     ],
   },
 ];
@@ -647,6 +646,8 @@ export class LandingPageComponent {
     switch (admission) {
       case 'blocked':
         return 'Blocked';
+      case 'visible_only_derived':
+        return 'Derived from duty evaluation';
       case 'phase1_passed':
         return 'Phase 1 Passed';
       case 'phase2_stable':
@@ -683,6 +684,10 @@ export class LandingPageComponent {
 
   protected isVisibleOnlyDetail(detail: ConceptDetailResponse | null | undefined): boolean {
     return detail?.conceptId ? VISIBLE_ONLY_PUBLIC_CONCEPTS.has(detail.conceptId) : false;
+  }
+
+  protected isDerivedVisibleOnlyDetail(detail: ConceptDetailResponse | null | undefined): boolean {
+    return detail?.reviewState?.admission === 'visible_only_derived';
   }
 
   protected isVisibleOnlyRefusal(
@@ -750,6 +755,10 @@ export class LandingPageComponent {
     detail: ConceptDetailResponse | null | undefined,
   ): string {
     if (this.isVisibleOnlyRefusal(response, detail)) {
+      if (this.isDerivedVisibleOnlyDetail(detail)) {
+        return 'Derived concept, inspectable only';
+      }
+
       return 'Visible in public scope, not live';
     }
 
@@ -776,6 +785,10 @@ export class LandingPageComponent {
     detail: ConceptDetailResponse | null | undefined,
   ): string {
     if (this.isVisibleOnlyRefusal(response, detail)) {
+      if (this.isDerivedVisibleOnlyDetail(detail)) {
+        return 'Violation remains inspectable as a derived concept computed from duty evaluation, but it is not admitted to the live public runtime.';
+      }
+
       return 'This concept is publicly visible and inspectable, but it is not admitted to the live public runtime.';
     }
 
@@ -794,6 +807,10 @@ export class LandingPageComponent {
     detail: ConceptDetailResponse | null | undefined,
   ): string {
     if (this.isVisibleOnlyRefusal(response, detail)) {
+      if (this.isDerivedVisibleOnlyDetail(detail)) {
+        return 'Derived concepts remain visible only for inspection and explanation; they do not enter live runtime resolution or comparison support.';
+      }
+
       return 'Visible-only concepts expose authored detail without entering live runtime resolution or comparison support.';
     }
 

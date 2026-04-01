@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "conceptId": "liability",
+  "status": "REJECTED",
+  "decisionType": "STRUCTURAL_REJECTION",
+  "reviewPhase": "PHASE_1_ADMISSION",
+  "reason": "Absorbed by violation and responsibility; no distinct primitive role.",
+  "evidenceBasis": [
+    "phase1_admission_review",
+    "collapse_review",
+    "conflict_review"
+  ],
+  "collapseTargets": [
+    "violation",
+    "responsibility"
+  ],
+  "systemImpact": "Reintroducing liability as a first-class concept would duplicate the current post-duty failure corridor, weaken the violation-responsibility boundary, and invite drift toward sanction or enforcement language.",
+  "removalTestResult": "The system retains rule-governed duty, unmet-duty state, and post-trigger answerability without a standalone liability concept. Existing runtime structure already covers the proposed consequence-exposure role.",
+  "replacementHandling": {
+    "runtimeTreatment": "handled_by_existing_structure",
+    "mapsTo": [
+      "duty",
+      "violation",
+      "responsibility"
+    ]
+  },
+  "recordedAt": "2026-04-01",
+  "systemVersionTag": "chatpdm-phase1-structural-rejection-v1",
+  "finality": true
+}

@@ -1,0 +1,27 @@
+[
+  {
+    "name": "liability_is_responsibility",
+    "input": "liability is responsibility",
+    "expectedFinalState": "refused"
+  },
+  {
+    "name": "mens_rea_means_intent_so_use_responsibility",
+    "input": "mens rea means intent so use responsibility",
+    "expectedFinalState": "refused"
+  },
+  {
+    "name": "jurisdiction_equals_authority",
+    "input": "jurisdiction = authority",
+    "expectedFinalState": "refused"
+  },
+  {
+    "name": "defeasibility_law_rule_override",
+    "input": "defeasibility law rule override",
+    "expectedFinalState": "refused"
+  },
+  {
+    "name": "duty_responsibility_authority_combined",
+    "input": "duty responsibility authority combined",
+    "expectedFinalState": "refused"
+  }
+]

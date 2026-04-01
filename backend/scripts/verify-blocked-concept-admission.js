@@ -3,15 +3,13 @@
 const assert = require('node:assert/strict');
 const {
   CONCEPT_UNLOCK_OVERRIDE_TEMPLATE,
-  INVALID_OVERRIDE_REASON,
-  OVERRIDABLE_CONCEPT_ID,
   OVERRIDE_APPROVAL_TOKEN,
   clearOverrideAttemptLog,
   evaluateBlockedConceptAdmission,
   getOverrideAttemptLog,
 } = require('../src/modules/concepts');
 
-function verifyValidOverrideUnlocksViolation() {
+function verifyViolationRemainsBlockedWithoutOverridePath() {
   const validOverride = {
     ...CONCEPT_UNLOCK_OVERRIDE_TEMPLATE,
     timestamp: '2026-03-31T13:00:00Z',
@@ -24,53 +22,49 @@ function verifyValidOverrideUnlocksViolation() {
   assert.deepEqual(
     result,
     {
-      status: 'override_applied',
-      effect: 'concept_unlocked',
-      conceptId: OVERRIDABLE_CONCEPT_ID,
+      status: 'concept_blocked',
+      reason: 'override_not_supported',
+      conceptId: 'violation',
     },
-    'valid override should unlock violation through the admission gate.',
+    'violation should remain blocked because the unlock override path is disabled.',
   );
 
   const logEntries = getOverrideAttemptLog();
-  assert.equal(logEntries.length, 1, 'valid admission override should record one log entry.');
-  assert.equal(logEntries[0].status, 'override_applied', 'valid admission override log status mismatch.');
-  assert.equal(logEntries[0].conceptId, OVERRIDABLE_CONCEPT_ID, 'valid admission override conceptId mismatch.');
+  assert.equal(logEntries.length, 0, 'blocked admission without override support should not write override logs.');
 
-  process.stdout.write('PASS blocked_concept_admission_valid_override_unlocks_violation\n');
+  process.stdout.write('PASS blocked_concept_admission_violation_remains_blocked\n');
 }
 
-function verifyInvalidOverrideKeepsViolationBlocked() {
-  const invalidOverride = {
+function verifyAnyBlockedConceptReturnsNoOverrideSupport() {
+  const validLookingOverride = {
     ...CONCEPT_UNLOCK_OVERRIDE_TEMPLATE,
     timestamp: '2026-03-31T13:00:00Z',
-    approvalToken: `${OVERRIDE_APPROVAL_TOKEN}_INVALID`,
+    approvalToken: `${OVERRIDE_APPROVAL_TOKEN}`,
   };
 
   clearOverrideAttemptLog();
 
-  const result = evaluateBlockedConceptAdmission('violation', invalidOverride);
+  const result = evaluateBlockedConceptAdmission('violation', validLookingOverride);
 
   assert.deepEqual(
     result,
     {
-      status: 'override_rejected',
-      reason: INVALID_OVERRIDE_REASON,
+      status: 'concept_blocked',
+      reason: 'override_not_supported',
+      conceptId: 'violation',
     },
-    'invalid override should be rejected through the admission gate.',
+    'blocked concept admission should not expose an unlock path for violation.',
   );
 
   const logEntries = getOverrideAttemptLog();
-  assert.equal(logEntries.length, 1, 'invalid admission override should record one log entry.');
-  assert.equal(logEntries[0].status, 'override_rejected', 'invalid admission override log status mismatch.');
-  assert.equal(logEntries[0].reason, INVALID_OVERRIDE_REASON, 'invalid admission override log reason mismatch.');
-  assert.equal(logEntries[0].conceptId, OVERRIDABLE_CONCEPT_ID, 'invalid admission override conceptId mismatch.');
+  assert.equal(logEntries.length, 0, 'disabled override path should not write override logs.');
 
-  process.stdout.write('PASS blocked_concept_admission_invalid_override_keeps_violation_blocked\n');
+  process.stdout.write('PASS blocked_concept_admission_override_not_supported\n');
 }
 
 function main() {
-  verifyValidOverrideUnlocksViolation();
-  verifyInvalidOverrideKeepsViolationBlocked();
+  verifyViolationRemainsBlockedWithoutOverridePath();
+  verifyAnyBlockedConceptReturnsNoOverrideSupport();
   process.stdout.write('ChatPDM blocked concept admission verification passed.\n');
 }
 

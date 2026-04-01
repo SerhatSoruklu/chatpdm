@@ -19,6 +19,26 @@ If the user says `push to git`, Codex should:
 - create a clean commit with a clear commit message
 - push the current branch to the configured remote
 
+## Protected Main Contract
+
+For this repo, treat `main` as a protected branch with the following expected
+constraints:
+
+- pull request required before merge
+- no direct pushes to `main`
+- signed commits required on the protected-branch path
+- linear history required
+- no force pushes
+- no deletion path
+- no assumed bypass, including admin-style bypass
+
+Operational consequence:
+
+- work on a feature branch
+- push the feature branch to `origin`
+- merge through pull request flow
+- prefer squash or rebase merge over merge commits when choosing a merge style
+
 The default meaning is:
 
 - push the changes relevant to the current task
@@ -33,7 +53,8 @@ The intended workflow is:
 - fix safely
 - stage
 - commit
-- push safely
+- push safely to the feature branch
+- use pull request flow for `main`
 
 ## Scope Review
 
@@ -116,6 +137,9 @@ This does not authorize pushing:
 
 `push ALL` means full repo worktree intent, not unsafe artifact leakage.
 
+`push ALL` still does not authorize direct publication to protected `main`.
+It means full intended scope on the current publication branch.
+
 ## Secret and Artifact Safety
 
 Do not stage or push:
@@ -196,5 +220,15 @@ After a successful push:
 
 - the user may check deploy logs
 - Codex should help verify deploy behavior, health checks, and rollback signals if needed
+
+If the user asks for `push` plus `deploy`, adapt to the protected-branch model:
+
+- push the feature branch
+- prepare or open the pull request when requested
+- validate the branch and any deploy-facing checks
+- do not bypass branch protection in order to deploy through `main`
+
+If deployment is triggered only from merged `main`, the deploy path now depends
+on pull request merge, not direct push.
 
 This workflow is meant to reduce staging friction while keeping pushes deliberate and safe.

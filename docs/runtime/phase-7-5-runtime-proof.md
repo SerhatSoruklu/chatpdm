@@ -30,7 +30,8 @@ The runtime proof covers:
 
 - exact match for the five seed concepts
 - empty-string rejection at the API boundary
-- noise input handling that normalizes to `__empty__`
+- whitespace-only and filler-only input handling that normalizes to `__empty__`
+- punctuation-preserving refusal for non-empty noise input
 - canonical_id success and failure
 - rejection-registry coverage for exact, normalized, and canonical-id queries
 - one authored suggestion case
@@ -47,11 +48,11 @@ The runtime proof covers:
 | `responsibility` | `responsibility` | `concept_match` | `responsibility` |
 | `duty` | `duty` | `concept_match` | `duty` |
 | `` | n/a | API invalid input | rejected before product response generation |
-| `   ` | `__empty__` | `no_exact_match` | `[]` |
-| `???` | `__empty__` | `no_exact_match` | `[]` |
-| `what is ???` | `__empty__` | `no_exact_match` | `[]` |
-| `concept:authority` | `conceptauthority` | `concept_match` | `authority` |
-| `concept:missing-id` | `conceptmissing-id` | `no_exact_match` | `[]` |
+| `   ` | `__empty__` | `invalid_query` | invalid query |
+| `???` | `???` | `unsupported_query_type` | unsupported complex query |
+| `what is ???` | `???` | `no_exact_match` | exact concept not found: `???` |
+| `concept:authority` | `concept:authority` | `concept_match` | `authority` |
+| `concept:missing-id` | `concept:missing-id` | `no_exact_match` | `[]` |
 | `obligation` | `obligation` | `rejected_concept` | `obligation` |
 | `enforcement` | `enforcement` | `rejected_concept` | `enforcement` |
 | `ENFORCEMENT` | `enforcement` | `rejected_concept` | `enforcement` |

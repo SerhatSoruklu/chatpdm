@@ -21,6 +21,7 @@ const {
 } = require('./concept-loader');
 const { getConceptRuntimeGovernanceState } = require('./concept-validation-state-loader');
 const { buildReadingRegistersForConcept } = require('./reading-registers');
+const { getConceptReviewState } = require('./concept-review-state-loader');
 const { loadResolveRules } = require('./resolve-rules-loader');
 const { getRejectedConceptRecord } = require('./rejection-registry-loader');
 const { assertSingleRuntimeResolutionState } = require('./runtime-resolution-state');
@@ -29,6 +30,7 @@ const { extractCanonicalId, normalizeQuery } = require('./normalizer');
 const { classifyQueryShape } = require('./query-shape-classifier');
 const { resolveComparisonQuery } = require('./comparison-resolver');
 const { detectGovernanceScopeEnforcement } = require('./governance-scope-enforcer');
+const { detectOutOfScopeInteractionQuery } = require('./interaction-kernel-boundary');
 const { assertDeterministicPathFreeOfAiMarkers } = require('../../lib/ai-governance-guard');
 const { assertValidProductResponse } = require('../../lib/product-response-validator');
 
@@ -148,11 +150,17 @@ function buildVisibleOnlyConceptInterpretation({
   concepts = [],
   comparison = false,
 }) {
+  const derivedVisibleOnlyConcepts = (targetConceptId ? [targetConceptId] : concepts)
+    .filter((conceptId) => getConceptReviewState(conceptId)?.admission === 'visible_only_derived');
+  const isDerivedVisibleOnly = derivedVisibleOnlyConcepts.length > 0;
+
   if (comparison) {
     return {
       interpretationType: 'visible_only_public_concept',
       concepts,
-      message: 'This query refers to visible-only public concepts that are inspectable but not admitted to live runtime comparison.',
+      message: isDerivedVisibleOnly
+        ? 'This query refers to a derived visible-only concept that remains inspectable but is not admitted to live runtime comparison.'
+        : 'This query refers to visible-only public concepts that are inspectable but not admitted to live runtime comparison.',
     };
   }
 
@@ -161,7 +169,11 @@ function buildVisibleOnlyConceptInterpretation({
     targetConceptId,
     concepts: targetConceptId ? [targetConceptId] : concepts,
     message: targetConceptId
-      ? `The concept "${targetConceptId}" is visible in public scope and detail, but it is not admitted to the live public runtime.`
+      ? (
+        isDerivedVisibleOnly
+          ? `The concept "${targetConceptId}" is inspectable as a derived concept computed from duty evaluation, but it is not admitted to the live public runtime.`
+          : `The concept "${targetConceptId}" is visible in public scope and detail, but it is not admitted to the live public runtime.`
+      )
       : 'This concept is visible in public scope and detail, but it is not admitted to the live public runtime.',
   };
 }
@@ -341,6 +353,30 @@ function resolveConceptQuery(rawQuery) {
     return finalizeResolvedResponse(response);
   }
 
+  const interactionBoundaryQuery = detectOutOfScopeInteractionQuery(
+    canonicalId !== null ? canonicalId : normalizedQuery,
+  );
+
+  if (interactionBoundaryQuery) {
+    response = {
+      ...baseResponse,
+      type: 'no_exact_match',
+      interpretation: {
+        interpretationType: 'out_of_scope',
+        targetConceptId: interactionBoundaryQuery.targetConceptId,
+        concepts: interactionBoundaryQuery.concepts,
+        message: interactionBoundaryQuery.message,
+      },
+      resolution: {
+        method: 'out_of_scope',
+      },
+      message: NO_EXACT_MATCH_MESSAGE,
+      suggestions: [],
+    };
+
+    return finalizeResolvedResponse(response);
+  }
+
   if (visibleOnlyCanonicalConceptId) {
     response = buildVisibleOnlyConceptResponse(
       baseResponse,
@@ -371,7 +407,10 @@ function resolveConceptQuery(rawQuery) {
   } else if (
     queryClassification.queryType === 'role_or_actor_query'
     || queryClassification.queryType === 'relation_query'
-    || queryClassification.queryType === 'unsupported_complex_query'
+    || (
+      queryClassification.queryType === 'unsupported_complex_query'
+      && (match.type !== 'no_exact_match' || match.suggestions.length === 0)
+    )
   ) {
     response = buildUnsupportedQueryTypeResponse(baseResponse);
   } else if (queryClassification.queryType === 'comparison_query') {

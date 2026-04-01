@@ -1,0 +1,77 @@
+[
+  {
+    "concept": "violation",
+    "reductionReferences": [
+      "law",
+      "duty"
+    ],
+    "reductionPath": "law -> duty -> evaluated unmet-duty state surface",
+    "scenarios": [
+      {
+        "input": "violation without duty",
+        "rule": "must_depend_on_references",
+        "explanation": "Violation cannot exist without an applicable duty, so the failure-state remains reducible to law-grounded duty evaluation."
+      }
+    ]
+  },
+  {
+    "concept": "breach",
+    "reductionReferences": [
+      "commitment"
+    ],
+    "reductionPath": "commitment -> non-continuation within the interaction frame",
+    "scenarios": [
+      {
+        "input": "breach without duty",
+        "rule": "survives_without_core_reference",
+        "explanation": "Breach survives without duty because the authored packet depends on commitment rather than on any of the six core primitives."
+      }
+    ]
+  },
+  {
+    "concept": "liability",
+    "reductionReferences": [
+      "law",
+      "duty",
+      "responsibility"
+    ],
+    "reductionPath": "law -> duty evaluation -> responsibility-side answerability corridor",
+    "scenarios": [
+      {
+        "input": "liability without causation",
+        "rule": "stays_reducible_when_attachment_fails",
+        "explanation": "Without attribution or outcome linkage, liability still does not require primitive promotion; it remains shorthand for a failed answerability attachment."
+      }
+    ]
+  },
+  {
+    "concept": "harm",
+    "reductionReferences": [
+      "power",
+      "responsibility"
+    ],
+    "reductionPath": "power-produced outcome -> responsibility-side answerability only when attribution is in question",
+    "scenarios": [
+      {
+        "input": "harm without responsibility",
+        "rule": "may_exist_without_answerability",
+        "explanation": "An adverse outcome may exist as a power-side effect even where responsibility is not yet attached."
+      }
+    ]
+  },
+  {
+    "concept": "causation",
+    "reductionReferences": [
+      "power",
+      "responsibility"
+    ],
+    "reductionPath": "power-side outcome production -> responsibility-side attribution of result to actor",
+    "scenarios": [
+      {
+        "input": "causation without responsibility",
+        "rule": "feeds_answerability_without_becoming_primitive",
+        "explanation": "Causation functions as an attribution basis for responsibility rather than as an independent primitive lane."
+      }
+    ]
+  }
+]

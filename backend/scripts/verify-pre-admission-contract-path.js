@@ -12,6 +12,7 @@ const {
 
 function verifyRegistryLoadsAndCoversRejectedConcepts() {
   const registry = loadPreAdmissionContractPathRegistry();
+  const conceptIds = registry.conceptPaths.map((entry) => entry.conceptId).sort();
 
   assert.equal(registry.version, 1, 'pre-admission contract path registry version mismatch.');
   assert.equal(
@@ -19,10 +20,10 @@ function verifyRegistryLoadsAndCoversRejectedConcepts() {
     'rejection_registry_only',
     'pre-admission contract path runtime exposure policy mismatch.',
   );
-  assert.equal(
-    registry.conceptPaths.length,
-    2,
-    'pre-admission contract path registry must cover the two rejected concepts.',
+  assert.deepEqual(
+    conceptIds,
+    ['enforcement', 'obligation'],
+    'pre-admission contract path registry must only cover concepts with active promotion paths.',
   );
 
   process.stdout.write('PASS pre_admission_contract_path_registry_loaded\n');
@@ -57,7 +58,7 @@ function verifyObligationAndEnforcementPaths() {
 }
 
 function verifyRejectedConceptsRemainRuntimeIsolated() {
-  ['obligation', 'enforcement'].forEach((conceptId) => {
+  ['obligation', 'enforcement', 'claim', 'liability', 'jurisdiction', 'defeasibility'].forEach((conceptId) => {
     const response = resolveConceptQuery(conceptId);
     const runtimeResolutionState = assertSingleRuntimeResolutionState(response);
 
@@ -78,9 +79,22 @@ function verifyRejectedConceptsRemainRuntimeIsolated() {
   process.stdout.write('PASS pre_admission_contract_path_runtime_isolation\n');
 }
 
+function verifyPermanentRejectionsRemainOutsidePromotionPathRegistry() {
+  ['claim', 'liability', 'jurisdiction', 'defeasibility'].forEach((conceptId) => {
+    assert.throws(
+      () => getPreAdmissionContractPath(conceptId),
+      /No pre-admission contract path found/,
+      `${conceptId} must not receive a pre-admission promotion path.`,
+    );
+  });
+
+  process.stdout.write('PASS pre_admission_contract_path_permanent_rejections\n');
+}
+
 function main() {
   verifyRegistryLoadsAndCoversRejectedConcepts();
   verifyObligationAndEnforcementPaths();
+  verifyPermanentRejectionsRemainOutsidePromotionPathRegistry();
   verifyRejectedConceptsRemainRuntimeIsolated();
   process.stdout.write('Pre-admission contract path verification passed.\n');
 }

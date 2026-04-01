@@ -56,9 +56,7 @@ export const RUNTIME_SCOPE_BY_CONCEPT = Object.freeze<Record<string, string>>({
   legitimacy: 'Governance v1',
   law: 'Governance v1',
   duty: 'Governance v1',
-  violation: 'Governance v1',
+  violation: 'Derived duty-failure surface',
   responsibility: 'Core abstractions v1',
   agreement: 'Interaction v2',
-  commitment: 'Interaction v2',
-  breach: 'Interaction v2',
 });

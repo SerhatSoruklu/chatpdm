@@ -49,10 +49,6 @@
         "targetConceptId": "law"
       },
       {
-        "relationType": "may_be_breached_as",
-        "targetConceptId": "violation"
-      },
-      {
         "relationType": "may_ground_answerability_in",
         "targetConceptId": "responsibility"
       }

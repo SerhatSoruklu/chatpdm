@@ -8,7 +8,6 @@ const COMPARISON_ALLOWLIST = Object.freeze([
   ['duty', 'law'],
   ['power', 'legitimacy'],
   ['responsibility', 'duty'],
-  ['responsibility', 'violation'],
 ]);
 
 function normalizePair(conceptIds) {

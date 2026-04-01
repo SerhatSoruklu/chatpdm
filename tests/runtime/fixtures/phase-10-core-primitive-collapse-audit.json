@@ -1,0 +1,173 @@
+[
+  {
+    "primitive": "law",
+    "scenario": "law without authority",
+    "collapseTargets": [
+      "duty",
+      "authority",
+      "legitimacy"
+    ],
+    "checks": [
+      {
+        "type": "role_marker_unique",
+        "value": "binding_normative_source"
+      },
+      {
+        "type": "forbidden_equivalent_to",
+        "target": "authority"
+      },
+      {
+        "type": "allowed_relation",
+        "relationType": "grounds",
+        "target": "duty"
+      },
+      {
+        "type": "invariant_id",
+        "value": "law_is_not_directive_standing"
+      }
+    ],
+    "reasonStem": "Law remains the unique binding normative source and structures authority without becoming standing."
+  },
+  {
+    "primitive": "authority",
+    "scenario": "authority without legitimacy",
+    "collapseTargets": [
+      "power",
+      "legitimacy"
+    ],
+    "checks": [
+      {
+        "type": "role_marker_unique",
+        "value": "recognized_directive_standing"
+      },
+      {
+        "type": "forbidden_equivalent_to",
+        "target": "legitimacy"
+      },
+      {
+        "type": "invariant_id",
+        "value": "authority_can_persist_while_legitimacy_is_contested"
+      },
+      {
+        "type": "invariant_id",
+        "value": "authority_is_not_validity_assessment"
+      }
+    ],
+    "reasonStem": "Authority remains recognized directive standing even where legitimacy is contested."
+  },
+  {
+    "primitive": "power",
+    "scenario": "power without authority",
+    "collapseTargets": [
+      "authority",
+      "legitimacy"
+    ],
+    "checks": [
+      {
+        "type": "role_marker_unique",
+        "value": "operative_outcome_capacity"
+      },
+      {
+        "type": "forbidden_equivalent_to",
+        "target": "authority"
+      },
+      {
+        "type": "invariant_id",
+        "value": "power_can_exist_without_authority"
+      },
+      {
+        "type": "invariant_id",
+        "value": "power_is_not_directive_standing"
+      }
+    ],
+    "reasonStem": "Power remains operative outcome capacity even where no recognized authority is present."
+  },
+  {
+    "primitive": "duty",
+    "scenario": "duty without responsibility",
+    "collapseTargets": [
+      "responsibility"
+    ],
+    "checks": [
+      {
+        "type": "role_marker_unique",
+        "value": "required_conduct"
+      },
+      {
+        "type": "forbidden_equivalent_to",
+        "target": "responsibility"
+      },
+      {
+        "type": "invariant_id",
+        "value": "duty_is_not_answerability"
+      },
+      {
+        "type": "structural_field_equals",
+        "path": [
+          "structuralProfile",
+          "requiredConductRole"
+        ],
+        "value": "defines required conduct directly"
+      }
+    ],
+    "reasonStem": "Duty remains uniquely required conduct and does not reduce to answerability."
+  },
+  {
+    "primitive": "responsibility",
+    "scenario": "responsibility without duty",
+    "collapseTargets": [
+      "duty"
+    ],
+    "checks": [
+      {
+        "type": "role_marker_unique",
+        "value": "answerable_attribution"
+      },
+      {
+        "type": "forbidden_equivalent_to",
+        "target": "duty"
+      },
+      {
+        "type": "invariant_id",
+        "value": "responsibility_is_not_required_conduct"
+      },
+      {
+        "type": "structural_field_equals",
+        "path": [
+          "structuralProfile",
+          "answerabilityRole"
+        ],
+        "value": "assigns answerability directly"
+      }
+    ],
+    "reasonStem": "Responsibility remains uniquely answerable attribution and does not reduce to required conduct."
+  },
+  {
+    "primitive": "legitimacy",
+    "scenario": "legitimacy without authority",
+    "collapseTargets": [
+      "authority",
+      "power"
+    ],
+    "checks": [
+      {
+        "type": "role_marker_unique",
+        "value": "accepted_justified_validity"
+      },
+      {
+        "type": "forbidden_equivalent_to",
+        "target": "authority"
+      },
+      {
+        "type": "allowed_relation",
+        "relationType": "evaluates",
+        "target": "law"
+      },
+      {
+        "type": "invariant_id",
+        "value": "legitimacy_is_not_directive_standing"
+      }
+    ],
+    "reasonStem": "Legitimacy remains validity assessment and can evaluate law without collapsing into authority."
+  }
+]
