@@ -174,9 +174,9 @@
       "fullDefinition": "Violation is not identical to duty. Duty defines what conduct or conditions are required under a binding source; violation records that those requirements are not satisfied when assessed.\n\nViolation is also not responsibility. Responsibility concerns who is answerable for the violated state. Violation concerns the state of non-satisfaction itself, whether or not answerability has already been assigned.\n\nWithin a governance system, violation is a derived failure-state surface rather than a live primitive. It is computed when a duty is in force, the relevant assessment point has been reached, and the actual state fails to satisfy what the duty requires."
     },
     "simplified": {
-      "shortDefinition": "Violation means a duty's required conduct or conditions are not met when checked.",
-      "coreMeaning": "Violation marks a derived failed duty-state. It does not describe intent, blame, or punishment. It records that what was required is not satisfied at the time the requirement is assessed.",
-      "fullDefinition": "Violation is not the same as duty, because duty says what is required. Violation says that the requirement was not met when checked.\n\nIt is also not responsibility, because responsibility asks who must answer for the failure. Violation marks the failure state itself.\n\nSo violation remains an inspectable derived result of duty evaluation. It exists once a duty applies, the assessment point arrives, and the actual state does not satisfy the requirement."
+      "shortDefinition": "Violation means a duty is broken when checked.",
+      "coreMeaning": "Violation marks that a duty was not kept when checked. It is not about blame or punishment. It only shows that the duty was not met then.",
+      "fullDefinition": "Violation is not the same as duty. Duty says what must be done. Violation says it was not done when checked.\n\nIt is not about who must answer for it. It only marks that the duty was broken.\n\nSo violation comes from checking a duty. It happens when a duty applies, the check time comes, and the facts do not match what the duty says."
     },
     "formal": {
       "shortDefinition": "Violation is the determinate failure state in which duty-required conduct or conditions remain unsatisfied at the relevant point of assessment.",
