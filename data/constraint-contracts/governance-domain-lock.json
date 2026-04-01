@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "lockId": "governance-domain-lock.v1",
+  "runtimeDomainId": "governance",
+  "conceptPacketDomainIds": [
+    "governance-structures",
+    "relational-structures",
+    "core-abstractions"
+  ],
+  "definition": "ChatPDM v1 is locked to governance-domain meaning. The allowed domain covers binding rule sources, recognized offices and standing, operative capacity in relation to rule, validity of rule or standing, required conduct under binding source, breach within an order of rule, and answerability within a governance order.",
+  "inScopeTopics": [
+    "binding rule sources",
+    "recognized offices and standing",
+    "operative capacity in relation to rule",
+    "validity of rule or standing",
+    "required conduct under binding source",
+    "breach within an order of rule",
+    "answerability within a governance order"
+  ],
+  "outOfScopeTopics": [
+    "psychology",
+    "emotion",
+    "informal_morality",
+    "private_feeling",
+    "physics",
+    "statistics",
+    "computing",
+    "magic",
+    "religion_outside_governance"
+  ],
+  "liveKernelConceptIds": [
+    "authority",
+    "power",
+    "legitimacy",
+    "law",
+    "duty",
+    "violation",
+    "responsibility"
+  ]
+}

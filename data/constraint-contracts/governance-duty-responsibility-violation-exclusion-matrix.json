@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "familyId": "governance-duty-responsibility-violation.v1",
+  "conceptIds": [
+    "duty",
+    "responsibility",
+    "violation"
+  ],
+  "pairs": [
+    {
+      "pairId": "duty_vs_responsibility",
+      "leftConceptId": "duty",
+      "rightConceptId": "responsibility",
+      "distinction": "Duty defines required conduct in advance; responsibility assigns answerability once conduct, omission, or outcome is attributable.",
+      "cannotCoexist": [
+        "The same governance claim cannot treat required conduct and answerable attribution as the same identity slot.",
+        "An equivalent_to relation between duty and responsibility is not admitted."
+      ],
+      "conflictCauses": [
+        "A duty claim assigns identityKind answerable_attribution.",
+        "A responsibility claim assigns identityKind required_conduct.",
+        "A claim asserts equivalent_to between duty and responsibility."
+      ]
+    },
+    {
+      "pairId": "duty_vs_violation",
+      "leftConceptId": "duty",
+      "rightConceptId": "violation",
+      "distinction": "Duty is the required conduct line before assessment; violation is the assessed state in which that required line is unmet.",
+      "cannotCoexist": [
+        "The same governance claim cannot treat required conduct and unmet-duty state as the same identity slot.",
+        "An equivalent_to relation between duty and violation is not admitted."
+      ],
+      "conflictCauses": [
+        "A duty claim assigns identityKind unmet_duty_state.",
+        "A violation claim assigns identityKind required_conduct.",
+        "A claim asserts equivalent_to between duty and violation."
+      ]
+    },
+    {
+      "pairId": "responsibility_vs_violation",
+      "leftConceptId": "responsibility",
+      "rightConceptId": "violation",
+      "distinction": "Responsibility is answerability for attributable conduct or outcome; violation is the unmet-duty state that may later ground answerability.",
+      "cannotCoexist": [
+        "The same governance claim cannot treat answerable attribution and unmet-duty state as the same identity slot.",
+        "An equivalent_to relation between responsibility and violation is not admitted."
+      ],
+      "conflictCauses": [
+        "A responsibility claim assigns identityKind unmet_duty_state.",
+        "A violation claim assigns identityKind answerable_attribution.",
+        "A claim asserts equivalent_to between responsibility and violation."
+      ]
+    }
+  ]
+}

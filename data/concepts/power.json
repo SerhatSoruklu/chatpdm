@@ -6,7 +6,7 @@
   "state": "published",
   "previousVersion": null,
   "createdAt": "2026-03-30T00:00:00Z",
-  "updatedAt": "2026-03-30T00:00:00Z",
+  "updatedAt": "2026-04-01T00:00:00Z",
   "domain": "relational-structures",
   "canonical": {
     "invariant": "Power is effective capacity to produce outcomes in relation to a governance structure.",
@@ -47,6 +47,124 @@
     "answerabilityRole": "does not assign answerability",
     "requiredConductRole": "does not define required conduct",
     "outcomeAttributionRole": "does not attribute outcomes normatively; it produces or shapes them"
+  },
+  "constraintContract": {
+    "version": 1,
+    "domainLockRef": "governance-domain-lock.v1",
+    "templateRole": "family_seed_operative_capacity",
+    "expectedIdentityKind": "operative_outcome_capacity",
+    "requiredFields": [
+      "domain",
+      "identityKind",
+      "governanceOrder"
+    ],
+    "allowedRelations": [
+      {
+        "relationType": "may_be_channeled_by",
+        "targetConceptId": "authority"
+      },
+      {
+        "relationType": "may_operate_without",
+        "targetConceptId": "authority"
+      },
+      {
+        "relationType": "may_operate_without",
+        "targetConceptId": "legitimacy"
+      }
+    ],
+    "forbiddenRelations": [
+      {
+        "relationType": "equivalent_to",
+        "targetConceptId": "authority",
+        "failureCode": "POWER_COLLAPSES_TO_AUTHORITY"
+      },
+      {
+        "relationType": "equivalent_to",
+        "targetConceptId": "legitimacy",
+        "failureCode": "POWER_COLLAPSES_TO_LEGITIMACY"
+      }
+    ],
+    "invariants": [
+      {
+        "id": "power_is_operative_capacity",
+        "statement": "Power is operative capacity to produce outcomes in relation to governance."
+      },
+      {
+        "id": "power_is_not_directive_standing",
+        "statement": "Power is not recognized directive standing."
+      },
+      {
+        "id": "power_is_not_validity_assessment",
+        "statement": "Power is not accepted or justified validity."
+      },
+      {
+        "id": "power_can_exist_without_authority",
+        "statement": "Power can operate without recognized authority."
+      },
+      {
+        "id": "power_can_exist_without_legitimacy",
+        "statement": "Power can operate without legitimacy."
+      }
+    ],
+    "structuralFailures": {
+      "invariantBreaches": [
+        {
+          "code": "POWER_IDENTITY_KIND_MISMATCH",
+          "condition": "A power claim assigns power a non-capacity identity within the governance domain.",
+          "reason": "Power must remain operative outcome capacity."
+        },
+        {
+          "code": "POWER_COLLAPSES_TO_AUTHORITY",
+          "condition": "A power claim treats power as recognized directive standing or as equivalent to authority.",
+          "reason": "Power must not collapse into authority."
+        },
+        {
+          "code": "POWER_COLLAPSES_TO_LEGITIMACY",
+          "condition": "A power claim treats power as justified validity or as equivalent to legitimacy.",
+          "reason": "Power must not collapse into legitimacy."
+        }
+      ],
+      "refusals": [
+        {
+          "code": "POWER_NON_GOVERNANCE_DOMAIN",
+          "condition": "The requested usage is outside the governance domain.",
+          "reason": "Power is locked to governance-domain meaning in ChatPDM v1."
+        },
+        {
+          "code": "POWER_OUT_OF_SCOPE_TOPIC",
+          "condition": "The requested usage is listed as out of scope in the governance domain lock.",
+          "reason": "The governance domain lock excludes that topic from the power contract."
+        },
+        {
+          "code": "POWER_UNSUPPORTED_RELATION",
+          "condition": "The query asks power to stand in a relation not admitted by the power contract.",
+          "reason": "This power contract admits only operative-capacity relations inside the governance cluster."
+        }
+      ]
+    },
+    "resolutionRules": {
+      "valid": [
+        "All required fields are present and non-empty.",
+        "domain equals governance.",
+        "identityKind equals operative_outcome_capacity.",
+        "If relationType is present, the relation-target pair is listed in allowedRelations."
+      ],
+      "invalid": [
+        "A required field is missing or empty.",
+        "relationType is present without relatedConceptId.",
+        "relatedConceptId is present without relationType."
+      ],
+      "conflict": [
+        "The claim assigns power an identity other than operative outcome capacity.",
+        "The claim collapses power into authority or legitimacy.",
+        "The claim asserts a forbidden equivalent_to relation."
+      ],
+      "refused": [
+        "The requested usage is outside the governance domain lock.",
+        "The requested topic is explicitly out of scope.",
+        "The requested relation is not admitted by the power contract."
+      ]
+    }
   },
   "fullDefinition": "Power is not identical to authority or legitimacy. In ChatPDM v1 it is defined within the governance domain as effective capacity to produce outcomes in relation to a governance structure.\n\nIts internal composition may rest in resources, coercive capacity, institutional position, coordination, or control over dependencies. The concept therefore concerns what can be made to happen, not who may rightfully direct or whether that capacity counts as valid.\n\nWithin governance structures, power explains operative effect. Authority may channel it and legitimacy may justify it, but neither is required for power to exist or to work.",
   "registers": {

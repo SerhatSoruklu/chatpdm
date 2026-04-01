@@ -1,0 +1,71 @@
+{
+  "version": 1,
+  "policyId": "pre-admission-contract-paths.v1",
+  "runtimeExposurePolicy": "rejection_registry_only",
+  "conceptPaths": [
+    {
+      "conceptId": "enforcement",
+      "runtimeStatus": "rejected_non_live",
+      "runtimeExposure": "rejection_registry_only",
+      "comparisonTargets": [
+        "duty",
+        "responsibility"
+      ],
+      "requiredArtifacts": [
+        "structural_profile",
+        "constraint_contract",
+        "overlap_report_against_live_kernel",
+        "boundary_proof_catalog",
+        "named_regression_snapshot_entry",
+        "admission_review_state"
+      ],
+      "authoringRequirements": [
+        "Author the enforcement contract outside data/concepts while the concept remains rejected.",
+        "Keep the contract inside the governance domain and define enforcement without collapsing it into duty or responsibility.",
+        "Bind the contract to one deterministic identity role before any promotion review begins."
+      ],
+      "testRequirements": [
+        "Compare enforcement against duty and responsibility through the live-kernel overlap gate.",
+        "Require a passing overlap report with no conflict, duplicate, or compression result.",
+        "Freeze any new enforcement regression pair in the overlap snapshot before live promotion review."
+      ],
+      "promotionRequirements": [
+        "Keep enforcement in the rejection registry until overlap admission returns overlap_scan_passed against the live kernel.",
+        "Require zero unapproved drift in the global overlap snapshot before changing concept-admission-state.json.",
+        "Promote enforcement to live only in the same scoped change that adds a reviewed concept packet and removes the rejection record."
+      ]
+    },
+    {
+      "conceptId": "obligation",
+      "runtimeStatus": "rejected_non_live",
+      "runtimeExposure": "rejection_registry_only",
+      "comparisonTargets": [
+        "duty",
+        "responsibility"
+      ],
+      "requiredArtifacts": [
+        "structural_profile",
+        "constraint_contract",
+        "overlap_report_against_live_kernel",
+        "boundary_proof_catalog",
+        "named_regression_snapshot_entry",
+        "admission_review_state"
+      ],
+      "authoringRequirements": [
+        "Author the obligation contract outside data/concepts while the concept remains rejected.",
+        "Keep the contract inside the governance domain and define obligation as a pre-duty binding condition without redefining duty or responsibility.",
+        "Bind the contract to one deterministic identity role before any promotion review begins."
+      ],
+      "testRequirements": [
+        "Compare obligation against duty and responsibility through the live-kernel overlap gate.",
+        "Require boundary proof wherever the live-kernel overlap result demands it.",
+        "Freeze any new obligation regression pair in the overlap snapshot before live promotion review."
+      ],
+      "promotionRequirements": [
+        "Keep obligation in the rejection registry until overlap admission returns overlap_scan_passed against the live kernel.",
+        "Require zero unapproved drift in the global overlap snapshot before changing concept-admission-state.json.",
+        "Promote obligation to live only in the same scoped change that adds a reviewed concept packet and removes the rejection record."
+      ]
+    }
+  ]
+}

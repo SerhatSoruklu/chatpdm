@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "familyId": "governance-duty-responsibility-violation.v1",
+  "directionality": "directional",
+  "baselinePairs": [
+    {
+      "conceptId": "duty",
+      "otherConceptId": "responsibility",
+      "classification": "distinct"
+    },
+    {
+      "conceptId": "duty",
+      "otherConceptId": "violation",
+      "classification": "distinct"
+    },
+    {
+      "conceptId": "responsibility",
+      "otherConceptId": "duty",
+      "classification": "distinct"
+    },
+    {
+      "conceptId": "responsibility",
+      "otherConceptId": "violation",
+      "classification": "distinct"
+    },
+    {
+      "conceptId": "violation",
+      "otherConceptId": "duty",
+      "classification": "distinct"
+    },
+    {
+      "conceptId": "violation",
+      "otherConceptId": "responsibility",
+      "classification": "distinct"
+    }
+  ]
+}

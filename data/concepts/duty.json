@@ -6,7 +6,7 @@
   "state": "published",
   "previousVersion": null,
   "createdAt": "2026-03-30T00:00:00Z",
-  "updatedAt": "2026-03-30T00:00:00Z",
+  "updatedAt": "2026-04-01T00:00:00Z",
   "domain": "governance-structures",
   "canonical": {
     "invariant": "Duty is required conduct owed by an actor under a rule, role, or obligation.",
@@ -32,6 +32,124 @@
     "answerabilityRole": "does not assign answerability by itself",
     "requiredConductRole": "defines required conduct directly",
     "outcomeAttributionRole": "does not attribute outcomes by itself"
+  },
+  "constraintContract": {
+    "version": 1,
+    "domainLockRef": "governance-domain-lock.v1",
+    "templateRole": "family_seed_required_conduct",
+    "expectedIdentityKind": "required_conduct",
+    "requiredFields": [
+      "domain",
+      "identityKind",
+      "governanceOrder"
+    ],
+    "allowedRelations": [
+      {
+        "relationType": "is_grounded_in",
+        "targetConceptId": "law"
+      },
+      {
+        "relationType": "may_be_breached_as",
+        "targetConceptId": "violation"
+      },
+      {
+        "relationType": "may_ground_answerability_in",
+        "targetConceptId": "responsibility"
+      }
+    ],
+    "forbiddenRelations": [
+      {
+        "relationType": "equivalent_to",
+        "targetConceptId": "responsibility",
+        "failureCode": "DUTY_COLLAPSES_TO_RESPONSIBILITY"
+      },
+      {
+        "relationType": "equivalent_to",
+        "targetConceptId": "violation",
+        "failureCode": "DUTY_COLLAPSES_TO_VIOLATION"
+      }
+    ],
+    "invariants": [
+      {
+        "id": "duty_is_required_conduct",
+        "statement": "Duty is required conduct owed by an actor under a binding source."
+      },
+      {
+        "id": "duty_exists_before_breach_assessment",
+        "statement": "Duty exists before any breach assessment or failure determination occurs."
+      },
+      {
+        "id": "duty_is_not_answerability",
+        "statement": "Duty is not the answerability relation that links an actor to attributable conduct or outcomes."
+      },
+      {
+        "id": "duty_is_not_failure_state",
+        "statement": "Duty is not the failure state produced when required conduct goes unmet."
+      },
+      {
+        "id": "duty_can_exist_without_violation",
+        "statement": "Duty can remain in force even where no violation has yet occurred."
+      }
+    ],
+    "structuralFailures": {
+      "invariantBreaches": [
+        {
+          "code": "DUTY_IDENTITY_KIND_MISMATCH",
+          "condition": "A duty claim assigns duty a non-conduct identity within the governance domain.",
+          "reason": "Duty must remain required conduct."
+        },
+        {
+          "code": "DUTY_COLLAPSES_TO_RESPONSIBILITY",
+          "condition": "A duty claim treats duty as answerability or as equivalent to responsibility.",
+          "reason": "Duty must not collapse into responsibility."
+        },
+        {
+          "code": "DUTY_COLLAPSES_TO_VIOLATION",
+          "condition": "A duty claim treats duty as breach state or as equivalent to violation.",
+          "reason": "Duty must not collapse into violation."
+        }
+      ],
+      "refusals": [
+        {
+          "code": "DUTY_NON_GOVERNANCE_DOMAIN",
+          "condition": "The requested usage is outside the governance domain.",
+          "reason": "Duty is locked to governance-domain meaning in ChatPDM v1."
+        },
+        {
+          "code": "DUTY_OUT_OF_SCOPE_TOPIC",
+          "condition": "The requested usage is listed as out of scope in the governance domain lock.",
+          "reason": "The governance domain lock excludes that topic from the duty contract."
+        },
+        {
+          "code": "DUTY_UNSUPPORTED_RELATION",
+          "condition": "The query asks duty to stand in a relation not admitted by the duty contract.",
+          "reason": "This duty contract admits only required-conduct relations inside the governance family."
+        }
+      ]
+    },
+    "resolutionRules": {
+      "valid": [
+        "All required fields are present and non-empty.",
+        "domain equals governance.",
+        "identityKind equals required_conduct.",
+        "If relationType is present, the relation-target pair is listed in allowedRelations."
+      ],
+      "invalid": [
+        "A required field is missing or empty.",
+        "relationType is present without relatedConceptId.",
+        "relatedConceptId is present without relationType."
+      ],
+      "conflict": [
+        "The claim assigns duty an identity other than required conduct.",
+        "The claim collapses duty into responsibility or violation.",
+        "The claim asserts a forbidden equivalent_to relation."
+      ],
+      "refused": [
+        "The requested usage is outside the governance domain lock.",
+        "The requested topic is explicitly out of scope.",
+        "The requested relation is not admitted by the duty contract."
+      ]
+    }
   },
   "fullDefinition": "Duty is not identical to responsibility. Responsibility links an actor to answerability; duty specifies conduct that is owed under a rule, role, office, or obligation.\n\nIts internal structure joins requirement to an actor through a binding source. The concept therefore concerns directive obligation rather than mere preference or capacity.\n\nWithin a system, duty stabilizes expected conduct by marking what is required before action occurs. Whether failure produces broader responsibility is a further question, not the definition of duty itself.",
   "registers": {

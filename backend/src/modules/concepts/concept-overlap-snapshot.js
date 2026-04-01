@@ -133,6 +133,12 @@ function buildRegressionPairSnapshotEntries() {
       compareConceptProfiles(obligation, duty).classification,
     ),
     createRegressionPairEntry(
+      'obligation_vs_responsibility',
+      'obligation',
+      'responsibility',
+      compareConceptProfiles(obligation, responsibility).classification,
+    ),
+    createRegressionPairEntry(
       'authority_vs_power',
       'authority',
       'power',
@@ -373,6 +379,33 @@ function evaluateConceptRelationshipSnapshotDrift(
   });
 }
 
+function formatBlockingChanges(changes) {
+  return changes
+    .map((change) => (
+      `${change.scope}:${change.conceptId}->${change.otherConceptId} ${change.previousClassification}=>${change.newClassification}`
+    ))
+    .join(', ');
+}
+
+function assertStoredConceptRelationshipSnapshotAuthority() {
+  const storedSnapshot = loadStoredConceptRelationshipSnapshot();
+  const currentSnapshot = buildCurrentConceptRelationshipSnapshot();
+  const approvalRegistry = loadBoundaryChangeApprovalRegistry();
+  const drift = evaluateConceptRelationshipSnapshotDrift(
+    storedSnapshot,
+    currentSnapshot,
+    approvalRegistry,
+  );
+
+  if (drift.blockingChanges.length > 0) {
+    throw new Error(
+      `Concept overlap snapshot authority blocked by unapproved drift: ${formatBlockingChanges(drift.blockingChanges)}.`,
+    );
+  }
+
+  return drift;
+}
+
 function writeConceptRelationshipSnapshot(snapshot) {
   const validatedSnapshot = validateStoredConceptRelationshipSnapshot(snapshot);
   fs.writeFileSync(
@@ -384,6 +417,7 @@ function writeConceptRelationshipSnapshot(snapshot) {
 
 module.exports = {
   BOUNDARY_CHANGE_APPROVAL_FIELDS,
+  assertStoredConceptRelationshipSnapshotAuthority,
   boundaryChangeApprovalPath,
   buildCurrentConceptRelationshipSnapshot,
   evaluateConceptRelationshipSnapshotDrift,

@@ -6,7 +6,7 @@
   "state": "published",
   "previousVersion": null,
   "createdAt": "2026-03-30T00:00:00Z",
-  "updatedAt": "2026-03-30T00:00:00Z",
+  "updatedAt": "2026-04-01T00:00:00Z",
   "domain": "relational-structures",
   "canonical": {
     "invariant": "Legitimacy is accepted or justified validity of rule or standing within a governance order.",
@@ -47,6 +47,124 @@
     "answerabilityRole": "does not assign answerability",
     "requiredConductRole": "does not define required conduct",
     "outcomeAttributionRole": "does not attribute outcomes to an actor"
+  },
+  "constraintContract": {
+    "version": 1,
+    "domainLockRef": "governance-domain-lock.v1",
+    "templateRole": "family_seed_validity_assessment",
+    "expectedIdentityKind": "accepted_justified_validity",
+    "requiredFields": [
+      "domain",
+      "identityKind",
+      "governanceOrder"
+    ],
+    "allowedRelations": [
+      {
+        "relationType": "evaluates",
+        "targetConceptId": "authority"
+      },
+      {
+        "relationType": "evaluates",
+        "targetConceptId": "law"
+      },
+      {
+        "relationType": "may_justify_exercise_of",
+        "targetConceptId": "power"
+      }
+    ],
+    "forbiddenRelations": [
+      {
+        "relationType": "equivalent_to",
+        "targetConceptId": "authority",
+        "failureCode": "LEGITIMACY_COLLAPSES_TO_AUTHORITY"
+      },
+      {
+        "relationType": "equivalent_to",
+        "targetConceptId": "power",
+        "failureCode": "LEGITIMACY_COLLAPSES_TO_POWER"
+      }
+    ],
+    "invariants": [
+      {
+        "id": "legitimacy_is_validity_assessment",
+        "statement": "Legitimacy is accepted or justified validity within a governance order."
+      },
+      {
+        "id": "legitimacy_is_not_directive_standing",
+        "statement": "Legitimacy is not recognized directive standing."
+      },
+      {
+        "id": "legitimacy_is_not_operative_capacity",
+        "statement": "Legitimacy is not operative capacity to produce outcomes."
+      },
+      {
+        "id": "legitimacy_can_be_absent_while_authority_persists",
+        "statement": "Legitimacy can be absent while authority persists as recognized standing."
+      },
+      {
+        "id": "legitimacy_can_be_absent_while_power_operates",
+        "statement": "Legitimacy can be absent while power continues to operate."
+      }
+    ],
+    "structuralFailures": {
+      "invariantBreaches": [
+        {
+          "code": "LEGITIMACY_IDENTITY_KIND_MISMATCH",
+          "condition": "A legitimacy claim assigns legitimacy a non-validity identity within the governance domain.",
+          "reason": "Legitimacy must remain accepted or justified validity."
+        },
+        {
+          "code": "LEGITIMACY_COLLAPSES_TO_AUTHORITY",
+          "condition": "A legitimacy claim treats legitimacy as recognized directive standing or as equivalent to authority.",
+          "reason": "Legitimacy must not collapse into authority."
+        },
+        {
+          "code": "LEGITIMACY_COLLAPSES_TO_POWER",
+          "condition": "A legitimacy claim treats legitimacy as operative capacity or as equivalent to power.",
+          "reason": "Legitimacy must not collapse into power."
+        }
+      ],
+      "refusals": [
+        {
+          "code": "LEGITIMACY_NON_GOVERNANCE_DOMAIN",
+          "condition": "The requested usage is outside the governance domain.",
+          "reason": "Legitimacy is locked to governance-domain meaning in ChatPDM v1."
+        },
+        {
+          "code": "LEGITIMACY_OUT_OF_SCOPE_TOPIC",
+          "condition": "The requested usage is listed as out of scope in the governance domain lock.",
+          "reason": "The governance domain lock excludes that topic from the legitimacy contract."
+        },
+        {
+          "code": "LEGITIMACY_UNSUPPORTED_RELATION",
+          "condition": "The query asks legitimacy to stand in a relation not admitted by the legitimacy contract.",
+          "reason": "This legitimacy contract admits only validity-assessment relations inside the governance cluster."
+        }
+      ]
+    },
+    "resolutionRules": {
+      "valid": [
+        "All required fields are present and non-empty.",
+        "domain equals governance.",
+        "identityKind equals accepted_justified_validity.",
+        "If relationType is present, the relation-target pair is listed in allowedRelations."
+      ],
+      "invalid": [
+        "A required field is missing or empty.",
+        "relationType is present without relatedConceptId.",
+        "relatedConceptId is present without relationType."
+      ],
+      "conflict": [
+        "The claim assigns legitimacy an identity other than accepted or justified validity.",
+        "The claim collapses legitimacy into authority or power.",
+        "The claim asserts a forbidden equivalent_to relation."
+      ],
+      "refused": [
+        "The requested usage is outside the governance domain lock.",
+        "The requested topic is explicitly out of scope.",
+        "The requested relation is not admitted by the legitimacy contract."
+      ]
+    }
   },
   "fullDefinition": "Legitimacy is not the same as authority or power. In ChatPDM v1 it is defined within the governance domain as accepted or justified validity of rule or standing within a governance order.\n\nIts internal composition joins acceptance or justification to a rule, office, institution, or governing order. The concept therefore evaluates standing rather than conferring directive right or operative capacity.\n\nWithin governance structures, legitimacy stabilizes obedience, trust, and continuity by making authority or power count as valid. Power may operate without it, and authority may exist while its legitimacy is contested.",
   "registers": {

@@ -1,8 +1,15 @@
 'use strict';
 
 const { validateBoundaryProofRequirements } = require('./concept-boundary-proof');
+const {
+  buildConstraintContractSummary,
+} = require('./constraint-contract');
 const { compareConceptProfiles } = require('./concept-profile-comparator');
 const { normalizeConceptToProfile } = require('./concept-structural-profile');
+const {
+  STRUCTURAL_FAILURE_KINDS,
+  classifyConstraintContractCollision,
+} = require('./structural-failure-layer');
 
 const OVERLAP_ADMISSION_VALUES = Object.freeze([
   'pending_overlap_scan',
@@ -35,8 +42,18 @@ function freezeReport(report) {
   return Object.freeze({
     ...report,
     comparedConceptIds: Object.freeze([...report.comparedConceptIds]),
+    structuralFailureKinds: Object.freeze([...(report.structuralFailureKinds ?? [])]),
     blockingResults: Object.freeze([...report.blockingResults]),
     comparisonResults: Object.freeze([...report.comparisonResults]),
+  });
+}
+
+function freezeComparisonResult(result) {
+  return Object.freeze({
+    ...result,
+    reasons: Object.freeze([...(result.reasons ?? [])]),
+    collidingFields: Object.freeze([...(result.collidingFields ?? [])]),
+    substitutionRiskExamples: Object.freeze([...(result.substitutionRiskExamples ?? [])]),
   });
 }
 
@@ -60,6 +77,18 @@ function normalizeLiveProfiles(liveConcepts) {
   );
 }
 
+function normalizeLiveRecords(liveConcepts) {
+  const liveProfiles = normalizeLiveProfiles(liveConcepts);
+
+  return Object.freeze(
+    liveConcepts.map((concept, index) => Object.freeze({
+      conceptId: concept.conceptId,
+      profile: liveProfiles[index],
+      contractSummary: buildConstraintContractSummary(concept),
+    })),
+  );
+}
+
 function buildPendingOverlapReport(conceptId) {
   return freezeReport({
     conceptId,
@@ -67,6 +96,7 @@ function buildPendingOverlapReport(conceptId) {
     blocking: true,
     reason: 'live concept set unavailable for overlap scan.',
     comparedConceptIds: [],
+    structuralFailureKinds: [],
     blockingResults: [],
     comparisonResults: [],
   });
@@ -86,6 +116,11 @@ function resolveFailureReport(candidateConcept, comparisonResults, classificatio
     blocking: true,
     reason: `Overlap scan found ${classification} against live concepts.`,
     comparedConceptIds: comparisonResults.map((result) => result.otherConceptId),
+    structuralFailureKinds: [...new Set(
+      blockingResults
+        .map((result) => result.structuralFailureKind)
+        .filter((kind) => STRUCTURAL_FAILURE_KINDS.includes(kind)),
+    )],
     blockingResults,
     comparisonResults,
   });
@@ -100,6 +135,7 @@ function resolveBoundaryRequiredReport(candidateConcept, comparisonResults, erro
     blocking: true,
     reason: error.message,
     comparedConceptIds: comparisonResults.map((result) => result.otherConceptId),
+    structuralFailureKinds: [],
     blockingResults,
     comparisonResults,
   });
@@ -112,19 +148,81 @@ function resolvePassingReport(candidateConcept, comparisonResults) {
     blocking: false,
     reason: 'All live concept comparisons passed and required boundary proofs are present.',
     comparedConceptIds: comparisonResults.map((result) => result.otherConceptId),
+    structuralFailureKinds: [],
     blockingResults: [],
     comparisonResults,
   });
 }
 
-function compareCandidateAgainstLiveConcepts(candidateConcept, liveConceptProfiles) {
+function resolveContractDuplicateResult(candidateConcept, candidateContractSummary, liveRecord) {
+  const structuralFailureKind = classifyConstraintContractCollision(
+    candidateContractSummary,
+    liveRecord.contractSummary,
+  );
+
+  if (!structuralFailureKind) {
+    return null;
+  }
+
+  return freezeComparisonResult({
+    otherConceptId: liveRecord.conceptId,
+    classification: 'duplicate_candidate',
+    reasons: [
+      'constraintContract assigns the same structural role as an existing live concept.',
+      'A new concept cannot claim a live contract kind that is already occupied inside the governance kernel.',
+    ],
+    collidingFields: [
+      'constraintContract.kindField',
+      'constraintContract.kindValue',
+      'constraintContract.templateRole',
+    ],
+    requiredBoundaryProof: false,
+    substitutionRiskExamples: [
+      `Substituting "${candidateConcept.conceptId}" for "${liveRecord.conceptId}" would preserve the same contract role ${candidateContractSummary.kindField}=${candidateContractSummary.kindValue}.`,
+    ],
+    signalSource: 'constraint_contract',
+    structuralFailureKind,
+  });
+}
+
+function compareCandidateAgainstLiveConcepts(candidateConcept, liveRecords) {
   const candidateProfile = normalizeConceptToProfile(candidateConcept);
+  const candidateContractSummary = buildConstraintContractSummary(candidateConcept);
 
   return Object.freeze(
-    liveConceptProfiles
-      .filter((liveProfile) => liveProfile.conceptId !== candidateProfile.conceptId)
-      .map((liveProfile) => compareConceptProfiles(candidateProfile, liveProfile)),
+    liveRecords
+      .filter((liveRecord) => liveRecord.conceptId !== candidateProfile.conceptId)
+      .map((liveRecord) => {
+        const contractDuplicateResult = resolveContractDuplicateResult(
+          candidateConcept,
+          candidateContractSummary,
+          liveRecord,
+        );
+
+        if (contractDuplicateResult) {
+          return contractDuplicateResult;
+        }
+
+        return freezeComparisonResult({
+          ...compareConceptProfiles(candidateProfile, liveRecord.profile),
+          signalSource: 'structural_profile',
+          structuralFailureKind: null,
+        });
+      }),
   );
+}
+
+function resolveContractViolationReport(candidateConcept, error) {
+  return freezeReport({
+    conceptId: candidateConcept.conceptId,
+    admission: 'overlap_scan_failed_conflict',
+    blocking: true,
+    reason: error.message,
+    comparedConceptIds: [],
+    structuralFailureKinds: ['contract_violation'],
+    blockingResults: [],
+    comparisonResults: [],
+  });
 }
 
 function evaluateConceptOverlapAdmission(candidateConcept, liveConcepts = null) {
@@ -134,8 +232,15 @@ function evaluateConceptOverlapAdmission(candidateConcept, liveConcepts = null) 
     return buildPendingOverlapReport(candidateConcept.conceptId);
   }
 
-  const liveConceptProfiles = normalizeLiveProfiles(liveConcepts);
-  const comparisonResults = compareCandidateAgainstLiveConcepts(candidateConcept, liveConceptProfiles);
+  let liveRecords;
+  let comparisonResults;
+
+  try {
+    liveRecords = normalizeLiveRecords(liveConcepts);
+    comparisonResults = compareCandidateAgainstLiveConcepts(candidateConcept, liveRecords);
+  } catch (error) {
+    return resolveContractViolationReport(candidateConcept, error);
+  }
 
   if (filterBlockingResults(comparisonResults, 'conflicting').length > 0) {
     return resolveFailureReport(candidateConcept, comparisonResults, 'conflicting');
@@ -151,7 +256,10 @@ function evaluateConceptOverlapAdmission(candidateConcept, liveConcepts = null) 
 
   if (comparisonResults.some((result) => result.requiredBoundaryProof)) {
     try {
-      validateBoundaryProofRequirements(candidateConcept, liveConceptProfiles);
+      validateBoundaryProofRequirements(
+        candidateConcept,
+        liveRecords.map((liveRecord) => liveRecord.profile),
+      );
     } catch (error) {
       return resolveBoundaryRequiredReport(candidateConcept, comparisonResults, error);
     }

@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "familyId": "governance-authority-power-legitimacy.v1",
+  "directionality": "directional",
+  "baselinePairs": [
+    {
+      "conceptId": "authority",
+      "otherConceptId": "legitimacy",
+      "classification": "adjacent"
+    },
+    {
+      "conceptId": "authority",
+      "otherConceptId": "power",
+      "classification": "adjacent"
+    },
+    {
+      "conceptId": "legitimacy",
+      "otherConceptId": "authority",
+      "classification": "adjacent"
+    },
+    {
+      "conceptId": "legitimacy",
+      "otherConceptId": "power",
+      "classification": "requires_explicit_boundary_note"
+    },
+    {
+      "conceptId": "power",
+      "otherConceptId": "authority",
+      "classification": "adjacent"
+    },
+    {
+      "conceptId": "power",
+      "otherConceptId": "legitimacy",
+      "classification": "requires_explicit_boundary_note"
+    }
+  ]
+}
