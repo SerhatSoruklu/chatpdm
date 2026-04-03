@@ -52,6 +52,11 @@ export const routes: Routes = [
     data: pageRouteData('what-is-chatpdm', 'static.what-is-chatpdm'),
   },
   {
+    path: 'zeroglare',
+    component: PublicPageComponent,
+    data: pageRouteData('zeroglare', 'static.zeroglare'),
+  },
+  {
     path: 'runtime',
     component: RuntimePageComponent,
     data: seoRouteData('static.runtime'),

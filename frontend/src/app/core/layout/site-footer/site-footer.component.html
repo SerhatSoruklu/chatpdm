@@ -1,74 +1,94 @@
 <footer class="pdm-site-footer">
   <div class="pdm-site-footer__inner">
-    <section class="pdm-site-footer__intro">
-      <a class="pdm-site-footer__brand" routerLink="/" aria-label="ChatPDM home">
-        <app-chatpdm-logo class="pdm-site-footer__logo" variant="footer" />
-      </a>
-      <p class="pdm-site-footer__title">Deterministic concept resolution inside a bounded runtime.</p>
-      <div class="pdm-site-footer__explanation">
-        <p class="pdm-site-footer__copy">
-          ChatPDM validates reasoning like a compiler validates code.
+    <div class="pdm-site-footer__main">
+      <section class="pdm-site-footer__intro" aria-labelledby="pdm-site-footer-title">
+        <a class="pdm-site-footer__brand" routerLink="/" aria-label="ChatPDM home">
+          <app-chatpdm-logo class="pdm-site-footer__logo" variant="footer" />
+        </a>
+        <p class="pdm-site-footer__title" id="pdm-site-footer-title">
+          Deterministic concept resolution inside a bounded runtime.
         </p>
-        <p class="pdm-site-footer__copy">Given an argument, it checks:</p>
-        <ul class="pdm-site-footer__checklist">
-          <li>are all terms defined?</li>
-          <li>does each claim have support?</li>
-          <li>are there contradictions?</li>
-        </ul>
-        <div class="pdm-site-footer__example">
-          <p class="pdm-site-footer__example-label">Example</p>
-          <p class="pdm-site-footer__example-line">
-            <span class="pdm-site-footer__example-key">Input:</span>
-            “Company policy overrides statutory law in all cases.”
+        <div class="pdm-site-footer__summary">
+          <p class="pdm-site-footer__copy">
+            ChatPDM validates reasoning like a compiler validates code.
           </p>
-          <p class="pdm-site-footer__example-line">
-            <span class="pdm-site-footer__example-key">Result:</span>
-            Invalid — contradicts defined legal hierarchy.
+          <p class="pdm-site-footer__copy">Given an argument, it checks:</p>
+          <ul class="pdm-site-footer__checklist">
+            <li>are all terms defined?</li>
+            <li>does each claim have support?</li>
+            <li>are there contradictions?</li>
+          </ul>
+          <div class="pdm-site-footer__example">
+            <p class="pdm-site-footer__example-label">Example</p>
+            <p class="pdm-site-footer__example-line">
+              <span class="pdm-site-footer__example-key">Input:</span>
+              “Company policy overrides statutory law in all cases.”
+            </p>
+            <p class="pdm-site-footer__example-line">
+              <span class="pdm-site-footer__example-key">Result:</span>
+              Invalid — contradicts defined legal hierarchy.
+            </p>
+          </div>
+          <p class="pdm-site-footer__support">
+            If the system cannot map the input to known concepts, it refuses instead of guessing.
+            <br />
+            Refusal is a correct outcome, not a failure.
+          </p>
+          <p class="pdm-site-footer__trust-anchor">
+            Every output is traceable, bounded, and derived only from defined concepts.
+            <br />
+            No hidden reasoning. No probabilistic guesses.
           </p>
         </div>
-        <p class="pdm-site-footer__support">
-          If the system cannot map the input to known concepts, it refuses instead of guessing.
-          <br />
-          Refusal is a correct outcome, not a failure.
-        </p>
-        <p class="pdm-site-footer__trust-anchor">
-          Every output is traceable, bounded, and derived only from defined concepts.
-          <br />
-          No hidden reasoning. No probabilistic guesses.
-        </p>
-      </div>
-      <section class="pdm-site-footer__contact" aria-label="Footer contact">
-        <p class="pdm-site-footer__contact-label">Contact</p>
-        <a class="pdm-site-footer__contact-link" [href]="'mailto:' + contactEmail">{{ contactEmail }}</a>
+        <div class="pdm-site-footer__meta">
+          <section class="pdm-site-footer__contact" aria-label="Footer contact">
+            <p class="pdm-site-footer__contact-label">Contact</p>
+            <a class="pdm-site-footer__contact-link" [href]="'mailto:' + contactEmail">{{ contactEmail }}</a>
+          </section>
+
+          <p class="pdm-site-footer__credit">
+            Built by Serhat Soruklu, founder of
+            <a
+              class="pdm-site-footer__credit-link"
+              href="https://coupyn.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Visit Coupyn"
+            >
+              Coupyn
+            </a>
+            .
+          </p>
+        </div>
       </section>
 
-      <p class="pdm-site-footer__credit">
-        Built by Serhat Soruklu, founder of
-        <a
-          class="pdm-site-footer__credit-link"
-          href="https://coupyn.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          title="Visit Coupyn"
-        >
-          Coupyn
-        </a>
-        .
-      </p>
-    </section>
+      <nav class="pdm-site-footer__grid" aria-label="System footer">
+        @for (column of footerColumns; track column.title) {
+          <section
+            class="pdm-site-footer__column"
+            [class.pdm-site-footer__column--secondary]="column.tone === 'secondary'"
+          >
+            <h3>{{ column.title }}</h3>
+            @for (link of column.links; track link.route + link.label) {
+              <a [routerLink]="link.route" [fragment]="link.fragment">{{ link.label }}</a>
+            }
+          </section>
+        }
+      </nav>
+    </div>
 
-    <nav class="pdm-site-footer__grid" aria-label="System footer">
-      @for (column of footerColumns; track column.title) {
-        <section
-          class="pdm-site-footer__column"
-          [class.pdm-site-footer__column--secondary]="column.tone === 'secondary'"
-        >
-          <h3>{{ column.title }}</h3>
-          @for (link of column.links; track link.route + link.label) {
-            <a [routerLink]="link.route" [fragment]="link.fragment">{{ link.label }}</a>
-          }
-        </section>
-      }
-    </nav>
+    <section class="pdm-site-footer__identity" aria-label="Zeroglare identity">
+      <div class="pdm-site-footer__identity-frame pdm-site-footer__zeroglare-container">
+        <img
+          class="pdm-site-footer__identity-image"
+          src="/assets/chatpdm/branding/zeroglare-footer.png?v=20260403-1"
+          alt="zeroglare, zero noise pure signal"
+          width="1536"
+          height="1024"
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+    </section>
   </div>
 </footer>

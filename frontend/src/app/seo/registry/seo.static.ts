@@ -35,6 +35,14 @@ export const seoStaticEntries = {
     sitemapChangeFrequency: 'monthly',
     sitemapPriority: 0.72,
   },
+  'static.zeroglare': {
+    title: 'Zeroglare - ChatPDM',
+    description: 'ChatPDM\'s internal signal-discipline layer for noise suppression, ambiguity surfacing, and pre-resolution clarity.',
+    canonicalPath: '/zeroglare',
+    includeInSitemap: true,
+    sitemapChangeFrequency: 'monthly',
+    sitemapPriority: 0.71,
+  },
   'static.runtime': {
     title: 'Runtime - ChatPDM',
     description: 'Query the live ChatPDM runtime, inspect reviewed but not-yet-live concepts, and observe bounded refusal behavior directly.',

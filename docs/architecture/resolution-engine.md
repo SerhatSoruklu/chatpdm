@@ -6,6 +6,8 @@ Phase 4 produces deterministic outcomes from authored admission state.
 
 It resolves or refuses. It does not interpret.
 
+Zeroglare sits before this phase and removes signal noise before normalized input reaches deterministic resolution.
+
 ## Inputs
 
 - `admission_state`

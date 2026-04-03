@@ -42,6 +42,7 @@ export type PublicPageKey =
   | 'about'
   | 'what-is-chatpdm'
   | 'how-it-works'
+  | 'zeroglare'
   | 'faq'
   | 'contact'
   | 'privacy'

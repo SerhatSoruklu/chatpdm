@@ -87,6 +87,85 @@ const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
       },
     ],
   },
+  zeroglare: {
+    eyebrow: 'Architecture',
+    title: 'Zeroglare is ChatPDM\'s internal signal-discipline layer.',
+    intro:
+      'It reduces rhetorical noise, isolates semantic signal, and prevents ambiguity from spreading into deterministic resolution.',
+    sections: [
+      {
+        title: 'Pipeline position',
+        paragraphs: [
+          'Zeroglare sits after input and before tokenize, parse, classify, validate, and resolve-or-refuse output.',
+          'It does not replace those phases. It keeps them from receiving avoidable noise.',
+        ],
+        bullets: [
+          'Input',
+          'Zeroglare',
+          'Tokenize',
+          'Parse',
+          'Classify',
+          'Validate / enforce',
+          'Resolve or refuse',
+        ],
+      },
+      {
+        title: 'What it does',
+        bullets: [
+          'detects rhetorical-noise pressure',
+          'surfaces unresolved ambiguity',
+          'flags unsupported semantic bridges',
+          'detects scope pressure before it reaches resolution',
+          'suppresses cosmetic certainty without defined support',
+        ],
+      },
+      {
+        title: 'What it is not',
+        bullets: [
+          'not a separate product',
+          'not a truth engine',
+          'not a reasoning engine',
+          'not a replacement for governance or validation',
+        ],
+      },
+      {
+        title: 'Diagnostics',
+        paragraphs: [
+          'The live backend diagnostic surface is exposed at /api/v1/zeroglare/analyze.',
+          'Current live diagnostic labels are rhetorical_noise, ambiguity_surface, unsupported_semantic_bridge, and scope_pressure.',
+          'These labels describe pre-resolution pressure; they do not add a new resolution state or override deterministic outcomes.',
+        ],
+        links: [
+          {
+            label: 'Docs',
+            route: '/docs',
+            note: 'Open the documentation index for the surrounding system surfaces.',
+          },
+          {
+            label: 'Reasoning structure',
+            route: '/reasoning-structure',
+            note: 'Read the deterministic core that remains primary.',
+          },
+          {
+            label: 'Resolution contract',
+            route: '/resolution-contract',
+            note: 'See the stable runtime output contract Zeroglare does not replace.',
+          },
+          {
+            label: 'API',
+            route: '/api',
+            note: 'Inspect the public transport surface that carries the diagnostics route.',
+          },
+        ],
+      },
+      {
+        title: 'Closing',
+        paragraphs: [
+          'Zeroglare ensures the system responds to meaning, not presentation.',
+        ],
+      },
+    ],
+  },
   faq: {
     eyebrow: 'FAQ',
     title: 'Questions about scope, behavior, and direction.',
@@ -602,6 +681,11 @@ const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
             label: 'How it works',
             route: '/how-it-works',
             note: 'Inspect the validation path from input to bounded output.',
+          },
+          {
+            label: 'Zeroglare',
+            route: '/zeroglare',
+            note: 'Read the internal signal-discipline layer that suppresses rhetorical noise before resolution.',
           },
           {
             label: 'Reasoning structure',
