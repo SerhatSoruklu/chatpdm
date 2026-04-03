@@ -39,6 +39,7 @@ export class SiteFooterComponent {
       links: [
         { label: 'What ChatPDM is', route: '/what-is-chatpdm' },
         { label: 'Reasoning structure', route: '/reasoning-structure' },
+        { label: 'Zeroglare', route: '/zeroglare' },
         { label: 'Scope model', route: '/scope-model' },
         { label: 'Resolution contract', route: '/resolution-contract' },
         { label: 'Version policy', route: '/version-policy' },

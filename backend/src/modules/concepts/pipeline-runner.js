@@ -15,16 +15,15 @@ const {
 const {
   validateAndExposeOutput,
 } = require('./output-validation-gate');
+const {
+  buildZeroglareDiagnostics,
+} = require('./zeroglare-diagnostics');
 
 const PIPELINE_PHASE_PATH = Object.freeze([0, 1, 2, 3, 4, 5]);
 
 function runFullPipeline(rawQuery) {
   if (typeof rawQuery !== 'string') {
     throw new TypeError('Expected rawQuery to be a string.');
-  }
-
-  if (rawQuery.length === 0) {
-    throw new TypeError('Expected rawQuery to be a non-empty string.');
   }
 
   const normalizedQuery = normalizeQuery(rawQuery);
@@ -36,8 +35,9 @@ function runFullPipeline(rawQuery) {
     normalized_query: normalizedQuery,
   });
   const finalOutput = validateAndExposeOutput(resolutionOutput);
+  const zeroglareDiagnostics = buildZeroglareDiagnostics(rawQuery);
 
-  return {
+  const pipelineResult = {
     raw_query: rawQuery,
     normalized_query: normalizedQuery,
     vocabulary_recognition: vocabularyRecognition,
@@ -46,6 +46,15 @@ function runFullPipeline(rawQuery) {
     final_output: finalOutput,
     phase_path: [...PIPELINE_PHASE_PATH],
   };
+
+  Object.defineProperty(pipelineResult, 'zeroglare_diagnostics', {
+    value: zeroglareDiagnostics,
+    enumerable: false,
+    configurable: false,
+    writable: false,
+  });
+
+  return pipelineResult;
 }
 
 module.exports = {

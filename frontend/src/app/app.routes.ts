@@ -7,6 +7,7 @@ import { LandingPageComponent } from './pages/landing/landing-page.component';
 import { LiveConceptsPageComponent } from './pages/live-concepts-page/live-concepts-page.component';
 import { PolicyPageComponent } from './pages/policy-page/policy-page.component';
 import { PublicPageComponent } from './pages/public-page/public-page.component';
+import { ZeroglareComponent } from './zeroglare/zeroglare.component';
 import { ReasoningStructurePageComponent } from './pages/reasoning-structure-page/reasoning-structure-page.component';
 import { ResolutionContractPageComponent } from './pages/resolution-contract-page/resolution-contract-page.component';
 import { RuntimePageComponent } from './pages/runtime-page/runtime-page.component';
@@ -45,6 +46,11 @@ export const routes: Routes = [
     path: 'what-is-chatpdm',
     component: PublicPageComponent,
     data: pageRouteData('what-is-chatpdm', 'static.what-is-chatpdm'),
+  },
+  {
+    path: 'zeroglare',
+    component: ZeroglareComponent,
+    data: seoRouteData('static.zeroglare'),
   },
   {
     path: 'runtime',
