@@ -1,0 +1,258 @@
+<div class="pdm-zeroglare">
+  <main class="pdm-zeroglare__main pdm-shell" aria-labelledby="pdm-zeroglare-title">
+    <div class="pdm-shell__frame pdm-zeroglare__frame">
+      <header class="pdm-zeroglare__hero">
+        <p class="pdm-zeroglare__eyebrow">Internal layer</p>
+        <h1 class="pdm-zeroglare__title" id="pdm-zeroglare-title">Zeroglare</h1>
+        <p class="pdm-zeroglare__subtitle">Zero noise. Pure signal.</p>
+        <p class="pdm-zeroglare__definition">
+          Zeroglare detects lexical and framing pressure signals before meaning construction. It
+          reduces rhetorical noise, isolates semantic signal, and prevents ambiguity from
+          spreading into deterministic resolution.
+        </p>
+        <p class="pdm-zeroglare__note">
+          Zeroglare ensures the system responds to meaning, not presentation.
+        </p>
+      </header>
+
+      <section
+        class="pdm-zeroglare__section pdm-site-surface pdm-site-panel"
+        aria-labelledby="pdm-zeroglare-core-title"
+      >
+        <div class="pdm-zeroglare__section-head">
+          <p class="pdm-zeroglare__section-label">Core transformation</p>
+          <h2 class="pdm-zeroglare__section-title" id="pdm-zeroglare-core-title">
+            From input to clean signal.
+          </h2>
+        </div>
+
+        <figure class="pdm-zeroglare__figure">
+          <div class="pdm-zeroglare__image-shell">
+            <img
+              class="pdm-zeroglare__image"
+              src="/assets/zeroglare/zeroglare_layer_1.png"
+              alt="Zeroglare layer one showing input transformed into clean signal through the signal-discipline layer"
+              width="1536"
+              height="1024"
+              loading="eager"
+              fetchpriority="high"
+              decoding="async"
+            >
+          </div>
+
+          <figcaption class="pdm-zeroglare__caption">
+            Input enters the system. Zeroglare removes distortion and exposes clean signal.
+          </figcaption>
+        </figure>
+      </section>
+
+      <section
+        class="pdm-zeroglare__section pdm-zeroglare__section--demo pdm-site-surface pdm-site-panel"
+        aria-labelledby="pdm-zeroglare-demo-title"
+      >
+        <div class="pdm-zeroglare__section-head pdm-zeroglare__section-head--demo">
+          <p class="pdm-zeroglare__section-label">Live diagnostic demo</p>
+          <h2 class="pdm-zeroglare__section-title pdm-zeroglare__section-title--demo" id="pdm-zeroglare-demo-title">
+            Try Zeroglare
+          </h2>
+          <p class="pdm-zeroglare__copy pdm-zeroglare__copy--demo">
+            Zeroglare inspects the input for distortion pressure before meaning is constructed.
+            It does not resolve, answer, or decide.
+          </p>
+        </div>
+
+        <div class="pdm-zeroglare__demo-grid">
+          <div class="pdm-zeroglare__demo-card">
+            <label class="pdm-zeroglare__field-label" for="pdm-zeroglare-input">Input</label>
+            <textarea
+              #zeroglareInput
+              id="pdm-zeroglare-input"
+              class="pdm-zeroglare__textarea"
+              [class.pdm-zeroglare__textarea--invalid]="isInputOverLimit"
+              name="pdm-zeroglare-input"
+              rows="5"
+              spellcheck="false"
+              autocapitalize="off"
+              autocomplete="off"
+              autocorrect="off"
+              wrap="off"
+              [attr.maxlength]="MAX_INPUT_CHARS"
+              placeholder="Enter a phrase or query to inspect signal pressure"
+              [attr.aria-invalid]="isInputOverLimit ? 'true' : null"
+              aria-describedby="pdm-zeroglare-input-count pdm-zeroglare-input-error"
+              (input)="handleInput($event)"
+            ></textarea>
+
+            <div class="pdm-zeroglare__field-meta">
+              <p class="pdm-zeroglare__field-count" id="pdm-zeroglare-input-count">
+                {{ inputLength | number:'1.0-0' }} / {{ MAX_INPUT_CHARS | number:'1.0-0' }} characters
+              </p>
+              @if (validationMessage) {
+                <p class="pdm-zeroglare__field-error" id="pdm-zeroglare-input-error">
+                  {{ validationMessage }}
+                </p>
+              }
+            </div>
+
+            <div class="pdm-zeroglare__actions">
+              <button
+                class="pdm-site-button pdm-zeroglare__analyze-button"
+                type="button"
+                (click)="analyze()"
+                [disabled]="isAnalyzing || !hasInput || isInputOverLimit"
+              >
+                @if (isAnalyzing) {
+                  <span>Analyzing…</span>
+                } @else {
+                  <span>Analyze</span>
+                }
+              </button>
+            </div>
+          </div>
+
+          <section class="pdm-zeroglare__demo-card pdm-zeroglare__demo-results" aria-live="polite">
+            <p class="pdm-zeroglare__invariant-note">
+              These markers are diagnostic only. They do not change ChatPDM resolution state.
+            </p>
+
+            @if (isAnalyzing) {
+              <div class="pdm-zeroglare__loading-state" aria-label="Zeroglare field is active">
+                <div class="pdm-zeroglare__loading-visual" aria-hidden="true">
+                  <div class="pdm-zeroglare__loading-frame">
+                    <span class="pdm-zeroglare__loading-halo"></span>
+                    <span class="pdm-zeroglare__loading-ring pdm-zeroglare__loading-ring--outer"></span>
+                    <span class="pdm-zeroglare__loading-ring pdm-zeroglare__loading-ring--inner"></span>
+                    <span class="pdm-zeroglare__loading-scan"></span>
+                    <span
+                      class="pdm-zeroglare__loading-orb"
+                    ></span>
+                    <span class="pdm-zeroglare__loading-particle pdm-zeroglare__loading-particle--one"></span>
+                    <span class="pdm-zeroglare__loading-particle pdm-zeroglare__loading-particle--two"></span>
+                    <span class="pdm-zeroglare__loading-particle pdm-zeroglare__loading-particle--three"></span>
+                    <span class="pdm-zeroglare__loading-particle pdm-zeroglare__loading-particle--four"></span>
+                  </div>
+                </div>
+                <p class="pdm-zeroglare__loading-copy">Analyzing input pressure...</p>
+              </div>
+            } @else if (errorMessage) {
+              <div class="pdm-zeroglare__error-state" role="alert">
+                <p class="pdm-zeroglare__error-title">Diagnostics unavailable</p>
+                <p class="pdm-zeroglare__error-copy">{{ errorMessage }}</p>
+              </div>
+            } @else if (analysisResult) {
+              <div class="pdm-zeroglare__result-shell">
+                <div class="pdm-zeroglare__status-panel">
+                  <div class="pdm-zeroglare__status-copy">
+                    <p class="pdm-zeroglare__micro-label">Overall Zeroglare status</p>
+                    <h3 class="pdm-zeroglare__status-title">
+                      {{ getStatusLabel(analysisResult.status) }}
+                    </h3>
+                    <p class="pdm-zeroglare__status-text">
+                      {{ getStatusCopy(analysisResult.status) }}
+                    </p>
+                  </div>
+
+                  <div class="pdm-zeroglare__status-badge pdm-zeroglare__status-badge--{{ analysisResult.status }}">
+                    {{ analysisResult.summary.markerCount | number:'1.0-0' }} marker{{ analysisResult.summary.markerCount === 1 ? '' : 's' }}
+                  </div>
+                </div>
+
+                <div class="pdm-zeroglare__chart-shell">
+                  <div class="pdm-zeroglare__chart-header">
+                    <p class="pdm-zeroglare__micro-label">Pressure breakdown</p>
+                  </div>
+
+                  <div class="pdm-zeroglare__chart" aria-label="Zeroglare pressure levels chart"></div>
+                </div>
+
+                <div class="pdm-zeroglare__summary-grid" aria-label="Zeroglare summary counts">
+                  <div class="pdm-zeroglare__summary-item">
+                    <p class="pdm-zeroglare__summary-label">Clear</p>
+                    <p class="pdm-zeroglare__summary-value">{{ analysisResult.summary.clearCount | number:'1.0-0' }}</p>
+                  </div>
+                  <div class="pdm-zeroglare__summary-item">
+                    <p class="pdm-zeroglare__summary-label">Pressure</p>
+                    <p class="pdm-zeroglare__summary-value">{{ analysisResult.summary.pressureCount | number:'1.0-0' }}</p>
+                  </div>
+                  <div class="pdm-zeroglare__summary-item">
+                    <p class="pdm-zeroglare__summary-label">Fail</p>
+                    <p class="pdm-zeroglare__summary-value">{{ analysisResult.summary.failCount | number:'1.0-0' }}</p>
+                  </div>
+                </div>
+
+                @if (analysisResult.normalizedInputPreview) {
+                  <div class="pdm-zeroglare__normalized-shell">
+                    <p class="pdm-zeroglare__micro-label">Normalized input</p>
+                    <p class="pdm-zeroglare__normalized-text">{{ analysisResult.normalizedInputPreview }}</p>
+                    @if (analysisResult.normalizedInputTruncated) {
+                      <p class="pdm-zeroglare__normalized-meta">
+                        Preview trimmed to {{ MAX_RENDER_CHARS | number:'1.0-0' }} characters for display.
+                        @if (analysisResult.normalizedInputLength) {
+                          <span>{{ analysisResult.normalizedInputLength | number:'1.0-0' }} characters total.</span>
+                        }
+                      </p>
+                    } @else if (analysisResult.normalizedInputLength) {
+                      <p class="pdm-zeroglare__normalized-meta">
+                        {{ analysisResult.normalizedInputLength | number:'1.0-0' }} characters total.
+                      </p>
+                    }
+                  </div>
+                }
+
+                @if (analysisResult.markers.length) {
+                  <div class="pdm-zeroglare__marker-grid" aria-label="Detected diagnostic markers">
+                    <article
+                      class="pdm-zeroglare__marker-card"
+                      *ngFor="let marker of analysisResult.markers; trackBy: trackByMarker"
+                    >
+                      <p class="pdm-zeroglare__marker-code">{{ marker }}</p>
+                      <h3 class="pdm-zeroglare__marker-title">{{ getMarkerTitle(marker) }}</h3>
+                      <p class="pdm-zeroglare__marker-copy">{{ getMarkerDescription(marker) }}</p>
+                    </article>
+                  </div>
+                } @else {
+                  <div class="pdm-zeroglare__empty-state">
+                    No diagnostic pressure markers were detected for this input.
+                  </div>
+                }
+              </div>
+            } @else {
+              <div class="pdm-zeroglare__empty-state">
+                Enter a phrase or query to inspect signal pressure.
+              </div>
+            }
+          </section>
+        </div>
+      </section>
+
+      <section
+        class="pdm-zeroglare__section pdm-zeroglare__section--analogy pdm-site-surface pdm-site-panel"
+        aria-labelledby="pdm-zeroglare-analogy-title"
+      >
+        <div class="pdm-zeroglare__section-head">
+          <p class="pdm-zeroglare__section-label">Analogy</p>
+          <h2 class="pdm-zeroglare__section-title" id="pdm-zeroglare-analogy-title">
+            A distortion filter for meaning.
+          </h2>
+          <p class="pdm-zeroglare__copy">
+            Zeroglare acts as a distortion filter. What goes in is cleaned, not guessed.
+          </p>
+        </div>
+
+        <figure class="pdm-zeroglare__figure pdm-zeroglare__figure--compact">
+          <div class="pdm-zeroglare__image-shell">
+            <img
+              class="pdm-zeroglare__image"
+              src="/assets/zeroglare/zeroglare-analogy.png"
+              alt="Zeroglare analogy image explaining how signal is cleaned before deterministic resolution"
+              width="1703"
+              height="1130"
+              loading="lazy"
+              decoding="async"
+            >
+          </div>
+        </figure>
+      </section>
+    </div>
+  </main>
+</div>

@@ -40,6 +40,7 @@ export class SiteFooterComponent {
         { label: 'What ChatPDM is', route: '/what-is-chatpdm' },
         { label: 'Reasoning structure', route: '/reasoning-structure' },
         { label: 'Vocabulary Boundary', route: '/vocabulary' },
+        { label: 'Zeroglare', route: '/zeroglare' },
         { label: 'Scope model', route: '/scope-model' },
         { label: 'Resolution contract', route: '/resolution-contract' },
         { label: 'Version policy', route: '/version-policy' },

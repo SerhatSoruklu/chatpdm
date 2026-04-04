@@ -177,6 +177,7 @@ const REFERENCE_SURFACE_GROUPS: ReferenceLinkGroup[] = [
     label: 'System',
     links: [
       { label: 'Scope model', route: '/scope-model' },
+      { label: 'Zeroglare', route: '/zeroglare' },
       { label: 'Source model', route: '/source-model' },
       { label: 'Version policy', route: '/version-policy' },
     ],

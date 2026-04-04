@@ -4,7 +4,28 @@
   <meta charset="utf-8">
   <title>ChatPDM | Answers That Don’t Change or Guess</title>
   <base href="/">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-JH3JCB6F3F"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-JH3JCB6F3F');
+  </script>
+  <script>
+    (function () {
+      if (location.pathname !== '/zeroglare' || !location.search) {
+        return;
+      }
+
+      try {
+        history.replaceState(history.state, '', location.pathname + location.hash);
+      } catch (_error) {
+        // Ignore navigation state errors; the page can still continue safely.
+      }
+    })();
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="origin">
   <meta
     name="description"
     content="ChatPDM gives you answers that don’t change, don’t guess, and show exactly where they come from. Deterministic, source-backed reasoning with full traceability."
