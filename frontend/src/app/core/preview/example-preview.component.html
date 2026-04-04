@@ -89,6 +89,7 @@
         <section class="pdm-example-preview__seed-issue pdm-example-preview__seed-issue--warning">
           <p class="pdm-example-preview__micro-label">{{ state.comparisonIssue.seedLabel }}</p>
           <p class="pdm-example-preview__state-copy">{{ state.comparisonIssue.message }}</p>
+          <p class="pdm-example-preview__micro-label">Resolver state:</p>
           <div class="pdm-example-preview__issue-details">
             @for (detail of state.comparisonIssue.details; track detail) {
               <span class="pdm-example-preview__trace-chip">{{ detail }}</span>
@@ -132,6 +133,7 @@
         <section class="pdm-example-preview__seed-issue pdm-example-preview__seed-issue--warning">
           <p class="pdm-example-preview__micro-label">{{ state.refusalIssue.seedLabel }}</p>
           <p class="pdm-example-preview__state-copy">{{ state.refusalIssue.message }}</p>
+          <p class="pdm-example-preview__micro-label">Resolver state:</p>
           <div class="pdm-example-preview__issue-details">
             @for (detail of state.refusalIssue.details; track detail) {
               <span class="pdm-example-preview__trace-chip">{{ detail }}</span>
