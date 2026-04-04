@@ -110,10 +110,18 @@
     rgba(255, 251, 235, 0.9);
 }
 
+.pdm-example-preview__status--partial {
+  color: #b45309;
+  background:
+    linear-gradient(180deg, rgba(255, 247, 237, 0.98), rgba(254, 243, 199, 0.88)),
+    rgba(255, 247, 237, 0.9);
+}
+
 .pdm-example-preview__query-shell,
 .pdm-example-preview__comparison-row,
 .pdm-example-preview__refusal,
-.pdm-example-preview__state-card {
+.pdm-example-preview__state-card,
+.pdm-example-preview__seed-issue {
   padding: 14px;
   border: 1px solid rgba(148, 163, 184, 0.14);
   border-radius: 20px;
@@ -158,6 +166,24 @@
 
 .pdm-example-preview__trace {
   gap: 10px;
+}
+
+.pdm-example-preview__seed-issue {
+  gap: 8px;
+  border-color: rgba(245, 158, 11, 0.18);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(255, 251, 235, 0.9)),
+    rgba(255, 255, 255, 0.92);
+}
+
+.pdm-example-preview__seed-issue--warning {
+  border-color: rgba(245, 158, 11, 0.18);
+}
+
+.pdm-example-preview__issue-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .pdm-example-preview__trace-list {

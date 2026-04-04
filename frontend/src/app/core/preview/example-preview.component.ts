@@ -1,38 +1,16 @@
 import { ChangeDetectionStrategy, Component, OnInit, computed, inject, signal } from '@angular/core';
-import { firstValueFrom, forkJoin } from 'rxjs';
+import { catchError, forkJoin, firstValueFrom, map, of } from 'rxjs';
 
 import { ConceptResolverService } from '../concepts/concept-resolver.service';
 import {
-  ComparisonAxis,
-  ComparisonAxisStatement,
-  ComparisonAxisValue,
-  ComparisonResponse,
-  NoExactMatchResponse,
-} from '../concepts/concept-resolver.types';
-
-const SEEDED_COMPARISON_QUERY = 'authority vs power';
-const SEEDED_REFUSAL_QUERY = 'authority vs charisma';
-const PREVIEW_TRACE_CHIPS = ['comparison mode', 'deterministic runtime', 'bounded scope'] as const;
-
-interface ComparisonPreview {
-  query: string;
-  conceptA: string;
-  conceptB: string;
-  conceptADefinition: string;
-  conceptBDefinition: string;
-  traceChips: readonly string[];
-  boundaryStatement: string | null;
-}
-
-interface RefusalPreview {
-  query: string;
-  message: string;
-}
-
-type PreviewState =
-  | { status: 'loading' }
-  | { status: 'error'; message: string }
-  | { status: 'ready'; comparison: ComparisonPreview; refusal: RefusalPreview };
+  buildExamplePreviewState,
+  classifyComparisonSeedResponse,
+  classifyRefusalSeedResponse,
+  ExamplePreviewState,
+  SEEDED_COMPARISON_QUERY,
+  SEEDED_REFUSAL_QUERY,
+  SeededPreviewIssue,
+} from './example-preview.view-model';
 
 @Component({
   selector: 'app-example-preview',
@@ -44,11 +22,13 @@ type PreviewState =
 export class ExamplePreviewComponent implements OnInit {
   private readonly resolver = inject(ConceptResolverService);
 
-  protected readonly previewState = signal<PreviewState>({ status: 'loading' });
+  protected readonly previewState = signal<ExamplePreviewState>({ status: 'loading' });
   protected readonly previewTitle = computed(() => {
     switch (this.previewState().status) {
       case 'ready':
         return 'Comparison result';
+      case 'partial':
+        return 'Seeded runtime preview';
       case 'error':
         return 'Runtime preview unavailable';
       default:
@@ -59,6 +39,8 @@ export class ExamplePreviewComponent implements OnInit {
     switch (this.previewState().status) {
       case 'ready':
         return 'Resolved within scope';
+      case 'partial':
+        return 'Fallback active';
       case 'error':
         return 'Preview unavailable';
       default:
@@ -76,97 +58,60 @@ export class ExamplePreviewComponent implements OnInit {
     try {
       const { comparison, refusal } = await firstValueFrom(
         forkJoin({
-          comparison: this.resolver.resolve(SEEDED_COMPARISON_QUERY),
-          refusal: this.resolver.resolve(SEEDED_REFUSAL_QUERY),
+          comparison: this.resolvedComparisonSeed(),
+          refusal: this.resolvedRefusalSeed(),
         }),
       );
 
-      if (comparison.type !== 'comparison') {
-        throw new Error('Seeded comparison query did not return comparison output.');
-      }
+      this.previewState.set(buildExamplePreviewState(comparison, refusal));
+    } catch (error) {
+      this.previewState.set(this.buildErrorState(error));
+    }
+  }
 
-      if (refusal.type !== 'no_exact_match' || refusal.queryType !== 'comparison_query') {
-        throw new Error('Seeded refusal query did not return comparison refusal output.');
-      }
+  private resolvedComparisonSeed() {
+    return this.resolver.resolve(SEEDED_COMPARISON_QUERY).pipe(
+      map((response) => classifyComparisonSeedResponse(response)),
+      catchError(() =>
+        of({
+          kind: 'issue',
+          issue: this.buildTransportIssue('comparison seed'),
+        } as const),
+      ),
+    );
+  }
 
-      this.previewState.set({
-        status: 'ready',
-        comparison: this.mapComparisonPreview(comparison),
-        refusal: this.mapRefusalPreview(refusal),
-      });
-    } catch {
-      this.previewState.set({
+  private resolvedRefusalSeed() {
+    return this.resolver.resolve(SEEDED_REFUSAL_QUERY).pipe(
+      map((response) => classifyRefusalSeedResponse(response)),
+      catchError(() =>
+        of({
+          kind: 'issue',
+          issue: this.buildTransportIssue('refusal seed'),
+        } as const),
+      ),
+    );
+  }
+
+  private buildTransportIssue(seedLabel: SeededPreviewIssue['seedLabel']): SeededPreviewIssue {
+    return {
+      seedLabel,
+      message: `Seeded ${seedLabel} could not reach the live resolver.`,
+      details: ['transport_error'],
+    };
+  }
+
+  private buildErrorState(error: unknown): ExamplePreviewState {
+    if (error instanceof Error && error.message) {
+      return {
         status: 'error',
-        message: 'Seeded runtime examples could not be loaded from the live resolver.',
-      });
+        message: error.message,
+      };
     }
-  }
-
-  private mapComparisonPreview(response: ComparisonResponse): ComparisonPreview {
-    const coreNatureAxis = this.findValueAxis(response.comparison.axes, 'core_nature')
-      ?? this.findFirstValueAxis(response.comparison.axes);
-    const boundaryStatement = this.findStatementAxis(response.comparison.axes, 'not_equivalent')?.statement
-      ?? null;
 
     return {
-      query: response.query,
-      conceptA: response.comparison.conceptA,
-      conceptB: response.comparison.conceptB,
-      conceptADefinition: coreNatureAxis?.A ?? 'Resolved meaning unavailable.',
-      conceptBDefinition: coreNatureAxis?.B ?? 'Resolved meaning unavailable.',
-      traceChips: PREVIEW_TRACE_CHIPS,
-      boundaryStatement,
+      status: 'error',
+      message: 'Seeded runtime examples could not be loaded from the live resolver.',
     };
-  }
-
-  private mapRefusalPreview(response: NoExactMatchResponse): RefusalPreview {
-    return {
-      query: response.query,
-      message: response.interpretation?.message?.trim() || response.message,
-    };
-  }
-
-  private findValueAxis(
-    axes: ComparisonAxis[],
-    axisName: string,
-  ): ComparisonAxisValue | null {
-    for (const axis of axes) {
-      if (axis.axis === axisName && this.isValueAxis(axis)) {
-        return axis;
-      }
-    }
-
-    return null;
-  }
-
-  private findFirstValueAxis(axes: ComparisonAxis[]): ComparisonAxisValue | null {
-    for (const axis of axes) {
-      if (this.isValueAxis(axis)) {
-        return axis;
-      }
-    }
-
-    return null;
-  }
-
-  private findStatementAxis(
-    axes: ComparisonAxis[],
-    axisName: string,
-  ): ComparisonAxisStatement | null {
-    for (const axis of axes) {
-      if (axis.axis === axisName && this.isStatementAxis(axis)) {
-        return axis;
-      }
-    }
-
-    return null;
-  }
-
-  private isValueAxis(axis: ComparisonAxis): axis is ComparisonAxisValue {
-    return 'A' in axis && 'B' in axis;
-  }
-
-  private isStatementAxis(axis: ComparisonAxis): axis is ComparisonAxisStatement {
-    return 'statement' in axis;
   }
 }
