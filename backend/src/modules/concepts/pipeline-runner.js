@@ -26,6 +26,10 @@ function runFullPipeline(rawQuery) {
     throw new TypeError('Expected rawQuery to be a string.');
   }
 
+  if (rawQuery.length === 0) {
+    throw new TypeError('Expected rawQuery to be a non-empty string.');
+  }
+
   const normalizedQuery = normalizeQuery(rawQuery);
   const vocabularyRecognition = recognizeLegalVocabulary(normalizedQuery);
   const admission = resolveAdmissionState(normalizedQuery, vocabularyRecognition);

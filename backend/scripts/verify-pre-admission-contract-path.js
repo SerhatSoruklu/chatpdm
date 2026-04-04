@@ -22,31 +22,20 @@ function verifyRegistryLoadsAndCoversRejectedConcepts() {
   );
   assert.deepEqual(
     conceptIds,
-    ['enforcement', 'obligation'],
+    ['enforcement'],
     'pre-admission contract path registry must only cover concepts with active promotion paths.',
   );
 
   process.stdout.write('PASS pre_admission_contract_path_registry_loaded\n');
 }
 
-function verifyObligationAndEnforcementPaths() {
-  const obligation = getPreAdmissionContractPath('obligation');
+function verifyEnforcementPath() {
   const enforcement = getPreAdmissionContractPath('enforcement');
 
-  assert.deepEqual(
-    obligation.comparisonTargets,
-    ['duty', 'responsibility'],
-    'obligation pre-admission comparison targets mismatch.',
-  );
   assert.deepEqual(
     enforcement.comparisonTargets,
     ['duty', 'responsibility'],
     'enforcement pre-admission comparison targets mismatch.',
-  );
-  assert.equal(
-    obligation.requiredArtifacts.includes('constraint_contract'),
-    true,
-    'obligation pre-admission path must require a constraint contract artifact.',
   );
   assert.equal(
     enforcement.requiredArtifacts.includes('overlap_report_against_live_kernel'),
@@ -54,15 +43,24 @@ function verifyObligationAndEnforcementPaths() {
     'enforcement pre-admission path must require a live-kernel overlap report.',
   );
 
-  process.stdout.write('PASS pre_admission_contract_path_entries\n');
+  process.stdout.write('PASS pre_admission_contract_path_entry_enforcement\n');
 }
 
 function verifyRejectedConceptsRemainRuntimeIsolated() {
+  const vocabularySurfaceConceptIds = new Set(['obligation', 'liability', 'jurisdiction']);
+
   ['obligation', 'enforcement', 'claim', 'liability', 'jurisdiction', 'defeasibility'].forEach((conceptId) => {
     const response = resolveConceptQuery(conceptId);
     const runtimeResolutionState = assertSingleRuntimeResolutionState(response);
 
-    assert.equal(response.type, 'rejected_concept', `${conceptId} must remain rejected in runtime.`);
+    if (vocabularySurfaceConceptIds.has(conceptId)) {
+      assert.equal(response.type, 'VOCABULARY_DETECTED', `${conceptId} must refuse through the vocabulary boundary.`);
+      assert.equal(response.finalState, 'refused', `${conceptId} vocabulary refusal finalState mismatch.`);
+      assert.equal(response.vocabulary?.term, conceptId, `${conceptId} vocabulary term mismatch.`);
+    } else {
+      assert.equal(response.type, 'rejected_concept', `${conceptId} must remain rejected in runtime.`);
+    }
+
     assert.equal(
       runtimeResolutionState,
       'refused',
@@ -80,7 +78,7 @@ function verifyRejectedConceptsRemainRuntimeIsolated() {
 }
 
 function verifyPermanentRejectionsRemainOutsidePromotionPathRegistry() {
-  ['claim', 'liability', 'jurisdiction', 'defeasibility'].forEach((conceptId) => {
+  ['obligation', 'claim', 'liability', 'jurisdiction', 'defeasibility'].forEach((conceptId) => {
     assert.throws(
       () => getPreAdmissionContractPath(conceptId),
       /No pre-admission contract path found/,
@@ -93,7 +91,7 @@ function verifyPermanentRejectionsRemainOutsidePromotionPathRegistry() {
 
 function main() {
   verifyRegistryLoadsAndCoversRejectedConcepts();
-  verifyObligationAndEnforcementPaths();
+  verifyEnforcementPath();
   verifyPermanentRejectionsRemainOutsidePromotionPathRegistry();
   verifyRejectedConceptsRemainRuntimeIsolated();
   process.stdout.write('Pre-admission contract path verification passed.\n');

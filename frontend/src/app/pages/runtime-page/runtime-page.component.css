@@ -128,6 +128,36 @@
   margin: 14px 0 0;
 }
 
+.pdm-runtime__boundary-link-shell {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  align-items: center;
+  margin-top: 18px;
+}
+
+.pdm-runtime__boundary-link-copy {
+  margin: 0;
+  color: #475569;
+  font-size: 0.98rem;
+  line-height: 1.6;
+}
+
+.pdm-runtime__boundary-link {
+  color: #1d4ed8;
+  font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.pdm-runtime__boundary-link:hover,
+.pdm-runtime__boundary-link:focus-visible {
+  text-decoration: underline;
+}
+
 .pdm-runtime__query-form,
 .pdm-runtime__catalog,
 .pdm-runtime__chip-row,

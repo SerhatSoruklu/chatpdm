@@ -10,6 +10,7 @@ const {
   NO_EXACT_MATCH_MESSAGE,
   REJECTED_CONCEPT_MESSAGE,
   UNSUPPORTED_QUERY_TYPE_MESSAGE,
+  VOCABULARY_DETECTED_MESSAGE,
 } = require('./constants');
 const {
   VISIBLE_ONLY_PUBLIC_CONCEPT_IDS,
@@ -33,6 +34,7 @@ const { detectGovernanceScopeEnforcement } = require('./governance-scope-enforce
 const { detectOutOfScopeInteractionQuery } = require('./interaction-kernel-boundary');
 const { assertDeterministicPathFreeOfAiMarkers } = require('../../lib/ai-governance-guard');
 const { assertValidProductResponse } = require('../../lib/product-response-validator');
+const { classifyVocabularySurface } = require('../../vocabulary/vocabulary-service.ts');
 
 function buildContextPayload(context) {
   const appliesTo = Array.isArray(context.appliesTo) && context.appliesTo.length > 0
@@ -98,6 +100,26 @@ function buildRejectedConceptResponse(query, normalizedQuery, conceptId, queryTy
       decisionType: rejectionRecord.decisionType,
       finality: rejectionRecord.finality,
     },
+  };
+}
+
+function buildVocabularyDetectedResponse(query, normalizedQuery, queryType, vocabulary) {
+  return {
+    query,
+    normalizedQuery,
+    contractVersion: CONTRACT_VERSION,
+    normalizerVersion: NORMALIZER_VERSION,
+    matcherVersion: MATCHER_VERSION,
+    conceptSetVersion: CONCEPT_SET_VERSION,
+    queryType,
+    finalState: 'refused',
+    interpretation: null,
+    type: 'VOCABULARY_DETECTED',
+    resolution: {
+      method: 'vocabulary_guard',
+    },
+    message: VOCABULARY_DETECTED_MESSAGE,
+    vocabulary,
   };
 }
 
@@ -297,9 +319,27 @@ function resolveConceptQuery(rawQuery) {
   const normalizedQuery = normalizeQuery(rawQuery);
   const routingQuery = deriveRoutingText(normalizedQuery);
   const canonicalId = extractCanonicalId(rawQuery);
+  const vocabularyLookupTarget = canonicalId !== null ? canonicalId : routingQuery;
   const visibleOnlyCanonicalConceptId = canonicalId !== null && isVisibleOnlyConceptId(canonicalId)
     ? canonicalId
     : null;
+  const vocabulary = classifyVocabularySurface(vocabularyLookupTarget);
+
+  if (
+    vocabulary.matched
+    && !isLiveConceptId(vocabularyLookupTarget)
+    && !isVisibleOnlyConceptId(vocabularyLookupTarget)
+  ) {
+    const response = buildVocabularyDetectedResponse(
+      rawQuery,
+      normalizedQuery,
+      canonicalId !== null ? 'canonical_id_query' : 'exact_concept_query',
+      vocabulary,
+    );
+
+    return finalizeResolvedResponse(response);
+  }
+
   const rejectedConcept = getRejectedConceptRecord(canonicalId !== null ? canonicalId : routingQuery);
 
   if (rejectedConcept) {

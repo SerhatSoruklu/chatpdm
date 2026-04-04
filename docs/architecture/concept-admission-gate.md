@@ -64,3 +64,5 @@ The admission gate must not:
 Admission defines ontology boundaries.
 
 Nothing crosses into the ontology without exact authored approval.
+
+See [vocabulary-boundary-contract.md](/home/serhat/code/chatpdm/docs/architecture/vocabulary-boundary-contract.md) for the enforced vocabulary-specific boundary guarantees and rejection-precedence rule.

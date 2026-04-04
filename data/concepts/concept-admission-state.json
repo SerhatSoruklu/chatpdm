@@ -12,21 +12,15 @@
     "agreement"
   ],
   "rejectedConceptIds": [
-    "obligation",
     "enforcement",
     "claim",
-    "liability",
-    "jurisdiction",
     "defeasibility"
   ],
   "detailBackedConceptIds": [
     "violation",
     "agreement",
-    "obligation",
     "enforcement",
     "claim",
-    "liability",
-    "jurisdiction",
     "defeasibility"
   ]
 }

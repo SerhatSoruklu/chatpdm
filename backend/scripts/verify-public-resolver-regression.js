@@ -20,9 +20,19 @@ function extractPublicContract(response) {
     normalizedQuery: response.normalizedQuery,
     type: response.type,
     queryType: response.queryType,
-    resolution: response.resolution,
-    interpretation: response.interpretation,
   };
+
+  if (Object.prototype.hasOwnProperty.call(response, 'finalState')) {
+    extracted.finalState = response.finalState;
+  }
+
+  if (Object.prototype.hasOwnProperty.call(response, 'resolution')) {
+    extracted.resolution = response.resolution;
+  }
+
+  if (Object.prototype.hasOwnProperty.call(response, 'interpretation')) {
+    extracted.interpretation = response.interpretation;
+  }
 
   if (typeof response.message === 'string') {
     extracted.message = response.message;
@@ -34,6 +44,10 @@ function extractPublicContract(response) {
 
   if (Array.isArray(response.suggestions)) {
     extracted.suggestions = response.suggestions;
+  }
+
+  if (Object.prototype.hasOwnProperty.call(response, 'vocabulary')) {
+    extracted.vocabulary = response.vocabulary;
   }
 
   return extracted;
