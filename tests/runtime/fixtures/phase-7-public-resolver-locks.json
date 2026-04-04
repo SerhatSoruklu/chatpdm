@@ -164,7 +164,7 @@
       "queryType": "exact_concept_query",
       "message": "No exact canonical concept match was found for this query.",
       "resolution": {
-        "method": "no_exact_match"
+        "method": "out_of_scope"
       },
       "interpretation": {
         "interpretationType": "visible_only_public_concept",

@@ -74,7 +74,7 @@
     "input": "violation",
     "expectedNormalizedQuery": "violation",
     "expectedType": "no_exact_match",
-    "expectedMethod": "no_exact_match",
+    "expectedMethod": "out_of_scope",
     "expectedQueryType": "exact_concept_query",
     "expectedInterpretation": {
       "interpretationType": "visible_only_public_concept",
@@ -87,7 +87,7 @@
     "input": "violation?",
     "expectedNormalizedQuery": "violation?",
     "expectedType": "no_exact_match",
-    "expectedMethod": "no_exact_match",
+    "expectedMethod": "out_of_scope",
     "expectedQueryType": "exact_concept_query",
     "expectedInterpretation": {
       "interpretationType": "visible_only_public_concept",
@@ -132,21 +132,14 @@
     }
   },
   {
-    "name": "defeasibility_question_rejected",
+    "name": "defeasibility_question_unsupported",
     "input": "what is defeasibility",
-    "expectedNormalizedQuery": "defeasibility",
-    "expectedType": "rejected_concept",
-    "expectedMethod": "rejection_registry",
-    "expectedQueryType": "exact_concept_query",
+    "expectedNormalizedQuery": "what is defeasibility",
+    "expectedType": "unsupported_query_type",
+    "expectedMethod": "unsupported_query_type",
+    "expectedQueryType": "unsupported_complex_query",
     "expectedInterpretation": {
-      "interpretationType": "explicitly_rejected_concept",
-      "targetConceptId": "defeasibility"
-    },
-    "expectedConceptId": "defeasibility",
-    "expectedRejection": {
-      "status": "REJECTED",
-      "decisionType": "STRUCTURAL_REJECTION",
-      "finality": true
+      "interpretationType": "unsupported_complex"
     }
   },
   {
@@ -393,17 +386,15 @@
     }
   },
   {
-    "name": "filler_and_punctuation_only",
+    "name": "filler_and_punctuation_unsupported",
     "input": "what is ???",
-    "expectedNormalizedQuery": "???",
-    "expectedType": "no_exact_match",
-    "expectedMethod": "no_exact_match",
-    "expectedQueryType": "exact_concept_query",
+    "expectedNormalizedQuery": "what is ???",
+    "expectedType": "unsupported_query_type",
+    "expectedMethod": "unsupported_query_type",
+    "expectedQueryType": "unsupported_complex_query",
     "expectedInterpretation": {
-      "interpretationType": "exact_concept_not_found",
-      "targetConceptId": "???"
-    },
-    "expectedSuggestions": []
+      "interpretationType": "unsupported_complex"
+    }
   },
   {
     "name": "canonical_id_success",
@@ -433,7 +424,7 @@
     "input": "agreement",
     "expectedNormalizedQuery": "agreement",
     "expectedType": "no_exact_match",
-    "expectedMethod": "no_exact_match",
+    "expectedMethod": "out_of_scope",
     "expectedQueryType": "exact_concept_query",
     "expectedInterpretation": {
       "interpretationType": "visible_only_public_concept",
@@ -442,17 +433,15 @@
     "expectedSuggestions": []
   },
   {
-    "name": "visible_only_agreement_prompt_exact",
+    "name": "visible_only_agreement_prompt_unsupported",
     "input": "what is agreement",
-    "expectedNormalizedQuery": "agreement",
-    "expectedType": "no_exact_match",
-    "expectedMethod": "no_exact_match",
-    "expectedQueryType": "exact_concept_query",
+    "expectedNormalizedQuery": "what is agreement",
+    "expectedType": "unsupported_query_type",
+    "expectedMethod": "unsupported_query_type",
+    "expectedQueryType": "unsupported_complex_query",
     "expectedInterpretation": {
-      "interpretationType": "visible_only_public_concept",
-      "targetConceptId": "agreement"
-    },
-    "expectedSuggestions": []
+      "interpretationType": "unsupported_complex"
+    }
   },
   {
     "name": "out_of_scope_commitment_exact",
@@ -732,27 +721,15 @@
     "expectedFinalState": "refused"
   },
   {
-    "name": "vocabulary_jurisdiction_prompt_exact",
+    "name": "vocabulary_jurisdiction_prompt_unsupported",
     "input": "what is jurisdiction",
-    "expectedNormalizedQuery": "jurisdiction",
-    "expectedType": "VOCABULARY_DETECTED",
-    "expectedMethod": "vocabulary_guard",
-    "expectedQueryType": "exact_concept_query",
-    "expectedInterpretation": null,
-    "expectedVocabulary": {
-      "input": "jurisdiction",
-      "normalizedInput": "jurisdiction",
-      "matched": true,
-      "term": "jurisdiction",
-      "classification": "legal_term",
-      "relations": null,
-      "systemFlags": {
-        "isCoreConcept": false,
-        "usableInResolver": false,
-        "reasoningAllowed": false
-      }
-    },
-    "expectedFinalState": "refused"
+    "expectedNormalizedQuery": "what is jurisdiction",
+    "expectedType": "unsupported_query_type",
+    "expectedMethod": "unsupported_query_type",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedInterpretation": {
+      "interpretationType": "unsupported_complex"
+    }
   },
   {
     "name": "vocabulary_obligation_canonical_id",

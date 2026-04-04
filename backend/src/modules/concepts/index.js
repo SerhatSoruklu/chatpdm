@@ -84,6 +84,7 @@ const { buildConceptDetail } = require('./concept-detail-service');
 const {
   getConceptById,
   loadConceptSet,
+  RESOLUTION_STATUS_VALUES,
 } = require('./concept-loader');
 const {
   ALLOWED_ADMISSION_VALUES,
@@ -136,6 +137,7 @@ module.exports = {
   RESPONSE_TYPE_TO_RUNTIME_RESOLUTION_STATE,
   ROLE_DIFFERENTIATION_FIELDS,
   RUNTIME_RESOLUTION_STATES,
+  RESOLUTION_STATUS_VALUES,
   STRUCTURAL_PROFILE_FIELDS,
   STRUCTURAL_PROFILE_SEED_FIELDS,
   STRUCTURAL_FAILURE_KINDS,

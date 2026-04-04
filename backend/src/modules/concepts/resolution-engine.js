@@ -61,7 +61,18 @@ function buildLiveResolution(normalizedQuery) {
   const response = resolveConceptQuery(normalizedQuery);
 
   if (response.type !== 'concept_match') {
-    throw new Error(`Expected live concept resolution for "${normalizedQuery}".`);
+    const governanceUnavailable = response.type === 'no_exact_match'
+      && response.interpretation?.interpretationType === 'validation_blocked'
+      && typeof response.interpretation?.message === 'string'
+      && /governance evidence is unavailable/i.test(response.interpretation.message);
+
+    return {
+      type: RESOLUTION_ENGINE_TYPES.NO_MATCH,
+      payload: {
+        normalized_query: normalizedQuery,
+        reason: governanceUnavailable ? 'governance_unavailable' : 'no_live_concept_match',
+      },
+    };
   }
 
   return {

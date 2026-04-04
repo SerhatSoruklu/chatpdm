@@ -36,31 +36,26 @@
     }
   },
   {
-    "name": "comparison_authority_same_as_power",
+    "name": "comparison_authority_same_as_power_unsupported",
     "input": "is authority the same as power",
     "expectedNormalizedQuery": "is authority the same as power",
-    "expectedType": "comparison",
-    "expectedQueryType": "comparison_query",
-    "expectedInterpretation": null,
-    "expectedComparison": {
-      "conceptA": "authority",
-      "conceptB": "power"
+    "expectedType": "unsupported_query_type",
+    "expectedMethod": "unsupported_query_type",
+    "expectedQueryType": "unsupported_complex_query",
+    "expectedInterpretation": {
+      "interpretationType": "unsupported_complex"
     }
   },
   {
-    "name": "comparison_violation_responsibility",
+    "name": "comparison_violation_responsibility_unsupported",
     "input": "is violation the same as responsibility",
     "expectedNormalizedQuery": "is violation the same as responsibility",
-    "expectedType": "no_exact_match",
-    "expectedMethod": "no_exact_match",
-    "expectedQueryType": "comparison_query",
+    "expectedType": "unsupported_query_type",
+    "expectedMethod": "unsupported_query_type",
+    "expectedQueryType": "unsupported_complex_query",
     "expectedInterpretation": {
-      "interpretationType": "visible_only_public_concept",
-      "concepts": [
-        "violation"
-      ]
-    },
-    "expectedSuggestions": []
+      "interpretationType": "unsupported_complex"
+    }
   },
   {
     "name": "comparison_missing_concept_refusal",

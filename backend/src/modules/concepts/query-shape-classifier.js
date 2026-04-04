@@ -13,7 +13,6 @@ const {
 const COMPARISON_KEYWORDS = Object.freeze([
   ' vs ',
   ' versus ',
-  ' or ',
   ' same as ',
 ]);
 
@@ -60,10 +59,6 @@ const NON_SUBTYPE_PREFIXES = Object.freeze([
 
 function escapePattern(value) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
-
-function uniqueStrings(values) {
-  return [...new Set(values)];
 }
 
 function buildTermEntries(concepts) {
@@ -167,6 +162,13 @@ function buildInvalidQueryInterpretation() {
   };
 }
 
+function buildAmbiguousQueryShapeInterpretation() {
+  return {
+    interpretationType: 'unsupported_complex',
+    message: 'Ambiguous query shape. Explicit contract required.',
+  };
+}
+
 function buildCanonicalLookupNotFoundInterpretation(targetConceptId) {
   if (targetConceptId === '') {
     return {
@@ -209,14 +211,6 @@ function uniqueCharacterCount(value) {
   return new Set(value).size;
 }
 
-function hasRecognizableQueryPrefix(rawQuery) {
-  return (
-    findLeadingFillerPhrase(rawQuery) !== null
-    || NON_SUBTYPE_PREFIXES.some((prefix) => rawQuery.startsWith(prefix))
-    || ROLE_PREFIXES.some((prefix) => rawQuery.startsWith(prefix))
-  );
-}
-
 function looksLikeContinuousNoise(token) {
   if (!/^[a-z]+$/.test(token) || token.length < 10) {
     return false;
@@ -246,15 +240,6 @@ function isClearlyInvalidQuery(rawQuery, normalizedQuery, mentionedConcepts) {
     return false;
   }
 
-  const canonicalizedRawQuery = canonicalizeRawQuery(rawQuery);
-  if (
-    hasRecognizableQueryPrefix(canonicalizedRawQuery)
-    || COMPARISON_KEYWORDS.some((keyword) => normalizedQuery.includes(keyword))
-    || RELATION_KEYWORDS.some((keyword) => normalizedQuery.includes(keyword))
-  ) {
-    return false;
-  }
-
   if (!isSingleToken(normalizedQuery)) {
     return false;
   }
@@ -267,12 +252,17 @@ function isExactConceptLookupCandidate(rawQuery, normalizedQuery) {
     return false;
   }
 
-  const canonicalizedRawQuery = canonicalizeRawQuery(rawQuery);
-  if (findLeadingFillerPhrase(canonicalizedRawQuery) !== null) {
-    return true;
-  }
-
   return /^[a-z]+(?:-[a-z]+)*$/.test(normalizedQuery);
+}
+
+function isAmbiguousQueryShape(rawQuery, normalizedQuery) {
+  const canonicalizedRawQuery = canonicalizeRawQuery(rawQuery);
+  const hasLeadingFiller = findLeadingFillerPhrase(canonicalizedRawQuery) !== null
+    || NON_SUBTYPE_PREFIXES.some((prefix) => canonicalizedRawQuery.startsWith(prefix));
+  const hasRolePrefix = ROLE_PREFIXES.some((prefix) => canonicalizedRawQuery.startsWith(prefix));
+  const hasImplicitComparison = /(^| )or( |$)/.test(normalizedQuery);
+
+  return hasLeadingFiller || hasRolePrefix || hasImplicitComparison;
 }
 
 function detectComparison(normalizedQuery, mentionedConcepts) {
@@ -323,7 +313,7 @@ function detectRoleOrActor(normalizedQuery, mentionedConcepts) {
   };
 }
 
-function classifyQueryShape({ rawQuery, normalizedQuery, concepts, resolveRules, match }) {
+function classifyQueryShape({ rawQuery, normalizedQuery, concepts, match }) {
   if (typeof rawQuery !== 'string' || rawQuery.length === 0) {
     return {
       queryType: 'invalid_query',
@@ -356,6 +346,13 @@ function classifyQueryShape({ rawQuery, normalizedQuery, concepts, resolveRules,
   }
 
   const routingQuery = deriveRoutingText(normalizedQuery);
+  if (isAmbiguousQueryShape(rawQuery, routingQuery)) {
+    return {
+      queryType: 'unsupported_complex_query',
+      interpretation: buildAmbiguousQueryShapeInterpretation(),
+    };
+  }
+
   const termEntries = buildTermEntries(concepts);
   const mentionedConcepts = detectMentionedConcepts(routingQuery, termEntries);
 

@@ -32,6 +32,7 @@ const { classifyQueryShape } = require('./query-shape-classifier');
 const { resolveComparisonQuery } = require('./comparison-resolver');
 const { detectGovernanceScopeEnforcement } = require('./governance-scope-enforcer');
 const { detectOutOfScopeInteractionQuery } = require('./interaction-kernel-boundary');
+const { evaluatePreResolutionGuard } = require('./pre-resolution-guard');
 const { assertDeterministicPathFreeOfAiMarkers } = require('../../lib/ai-governance-guard');
 const { assertValidProductResponse } = require('../../lib/product-response-validator');
 const { classifyVocabularySurface } = require('../../vocabulary/vocabulary-service.ts');
@@ -71,6 +72,38 @@ function buildBaseResponse(query, normalizedQuery, queryClassification) {
     conceptSetVersion: CONCEPT_SET_VERSION,
     queryType: queryClassification.queryType,
     interpretation: queryClassification.interpretation,
+  };
+}
+
+function buildGuardInterpretation(guardDecision) {
+  const interpretation = {
+    interpretationType: guardDecision.interpretationType,
+    message: guardDecision.message,
+  };
+
+  if (typeof guardDecision.domain === 'string' && guardDecision.domain.trim() !== '') {
+    interpretation.domain = guardDecision.domain;
+  }
+
+  return interpretation;
+}
+
+function buildPreResolutionGuardResponse(query, normalizedQuery, guardDecision) {
+  return {
+    query,
+    normalizedQuery,
+    contractVersion: CONTRACT_VERSION,
+    normalizerVersion: NORMALIZER_VERSION,
+    matcherVersion: MATCHER_VERSION,
+    conceptSetVersion: CONCEPT_SET_VERSION,
+    queryType: guardDecision.queryType,
+    interpretation: buildGuardInterpretation(guardDecision),
+    type: 'no_exact_match',
+    resolution: {
+      method: 'no_exact_match',
+    },
+    message: NO_EXACT_MATCH_MESSAGE,
+    suggestions: [],
   };
 }
 
@@ -136,6 +169,19 @@ function buildValidationBlockedInterpretation(blockedConceptIds) {
     message: blockedConceptId
       ? `The authored concept "${blockedConceptId}" is currently blocked by validator law enforcement and is not actionable in the runtime.`
       : 'This authored concept is currently blocked by validator law enforcement and is not actionable in the runtime.',
+  };
+}
+
+function buildGovernanceUnavailableInterpretation(targetConceptId = null) {
+  const concepts = targetConceptId ? [targetConceptId] : [];
+
+  return {
+    interpretationType: 'validation_blocked',
+    targetConceptId,
+    concepts,
+    message: targetConceptId
+      ? `The concept "${targetConceptId}" cannot resolve because governance evidence is unavailable.`
+      : 'This concept cannot resolve because governance evidence is unavailable.',
   };
 }
 
@@ -208,7 +254,7 @@ function buildVisibleOnlyConceptResponse(baseResponse, interpretation) {
     type: 'no_exact_match',
     interpretation,
     resolution: {
-      method: 'no_exact_match',
+      method: 'out_of_scope',
     },
     message: NO_EXACT_MATCH_MESSAGE,
     suggestions: [],
@@ -316,9 +362,21 @@ function resolveConceptQuery(rawQuery) {
     throw new TypeError('Expected query to be a non-empty string.');
   }
 
-  const normalizedQuery = normalizeQuery(rawQuery);
-  const routingQuery = deriveRoutingText(normalizedQuery);
-  const canonicalId = extractCanonicalId(rawQuery);
+  const preResolutionGuard = evaluatePreResolutionGuard(rawQuery);
+  const normalizedQuery = preResolutionGuard.normalizedQuery;
+  const routingQuery = preResolutionGuard.routingQuery;
+  const canonicalId = preResolutionGuard.canonicalId;
+
+  if (preResolutionGuard.refused) {
+    const response = buildPreResolutionGuardResponse(
+      rawQuery,
+      normalizedQuery,
+      preResolutionGuard,
+    );
+
+    return finalizeResolvedResponse(response);
+  }
+
   const vocabularyLookupTarget = canonicalId !== null ? canonicalId : routingQuery;
   const visibleOnlyCanonicalConceptId = canonicalId !== null && isVisibleOnlyConceptId(canonicalId)
     ? canonicalId
@@ -514,7 +572,18 @@ function resolveConceptQuery(rawQuery) {
 
     traceGovernanceState(governanceState);
 
-    if (governanceState.isBlocked) {
+    if (!governanceState.available) {
+      response = {
+        ...baseResponse,
+        type: 'no_exact_match',
+        interpretation: buildGovernanceUnavailableInterpretation(match.concept.conceptId),
+        resolution: {
+          method: 'no_exact_match',
+        },
+        message: NO_EXACT_MATCH_MESSAGE,
+        suggestions: [],
+      };
+    } else if (governanceState.isBlocked) {
       response = buildValidationBlockedResponse(baseResponse, [match.concept.conceptId]);
     } else {
       response = {
@@ -542,6 +611,9 @@ function resolveConceptQuery(rawQuery) {
           relatedConcepts: filterActionableRelatedConcepts(match.concept.relatedConcepts, conceptIndex).map((relatedConcept) => (
             buildRelatedConceptPayload(relatedConcept, conceptIndex)
           )),
+          ...(Object.hasOwn(match.concept, 'resolutionStatus')
+            ? { resolutionStatus: match.concept.resolutionStatus }
+            : {}),
         },
       };
     }

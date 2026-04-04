@@ -137,7 +137,7 @@ function validateAndExposeOutput(resolutionOutput) {
       type: resolutionOutput.type,
       payload: resolutionOutput.payload,
     };
-  } catch (error) {
+  } catch {
     return buildValidationFailure();
   }
 }

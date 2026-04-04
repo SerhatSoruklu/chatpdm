@@ -235,25 +235,19 @@ function loadAuthoredRelationPackets(options = {}) {
         const packetMissingWarning = createPacketEntry(
           'RELATION_PACKET_MISSING',
           conceptId,
-          'Authored relation packet is missing; fallback relation seeds may be used.',
+          'Authored relation packet is missing; relation data is unavailable.',
           filePath,
         );
-        const fallbackWarning = createPacketEntry(
-          'RELATION_FALLBACK_USED',
-          conceptId,
-          'Fallback relation seeds were used because an authored relation packet is missing.',
-          filePath,
-        );
-        warnings.push(packetMissingWarning, fallbackWarning);
+        warnings.push(packetMissingWarning);
         packetResults.push({
           conceptId,
           filePath,
           present: false,
           passed: false,
-          source: 'fallback',
+          source: 'unavailable',
           relationCount: 0,
           failures: [],
-          warnings: [packetMissingWarning, fallbackWarning],
+          warnings: [packetMissingWarning],
         });
       }
 
@@ -316,16 +310,16 @@ function loadAuthoredRelationPackets(options = {}) {
     });
   });
 
-  const fallbackUsed = missingConceptIds.length > 0 && !strictMode;
-  const source = fallbackUsed && !strictMode ? 'fallback' : 'authored';
+  const hasMissingPackets = missingConceptIds.length > 0;
+  const source = failures.length === 0 && !hasMissingPackets ? 'authored' : 'unavailable';
 
   return {
-    passed: failures.length === 0,
+    passed: failures.length === 0 && !hasMissingPackets,
     strictMode,
     source,
-    dataSource: source === 'authored' ? 'authored_relation_packets' : 'default_seed_relations',
-    relationDataPresent: source === 'authored' && failures.length === 0 && !fallbackUsed,
-    fallbackUsed,
+    dataSource: source === 'authored' ? 'authored_relation_packets' : 'none',
+    relationDataPresent: source === 'authored' && failures.length === 0,
+    fallbackUsed: false,
     relations,
     packetResults,
     failures,

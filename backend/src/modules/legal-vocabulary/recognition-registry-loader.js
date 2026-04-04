@@ -75,7 +75,7 @@ function assertClassification(value, lineNumber) {
   }
 }
 
-function registerTerm(recordsByTerm, countsByClassification, term, classification) {
+function registerTerm(recordsByTerm, countsByClassification, term, classification, family) {
   if (EXCLUDED_CONCEPT_IDS.has(term) || recordsByTerm.has(term)) {
     return;
   }
@@ -83,6 +83,7 @@ function registerTerm(recordsByTerm, countsByClassification, term, classificatio
   recordsByTerm.set(term, {
     term,
     classification,
+    family,
   });
   countsByClassification.set(
     classification,
@@ -120,6 +121,7 @@ function buildRegistry() {
   ]);
 
   let activeClassification = null;
+  let activeFamily = null;
 
   lines.forEach((rawLine, index) => {
     const lineNumber = index + 1;
@@ -132,6 +134,7 @@ function buildRegistry() {
     const header = parseHeader(line);
     if (header) {
       activeClassification = HEADER_TO_CLASSIFICATION[header] ?? null;
+      activeFamily = header;
       assertClassification(activeClassification, lineNumber);
       return;
     }
@@ -149,7 +152,7 @@ function buildRegistry() {
     const classification = EXPLICIT_CLASSIFICATION_OVERRIDES[canonicalSurface] ?? activeClassification;
 
     surfaceForms.forEach((term) => {
-      registerTerm(recordsByTerm, countsByClassification, term, classification);
+      registerTerm(recordsByTerm, countsByClassification, term, classification, activeFamily);
     });
   });
 

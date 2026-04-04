@@ -20,7 +20,28 @@ const ZEROGLOARE_PIPELINE_STAGES = Object.freeze([
   'resolve_or_refuse',
 ]);
 
-const ZEROGLOARE_DEFINITION = 'Zeroglare is ChatPDM\'s internal signal-discipline layer. It reduces rhetorical noise, isolates semantic signal, and prevents ambiguity from spreading into deterministic resolution.';
+const ZEROGLOARE_MARKER_TAXONOMY_VERSION = 'v1';
+
+const ZEROGLARE_MARKER_CODES = Object.freeze([
+  'rhetorical_noise',
+  'ambiguity_surface',
+  'unsupported_semantic_bridge',
+  'scope_pressure',
+  'scope_instability_pressure',
+  'circular_dependency_pressure',
+  'recursive_frame_pressure',
+  'conditional_frame_fragility',
+  'contradiction_pressure',
+  'universal_scope_pressure',
+  'exception_leak_pressure',
+  'role_forcing_pressure',
+  'self_negation_pressure',
+  'causal_bridge_pressure',
+  'reference_collapse_pressure',
+  'context_drift_pressure',
+]);
+
+const ZEROGLOARE_DEFINITION = 'Zeroglare is ChatPDM\'s internal signal-discipline layer. It primarily catches instability in frame and scope, invalid semantic leaps, and forced assignment of authority or decision roles.';
 
 const ZEROGLOARE_SUPPORTING_LINE = 'Zeroglare ensures the system responds to meaning, not presentation.';
 const ZEROGLOARE_ANALYSIS_PREVIEW_LIMIT = 2_000;
@@ -76,6 +97,190 @@ const SCOPE_PRESSURE_MARKERS = Object.freeze([
   'general purpose',
   'in general',
   'whole',
+]);
+
+const SCOPE_INSTABILITY_POSITIVE_MARKERS = Object.freeze([
+  'without stable scope',
+  'under a widened scope',
+  'once reclassified',
+  'after reclassification',
+]);
+
+const SCOPE_INSTABILITY_NEGATIVE_MARKERS = Object.freeze([
+  'within a defined scope',
+  'under a fixed scope',
+  'bounded conditions',
+]);
+
+const CIRCULAR_DEPENDENCY_POSITIVE_MARKERS = Object.freeze([
+  'decide each other simultaneously',
+  'mutually define',
+  'mutually decide',
+  'circular dependency',
+  'self referential',
+]);
+
+const CIRCULAR_DEPENDENCY_NEGATIVE_MARKERS = Object.freeze([
+  'not circular',
+  'linear relation',
+  'one way only',
+  'fixed direction',
+]);
+
+const RECURSIVE_FRAME_POSITIVE_MARKERS = Object.freeze([
+  'recursive frame',
+  'frame repeats itself',
+  'frame within frame',
+  'frame calls itself',
+  'frame reenters itself',
+]);
+
+const RECURSIVE_FRAME_NEGATIVE_MARKERS = Object.freeze([
+  'non recursive',
+  'linear frame',
+  'no recursion',
+  'fixed frame',
+  'one way only',
+]);
+
+const CONDITIONAL_FRAME_POSITIVE_MARKERS = Object.freeze([
+  'holds only if',
+  'remains valid only while',
+  'remains defined only while',
+  'survives only under fixed conditions',
+  'breaks when the context shifts',
+]);
+
+const CONDITIONAL_FRAME_NEGATIVE_MARKERS = Object.freeze([
+  'independent of context',
+  'regardless of context',
+  'unconditional',
+  'fixed regardless',
+  'stable regardless',
+]);
+
+const CONTRADICTION_POSITIVE_MARKERS = Object.freeze([
+  'both valid and invalid',
+  'valid only if it is not valid',
+  'cannot be both true and false',
+  'true and false at once',
+  'the same conditions and not the same conditions',
+  'always valid but it is also never valid',
+  'always valid, but it is also never valid',
+  'always valid but also never valid',
+  'never valid but also always valid',
+]);
+
+const CONTRADICTION_NEGATIVE_MARKERS = Object.freeze([
+  'not contradictory',
+  'consistent',
+  'non contradictory',
+  'plainly consistent',
+]);
+
+const UNIVERSAL_SCOPE_POSITIVE_MARKERS = Object.freeze([
+  'all systems',
+  'all times',
+  'all domains',
+  'everywhere',
+  'everywhere at once',
+]);
+
+const UNIVERSAL_SCOPE_NEGATIVE_MARKERS = Object.freeze([
+  'specific case',
+  'limited domain',
+  'local context',
+  'bounded domain',
+  'single case',
+]);
+
+const EXCEPTION_LEAK_POSITIVE_MARKERS = Object.freeze([
+  'except when',
+  'except for',
+  'unless',
+  'with one exception',
+  'all cases except',
+  'every case except',
+]);
+
+const EXCEPTION_LEAK_NEGATIVE_MARKERS = Object.freeze([
+  'no exception clause',
+  'closed rule',
+  'fully bounded',
+]);
+
+const ROLE_FORCING_POSITIVE_MARKERS = Object.freeze([
+  'who decides',
+  'who governs',
+  'who controls',
+  'who assigns',
+  'who is responsible for',
+]);
+
+const ROLE_FORCING_NEGATIVE_MARKERS = Object.freeze([
+  'no role assigned',
+  'no role is assigned',
+  'role neutral',
+  'without assigning',
+]);
+
+const SELF_NEGATION_POSITIVE_MARKERS = Object.freeze([
+  'denies itself',
+  'refuses its own claim',
+  'self negating',
+  'not not',
+  'cannot not',
+]);
+
+const SELF_NEGATION_NEGATIVE_MARKERS = Object.freeze([
+  'self consistent',
+  'stable claim',
+  'non negating',
+]);
+
+const CAUSAL_BRIDGE_POSITIVE_MARKERS = Object.freeze([
+  'because authority exists',
+  'because the frame exists',
+  'therefore obligation exists',
+  'therefore truth exists',
+  'leads directly to',
+  'automatically creates obligation',
+  'directly creates obligation',
+]);
+
+const CAUSAL_BRIDGE_NEGATIVE_MARKERS = Object.freeze([
+  'no causal bridge',
+  'causal link absent',
+  'without causal leap',
+]);
+
+const REFERENCE_COLLAPSE_POSITIVE_MARKERS = Object.freeze([
+  'defines itself',
+  'explains itself',
+  'refers to itself',
+  'self reference',
+  'reference collapse',
+]);
+
+const REFERENCE_COLLAPSE_NEGATIVE_MARKERS = Object.freeze([
+  'external reference',
+  'one way reference',
+  'outward reference',
+]);
+
+const CONTEXT_DRIFT_POSITIVE_MARKERS = Object.freeze([
+  'meaning changes with context',
+  'context changes the meaning',
+  'shifts with context',
+  'same term means something else',
+  'different context changes meaning',
+]);
+
+const CONTEXT_DRIFT_NEGATIVE_MARKERS = Object.freeze([
+  'fixed meaning',
+  'stable meaning',
+  'same meaning throughout',
+  'the meaning stays fixed',
 ]);
 
 function canonicalizeSignalText(rawQuery) {
@@ -173,6 +378,162 @@ function detectScopePressure(signalText) {
   });
 }
 
+function detectScopeInstabilityPressure(signalText) {
+  const positiveEvidence = collectMarkerEvidence(signalText, SCOPE_INSTABILITY_POSITIVE_MARKERS);
+  const negativeEvidence = collectMarkerEvidence(signalText, SCOPE_INSTABILITY_NEGATIVE_MARKERS);
+
+  return buildObservation({
+    code: 'scope_instability_pressure',
+    label: 'Scope instability pressure',
+    severity: 'moderate',
+    evidence: negativeEvidence.length > 0 ? [] : positiveEvidence,
+    message: 'Zeroglare detected scope instability pressure.',
+  });
+}
+
+function detectCircularDependencyPressure(signalText) {
+  const positiveEvidence = collectMarkerEvidence(signalText, CIRCULAR_DEPENDENCY_POSITIVE_MARKERS);
+  const negativeEvidence = collectMarkerEvidence(signalText, CIRCULAR_DEPENDENCY_NEGATIVE_MARKERS);
+
+  return buildObservation({
+    code: 'circular_dependency_pressure',
+    label: 'Circular dependency pressure',
+    severity: 'moderate',
+    evidence: negativeEvidence.length > 0 ? [] : positiveEvidence,
+    message: 'Zeroglare detected circular dependency pressure.',
+  });
+}
+
+function detectRecursiveFramePressure(signalText) {
+  const positiveEvidence = collectMarkerEvidence(signalText, RECURSIVE_FRAME_POSITIVE_MARKERS);
+  const negativeEvidence = collectMarkerEvidence(signalText, RECURSIVE_FRAME_NEGATIVE_MARKERS);
+
+  return buildObservation({
+    code: 'recursive_frame_pressure',
+    label: 'Recursive frame pressure',
+    severity: 'moderate',
+    evidence: negativeEvidence.length > 0 ? [] : positiveEvidence,
+    message: 'Zeroglare detected recursive frame pressure.',
+  });
+}
+
+function detectConditionalFrameFragility(signalText) {
+  const positiveEvidence = collectMarkerEvidence(signalText, CONDITIONAL_FRAME_POSITIVE_MARKERS);
+  const negativeEvidence = collectMarkerEvidence(signalText, CONDITIONAL_FRAME_NEGATIVE_MARKERS);
+
+  return buildObservation({
+    code: 'conditional_frame_fragility',
+    label: 'Conditional frame fragility',
+    severity: 'moderate',
+    evidence: negativeEvidence.length > 0 ? [] : positiveEvidence,
+    message: 'Zeroglare detected conditional frame fragility.',
+  });
+}
+
+function detectContradictionPressure(signalText) {
+  const positiveEvidence = collectMarkerEvidence(signalText, CONTRADICTION_POSITIVE_MARKERS);
+  const negativeEvidence = collectMarkerEvidence(signalText, CONTRADICTION_NEGATIVE_MARKERS);
+
+  return buildObservation({
+    code: 'contradiction_pressure',
+    label: 'Contradiction pressure',
+    severity: 'moderate',
+    evidence: negativeEvidence.length > 0 ? [] : positiveEvidence,
+    message: 'Zeroglare detected contradiction pressure.',
+  });
+}
+
+function detectUniversalScopePressure(signalText) {
+  const positiveEvidence = collectMarkerEvidence(signalText, UNIVERSAL_SCOPE_POSITIVE_MARKERS);
+  const negativeEvidence = collectMarkerEvidence(signalText, UNIVERSAL_SCOPE_NEGATIVE_MARKERS);
+
+  return buildObservation({
+    code: 'universal_scope_pressure',
+    label: 'Universal scope pressure',
+    severity: 'moderate',
+    evidence: negativeEvidence.length > 0 ? [] : positiveEvidence,
+    message: 'Zeroglare detected universal scope pressure.',
+  });
+}
+
+function detectExceptionLeakPressure(signalText) {
+  const positiveEvidence = collectMarkerEvidence(signalText, EXCEPTION_LEAK_POSITIVE_MARKERS);
+  const negativeEvidence = collectMarkerEvidence(signalText, EXCEPTION_LEAK_NEGATIVE_MARKERS);
+
+  return buildObservation({
+    code: 'exception_leak_pressure',
+    label: 'Exception leak pressure',
+    severity: 'moderate',
+    evidence: negativeEvidence.length > 0 ? [] : positiveEvidence,
+    message: 'Zeroglare detected exception leak pressure.',
+  });
+}
+
+function detectRoleForcingPressure(signalText) {
+  const positiveEvidence = collectMarkerEvidence(signalText, ROLE_FORCING_POSITIVE_MARKERS);
+  const negativeEvidence = collectMarkerEvidence(signalText, ROLE_FORCING_NEGATIVE_MARKERS);
+
+  return buildObservation({
+    code: 'role_forcing_pressure',
+    label: 'Role forcing pressure',
+    severity: 'moderate',
+    evidence: negativeEvidence.length > 0 ? [] : positiveEvidence,
+    message: 'Zeroglare detected role forcing pressure.',
+  });
+}
+
+function detectSelfNegationPressure(signalText) {
+  const positiveEvidence = collectMarkerEvidence(signalText, SELF_NEGATION_POSITIVE_MARKERS);
+  const negativeEvidence = collectMarkerEvidence(signalText, SELF_NEGATION_NEGATIVE_MARKERS);
+
+  return buildObservation({
+    code: 'self_negation_pressure',
+    label: 'Self negation pressure',
+    severity: 'moderate',
+    evidence: negativeEvidence.length > 0 ? [] : positiveEvidence,
+    message: 'Zeroglare detected self negation pressure.',
+  });
+}
+
+function detectCausalBridgePressure(signalText) {
+  const positiveEvidence = collectMarkerEvidence(signalText, CAUSAL_BRIDGE_POSITIVE_MARKERS);
+  const negativeEvidence = collectMarkerEvidence(signalText, CAUSAL_BRIDGE_NEGATIVE_MARKERS);
+
+  return buildObservation({
+    code: 'causal_bridge_pressure',
+    label: 'Causal bridge pressure',
+    severity: 'moderate',
+    evidence: negativeEvidence.length > 0 ? [] : positiveEvidence,
+    message: 'Zeroglare detected causal bridge pressure.',
+  });
+}
+
+function detectReferenceCollapsePressure(signalText) {
+  const positiveEvidence = collectMarkerEvidence(signalText, REFERENCE_COLLAPSE_POSITIVE_MARKERS);
+  const negativeEvidence = collectMarkerEvidence(signalText, REFERENCE_COLLAPSE_NEGATIVE_MARKERS);
+
+  return buildObservation({
+    code: 'reference_collapse_pressure',
+    label: 'Reference collapse pressure',
+    severity: 'moderate',
+    evidence: negativeEvidence.length > 0 ? [] : positiveEvidence,
+    message: 'Zeroglare detected reference collapse pressure.',
+  });
+}
+
+function detectContextDriftPressure(signalText) {
+  const positiveEvidence = collectMarkerEvidence(signalText, CONTEXT_DRIFT_POSITIVE_MARKERS);
+  const negativeEvidence = collectMarkerEvidence(signalText, CONTEXT_DRIFT_NEGATIVE_MARKERS);
+
+  return buildObservation({
+    code: 'context_drift_pressure',
+    label: 'Context drift pressure',
+    severity: 'moderate',
+    evidence: negativeEvidence.length > 0 ? [] : positiveEvidence,
+    message: 'Zeroglare detected context drift pressure.',
+  });
+}
+
 function buildZeroglareDiagnostics(rawQuery) {
   if (typeof rawQuery !== 'string') {
     throw new TypeError('Expected rawQuery to be a string.');
@@ -186,12 +547,25 @@ function buildZeroglareDiagnostics(rawQuery) {
     detectAmbiguitySurface(signalText),
     detectUnsupportedSemanticBridge(signalText),
     detectScopePressure(signalText),
+    detectScopeInstabilityPressure(signalText),
+    detectCircularDependencyPressure(signalText),
+    detectRecursiveFramePressure(signalText),
+    detectConditionalFrameFragility(signalText),
+    detectContradictionPressure(signalText),
+    detectUniversalScopePressure(signalText),
+    detectExceptionLeakPressure(signalText),
+    detectRoleForcingPressure(signalText),
+    detectSelfNegationPressure(signalText),
+    detectCausalBridgePressure(signalText),
+    detectReferenceCollapsePressure(signalText),
+    detectContextDriftPressure(signalText),
   ];
   const activeObservations = observations.filter((observation) => observation.detected);
   const primaryObservation = activeObservations[0] ?? null;
 
   return {
     layer: 'zeroglare',
+    taxonomy_version: ZEROGLOARE_MARKER_TAXONOMY_VERSION,
     definition: ZEROGLOARE_DEFINITION,
     supporting_line: ZEROGLOARE_SUPPORTING_LINE,
     status: activeObservations.length > 0 ? 'pressure' : 'clear',
@@ -226,6 +600,18 @@ function buildZeroglareAnalysis(rawQuery) {
     detectAmbiguitySurface(signalText),
     detectUnsupportedSemanticBridge(signalText),
     detectScopePressure(signalText),
+    detectScopeInstabilityPressure(signalText),
+    detectCircularDependencyPressure(signalText),
+    detectRecursiveFramePressure(signalText),
+    detectConditionalFrameFragility(signalText),
+    detectContradictionPressure(signalText),
+    detectUniversalScopePressure(signalText),
+    detectExceptionLeakPressure(signalText),
+    detectRoleForcingPressure(signalText),
+    detectSelfNegationPressure(signalText),
+    detectCausalBridgePressure(signalText),
+    detectReferenceCollapsePressure(signalText),
+    detectContextDriftPressure(signalText),
   ];
   const activeObservations = observations.filter((observation) => observation.detected);
   const markerCount = activeObservations.length;
@@ -235,6 +621,7 @@ function buildZeroglareAnalysis(rawQuery) {
 
   return {
     resource: 'zeroglare',
+    taxonomy_version: ZEROGLOARE_MARKER_TAXONOMY_VERSION,
     status,
     summary: {
       state: status,
@@ -262,6 +649,8 @@ function buildZeroglareAnalysis(rawQuery) {
 module.exports = {
   ZEROGLOARE_ANALYSIS_PREVIEW_LIMIT,
   ZEROGLOARE_DEFINITION,
+  ZEROGLARE_MARKER_CODES,
+  ZEROGLOARE_MARKER_TAXONOMY_VERSION,
   ZEROGLOARE_PIPELINE_STAGES,
   ZEROGLOARE_SUPPORTING_LINE,
   buildZeroglareAnalysis,

@@ -5,8 +5,8 @@ const conceptsRoute = require('./concepts.route');
 const feedbackRoute = require('./feedback.route');
 const sourcesRoute = require('./sources.route');
 const perspectivesRoute = require('./perspectives.route');
-const zeroglareRoute = require('./zeroglare.route');
 const vocabularyRoute = require('./vocabulary.route');
+const zeroglareRoute = require('./zeroglare.route');
 
 const router = Router();
 

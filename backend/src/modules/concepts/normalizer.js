@@ -31,11 +31,6 @@ function normalizeQuery(rawQuery) {
   normalizedQuery = normalizedQuery.toLowerCase();
   normalizedQuery = normalizedQuery.replace(/\s+/g, ' ');
 
-  const matchingPrefix = findLeadingFillerPhrase(normalizedQuery);
-  if (matchingPrefix) {
-    normalizedQuery = normalizedQuery.slice(matchingPrefix.length);
-  }
-
   normalizedQuery = normalizedQuery.trim();
 
   return normalizedQuery === '' ? EMPTY_NORMALIZED_QUERY : normalizedQuery;
