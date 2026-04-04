@@ -408,6 +408,12 @@ export class RuntimePageComponent implements OnInit {
       return 'Out-of-scope';
     }
 
+    const guardLabel = this.preResolutionGuardStatusLabel(response.interpretation?.interpretationType);
+
+    if (guardLabel) {
+      return guardLabel;
+    }
+
     return 'Blocked';
   }
 
@@ -599,6 +605,12 @@ export class RuntimePageComponent implements OnInit {
       return 'No canonical lookup resolved';
     }
 
+    const guardTitle = this.preResolutionGuardTitle(response.interpretation?.interpretationType);
+
+    if (guardTitle) {
+      return guardTitle;
+    }
+
     return 'No canonical concept resolved';
   }
 
@@ -648,6 +660,12 @@ export class RuntimePageComponent implements OnInit {
 
     if (response.type === 'unsupported_query_type') {
       return 'This runtime supports exact concept resolution and allowlisted comparisons only.';
+    }
+
+    const guardSupportCopy = this.preResolutionGuardSupportCopy(response.interpretation?.interpretationType);
+
+    if (guardSupportCopy) {
+      return guardSupportCopy;
     }
 
     if (response.interpretation?.interpretationType === 'comparison_not_supported') {
@@ -790,8 +808,8 @@ export class RuntimePageComponent implements OnInit {
       return {
         classification: 'empty',
         status: 'idle',
-        label: 'Awaiting input',
-        message: 'Enter any query. The runtime will normalize, classify, then resolve or refuse.',
+        label: 'Waiting for a question',
+        message: 'Enter a question or request to see how the runtime responds.',
         canSubmit: false,
       };
     }
@@ -799,8 +817,8 @@ export class RuntimePageComponent implements OnInit {
     return {
       classification: 'ready',
       status: 'valid',
-      label: 'Ready to classify',
-      message: 'This input will be normalized, classified, then resolved or refused.',
+      label: 'Ready to check',
+      message: 'This question is ready for the live runtime to check.',
       canSubmit: true,
     };
   }
@@ -1127,6 +1145,26 @@ export class RuntimePageComponent implements OnInit {
       };
     }
 
+    const guardTitle = response.type === 'no_exact_match'
+      ? this.preResolutionGuardTitle(response.interpretation?.interpretationType)
+      : null;
+
+    if (guardTitle) {
+      return {
+        key: 'unsupported_composition',
+        query,
+        classLabel: guardTitle,
+        classMeaning: this.preResolutionGuardSupportCopy(response.interpretation?.interpretationType)
+          ?? 'The runtime refuses this input before concept resolution.',
+        outcome: 'refused',
+        interpretation: response.interpretation?.interpretationType ?? response.type,
+        reason: response.interpretation?.message ?? this.refusalMessage(response),
+        queryType: response.queryType,
+        resolution: this.refusalResolutionMethod(response),
+        message: response.interpretation?.message ?? this.refusalMessage(response),
+      };
+    }
+
     return {
       key: 'unsupported_composition',
       query,
@@ -1153,6 +1191,51 @@ export class RuntimePageComponent implements OnInit {
 
   private refusalMessage(response: ResolveProductResponse): string {
     return 'message' in response ? response.message : 'Structured runtime output returned.';
+  }
+
+  private preResolutionGuardStatusLabel(interpretationType: string | undefined): string | null {
+    switch (interpretationType) {
+      case 'unresolved_domain':
+        return 'Unresolved domain';
+      case 'unsupported_semantic_bridge':
+        return 'Unsupported bridge';
+      case 'domain_boundary_violation':
+        return 'Domain boundary';
+      case 'causal_overreach':
+        return 'Causal overreach';
+      default:
+        return null;
+    }
+  }
+
+  private preResolutionGuardTitle(interpretationType: string | undefined): string | null {
+    switch (interpretationType) {
+      case 'unresolved_domain':
+        return 'Unresolved domain refused';
+      case 'unsupported_semantic_bridge':
+        return 'Unsupported semantic bridge';
+      case 'domain_boundary_violation':
+        return 'Domain boundary violation';
+      case 'causal_overreach':
+        return 'Causal overreach';
+      default:
+        return null;
+    }
+  }
+
+  private preResolutionGuardSupportCopy(interpretationType: string | undefined): string | null {
+    switch (interpretationType) {
+      case 'unresolved_domain':
+        return 'The runtime refuses unresolved domains instead of trying to infer a meaning.';
+      case 'unsupported_semantic_bridge':
+        return 'The runtime refuses unsupported bridges instead of promoting a leap between claims.';
+      case 'domain_boundary_violation':
+        return 'The runtime refuses cross-domain jumps without a validated bridge.';
+      case 'causal_overreach':
+        return 'The runtime refuses causal overreach instead of treating correlation as proof.';
+      default:
+        return null;
+    }
   }
 
   private async loadConceptDetail(

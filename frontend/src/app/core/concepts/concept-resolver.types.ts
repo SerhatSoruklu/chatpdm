@@ -13,6 +13,12 @@ export type QueryType =
   | 'unsupported_complex_query'
   | 'invalid_query';
 
+export type PreResolutionGuardInterpretationType =
+  | 'unresolved_domain'
+  | 'unsupported_semantic_bridge'
+  | 'domain_boundary_violation'
+  | 'causal_overreach';
+
 export interface QueryInterpretation {
   interpretationType:
     | 'comparison_not_supported'
@@ -27,7 +33,8 @@ export interface QueryInterpretation {
     | 'exact_concept_not_found'
     | 'visible_only_public_concept'
     | 'explicitly_rejected_concept'
-    | 'invalid_query';
+    | 'invalid_query'
+    | PreResolutionGuardInterpretationType;
   message: string;
   baseConcept?: string;
   concepts?: string[];
@@ -93,6 +100,12 @@ export interface ReadingRegisters {
   simplified: ReadingRegisterFields;
   formal: ReadingRegisterFields;
 }
+
+export type ResolutionStatus =
+  | 'RESOLVED'
+  | 'PARTIALLY_RESOLVED'
+  | 'UNRESOLVED'
+  | 'UNFALSIFIABLE';
 
 export interface GovernanceStateTrace {
   conceptId: string;
@@ -182,6 +195,7 @@ export interface ConceptDetailResponse {
   shortDefinition: string | null;
   coreMeaning: string | null;
   fullDefinition: string | null;
+  resolutionStatus?: ResolutionStatus;
   governanceState: GovernanceState;
   reviewState: ReviewState | null;
   rejection: RejectionState | null;
@@ -207,6 +221,7 @@ export interface ConceptMatchResponse {
     shortDefinition: string;
     coreMeaning: string;
     fullDefinition: string;
+    resolutionStatus?: ResolutionStatus;
     governanceState: GovernanceState;
     registers: ReadingRegisters;
     contexts: ConceptContext[];

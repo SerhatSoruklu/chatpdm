@@ -5,8 +5,7 @@
         <p class="pdm-runtime__eyebrow">Runtime</p>
         <h1 class="pdm-runtime__title" id="pdm-runtime-title">Runtime</h1>
         <p class="pdm-runtime__subtitle">
-          Query the live public runtime. Concepts resolve only if they are admitted and within
-          scope.
+          Ask a question. The live runtime checks whether it belongs in scope and returns a structured result or a clear refusal.
         </p>
         <div class="pdm-runtime__boundary-link-shell">
           <p class="pdm-runtime__boundary-link-copy">
@@ -29,8 +28,7 @@
         </div>
 
         <p class="pdm-runtime__copy">
-          Submit any natural-language query. The runtime normalizes, classifies, then resolves
-          admitted concepts or refuses explicitly without guessing.
+          The live runtime still follows the exact pipeline: input, tokenize, parse / structure, classify / type, validate / enforce, allowed / refused.
         </p>
 
         <form class="pdm-runtime__query-form" (ngSubmit)="submitDraft()">

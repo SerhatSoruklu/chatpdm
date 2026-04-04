@@ -8,6 +8,10 @@ Primary source:
 
 - [authority-law-and-morality.pdf](/home/serhat/code/chatpdm/chatpdm-sources/law/authority-law-and-morality.pdf)
 
+Local structured extract, when generated for private reading:
+
+- `/home/serhat/code/chatpdm/chatpdm-sources_json/authority-law-and-morality.json`
+
 ## Continued Extraction Log
 
 ### 1. Sources Thesis as default validity posture
