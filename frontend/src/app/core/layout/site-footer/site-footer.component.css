@@ -189,6 +189,44 @@
   opacity: 0.72;
 }
 
+.pdm-site-footer__orcid {
+  margin: 0;
+}
+
+.pdm-site-footer__orcid-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(191, 219, 254, 0.82);
+  font-size: 0.84rem;
+  font-weight: 600;
+  line-height: 1.4;
+  text-decoration: none;
+  text-underline-offset: 0.16em;
+  transition:
+    color 160ms ease,
+    opacity 160ms ease;
+}
+
+.pdm-site-footer__orcid-link:hover,
+.pdm-site-footer__orcid-link:focus-visible {
+  color: #f8fafc;
+  text-decoration: underline;
+}
+
+.pdm-site-footer__orcid-icon {
+  display: block;
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+}
+
+.pdm-site-footer__orcid-text {
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
 .pdm-site-footer__grid {
   display: grid;
   gap: 18px 24px;

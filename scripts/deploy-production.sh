@@ -191,7 +191,12 @@ npm --prefix "$RELEASE_DIR/frontend" ci
 log "Building frontend"
 npm --prefix "$RELEASE_DIR/frontend" run build
 
+log "Generating register validation artifact"
+node "$RELEASE_DIR/scripts/validate-registers.js"
+
 log "Validating release artifacts"
+test -f "$RELEASE_DIR/artifacts/register-validation-report.json"
+test -s "$RELEASE_DIR/artifacts/register-validation-report.json"
 test -f "$RELEASE_DIR/frontend/dist/frontend/browser/index.csr.html"
 test -f "$RELEASE_DIR/frontend/dist/frontend/server/index.server.html"
 test -f "$RELEASE_DIR/frontend/dist/frontend/server/server.mjs"
