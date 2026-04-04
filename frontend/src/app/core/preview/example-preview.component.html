@@ -11,6 +11,7 @@
     <span
       class="pdm-example-preview__status"
       [class.pdm-example-preview__status--loading]="previewState().status === 'loading'"
+      [class.pdm-example-preview__status--partial]="previewState().status === 'partial'"
       [class.pdm-example-preview__status--error]="previewState().status === 'error'"
     >
       {{ previewStatus() }}
@@ -64,27 +65,106 @@
         <p class="pdm-example-preview__refusal-query">{{ state.refusal.query }}</p>
         <p class="pdm-example-preview__refusal-copy">{{ state.refusal.message }}</p>
       </section>
-    } @else {
+    } @else if (state.status === 'partial') {
+      <div class="pdm-example-preview__query-shell">
+        <p class="pdm-example-preview__micro-label">Query</p>
+        <p class="pdm-example-preview__query">
+          {{ state.comparison?.query ?? state.refusal?.query ?? 'Seeded runtime examples' }}
+        </p>
+      </div>
+
+      @if (state.comparison) {
+        <dl class="pdm-example-preview__comparison-list" aria-label="Resolved meanings">
+          <div class="pdm-example-preview__comparison-row">
+            <dt class="pdm-example-preview__term">{{ state.comparison.conceptA }}</dt>
+            <dd class="pdm-example-preview__definition">{{ state.comparison.conceptADefinition }}</dd>
+          </div>
+
+          <div class="pdm-example-preview__comparison-row">
+            <dt class="pdm-example-preview__term">{{ state.comparison.conceptB }}</dt>
+            <dd class="pdm-example-preview__definition">{{ state.comparison.conceptBDefinition }}</dd>
+          </div>
+        </dl>
+      } @else if (state.comparisonIssue) {
+        <section class="pdm-example-preview__seed-issue pdm-example-preview__seed-issue--warning">
+          <p class="pdm-example-preview__micro-label">{{ state.comparisonIssue.seedLabel }}</p>
+          <p class="pdm-example-preview__state-copy">{{ state.comparisonIssue.message }}</p>
+          <div class="pdm-example-preview__issue-details">
+            @for (detail of state.comparisonIssue.details; track detail) {
+              <span class="pdm-example-preview__trace-chip">{{ detail }}</span>
+            }
+          </div>
+        </section>
+      }
+
+      @if (state.comparison) {
+        <section class="pdm-example-preview__trace" aria-labelledby="pdm-example-preview-trace-title">
+          <p class="pdm-example-preview__micro-label" id="pdm-example-preview-trace-title">
+            Trace and limits
+          </p>
+
+          <div class="pdm-example-preview__trace-list">
+            @for (chip of state.comparison.traceChips; track chip) {
+              <span class="pdm-example-preview__trace-chip">{{ chip }}</span>
+            }
+          </div>
+
+          @if (state.comparison.boundaryStatement) {
+            <p class="pdm-example-preview__trace-note">{{ state.comparison.boundaryStatement }}</p>
+          }
+        </section>
+      }
+
+      @if (state.refusal) {
+        <section class="pdm-example-preview__refusal" aria-labelledby="pdm-example-preview-refusal-title">
+          <div class="pdm-example-preview__refusal-head">
+            <p class="pdm-example-preview__micro-label" id="pdm-example-preview-refusal-title">
+              Comparison refusal
+            </p>
+
+            <span class="pdm-example-preview__refusal-status">Refused</span>
+          </div>
+
+          <p class="pdm-example-preview__refusal-query">{{ state.refusal.query }}</p>
+          <p class="pdm-example-preview__refusal-copy">{{ state.refusal.message }}</p>
+        </section>
+      } @else if (state.refusalIssue) {
+        <section class="pdm-example-preview__seed-issue pdm-example-preview__seed-issue--warning">
+          <p class="pdm-example-preview__micro-label">{{ state.refusalIssue.seedLabel }}</p>
+          <p class="pdm-example-preview__state-copy">{{ state.refusalIssue.message }}</p>
+          <div class="pdm-example-preview__issue-details">
+            @for (detail of state.refusalIssue.details; track detail) {
+              <span class="pdm-example-preview__trace-chip">{{ detail }}</span>
+            }
+          </div>
+        </section>
+      }
+    } @else if (state.status === 'loading') {
       <div class="pdm-example-preview__query-shell">
         <p class="pdm-example-preview__micro-label">Status</p>
         <p class="pdm-example-preview__query">
-          {{ state.status === 'loading' ? 'Loading seeded queries' : 'Preview unavailable' }}
+          Loading seeded queries
         </p>
       </div>
 
       <section
         class="pdm-example-preview__state-card"
-        [class.pdm-example-preview__state-card--error]="state.status === 'error'"
         aria-live="polite"
       >
         <p class="pdm-example-preview__micro-label">Live resolver</p>
         <p class="pdm-example-preview__state-copy">
-          @if (state.status === 'loading') {
-            Resolving seeded runtime examples from the current contract.
-          } @else {
-            {{ state.message }}
-          }
+          Resolving seeded runtime examples from the current contract.
         </p>
+      </section>
+    } @else {
+      <div class="pdm-example-preview__query-shell">
+        <p class="pdm-example-preview__micro-label">Status</p>
+        <p class="pdm-example-preview__query">Preview unavailable</p>
+      </div>
+
+      <section class="pdm-example-preview__state-card pdm-example-preview__state-card--error" aria-live="polite">
+        <p class="pdm-example-preview__micro-label">Live resolver</p>
+        <p class="pdm-example-preview__state-copy">{{ state.message }}</p>
       </section>
     }
   }
