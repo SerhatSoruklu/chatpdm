@@ -50,14 +50,36 @@
             Built by Serhat Soruklu, founder of
             <a
               class="pdm-site-footer__credit-link"
-              href="https://coupyn.com"
+              [href]="coupynProfileUrl"
               target="_blank"
               rel="noopener noreferrer"
-              title="Visit Coupyn"
+              [pdmTooltip]="coupynProfileLabel"
             >
               Coupyn
             </a>
             .
+          </p>
+          <p class="pdm-site-footer__orcid">
+            <a
+              class="pdm-site-footer__orcid-link"
+              [href]="orcidProfileUrl"
+              target="_blank"
+              rel="me noopener noreferrer"
+              [pdmTooltip]="orcidProfileLabel"
+              [attr.aria-label]="orcidProfileLabel"
+            >
+              <img
+                class="pdm-site-footer__orcid-icon"
+                [src]="orcidIconPath"
+                alt=""
+                aria-hidden="true"
+                width="16"
+                height="16"
+                loading="lazy"
+                decoding="async"
+              />
+              <span class="pdm-site-footer__orcid-text">ORCID iD</span>
+            </a>
           </p>
         </div>
       </section>

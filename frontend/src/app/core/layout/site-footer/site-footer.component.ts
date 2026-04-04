@@ -1,7 +1,14 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ChatPdmLogoComponent } from '../../brand/chatpdm-logo/chatpdm-logo.component';
+import { PdmTooltipDirective } from '../../ui/tooltip/pdm-tooltip.directive';
 import { SITE_CONTACT_EMAIL } from '../site-navigation.data';
+
+const COUPYN_PROFILE_URL = 'https://coupyn.com';
+const COUPYN_PROFILE_LABEL = 'Visit Coupyn';
+const ORCID_PROFILE_URL = 'https://orcid.org/0009-0006-8963-5986';
+const ORCID_ICON_PATH = '/assets/orcid/ORCIDserhat_soruklu.png';
+const ORCID_PROFILE_LABEL = 'Open Serhat Soruklu ORCID profile';
 
 interface FooterLink {
   label: string;
@@ -18,12 +25,17 @@ interface FooterColumn {
 @Component({
   selector: 'app-site-footer',
   standalone: true,
-  imports: [RouterLink, ChatPdmLogoComponent],
+  imports: [RouterLink, ChatPdmLogoComponent, PdmTooltipDirective],
   templateUrl: './site-footer.component.html',
   styleUrl: './site-footer.component.css',
 })
 export class SiteFooterComponent {
   protected readonly contactEmail = SITE_CONTACT_EMAIL;
+  protected readonly coupynProfileUrl = COUPYN_PROFILE_URL;
+  protected readonly coupynProfileLabel = COUPYN_PROFILE_LABEL;
+  protected readonly orcidProfileUrl = ORCID_PROFILE_URL;
+  protected readonly orcidIconPath = ORCID_ICON_PATH;
+  protected readonly orcidProfileLabel = ORCID_PROFILE_LABEL;
   protected readonly footerColumns: FooterColumn[] = [
     {
       title: 'Runtime',
