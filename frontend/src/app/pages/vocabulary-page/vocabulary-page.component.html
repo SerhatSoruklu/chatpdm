@@ -71,53 +71,204 @@
 
       <section class="pdm-vocabulary-page__list-shell pdm-site-surface pdm-site-panel" aria-labelledby="pdm-vocabulary-page-list-title">
         <div class="pdm-vocabulary-page__section-head">
-          <p class="pdm-vocabulary-page__section-label">Vocabulary list</p>
+          <p class="pdm-vocabulary-page__section-label">Registry console</p>
           <h2 class="pdm-vocabulary-page__section-title" id="pdm-vocabulary-page-list-title">
-            All recognized vocabulary terms in the current boundary registry.
+            Search, filter, and inspect recognized boundary terms.
           </h2>
         </div>
 
         <p class="pdm-vocabulary-page__list-note">{{ listNote }}</p>
-
-        <div class="pdm-vocabulary-page__search-shell">
-          <label class="pdm-vocabulary-page__search-label" for="pdm-vocabulary-search">Search vocabulary terms</label>
-          <input
-            id="pdm-vocabulary-search"
-            class="pdm-vocabulary-page__search-input"
-            type="search"
-            [ngModel]="searchQuery()"
-            (ngModelChange)="searchQuery.set($event)"
-            placeholder="Search plain vocabulary terms"
-            autocomplete="off"
-            spellcheck="false"
-          />
-          <p class="pdm-vocabulary-page__search-count">
-            @if (boundaryData(); as data) {
-              Showing {{ formatCount(filteredTerms().length) }} of {{ formatCount(data.total) }} terms
-            } @else {
-              Boundary index unavailable.
-            }
-          </p>
-        </div>
 
         @if (boundaryState().status === 'error') {
           <section class="pdm-vocabulary-page__state-card pdm-vocabulary-page__state-card--error">
             <p class="pdm-vocabulary-page__state-title">Boundary index unavailable</p>
             <p class="pdm-vocabulary-page__state-copy">{{ boundaryErrorMessage() }}</p>
           </section>
-        } @else if (filteredTerms().length === 0) {
-          <section class="pdm-vocabulary-page__state-card">
-            <p class="pdm-vocabulary-page__state-title">No terms matched the current search.</p>
-            <p class="pdm-vocabulary-page__state-copy">
-              Try a broader search string or clear the filter to inspect the full boundary list.
-            </p>
-          </section>
         } @else {
-          <ul class="pdm-vocabulary-page__term-list" aria-label="Recognized legal vocabulary terms">
-            @for (term of filteredTerms(); track term) {
-              <li class="pdm-vocabulary-page__term">{{ term }}</li>
-            }
-          </ul>
+          <div class="pdm-vocabulary-page__console-rail">
+            <section class="pdm-vocabulary-page__search-shell pdm-vocabulary-page__console-panel" aria-label="Search registry terms">
+              <label class="pdm-vocabulary-page__search-label" for="pdm-vocabulary-search">Search registry</label>
+              <input
+                #vocabularySearchInput
+                id="pdm-vocabulary-search"
+                class="pdm-vocabulary-page__search-input"
+                type="search"
+                [value]="searchQuery()"
+                (input)="onSearchChange(vocabularySearchInput.value)"
+                placeholder="Search term, family, or boundary note"
+                autocomplete="off"
+                spellcheck="false"
+              />
+              <p class="pdm-vocabulary-page__search-count">
+                Matches term names, families, classifications, notes, and related terms.
+              </p>
+            </section>
+
+            <section class="pdm-vocabulary-page__filter-shell pdm-vocabulary-page__console-panel" aria-label="Filter registry buckets">
+              <p class="pdm-vocabulary-page__filter-label">Filter by bucket</p>
+              <div class="pdm-vocabulary-page__filter-chips">
+                @for (filter of filterOptions(); track filter.key) {
+                  <button
+                    type="button"
+                    class="pdm-vocabulary-page__filter-chip"
+                    [class.pdm-vocabulary-page__filter-chip--active]="selectedFilter() === filter.key"
+                    (click)="selectFilter(filter.key)"
+                    [attr.aria-pressed]="selectedFilter() === filter.key"
+                  >
+                    <span class="pdm-vocabulary-page__filter-chip-label">{{ filter.label }}</span>
+                    <span class="pdm-vocabulary-page__filter-chip-count">{{ formatCount(filter.count) }}</span>
+                  </button>
+                }
+              </div>
+            </section>
+          </div>
+
+          <div class="pdm-vocabulary-page__summary-grid" aria-label="Registry result summary">
+            <article class="pdm-vocabulary-page__summary-card">
+              <p class="pdm-vocabulary-page__summary-label">Matched terms</p>
+              <p class="pdm-vocabulary-page__summary-value">{{ visibleRangeSummary() }}</p>
+            </article>
+
+            <article class="pdm-vocabulary-page__summary-card">
+              <p class="pdm-vocabulary-page__summary-label">Active bucket</p>
+              <p class="pdm-vocabulary-page__summary-value">{{ activeFilterOption()?.label ?? 'All terms' }}</p>
+              <p class="pdm-vocabulary-page__summary-supporting">
+                {{ formatCount(activeFilterOption()?.count) }} terms
+              </p>
+            </article>
+
+            <article class="pdm-vocabulary-page__summary-card">
+              <p class="pdm-vocabulary-page__summary-label">Page</p>
+              <p class="pdm-vocabulary-page__summary-value">{{ pageSummary() }}</p>
+              <p class="pdm-vocabulary-page__summary-supporting">
+                {{ formatCount(pageSize()) }} rows per page
+              </p>
+            </article>
+          </div>
+
+          @if (filteredEntries().length === 0) {
+            <section class="pdm-vocabulary-page__state-card">
+              <p class="pdm-vocabulary-page__state-title">No terms matched the current search and filter.</p>
+              <p class="pdm-vocabulary-page__state-copy">
+                Try a broader search string or switch the registry bucket to inspect the full boundary list.
+              </p>
+            </section>
+          } @else {
+            <ul class="pdm-vocabulary-page__term-grid" aria-label="Recognized legal vocabulary terms">
+              @for (entry of visibleEntries(); track entry.term) {
+                <li class="pdm-vocabulary-page__term-card">
+                  <div class="pdm-vocabulary-page__term-card-head">
+                    <div class="pdm-vocabulary-page__term-card-copy">
+                      <p class="pdm-vocabulary-page__term-family">{{ entry.familyLabel }}</p>
+                      <h3 class="pdm-vocabulary-page__term-name">{{ entry.term }}</h3>
+                    </div>
+
+                    <div class="pdm-vocabulary-page__term-badges">
+                      <span class="pdm-vocabulary-page__term-badge">{{ entry.classificationLabel }}</span>
+                      <span class="pdm-vocabulary-page__term-badge pdm-vocabulary-page__term-badge--muted">
+                        {{ entry.sourceStatusLabel }}
+                      </span>
+                    </div>
+                  </div>
+
+                  <p class="pdm-vocabulary-page__term-summary">{{ entry.shortMeaning }}</p>
+
+                  <dl class="pdm-vocabulary-page__term-details">
+                    <div class="pdm-vocabulary-page__term-detail">
+                      <dt>Boundary note</dt>
+                      <dd>{{ entry.boundaryNote ?? 'Registry-only term.' }}</dd>
+                    </div>
+
+                    <div class="pdm-vocabulary-page__term-detail">
+                      <dt>Family</dt>
+                      <dd>{{ entry.familyLabel }}</dd>
+                    </div>
+                  </dl>
+                </li>
+              }
+            </ul>
+          }
+
+          <div class="pdm-vocabulary-page__pager-shell" aria-label="Vocabulary pagination and page size">
+            <div class="pdm-vocabulary-page__pager-meta">
+              <p class="pdm-vocabulary-page__pager-label">Registry pagination</p>
+              <p class="pdm-vocabulary-page__pager-copy">{{ resultsSummary() }}</p>
+              <p class="pdm-vocabulary-page__pager-range">{{ pageSummary() }}</p>
+            </div>
+
+            <nav class="pdm-vocabulary-page__pager" aria-label="Vocabulary page navigation">
+              <button
+                type="button"
+                class="pdm-vocabulary-page__pager-button"
+                [disabled]="activePage() === 1 || filteredEntries().length === 0"
+                (click)="selectPage(1)"
+              >
+                First
+              </button>
+
+              <button
+                type="button"
+                class="pdm-vocabulary-page__pager-button"
+                [disabled]="activePage() === 1 || filteredEntries().length === 0"
+                (click)="selectPage(activePage() - 1)"
+              >
+                Previous
+              </button>
+
+              <div class="pdm-vocabulary-page__pager-pages" aria-label="Page numbers">
+                @for (token of pageTokens(); track token.kind === 'page' ? token.page : token.label) {
+                  @if (token.kind === 'page') {
+                    <button
+                      type="button"
+                      class="pdm-vocabulary-page__pager-page"
+                      [class.pdm-vocabulary-page__pager-page--active]="token.active"
+                      [disabled]="token.active || filteredEntries().length === 0"
+                      (click)="selectPage(token.page ?? 1)"
+                    >
+                      {{ token.label }}
+                    </button>
+                  } @else {
+                    <span class="pdm-vocabulary-page__pager-ellipsis" aria-hidden="true">{{ token.label }}</span>
+                  }
+                }
+              </div>
+
+              <button
+                type="button"
+                class="pdm-vocabulary-page__pager-button"
+                [disabled]="activePage() === pageCount() || filteredEntries().length === 0"
+                (click)="selectPage(activePage() + 1)"
+              >
+                Next
+              </button>
+
+              <button
+                type="button"
+                class="pdm-vocabulary-page__pager-button"
+                [disabled]="activePage() === pageCount() || filteredEntries().length === 0"
+                (click)="selectPage(pageCount())"
+              >
+                Last
+              </button>
+            </nav>
+
+            <div class="pdm-vocabulary-page__page-size-shell">
+              <p class="pdm-vocabulary-page__pager-label">Rows per page</p>
+              <div class="pdm-vocabulary-page__page-size-options" role="group" aria-label="Rows per page">
+                @for (size of pageSizeOptions; track size) {
+                  <button
+                    type="button"
+                    class="pdm-vocabulary-page__page-size-option"
+                    [class.pdm-vocabulary-page__page-size-option--active]="pageSize() === size"
+                    (click)="selectPageSize(size)"
+                    [attr.aria-pressed]="pageSize() === size"
+                  >
+                    {{ formatCount(size) }}
+                  </button>
+                }
+              </div>
+            </div>
+          </div>
         }
       </section>
     </div>
