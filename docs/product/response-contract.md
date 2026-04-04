@@ -212,6 +212,7 @@ Allowed `queryType` values:
 
 `answer` object:
 
+- `itemType`: `"core_concept"`
 - `title`: canonical concept title
 - `shortDefinition`: short editorially constrained definition
 - `coreMeaning`: compressed semantic center of the concept

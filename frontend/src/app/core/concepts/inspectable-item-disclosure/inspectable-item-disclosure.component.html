@@ -1,0 +1,37 @@
+<div class="pdm-inspectable-disclosure" [attr.data-item-type]="itemType()">
+  <button
+    class="pdm-inspectable-disclosure__toggle"
+    type="button"
+    [attr.aria-expanded]="isExpanded()"
+    [attr.aria-controls]="contentId"
+    (click)="toggleDisclosure()"
+  >
+    <span class="pdm-inspectable-disclosure__toggle-text">{{ toggleLabel() }}</span>
+    <span class="pdm-inspectable-disclosure__toggle-mark" aria-hidden="true">
+      {{ isExpanded() ? '-' : '+' }}
+    </span>
+  </button>
+
+  @if (isExpanded()) {
+    <dl class="pdm-inspectable-disclosure__content" [id]="contentId">
+      @switch (itemType()) {
+        @case ('core_concept') {
+          @for (row of coreRows(); track row.label) {
+            <div class="pdm-inspectable-disclosure__row">
+              <dt class="pdm-inspectable-disclosure__label">{{ row.label }}</dt>
+              <dd class="pdm-inspectable-disclosure__value">{{ row.value }}</dd>
+            </div>
+          }
+        }
+        @case ('registry_term') {
+          @for (row of registryRows(); track row.label) {
+            <div class="pdm-inspectable-disclosure__row">
+              <dt class="pdm-inspectable-disclosure__label">{{ row.label }}</dt>
+              <dd class="pdm-inspectable-disclosure__value">{{ row.value }}</dd>
+            </div>
+          }
+        }
+      }
+    </dl>
+  }
+</div>

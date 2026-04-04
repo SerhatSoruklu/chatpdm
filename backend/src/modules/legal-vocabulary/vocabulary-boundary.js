@@ -9,6 +9,11 @@ const {
   VISIBLE_ONLY_PUBLIC_CONCEPT_IDS,
 } = require('../concepts/admission-state');
 const {
+  REGISTRY_TERM_ITEM_TYPE,
+  getRegistryInterpretationFallback,
+  getWhyRegistryOnlyFallback,
+} = require('../inspectable-item-contract');
+const {
   loadLegalVocabularyRegistry,
 } = require('./recognition-registry-loader');
 
@@ -108,11 +113,34 @@ function firstSentence(value) {
   return trimmed.slice(0, sentenceEnd + 1).trim();
 }
 
+const TERM_SEMANTIC_OVERRIDES = Object.freeze({
+  'ab initio': Object.freeze({
+    meaningInLaw: 'From the beginning; in law, treated as starting at the outset.',
+    registryInterpretation: 'Recognized legal vocabulary with fixed Latin usage, but not normalized here into a single runtime-safe structural concept.',
+    whyRegistryOnly: 'This term remains registry-only because its legal usage is inspectable but it is not admitted to runtime ontology.',
+  }),
+  abandonment: Object.freeze({
+    meaningInLaw: 'Intentional relinquishment or surrender of a right, claim, interest, or property.',
+    registryInterpretation: 'Recognized legal vocabulary with broad contextual usage, but not normalized here into a single runtime-safe structural concept.',
+    whyRegistryOnly: 'This term remains registry-only because its legal usage is contextual and it is not admitted to runtime ontology.',
+  }),
+});
+
+function getTermSemanticOverride(term) {
+  return TERM_SEMANTIC_OVERRIDES[term] ?? null;
+}
+
+// Compatibility residue remains intentionally narrow.
+// - shortMeaning: keep as the compact registry-card summary and search helper.
+// - definition: remove_later; legacy compatibility/search text only.
+// - boundaryNote: alias to the older boundary-note surface, retained only for compatibility/search.
 function buildRegistryOnlyEntry(term, family, classification) {
   const familyLabel = formatFamilyLabel(family);
   const classificationLabel = formatClassificationLabel(classification);
+  const semanticOverride = getTermSemanticOverride(term);
 
   return {
+    itemType: REGISTRY_TERM_ITEM_TYPE,
     term,
     family,
     familyLabel,
@@ -120,6 +148,11 @@ function buildRegistryOnlyEntry(term, family, classification) {
     classificationLabel,
     sourceStatus: 'registry_only',
     sourceStatusLabel: 'Registry-only',
+    meaningInLaw: semanticOverride?.meaningInLaw ?? null,
+    registryInterpretation: semanticOverride?.registryInterpretation
+      ?? getRegistryInterpretationFallback(classification),
+    whyRegistryOnly: semanticOverride?.whyRegistryOnly
+      ?? getWhyRegistryOnlyFallback('registry_only'),
     shortMeaning: `${familyLabel} registry term.`,
     definition: `Registry-only term in the ${familyLabel} family. No published concept packet is available for this entry.`,
     example: null,
@@ -241,8 +274,10 @@ function buildPacketBackedEntry(term, family, classification, packet) {
   const nearMiss = getPacketNearMiss(packet);
   const nonGoal = getPacketNonGoal(packet);
   const relatedTerms = getPacketRelatedTerms(packet);
+  const meaningInLaw = shortMeaning || null;
 
   return {
+    itemType: REGISTRY_TERM_ITEM_TYPE,
     term,
     family,
     familyLabel,
@@ -250,6 +285,9 @@ function buildPacketBackedEntry(term, family, classification, packet) {
     classificationLabel,
     sourceStatus: 'packet_backed',
     sourceStatusLabel: 'Packet-backed',
+    meaningInLaw,
+    registryInterpretation: getRegistryInterpretationFallback(classification),
+    whyRegistryOnly: getWhyRegistryOnlyFallback('packet_backed'),
     shortMeaning: shortMeaning || `${familyLabel} concept packet.`,
     definition: packet.fullDefinition ?? packet.coreMeaning ?? packet.shortDefinition ?? `${familyLabel} concept packet.`,
     example,

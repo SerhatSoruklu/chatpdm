@@ -172,11 +172,16 @@ export function buildVocabularySearchSummary(
 }
 
 function buildVocabularySearchText(entry: VocabularyBoundaryEntry): string {
+  // Legacy registry payload fields remain searchable here for compatibility only.
+  // The canonical semantic contract now lives in the disclosure fields.
   return [
     entry.term,
     entry.familyLabel,
     entry.classificationLabel,
     entry.sourceStatusLabel,
+    entry.meaningInLaw ?? '',
+    entry.registryInterpretation,
+    entry.whyRegistryOnly,
     entry.shortMeaning,
     entry.boundaryNote ?? '',
     entry.example ?? '',

@@ -27,6 +27,11 @@ import {
 } from '../../core/concepts/concept-resolver.types';
 import { AiAdvisoryComponent } from '../../core/ai/ai-advisory/ai-advisory.component';
 import { AiTrackingEventType, AiTrackingService } from '../../core/ai/ai-tracking.service';
+import { InspectableItemDisclosureComponent } from '../../core/concepts/inspectable-item-disclosure/inspectable-item-disclosure.component';
+import {
+  buildInspectableItemDisclosureCoreData,
+  type InspectableItemDisclosureCoreData,
+} from '../../core/concepts/inspectable-item-disclosure/inspectable-item-disclosure.model';
 import { ExamplePreviewComponent } from '../../core/preview/example-preview.component';
 import { PdmTooltipDirective } from '../../core/ui/tooltip/pdm-tooltip.directive';
 import {
@@ -216,6 +221,7 @@ const NO_EXACT_MATCH_FEEDBACK_OPTIONS: FeedbackOption[] = [
     FormsModule,
     RouterLink,
     AiAdvisoryComponent,
+    InspectableItemDisclosureComponent,
     ExamplePreviewComponent,
     PdmTooltipDirective,
     VocabularyPanelComponent,
@@ -756,6 +762,10 @@ export class LandingPageComponent {
     return detail?.reviewState?.admission === 'visible_only_derived';
   }
 
+  protected visibleOnlyDisclosureData(detail: ConceptDetailResponse): InspectableItemDisclosureCoreData | null {
+    return buildInspectableItemDisclosureCoreData(detail);
+  }
+
   protected isVisibleOnlyRefusal(
     response: RefusalResponse,
     detail: ConceptDetailResponse | null | undefined,
@@ -996,10 +1006,6 @@ export class LandingPageComponent {
       coreMeaning: activeMode.coreMeaning,
       fullDefinition: activeMode.fullDefinition,
     };
-  }
-
-  protected definitionParagraphs(fullDefinition: string): string[] {
-    return fullDefinition.split('\n\n');
   }
 
   protected canonicalHashShort(response: ConceptMatchResponse): string {

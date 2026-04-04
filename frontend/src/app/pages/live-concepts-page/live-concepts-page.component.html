@@ -77,19 +77,10 @@
                 </div>
               </div>
 
-              <section class="pdm-live-concepts__content-block">
-                <p class="pdm-live-concepts__block-label">Core meaning</p>
-                <p class="pdm-live-concepts__copy">{{ concept.answer.coreMeaning }}</p>
-              </section>
-
-              <section class="pdm-live-concepts__content-block">
-                <p class="pdm-live-concepts__block-label">Full definition</p>
-                <div class="pdm-live-concepts__definition-stack">
-                  @for (paragraph of definitionParagraphs(concept.answer.fullDefinition); track paragraph) {
-                    <p class="pdm-live-concepts__copy">{{ paragraph }}</p>
-                  }
-                </div>
-              </section>
+              <app-inspectable-item-disclosure
+                [itemType]="'core_concept'"
+                [semanticData]="concept.answer"
+              />
 
               <div class="pdm-live-concepts__split">
                 <section class="pdm-live-concepts__content-block">

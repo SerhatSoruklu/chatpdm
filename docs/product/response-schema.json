@@ -822,6 +822,7 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
+        "itemType",
         "title",
         "shortDefinition",
         "coreMeaning",
@@ -833,6 +834,9 @@
         "relatedConcepts"
       ],
       "properties": {
+        "itemType": {
+          "const": "core_concept"
+        },
         "title": {
           "$ref": "#/$defs/stringValue"
         },

@@ -26,12 +26,14 @@ test('valid ordinary concepts still resolve through the normal path', () => {
 
   assert.equal(response.type, 'concept_match');
   assert.equal(response.resolution.method, 'exact_alias');
+  assert.equal(response.answer.itemType, 'core_concept');
 
   const pipelineResult = runFullPipeline('authority');
 
   assert.equal(pipelineResult.final_output.state, 'valid');
   assert.equal(pipelineResult.resolution_output.type, 'LIVE_RESOLUTION');
   assert.equal(pipelineResult.resolution_output.payload.type, 'concept_match');
+  assert.equal(pipelineResult.resolution_output.payload.answer.itemType, 'core_concept');
 });
 
 test('unresolved domain inputs refuse before resolution', () => {

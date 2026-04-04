@@ -14,6 +14,9 @@ export interface VocabularyBoundaryEntry {
   readonly classificationLabel: string;
   readonly sourceStatus: 'packet_backed' | 'registry_only';
   readonly sourceStatusLabel: string;
+  readonly meaningInLaw: string | null;
+  readonly registryInterpretation: string;
+  readonly whyRegistryOnly: string;
   readonly shortMeaning: string;
   readonly definition: string;
   readonly example: string | null;

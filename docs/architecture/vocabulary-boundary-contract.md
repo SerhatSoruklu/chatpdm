@@ -72,8 +72,17 @@ The following are forbidden:
 - synonym substitution inside the resolver
 - use of vocabulary as concept-comparison input
 - rendering vocabulary as concept cards or concept pages
-- attaching concept-level explanatory payloads to vocabulary terms
+- attaching core-concept explanatory payloads to vocabulary terms
 - exposing vocabulary as resolver-admitted entities
+
+Registry-term boundary entries may expose bounded semantic fields for inspection:
+
+- `itemType: registry_term`
+- `meaningInLaw`
+- `registryInterpretation`
+- `whyRegistryOnly`
+
+These fields are explanatory, not admitting, and they do not convert a registry term into a core concept.
 
 ## UI Contract
 
@@ -82,7 +91,8 @@ Vocabulary terms must:
 - be displayed as boundary-only plain text
 - not link to concept pages because they are vocabulary terms
 - not be styled as live or visible-only concepts
-- not include definitions or concept explanations on the vocabulary boundary surface
+- not include core-concept definitions on the vocabulary boundary surface
+- keep registry-term semantic fields bounded to inspection text
 
 Mandatory warning:
 

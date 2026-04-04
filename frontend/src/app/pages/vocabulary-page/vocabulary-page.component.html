@@ -173,10 +173,15 @@
 
                   <p class="pdm-vocabulary-page__term-summary">{{ entry.shortMeaning }}</p>
 
+                  <app-inspectable-item-disclosure
+                    [itemType]="'registry_term'"
+                    [semanticData]="entry"
+                  />
+
                   <dl class="pdm-vocabulary-page__term-details">
                     <div class="pdm-vocabulary-page__term-detail">
                       <dt>Boundary note</dt>
-                      <dd>{{ entry.boundaryNote ?? 'Registry-only term.' }}</dd>
+                      <dd>{{ entry.whyRegistryOnly }}</dd>
                     </div>
 
                     <div class="pdm-vocabulary-page__term-detail">
