@@ -951,6 +951,62 @@
 
       <section
         class="pdm-home__steps-section"
+        id="walkthrough"
+        aria-labelledby="pdm-walkthrough-title"
+      >
+        <div class="pdm-home__section-head pdm-home__section-head--walkthrough">
+          <div>
+            <p class="pdm-home__section-label">WALKTHROUGH</p>
+            <h2 class="pdm-home__section-title" id="pdm-walkthrough-title">
+              What happens when ZeroGlare analyzes text
+            </h2>
+            <p class="pdm-home__section-copy pdm-home__section-copy--attached">
+              Plain language explains the flow clearly. Technical details show the exact analysis pipeline.
+            </p>
+          </div>
+
+          <div class="pdm-home__walkthrough-switch-shell">
+            <p class="pdm-home__micro-label">Layer</p>
+            <div class="pdm-home__walkthrough-switch" role="group" aria-label="Walkthrough layer">
+              @for (option of walkthroughModeOptions; track option.mode) {
+                <button
+                  class="pdm-home__walkthrough-switch-option"
+                  type="button"
+                  [class.pdm-home__walkthrough-switch-option--active]="walkthroughMode() === option.mode"
+                  [attr.aria-pressed]="walkthroughMode() === option.mode"
+                  (click)="setWalkthroughMode(option.mode)"
+                >
+                  {{ option.label }}
+                </button>
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="pdm-home__steps-grid pdm-home__steps-grid--pipeline pdm-home__steps-grid--walkthrough">
+          @for (step of walkthroughCards(); track step.id) {
+            <article class="pdm-home__step-card pdm-site-surface">
+              <div class="pdm-home__step-head">
+                <p class="pdm-home__step-sequence">{{ step.sequence }}</p>
+                <p class="pdm-home__step-index">{{ step.view.label }}</p>
+              </div>
+              <h3>{{ step.view.title }}</h3>
+              <p>{{ step.view.copy }}</p>
+              <p class="pdm-home__step-result">
+                <span class="pdm-home__step-result-mark" aria-hidden="true">→</span>
+                <span>{{ step.view.resultLine }}</span>
+              </p>
+              <div class="pdm-home__step-anchor" aria-label="Pipeline stage">
+                <span class="pdm-home__micro-label">Pipeline stage</span>
+                <span class="pdm-home__step-anchor-value pdm-mono">{{ step.view.pipelineStage }}</span>
+              </div>
+            </article>
+          }
+        </div>
+      </section>
+
+      <section
+        class="pdm-home__steps-section"
         id="mechanism"
         aria-labelledby="pdm-steps-title"
       >

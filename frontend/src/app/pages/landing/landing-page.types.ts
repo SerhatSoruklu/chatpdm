@@ -20,6 +20,32 @@ export interface HomepageSignal {
   label: string;
 }
 
+export type HomepageWalkthroughMode = 'plain' | 'technical';
+
+export interface HomepageWalkthroughModeOption {
+  mode: HomepageWalkthroughMode;
+  label: string;
+}
+
+export interface HomepageWalkthroughCardView {
+  label: string;
+  title: string;
+  copy: string;
+  resultLine: string;
+  pipelineStage: string;
+}
+
+export interface HomepageWalkthroughCard {
+  id: string;
+  sequence: string;
+  plain: HomepageWalkthroughCardView;
+  technical: HomepageWalkthroughCardView;
+}
+
+export interface HomepageWalkthroughRenderedCard extends HomepageWalkthroughCard {
+  view: HomepageWalkthroughCardView;
+}
+
 export interface HomepageStep {
   id: string;
   sequence: string;

@@ -46,16 +46,20 @@ import {
 import { VocabularyPanelComponent } from '../../core/concepts/vocabulary-panel/vocabulary-panel.component';
 import { FeedbackService } from '../../core/feedback/feedback.service';
 import type { VocabularyBoundaryResolvedState } from '../../core/vocabulary/vocabulary-boundary.types';
+import {
+  HOMEPAGE_WALKTHROUGH_MODE_OPTIONS,
+  buildHomepageWalkthroughCards,
+} from './landing-page.model';
 import type {
   AmbiguousSelectionOrigin,
   EntryFeedbackState,
   FeedbackOption,
   HomepageStep,
   LandingComparisonResponse,
-  LinkAction,
   ReferenceLinkGroup,
   ResolverEntry,
   ScopeGroup,
+  HomepageWalkthroughMode,
   SubmitQueryOptions,
 } from './landing-page.types';
 import { VOCABULARY_BOUNDARY_HOME_NOTE } from '../vocabulary-page/vocabulary-page.model';
@@ -234,6 +238,11 @@ export class LandingPageComponent {
   protected readonly isSubmitting = signal(false);
   protected readonly scopeGroups = FILTERED_SCOPE_GROUPS;
   protected readonly homepageSteps = HOMEPAGE_STEPS;
+  protected readonly walkthroughModeOptions = HOMEPAGE_WALKTHROUGH_MODE_OPTIONS;
+  protected readonly walkthroughMode = signal<HomepageWalkthroughMode>('plain');
+  protected readonly walkthroughCards = computed(() =>
+    buildHomepageWalkthroughCards(this.walkthroughMode()),
+  );
   protected readonly referenceSurfaceGroups = REFERENCE_SURFACE_GROUPS;
   protected readonly liveRuntimeConceptIds = LIVE_RUNTIME_CONCEPT_IDS;
   protected readonly visibleOnlyConceptIds = VISIBLE_ONLY_PUBLIC_CONCEPT_IDS;
@@ -270,6 +279,10 @@ export class LandingPageComponent {
     }
 
     return this.countFormatter.format(value);
+  }
+
+  protected setWalkthroughMode(mode: HomepageWalkthroughMode): void {
+    this.walkthroughMode.set(mode);
   }
 
   protected async submitDraft(): Promise<void> {
