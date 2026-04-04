@@ -27,17 +27,22 @@ const CASES = [
     },
   },
   {
-    name: 'scope pressure hits rhetorical noise and scope pressure',
+    name: 'scope pressure hits rhetorical noise, scope pressure, and role forcing',
     input: 'Who decides what is legitimate for all cases everywhere?',
     expected: {
-      status: 'pressure',
-      markers: ['rhetorical_noise', 'scope_pressure'],
-      markerCount: 2,
+      status: 'fail',
+      markers: [
+        'rhetorical_noise',
+        'scope_pressure',
+        'universal_scope_pressure',
+        'role_forcing_pressure',
+      ],
+      markerCount: 4,
     },
   },
   {
     name: 'unsupported semantic bridge is detected on its own',
-    input: 'Authority is the same as moral truth in all systems.',
+    input: 'Authority is the same as moral truth.',
     expected: {
       status: 'pressure',
       markers: ['unsupported_semantic_bridge'],
@@ -54,7 +59,7 @@ const CASES = [
     },
   },
   {
-    name: 'multi-pressure input fails with four markers',
+    name: 'multi-pressure input fails with five markers',
     input: 'If authority is just a social construct, then who decides what is legitimate for all cases, or maybe it counts as everything in practice?',
     expected: {
       status: 'fail',
@@ -63,8 +68,9 @@ const CASES = [
         'ambiguity_surface',
         'unsupported_semantic_bridge',
         'scope_pressure',
+        'role_forcing_pressure',
       ],
-      markerCount: 4,
+      markerCount: 5,
     },
   },
   {
@@ -86,21 +92,21 @@ const CASES = [
     },
   },
   {
-    name: 'contradiction pressure wording stays clear today',
+    name: 'contradiction pressure wording is detected today',
     input: 'Authority is always valid, but it is also never valid.',
     expected: {
-      status: 'clear',
-      markers: [],
-      markerCount: 0,
+      status: 'pressure',
+      markers: ['contradiction_pressure'],
+      markerCount: 1,
     },
   },
   {
-    name: 'false universal claim stays clear today',
+    name: 'false universal claim is detected today',
     input: 'All systems must accept one single authority definition.',
     expected: {
-      status: 'clear',
-      markers: [],
-      markerCount: 0,
+      status: 'pressure',
+      markers: ['universal_scope_pressure'],
+      markerCount: 1,
     },
   },
   {

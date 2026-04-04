@@ -26,6 +26,12 @@ const RESERVED_AUTHORED_OVERLAY_FIELDS = Object.freeze([
 ]);
 const AUTHORED_REGISTER_MODES = Object.freeze(['standard', 'simplified', 'formal']);
 const AUTHORED_REGISTER_FIELDS = Object.freeze(['shortDefinition', 'coreMeaning', 'fullDefinition']);
+const RESOLUTION_STATUS_VALUES = Object.freeze([
+  'RESOLVED',
+  'PARTIALLY_RESOLVED',
+  'UNRESOLVED',
+  'UNFALSIFIABLE',
+]);
 
 const PRIMARY_SOURCE_BY_CONCEPT = Object.freeze({
   authority: 'weber',
@@ -88,6 +94,7 @@ function buildCanonicalConceptHashInput(concept) {
   delete canonicalConcept.boundaryProofs;
   delete canonicalConcept.constraintContract;
   delete canonicalConcept.structureV3;
+  delete canonicalConcept.resolutionStatus;
   return canonicalConcept;
 }
 
@@ -146,6 +153,18 @@ function validateRegistersShape(concept, conceptId) {
       );
     }
   });
+}
+
+function validateResolutionStatusShape(concept, conceptId) {
+  if (!Object.hasOwn(concept, 'resolutionStatus')) {
+    return;
+  }
+
+  if (typeof concept.resolutionStatus !== 'string' || !RESOLUTION_STATUS_VALUES.includes(concept.resolutionStatus)) {
+    throw new Error(
+      `Concept "${conceptId}" has unsupported resolutionStatus "${concept.resolutionStatus}".`,
+    );
+  }
 }
 
 function validateComparisonAxis(axis, conceptId, relatedConceptId, axisIndex) {
@@ -365,6 +384,7 @@ function validateConceptShape(concept, expectedConceptId) {
   assertArray(concept.relatedConcepts, 'relatedConcepts', expectedConceptId);
   assertArray(concept.aliases, 'aliases', expectedConceptId);
   assertArray(concept.normalizedAliases, 'normalizedAliases', expectedConceptId);
+  validateResolutionStatusShape(concept, expectedConceptId);
   validateComparisonShape(concept.comparison, expectedConceptId);
   validateBoundaryProofCatalog(concept.boundaryProofs, expectedConceptId);
   validateConstraintContractShape(concept.constraintContract, expectedConceptId);
@@ -419,5 +439,6 @@ module.exports = {
   computeCanonicalConceptHash,
   getConceptById,
   loadConceptSet,
+  RESOLUTION_STATUS_VALUES,
   validateConceptShape,
 };

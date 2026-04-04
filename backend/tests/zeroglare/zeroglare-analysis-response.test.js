@@ -25,6 +25,7 @@ test('zeroglare analyze returns a compact summary payload', async (t) => {
 
   const body = await response.json();
   assert.equal(body.resource, 'zeroglare');
+  assert.equal(body.taxonomy_version, 'v1');
   assert.equal(body.status, 'fail');
   assert.equal(body.summary.state, 'fail');
   assert.equal(body.summary.marker_count, 4);

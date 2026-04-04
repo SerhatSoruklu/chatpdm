@@ -69,27 +69,64 @@ function verifyVisibleOnlyDetailAvailability() {
 
 function verifyVisibleOnlyExactRuntimeRefusal() {
   const cases = [
-    { query: 'violation', targetConceptId: 'violation' },
-    { query: 'what is violation', targetConceptId: 'violation' },
-    { query: 'agreement', targetConceptId: 'agreement' },
-    { query: 'what is agreement', targetConceptId: 'agreement' },
+    {
+      query: 'violation',
+      targetConceptId: 'violation',
+      expectedType: 'no_exact_match',
+      expectedMethod: 'out_of_scope',
+      expectedQueryType: 'exact_concept_query',
+      expectedInterpretationType: 'visible_only_public_concept',
+    },
+    {
+      query: 'what is violation',
+      expectedType: 'unsupported_query_type',
+      expectedMethod: 'unsupported_query_type',
+      expectedQueryType: 'unsupported_complex_query',
+      expectedInterpretationType: 'unsupported_complex',
+    },
+    {
+      query: 'agreement',
+      targetConceptId: 'agreement',
+      expectedType: 'no_exact_match',
+      expectedMethod: 'out_of_scope',
+      expectedQueryType: 'exact_concept_query',
+      expectedInterpretationType: 'visible_only_public_concept',
+    },
+    {
+      query: 'what is agreement',
+      expectedType: 'unsupported_query_type',
+      expectedMethod: 'unsupported_query_type',
+      expectedQueryType: 'unsupported_complex_query',
+      expectedInterpretationType: 'unsupported_complex',
+    },
   ];
 
-  cases.forEach(({ query, targetConceptId }) => {
+  cases.forEach(({
+    query,
+    targetConceptId,
+    expectedType,
+    expectedMethod,
+    expectedQueryType,
+    expectedInterpretationType,
+  }) => {
     const response = resolveConceptQuery(query);
 
-    assert.equal(response.type, 'no_exact_match', `${query} should remain a refusal.`);
-    assert.equal(response.queryType, 'exact_concept_query', `${query} queryType mismatch.`);
+    assert.equal(response.type, expectedType, `${query} should remain a refusal.`);
+    assert.equal(response.queryType, expectedQueryType, `${query} queryType mismatch.`);
+    assert.equal(response.resolution?.method, expectedMethod, `${query} resolution.method mismatch.`);
     assert.equal(
       response.interpretation?.interpretationType,
-      'visible_only_public_concept',
+      expectedInterpretationType,
       `${query} interpretationType mismatch.`,
     );
-    assert.equal(
-      response.interpretation?.targetConceptId,
-      targetConceptId,
-      `${query} targetConceptId mismatch.`,
-    );
+
+    if (typeof targetConceptId === 'string') {
+      assert.equal(
+        response.interpretation?.targetConceptId,
+        targetConceptId,
+        `${query} targetConceptId mismatch.`,
+      );
+    }
   });
 
   process.stdout.write('PASS admission_boundary_visible_only_exact_runtime_refusal\n');

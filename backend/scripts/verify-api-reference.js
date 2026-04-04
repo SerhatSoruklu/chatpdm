@@ -98,8 +98,18 @@ async function verifyEndpointExistenceAndMethodPairing(baseUrl) {
   const conceptsResolve = await request('GET', `${baseUrl}/api/v1/concepts/resolve?q=authority`);
   assert.equal(conceptsResolve.status, 200, 'GET /api/v1/concepts/resolve should succeed.');
 
-  const conceptsResolveWrongMethod = await request('POST', `${baseUrl}/api/v1/concepts/resolve`);
-  assert.equal(conceptsResolveWrongMethod.status, 404, 'POST /api/v1/concepts/resolve should not be routed.');
+  const conceptsResolvePost = await request('POST', `${baseUrl}/api/v1/concepts/resolve`, {
+    payload: { input: 'authority' },
+  });
+  assert.equal(conceptsResolvePost.status, 200, 'POST /api/v1/concepts/resolve should succeed.');
+
+  const vocabularyClassify = await request('POST', `${baseUrl}/api/vocabulary/classify`, {
+    payload: { input: 'obligation' },
+  });
+  assert.equal(vocabularyClassify.status, 200, 'POST /api/vocabulary/classify should succeed.');
+
+  const vocabularyWrongMethod = await request('GET', `${baseUrl}/api/vocabulary/classify`);
+  assert.equal(vocabularyWrongMethod.status, 404, 'GET /api/vocabulary/classify should not be routed.');
 
   const conceptDetail = await request('GET', `${baseUrl}/api/v1/concepts/authority`);
   assert.equal(conceptDetail.status, 200, 'GET /api/v1/concepts/:conceptId should succeed for live concepts.');
@@ -132,6 +142,42 @@ async function verifyConceptResolutionEndpoint(baseUrl) {
   assert.equal(liveConcept.status, 200, 'authority resolution should return 200.');
   assert.equal(liveConcept.body.type, 'concept_match', 'authority should resolve as concept_match.');
   assert.equal(liveConcept.body.resolution.conceptId, 'authority', 'authority conceptId mismatch.');
+  assert.equal(
+    Object.prototype.hasOwnProperty.call(liveConcept.body, 'vocabulary'),
+    false,
+    'authority resolution must not expose a vocabulary payload.',
+  );
+
+  const vocabulary = await request(
+    'GET',
+    `${baseUrl}/api/v1/concepts/resolve?q=${encodeURIComponent('obligation')}`,
+  );
+  assert.equal(vocabulary.status, 200, 'vocabulary refusal should return 200.');
+  assert.equal(vocabulary.body.type, 'VOCABULARY_DETECTED', 'obligation should refuse through VOCABULARY_DETECTED.');
+  assert.equal(vocabulary.body.finalState, 'refused', 'obligation vocabulary refusal finalState mismatch.');
+  assert.equal(vocabulary.body.resolution.method, 'vocabulary_guard', 'obligation vocabulary refusal method mismatch.');
+  assert.equal(vocabulary.body.vocabulary.term, 'obligation', 'obligation vocabulary term mismatch.');
+  assert.equal(vocabulary.body.vocabulary.matched, true, 'obligation vocabulary matched flag mismatch.');
+
+  const postVocabulary = await request('POST', `${baseUrl}/api/v1/concepts/resolve`, {
+    payload: { input: 'obligation' },
+  });
+  assert.equal(postVocabulary.status, 200, 'POST resolver vocabulary refusal should return 200.');
+  assert.equal(postVocabulary.body.type, 'VOCABULARY_DETECTED', 'POST resolver obligation must refuse through VOCABULARY_DETECTED.');
+  assert.equal(postVocabulary.body.finalState, 'refused', 'POST resolver obligation finalState mismatch.');
+  assert.equal(postVocabulary.body.vocabulary.term, 'obligation', 'POST resolver obligation vocabulary term mismatch.');
+
+  const postDuty = await request('POST', `${baseUrl}/api/v1/concepts/resolve`, {
+    payload: { input: 'duty' },
+  });
+  assert.equal(postDuty.status, 200, 'POST resolver duty should return 200.');
+  assert.equal(postDuty.body.type, 'concept_match', 'POST resolver duty should resolve as concept_match.');
+  assert.equal(postDuty.body.resolution.conceptId, 'duty', 'POST resolver duty conceptId mismatch.');
+  assert.equal(
+    Object.prototype.hasOwnProperty.call(postDuty.body, 'vocabulary'),
+    false,
+    'POST resolver duty must not expose a vocabulary payload.',
+  );
 
   const outOfScope = await request(
     'GET',
@@ -155,6 +201,43 @@ async function verifyConceptResolutionEndpoint(baseUrl) {
   );
 
   process.stdout.write('PASS api_concept_resolution_behavior_matches_runtime_contract\n');
+}
+
+async function verifyVocabularyClassificationEndpoint(baseUrl) {
+  const obligation = await request('POST', `${baseUrl}/api/vocabulary/classify`, {
+    payload: { input: 'obligation' },
+  });
+  assert.equal(obligation.status, 200, 'obligation vocabulary classify should return 200.');
+  assert.equal(obligation.body.matched, true, 'obligation vocabulary classify matched flag mismatch.');
+  assert.equal(obligation.body.term, 'obligation', 'obligation vocabulary classify term mismatch.');
+  assert.equal(obligation.body.classification, 'legal_term', 'obligation vocabulary classify classification mismatch.');
+
+  const liability = await request('POST', `${baseUrl}/api/vocabulary/classify`, {
+    payload: { input: 'liability' },
+  });
+  assert.equal(liability.status, 200, 'liability vocabulary classify should return 200.');
+  assert.equal(liability.body.matched, true, 'liability vocabulary classify matched flag mismatch.');
+  assert.equal(liability.body.term, 'liability', 'liability vocabulary classify term mismatch.');
+
+  const unknown = await request('POST', `${baseUrl}/api/vocabulary/classify`, {
+    payload: { input: 'invented legal moonword' },
+  });
+  assert.equal(unknown.status, 200, 'unknown vocabulary classify should return 200.');
+  assert.deepEqual(unknown.body, {
+    input: 'invented legal moonword',
+    normalizedInput: 'invented legal moonword',
+    matched: false,
+    term: null,
+    classification: null,
+    relations: null,
+    systemFlags: {
+      isCoreConcept: false,
+      usableInResolver: false,
+      reasoningAllowed: false,
+    },
+  });
+
+  process.stdout.write('PASS api_vocabulary_classification_behavior_matches_contract\n');
 }
 
 async function verifyConceptDetailEndpoint(baseUrl) {
@@ -456,6 +539,7 @@ async function main() {
     await withServer(async (baseUrl) => {
       await verifyEndpointExistenceAndMethodPairing(baseUrl);
       await verifyConceptResolutionEndpoint(baseUrl);
+      await verifyVocabularyClassificationEndpoint(baseUrl);
       await verifyConceptDetailEndpoint(baseUrl);
       await verifyFeedbackSubmissionValidation(baseUrl);
       await verifyFeedbackExportDeleteBehavior(baseUrl);

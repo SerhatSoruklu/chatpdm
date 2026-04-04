@@ -69,7 +69,9 @@ web_modules/
 .dynamodb/
 .firebase/
 .tern-port
+.vscode/
 .vscode-test
+scripts/__pycache__/
 
 # Windows metadata artifacts
 *:Zone.Identifier
@@ -77,6 +79,7 @@ web_modules/
 # Reference source files
 chatpdm-reference/**/*.pdf
 chatpdm-sources/
+chatpdm-sources_json/authority-law-and-morality.json
 *.pdf
 
 # Local agent and scratch artifacts

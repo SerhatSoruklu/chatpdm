@@ -43,10 +43,10 @@ function buildUnavailableGovernanceState(conceptId, unavailableReason) {
     lawStatus: null,
     enforcementStatus: null,
     systemValidationState: null,
-    isBlocked: false,
-    isStructurallyIncomplete: false,
+    isBlocked: true,
+    isStructurallyIncomplete: true,
     isFullyValidated: false,
-    isActionable: true,
+    isActionable: false,
     trace: buildTrace(conceptId, null, 'unavailable', unavailableReason),
   };
 }

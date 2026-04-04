@@ -86,7 +86,11 @@
             "explicitly_rejected_concept",
             "invalid_query",
             "out_of_scope",
-            "scoped_clarification"
+            "scoped_clarification",
+            "unresolved_domain",
+            "unsupported_semantic_bridge",
+            "domain_boundary_violation",
+            "causal_overreach"
           ]
         },
         "message": {

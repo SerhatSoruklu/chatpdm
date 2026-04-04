@@ -84,26 +84,6 @@ function averageSentenceLength(modeRecord) {
   return totalWords / sentences.length;
 }
 
-function tokenJaccardSimilarity(leftText, rightText) {
-  const leftTokens = new Set(tokenize(leftText));
-  const rightTokens = new Set(tokenize(rightText));
-  const union = new Set([...leftTokens, ...rightTokens]);
-
-  if (union.size === 0) {
-    return 1;
-  }
-
-  const intersectionCount = [...leftTokens].filter((token) => rightTokens.has(token)).length;
-  return intersectionCount / union.size;
-}
-
-function lengthDeltaRatio(leftText, rightText) {
-  const leftLength = tokenize(leftText).length;
-  const rightLength = tokenize(rightText).length;
-  const largest = Math.max(leftLength, rightLength, 1);
-  return Math.abs(leftLength - rightLength) / largest;
-}
-
 function buildModeText(modeRecord) {
   return AUTHORED_REGISTER_FIELDS.map((fieldName) => modeRecord[fieldName]).join('\n\n');
 }
@@ -182,21 +162,6 @@ function validateAgainstStandard(modeRecord, standardModeRecord, modeName, reaso
       });
     }
   });
-
-  const candidateModeText = buildModeText(modeRecord);
-  const standardModeText = buildModeText(standardModeRecord);
-  const similarity = tokenJaccardSimilarity(candidateModeText, standardModeText);
-  const lengthDelta = lengthDeltaRatio(candidateModeText, standardModeText);
-
-  if (
-    similarity >= gate.divergenceValidation.tooCloseThresholds.tokenJaccardMin
-    && lengthDelta <= gate.divergenceValidation.tooCloseThresholds.lengthDeltaMax
-  ) {
-    pushReason(reasons, {
-      code: modeName === 'simplified' ? 'SIMPLIFIED_TOO_CLOSE_TO_STANDARD' : 'FORMAL_TOO_CLOSE_TO_STANDARD',
-      detail: `similarity=${similarity.toFixed(2)} lengthDelta=${lengthDelta.toFixed(2)}`,
-    });
-  }
 }
 
 function validateMode(modeRecord, standardModeRecord, modeName) {

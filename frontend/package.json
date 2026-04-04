@@ -4,7 +4,7 @@
   "description": "Angular landing shell for the ChatPDM workspace.",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --host 0.0.0.0 --port 4200",
+    "start": "ng serve --host 127.0.0.1 --port 4200",
     "build": "npm run generate:policy-surface && npm run generate:sitemap && ng build",
     "generate:policy-surface": "node --experimental-strip-types scripts/generate-policy-surface.ts",
     "generate:sitemap": "node --experimental-strip-types scripts/generate-sitemap.ts",

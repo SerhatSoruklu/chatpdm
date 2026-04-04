@@ -39,7 +39,7 @@ function buildConceptDetail(conceptId) {
     return null;
   }
 
-  return {
+  const detail = {
     conceptId: routingConceptId,
     title: concept?.title ?? null,
     shortDefinition: concept?.shortDefinition ?? null,
@@ -49,6 +49,12 @@ function buildConceptDetail(conceptId) {
     reviewState,
     rejection: buildRejectionPayload(rejectionRecord),
   };
+
+  if (Object.hasOwn(concept ?? {}, 'resolutionStatus')) {
+    detail.resolutionStatus = concept.resolutionStatus;
+  }
+
+  return detail;
 }
 
 module.exports = {

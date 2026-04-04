@@ -5,22 +5,12 @@ const { buildConceptDetail, resolveConceptQuery } = require('../../../modules/co
 
 const router = Router();
 
-router.get('/', (req, res) => {
-  res.json({
-    resource: 'concepts',
-    status: 'active',
-    availableOperations: ['resolve', 'detail'],
-  });
-});
-
-router.get('/resolve', (req, res) => {
-  const rawQuery = req.query.q;
-
+function handleResolveRequest(rawQuery, res, invalidInputMessage) {
   if (typeof rawQuery !== 'string' || rawQuery.length === 0) {
     res.status(400).json({
       error: {
         code: 'invalid_query',
-        message: 'Query parameter q must be a non-empty string.',
+        message: invalidInputMessage,
       },
     });
     return;
@@ -38,6 +28,30 @@ router.get('/resolve', (req, res) => {
       },
     });
   }
+}
+
+router.get('/', (req, res) => {
+  res.json({
+    resource: 'concepts',
+    status: 'active',
+    availableOperations: ['resolve', 'detail'],
+  });
+});
+
+router.get('/resolve', (req, res) => {
+  handleResolveRequest(
+    req.query.q,
+    res,
+    'Query parameter q must be a non-empty string.',
+  );
+});
+
+router.post('/resolve', (req, res) => {
+  handleResolveRequest(
+    req.body?.input,
+    res,
+    'Request body field "input" must be a non-empty string.',
+  );
 });
 
 router.get('/:conceptId', (req, res) => {

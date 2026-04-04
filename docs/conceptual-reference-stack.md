@@ -84,8 +84,32 @@ References complement these existing controls:
 - [concept-review-checklist.md](/home/serhat/code/chatpdm/docs/architecture/concept-review-checklist.md)
 - [constraint-contract-checklist.md](/home/serhat/code/chatpdm/docs/architecture/constraint-contract-checklist.md)
 - [v1-concept-scope.md](/home/serhat/code/chatpdm/docs/architecture/v1-concept-scope.md)
+- [zeroglare-signal-discipline-layer.md](/home/serhat/code/chatpdm/docs/architecture/zeroglare-signal-discipline-layer.md)
 
 They do not replace those controls.
+
+## Local Structured Extracts
+
+Structured full-text extracts used for local reading and source review live under
+[chatpdm-sources_json](/home/serhat/code/chatpdm/chatpdm-sources_json).
+
+Their usability is governed by
+[source-classification-registry.json](/home/serhat/code/chatpdm/chatpdm-sources_json/source-classification-registry.json),
+not by file presence alone.
+
+Current law-side structured extracts now include:
+
+- `the-concept-of-law.json`
+- `an-introduction-to-legal-reasoning.json`
+
+Rule:
+
+These extracts are available for bounded source review, but they do not become
+primary canonical grounding unless the reference hierarchy is explicitly updated.
+
+Some local structured extracts may also exist for private reading and
+comparison work. Those local-only files are not part of the committed
+reference surface unless they are explicitly promoted into the repo.
 
 ## Explicit Non-Authorization
 
