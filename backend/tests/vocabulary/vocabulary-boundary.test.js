@@ -29,8 +29,28 @@ test('vocabulary boundary response exposes expandable row metadata', () => {
   assert.equal(abandonment.sourceStatus, 'registry_only');
   assert.equal(abandonment.sourceStatusLabel, 'Registry-only');
   assert.equal(abandonment.familyLabel, 'Meta / Stress / Edge Terms');
-  assert.match(abandonment.definition, /registry-only term/i);
   assert.equal(abandonment.example, null);
   assert.equal(abandonment.nearMiss, null);
   assert.ok(abandonment.nonGoal && abandonment.nonGoal.length > 0);
+
+  const abInitio = response.entries.find((entry) => entry.term === 'ab initio');
+  assert.ok(abInitio, 'Expected ab initio to be present in the boundary registry.');
+  assert.deepEqual(abInitio.definition, {
+    short: 'From the beginning; treated as existing from the initial state without prior conditions.',
+  });
+
+  const abandonmentDefinition = response.entries.find((entry) => entry.term === 'abandonment');
+  assert.ok(abandonmentDefinition, 'Expected abandonment to be present in the boundary registry.');
+  assert.deepEqual(abandonmentDefinition.definition, {
+    short: 'The voluntary relinquishment of a right, claim, or property without intention to reclaim it.',
+  });
+
+  const abatementDefinition = response.entries.find((entry) => entry.term === 'abatement');
+  assert.ok(abatementDefinition, 'Expected abatement to be present in the boundary registry.');
+  assert.deepEqual(abatementDefinition.definition, {
+    short: 'The reduction, suspension, or termination of a legal claim, obligation, or proceeding under specific conditions.',
+  });
+
+  const entriesWithDefinitions = response.entries.filter((entry) => entry.definition);
+  assert.deepEqual(entriesWithDefinitions.map((entry) => entry.term), ['ab initio', 'abandonment', 'abatement']);
 });

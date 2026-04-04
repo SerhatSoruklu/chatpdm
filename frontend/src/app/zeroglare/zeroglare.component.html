@@ -111,10 +111,6 @@
           </div>
 
           <section class="pdm-zeroglare__demo-card pdm-zeroglare__demo-results" aria-live="polite">
-            <p class="pdm-zeroglare__invariant-note">
-              These markers are diagnostic only. They do not change ChatPDM resolution state.
-            </p>
-
             @if (isAnalyzing) {
               <div class="pdm-zeroglare__loading-state" aria-label="Zeroglare field is active">
                 <div class="pdm-zeroglare__loading-visual" aria-hidden="true">
@@ -141,80 +137,141 @@
               </div>
             } @else if (analysisResult) {
               <div class="pdm-zeroglare__result-shell">
-                <div class="pdm-zeroglare__status-panel">
-                  <div class="pdm-zeroglare__status-copy">
-                    <p class="pdm-zeroglare__micro-label">Overall Zeroglare status</p>
-                    <h3 class="pdm-zeroglare__status-title">
-                      {{ getStatusLabel(analysisResult.status) }}
-                    </h3>
-                    <p class="pdm-zeroglare__status-text">
-                      {{ getStatusCopy(analysisResult.status) }}
-                    </p>
-                  </div>
-
-                  <div class="pdm-zeroglare__status-badge pdm-zeroglare__status-badge--{{ analysisResult.status }}">
-                    {{ analysisResult.summary.markerCount | number:'1.0-0' }} marker{{ analysisResult.summary.markerCount === 1 ? '' : 's' }}
-                  </div>
-                </div>
-
-                <div class="pdm-zeroglare__chart-shell">
-                  <div class="pdm-zeroglare__chart-header">
-                    <p class="pdm-zeroglare__micro-label">Pressure breakdown</p>
-                  </div>
-
-                  <div class="pdm-zeroglare__chart" aria-label="Zeroglare pressure levels chart"></div>
-                </div>
-
-                <div class="pdm-zeroglare__summary-grid" aria-label="Zeroglare summary counts">
-                  <div class="pdm-zeroglare__summary-item">
-                    <p class="pdm-zeroglare__summary-label">Clear</p>
-                    <p class="pdm-zeroglare__summary-value">{{ analysisResult.summary.clearCount | number:'1.0-0' }}</p>
-                  </div>
-                  <div class="pdm-zeroglare__summary-item">
-                    <p class="pdm-zeroglare__summary-label">Pressure</p>
-                    <p class="pdm-zeroglare__summary-value">{{ analysisResult.summary.pressureCount | number:'1.0-0' }}</p>
-                  </div>
-                  <div class="pdm-zeroglare__summary-item">
-                    <p class="pdm-zeroglare__summary-label">Fail</p>
-                    <p class="pdm-zeroglare__summary-value">{{ analysisResult.summary.failCount | number:'1.0-0' }}</p>
-                  </div>
-                </div>
-
-                @if (analysisResult.normalizedInputPreview) {
-                  <div class="pdm-zeroglare__normalized-shell">
-                    <p class="pdm-zeroglare__micro-label">Normalized input</p>
-                    <p class="pdm-zeroglare__normalized-text">{{ analysisResult.normalizedInputPreview }}</p>
-                    @if (analysisResult.normalizedInputTruncated) {
-                      <p class="pdm-zeroglare__normalized-meta">
-                        Preview trimmed to {{ MAX_RENDER_CHARS | number:'1.0-0' }} characters for display.
-                        @if (analysisResult.normalizedInputLength) {
-                          <span>{{ analysisResult.normalizedInputLength | number:'1.0-0' }} characters total.</span>
-                        }
+                @if (resultCard) {
+                  <section class="pdm-zeroglare__status-panel" aria-labelledby="pdm-zeroglare-result-title">
+                    <div class="pdm-zeroglare__status-copy">
+                      <p class="pdm-zeroglare__micro-label">ZeroGlare result</p>
+                      <h3 class="pdm-zeroglare__status-title" id="pdm-zeroglare-result-title">
+                        {{ resultCard.headline }}
+                      </h3>
+                      <p class="pdm-zeroglare__status-text">
+                        {{ resultCard.summary }}
                       </p>
-                    } @else if (analysisResult.normalizedInputLength) {
-                      <p class="pdm-zeroglare__normalized-meta">
-                        {{ analysisResult.normalizedInputLength | number:'1.0-0' }} characters total.
+                      <p class="pdm-zeroglare__status-explanation">
+                        {{ resultCard.explanation }}
                       </p>
-                    }
-                  </div>
+
+                      @if (guidanceCard) {
+                        <div class="pdm-zeroglare__guidance-card">
+                          <p class="pdm-zeroglare__micro-label">{{ guidanceCard.label }}</p>
+                          <p class="pdm-zeroglare__guidance-summary">
+                            {{ guidanceCard.summary }}
+                          </p>
+                          <p class="pdm-zeroglare__response-text">{{ guidanceCard.response }}</p>
+
+                          <div class="pdm-zeroglare__guidance-actions">
+                            <button
+                              class="pdm-site-button pdm-zeroglare__guidance-action"
+                              type="button"
+                              (click)="copyGuidanceResponse()"
+                            >
+                              {{ guidanceCard.actionLabel }}
+                            </button>
+                          </div>
+                        </div>
+                      }
+
+                      @if (resultCard.suggestedResponse) {
+                        <div class="pdm-zeroglare__response-card">
+                          <p class="pdm-zeroglare__micro-label">Suggested response</p>
+                          <p class="pdm-zeroglare__response-text">{{ resultCard.suggestedResponse }}</p>
+                        </div>
+                      }
+                    </div>
+
+                    <div class="pdm-zeroglare__status-actions">
+                      <div class="pdm-zeroglare__status-badge pdm-zeroglare__status-badge--{{ analysisResult.status }}">
+                        {{ getStatusLabel(analysisResult.status) }}
+                      </div>
+
+                      <button
+                        class="pdm-site-button pdm-zeroglare__primary-action pdm-zeroglare__primary-action--{{ resultCard.primaryActionType }}"
+                        type="button"
+                        (click)="handlePrimaryAction()"
+                      >
+                        {{ resultCard.primaryActionLabel }}
+                      </button>
+                    </div>
+                  </section>
                 }
 
-                @if (analysisResult.markers.length) {
-                  <div class="pdm-zeroglare__marker-grid" aria-label="Detected diagnostic markers">
-                    <article
-                      class="pdm-zeroglare__marker-card"
-                      *ngFor="let marker of analysisResult.markers; trackBy: trackByMarker"
-                    >
-                      <p class="pdm-zeroglare__marker-code">{{ marker }}</p>
-                      <h3 class="pdm-zeroglare__marker-title">{{ getMarkerTitle(marker) }}</h3>
-                      <p class="pdm-zeroglare__marker-copy">{{ getMarkerDescription(marker) }}</p>
-                    </article>
+                <section
+                  #zeroglareTechnicalDetails
+                  [attr.id]="technicalDetailsId"
+                  class="pdm-zeroglare__technical-shell"
+                  tabindex="-1"
+                  aria-labelledby="pdm-zeroglare-technical-title"
+                >
+                  <div class="pdm-zeroglare__technical-head">
+                    <p class="pdm-zeroglare__micro-label">Technical details</p>
+                    <h4 class="pdm-zeroglare__technical-title" id="pdm-zeroglare-technical-title">
+                      Diagnostic breakdown
+                    </h4>
                   </div>
-                } @else {
-                  <div class="pdm-zeroglare__empty-state">
-                    No diagnostic pressure markers were detected for this input.
+
+                  <p class="pdm-zeroglare__invariant-note">
+                    These markers are diagnostic only. They do not change ChatPDM resolution state.
+                  </p>
+
+                  <div class="pdm-zeroglare__chart-shell">
+                    <div class="pdm-zeroglare__chart-header">
+                      <p class="pdm-zeroglare__micro-label">Pressure breakdown</p>
+                    </div>
+
+                    <div class="pdm-zeroglare__chart" aria-label="Zeroglare pressure levels chart"></div>
                   </div>
-                }
+
+                  <div class="pdm-zeroglare__summary-grid" aria-label="Zeroglare summary counts">
+                    <div class="pdm-zeroglare__summary-item">
+                      <p class="pdm-zeroglare__summary-label">Clear</p>
+                      <p class="pdm-zeroglare__summary-value">{{ analysisResult.summary.clearCount | number:'1.0-0' }}</p>
+                    </div>
+                    <div class="pdm-zeroglare__summary-item">
+                      <p class="pdm-zeroglare__summary-label">Pressure</p>
+                      <p class="pdm-zeroglare__summary-value">{{ analysisResult.summary.pressureCount | number:'1.0-0' }}</p>
+                    </div>
+                    <div class="pdm-zeroglare__summary-item">
+                      <p class="pdm-zeroglare__summary-label">Fail</p>
+                      <p class="pdm-zeroglare__summary-value">{{ analysisResult.summary.failCount | number:'1.0-0' }}</p>
+                    </div>
+                  </div>
+
+                  @if (analysisResult.normalizedInputPreview) {
+                    <div class="pdm-zeroglare__normalized-shell">
+                      <p class="pdm-zeroglare__micro-label">Normalized input</p>
+                      <p class="pdm-zeroglare__normalized-text">{{ analysisResult.normalizedInputPreview }}</p>
+                      @if (analysisResult.normalizedInputTruncated) {
+                        <p class="pdm-zeroglare__normalized-meta">
+                          Preview trimmed to {{ MAX_RENDER_CHARS | number:'1.0-0' }} characters for display.
+                          @if (analysisResult.normalizedInputLength) {
+                            <span>{{ analysisResult.normalizedInputLength | number:'1.0-0' }} characters total.</span>
+                          }
+                        </p>
+                      } @else if (analysisResult.normalizedInputLength) {
+                        <p class="pdm-zeroglare__normalized-meta">
+                          {{ analysisResult.normalizedInputLength | number:'1.0-0' }} characters total.
+                        </p>
+                      }
+                    </div>
+                  }
+
+                  @if (analysisResult.markers.length) {
+                    <div class="pdm-zeroglare__marker-grid" aria-label="Detected diagnostic markers">
+                      <article
+                        class="pdm-zeroglare__marker-card"
+                        *ngFor="let marker of analysisResult.markers; trackBy: trackByMarker"
+                      >
+                        <p class="pdm-zeroglare__marker-code">{{ marker }}</p>
+                        <h3 class="pdm-zeroglare__marker-title">{{ getMarkerTitle(marker) }}</h3>
+                        <p class="pdm-zeroglare__marker-copy">{{ getMarkerDescription(marker) }}</p>
+                      </article>
+                    </div>
+                  } @else {
+                    <div class="pdm-zeroglare__empty-state">
+                      No diagnostic pressure markers were detected for this input.
+                    </div>
+                  }
+                </section>
               </div>
             } @else {
               <div class="pdm-zeroglare__empty-state">

@@ -10,6 +10,18 @@ import {
 } from '@angular/core';
 
 import { resolveApiOrigin } from '../core/api/api-origin';
+import {
+  buildZeroglareResultCard,
+  buildZeroglareGuidanceCard,
+  type ZeroglareAnalysisConversational,
+  type ZeroglareAnalysisRefusal,
+  type ZeroglareAnalysisResult,
+  type ZeroglareDiagnosticStatus,
+  type ZeroglareDiagnosticSummary,
+  type ZeroglareGuidanceCard,
+  type ZeroglareResultCard,
+} from './zeroglare.model';
+import { PdmProductEventsService } from '../core/telemetry/pdm-product-events.service';
 
 const ZEROGLOARE_MARKER_COPY = {
   rhetorical_noise: {
@@ -48,16 +60,6 @@ interface ZeroglareAnalyzeSignal {
   detected?: boolean;
 }
 
-type ZeroglareDiagnosticStatus = 'clear' | 'pressure' | 'fail';
-
-interface ZeroglareDiagnosticSummary {
-  state: ZeroglareDiagnosticStatus;
-  clearCount: number;
-  pressureCount: number;
-  failCount: number;
-  markerCount: number;
-}
-
 interface ZeroglareAnalyzeResponse {
   status?: ZeroglareDiagnosticStatus;
   summary?: {
@@ -66,12 +68,15 @@ interface ZeroglareAnalyzeResponse {
     pressure_count?: number;
     fail_count?: number;
     marker_count?: number;
+    refusal_count?: number;
   };
   normalized_input_preview?: string | null;
   normalized_input_length?: number;
   normalized_input_truncated?: boolean;
   markers?: readonly string[];
   signals?: readonly ZeroglareAnalyzeSignal[];
+  refusal?: ZeroglareAnalysisRefusal | null;
+  conversational?: ZeroglareAnalysisConversational | null;
   diagnostics?: {
     input?: {
       normalized_query?: string;
@@ -81,15 +86,6 @@ interface ZeroglareAnalyzeResponse {
     };
     signals?: readonly ZeroglareAnalyzeSignal[];
   };
-}
-
-interface ZeroglareAnalysisResult {
-  status: ZeroglareDiagnosticStatus;
-  summary: ZeroglareDiagnosticSummary;
-  normalizedInputPreview?: string;
-  normalizedInputLength?: number;
-  normalizedInputTruncated: boolean;
-  markers: ZeroglareMarkerId[];
 }
 
 const MAX_INPUT_CHARS = 100_000;
@@ -111,9 +107,11 @@ export class ZeroglareComponent implements OnInit, OnDestroy {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly document = inject(DOCUMENT);
   private readonly apiOrigin = resolveApiOrigin(this.document);
+  private readonly productEvents = inject(PdmProductEventsService);
   private pressureChart: { destroy: () => void } | null = null;
   private pressureChartRenderToken = 0;
   private abortController: AbortController | null = null;
+  protected readonly technicalDetailsId = 'pdm-zeroglare-technical-details';
 
   protected readonly MAX_INPUT_CHARS = MAX_INPUT_CHARS;
   protected readonly MAX_RENDER_CHARS = MAX_RENDER_CHARS;
@@ -124,6 +122,8 @@ export class ZeroglareComponent implements OnInit, OnDestroy {
   protected validationMessage = '';
   protected errorMessage = '';
   protected analysisResult: ZeroglareAnalysisResult | null = null;
+  protected resultCard: ZeroglareResultCard | null = null;
+  protected guidanceCard: ZeroglareGuidanceCard | null = null;
 
   ngOnInit(): void {
     const view = this.document.defaultView;
@@ -169,8 +169,17 @@ export class ZeroglareComponent implements OnInit, OnDestroy {
       return;
     }
 
+    this.productEvents.track('zeroglare_input_submitted', {
+      inputLength: this.inputLength,
+      hasText: this.hasInput,
+      page: 'zeroglare',
+    });
+
     if (this.inputLength > MAX_INPUT_CHARS) {
       this.validationMessage = FRONTEND_LIMIT_MESSAGE;
+      this.productEvents.track('zeroglare_analysis_failed', {
+        errorType: 'validation',
+      });
       this.cdr.detectChanges();
       return;
     }
@@ -178,6 +187,8 @@ export class ZeroglareComponent implements OnInit, OnDestroy {
     this.validationMessage = '';
     this.errorMessage = '';
     this.analysisResult = null;
+    this.resultCard = null;
+    this.guidanceCard = null;
     this.clearPressureChart();
     this.isAnalyzing = true;
     this.cdr.detectChanges();
@@ -210,6 +221,10 @@ export class ZeroglareComponent implements OnInit, OnDestroy {
           ? body.error
           : body?.error?.code;
 
+        this.productEvents.track('zeroglare_analysis_failed', {
+          errorType: this.resolveAnalysisErrorType(response.status, backendErrorCode),
+        });
+
         this.errorMessage = response.status === 413 || backendErrorCode === 'INPUT_TOO_LARGE'
           ? BACKEND_LIMIT_MESSAGE
           : GENERIC_ERROR_MESSAGE;
@@ -235,7 +250,18 @@ export class ZeroglareComponent implements OnInit, OnDestroy {
         normalizedInputLength: normalizedInput.length > 0 ? normalizedInput.length : undefined,
         normalizedInputTruncated: normalizedInput.truncated,
         markers,
+        refusal: responseBody.refusal ?? null,
+        conversational: responseBody.conversational ?? null,
       };
+      this.resultCard = buildZeroglareResultCard(this.analysisResult);
+      this.guidanceCard = buildZeroglareGuidanceCard(this.analysisResult);
+      this.productEvents.track('zeroglare_analysis_completed', {
+        status: this.analysisResult.status,
+        hasRefusal: Boolean(this.analysisResult.refusal),
+        refusalReasonCode: this.analysisResult.refusal?.reason_code ?? null,
+        hasConversational: Boolean(this.analysisResult.conversational),
+        conversationalPattern: this.analysisResult.conversational?.pattern ?? null,
+      });
       this.cdr.detectChanges();
       const chartResult = this.analysisResult;
       this.document.defaultView?.setTimeout(() => {
@@ -245,9 +271,15 @@ export class ZeroglareComponent implements OnInit, OnDestroy {
       }, 0);
     } catch (_error) {
       if ((_error as DOMException | null)?.name === 'AbortError') {
+        this.productEvents.track('zeroglare_analysis_failed', {
+          errorType: 'aborted',
+        });
         return;
       }
 
+      this.productEvents.track('zeroglare_analysis_failed', {
+        errorType: _error instanceof TypeError ? 'network' : 'server',
+      });
       this.errorMessage = GENERIC_ERROR_MESSAGE;
       this.cdr.detectChanges();
     } finally {
@@ -276,6 +308,8 @@ export class ZeroglareComponent implements OnInit, OnDestroy {
         return 'Pressure';
       case 'fail':
         return 'Fail';
+      case 'refused':
+        return 'Refused';
       default:
         return 'Clear';
     }
@@ -289,9 +323,59 @@ export class ZeroglareComponent implements OnInit, OnDestroy {
         return 'Signal pressure is present, but not at fail intensity.';
       case 'fail':
         return 'Signal pressure crossed the fail boundary.';
+      case 'refused':
+        return 'ZeroGlare matched an explicit refusal contract.';
       default:
         return 'No diagnostic pressure markers were detected.';
     }
+  }
+
+  protected handlePrimaryAction(): void {
+    if (!this.resultCard) {
+      return;
+    }
+
+    this.productEvents.track('zeroglare_primary_action_clicked', {
+      status: this.analysisResult?.status ?? 'clear',
+      action: this.resultCard.primaryActionType,
+    });
+
+    if (this.resultCard.primaryActionType === 'copy_response') {
+      const response = this.resultCard.suggestedResponse?.trim();
+
+      if (response) {
+        void this.copyToClipboard(response).then(() => {
+          this.trackResponseCopied('refused');
+        });
+      }
+
+      return;
+    }
+
+    if (this.resultCard.primaryActionType === 'inspect_signals' || this.resultCard.primaryActionType === 'review_analysis') {
+      this.productEvents.track('zeroglare_technical_details_viewed', {
+        status: this.analysisResult?.status === 'clear'
+          || this.analysisResult?.status === 'pressure'
+          || this.analysisResult?.status === 'fail'
+          ? this.analysisResult.status
+          : 'pressure',
+        action: this.resultCard.primaryActionType,
+      });
+    }
+
+    this.scrollToTechnicalDetails();
+  }
+
+  protected copyGuidanceResponse(): void {
+    const response = this.guidanceCard?.response?.trim();
+
+    if (!response) {
+      return;
+    }
+
+    void this.copyToClipboard(response).then(() => {
+      this.trackResponseCopied('pressure');
+    });
   }
 
   protected trackByMarker(_index: number, marker: string): string {
@@ -380,6 +464,49 @@ export class ZeroglareComponent implements OnInit, OnDestroy {
     }
 
     return 'pressure';
+  }
+
+  private scrollToTechnicalDetails(): void {
+    const target = this.document.getElementById(this.technicalDetailsId);
+
+    if (!target) {
+      return;
+    }
+
+    target.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
+    target.focus({ preventScroll: true });
+  }
+
+  private async copyToClipboard(text: string): Promise<void> {
+    const view = this.document.defaultView;
+
+    if (view?.navigator?.clipboard?.writeText) {
+      try {
+        await view.navigator.clipboard.writeText(text);
+        return;
+      } catch (_error) {
+        // Fall through to the fallback copy path.
+      }
+    }
+
+    const fallback = this.document.createElement('textarea');
+    fallback.value = text;
+    fallback.setAttribute('readonly', '');
+    fallback.style.position = 'fixed';
+    fallback.style.opacity = '0';
+    fallback.style.pointerEvents = 'none';
+    fallback.style.left = '-9999px';
+    this.document.body.appendChild(fallback);
+    fallback.select();
+
+    try {
+      this.document.execCommand('copy');
+    } finally {
+      fallback.remove();
+    }
   }
 
   private async renderPressureChart(result: ZeroglareAnalysisResult): Promise<void> {
@@ -549,5 +676,36 @@ export class ZeroglareComponent implements OnInit, OnDestroy {
     return text.length > this.MAX_RENDER_CHARS
       ? `${text.slice(0, this.MAX_RENDER_CHARS)}...`
       : text;
+  }
+
+  private resolveAnalysisErrorType(
+    status: number,
+    backendErrorCode?: string | null,
+  ): 'network' | 'server' | 'validation' | 'aborted' {
+    if (status === 413 || backendErrorCode === 'INPUT_TOO_LARGE') {
+      return 'validation';
+    }
+
+    if (status >= 500) {
+      return 'server';
+    }
+
+    if (status >= 400) {
+      return 'validation';
+    }
+
+    return 'server';
+  }
+
+  private trackResponseCopied(status: 'refused' | 'pressure'): void {
+    if (!this.analysisResult) {
+      return;
+    }
+
+    this.productEvents.track('zeroglare_response_copied', {
+      status,
+      reasonCode: this.analysisResult.refusal?.reason_code ?? null,
+      pattern: this.analysisResult.conversational?.pattern ?? null,
+    });
   }
 }

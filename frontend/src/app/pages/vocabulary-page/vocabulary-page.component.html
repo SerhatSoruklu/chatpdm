@@ -79,25 +79,51 @@
 
         <p class="pdm-vocabulary-page__list-note">{{ listNote }}</p>
 
-        <div class="pdm-vocabulary-page__search-shell">
-          <label class="pdm-vocabulary-page__search-label" for="pdm-vocabulary-search">Search vocabulary terms</label>
-          <input
-            id="pdm-vocabulary-search"
-            class="pdm-vocabulary-page__search-input"
-            type="search"
-            [ngModel]="searchQuery()"
-            (ngModelChange)="searchQuery.set($event)"
-            placeholder="Search plain vocabulary terms"
-            autocomplete="off"
-            spellcheck="false"
-          />
-          <p class="pdm-vocabulary-page__search-count">
-            @if (boundaryData(); as data) {
-              Showing {{ formatCount(filteredTerms().length) }} of {{ formatCount(data.total) }} terms
-            } @else {
-              Boundary index unavailable.
-            }
-          </p>
+        <div class="pdm-vocabulary-page__registry-toolbar">
+          <div class="pdm-vocabulary-page__search-shell">
+            <label class="pdm-vocabulary-page__search-label" for="pdm-vocabulary-search">Search vocabulary terms</label>
+            <input
+              id="pdm-vocabulary-search"
+              class="pdm-vocabulary-page__search-input"
+              type="search"
+              [ngModel]="searchQuery()"
+              (ngModelChange)="onSearchQueryChange($event)"
+              placeholder="Search plain vocabulary terms"
+              autocomplete="off"
+              spellcheck="false"
+            />
+            <p class="pdm-vocabulary-page__search-count">
+              @if (boundaryData(); as data) {
+                @if (hasRegistryResults()) {
+                  {{ formatCount(filteredEntryCount()) }} terms match the current search and filter
+                } @else {
+                  No terms match the current search and filter.
+                }
+              } @else {
+                Boundary index unavailable.
+              }
+            </p>
+          </div>
+
+          @if (registryFilterOptions().length > 0) {
+            <div class="pdm-vocabulary-page__filter-shell">
+              <p class="pdm-vocabulary-page__filter-label">Filter by category</p>
+              <div class="pdm-vocabulary-page__filter-row" role="group" aria-label="Filter vocabulary terms by category">
+                @for (option of registryFilterOptions(); track option.key) {
+                  <button
+                    class="pdm-vocabulary-page__filter-chip"
+                    type="button"
+                    [class.pdm-vocabulary-page__filter-chip--active]="selectedCategoryFilter() === option.key"
+                    [attr.aria-pressed]="selectedCategoryFilter() === option.key"
+                    (click)="onCategoryFilterChange(option.key)"
+                  >
+                    <span class="pdm-vocabulary-page__filter-chip-label">{{ option.label }}</span>
+                    <span class="pdm-vocabulary-page__filter-chip-count">{{ formatCount(option.count) }}</span>
+                  </button>
+                }
+              </div>
+            </div>
+          }
         </div>
 
         @if (boundaryState().status === 'error') {
@@ -105,19 +131,135 @@
             <p class="pdm-vocabulary-page__state-title">Boundary index unavailable</p>
             <p class="pdm-vocabulary-page__state-copy">{{ boundaryErrorMessage() }}</p>
           </section>
-        } @else if (filteredTerms().length === 0) {
-          <section class="pdm-vocabulary-page__state-card">
-            <p class="pdm-vocabulary-page__state-title">No terms matched the current search.</p>
-            <p class="pdm-vocabulary-page__state-copy">
-              Try a broader search string or clear the filter to inspect the full boundary list.
-            </p>
-          </section>
         } @else {
-          <ul class="pdm-vocabulary-page__term-list" aria-label="Recognized legal vocabulary terms">
-            @for (term of filteredTerms(); track term) {
-              <li class="pdm-vocabulary-page__term">{{ term }}</li>
-            }
-          </ul>
+          @if (hasRegistryResults()) {
+            <ul class="pdm-vocabulary-page__term-grid" aria-label="Recognized legal vocabulary registry">
+              @for (item of registryItems(); track item.term) {
+                <li class="pdm-vocabulary-page__term-grid-item">
+                  <article class="pdm-vocabulary-page__term-card">
+                    <div class="pdm-vocabulary-page__term-card-head">
+                      <div class="pdm-vocabulary-page__term-card-title-group">
+                        <p class="pdm-vocabulary-page__term-card-eyebrow">Registry term</p>
+                        <h3 class="pdm-vocabulary-page__term-card-title" [innerHTML]="formatTerm(item.term)"></h3>
+                        @if (item.shortDefinitionPreview) {
+                          <p class="pdm-vocabulary-page__term-card-definition">
+                            {{ item.shortDefinitionPreview }}
+                          </p>
+                        }
+                      </div>
+
+                      <button
+                        class="pdm-vocabulary-page__term-card-action"
+                        type="button"
+                        [disabled]="!item.detailsAvailable"
+                      >
+                        {{ item.detailsAvailable ? 'View details' : 'Details reserved' }}
+                      </button>
+                    </div>
+
+                    <div class="pdm-vocabulary-page__term-card-meta" aria-label="Registry metadata">
+                      @for (badge of item.badges; track badge) {
+                        <span class="pdm-vocabulary-page__term-card-badge">{{ badge }}</span>
+                      }
+                    </div>
+                  </article>
+                </li>
+              }
+            </ul>
+          } @else {
+            <section class="pdm-vocabulary-page__state-card">
+              <p class="pdm-vocabulary-page__state-title">No terms matched the current search and filter.</p>
+              <p class="pdm-vocabulary-page__state-copy">
+                Try a broader search, switch the category filter back to All, or change the page size.
+              </p>
+            </section>
+          }
+
+          <section class="pdm-vocabulary-page__paginator-shell" aria-label="Vocabulary registry pagination">
+            <div class="pdm-vocabulary-page__paginator-bar">
+              <div class="pdm-vocabulary-page__paginator-meta">
+                @if (hasRegistryResults()) {
+                  <p class="pdm-vocabulary-page__paginator-summary">
+                    Page {{ activePage() }} of {{ totalPages() }} · Showing
+                    {{ formatCount(pageRangeStart()) }}–{{ formatCount(pageRangeEnd()) }}
+                    of {{ formatCount(filteredEntryCount()) }} terms
+                  </p>
+                } @else {
+                  <p class="pdm-vocabulary-page__paginator-summary">
+                    No terms match the current search and filter.
+                  </p>
+                }
+              </div>
+
+              <div class="pdm-vocabulary-page__paginator-nav" aria-label="Page navigation">
+                <button
+                  class="pdm-vocabulary-page__paginator-button"
+                  type="button"
+                  [disabled]="!canGoFirst()"
+                  (click)="goToFirstPage()"
+                >
+                  First
+                </button>
+
+                <button
+                  class="pdm-vocabulary-page__paginator-button"
+                  type="button"
+                  [disabled]="!canGoPrevious()"
+                  (click)="goToPreviousPage()"
+                >
+                  Previous
+                </button>
+
+                <div class="pdm-vocabulary-page__paginator-pages" role="group" aria-label="Page numbers">
+                  @for (token of pageTokens(); track token.kind === 'page' ? 'page-' + token.page : token.id) {
+                    @if (token.kind === 'page') {
+                      <button
+                        class="pdm-vocabulary-page__paginator-page-button"
+                        type="button"
+                        [class.pdm-vocabulary-page__paginator-page-button--active]="token.active"
+                        [disabled]="token.active"
+                        [attr.aria-current]="token.active ? 'page' : null"
+                        (click)="goToPage(token.page)"
+                      >
+                        {{ token.page }}
+                      </button>
+                    } @else {
+                      <span class="pdm-vocabulary-page__paginator-ellipsis" aria-hidden="true">…</span>
+                    }
+                  }
+                </div>
+
+                <button
+                  class="pdm-vocabulary-page__paginator-button"
+                  type="button"
+                  [disabled]="!canGoNext()"
+                  (click)="goToNextPage()"
+                >
+                  Next
+                </button>
+
+                <button
+                  class="pdm-vocabulary-page__paginator-button"
+                  type="button"
+                  [disabled]="!canGoLast()"
+                  (click)="goToLastPage()"
+                >
+                  Last
+                </button>
+              </div>
+
+              <div class="pdm-vocabulary-page__paginator-control">
+                <app-pdm-dropdown
+                  label="Rows per page"
+                  [ariaLabel]="'Rows per page'"
+                  align="end"
+                  [options]="pageSizeDropdownOptions"
+                  [value]="pageSize()"
+                  (selectionChange)="onPageSizeChange($event)"
+                />
+              </div>
+            </div>
+          </section>
         }
       </section>
     </div>

@@ -692,7 +692,7 @@
 
 .pdm-zeroglare__status-panel {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 16px;
   padding: 16px;
@@ -709,7 +709,7 @@
 
 .pdm-zeroglare__status-copy {
   display: grid;
-  gap: 6px;
+  gap: 8px;
   min-width: 0;
 }
 
@@ -728,6 +728,24 @@
   line-height: 1.55;
   overflow-wrap: anywhere;
   word-break: break-word;
+}
+
+.pdm-zeroglare__status-explanation {
+  margin: 0;
+  color: #e2e8f0;
+  font-size: 0.92rem;
+  line-height: 1.62;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.pdm-zeroglare__status-actions {
+  display: grid;
+  justify-items: end;
+  align-content: start;
+  gap: 10px;
+  flex: 0 0 auto;
+  min-width: 0;
 }
 
 .pdm-zeroglare__status-badge {
@@ -755,6 +773,100 @@
 .pdm-zeroglare__status-badge--fail {
   color: #fecaca;
   background: rgba(248, 113, 113, 0.16);
+}
+
+.pdm-zeroglare__status-badge--refused {
+  color: #e2e8f0;
+  background: rgba(71, 85, 105, 0.3);
+}
+
+.pdm-zeroglare__primary-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 10.5rem;
+}
+
+.pdm-zeroglare__primary-action--review_analysis,
+.pdm-zeroglare__primary-action--inspect_signals,
+.pdm-zeroglare__primary-action--copy_response {
+  box-shadow: none;
+}
+
+.pdm-zeroglare__technical-shell {
+  display: grid;
+  gap: 16px;
+  padding: 16px;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.025);
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.pdm-zeroglare__technical-head {
+  display: grid;
+  gap: 6px;
+}
+
+.pdm-zeroglare__technical-title {
+  margin: 0;
+  color: #f8fafc;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.pdm-zeroglare__response-card {
+  display: grid;
+  gap: 6px;
+  padding: 14px 16px;
+  border: 1px solid rgba(96, 165, 250, 0.18);
+  border-radius: 16px;
+  background: rgba(96, 165, 250, 0.07);
+  min-width: 0;
+}
+
+.pdm-zeroglare__guidance-card {
+  display: grid;
+  gap: 8px;
+  padding: 14px 16px;
+  border: 1px solid rgba(96, 165, 250, 0.16);
+  border-radius: 16px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02)),
+    rgba(15, 23, 42, 0.2);
+  min-width: 0;
+}
+
+.pdm-zeroglare__guidance-summary {
+  margin: 0;
+  color: rgba(203, 213, 225, 0.82);
+  font-size: 0.88rem;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.pdm-zeroglare__guidance-actions {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.pdm-zeroglare__guidance-action {
+  min-width: 9.25rem;
+}
+
+.pdm-zeroglare__response-text {
+  margin: 0;
+  color: #f8fafc;
+  font-size: 0.98rem;
+  font-weight: 600;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .pdm-zeroglare__chart-shell {
@@ -790,7 +902,7 @@
 
 .pdm-zeroglare__result-shell {
   display: grid;
-  gap: 16px;
+  gap: 14px;
 }
 
 .pdm-zeroglare__summary-grid {
@@ -954,6 +1066,11 @@
     align-items: flex-start;
   }
 
+  .pdm-zeroglare__status-actions {
+    width: 100%;
+    justify-items: start;
+  }
+
   .pdm-zeroglare__summary-grid {
     grid-template-columns: 1fr;
   }
@@ -1027,6 +1144,10 @@
     padding: 14px;
   }
 
+  .pdm-zeroglare__technical-shell {
+    padding: 14px;
+  }
+
   .pdm-zeroglare__chart-shell {
     padding: 12px;
   }
@@ -1042,6 +1163,11 @@
   .pdm-zeroglare__summary-item,
   .pdm-zeroglare__marker-card {
     padding: 12px 14px;
+  }
+
+  .pdm-zeroglare__primary-action {
+    width: 100%;
+    min-width: 0;
   }
 }
 

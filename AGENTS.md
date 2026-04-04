@@ -155,6 +155,7 @@ Protected branch expectations for `main`:
 - do not assume admin bypass
 
 - When the user says `commit`, create a local commit only.
+- When the user says `make checkpoint`, run `git add .` and commit with the checkpoint name the user provided.
 - When the user says `push to git`, do not push directly to `main`.
 - Use a feature branch for publication. If work started on `main`, create a branch before pushing.
 - Push the feature branch to `origin` and keep `main` untouched unless the user explicitly requests otherwise and the rules allow it.

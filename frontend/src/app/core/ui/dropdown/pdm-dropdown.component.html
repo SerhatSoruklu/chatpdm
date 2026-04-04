@@ -1,0 +1,66 @@
+<div
+  class="pdm-dropdown"
+  [class.pdm-dropdown--open]="isOpen()"
+  [class.pdm-dropdown--disabled]="disabled()"
+  [class.pdm-dropdown--align-end]="align() === 'end'"
+>
+  @if (label()) {
+    <p class="pdm-dropdown__label">{{ label() }}</p>
+  }
+
+  <div class="pdm-dropdown__shell">
+    <button
+      #triggerButton
+      class="pdm-dropdown__trigger"
+      type="button"
+      aria-haspopup="listbox"
+      [attr.aria-label]="ariaLabel() ?? (label() || triggerLabel())"
+      [attr.aria-expanded]="isOpen()"
+      [attr.aria-controls]="menuId"
+      [disabled]="disabled() || options().length === 0"
+      (click)="onTriggerClick()"
+      (keydown)="onTriggerKeydown($event)"
+    >
+      <span class="pdm-dropdown__trigger-copy">
+        <span class="pdm-dropdown__trigger-value">{{ triggerLabel() }}</span>
+      </span>
+
+      <span class="pdm-dropdown__chevron" aria-hidden="true">⌄</span>
+    </button>
+
+    @if (isOpen()) {
+      <div
+        class="pdm-dropdown__menu"
+        [id]="menuId"
+        role="listbox"
+        [attr.aria-label]="ariaLabel() ?? (label() || triggerLabel())"
+      >
+        @for (option of options(); track option.value; let index = $index) {
+          <button
+            #optionButton
+            class="pdm-dropdown__option"
+            type="button"
+            role="option"
+            [class.pdm-dropdown__option--selected]="isSelected(option)"
+            [class.pdm-dropdown__option--disabled]="option.disabled"
+            [attr.aria-selected]="isSelected(option)"
+            [disabled]="option.disabled"
+            (click)="selectOption(option)"
+            (keydown)="onOptionKeydown($event, index)"
+          >
+            <span class="pdm-dropdown__option-main">
+              <span class="pdm-dropdown__option-label">{{ option.label }}</span>
+              @if (option.description) {
+                <span class="pdm-dropdown__option-description">{{ option.description }}</span>
+              }
+            </span>
+
+            @if (isSelected(option)) {
+              <span class="pdm-dropdown__option-check" aria-hidden="true">✓</span>
+            }
+          </button>
+        }
+      </div>
+    }
+  </div>
+</div>

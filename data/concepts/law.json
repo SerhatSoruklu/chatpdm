@@ -9,7 +9,7 @@
   "updatedAt": "2026-04-01T00:00:00Z",
   "domain": "governance-structures",
   "canonical": {
-    "invariant": "Law is a binding normative source that establishes rules and conditions within a governance order.",
+    "invariant": "Law is a structured set of rules within a governance order that defines what conduct is permitted, required, or prohibited under specified conditions.",
     "excludes": [
       "required conduct owed by an actor under a rule",
       "recognized standing to direct or govern",
@@ -21,8 +21,8 @@
       "legitimacy": "Legitimacy evaluates whether a rule or standing is justified; law establishes binding rules whether or not they are treated as justified."
     }
   },
-  "shortDefinition": "Law is a binding normative source that establishes rules and conditions within a governance order.",
-  "coreMeaning": "Law functions as the binding norm layer of a governance order. It establishes the rules and conditions under which conduct, office, and institutional action are structured. It is not itself owed conduct, directive standing, or justified validity.",
+  "shortDefinition": "Law is a structured set of rules within a governance order that defines what conduct is permitted, required, or prohibited under specified conditions.",
+  "coreMeaning": "Law functions as the structured rule layer of a governance order. It defines the conditions under which conduct is permitted, required, or prohibited. It is not itself conduct owed, directive authority, or justified legitimacy, but the system that establishes the rules by which these may arise.",
   "structuralProfile": {
     "function": "binding normative source within a governance order",
     "object": "rules and conditions that structure conduct, office, and institutional action",
@@ -78,7 +78,7 @@
     "invariants": [
       {
         "id": "law_is_binding_normative_source",
-        "statement": "Law is a binding normative source within a governance order."
+        "statement": "Law is a structured set of rules within a governance order that defines what conduct is permitted, required, or prohibited under specified conditions."
       },
       {
         "id": "law_is_not_required_conduct",
@@ -176,22 +176,22 @@
       ]
     }
   },
-  "fullDefinition": "Law is not identical to duty, authority, or legitimacy. Duty concerns conduct owed under a binding source. Authority concerns recognized standing to direct. Legitimacy concerns whether a rule, office, or standing is justified.\n\nLaw instead operates as the binding normative source within a governance order. It establishes the rules and conditions under which conduct can become owed, offices can be structured, and institutional acts can count as valid within the order.\n\nLaw can exist as law even when it is violated, weakly enforced, or contested in legitimacy. Its role is to bind and structure the order, not to guarantee obedience, standing, or justification.",
+  "fullDefinition": "Law is a structured set of rules within a governance order that defines what conduct is permitted, required, or prohibited under specified conditions.\n\nIt operates as a system of rules that structure conduct, roles, and valid actions within the order. It is distinct from duty, which concerns conduct owed under the rules; from authority, which concerns recognized power to direct; and from legitimacy, which concerns whether rules or actions are justified.\n\nLaw may exist as law even where compliance is absent, enforcement is weak, or legitimacy is contested. Its function is to structure the rule system of the order, not to guarantee obedience, confer authority, or resolve questions of justification.",
   "registers": {
     "standard": {
-      "shortDefinition": "Law is a binding normative source that establishes rules and conditions within a governance order.",
-      "coreMeaning": "Law functions as the binding norm layer of a governance order. It establishes the rules and conditions under which conduct, office, and institutional action are structured. It is not itself owed conduct, directive standing, or justified validity.",
-      "fullDefinition": "Law is not identical to duty, authority, or legitimacy. Duty concerns conduct owed under a binding source. Authority concerns recognized standing to direct. Legitimacy concerns whether a rule, office, or standing is justified.\n\nLaw instead operates as the binding normative source within a governance order. It establishes the rules and conditions under which conduct can become owed, offices can be structured, and institutional acts can count as valid within the order.\n\nLaw can exist as law even when it is violated, weakly enforced, or contested in legitimacy. Its role is to bind and structure the order, not to guarantee obedience, standing, or justification."
+      "shortDefinition": "Law is a structured set of rules within a governance order that defines what conduct is permitted, required, or prohibited under specified conditions.",
+      "coreMeaning": "Law functions as the structured rule layer of a governance order. It defines the conditions under which conduct is permitted, required, or prohibited. It is not itself conduct owed, directive authority, or justified legitimacy, but the system that establishes the rules by which these may arise.",
+      "fullDefinition": "Law is a structured set of rules within a governance order that defines what conduct is permitted, required, or prohibited under specified conditions.\n\nIt operates as a system of rules that structure conduct, roles, and valid actions within the order. It is distinct from duty, which concerns conduct owed under the rules; from authority, which concerns recognized power to direct; and from legitimacy, which concerns whether rules or actions are justified.\n\nLaw may exist as law even where compliance is absent, enforcement is weak, or legitimacy is contested. Its function is to structure the rule system of the order, not to guarantee obedience, confer authority, or resolve questions of justification."
     },
     "simplified": {
-      "shortDefinition": "Law is the binding rule-source of a governance order.",
-      "coreMeaning": "Law sets the binding rules of an order. It is not the conduct owed under those rules. It is also not the office that directs or the judgment that the rules are justified.",
-      "fullDefinition": "Law is the binding source of rules inside a governance order. It can make conduct owed and define conditions for offices or institutional acts.\n\nIt is not duty, because duty is the conduct owed. It is not authority, because authority is recognized standing to direct. It is not legitimacy, because legitimacy asks whether a rule or standing is justified.\n\nLaw can still exist when it is broken or challenged. Its role is to bind the order."
+      "shortDefinition": "Law is the system of rules in a governance order that sets what people are allowed, required, or not allowed to do under certain conditions.",
+      "coreMeaning": "Law is the rule system of a governance order. It sets the conditions for what people can do, must do, or must not do. It is not the actions people owe, the authority that directs them, or the judgment that rules are justified, but the system that defines those rules.",
+      "fullDefinition": "Law is the system of rules in a governance order that sets what people are allowed, required, or not allowed to do under certain conditions.\n\nIt organizes how actions, roles, and institutions work within the order. It is different from duty. Duty is about what people must do under the rules. It is different from authority. Authority is about who has the power to direct. It is different from legitimacy. Legitimacy is about whether rules are justified.\n\nLaw can still exist even if people do not follow it. It can still exist if enforcement is weak. It can still exist if people question it. Its role is to define the rules of the order. It does not guarantee obedience or justification."
     },
     "formal": {
-      "shortDefinition": "Law is the normative rule-binding source through which a governance order establishes operative rules and conditions.",
-      "coreMeaning": "Within a governance order, law supplies the rule-binding layer by establishing the norms and conditions through which conduct, office, and institutional action are structured. It is not reducible to owed conduct, directive standing, or justified validity.",
-      "fullDefinition": "Law is defined as the binding normative source within a governance order. It establishes the rules and conditions through which conduct may become owed, offices may be structured, and institutional acts may count as operative within the order. Law is therefore distinct from duty, which concerns owed conduct, from authority, which concerns recognized standing to direct, and from legitimacy, which concerns whether rule or standing is justified.\n\nThe concept remains stable even where compliance is absent, enforcement is weak, or legitimacy is contested. It does not by itself guarantee obedience, confer standing, or settle whether the order is justified."
+      "shortDefinition": "Law is the rule-structuring normative system within a governance order that determines, under specified conditions, which forms of conduct are permitted, required, or prohibited.",
+      "coreMeaning": "Law constitutes the normative rule-structuring layer of a governance order. It determines the conditions under which conduct is permitted, required, or prohibited, without itself being reducible to owed conduct, directive authority, or justified legitimacy. It is the system through which such relations are constituted.",
+      "fullDefinition": "Law is the rule-structuring normative system within a governance order that determines, under specified conditions, which forms of conduct are permitted, required, or prohibited.\n\nIt operates as a structured system of rules that constitute and regulate conduct, institutional roles, and valid actions within the order. It is analytically distinct from duty, which concerns conduct owed under the rules; from authority, which concerns recognized standing to direct; and from legitimacy, which concerns the justification of rules, roles, or actions.\n\nLaw may remain valid as law even where compliance is absent, enforcement is ineffective, or legitimacy is contested. Its function is to constitute and structure the normative order, not to guarantee obedience, confer directive authority, or resolve justificatory claims."
     }
   },
   "contexts": [

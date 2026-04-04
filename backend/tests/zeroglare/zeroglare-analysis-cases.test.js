@@ -146,6 +146,8 @@ for (const testCase of CASES) {
     assert.equal(result.summary.state, testCase.expected.status);
     assert.equal(result.summary.marker_count, testCase.expected.markerCount);
     assert.deepEqual(result.markers, testCase.expected.markers);
+    assert.equal(Object.prototype.hasOwnProperty.call(result, 'refusal'), false);
+    assert.equal(Object.prototype.hasOwnProperty.call(result, 'conversational'), false);
     assert.equal(result.summary.clear_count, testCase.expected.status === 'clear' ? 1 : 0);
     assert.equal(
       result.summary.pressure_count,

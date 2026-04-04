@@ -252,12 +252,12 @@
         {
           "axis": "core_nature",
           "A": "required conduct owed under a rule, role, or obligation",
-          "B": "binding normative source that establishes rules and conditions within a governance order"
+          "B": "Law is a structured set of rules within a governance order that defines what conduct is permitted, required, or prohibited under specified conditions."
         },
         {
           "axis": "depends_on",
           "A": "an actor bound to perform or refrain from conduct",
-          "B": "a governance order that establishes binding rules and conditions"
+          "B": "Law is a structured set of rules within a governance order that defines what conduct is permitted, required, or prohibited under specified conditions."
         },
         {
           "axis": "not_equivalent",

@@ -11,6 +11,9 @@ const {
 const {
   loadLegalVocabularyRegistry,
 } = require('./recognition-registry-loader');
+const {
+  loadTermDefinitions,
+} = require('./term-definitions');
 
 const conceptsDirectoryPath = path.resolve(__dirname, '../../../../data/concepts');
 let cachedConceptPacketIndex = null;
@@ -121,7 +124,6 @@ function buildRegistryOnlyEntry(term, family, classification) {
     sourceStatus: 'registry_only',
     sourceStatusLabel: 'Registry-only',
     shortMeaning: `${familyLabel} registry term.`,
-    definition: `Registry-only term in the ${familyLabel} family. No published concept packet is available for this entry.`,
     example: null,
     nearMiss: null,
     nonGoal: 'This surface does not invent a canonical definition for registry-only rows.',
@@ -251,7 +253,6 @@ function buildPacketBackedEntry(term, family, classification, packet) {
     sourceStatus: 'packet_backed',
     sourceStatusLabel: 'Packet-backed',
     shortMeaning: shortMeaning || `${familyLabel} concept packet.`,
-    definition: packet.fullDefinition ?? packet.coreMeaning ?? packet.shortDefinition ?? `${familyLabel} concept packet.`,
     example,
     nearMiss,
     nonGoal,
@@ -260,15 +261,35 @@ function buildPacketBackedEntry(term, family, classification, packet) {
   };
 }
 
+function attachOptionalTermDefinition(term, entry) {
+  const termDefinitions = loadTermDefinitions();
+  const definition = termDefinitions.definitionsByTerm.get(term);
+
+  if (!definition) {
+    return entry;
+  }
+
+  return {
+    ...entry,
+    definition,
+  };
+}
+
 function buildVocabularyBoundaryEntry(term, record) {
   const conceptPackets = loadConceptPacketIndex();
   const packet = conceptPackets.get(term) ?? null;
 
   if (packet) {
-    return buildPacketBackedEntry(term, record.family, record.classification, packet);
+    return attachOptionalTermDefinition(
+      term,
+      buildPacketBackedEntry(term, record.family, record.classification, packet),
+    );
   }
 
-  return buildRegistryOnlyEntry(term, record.family, record.classification);
+  return attachOptionalTermDefinition(
+    term,
+    buildRegistryOnlyEntry(term, record.family, record.classification),
+  );
 }
 
 function buildVocabularyBoundaryResponse() {

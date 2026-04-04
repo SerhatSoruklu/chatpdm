@@ -28,6 +28,7 @@ import {
 import { AiAdvisoryComponent } from '../../core/ai/ai-advisory/ai-advisory.component';
 import { AiTrackingEventType, AiTrackingService } from '../../core/ai/ai-tracking.service';
 import { ExamplePreviewComponent } from '../../core/preview/example-preview.component';
+import { PdmProductEventsService } from '../../core/telemetry/pdm-product-events.service';
 import { PdmTooltipDirective } from '../../core/ui/tooltip/pdm-tooltip.directive';
 import {
   CANONICAL_VISUAL_ANCHOR_HASH_LENGTH,
@@ -230,6 +231,7 @@ export class LandingPageComponent {
   });
   private readonly resolver = inject(ConceptResolverService);
   private readonly aiTracking = inject(AiTrackingService);
+  private readonly productEvents = inject(PdmProductEventsService);
   private readonly feedbackService = inject(FeedbackService);
   private readonly countFormatter = new Intl.NumberFormat('en-US');
 
@@ -301,6 +303,7 @@ export class LandingPageComponent {
     }
 
     const submittedQuery = options.displayQuery ?? query.trim();
+    const hasSubmittedQuery = submittedQuery.length > 0;
 
     this.activeReadingLens.set('standard');
     this.validationTraceVisible.set(false);
@@ -309,6 +312,14 @@ export class LandingPageComponent {
       submittedQuery,
       status: 'loading',
     });
+
+    if (hasSubmittedQuery) {
+      this.productEvents.track('homepage_search_submitted', {
+        queryLength: query.trim().length,
+        hasQuery: true,
+        page: 'home',
+      });
+    }
 
     try {
       const response = await firstValueFrom(this.resolver.resolve(query));
@@ -320,12 +331,20 @@ export class LandingPageComponent {
         detail,
         feedback: this.buildFeedbackState(response, detail, options.feedbackOrigin),
       });
+      this.productEvents.track('homepage_search_completed', {
+        responseType: response.type,
+        queryType: response.queryType,
+        hasDetail: detail !== null,
+      });
       this.scheduleScrollToResult();
     } catch (error) {
       this.activeEntry.set({
         submittedQuery,
         status: 'error',
         errorMessage: this.describeError(error),
+      });
+      this.productEvents.track('homepage_search_failed', {
+        errorType: this.resolveHomepageSearchErrorType(error),
       });
       this.scheduleScrollToResult();
     } finally {
@@ -1143,6 +1162,30 @@ export class LandingPageComponent {
     }
 
     return 'ChatPDM could not return a product response for this request.';
+  }
+
+  private resolveHomepageSearchErrorType(error: unknown): 'network' | 'server' | 'validation' | 'aborted' {
+    if (error instanceof DOMException && error.name === 'AbortError') {
+      return 'aborted';
+    }
+
+    if (error instanceof HttpErrorResponse) {
+      if (error.status === 0) {
+        return 'network';
+      }
+
+      if (error.status === 400) {
+        return 'validation';
+      }
+
+      return 'server';
+    }
+
+    if (error instanceof TypeError) {
+      return 'network';
+    }
+
+    return 'server';
   }
 
   private classifyQuery(query: string): QueryAssessment {

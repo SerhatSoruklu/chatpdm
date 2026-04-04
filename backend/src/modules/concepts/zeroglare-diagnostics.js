@@ -9,6 +9,12 @@ const {
   findLeadingFillerPhrase,
   normalizeQuery,
 } = require('./normalizer');
+const {
+  evaluateZeroglareRefusal,
+} = require('./zeroglare-refusal-contracts');
+const {
+  evaluateZeroglareConversationalGuidance,
+} = require('./zeroglare-conversational-guidance');
 
 const ZEROGLOARE_PIPELINE_STAGES = Object.freeze([
   'input',
@@ -595,6 +601,10 @@ function buildZeroglareAnalysis(rawQuery) {
 
   const normalizedQuery = normalizeQuery(rawQuery);
   const signalText = canonicalizeSignalText(rawQuery);
+  const refusal = evaluateZeroglareRefusal(rawQuery);
+  const conversationalGuidance = refusal.refused
+    ? null
+    : evaluateZeroglareConversationalGuidance(rawQuery);
   const observations = [
     detectRhetoricalNoise(rawQuery, signalText),
     detectAmbiguitySurface(signalText),
@@ -615,21 +625,50 @@ function buildZeroglareAnalysis(rawQuery) {
   ];
   const activeObservations = observations.filter((observation) => observation.detected);
   const markerCount = activeObservations.length;
-  const status = markerCount === 0 ? 'clear' : markerCount >= 3 ? 'fail' : 'pressure';
+  const status = refusal.refused
+    ? 'refused'
+    : markerCount === 0
+      ? 'clear'
+      : markerCount >= 3
+        ? 'fail'
+        : 'pressure';
   const normalizedInput = normalizedQuery === EMPTY_NORMALIZED_QUERY ? '' : normalizedQuery;
   const normalizedInputLength = normalizedInput.length;
+  const summary = {
+    state: status,
+    clear_count: status === 'clear' ? 1 : 0,
+    pressure_count: status === 'pressure' || status === 'refused' ? markerCount : 0,
+    fail_count: status === 'fail' ? markerCount : 0,
+    refusal_count: status === 'refused' ? 1 : 0,
+    marker_count: markerCount,
+  };
+  const refusalPayload = refusal.refused
+    ? {
+      contract_name: refusal.contract_name,
+      reason_code: refusal.reason_code,
+      reason: refusal.reason,
+      matched_features: [...refusal.matched_features],
+      matched_disqualifiers: [...refusal.matched_disqualifiers],
+    }
+    : null;
+  const conversationalPayload = conversationalGuidance?.matched
+    ? {
+      pattern: conversationalGuidance.pattern,
+      response: conversationalGuidance.response,
+      strategy: conversationalGuidance.strategy,
+      intent: conversationalGuidance.intent,
+      matched_features: [...conversationalGuidance.matched_features],
+      matched_disqualifiers: [...conversationalGuidance.matched_disqualifiers],
+    }
+    : null;
 
   return {
     resource: 'zeroglare',
     taxonomy_version: ZEROGLOARE_MARKER_TAXONOMY_VERSION,
     status,
-    summary: {
-      state: status,
-      clear_count: status === 'clear' ? 1 : 0,
-      pressure_count: status === 'pressure' ? markerCount : 0,
-      fail_count: status === 'fail' ? markerCount : 0,
-      marker_count: markerCount,
-    },
+    summary,
+    ...(refusalPayload ? { refusal: refusalPayload } : {}),
+    ...(conversationalPayload ? { conversational: conversationalPayload } : {}),
     normalized_input_preview: normalizedInputLength > 0
       ? normalizedInput.slice(0, ZEROGLOARE_ANALYSIS_PREVIEW_LIMIT)
       : null,

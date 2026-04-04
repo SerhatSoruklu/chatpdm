@@ -1,0 +1,535 @@
+{
+  "metadata": {
+    "pack_name": "ZeroGlare Boundary Integrity Pack",
+    "version": "v1",
+    "note": "Frozen boundary corpus for v1 deterministic ZeroGlare behavior. New refusal contracts or guidance patterns must expand this pack explicitly; silent broadening is not acceptable."
+  },
+  "clear": [
+    {
+      "id": "clear-01",
+      "input": "A contract requires mutual agreement between two parties.",
+      "expected_status": "clear",
+      "expected_reason_code": null,
+      "expected_guidance_pattern": null,
+      "short_note": "neutral baseline"
+    },
+    {
+      "id": "clear-02",
+      "input": "The moon rises over the harbor.",
+      "expected_status": "clear",
+      "expected_reason_code": null,
+      "expected_guidance_pattern": null,
+      "short_note": "plain scene"
+    },
+    {
+      "id": "clear-03",
+      "input": "A bounded process ends when its conditions are met.",
+      "expected_status": "clear",
+      "expected_reason_code": null,
+      "expected_guidance_pattern": null,
+      "short_note": "bounded process"
+    },
+    {
+      "id": "clear-04",
+      "input": "The policy is written in plain language.",
+      "expected_status": "clear",
+      "expected_reason_code": null,
+      "expected_guidance_pattern": null,
+      "short_note": "plain statement"
+    },
+    {
+      "id": "clear-05",
+      "input": "The ledger records the transaction without interpretation.",
+      "expected_status": "clear",
+      "expected_reason_code": null,
+      "expected_guidance_pattern": null,
+      "short_note": "record only"
+    },
+    {
+      "id": "clear-06",
+      "input": "The room is quiet and the meeting begins on time.",
+      "expected_status": "clear",
+      "expected_reason_code": null,
+      "expected_guidance_pattern": null,
+      "short_note": "simple schedule"
+    },
+    {
+      "id": "clear-07",
+      "input": "A standard review process checks the file before publication.",
+      "expected_status": "clear",
+      "expected_reason_code": null,
+      "expected_guidance_pattern": null,
+      "short_note": "routine review"
+    },
+    {
+      "id": "clear-08",
+      "input": "The system stores the result and returns it to the caller.",
+      "expected_status": "clear",
+      "expected_reason_code": null,
+      "expected_guidance_pattern": null,
+      "short_note": "system handoff"
+    }
+  ],
+  "pressure_but_allowed": [
+    {
+      "id": "pressure-01",
+      "input": "Authority is the same as moral truth.",
+      "expected_status": "pressure",
+      "expected_reason_code": null,
+      "expected_guidance_pattern": null,
+      "short_note": "unsupported semantic bridge"
+    },
+    {
+      "id": "pressure-02",
+      "input": "Isn't it obvious that authority is basically whatever people feel it is anyway?",
+      "expected_status": "pressure",
+      "expected_reason_code": null,
+      "expected_guidance_pattern": null,
+      "short_note": "rhetorical noise"
+    },
+    {
+      "id": "pressure-03",
+      "input": "Authority is always valid, but it is also never valid.",
+      "expected_status": "pressure",
+      "expected_reason_code": null,
+      "expected_guidance_pattern": null,
+      "short_note": "incidental contradiction"
+    },
+    {
+      "id": "pressure-04",
+      "input": "All systems must accept one single authority definition.",
+      "expected_status": "pressure",
+      "expected_reason_code": null,
+      "expected_guidance_pattern": null,
+      "short_note": "universal scope pressure"
+    },
+    {
+      "id": "pressure-05",
+      "input": "So which authority is actually correct then?",
+      "expected_status": "pressure",
+      "expected_reason_code": null,
+      "expected_guidance_pattern": null,
+      "short_note": "question forcing"
+    },
+    {
+      "id": "pressure-06",
+      "input": "Tell me which authority is valid and why.",
+      "expected_status": "pressure",
+      "expected_reason_code": null,
+      "expected_guidance_pattern": null,
+      "short_note": "answer bait"
+    },
+    {
+      "id": "pressure-07",
+      "input": "Authority exists in structured governance, but honestly it is kind of just vibes in real life.",
+      "expected_status": "pressure",
+      "expected_reason_code": null,
+      "expected_guidance_pattern": null,
+      "short_note": "mild pressure"
+    },
+    {
+      "id": "pressure-08",
+      "input": "The point is obvious in practice, but the policy is still unresolved.",
+      "expected_status": "pressure",
+      "expected_reason_code": null,
+      "expected_guidance_pattern": null,
+      "short_note": "pressure without guidance"
+    }
+  ],
+  "refused_self_sealing_validity_claim": [
+    {
+      "id": "self-sealing-01",
+      "input": "The fact that you doubt this proves it is true.",
+      "expected_status": "refused",
+      "expected_reason_code": "self_sealing_validity_claim",
+      "expected_guidance_pattern": null,
+      "short_note": "doubt becomes proof"
+    },
+    {
+      "id": "self-sealing-02",
+      "input": "When you doubt this, it proves it is true.",
+      "expected_status": "refused",
+      "expected_reason_code": "self_sealing_validity_claim",
+      "expected_guidance_pattern": null,
+      "short_note": "active doubt becomes proof"
+    },
+    {
+      "id": "self-sealing-03",
+      "input": "Anyone who disagrees only proves they do not understand.",
+      "expected_status": "refused",
+      "expected_reason_code": "self_sealing_validity_claim",
+      "expected_guidance_pattern": null,
+      "short_note": "disagreement becomes proof"
+    },
+    {
+      "id": "self-sealing-04",
+      "input": "Resistance is evidence that the mechanism is working.",
+      "expected_status": "refused",
+      "expected_reason_code": "self_sealing_validity_claim",
+      "expected_guidance_pattern": null,
+      "short_note": "resistance becomes evidence"
+    },
+    {
+      "id": "self-sealing-05",
+      "input": "The fact that you doubt this proves it is true, even in a longer paragraph.",
+      "expected_status": "refused",
+      "expected_reason_code": "self_sealing_validity_claim",
+      "expected_guidance_pattern": null,
+      "short_note": "longer enacted claim"
+    },
+    {
+      "id": "self-sealing-06",
+      "input": "Anyone who disagrees here only proves they do not understand.",
+      "expected_status": "refused",
+      "expected_reason_code": "self_sealing_validity_claim",
+      "expected_guidance_pattern": null,
+      "short_note": "longer enacted disagreement"
+    },
+    {
+      "id": "self-sealing-07",
+      "input": "When you doubt this, it proves it is true, and nothing else.",
+      "expected_status": "refused",
+      "expected_reason_code": "self_sealing_validity_claim",
+      "expected_guidance_pattern": null,
+      "short_note": "no independent path"
+    },
+    {
+      "id": "self-sealing-08",
+      "input": "Resistance is evidence that the mechanism is working, full stop.",
+      "expected_status": "refused",
+      "expected_reason_code": "self_sealing_validity_claim",
+      "expected_guidance_pattern": null,
+      "short_note": "closed evidence loop"
+    }
+  ],
+  "refused_no_exit_contradictory_bind": [
+    {
+      "id": "bind-01",
+      "input": "If you accept it, you are naive. If you reject it, that proves you fear it.",
+      "expected_status": "refused",
+      "expected_reason_code": "no_exit_contradictory_bind",
+      "expected_guidance_pattern": null,
+      "short_note": "accept reject bind"
+    },
+    {
+      "id": "bind-02",
+      "input": "Silence means consent. Objection means defensiveness.",
+      "expected_status": "refused",
+      "expected_reason_code": "no_exit_contradictory_bind",
+      "expected_guidance_pattern": null,
+      "short_note": "silence objection bind"
+    },
+    {
+      "id": "bind-03",
+      "input": "Agree and you concede. Disagree and you confirm.",
+      "expected_status": "refused",
+      "expected_reason_code": "no_exit_contradictory_bind",
+      "expected_guidance_pattern": null,
+      "short_note": "agree disagree bind"
+    },
+    {
+      "id": "bind-04",
+      "input": "If you accept it, you are naive. If you reject it, that proves you fear it, and no exit is offered.",
+      "expected_status": "refused",
+      "expected_reason_code": "no_exit_contradictory_bind",
+      "expected_guidance_pattern": null,
+      "short_note": "longer closed bind"
+    },
+    {
+      "id": "bind-05",
+      "input": "Silence means consent. Objection means defensiveness, with no neutral path.",
+      "expected_status": "refused",
+      "expected_reason_code": "no_exit_contradictory_bind",
+      "expected_guidance_pattern": null,
+      "short_note": "no neutral path"
+    },
+    {
+      "id": "bind-06",
+      "input": "Agree and you concede. Disagree and you confirm, inside the same imposed conclusion.",
+      "expected_status": "refused",
+      "expected_reason_code": "no_exit_contradictory_bind",
+      "expected_guidance_pattern": null,
+      "short_note": "same conclusion imposed"
+    },
+    {
+      "id": "bind-07",
+      "input": "If you accept it, you are naive. If you reject it, that proves you fear it. The text gives no alternate exit.",
+      "expected_status": "refused",
+      "expected_reason_code": "no_exit_contradictory_bind",
+      "expected_guidance_pattern": null,
+      "short_note": "no alternate exit"
+    },
+    {
+      "id": "bind-08",
+      "input": "Silence means consent. Objection means defensiveness, and the frame gives no alternate exit.",
+      "expected_status": "refused",
+      "expected_reason_code": "no_exit_contradictory_bind",
+      "expected_guidance_pattern": null,
+      "short_note": "frame gives no exit"
+    }
+  ],
+  "refused_unresolvable_recursive_closure": [
+    {
+      "id": "recursive-01",
+      "input": "If you reject this, that proves it.",
+      "expected_status": "refused",
+      "expected_reason_code": "unresolvable_recursive_closure",
+      "expected_guidance_pattern": null,
+      "short_note": "rejecting proves it"
+    },
+    {
+      "id": "recursive-02",
+      "input": "Questioning it confirms it.",
+      "expected_status": "refused",
+      "expected_reason_code": "unresolvable_recursive_closure",
+      "expected_guidance_pattern": null,
+      "short_note": "questioning confirms"
+    },
+    {
+      "id": "recursive-03",
+      "input": "Trying to step outside the frame keeps you inside the frame.",
+      "expected_status": "refused",
+      "expected_reason_code": "unresolvable_recursive_closure",
+      "expected_guidance_pattern": null,
+      "short_note": "frame keeps you inside"
+    },
+    {
+      "id": "recursive-04",
+      "input": "If you reject this, that proves it, and the claim closes the loop.",
+      "expected_status": "refused",
+      "expected_reason_code": "unresolvable_recursive_closure",
+      "expected_guidance_pattern": null,
+      "short_note": "longer loop closes"
+    },
+    {
+      "id": "recursive-05",
+      "input": "Questioning it confirms it, and no exit is offered.",
+      "expected_status": "refused",
+      "expected_reason_code": "unresolvable_recursive_closure",
+      "expected_guidance_pattern": null,
+      "short_note": "no exit offered"
+    },
+    {
+      "id": "recursive-06",
+      "input": "Trying to step outside the frame keeps you inside the frame, by the text's own structure.",
+      "expected_status": "refused",
+      "expected_reason_code": "unresolvable_recursive_closure",
+      "expected_guidance_pattern": null,
+      "short_note": "self-contained loop"
+    },
+    {
+      "id": "recursive-07",
+      "input": "If you reject this, that proves it, full stop.",
+      "expected_status": "refused",
+      "expected_reason_code": "unresolvable_recursive_closure",
+      "expected_guidance_pattern": null,
+      "short_note": "closing assertion"
+    },
+    {
+      "id": "recursive-08",
+      "input": "Questioning it confirms it because the loop remains closed.",
+      "expected_status": "refused",
+      "expected_reason_code": "unresolvable_recursive_closure",
+      "expected_guidance_pattern": null,
+      "short_note": "loop remains closed"
+    }
+  ],
+  "guidance_ambiguity_uncertain_interpretation": [
+    {
+      "id": "ambiguity-01",
+      "input": "I think I understand what you're saying, but at the same time it feels like you're implying something without directly stating it, and I'm not sure if I'm supposed to agree with it or question it.",
+      "expected_status": "pressure",
+      "expected_reason_code": null,
+      "expected_guidance_pattern": "ambiguity_uncertain_interpretation",
+      "short_note": "uncertain split interpretation"
+    },
+    {
+      "id": "ambiguity-02",
+      "input": "I can't tell whether you're making a direct claim or implying something behind it.",
+      "expected_status": "pressure",
+      "expected_reason_code": null,
+      "expected_guidance_pattern": "ambiguity_uncertain_interpretation",
+      "short_note": "direct claim versus implication"
+    },
+    {
+      "id": "ambiguity-03",
+      "input": "It sounds like you might mean two different things here, and I'm not sure which one I'm supposed to respond to, really.",
+      "expected_status": "pressure",
+      "expected_reason_code": null,
+      "expected_guidance_pattern": "ambiguity_uncertain_interpretation",
+      "short_note": "two possible meanings"
+    },
+    {
+      "id": "ambiguity-04",
+      "input": "I think I understand what you're saying, but it feels like you're implying something without directly stating it, and I'm not sure if I'm supposed to agree with it or question it, honestly.",
+      "expected_status": "pressure",
+      "expected_reason_code": null,
+      "expected_guidance_pattern": "ambiguity_uncertain_interpretation",
+      "short_note": "implied meaning and split response"
+    },
+    {
+      "id": "ambiguity-05",
+      "input": "I can't tell whether you're making a direct claim or implying something behind it, honestly.",
+      "expected_status": "pressure",
+      "expected_reason_code": null,
+      "expected_guidance_pattern": "ambiguity_uncertain_interpretation",
+      "short_note": "uncertain direct versus implied"
+    },
+    {
+      "id": "ambiguity-06",
+      "input": "It sounds like you might mean two different things here, and I'm not sure which one I'm supposed to respond to, obviously.",
+      "expected_status": "pressure",
+      "expected_reason_code": null,
+      "expected_guidance_pattern": "ambiguity_uncertain_interpretation",
+      "short_note": "split response with pressure"
+    },
+    {
+      "id": "ambiguity-07",
+      "input": "I think I understand what you're saying, but at the same time it feels like you're implying something without directly stating it, and I'm not sure if I'm supposed to agree with it or question it, obviously.",
+      "expected_status": "pressure",
+      "expected_reason_code": null,
+      "expected_guidance_pattern": "ambiguity_uncertain_interpretation",
+      "short_note": "implied meaning with pressure"
+    },
+    {
+      "id": "ambiguity-08",
+      "input": "I can't tell whether you're making a direct claim or implying something behind it, really.",
+      "expected_status": "pressure",
+      "expected_reason_code": null,
+      "expected_guidance_pattern": "ambiguity_uncertain_interpretation",
+      "short_note": "uncertain implication with pressure"
+    }
+  ],
+  "guidance_soft_pressure_expectation_frame": [
+    {
+      "id": "soft-pressure-01",
+      "input": "Most reasonable people would agree with this, obviously.",
+      "expected_status": "pressure",
+      "expected_reason_code": null,
+      "expected_guidance_pattern": "soft_pressure_expectation_frame",
+      "short_note": "consensus framing"
+    },
+    {
+      "id": "soft-pressure-02",
+      "input": "Most reasonable people would agree with this, really.",
+      "expected_status": "pressure",
+      "expected_reason_code": null,
+      "expected_guidance_pattern": "soft_pressure_expectation_frame",
+      "short_note": "consensus with pressure"
+    },
+    {
+      "id": "soft-pressure-03",
+      "input": "You already know the right answer, honestly.",
+      "expected_status": "pressure",
+      "expected_reason_code": null,
+      "expected_guidance_pattern": "soft_pressure_expectation_frame",
+      "short_note": "implied preferred answer"
+    },
+    {
+      "id": "soft-pressure-04",
+      "input": "You already know the right answer, obviously.",
+      "expected_status": "pressure",
+      "expected_reason_code": null,
+      "expected_guidance_pattern": "soft_pressure_expectation_frame",
+      "short_note": "preferred answer pressure"
+    },
+    {
+      "id": "soft-pressure-05",
+      "input": "You already know what the right answer is, honestly.",
+      "expected_status": "pressure",
+      "expected_reason_code": null,
+      "expected_guidance_pattern": "soft_pressure_expectation_frame",
+      "short_note": "implied conclusion"
+    },
+    {
+      "id": "soft-pressure-06",
+      "input": "You probably don't want to be the kind of person who ignores this, really.",
+      "expected_status": "pressure",
+      "expected_reason_code": null,
+      "expected_guidance_pattern": "soft_pressure_expectation_frame",
+      "short_note": "mild social pressure"
+    },
+    {
+      "id": "soft-pressure-07",
+      "input": "You probably don't want to be the kind of person who ignores this, obviously.",
+      "expected_status": "pressure",
+      "expected_reason_code": null,
+      "expected_guidance_pattern": "soft_pressure_expectation_frame",
+      "short_note": "mild expectation frame"
+    },
+    {
+      "id": "soft-pressure-08",
+      "input": "The obvious conclusion is right in front of you, obviously.",
+      "expected_status": "pressure",
+      "expected_reason_code": null,
+      "expected_guidance_pattern": "soft_pressure_expectation_frame",
+      "short_note": "obvious conclusion cue"
+    }
+  ],
+  "descriptive_or_meta_non_match": [
+    {
+      "id": "meta-01",
+      "input": "The phrase \"if you doubt it, that proves it\" is a self-sealing argument.",
+      "expected_status": "clear",
+      "expected_reason_code": null,
+      "expected_guidance_pattern": null,
+      "short_note": "quoted self-sealing mention"
+    },
+    {
+      "id": "meta-02",
+      "input": "This sentence describes a false dilemma.",
+      "expected_status": "clear",
+      "expected_reason_code": null,
+      "expected_guidance_pattern": null,
+      "short_note": "descriptive false dilemma"
+    },
+    {
+      "id": "meta-03",
+      "input": "Some rhetoric creates binds where every answer looks bad.",
+      "expected_status": "clear",
+      "expected_reason_code": null,
+      "expected_guidance_pattern": null,
+      "short_note": "bind discussion only"
+    },
+    {
+      "id": "meta-04",
+      "input": "A recursive closure happens when every interpretation loops back.",
+      "expected_status": "clear",
+      "expected_reason_code": null,
+      "expected_guidance_pattern": null,
+      "short_note": "recursive discussion only"
+    },
+    {
+      "id": "meta-05",
+      "input": "The text describes a self-sealing claim without asserting one.",
+      "expected_status": "clear",
+      "expected_reason_code": null,
+      "expected_guidance_pattern": null,
+      "short_note": "description without enactment"
+    },
+    {
+      "id": "meta-06",
+      "input": "The passage analyzes a contradictory bind but leaves an independent validation path open.",
+      "expected_status": "clear",
+      "expected_reason_code": null,
+      "expected_guidance_pattern": null,
+      "short_note": "analysis with exit path"
+    },
+    {
+      "id": "meta-07",
+      "input": "The note quotes a recursive claim for analysis.",
+      "expected_status": "clear",
+      "expected_reason_code": null,
+      "expected_guidance_pattern": null,
+      "short_note": "quoted recursive claim"
+    },
+    {
+      "id": "meta-08",
+      "input": "The example discusses social pressure rhetoric without making a demand.",
+      "expected_status": "clear",
+      "expected_reason_code": null,
+      "expected_guidance_pattern": null,
+      "short_note": "discussion only"
+    }
+  ]
+}
