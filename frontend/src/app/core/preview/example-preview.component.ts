@@ -40,7 +40,7 @@ export class ExamplePreviewComponent implements OnInit {
       case 'ready':
         return 'Resolved within scope';
       case 'partial':
-        return 'Fallback active';
+        return 'Partial result';
       case 'error':
         return 'Preview unavailable';
       default:

@@ -25,6 +25,11 @@ function main(): void {
   const liveComparisonIssue = classifyComparisonSeedResponse(buildLiveComparisonResponse());
   assert.equal(liveComparisonIssue.kind, 'issue', 'live comparison drift should become an issue, not a hard failure.');
   if (liveComparisonIssue.kind === 'issue') {
+    assert.equal(
+      liveComparisonIssue.issue.message,
+      'Comparison seed blocked by validator.',
+      'comparison drift should be labeled as validator-blocked, not unavailable.',
+    );
     assert.deepEqual(
       liveComparisonIssue.issue.details,
       ['no_exact_match', 'comparison_query', 'validation_blocked'],

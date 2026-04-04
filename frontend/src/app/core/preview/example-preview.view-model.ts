@@ -85,7 +85,7 @@ export function classifyComparisonSeedResponse(
       kind: 'issue',
       issue: {
         seedLabel: 'comparison seed',
-        message: 'Seeded comparison query is unavailable from the live resolver.',
+        message: comparisonSeedIssueMessage(response),
         details: responseDetails(response),
       },
     };
@@ -153,6 +153,22 @@ function responseDetails(response: ResolveProductResponse): string[] {
   }
 
   return details;
+}
+
+function comparisonSeedIssueMessage(response: ResolveProductResponse): string {
+  if (
+    response.type === 'no_exact_match' &&
+    response.queryType === 'comparison_query' &&
+    response.interpretation?.interpretationType === 'validation_blocked'
+  ) {
+    return 'Comparison seed blocked by validator.';
+  }
+
+  if (response.type === 'no_exact_match' && response.queryType === 'comparison_query') {
+    return 'Comparison seed resolved to a non-comparison live resolver state.';
+  }
+
+  return 'Comparison seed returned an unexpected live resolver state.';
 }
 
 function findValueAxis(
