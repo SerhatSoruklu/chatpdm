@@ -16,6 +16,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://chatpdm.com/zeroglare</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://chatpdm.com/runtime</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -79,5 +84,10 @@
     <loc>https://chatpdm.com/faq</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://chatpdm.com/vocabulary</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
 </urlset>
