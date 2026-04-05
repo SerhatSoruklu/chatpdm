@@ -1,18 +1,36 @@
 # ChatPDM
 
-ChatPDM is a deterministic concept-resolution system for authored meaning.
-It takes a query, normalizes it, matches it against a bounded concept set, and returns a fixed structured response.
-If the query falls outside authored scope, it refuses instead of guessing.
-Same input, same versions, same output.
+ChatPDM guarantees that rewriting or simplifying text never changes its meaning.
 
-## Front Door
+It resolves text to a canonical concept, then returns fixed views of that same meaning.
+If it cannot preserve meaning safely, it refuses instead of guessing.
 
-- What enters: a user query or a canonical concept id.
-- What the system does: normalize, classify, resolve, or refuse.
-- What happens on unsupported input: explicit refusal, not invented meaning.
-- Why refusal is a feature: it protects closed-world enforcement and keeps meaning stable.
+## Why This Exists
 
-## Minimal Examples
+Most systems treat wording as flexible. That is fine for chat, but unsafe when meaning must stay anchored.
+A rewrite, summary, or simplification can silently change the semantic payload.
+ChatPDM exists to stop that drift.
+
+## Normal Systems vs ChatPDM
+
+| Normal system | ChatPDM |
+| --- | --- |
+| Rewriting can change meaning | Rewriting or simplifying keeps the same canonical meaning |
+| Answers vary by wording | Same concept, same versions, same output |
+| Ambiguity gets smoothed over | Unsafe ambiguity is refused |
+| The system guesses when it is unsure | The system stops at the boundary |
+
+## Concrete Example
+
+A user asks about `authority`.
+
+A normal system might answer with slightly different meanings depending on the wording: "the power to command", "recognized standing", or "legitimate control".
+Those are not guaranteed to stay identical across rewrites.
+
+ChatPDM resolves `authority` to one canonical concept and returns fixed views of that concept, such as a short definition, core meaning, and full definition.
+Different wording. Same meaning. Guaranteed.
+
+## API Examples
 
 ### Supported query
 
@@ -73,7 +91,7 @@ That is the intended posture: resolve authored concepts deterministically, and r
 
 ## What ChatPDM Does
 
-- Resolves authored concepts into bounded outputs.
+- Resolves authored concepts into fixed, bounded outputs.
 - Keeps the concept layer inspectable instead of opaque.
 - Returns refusal when the runtime cannot support a request safely.
 - Preserves the same output shape under the same declared versions.
@@ -84,7 +102,7 @@ That is the intended posture: resolve authored concepts deterministically, and r
 - Matching is bounded by authored concepts and explicit contract rules.
 - Resolution is deterministic, not probabilistic.
 - Unsupported queries do not get a guessed answer.
-- Meaning is authored before runtime and then resolved, not invented on demand.
+- Meaning is authored before runtime and then resolved through fixed views, not invented on demand.
 
 ## What ChatPDM Is / Is Not
 
@@ -127,11 +145,11 @@ Meaning is authored before runtime, executed within explicit boundaries, and rej
 
 Most concept tools drift into one of two failures:
 
-- fluent answers that are not structurally grounded
+- fluent answers that can change meaning when text is reworded
 - flat lookup behavior that cannot represent ambiguity or refusal cleanly
 
 ChatPDM sits between those failures.
-It resolves only authored concepts and refuses the rest.
+It resolves only authored concepts, returns fixed views of the same meaning, and refuses the rest.
 
 ## Governance Scope Policy
 
