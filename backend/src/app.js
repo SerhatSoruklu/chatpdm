@@ -14,10 +14,7 @@ const app = express();
 app.disable('x-powered-by');
 app.set('trust proxy', env.trustProxy);
 
-app.use(helmet({
-  crossOriginEmbedderPolicy: false,
-  contentSecurityPolicy: false,
-}));
+app.use(helmet());
 
 if (env.enableCompression) {
   app.use(compression({ threshold: 1024 }));

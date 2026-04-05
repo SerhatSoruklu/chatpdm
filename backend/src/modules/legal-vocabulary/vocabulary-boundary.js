@@ -66,7 +66,7 @@ function loadConceptPacketIndex() {
       if (isPublishedConceptPacketRecord(record)) {
         packets.set(record.concept, record);
       }
-    } catch (_error) {
+    } catch {
       continue;
     }
   }

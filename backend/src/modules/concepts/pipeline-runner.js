@@ -1,9 +1,6 @@
 'use strict';
 
 const {
-  normalizeQuery,
-} = require('./normalizer');
-const {
   recognizeLegalVocabulary,
 } = require('../legal-vocabulary');
 const {

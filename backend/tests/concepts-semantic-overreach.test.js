@@ -5,6 +5,7 @@ const test = require('node:test');
 
 const {
   detectSemanticOverreach,
+  hasNormalizedTerm,
   normalizeSemanticOverreachText,
 } = require('../src/modules/concepts/semantic-overreach-detector');
 
@@ -71,6 +72,24 @@ test('ordinary inputs remain unflagged', () => {
     assert.equal(result.causalOverreach, false, input);
     assert.deepEqual(result.matchedReasons, [], input);
   });
+});
+
+test('normalized term matching remains boundary-aware on large normalized inputs', () => {
+  assert.equal(hasNormalizedTerm('microtubules_consciousness', 'microtubules'), true);
+  assert.equal(hasNormalizedTerm('microtubules_consciousness', 'tubules'), false);
+  assert.equal(hasNormalizedTerm('quantum_biology_brain_quantum_computer', 'quantum biology'), true);
+});
+
+test('long noisy input still normalizes and matches deterministically', () => {
+  const longClaim = `${' '.repeat(1000)}microtubules${'-'.repeat(1000)}consciousness`
+    + `${' '.repeat(1000)}therefore${' '.repeat(1000)}cosmic${' '.repeat(1000)}consciousness`;
+
+  const result = detectSemanticOverreach(longClaim);
+
+  assert.equal(result.unsupportedSemanticBridge, true);
+  assert.equal(result.causalOverreach, false);
+  assert.ok(result.matchedReasons.includes('microtubules_to_consciousness'));
+  assert.ok(result.matchedReasons.includes('microtubules_to_cosmic_consciousness'));
 });
 
 test('normalization is explicit and conservative', () => {

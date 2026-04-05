@@ -16,12 +16,28 @@ function normalizeUnresolvedDomainTerm(term) {
     return '';
   }
 
-  return term
-    .trim()
-    .toLowerCase()
-    .replace(/[\s-]+/g, '_')
-    .replace(/_+/g, '_')
-    .replace(/^_+|_+$/g, '');
+  const trimmed = term.trim().toLowerCase();
+  const normalized = [];
+
+  for (let index = 0; index < trimmed.length; index += 1) {
+    const char = trimmed[index];
+    const isSeparator = char === '-' || char === '_' || char.trim() === '';
+
+    if (isSeparator) {
+      if (normalized.length > 0 && normalized[normalized.length - 1] !== '_') {
+        normalized.push('_');
+      }
+      continue;
+    }
+
+    normalized.push(char);
+  }
+
+  if (normalized[normalized.length - 1] === '_') {
+    normalized.pop();
+  }
+
+  return normalized.join('');
 }
 
 function isUnresolvedDomain(term) {

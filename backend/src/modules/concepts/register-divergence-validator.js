@@ -84,10 +84,6 @@ function averageSentenceLength(modeRecord) {
   return totalWords / sentences.length;
 }
 
-function buildModeText(modeRecord) {
-  return AUTHORED_REGISTER_FIELDS.map((fieldName) => modeRecord[fieldName]).join('\n\n');
-}
-
 function validateRequiredFields(modeRecord, modeName, reasons) {
   AUTHORED_REGISTER_FIELDS.forEach((fieldName) => {
     if (typeof modeRecord?.[fieldName] !== 'string' || modeRecord[fieldName].trim() === '') {

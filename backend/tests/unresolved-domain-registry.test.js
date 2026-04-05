@@ -29,3 +29,11 @@ test('unresolved domain normalization is conservative and explicit', () => {
   assert.equal(normalizeUnresolvedDomainTerm('cosmic-consciousness'), 'cosmic_consciousness');
   assert.equal(normalizeUnresolvedDomainTerm(null), '');
 });
+
+test('unresolved domain normalization stays deterministic on large noisy input', () => {
+  const noisyInput = `${' '.repeat(1000)}Observer${'-'.repeat(1000)}Created${' '.repeat(1000)}Reality`
+    + `${' '.repeat(1000)}`;
+
+  assert.equal(normalizeUnresolvedDomainTerm(noisyInput), 'observer_created_reality');
+  assert.equal(isUnresolvedDomain(noisyInput), true);
+});
