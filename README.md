@@ -1,65 +1,141 @@
 # ChatPDM
 
-Deterministic concept resolution for a bounded, authored concept system.
+ChatPDM is a deterministic concept-resolution system for authored meaning.
+It takes a query, normalizes it, matches it against a bounded concept set, and returns a fixed structured response.
+If the query falls outside authored scope, it refuses instead of guessing.
+Same input, same versions, same output.
 
-ChatPDM is a public development repo for a meaning engine that answers only within a defined concept set. It is designed to return stable, inspectable outputs for authored concepts and to refuse unsupported queries honestly instead of improvising.
+## Front Door
 
-## Canonical Implementation
+- What enters: a user query or a canonical concept id.
+- What the system does: normalize, classify, resolve, or refuse.
+- What happens on unsupported input: explicit refusal, not invented meaning.
+- Why refusal is a feature: it protects closed-world enforcement and keeps meaning stable.
 
-This repository is the canonical reference implementation of ChatPDM.
+## Minimal Examples
 
-Forks may modify behavior, but are not guaranteed to preserve:
+### Supported query
 
-- closed-world enforcement
-- refusal guarantees
-- governance integrity
+```bash
+GET /api/v1/concepts/resolve?q=authority
+```
 
-This repo maintains the strict, deterministic core.
+```json
+{
+  "type": "concept_match",
+  "query": "authority",
+  "normalizedQuery": "authority",
+  "queryType": "exact_concept_query",
+  "resolution": {
+    "method": "exact_alias",
+    "conceptId": "authority"
+  },
+  "answer": {
+    "itemType": "core_concept",
+    "title": "Authority",
+    "shortDefinition": "Authority is recognized standing to direct, decide, or govern within a governance order."
+  }
+}
+```
 
-## What PDM Means
+### Refusal case
 
-PDM stands for **Predefined Deterministic Meaning**.
+```bash
+GET /api/v1/concepts/resolve?q=civic%20duty
+```
 
-In ChatPDM, meaning is authored before runtime, executed within explicit governance and package boundaries, and fails closed before semantic drift.
+```json
+{
+  "type": "no_exact_match",
+  "queryType": "unsupported_complex_query",
+  "interpretation": {
+    "interpretationType": "unsupported_complex",
+    "message": "This query does not match a supported concept query form in the current runtime.",
+    "concepts": [
+      "duty"
+    ]
+  },
+  "resolution": {
+    "method": "no_exact_match"
+  },
+  "message": "No exact canonical concept match was found for this query.",
+  "suggestions": [
+    {
+      "conceptId": "duty",
+      "title": "Duty",
+      "reason": "broader_topic"
+    }
+  ]
+}
+```
 
-This reflects the system's core invariant: the same meaning object must survive phrasing pressure, lifecycle evolution, and institutional execution boundaries.
+That is the intended posture: resolve authored concepts deterministically, and refuse unsupported composition honestly.
 
-## What Problem It Solves
+## What ChatPDM Does
 
-Most concept tools drift into one of two failure modes:
+- Resolves authored concepts into bounded outputs.
+- Keeps the concept layer inspectable instead of opaque.
+- Returns refusal when the runtime cannot support a request safely.
+- Preserves the same output shape under the same declared versions.
 
-- chatbot-style answers that sound plausible but are not structurally grounded
-- dictionary-style lookup that cannot represent ambiguity, refusal, or bounded interpretation cleanly
+## How It Behaves
 
-ChatPDM is built to sit in between those extremes.
+- Input is normalized before matching.
+- Matching is bounded by authored concepts and explicit contract rules.
+- Resolution is deterministic, not probabilistic.
+- Unsupported queries do not get a guessed answer.
+- Meaning is authored before runtime and then resolved, not invented on demand.
 
-It aims to:
-
-- resolve authored concepts deterministically
-- preserve explicit ambiguity when a query should not auto-resolve
-- return honest `no_exact_match` when the system should refuse
-- classify query shape without pretending to reason beyond authored scope
-
-## What ChatPDM Is
+## What ChatPDM Is / Is Not
 
 ChatPDM is:
 
 - a deterministic meaning system
 - a bounded concept engine
 - authored, versioned, and inspectable
-- refusal-first outside the authored concept boundary
+- refusal-first outside authored scope
 
 ChatPDM is not:
 
 - a chatbot
 - a generic Q&A system
-- semantic search
+- open-world reasoning
 - an inference engine
-- a full ontology platform
+- a universal ontology platform
+- Product Data Management software
 
-## Governance Scope Policy (Phase 12.5)
+## Canonical Implementation Posture
 
-Certain core concepts are explicitly governance-scoped in ChatPDM v1:
+This repository is the canonical reference implementation of ChatPDM.
+
+Forks may diverge, but they are not guaranteed to preserve:
+
+- closed-world enforcement
+- refusal guarantees
+- governance integrity
+- deterministic meaning resolution
+
+The working rule is simple: preserve the contract, do not improvise new behavior.
+
+## What PDM Means
+
+PDM stands for **Predefined Deterministic Meaning**.
+
+Meaning is authored before runtime, executed within explicit boundaries, and rejected when the system cannot resolve it safely.
+
+## What Problem It Solves
+
+Most concept tools drift into one of two failures:
+
+- fluent answers that are not structurally grounded
+- flat lookup behavior that cannot represent ambiguity or refusal cleanly
+
+ChatPDM sits between those failures.
+It resolves only authored concepts and refuses the rest.
+
+## Governance Scope Policy
+
+Certain core concepts are governance-scoped in ChatPDM v1:
 
 - authority
 - power
@@ -67,144 +143,53 @@ Certain core concepts are explicitly governance-scoped in ChatPDM v1:
 
 These are not universal definitions across all domains.
 
-### Rules
+Rules:
 
-- These concepts are defined only within the governance domain
-- They must not be presented as domain-neutral or universally exhaustive
-- Their scope must be preserved in:
-  - canonical outputs
-  - comparison outputs
-  - relation outputs
-  - documentation
-  - UI/API surfaces
+- these concepts are defined only within the governance domain
+- they must not be presented as domain-neutral or universally exhaustive
+- scope must be preserved in canonical outputs, comparison outputs, relation outputs, documentation, and UI/API surfaces
+- non-governance usage must produce scoped clarification or explicit `out_of_scope` refusal
 
-### Non-governance handling
+## AI Governance Boundary
 
-Queries implying non-governance usage must result in:
+If AI is introduced, it remains advisory only.
+It must not become canonical authority.
 
-- scoped clarification, or
-- explicit out_of_scope refusal
+Current governance boundary docs:
 
-This policy is enforced at runtime and must not be bypassed.
-
-## Governance Contracts
-
-Governance-facing system boundaries are documented in:
-
-- [ANTI_CORRUPTION/ANTI_CORRUPTION_SYSTEM_LAW.md](./ANTI_CORRUPTION/ANTI_CORRUPTION_SYSTEM_LAW.md)
 - [LLGS AI Boundary Protocol](./docs/governance/LLGS_AI_BOUNDARY_PROTOCOL.md)
 - [AI Interaction Contract](./docs/governance/AI_INTERACTION_CONTRACT.md)
 - [AI Output Surface Spec](./docs/governance/AI_OUTPUT_SURFACE_SPEC.md)
 - [AI Misuse Scenarios](./docs/governance/AI_MISUSE_SCENARIOS.md)
 - [AI Automated Integrity Checks](./docs/governance/AI_AUTOMATED_INTEGRITY_CHECKS.md)
-- [LANGUAGE_CONTRACT.md](./LANGUAGE_CONTRACT.md)
+- [Language Contract](./LANGUAGE_CONTRACT.md)
 
-If AI is introduced, it remains advisory only and must not acquire canonical authority.
-
-Known AI governance regressions are stored as machine-readable replay fixtures under [governance/violations](/home/serhat/code/chatpdm/governance/violations).
+Known AI governance regressions are stored as machine-readable replay fixtures under [governance/violations](./governance/violations).
 
 ## Current Status
 
 The repo is in active beta development.
 
-Current state:
+Current runtime posture:
 
 - Angular SSR beta query surface
 - Express runtime resolver
 - file-backed canonical concept set
 - response contract and schema validation
 - semantic pressure-testing harness
-- query-shape classification for:
-  - exact concept queries
-  - canonical ID queries
-  - ambiguity
-  - subtype-shaped phrasing
-  - comparison-shaped phrasing
-  - relation-shaped phrasing
-  - role or actor phrasing
+- live runtime seed concepts: `authority`, `power`, `legitimacy`, `responsibility`, `duty`
 
-Current runtime seed concepts:
-
-- `governance-scoped enforcement for authority, power, legitimacy`
-- `source-integrity enforcement via sourcePriority (Phase 12.6)`
-- `authority`
-- `power`
-- `legitimacy`
-- `responsibility`
-- `duty`
-
-Locked v1 scope is broader than the live seed runtime, but the runtime intentionally expands slowly.
-
-## Minimal Example
-
-Example resolver call:
-
-```bash
-curl "http://localhost:4301/api/v1/concepts/resolve?q=civic%20duty"
-```
-
-Representative response shape:
-
-```json
-{
-  "type": "no_exact_match",
-  "query": "civic duty",
-  "normalizedQuery": "civic duty",
-  "queryType": "subtype_query",
-  "interpretation": {
-    "interpretationType": "narrower_subtype",
-    "baseConcept": "duty",
-    "modifier": "civic"
-  },
-  "resolution": {
-    "method": "no_exact_match"
-  },
-  "suggestions": [
-    {
-      "conceptId": "duty",
-      "reason": "broader_topic"
-    }
-  ]
-}
-```
-
-This is the intended posture:
-
-- recognize what kind of query was asked
-- refuse unsupported composition honestly
-- point to the nearest authored concept when a deterministic rule exists
+The live runtime is intentionally smaller than the authored v1 scope.
 
 ## Repository Layout
 
-```text
-chatpdm/
-├─ AGENTS.md
-├─ PRODUCT-IDENTITY.md
-├─ README.md
-├─ backend/
-├─ chatpdm-reference/
-├─ data/
-├─ docs/
-├─ frontend/
-├─ governance/
-└─ package.json
-```
-
-Key areas:
-
-- [frontend](/home/serhat/code/chatpdm/frontend): Angular beta surface
-- [backend](/home/serhat/code/chatpdm/backend): Express resolver runtime
-- [docs](/home/serhat/code/chatpdm/docs): product, architecture, authoring, and validation docs
-- [data](/home/serhat/code/chatpdm/data): canonical concept source artifacts
-- [governance](/home/serhat/code/chatpdm/governance): machine-readable governance replay fixtures and supporting artifacts
-- [tests](/home/serhat/code/chatpdm/tests): golden fixtures and semantic pressure harness
-- [chatpdm-reference](/home/serhat/code/chatpdm/chatpdm-reference): conceptual grounding stack for authoring discipline
-
-Frontend structure policy:
-
-- new Angular UI work should default to `ts/html/css` component-local files
-- `spec.ts` files are optional for pure presentational components and expected for behavior-bearing ones
-- global [styles.css](/home/serhat/code/chatpdm/frontend/src/styles.css) should stay limited to app-wide foundations, not component-specific styling
+- [frontend](./frontend): Angular SSR user interface
+- [backend](./backend): Express resolver runtime and validation scripts
+- [docs](./docs): product, architecture, governance, and validation docs
+- [data](./data): canonical source artifacts and concept packets
+- [tests](./tests): golden fixtures and runtime pressure harnesses
+- [governance](./governance): machine-readable governance replay fixtures and supporting artifacts
+- [chatpdm-reference](./chatpdm-reference): grounding stack for concept authoring discipline
 
 ## Local Development
 
@@ -219,8 +204,6 @@ npm run dev
 Useful commands:
 
 ```bash
-npm run dev:frontend
-npm run dev:backend
 npm run build
 npm run check
 npm run scan:ai-governance
@@ -235,18 +218,11 @@ cd frontend && npm run serve:ssr:frontend
 cd backend && npm run dev
 ```
 
-## Local Dev Ports
+## Ports / Runtime Split
 
 - Backend: `http://127.0.0.1:4301`
 - Frontend: `http://127.0.0.1:4200`
-- These ports are intentionally fixed for deterministic local validation.
-
-SSR production build output:
-
-```text
-frontend/dist/frontend/browser
-frontend/dist/frontend/server
-```
+- These ports are fixed for deterministic local validation.
 
 Production runtime split:
 
@@ -256,101 +232,71 @@ Production runtime split:
 
 ## Testing Posture
 
-ChatPDM currently uses targeted validation rather than a broad formal test suite.
+ChatPDM uses targeted validation rather than a broad formal test suite.
 
-- Frontend relies mainly on Angular build, TypeScript correctness, SSR compile health, and `*.spec.ts` only where needed.
-- Backend relies mainly on focused verification scripts and lightweight runtime validation.
-- Add tests selectively where regression risk justifies them.
+- Frontend relies mainly on Angular build, TypeScript correctness, SSR compile health, and `*.spec.ts` where behavior warrants it.
+- Backend relies mainly on focused verification scripts and lightweight startup-safety checks.
+- Add tests selectively when regression risk justifies them.
 
 ## Documentation Map
 
-Start here if you want the project model before touching code:
+Start here:
 
-- [Response contract](/home/serhat/code/chatpdm/docs/product/response-contract.md)
-- [Response schema](/home/serhat/code/chatpdm/docs/product/response-schema.json)
-- [Query normalization and matching rules](/home/serhat/code/chatpdm/docs/architecture/query-normalization-rules.md)
-- [Concept writing standard](/home/serhat/code/chatpdm/docs/architecture/concept-writing-standard.md)
-- [V1 concept scope](/home/serhat/code/chatpdm/docs/architecture/v1-concept-scope.md)
-- [Boundary integrity](/home/serhat/code/chatpdm/docs/boundary-integrity.md)
-- [Conceptual reference stack](/home/serhat/code/chatpdm/docs/conceptual-reference-stack.md)
-- [Git push workflow](/home/serhat/code/chatpdm/docs/git-push-workflow.md)
+- [Determinism as Architecture](./docs/architecture/architecture-philosophy.md)
+- [Response Contract](./docs/product/response-contract.md)
+- [Concept Detail Contract](./docs/product/concept-detail-contract.md)
+- [Inspectable Item Semantic Contract](./docs/data-model/inspectable-item-semantic-contract.md)
+- [V1 Concept Scope](./docs/architecture/v1-concept-scope.md)
+- [Boundary Integrity](./docs/boundary-integrity.md)
+- [Conceptual Reference Stack](./docs/conceptual-reference-stack.md)
+- [Git Push Workflow](./docs/git-push-workflow.md)
 
-## Reference Stack
-
-ChatPDM uses a structured reference stack under [chatpdm-reference](/home/serhat/code/chatpdm/chatpdm-reference) to improve concept authoring rigor and boundary discipline.
-
-That stack informs:
-
-- canonical source grounding
-- concept contrast work
-- semantic review
-- long-term authoring consistency
-
-It does not by itself authorize:
-
-- ontology engineering
-- inference engines
-- graph database migration
-- broad architecture changes
-
-See [conceptual-reference-stack.md](/home/serhat/code/chatpdm/docs/conceptual-reference-stack.md) for the active v1.1 policy.
-
-## Design Principles
-
-- deterministic runtime behavior under fixed versions
-- authored concepts over generated meaning
-- enforced source grounding for canonical definitions
-- governance-domain scoping for core structural concepts
-- honest refusal over fake completeness
-- calm, bounded product surfaces over AI theater
-- narrow expansion with validation before scale
-
-## Source Integrity Layer (Phase 12.6)
+## Source Integrity Layer
 
 ChatPDM enforces strict source integrity at the concept level.
 
 Each concept must define a `sourcePriority` array with:
 
-- index 0 → primary canonical source (concept-specific)
-- index 1 → `oxford` (dictionary boundary anchor)
+- index 0: primary canonical source for the concept
+- index 1: `oxford` as the dictionary boundary anchor
 
-### Source Rules
+Rules:
 
-- Only sources registered in `source-registry.json` are allowed
-- Only `tier: "core"` sources may be used in `sourcePriority`
+- only sources registered in `source-registry.json` are allowed
+- only `tier: "core"` sources may be used in `sourcePriority`
 - `oxford` is mandatory and must be at index 1
-- The primary source must match the concept binding:
-  - authority → weber
-  - power → lukes
-  - legitimacy → beetham
-  - responsibility → hart
-  - duty → hohfeld
-- `sourcePriority` must exactly match `sources[]` (no extra or missing sources)
-- Duplicate sources are not allowed
+- `sourcePriority` must exactly match `sources[]`
+- duplicate sources are not allowed
 
-### Purpose
+Current primary source bindings:
 
-This ensures:
+- `authority` -> `weber`
+- `power` -> `lukes`
+- `legitimacy` -> `beetham`
+- `responsibility` -> `hart`
+- `duty` -> `hohfeld`
 
-- deterministic grounding of definitions
-- no silent source drift
-- no injection of extended or technical references into canonical outputs
-
-This layer does not change runtime behavior. It enforces data integrity at load time only.
+This layer enforces data integrity at load time only.
+It does not change runtime behavior.
 
 ## Roadmap Posture
 
 ChatPDM is being built in phases.
 
-The current posture is:
+Current posture:
 
 - keep the runtime narrow
 - validate meaning before scale
-- prefer stronger authoring and pressure testing over premature feature growth
+- prefer stronger authoring and pressure testing over premature growth
 
-This repo should not drift into:
+The repo should not drift into:
 
 - broad concept expansion without validation
-- ontology panic
 - chatbot behavior
 - feature growth that outruns semantic discipline
+
+## Community
+
+- [Code of Conduct](./CODE_OF_CONDUCT.md)
+- [Bug report template](./.github/ISSUE_TEMPLATE/bug_report.md)
+- [Feature request template](./.github/ISSUE_TEMPLATE/feature_request.md)
