@@ -21,7 +21,7 @@ const {
   loadConceptSet,
 } = require('./concept-loader');
 const { loadAuthoredRelationPackets } = require('./concept-relation-loader');
-const { RELATION_TYPES } = require('./concept-relation-schema');
+const { isDirectRelationReadSupportedType } = require('./direct-relation-read-types');
 const { getConceptRuntimeGovernanceState } = require('./concept-validation-state-loader');
 const { buildReadingRegistersForConcept } = require('./reading-registers');
 const { getConceptReviewState } = require('./concept-review-state-loader');
@@ -79,15 +79,6 @@ function buildBaseResponse(query, normalizedQuery, queryClassification) {
     interpretation: queryClassification.interpretation,
   };
 }
-
-// Phase 12.8A stays narrow: only authored direct relations with these explicit types may be returned.
-const DIRECT_RELATION_READ_SUPPORTED_TYPES = new Set([
-  RELATION_TYPES.GROUNDS_DUTY,
-  RELATION_TYPES.TRIGGERS_RESPONSIBILITY,
-  RELATION_TYPES.VALIDATES_AUTHORITY,
-  RELATION_TYPES.REQUIRES_AUTHORITY,
-  RELATION_TYPES.DOES_NOT_IMPLY,
-]);
 
 function buildGuardInterpretation(guardDecision) {
   const interpretation = {
@@ -412,7 +403,7 @@ function resolveDirectRelationReadResponse(baseResponse, relationConcepts, relat
   }
 
   const unsupportedDirectRelations = directRelations.filter(
-    (relation) => !DIRECT_RELATION_READ_SUPPORTED_TYPES.has(relation.type),
+    (relation) => !isDirectRelationReadSupportedType(relation.type),
   );
 
   if (unsupportedDirectRelations.length > 0) {

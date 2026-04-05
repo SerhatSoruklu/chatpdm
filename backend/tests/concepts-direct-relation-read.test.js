@@ -100,6 +100,10 @@ const NON_ADMITTED_RELATION_QUERIES = [
     input: 'relation between authority and power because of legitimacy',
   },
   {
+    name: 'indirect discovery wording',
+    input: 'what concepts are indirectly related to authority and power',
+  },
+  {
     name: 'explanation-seeking wording',
     input: 'explain relation between authority and power',
   },
