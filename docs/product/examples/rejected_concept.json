@@ -1,21 +1,21 @@
 {
-  "query": "obligation",
-  "normalizedQuery": "obligation",
-  "contractVersion": "v1.4",
-  "normalizerVersion": "2026-03-27.v1",
-  "matcherVersion": "2026-03-27.v3",
-  "conceptSetVersion": "20260327.4",
+  "query": "claim",
+  "normalizedQuery": "claim",
+  "contractVersion": "v1.7",
+  "normalizerVersion": "2026-04-01.v2",
+  "matcherVersion": "2026-04-01.v4",
+  "conceptSetVersion": "20260401.2",
   "queryType": "exact_concept_query",
   "interpretation": {
     "interpretationType": "explicitly_rejected_concept",
-    "targetConceptId": "obligation",
-    "concepts": ["obligation"],
-    "message": "The concept \"obligation\" is explicitly rejected under the current system state."
+    "targetConceptId": "claim",
+    "concepts": ["claim"],
+    "message": "The concept \"claim\" is explicitly rejected under the current system state."
   },
   "type": "rejected_concept",
   "resolution": {
     "method": "rejection_registry",
-    "conceptId": "obligation"
+    "conceptId": "claim"
   },
   "message": "This concept is structurally rejected under the current system state.",
   "rejection": {

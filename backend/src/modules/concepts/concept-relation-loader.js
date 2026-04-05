@@ -198,6 +198,7 @@ function validatePacketShape(packet, conceptId, filePath) {
 function loadAuthoredRelationPackets(options = {}) {
   const relationPolicy = getRelationPolicy();
   const strictMode = options.requireAuthoredRelations ?? relationPolicy.requireAuthoredRelations;
+  const allowFallback = options.allowFallback ?? false;
   const directory = typeof options.directory === 'string' && options.directory.trim() !== ''
     ? options.directory
     : relationPacketsDirectory;
@@ -230,6 +231,30 @@ function loadAuthoredRelationPackets(options = {}) {
           relationCount: 0,
           failures: [failure],
           warnings: [],
+        });
+      } else if (allowFallback) {
+        const packetMissingWarning = createPacketEntry(
+          'RELATION_PACKET_MISSING',
+          conceptId,
+          'Authored relation packet is missing; relation fallback will be used in compatible mode.',
+          filePath,
+        );
+        const fallbackWarning = createPacketEntry(
+          'RELATION_FALLBACK_USED',
+          conceptId,
+          'Compatible mode is using default seed relation data because authored coverage is incomplete.',
+          filePath,
+        );
+        warnings.push(packetMissingWarning, fallbackWarning);
+        packetResults.push({
+          conceptId,
+          filePath,
+          present: false,
+          passed: false,
+          source: 'fallback',
+          relationCount: 0,
+          failures: [],
+          warnings: [packetMissingWarning, fallbackWarning],
         });
       } else {
         const packetMissingWarning = createPacketEntry(
@@ -311,15 +336,22 @@ function loadAuthoredRelationPackets(options = {}) {
   });
 
   const hasMissingPackets = missingConceptIds.length > 0;
-  const source = failures.length === 0 && !hasMissingPackets ? 'authored' : 'unavailable';
+  const fallbackUsed = allowFallback && !strictMode && hasMissingPackets && failures.length === 0;
+  const source = failures.length === 0
+    ? (fallbackUsed ? 'fallback' : hasMissingPackets ? 'unavailable' : 'authored')
+    : 'unavailable';
 
   return {
-    passed: failures.length === 0 && !hasMissingPackets,
+    passed: failures.length === 0 && (!hasMissingPackets || fallbackUsed),
     strictMode,
     source,
-    dataSource: source === 'authored' ? 'authored_relation_packets' : 'none',
-    relationDataPresent: source === 'authored' && failures.length === 0,
-    fallbackUsed: false,
+    dataSource: source === 'authored'
+      ? 'authored_relation_packets'
+      : source === 'fallback'
+        ? 'default_seed_relations'
+        : 'none',
+    relationDataPresent: source === 'authored' || source === 'fallback',
+    fallbackUsed,
     relations,
     packetResults,
     failures,

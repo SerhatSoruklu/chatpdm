@@ -10,11 +10,12 @@ This document defines the only allowed product response shapes for ChatPDM v1. I
 
 This is a product response contract, not an API failure contract. Internal failures, malformed requests, dependency outages, and transport concerns are handled separately and are outside the scope of this document.
 
-Current runtime declarations for this contract:
+Current runtime declarations for this contract come from `backend/src/modules/concepts/constants.js`:
 
-- `contractVersion = "v1.4"`
-- `matcherVersion = "2026-03-27.v3"`
-- `normalizerVersion = "2026-03-27.v1"`
+- `contractVersion = "v1.7"`
+- `normalizerVersion = "2026-04-01.v2"`
+- `matcherVersion = "2026-04-01.v4"`
+- `conceptSetVersion = "20260401.2"`
 
 ## Determinism Contract
 
@@ -51,10 +52,10 @@ Shared top-level skeleton:
   "type": "concept_match",
   "query": "what is authority",
   "normalizedQuery": "authority",
-  "contractVersion": "v1.4",
-  "normalizerVersion": "2026-03-27.v1",
-  "matcherVersion": "2026-03-27.v3",
-  "conceptSetVersion": "20260327.4",
+  "contractVersion": "v1.7",
+  "normalizerVersion": "2026-04-01.v2",
+  "matcherVersion": "2026-04-01.v4",
+  "conceptSetVersion": "20260401.2",
   "queryType": "exact_concept_query",
   "interpretation": null
 }
@@ -503,6 +504,8 @@ Interpretation patterns allowed in this response type include:
 #### Purpose (ambiguous_match)
 
 Return a disambiguation surface when multiple nearby canonical concepts are plausible and the user must choose explicitly.
+
+In the current runtime, higher-priority refusal guards may pre-empt some inputs before this branch is reached.
 
 #### Required fields (ambiguous_match)
 

@@ -276,7 +276,13 @@ function validateConceptRelations({ concepts, relations, relationLoadOptions } =
   let fallbackSubjectIds = new Set();
 
   if (!Array.isArray(relations)) {
-    const authoredRelationLoad = loadAuthoredRelationPackets(relationLoadOptions);
+    const allowFallback = relationLoadOptions?.requireAuthoredRelations === true
+      ? false
+      : (relationLoadOptions?.allowFallback ?? true);
+    const authoredRelationLoad = loadAuthoredRelationPackets({
+      ...(relationLoadOptions ?? {}),
+      allowFallback,
+    });
     packetResults = authoredRelationLoad.packetResults;
     relationFailures = [...authoredRelationLoad.failures];
     relationWarnings = [...authoredRelationLoad.warnings];
@@ -342,18 +348,6 @@ function validateConceptRelations({ concepts, relations, relationLoadOptions } =
 
   const relationConflicts = buildRelationConflicts(relationResults);
   relationFailures.push(...relationConflicts);
-
-  if (fallbackUsed) {
-    const fallbackWarnings = packetResults
-      .filter((entry) => entry.present === false)
-      .map((entry) => createConceptRelationEntry(
-        REASON_CODES.RELATION_FALLBACK_USED,
-        entry.conceptId,
-        'Fallback relation seeds were used because authored relation coverage is incomplete.',
-      ));
-
-    relationWarnings.push(...fallbackWarnings);
-  }
 
   return {
     passed: relationFailures.length === 0 && relationResults.every((relationResult) => relationResult.passed),

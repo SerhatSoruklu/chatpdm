@@ -23,8 +23,9 @@ const {
   validateRegisterDivergenceForConcept,
 } = require('../src/modules/concepts/register-divergence-validator');
 
+const VALIDATION_STATE_LOADER_MODULE = '../src/modules/concepts/concept-validation-state-loader';
 const MODULES_TO_CLEAR = [
-  '../src/modules/concepts/concept-validation-state-loader',
+  VALIDATION_STATE_LOADER_MODULE,
   '../src/modules/concepts/resolver',
   '../src/modules/concepts/resolution-engine',
   '../src/modules/concepts/pipeline-runner',
@@ -36,8 +37,12 @@ const RESOLVER_MODULES_TO_CLEAR = [
   '../src/modules/concepts/pipeline-runner',
 ];
 
-function clearConceptResolutionCaches() {
+function clearConceptResolutionCaches({ preserveValidationStateLoader = false } = {}) {
   MODULES_TO_CLEAR.forEach((modulePath) => {
+    if (preserveValidationStateLoader && modulePath === VALIDATION_STATE_LOADER_MODULE) {
+      return;
+    }
+
     try {
       delete require.cache[require.resolve(modulePath)];
     } catch {
@@ -56,8 +61,8 @@ function clearResolverCaches() {
   });
 }
 
-function loadRunFullPipelineFresh() {
-  clearConceptResolutionCaches();
+function loadRunFullPipelineFresh(options = {}) {
+  clearConceptResolutionCaches(options);
   return require('../src/modules/concepts/pipeline-runner').runFullPipeline;
 }
 
@@ -90,6 +95,53 @@ function buildBlockedGovernanceState(conceptId) {
       dataSource: 'authored_relation_packets',
     },
   };
+}
+
+function buildUnavailableGovernanceState(conceptId, unavailableReason) {
+  return {
+    source: 'unavailable',
+    available: false,
+    validationState: null,
+    v3Status: null,
+    relationStatus: null,
+    lawStatus: null,
+    enforcementStatus: null,
+    systemValidationState: null,
+    isBlocked: true,
+    isStructurallyIncomplete: true,
+    isFullyValidated: false,
+    isActionable: false,
+    trace: {
+      conceptId,
+      validatorSource: 'unavailable',
+      unavailableReason,
+      relationSource: null,
+      lawSource: null,
+      relationDataPresent: false,
+      dataSource: 'none',
+    },
+  };
+}
+
+function withMockedValidationStateLoader(mockExports, callback) {
+  const originalModule = require.cache[require.resolve(VALIDATION_STATE_LOADER_MODULE)];
+
+  require.cache[require.resolve(VALIDATION_STATE_LOADER_MODULE)] = {
+    id: require.resolve(VALIDATION_STATE_LOADER_MODULE),
+    filename: require.resolve(VALIDATION_STATE_LOADER_MODULE),
+    loaded: true,
+    exports: mockExports,
+  };
+
+  try {
+    return callback();
+  } finally {
+    if (originalModule) {
+      require.cache[require.resolve(VALIDATION_STATE_LOADER_MODULE)] = originalModule;
+    } else {
+      delete require.cache[require.resolve(VALIDATION_STATE_LOADER_MODULE)];
+    }
+  }
 }
 
 function deriveRefusalReason(response) {
@@ -147,21 +199,28 @@ function deriveRefusalReason(response) {
 test('missing governance snapshot fails closed with a governance_unavailable refusal', () => {
   assert.equal(fs.existsSync(artifactPath), true, `Expected validation artifact at ${artifactPath}.`);
 
-  const backupPath = `${artifactPath}.test-backup-${process.pid}-${Date.now()}`;
-  fs.renameSync(artifactPath, backupPath);
+  const validationStateLoader = require('../src/modules/concepts/concept-validation-state-loader');
+  const mockedValidationStateLoader = {
+    ...validationStateLoader,
+    loadConceptValidationSnapshot: () => ({
+      available: false,
+      source: 'unavailable',
+      unavailableReason: 'artifact_missing',
+      conceptsById: new Map(),
+    }),
+    getConceptRuntimeGovernanceState: (conceptId) => buildUnavailableGovernanceState(conceptId, 'artifact_missing'),
+  };
 
-  try {
-    const runFullPipeline = loadRunFullPipelineFresh();
+  // Use a test-local module shim so the shared validation artifact never needs to be renamed.
+  withMockedValidationStateLoader(mockedValidationStateLoader, () => {
+    const runFullPipeline = loadRunFullPipelineFresh({ preserveValidationStateLoader: true });
     const result = runFullPipeline('authority');
 
     assert.equal(result.final_output.state, 'refused');
     assert.equal(result.resolution_output.type, 'NO_MATCH');
     assert.equal(result.resolution_output.payload.normalized_query, 'authority');
     assert.equal(result.resolution_output.payload.reason, 'governance_unavailable');
-  } finally {
-    fs.renameSync(backupPath, artifactPath);
-    clearConceptResolutionCaches();
-  }
+  });
 
   const runFullPipelineRestored = loadRunFullPipelineFresh();
   const restoredResult = runFullPipelineRestored('authority');
