@@ -28,6 +28,9 @@
     },
     {
       "$ref": "#/$defs/comparisonResponse"
+    },
+    {
+      "$ref": "#/$defs/relationReadResponse"
     }
   ],
   "$defs": {
@@ -1047,6 +1050,232 @@
         }
       }
     },
+    "relationEndpointObject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "conceptId"
+      ],
+      "properties": {
+        "conceptId": {
+          "$ref": "#/$defs/stringValue"
+        },
+        "path": {
+          "$ref": "#/$defs/stringValue"
+        },
+        "label": {
+          "$ref": "#/$defs/stringValue"
+        }
+      }
+    },
+    "directRelationEntryObject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schemaVersion",
+        "subject",
+        "type",
+        "target",
+        "basis",
+        "effect",
+        "status"
+      ],
+      "properties": {
+        "schemaVersion": {
+          "type": "integer"
+        },
+        "subject": {
+          "$ref": "#/$defs/relationEndpointObject"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "GROUNDS_DUTY",
+            "TRIGGERS_RESPONSIBILITY",
+            "VALIDATES_AUTHORITY",
+            "REQUIRES_AUTHORITY",
+            "DOES_NOT_IMPLY"
+          ]
+        },
+        "target": {
+          "$ref": "#/$defs/relationEndpointObject"
+        },
+        "basis": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "description"
+          ],
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "concept_law",
+                "scope_rule",
+                "boundary_rule",
+                "governance_rule"
+              ]
+            },
+            "description": {
+              "$ref": "#/$defs/stringValue"
+            }
+          }
+        },
+        "conditions": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "when": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/stringValue"
+              }
+            },
+            "unless": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/stringValue"
+              }
+            }
+          }
+        },
+        "effect": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "description"
+          ],
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "derives",
+                "triggers",
+                "validates",
+                "permits",
+                "depends_on",
+                "weakens",
+                "invalidates",
+                "separates"
+              ]
+            },
+            "description": {
+              "$ref": "#/$defs/stringValue"
+            }
+          }
+        },
+        "status": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "active",
+            "blocking"
+          ],
+          "properties": {
+            "active": {
+              "type": "boolean"
+            },
+            "blocking": {
+              "type": "boolean"
+            },
+            "note": {
+              "$ref": "#/$defs/stringValue"
+            }
+          }
+        }
+      }
+    },
+    "relationReadObject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "queryConcepts",
+        "entries"
+      ],
+      "properties": {
+        "queryConcepts": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "$ref": "#/$defs/stringValue"
+          }
+        },
+        "entries": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/directRelationEntryObject"
+          }
+        }
+      }
+    },
+    "relationReadResolution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "method"
+      ],
+      "properties": {
+        "method": {
+          "const": "authored_direct_relation"
+        }
+      }
+    },
+    "relationReadResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "query",
+        "normalizedQuery",
+        "contractVersion",
+        "normalizerVersion",
+        "matcherVersion",
+        "conceptSetVersion",
+        "queryType",
+        "interpretation",
+        "resolution",
+        "relation"
+      ],
+      "properties": {
+        "type": {
+          "const": "relation_read"
+        },
+        "query": {
+          "$ref": "#/$defs/stringValue"
+        },
+        "normalizedQuery": {
+          "$ref": "#/$defs/stringValue"
+        },
+        "contractVersion": {
+          "$ref": "#/$defs/contractVersionString"
+        },
+        "normalizerVersion": {
+          "$ref": "#/$defs/datedVersionString"
+        },
+        "matcherVersion": {
+          "$ref": "#/$defs/datedVersionString"
+        },
+        "conceptSetVersion": {
+          "$ref": "#/$defs/conceptSetVersionString"
+        },
+        "queryType": {
+          "const": "relation_query"
+        },
+        "interpretation": {
+          "type": "null"
+        },
+        "resolution": {
+          "$ref": "#/$defs/relationReadResolution"
+        },
+        "relation": {
+          "$ref": "#/$defs/relationReadObject"
+        }
+      }
+    },
     "rejectedConceptResponse": {
       "type": "object",
       "additionalProperties": false,
@@ -1357,7 +1586,6 @@
         "queryType": {
           "type": "string",
           "enum": [
-            "relation_query",
             "role_or_actor_query",
             "unsupported_complex_query"
           ]

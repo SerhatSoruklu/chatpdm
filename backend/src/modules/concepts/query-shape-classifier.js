@@ -3,6 +3,7 @@
 const {
   EMPTY_NORMALIZED_QUERY,
 } = require('./constants');
+const { isLiveConceptId } = require('./admission-state');
 const {
   deriveRoutingText,
   extractCanonicalId,
@@ -16,14 +17,8 @@ const COMPARISON_KEYWORDS = Object.freeze([
   ' same as ',
 ]);
 
-const RELATION_KEYWORDS = Object.freeze([
-  ' without ',
-  ' with no ',
-  ' under ',
-  ' over ',
-  ' against ',
-  ' between ',
-]);
+const DIRECT_RELATION_READ_PREFIX = 'relation between ';
+const DIRECT_RELATION_READ_CONNECTOR = ' and ';
 
 const ROLE_PREFIXES = Object.freeze([
   'who has ',
@@ -129,7 +124,7 @@ function buildRelationInterpretation(concepts, relationTerm) {
     interpretationType: 'relation_not_supported',
     concepts,
     relationTerm,
-    message: 'This query expresses a relationship between concepts. The current system does not evaluate inter-concept relations yet.',
+    message: 'This query expresses a direct relation read between exactly two concepts.',
   };
 }
 
@@ -286,18 +281,31 @@ function detectComparison(normalizedQuery, mentionedConcepts) {
 }
 
 function detectRelation(normalizedQuery, mentionedConcepts) {
-  if (mentionedConcepts.length < 2) {
+  if (!normalizedQuery.startsWith(DIRECT_RELATION_READ_PREFIX)) {
     return null;
   }
 
-  const keyword = RELATION_KEYWORDS.find((candidate) => normalizedQuery.includes(candidate));
-  if (!keyword) {
+  const relationTail = normalizedQuery.slice(DIRECT_RELATION_READ_PREFIX.length);
+  const segments = relationTail
+    .split(DIRECT_RELATION_READ_CONNECTOR)
+    .map((segment) => segment.trim())
+    .filter((segment) => segment !== '');
+
+  if (segments.length !== 2) {
+    return null;
+  }
+
+  if (mentionedConcepts.length !== 2) {
+    return null;
+  }
+
+  if (!segments.every((segment) => isLiveConceptId(segment))) {
     return null;
   }
 
   return {
-    concepts: mentionedConcepts,
-    relationTerm: keyword.trim(),
+    concepts: segments,
+    relationTerm: 'between',
   };
 }
 

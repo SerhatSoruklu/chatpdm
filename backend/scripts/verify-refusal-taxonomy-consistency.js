@@ -20,6 +20,7 @@ const responseSchemaPath = path.resolve(__dirname, '../../docs/product/response-
 const EXPECTED_RUNTIME_STATE_BY_RESPONSE_TYPE = Object.freeze({
   concept_match: 'allowed',
   comparison: 'allowed',
+  relation_read: 'allowed',
   VOCABULARY_DETECTED: 'refused',
   invalid_query: 'invalid',
   ambiguous_match: 'conflict',
