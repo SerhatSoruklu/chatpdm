@@ -1,0 +1,92 @@
+:host {
+  display: block;
+  margin-top: 18px;
+}
+
+.pdm-inspectable-disclosure {
+  display: grid;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(148, 163, 184, 0.14);
+}
+
+.pdm-inspectable-disclosure__toggle {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 999px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(247, 250, 255, 0.9)),
+    rgba(255, 255, 255, 0.92);
+  color: #334155;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    transform 140ms ease,
+    border-color 140ms ease,
+    box-shadow 140ms ease;
+}
+
+.pdm-inspectable-disclosure__toggle:hover,
+.pdm-inspectable-disclosure__toggle:focus-visible {
+  transform: translateY(-1px);
+  border-color: rgba(37, 99, 235, 0.22);
+  box-shadow: 0 10px 24px rgba(148, 163, 184, 0.12);
+  outline: none;
+}
+
+.pdm-inspectable-disclosure__toggle-text {
+  text-align: left;
+}
+
+.pdm-inspectable-disclosure__toggle-mark {
+  min-width: 1ch;
+  color: #1d4ed8;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.pdm-inspectable-disclosure__content {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+}
+
+.pdm-inspectable-disclosure__row {
+  display: grid;
+  gap: 4px;
+  padding: 12px 14px;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 16px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(248, 250, 252, 0.88)),
+    rgba(255, 255, 255, 0.88);
+}
+
+.pdm-inspectable-disclosure__label,
+.pdm-inspectable-disclosure__value {
+  margin: 0;
+}
+
+.pdm-inspectable-disclosure__label {
+  color: #64748b;
+  font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pdm-inspectable-disclosure__value {
+  color: #334155;
+  font-size: 0.98rem;
+  line-height: 1.7;
+  white-space: pre-wrap;
+}

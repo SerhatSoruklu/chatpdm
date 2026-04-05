@@ -203,19 +203,10 @@
                     <span class="pdm-site-chip">{{ response.contractVersion }}</span>
                   </div>
 
-                  <section class="pdm-runtime__content-block">
-                    <p class="pdm-runtime__block-label">Core meaning</p>
-                    <p class="pdm-runtime__copy">{{ asConceptMatch(response).answer.coreMeaning }}</p>
-                  </section>
-
-                  <section class="pdm-runtime__content-block">
-                    <p class="pdm-runtime__block-label">Full definition</p>
-                    <div class="pdm-runtime__definition-stack">
-                      @for (paragraph of definitionParagraphs(asConceptMatch(response).answer.fullDefinition); track paragraph) {
-                        <p class="pdm-runtime__copy">{{ paragraph }}</p>
-                      }
-                    </div>
-                  </section>
+                  <app-inspectable-item-disclosure
+                    [itemType]="'core_concept'"
+                    [semanticData]="asConceptMatch(response).answer"
+                  />
 
                   <div class="pdm-runtime__result-split">
                     <section class="pdm-runtime__content-block">
@@ -441,20 +432,11 @@
                       <p class="pdm-runtime__result-subtitle">{{ detail.shortDefinition }}</p>
                     </div>
 
-                    <section class="pdm-runtime__content-block">
-                      <p class="pdm-runtime__block-label">Core meaning</p>
-                      <p class="pdm-runtime__copy">{{ visibleOnlyBody(detail) }}</p>
-                    </section>
-
-                    @if (detail.fullDefinition) {
-                      <section class="pdm-runtime__content-block">
-                        <p class="pdm-runtime__block-label">Full definition</p>
-                        <div class="pdm-runtime__definition-stack">
-                          @for (paragraph of definitionParagraphs(detail.fullDefinition); track paragraph) {
-                            <p class="pdm-runtime__copy">{{ paragraph }}</p>
-                          }
-                        </div>
-                      </section>
+                    @if (visibleOnlyDisclosureData(detail); as disclosureData) {
+                      <app-inspectable-item-disclosure
+                        [itemType]="'core_concept'"
+                        [semanticData]="disclosureData"
+                      />
                     }
 
                     <p class="pdm-runtime__support">{{ visibleOnlySupportCopy(detail) }}</p>

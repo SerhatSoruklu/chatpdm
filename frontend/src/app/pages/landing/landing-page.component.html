@@ -335,21 +335,10 @@
                       </p>
                     </section>
 
-                    <div class="pdm-home__definition-sections">
-                      <section class="pdm-home__definition-section pdm-home__definition-section--core">
-                        <p class="pdm-home__micro-label">Core meaning</p>
-                        <p class="pdm-home__body-copy pdm-home__body-copy--secondary">
-                          {{ activeReadingFields(asConceptMatch(response)).coreMeaning }}
-                        </p>
-                      </section>
-
-                      <section class="pdm-home__definition-section pdm-home__definition-section--full">
-                        <p class="pdm-home__micro-label">Full definition</p>
-                        @for (paragraph of definitionParagraphs(activeReadingFields(asConceptMatch(response)).fullDefinition); track paragraph) {
-                          <p class="pdm-home__body-copy pdm-home__body-copy--tertiary">{{ paragraph }}</p>
-                        }
-                      </section>
-                    </div>
+                    <app-inspectable-item-disclosure
+                      [itemType]="'core_concept'"
+                      [semanticData]="activeReadingFields(asConceptMatch(response))"
+                    />
 
                     <div class="pdm-home__response-grid">
                       <section class="pdm-home__response-section pdm-home__response-section--flat">
@@ -751,21 +740,12 @@
                           <p class="pdm-home__definition-lead-copy">{{ detail.shortDefinition }}</p>
                         </section>
 
-                        <div class="pdm-home__definition-sections">
-                          <section class="pdm-home__definition-section pdm-home__definition-section--core">
-                            <p class="pdm-home__micro-label">Core meaning</p>
-                            <p class="pdm-home__body-copy pdm-home__body-copy--secondary">{{ detail.coreMeaning }}</p>
-                          </section>
-
-                          @if (detail.fullDefinition) {
-                            <section class="pdm-home__definition-section pdm-home__definition-section--full">
-                              <p class="pdm-home__micro-label">Full definition</p>
-                              @for (paragraph of definitionParagraphs(detail.fullDefinition); track paragraph) {
-                                <p class="pdm-home__body-copy pdm-home__body-copy--tertiary">{{ paragraph }}</p>
-                              }
-                            </section>
-                          }
-                        </div>
+                        @if (visibleOnlyDisclosureData(detail); as disclosureData) {
+                          <app-inspectable-item-disclosure
+                            [itemType]="'core_concept'"
+                            [semanticData]="disclosureData"
+                          />
+                        }
                       }
                     }
 

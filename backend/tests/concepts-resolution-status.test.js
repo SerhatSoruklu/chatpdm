@@ -22,6 +22,7 @@ test('resolution status remains optional for existing concepts', () => {
   const detail = buildConceptDetail('authority');
 
   assert.ok(detail, 'Expected authority detail to load.');
+  assert.equal(detail.itemType, 'core_concept');
   assert.equal(Object.hasOwn(detail, 'resolutionStatus'), false);
 
   const baselineHash = computeCanonicalConceptHash(concept);
@@ -56,4 +57,19 @@ test('resolution status accepts only the explicit four values', () => {
     }, 'authority'),
     /unsupported resolutionStatus/i,
   );
+});
+
+test('law and power remain definition-led core_concept detail payloads', () => {
+  ['law', 'power'].forEach((conceptId) => {
+    const concept = getConceptById(conceptId);
+    assert.ok(concept, `Expected ${conceptId} concept to load.`);
+
+    const detail = buildConceptDetail(conceptId);
+
+    assert.ok(detail, `Expected ${conceptId} detail to load.`);
+    assert.equal(detail.itemType, 'core_concept');
+    assert.equal(detail.shortDefinition, concept.shortDefinition);
+    assert.equal(detail.coreMeaning, concept.coreMeaning);
+    assert.equal(detail.fullDefinition, concept.fullDefinition);
+  });
 });

@@ -6,6 +6,10 @@ const { getConceptRuntimeGovernanceState } = require('./concept-validation-state
 const { getConceptReviewState } = require('./concept-review-state-loader');
 const { deriveRoutingText, normalizeQuery } = require('./normalizer');
 const { getRejectedConceptRecord } = require('./rejection-registry-loader');
+const {
+  CORE_CONCEPT_ITEM_TYPE,
+  buildCoreConceptResponsePayload,
+} = require('../inspectable-item-contract');
 
 function buildRejectionPayload(rejectionRecord) {
   if (!rejectionRecord) {
@@ -39,12 +43,17 @@ function buildConceptDetail(conceptId) {
     return null;
   }
 
+  const conceptPayload = concept ? buildCoreConceptResponsePayload(concept, routingConceptId) : null;
+
   const detail = {
+    itemType: CORE_CONCEPT_ITEM_TYPE,
     conceptId: routingConceptId,
-    title: concept?.title ?? null,
-    shortDefinition: concept?.shortDefinition ?? null,
-    coreMeaning: concept?.coreMeaning ?? null,
-    fullDefinition: concept?.fullDefinition ?? null,
+    ...(conceptPayload ?? {
+      title: null,
+      shortDefinition: null,
+      coreMeaning: null,
+      fullDefinition: null,
+    }),
     governanceState: getConceptRuntimeGovernanceState(routingConceptId),
     reviewState,
     rejection: buildRejectionPayload(rejectionRecord),

@@ -176,6 +176,7 @@ test('ambiguous query shapes refuse instead of routing heuristically', () => {
   const authoredAliasQuery = resolveConceptQuery('what is authority');
   assert.equal(authoredAliasQuery.type, 'concept_match');
   assert.equal(authoredAliasQuery.resolution.method, 'exact_alias');
+  assert.equal(authoredAliasQuery.answer.itemType, 'core_concept');
 
   const comparisonQuery = resolveConceptQuery('authority or power');
   assert.equal(comparisonQuery.type, 'unsupported_query_type');

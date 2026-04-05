@@ -14,6 +14,7 @@
     "conceptVersion": 1
   },
   "answer": {
+    "itemType": "core_concept",
     "title": "Authority",
     "shortDefinition": "Authority is recognized standing to direct, decide, or govern within a governance order.",
     "coreMeaning": "Within the governance domain, authority works by giving a recognized role, office, or position the right to direct. It concerns who may direct, not what can be enforced or whether that standing is valid.",

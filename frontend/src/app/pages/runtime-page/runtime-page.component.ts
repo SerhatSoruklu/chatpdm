@@ -31,6 +31,11 @@ import {
   VISIBLE_ONLY_PUBLIC_CONCEPT_IDS,
 } from '../../core/concepts/public-runtime.catalog';
 import { VocabularyPanelComponent } from '../../core/concepts/vocabulary-panel/vocabulary-panel.component';
+import { InspectableItemDisclosureComponent } from '../../core/concepts/inspectable-item-disclosure/inspectable-item-disclosure.component';
+import {
+  buildInspectableItemDisclosureCoreData,
+  type InspectableItemDisclosureCoreData,
+} from '../../core/concepts/inspectable-item-disclosure/inspectable-item-disclosure.model';
 import { FeedbackService } from '../../core/feedback/feedback.service';
 import type {
   FeedbackResponseType,
@@ -184,7 +189,13 @@ const REFUSAL_BOUNDARY_STATES = Object.freeze<RefusalBoundaryState[]>([
 @Component({
   selector: 'app-runtime-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, VocabularyPanelComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterLink,
+    VocabularyPanelComponent,
+    InspectableItemDisclosureComponent,
+  ],
   templateUrl: './runtime-page.component.html',
   styleUrl: './runtime-page.component.css',
 })
@@ -532,13 +543,8 @@ export class RuntimePageComponent implements OnInit {
     return detail.title ?? this.formatConceptLabel(detail.conceptId);
   }
 
-  protected visibleOnlyBody(detail: ConceptDetailResponse): string {
-    if (detail.reviewState?.admission === 'visible_only_derived') {
-      return 'Violation is a derived failure-state surface computed from duty evaluation. It remains inspectable and explainable, but it is not admitted as a live primitive in the public runtime.';
-    }
-
-    return detail.coreMeaning
-      ?? 'This concept is publicly visible and inspectable, but it is not admitted to the live public runtime.';
+  protected visibleOnlyDisclosureData(detail: ConceptDetailResponse): InspectableItemDisclosureCoreData | null {
+    return buildInspectableItemDisclosureCoreData(detail);
   }
 
   protected visibleOnlySupportCopy(detail?: ConceptDetailResponse): string {
@@ -756,10 +762,6 @@ export class RuntimePageComponent implements OnInit {
       .filter(Boolean)
       .map((segment) => segment.charAt(0).toUpperCase() + segment.slice(1))
       .join(' ');
-  }
-
-  protected definitionParagraphs(fullDefinition: string): string[] {
-    return fullDefinition.split('\n\n');
   }
 
   protected asConceptMatch(response: ResolveProductResponse): ConceptMatchResponse {

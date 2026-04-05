@@ -4,6 +4,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 
 import { VOCABULARY_PANEL_WARNING_TEXT } from '../../core/concepts/vocabulary-panel/vocabulary-panel.model';
+import { InspectableItemDisclosureComponent } from '../../core/concepts/inspectable-item-disclosure/inspectable-item-disclosure.component';
 import type {
   VocabularyBoundaryBuckets,
   VocabularyBoundaryResolvedState,
@@ -32,7 +33,7 @@ interface VocabularyBucketRow {
 @Component({
   selector: 'app-vocabulary-page',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, InspectableItemDisclosureComponent],
   templateUrl: './vocabulary-page.component.html',
   styleUrl: './vocabulary-page.component.css',
 })

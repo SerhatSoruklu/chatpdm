@@ -25,6 +25,9 @@ const sampleEntries: readonly VocabularyBoundaryEntry[] = [
     classificationLabel: 'Unknown Structure',
     sourceStatus: 'registry_only',
     sourceStatusLabel: 'Registry-only',
+    meaningInLaw: 'Intentional relinquishment or surrender of a right, claim, interest, or property.',
+    registryInterpretation: 'Recognized legal vocabulary with broad contextual usage, but not normalized here into a single runtime-safe structural concept.',
+    whyRegistryOnly: 'This term remains registry-only because its legal usage is contextual and it is not admitted to runtime ontology.',
     shortMeaning: 'Meta / Stress / Edge Terms registry term.',
     definition: 'Registry-only term.',
     example: null,
@@ -41,6 +44,9 @@ const sampleEntries: readonly VocabularyBoundaryEntry[] = [
     classificationLabel: 'Derived',
     sourceStatus: 'packet_backed',
     sourceStatusLabel: 'Packet-backed',
+    meaningInLaw: 'The burden of proof is the obligation to establish a claim or defense in legal proceedings.',
+    registryInterpretation: 'Recognized legal vocabulary interpreted as dependent on underlying concepts rather than as a primary concept.',
+    whyRegistryOnly: 'This term is visible through an authored concept packet, but it remains outside runtime ontology on the registry surface.',
     shortMeaning: 'Derived procedural term.',
     definition: 'Derived procedural term.',
     example: 'The burden of proof remains on the claimant.',
@@ -57,6 +63,9 @@ const sampleEntries: readonly VocabularyBoundaryEntry[] = [
     classificationLabel: 'Carrier',
     sourceStatus: 'registry_only',
     sourceStatusLabel: 'Registry-only',
+    meaningInLaw: null,
+    registryInterpretation: 'Recognized legal vocabulary interpreted as context-bearing rather than standalone conceptual structure.',
+    whyRegistryOnly: 'This term is visible in the registry only and is not backed by a published concept packet.',
     shortMeaning: 'Carrier registry term.',
     definition: 'Carrier registry term.',
     example: null,
@@ -109,6 +118,12 @@ describe('VocabularyPage helpers', () => {
       'burden of proof',
     ]);
     expect(filterVocabularyEntries(sampleEntries, 'carrier', 'derived')).toEqual([]);
+  });
+
+  it('filters registry entries by semantic disclosure text', () => {
+    expect(filterVocabularyEntries(sampleEntries, 'runtime-safe', 'all').map((entry) => entry.term)).toEqual([
+      'abandonment',
+    ]);
   });
 
   it('builds public filter options from the boundary buckets', () => {
@@ -196,6 +211,9 @@ describe('VocabularyPage component', () => {
     expect(template).toContain('Search registry');
     expect(template).toContain('pdm-vocabulary-page__term-grid');
     expect(template).toContain('pdm-vocabulary-page__pager-shell');
+    expect(template).toContain('app-inspectable-item-disclosure');
+    expect(template).toContain('entry.whyRegistryOnly');
+    expect(template).not.toContain('entry.boundaryNote ??');
     expect(template).not.toContain('term-list');
     expect(template).not.toContain('Search vocabulary terms');
     expect(styles).not.toContain('.pdm-vocabulary-page__term {');

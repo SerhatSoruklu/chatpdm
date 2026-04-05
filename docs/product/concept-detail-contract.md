@@ -14,6 +14,7 @@ Response shape:
 
 ```json
 {
+  "itemType": "core_concept",
   "conceptId": "law",
   "title": null,
   "shortDefinition": null,
@@ -33,6 +34,7 @@ Response shape:
 
 Rules:
 
+- `itemType` is `core_concept`
 - `governanceState` remains validator-derived runtime metadata only
 - `reviewState` remains concept lifecycle/admission metadata only
 - `reviewState` is loaded from `data/concepts/review-states/`

@@ -36,6 +36,9 @@ const { evaluatePreResolutionGuard } = require('./pre-resolution-guard');
 const { assertDeterministicPathFreeOfAiMarkers } = require('../../lib/ai-governance-guard');
 const { assertValidProductResponse } = require('../../lib/product-response-validator');
 const { classifyVocabularySurface } = require('../../vocabulary/vocabulary-service.ts');
+const {
+  buildCoreConceptResponsePayload,
+} = require('../inspectable-item-contract');
 
 function buildContextPayload(context) {
   const appliesTo = Array.isArray(context.appliesTo) && context.appliesTo.length > 0
@@ -595,10 +598,7 @@ function resolveConceptQuery(rawQuery) {
           conceptVersion: match.concept.version,
         },
         answer: {
-          title: match.concept.title,
-          shortDefinition: match.concept.shortDefinition,
-          coreMeaning: match.concept.coreMeaning,
-          fullDefinition: match.concept.fullDefinition,
+          ...buildCoreConceptResponsePayload(match.concept, match.concept.conceptId),
           governanceState,
           registers: buildReadingRegistersForConcept(match.concept),
           contexts: match.concept.contexts.map(buildContextPayload),

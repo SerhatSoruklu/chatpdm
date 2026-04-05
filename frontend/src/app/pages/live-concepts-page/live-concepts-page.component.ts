@@ -9,6 +9,7 @@ import {
   ConceptSource,
   RelatedConcept,
 } from '../../core/concepts/concept-resolver.types';
+import { InspectableItemDisclosureComponent } from '../../core/concepts/inspectable-item-disclosure/inspectable-item-disclosure.component';
 import {
   LIVE_RUNTIME_CONCEPT_IDS,
   RUNTIME_SCOPE_BY_CONCEPT,
@@ -23,7 +24,7 @@ interface LiveConceptCatalogState {
 @Component({
   selector: 'app-live-concepts-page',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, InspectableItemDisclosureComponent],
   templateUrl: './live-concepts-page.component.html',
   styleUrl: './live-concepts-page.component.css',
 })
@@ -47,10 +48,6 @@ export class LiveConceptsPageComponent implements OnInit {
 
   protected scopeLabel(conceptId: string): string {
     return RUNTIME_SCOPE_BY_CONCEPT[conceptId] ?? 'Bounded runtime v1';
-  }
-
-  protected definitionParagraphs(fullDefinition: string): string[] {
-    return fullDefinition.split('\n\n');
   }
 
   protected relationLabel(relationType: string): string {
