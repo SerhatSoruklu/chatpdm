@@ -469,6 +469,26 @@ Allowed `relation.entries.type` values in this phase:
 
 The `relation` object is the canonical payload boundary for this response type.
 
+#### Phase 12.8A.1 canonical freeze
+
+This is the canonical freeze for the direct relation read surface in Phase 12.8A.1.
+
+Phase law:
+
+- read-only
+- two-concept-only
+- direct authored relation only
+
+Golden success example:
+
+- [docs/product/examples/relation_read.json](./examples/relation_read.json)
+
+Golden refusal example:
+
+- [docs/product/examples/relation_read_refusal.json](./examples/relation_read_refusal.json)
+
+Any change to the admitted shape, returned fields, or supported direct relation types is a contract change and must be advanced deliberately.
+
 ### 4. rejected_concept
 
 #### Purpose (rejected_concept)
