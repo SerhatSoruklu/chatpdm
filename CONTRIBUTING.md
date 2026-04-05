@@ -2,6 +2,11 @@
 
 ChatPDM uses a protected-branch workflow on `main`.
 
+## Community Standards
+
+- Follow [Code of Conduct](./CODE_OF_CONDUCT.md).
+- Use the issue templates in [`.github/ISSUE_TEMPLATE/`](./.github/ISSUE_TEMPLATE/).
+
 ## Git publish policy
 
 - Do not push directly to `main`.
