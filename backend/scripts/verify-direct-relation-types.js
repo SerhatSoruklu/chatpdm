@@ -3,14 +3,20 @@
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
+const { mock } = require('node:test');
 
 const {
+  DIRECT_RELATION_READ_EXPOSED_TYPES,
   DIRECT_RELATION_READ_SUPPORTED_TYPES,
-  isDirectRelationReadSupportedType,
+  isDirectRelationReadExposedType,
 } = require('../src/modules/concepts/direct-relation-read-types');
-const {
-  resolveConceptQuery,
-} = require('../src/modules/concepts/resolver');
+const relationLoaderModule = require('../src/modules/concepts/concept-relation-loader');
+const RESOLVER_MODULE = '../src/modules/concepts/resolver';
+
+function loadResolveConceptQueryFresh() {
+  delete require.cache[require.resolve(RESOLVER_MODULE)];
+  return require(RESOLVER_MODULE).resolveConceptQuery;
+}
 
 const contractPath = path.resolve(__dirname, '../../docs/product/response-contract.md');
 const schemaPath = path.resolve(__dirname, '../../docs/product/response-schema.json');
@@ -67,13 +73,13 @@ function assertExactOrderedList(actual, expected, label) {
   assert.deepEqual(
     actual,
     expected,
-    `${label} drifted from the direct relation read allowlist source.`,
+    `${label} drifted from the direct relation exposure source.`,
   );
 }
 
-function verifyRuntimeAllowlistSource() {
+function verifyExposureAllowlistSource() {
   assertExactOrderedList(
-    DIRECT_RELATION_READ_SUPPORTED_TYPES,
+    DIRECT_RELATION_READ_EXPOSED_TYPES,
     [
       'GROUNDS_DUTY',
       'TRIGGERS_RESPONSIBILITY',
@@ -85,24 +91,24 @@ function verifyRuntimeAllowlistSource() {
   );
 
   assert.equal(
-    new Set(DIRECT_RELATION_READ_SUPPORTED_TYPES).size,
-    DIRECT_RELATION_READ_SUPPORTED_TYPES.length,
-    'backend/src/modules/concepts/direct-relation-read-types.js must not contain duplicate supported relation types.',
+    new Set(DIRECT_RELATION_READ_EXPOSED_TYPES).size,
+    DIRECT_RELATION_READ_EXPOSED_TYPES.length,
+    'backend/src/modules/concepts/direct-relation-read-types.js must not contain duplicate exposed relation types.',
   );
 
-  DIRECT_RELATION_READ_SUPPORTED_TYPES.forEach((type) => {
+  DIRECT_RELATION_READ_EXPOSED_TYPES.forEach((type) => {
     assert.equal(
-      isDirectRelationReadSupportedType(type),
+      isDirectRelationReadExposedType(type),
       true,
-      `Runtime allowlist source does not recognize "${type}" as a supported direct relation type.`,
+      `Runtime exposure source does not recognize "${type}" as an exposed direct relation type.`,
     );
   });
 
-  process.stdout.write('PASS direct_relation_type_allowlist_source\n');
+  process.stdout.write('PASS direct_relation_type_exposure_allowlist_source\n');
 }
 
 function verifyRuntimeBehavior() {
-  const response = resolveConceptQuery('relation between authority and power');
+  const response = loadResolveConceptQueryFresh()('relation between authority and power');
 
   assert.equal(
     response.type,
@@ -112,13 +118,72 @@ function verifyRuntimeBehavior() {
   assert.equal(Array.isArray(response.relation?.entries), true, 'relation_read response must expose relation entries.');
   response.relation.entries.forEach((entry) => {
     assert.equal(
-      isDirectRelationReadSupportedType(entry.type),
+      isDirectRelationReadExposedType(entry.type),
       true,
-      `Runtime direct relation output contains unsupported type "${entry.type}".`,
+      `Runtime direct relation output contains unexposed type "${entry.type}".`,
     );
   });
 
   process.stdout.write('PASS direct_relation_type_runtime_alignment\n');
+}
+
+function verifyRuntimeExposureRefusal() {
+  const authoredReport = relationLoaderModule.loadAuthoredRelationPackets({
+    requireAuthoredRelations: true,
+    allowFallback: false,
+  });
+  const nonExposedRelationReport = {
+    ...authoredReport,
+    source: 'authored',
+    relationDataPresent: true,
+    relations: authoredReport.relations.map((relation) => (
+      relation.subject?.conceptId === 'power' && relation.target?.conceptId === 'authority'
+        ? { ...relation, type: 'WEAKENS' }
+        : relation
+    )),
+  };
+
+  const mockedLoader = mock.method(
+    relationLoaderModule,
+    'loadAuthoredRelationPackets',
+    () => nonExposedRelationReport,
+  );
+
+  try {
+    const resolveConceptQuery = loadResolveConceptQueryFresh();
+    const response = resolveConceptQuery('relation between authority and power');
+
+    assert.equal(
+      response.type,
+      'no_exact_match',
+      'Direct relation runtime must refuse when an authored relation type is not exposed by policy.',
+    );
+    assert.equal(
+      response.interpretation.interpretationType,
+      'relation_not_supported',
+      'Direct relation runtime must surface relation_not_supported when exposure policy blocks the relation type.',
+    );
+    assert.match(
+      response.interpretation.message,
+      /not exposed/i,
+      'Direct relation runtime refusal must clearly identify exposure policy drift.',
+    );
+  } finally {
+    mockedLoader.mock.restore();
+    delete require.cache[require.resolve(RESOLVER_MODULE)];
+  }
+
+  process.stdout.write('PASS direct_relation_type_runtime_exposure_refusal\n');
+}
+
+function verifyExposureAndSupportAlias() {
+  assertExactOrderedList(
+    DIRECT_RELATION_READ_EXPOSED_TYPES,
+    DIRECT_RELATION_READ_SUPPORTED_TYPES,
+    'direct relation exposure allowlist must remain aligned with the supported direct relation types.',
+  );
+
+  process.stdout.write('PASS direct_relation_type_exposure_support_alias\n');
 }
 
 function verifyContractDoc() {
@@ -127,7 +192,7 @@ function verifyContractDoc() {
 
   assertExactOrderedList(
     contractTypes,
-    DIRECT_RELATION_READ_SUPPORTED_TYPES,
+    DIRECT_RELATION_READ_EXPOSED_TYPES,
     'docs/product/response-contract.md allowed relation types',
   );
 
@@ -140,7 +205,7 @@ function verifySchema() {
 
   assertExactOrderedList(
     schemaTypes,
-    DIRECT_RELATION_READ_SUPPORTED_TYPES,
+    DIRECT_RELATION_READ_EXPOSED_TYPES,
     'docs/product/response-schema.json directRelationEntryObject.type enum',
   );
 
@@ -160,7 +225,7 @@ function verifyExamples() {
   assert.equal(Array.isArray(successExample.relation?.entries), true, 'relation_read example must include relation entries.');
   successExample.relation.entries.forEach((entry) => {
     assert.equal(
-      isDirectRelationReadSupportedType(entry.type),
+      isDirectRelationReadExposedType(entry.type),
       true,
       `docs/product/examples/relation_read.json contains unsupported relation type "${entry.type}".`,
     );
@@ -182,12 +247,14 @@ function verifyExamples() {
 }
 
 function main() {
-  verifyRuntimeAllowlistSource();
+  verifyExposureAllowlistSource();
   verifyRuntimeBehavior();
+  verifyRuntimeExposureRefusal();
+  verifyExposureAndSupportAlias();
   verifyContractDoc();
   verifySchema();
   verifyExamples();
-  process.stdout.write('Direct relation type allowlist verification passed.\n');
+  process.stdout.write('Direct relation exposure drift verification passed.\n');
 }
 
 main();

@@ -177,7 +177,7 @@ test('direct relation reads refuse cleanly when relation packets are unavailable
   });
 });
 
-test('direct relation reads refuse cleanly when the relation type is unsupported in this phase', () => {
+test('direct relation reads refuse cleanly when the relation type is not exposed by policy', () => {
   const authoredReport = loadAuthoredRelationPackets({
     requireAuthoredRelations: true,
     allowFallback: false,
@@ -198,7 +198,32 @@ test('direct relation reads refuse cleanly when the relation type is unsupported
     assert.equal(response.type, 'no_exact_match');
     assert.equal(deriveRuntimeResolutionStateFromResponse(response), 'refused');
     assert.equal(response.interpretation.interpretationType, 'relation_not_supported');
-    assert.match(response.interpretation.message, /not supported/i);
+    assert.match(response.interpretation.message, /not exposed/i);
+  });
+});
+
+test('direct relation reads refuse cleanly when the relation type is unknown', () => {
+  const authoredReport = loadAuthoredRelationPackets({
+    requireAuthoredRelations: true,
+    allowFallback: false,
+  });
+  const unknownRelationReport = {
+    ...authoredReport,
+    source: 'authored',
+    relationDataPresent: true,
+    relations: [
+      buildSyntheticRelationEntry('authority', 'power', 'MYSTERY_TYPE'),
+    ],
+  };
+
+  withMockedRelationLoader(unknownRelationReport, (resolveConceptQueryFresh) => {
+    const response = resolveConceptQueryFresh('relation between authority and power');
+
+    assert.equal(response.queryType, 'relation_query');
+    assert.equal(response.type, 'no_exact_match');
+    assert.equal(deriveRuntimeResolutionStateFromResponse(response), 'refused');
+    assert.equal(response.interpretation.interpretationType, 'relation_not_supported');
+    assert.match(response.interpretation.message, /not exposed/i);
   });
 });
 

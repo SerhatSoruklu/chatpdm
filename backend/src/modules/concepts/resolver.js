@@ -21,7 +21,7 @@ const {
   loadConceptSet,
 } = require('./concept-loader');
 const { loadAuthoredRelationPackets } = require('./concept-relation-loader');
-const { isDirectRelationReadSupportedType } = require('./direct-relation-read-types');
+const { isDirectRelationReadExposedType } = require('./direct-relation-read-types');
 const { getConceptRuntimeGovernanceState } = require('./concept-validation-state-loader');
 const { buildReadingRegistersForConcept } = require('./reading-registers');
 const { getConceptReviewState } = require('./concept-review-state-loader');
@@ -402,17 +402,17 @@ function resolveDirectRelationReadResponse(baseResponse, relationConcepts, relat
     );
   }
 
-  const unsupportedDirectRelations = directRelations.filter(
-    (relation) => !isDirectRelationReadSupportedType(relation.type),
+  const nonExposedDirectRelations = directRelations.filter(
+    (relation) => !isDirectRelationReadExposedType(relation.type),
   );
 
-  if (unsupportedDirectRelations.length > 0) {
-    const unsupportedRelationType = unsupportedDirectRelations[0]?.type ?? 'unknown';
+  if (nonExposedDirectRelations.length > 0) {
+    const nonExposedRelationType = nonExposedDirectRelations[0]?.type ?? 'unknown';
 
     return buildDirectRelationRefusalResponse(
       baseResponse,
       queryConcepts,
-      `The direct relation type "${unsupportedRelationType}" is not supported in the current phase.`,
+      `The direct relation type "${nonExposedRelationType}" is not exposed on the public direct relation surface.`,
     );
   }
 
