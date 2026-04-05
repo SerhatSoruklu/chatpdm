@@ -3,6 +3,41 @@ import { Injectable, inject } from '@angular/core';
 
 const SESSION_STORAGE_KEY = 'chatpdm-beta-session-id';
 
+type SecureRandomSource = Partial<Pick<Crypto, 'getRandomValues' | 'randomUUID'>>;
+
+function formatUuid(bytes: Uint8Array): string {
+  const normalized = Uint8Array.from(bytes);
+
+  normalized[6] = (normalized[6] & 0x0f) | 0x40;
+  normalized[8] = (normalized[8] & 0x3f) | 0x80;
+
+  const hex = Array.from(normalized, (byte) => byte.toString(16).padStart(2, '0')).join('');
+
+  return [
+    hex.slice(0, 8),
+    hex.slice(8, 12),
+    hex.slice(12, 16),
+    hex.slice(16, 20),
+    hex.slice(20, 32),
+  ].join('-');
+}
+
+export function createSecureSessionId(cryptoSource?: SecureRandomSource): string {
+  const generated = cryptoSource?.randomUUID?.();
+
+  if (generated) {
+    return `chatpdm-${generated}`;
+  }
+
+  if (cryptoSource?.getRandomValues) {
+    const bytes = new Uint8Array(16);
+    cryptoSource.getRandomValues(bytes);
+    return `chatpdm-${formatUuid(bytes)}`;
+  }
+
+  throw new Error('Secure crypto APIs are unavailable.');
+}
+
 @Injectable({ providedIn: 'root' })
 export class FeedbackSessionService {
   private readonly document = inject(DOCUMENT);
@@ -38,13 +73,6 @@ export class FeedbackSessionService {
 
   private generateSessionId(): string {
     const defaultView = this.document?.defaultView;
-    const generated = defaultView?.crypto?.randomUUID?.();
-
-    if (generated) {
-      return generated;
-    }
-
-    return `chatpdm-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+    return createSecureSessionId(defaultView?.crypto ?? globalThis.crypto);
   }
 }
-

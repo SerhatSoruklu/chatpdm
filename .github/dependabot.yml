@@ -1,6 +1,7 @@
 version: 2
 
 updates:
+  # Keep npm updates bounded across the root workspace and the two app workspaces.
   - package-ecosystem: "npm"
     directories:
       - "/"
@@ -31,6 +32,7 @@ updates:
           - "minor"
           - "patch"
 
+  # Keep workflow updates predictable and reviewable as well.
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:

@@ -8,8 +8,10 @@ import express from 'express';
 import type { Request, Response as ExpressResponse } from 'express';
 import { extname, join } from 'node:path';
 
+import { buildTrustedApiUrl, createTrustedApiOrigin } from './server-url';
+
 const browserDistFolder = join(import.meta.dirname, '../browser');
-const apiBaseUrl = process.env['API_BASE_URL'] || 'http://127.0.0.1:4301';
+const apiBaseUrl = createTrustedApiOrigin(process.env['API_BASE_URL']);
 const allowedHosts = (
   process.env['NG_ALLOWED_HOSTS']
     ?.split(',')
@@ -25,7 +27,7 @@ const angularApp = new AngularNodeAppEngine({
 
 app.get('/health', async (_req: Request, res: ExpressResponse) => {
   try {
-    const response = await fetch(new URL('/health', apiBaseUrl));
+    const response = await fetch(buildTrustedApiUrl(apiBaseUrl, '/health'));
     const body = await response.text();
 
     res.status(response.status);
@@ -145,7 +147,7 @@ function buildProxyHeaders(req: Request, hasBody: boolean): Headers {
 }
 
 async function proxyRequest(req: Request, res: ExpressResponse, body?: unknown): Promise<void> {
-  const response = await fetch(new URL(req.originalUrl, apiBaseUrl), {
+  const response = await fetch(buildTrustedApiUrl(apiBaseUrl, req.originalUrl), {
     method: req.method,
     headers: buildProxyHeaders(req, body !== undefined),
     body: body === undefined ? undefined : JSON.stringify(body),

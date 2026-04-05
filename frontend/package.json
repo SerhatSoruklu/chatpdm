@@ -54,6 +54,7 @@
     "@angular/compiler-cli": "^21.0.0",
     "@types/express": "^5.0.1",
     "@types/node": "^20.17.19",
+    "vitest": "^4.0.8",
     "typescript": "~5.9.2"
   }
 }

@@ -30,6 +30,9 @@ on:
       - "package.json"
       - "package-lock.json"
 
+permissions:
+  contents: read
+
 jobs:
   markdownlint:
     name: markdown-lint

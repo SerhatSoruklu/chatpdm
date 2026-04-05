@@ -93,17 +93,36 @@ const CAUSAL_OVERREACH_RULES = Object.freeze([
   }),
 ]);
 
+function isAsciiLowerAlphaNumericCode(code) {
+  return (code >= 48 && code <= 57) || (code >= 97 && code <= 122);
+}
+
 function normalizeSemanticOverreachText(text) {
   if (typeof text !== 'string') {
     return '';
   }
 
-  return text
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '_')
-    .replace(/_+/g, '_')
-    .replace(/^_+|_+$/g, '');
+  const trimmed = text.trim().toLowerCase();
+  const normalized = [];
+
+  for (let index = 0; index < trimmed.length; index += 1) {
+    const charCode = trimmed.charCodeAt(index);
+
+    if (isAsciiLowerAlphaNumericCode(charCode)) {
+      normalized.push(trimmed[index]);
+      continue;
+    }
+
+    if (normalized.length > 0 && normalized[normalized.length - 1] !== '_') {
+      normalized.push('_');
+    }
+  }
+
+  if (normalized[normalized.length - 1] === '_') {
+    normalized.pop();
+  }
+
+  return normalized.join('');
 }
 
 function hasNormalizedTerm(normalizedText, term) {
@@ -116,7 +135,27 @@ function hasNormalizedTerm(normalizedText, term) {
     return false;
   }
 
-  return new RegExp(`(^|_)${normalizedTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(_|$)`).test(normalizedText);
+  let searchStart = 0;
+
+  while (searchStart <= normalizedText.length - normalizedTerm.length) {
+    const matchIndex = normalizedText.indexOf(normalizedTerm, searchStart);
+
+    if (matchIndex === -1) {
+      return false;
+    }
+
+    const beforeMatches = matchIndex === 0 || normalizedText.charAt(matchIndex - 1) === '_';
+    const afterIndex = matchIndex + normalizedTerm.length;
+    const afterMatches = afterIndex === normalizedText.length || normalizedText.charAt(afterIndex) === '_';
+
+    if (beforeMatches && afterMatches) {
+      return true;
+    }
+
+    searchStart = matchIndex + 1;
+  }
+
+  return false;
 }
 
 function ruleMatches(normalizedText, rule) {
