@@ -318,3 +318,17 @@ The repo should not drift into:
 - [Code of Conduct](./CODE_OF_CONDUCT.md)
 - [Bug report template](./.github/ISSUE_TEMPLATE/bug_report.md)
 - [Feature request template](./.github/ISSUE_TEMPLATE/feature_request.md)
+
+## Author
+
+### Operating Model
+
+SS-CYP-CPDM-PSM-2406  
+Serhat Soruklu | Coupyn | ChatPDM  
+PSM = Principled Strategy Model  
+
+Core Hash:  
+PSM-5 = Strategy / Long-Term / People / Execution / Trust  
+
+Full Operating Code:  
+SS::CYP::CPDM::GREEN-PSM-5::NO-DECEPTION::SIGNAL-INTEGRITY
