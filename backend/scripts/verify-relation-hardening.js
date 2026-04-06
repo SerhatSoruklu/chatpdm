@@ -57,6 +57,7 @@ function verifyFallbackWarningInCompatibleMode() {
     const report = loadAuthoredRelationPackets({
       directory,
       requireAuthoredRelations: false,
+      allowFallback: true,
     });
 
     assert.equal(report.strictMode, false, 'compatible mode should not enable strict relation requirements.');
@@ -80,7 +81,7 @@ function verifyStrictModeRequiresAuthoredRelations() {
     });
 
     assert.equal(report.strictMode, true, 'strict mode should enable authored relation requirements.');
-    assert.equal(report.source, 'authored', 'strict mode should preserve authored source semantics.');
+    assert.equal(report.source, 'unavailable', 'strict mode should fail closed when authored packets are missing.');
     assert.equal(report.fallbackUsed, false, 'strict mode must not claim fallback usage when fallback is disabled.');
     assert(report.failures.some((entry) => entry.code === REASON_CODES.RELATION_REQUIRED_MISSING_STRICT), 'strict mode missing-packet failure not emitted.');
   });

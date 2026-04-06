@@ -12,12 +12,13 @@ The schema exists to stop shape drift during runtime implementation and later co
 
 The schema enforces the structural boundary of ChatPDM v1 product responses:
 
-- only five product response types are valid:
+- only six product response types are valid:
   - `concept_match`
+  - `comparison`
+  - `relation_read`
   - `rejected_concept`
   - `no_exact_match`
   - `ambiguous_match`
-  - `comparison`
 - every product response must include the required top-level version fields
 - every product response must include `queryType` and `interpretation`
 - nested object shapes must match the contract exactly
@@ -25,12 +26,13 @@ The schema enforces the structural boundary of ChatPDM v1 product responses:
 - undocumented fields are rejected
 - cross-type leakage is rejected
   - `answer` is valid only on `concept_match`
+  - `relation` is valid only on `relation_read`
   - `rejection` is valid only on `rejected_concept`
   - `suggestions` are valid only on `no_exact_match`
   - `candidates` are valid only on `ambiguous_match`
 - `conceptVersion` is integer only
 - `contexts` must use structured objects
-- source objects, related concept objects, suggestion objects, and candidate objects must match their documented shapes
+- source objects, related concept objects, relation entries, suggestion objects, and candidate objects must match their documented shapes
 
 The schema also locks the current fixed v1 non-match and ambiguity messages as literal values. That was chosen because the contract already defines those strings as canonical v1 text. This is a contract-level decision and not a localization strategy. Localization must be handled outside the canonical product response contract.
 
@@ -125,6 +127,8 @@ Use them to:
 - keep the contract readable for humans
 
 The approved output commitments live under `tests/golden/fixtures/`.
+
+Some phase-specific surfaces, such as the direct relation read surface, also use dedicated verifiers that compare canonical runtime output against approved golden snapshots.
 
 Use golden fixtures to:
 

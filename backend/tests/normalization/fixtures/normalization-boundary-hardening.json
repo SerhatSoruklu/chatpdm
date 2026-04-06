@@ -1,0 +1,56 @@
+[
+  {
+    "name": "percent_base64_harmful_chain",
+    "input": "%64%32%68%68%64%43%42%70%63%79%42%6A%62%32%35%7A%59%32%6C%76%64%58%4E%75%5A%58%4E%7A",
+    "expectedStatus": "normalized",
+    "expectedCanonicalText": "what is consciousness",
+    "expectedDepthUsed": 2,
+    "expectedAppliedTransformKinds": [
+      "percent_decode",
+      "base64_decode"
+    ],
+    "expectedChanged": true
+  },
+  {
+    "name": "hex_harmful_chain",
+    "input": "7768617420697320636F6E7363696F75736E657373",
+    "expectedStatus": "normalized",
+    "expectedCanonicalText": "what is consciousness",
+    "expectedDepthUsed": 1,
+    "expectedAppliedTransformKinds": [
+      "hex_decode"
+    ],
+    "expectedChanged": true
+  },
+  {
+    "name": "malformed_mixed_layer_encoding",
+    "input": "%53%47%56%73%62%47%38%3D%3D",
+    "expectedStatus": "refused",
+    "expectedRefusalCode": "NORMALIZATION_INVALID_ENCODING",
+    "expectedDepthUsed": 1,
+    "expectedAppliedTransformKinds": [
+      "percent_decode"
+    ],
+    "expectedChanged": true
+  },
+  {
+    "name": "ambiguous_dual_valid_input",
+    "input": "270A",
+    "expectedStatus": "refused",
+    "expectedRefusalCode": "NORMALIZATION_AMBIGUOUS",
+    "expectedDepthUsed": 0,
+    "expectedAppliedTransformKinds": [],
+    "expectedChanged": false
+  },
+  {
+    "name": "unicode_nfc_edge_case",
+    "input": "Café",
+    "expectedStatus": "normalized",
+    "expectedCanonicalText": "Café",
+    "expectedDepthUsed": 1,
+    "expectedAppliedTransformKinds": [
+      "unicode_nfc"
+    ],
+    "expectedChanged": true
+  }
+]

@@ -1,0 +1,556 @@
+{
+  "harmfulFamilies": [
+    {
+      "name": "phishing_request",
+      "plainText": "phishing request",
+      "canonicalText": "phishing request",
+      "expectedResolver": {
+        "type": "unsupported_query_type",
+        "queryType": "unsupported_complex_query",
+        "interpretationType": "unsupported_complex",
+        "resolutionMethod": "unsupported_query_type",
+        "conceptId": null,
+        "runtimeState": "refused"
+      },
+      "expectedPipeline": {
+        "admissionState": "NOT_A_CONCEPT",
+        "finalState": "refused",
+        "resolutionType": "NO_MATCH",
+        "resolutionReason": null,
+        "resolutionConceptId": null
+      },
+      "variants": [
+        {
+          "name": "plain",
+          "encodeSteps": [],
+          "expectedNormalizationStatus": "unchanged"
+        },
+        {
+          "name": "base64",
+          "encodeSteps": [
+            "base64"
+          ],
+          "expectedNormalizationStatus": "normalized"
+        },
+        {
+          "name": "percent_then_base64",
+          "encodeSteps": [
+            "base64",
+            "percent"
+          ],
+          "expectedNormalizationStatus": "normalized"
+        }
+      ]
+    },
+    {
+      "name": "credential_theft_request",
+      "plainText": "credential theft request",
+      "canonicalText": "credential theft request",
+      "expectedResolver": {
+        "type": "unsupported_query_type",
+        "queryType": "unsupported_complex_query",
+        "interpretationType": "unsupported_complex",
+        "resolutionMethod": "unsupported_query_type",
+        "conceptId": null,
+        "runtimeState": "refused"
+      },
+      "expectedPipeline": {
+        "admissionState": "NOT_A_CONCEPT",
+        "finalState": "refused",
+        "resolutionType": "NO_MATCH",
+        "resolutionReason": null,
+        "resolutionConceptId": null
+      },
+      "variants": [
+        {
+          "name": "plain",
+          "encodeSteps": [],
+          "expectedNormalizationStatus": "unchanged"
+        },
+        {
+          "name": "base64",
+          "encodeSteps": [
+            "base64"
+          ],
+          "expectedNormalizationStatus": "normalized"
+        },
+        {
+          "name": "percent_then_base64",
+          "encodeSteps": [
+            "base64",
+            "percent"
+          ],
+          "expectedNormalizationStatus": "normalized"
+        }
+      ]
+    },
+    {
+      "name": "malware_help_request",
+      "plainText": "malware help request",
+      "canonicalText": "malware help request",
+      "expectedResolver": {
+        "type": "unsupported_query_type",
+        "queryType": "unsupported_complex_query",
+        "interpretationType": "unsupported_complex",
+        "resolutionMethod": "unsupported_query_type",
+        "conceptId": null,
+        "runtimeState": "refused"
+      },
+      "expectedPipeline": {
+        "admissionState": "NOT_A_CONCEPT",
+        "finalState": "refused",
+        "resolutionType": "NO_MATCH",
+        "resolutionReason": null,
+        "resolutionConceptId": null
+      },
+      "variants": [
+        {
+          "name": "plain",
+          "encodeSteps": [],
+          "expectedNormalizationStatus": "unchanged"
+        },
+        {
+          "name": "base64",
+          "encodeSteps": [
+            "base64"
+          ],
+          "expectedNormalizationStatus": "normalized"
+        },
+        {
+          "name": "percent_then_base64",
+          "encodeSteps": [
+            "base64",
+            "percent"
+          ],
+          "expectedNormalizationStatus": "normalized"
+        }
+      ]
+    },
+    {
+      "name": "card_fraud_request",
+      "plainText": "card fraud request",
+      "canonicalText": "card fraud request",
+      "expectedResolver": {
+        "type": "unsupported_query_type",
+        "queryType": "unsupported_complex_query",
+        "interpretationType": "unsupported_complex",
+        "resolutionMethod": "unsupported_query_type",
+        "conceptId": null,
+        "runtimeState": "refused"
+      },
+      "expectedPipeline": {
+        "admissionState": "NOT_A_CONCEPT",
+        "finalState": "refused",
+        "resolutionType": "NO_MATCH",
+        "resolutionReason": null,
+        "resolutionConceptId": null
+      },
+      "variants": [
+        {
+          "name": "plain",
+          "encodeSteps": [],
+          "expectedNormalizationStatus": "unchanged"
+        },
+        {
+          "name": "base64",
+          "encodeSteps": [
+            "base64"
+          ],
+          "expectedNormalizationStatus": "normalized"
+        },
+        {
+          "name": "percent_then_base64",
+          "encodeSteps": [
+            "base64",
+            "percent"
+          ],
+          "expectedNormalizationStatus": "normalized"
+        }
+      ]
+    }
+  ],
+  "safeFamilies": [
+    {
+      "name": "authority",
+      "plainText": "authority",
+      "canonicalText": "authority",
+      "expectedResolver": {
+        "type": "concept_match",
+        "queryType": "exact_concept_query",
+        "interpretationType": null,
+        "resolutionMethod": "exact_alias",
+        "conceptId": "authority",
+        "runtimeState": "allowed"
+      },
+      "expectedPipeline": {
+        "admissionState": "LIVE",
+        "finalState": "valid",
+        "resolutionType": "LIVE_RESOLUTION",
+        "resolutionReason": null,
+        "resolutionConceptId": "authority"
+      },
+      "variants": [
+        {
+          "name": "plain",
+          "encodeSteps": [],
+          "expectedNormalizationStatus": "unchanged"
+        },
+        {
+          "name": "base64",
+          "encodeSteps": [
+            "base64"
+          ],
+          "expectedNormalizationStatus": "normalized"
+        },
+        {
+          "name": "reverse_then_base64",
+          "encodeSteps": [
+            "base64",
+            "reverse"
+          ],
+          "expectedNormalizationStatus": "normalized"
+        },
+        {
+          "name": "hex",
+          "encodeSteps": [
+            "hex"
+          ],
+          "expectedNormalizationStatus": "normalized"
+        },
+        {
+          "name": "percent_then_base64",
+          "encodeSteps": [
+            "base64",
+            "percent"
+          ],
+          "expectedNormalizationStatus": "normalized"
+        }
+      ]
+    },
+    {
+      "name": "power",
+      "plainText": "power",
+      "canonicalText": "power",
+      "expectedResolver": {
+        "type": "concept_match",
+        "queryType": "exact_concept_query",
+        "interpretationType": null,
+        "resolutionMethod": "exact_alias",
+        "conceptId": "power",
+        "runtimeState": "allowed"
+      },
+      "expectedPipeline": {
+        "admissionState": "LIVE",
+        "finalState": "valid",
+        "resolutionType": "LIVE_RESOLUTION",
+        "resolutionReason": null,
+        "resolutionConceptId": "power"
+      },
+      "variants": [
+        {
+          "name": "plain",
+          "encodeSteps": [],
+          "expectedNormalizationStatus": "unchanged"
+        },
+        {
+          "name": "base64",
+          "encodeSteps": [
+            "base64"
+          ],
+          "expectedNormalizationStatus": "normalized"
+        },
+        {
+          "name": "reverse_then_base64",
+          "encodeSteps": [
+            "base64",
+            "reverse"
+          ],
+          "expectedNormalizationStatus": "normalized"
+        },
+        {
+          "name": "hex",
+          "encodeSteps": [
+            "hex"
+          ],
+          "expectedNormalizationStatus": "normalized"
+        },
+        {
+          "name": "percent_then_base64",
+          "encodeSteps": [
+            "base64",
+            "percent"
+          ],
+          "expectedNormalizationStatus": "normalized"
+        }
+      ]
+    },
+    {
+      "name": "legitimacy",
+      "plainText": "legitimacy",
+      "canonicalText": "legitimacy",
+      "expectedResolver": {
+        "type": "concept_match",
+        "queryType": "exact_concept_query",
+        "interpretationType": null,
+        "resolutionMethod": "exact_alias",
+        "conceptId": "legitimacy",
+        "runtimeState": "allowed"
+      },
+      "expectedPipeline": {
+        "admissionState": "LIVE",
+        "finalState": "valid",
+        "resolutionType": "LIVE_RESOLUTION",
+        "resolutionReason": null,
+        "resolutionConceptId": "legitimacy"
+      },
+      "variants": [
+        {
+          "name": "plain",
+          "encodeSteps": [],
+          "expectedNormalizationStatus": "unchanged"
+        },
+        {
+          "name": "base64",
+          "encodeSteps": [
+            "base64"
+          ],
+          "expectedNormalizationStatus": "normalized"
+        },
+        {
+          "name": "reverse_then_base64",
+          "encodeSteps": [
+            "base64",
+            "reverse"
+          ],
+          "expectedNormalizationStatus": "normalized"
+        },
+        {
+          "name": "hex",
+          "encodeSteps": [
+            "hex"
+          ],
+          "expectedNormalizationStatus": "normalized"
+        },
+        {
+          "name": "percent_then_base64",
+          "encodeSteps": [
+            "base64",
+            "percent"
+          ],
+          "expectedNormalizationStatus": "normalized"
+        }
+      ]
+    },
+    {
+      "name": "responsibility",
+      "plainText": "responsibility",
+      "canonicalText": "responsibility",
+      "expectedResolver": {
+        "type": "concept_match",
+        "queryType": "exact_concept_query",
+        "interpretationType": null,
+        "resolutionMethod": "exact_alias",
+        "conceptId": "responsibility",
+        "runtimeState": "allowed"
+      },
+      "expectedPipeline": {
+        "admissionState": "LIVE",
+        "finalState": "valid",
+        "resolutionType": "LIVE_RESOLUTION",
+        "resolutionReason": null,
+        "resolutionConceptId": "responsibility"
+      },
+      "variants": [
+        {
+          "name": "plain",
+          "encodeSteps": [],
+          "expectedNormalizationStatus": "unchanged"
+        },
+        {
+          "name": "base64",
+          "encodeSteps": [
+            "base64"
+          ],
+          "expectedNormalizationStatus": "normalized"
+        },
+        {
+          "name": "reverse_then_base64",
+          "encodeSteps": [
+            "base64",
+            "reverse"
+          ],
+          "expectedNormalizationStatus": "normalized"
+        },
+        {
+          "name": "hex",
+          "encodeSteps": [
+            "hex"
+          ],
+          "expectedNormalizationStatus": "normalized"
+        },
+        {
+          "name": "percent_then_base64",
+          "encodeSteps": [
+            "base64",
+            "percent"
+          ],
+          "expectedNormalizationStatus": "normalized"
+        }
+      ]
+    }
+  ],
+  "boundaryCases": [
+    {
+      "name": "malformed_base64_junk",
+      "input": "SGVsbG8===",
+      "expectedNormalization": {
+        "status": "refused",
+        "refusalCode": "NORMALIZATION_INVALID_ENCODING",
+        "changed": false
+      },
+      "expectedResolver": {
+        "type": "invalid_query",
+        "queryType": "invalid_query",
+        "interpretationType": "invalid_query",
+        "resolutionMethod": "invalid_query",
+        "conceptId": null,
+        "runtimeState": "invalid"
+      },
+      "expectedPipeline": {
+        "admissionState": "NOT_A_CONCEPT",
+        "finalState": "refused",
+        "resolutionType": "NO_MATCH",
+        "resolutionReason": "normalization_refused",
+        "resolutionConceptId": null
+      }
+    },
+    {
+      "name": "percent_then_base64_malformed_junk",
+      "input": "%53%47%56%73%62%47%38%3D%3D",
+      "expectedNormalization": {
+        "status": "refused",
+        "refusalCode": "NORMALIZATION_INVALID_ENCODING",
+        "changed": true
+      },
+      "expectedResolver": {
+        "type": "invalid_query",
+        "queryType": "invalid_query",
+        "interpretationType": "invalid_query",
+        "resolutionMethod": "invalid_query",
+        "conceptId": null,
+        "runtimeState": "invalid"
+      },
+      "expectedPipeline": {
+        "admissionState": "NOT_A_CONCEPT",
+        "finalState": "refused",
+        "resolutionType": "NO_MATCH",
+        "resolutionReason": "normalization_refused",
+        "resolutionConceptId": null
+      }
+    },
+    {
+      "name": "non_text_output",
+      "input": "//8=",
+      "expectedNormalization": {
+        "status": "refused",
+        "refusalCode": "NORMALIZATION_NON_TEXT_OUTPUT",
+        "changed": false
+      },
+      "expectedResolver": {
+        "type": "invalid_query",
+        "queryType": "invalid_query",
+        "interpretationType": "invalid_query",
+        "resolutionMethod": "invalid_query",
+        "conceptId": null,
+        "runtimeState": "invalid"
+      },
+      "expectedPipeline": {
+        "admissionState": "NOT_A_CONCEPT",
+        "finalState": "refused",
+        "resolutionType": "NO_MATCH",
+        "resolutionReason": "normalization_refused",
+        "resolutionConceptId": null
+      }
+    },
+    {
+      "name": "too_deep_nested_base64",
+      "inputGenerator": {
+        "kind": "nested_base64",
+        "seed": "Hello ChatPDM",
+        "depthOffset": 1
+      },
+      "expectedNormalization": {
+        "status": "refused",
+        "refusalCode": "NORMALIZATION_TOO_DEEP",
+        "changed": true
+      },
+      "expectedResolver": {
+        "type": "invalid_query",
+        "queryType": "invalid_query",
+        "interpretationType": "invalid_query",
+        "resolutionMethod": "invalid_query",
+        "conceptId": null,
+        "runtimeState": "invalid"
+      },
+      "expectedPipeline": {
+        "admissionState": "NOT_A_CONCEPT",
+        "finalState": "refused",
+        "resolutionType": "NO_MATCH",
+        "resolutionReason": "normalization_refused",
+        "resolutionConceptId": null
+      }
+    },
+    {
+      "name": "too_large_input",
+      "inputGenerator": {
+        "kind": "repeat",
+        "char": "a",
+        "lengthOffset": 1
+      },
+      "expectedNormalization": {
+        "status": "refused",
+        "refusalCode": "NORMALIZATION_TOO_LARGE",
+        "changed": false
+      },
+      "expectedResolver": {
+        "type": "invalid_query",
+        "queryType": "invalid_query",
+        "interpretationType": "invalid_query",
+        "resolutionMethod": "invalid_query",
+        "conceptId": null,
+        "runtimeState": "invalid"
+      },
+      "expectedPipeline": {
+        "admissionState": "NOT_A_CONCEPT",
+        "finalState": "refused",
+        "resolutionType": "NO_MATCH",
+        "resolutionReason": "normalization_refused",
+        "resolutionConceptId": null
+      }
+    },
+    {
+      "name": "ambiguous_dual_valid_input",
+      "input": "270A",
+      "expectedNormalization": {
+        "status": "refused",
+        "refusalCode": "NORMALIZATION_AMBIGUOUS",
+        "changed": false
+      },
+      "expectedResolver": {
+        "type": "invalid_query",
+        "queryType": "invalid_query",
+        "interpretationType": "invalid_query",
+        "resolutionMethod": "invalid_query",
+        "conceptId": null,
+        "runtimeState": "invalid"
+      },
+      "expectedPipeline": {
+        "admissionState": "NOT_A_CONCEPT",
+        "finalState": "refused",
+        "resolutionType": "NO_MATCH",
+        "resolutionReason": "normalization_refused",
+        "resolutionConceptId": null
+      }
+    }
+  ]
+}

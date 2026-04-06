@@ -4,6 +4,9 @@ const {
   recognizeLegalVocabulary,
 } = require('../legal-vocabulary');
 const {
+  normalizeChatPdmInput,
+} = require('../../normalization/normalization.pipeline.ts');
+const {
   resolveAdmissionState,
   ADMISSION_STATES,
 } = require('./admission-gate');
@@ -27,7 +30,47 @@ function runFullPipeline(rawQuery) {
     throw new TypeError('Expected rawQuery to be a string.');
   }
 
-  const preResolutionGuard = evaluatePreResolutionGuard(rawQuery);
+  const normalization = normalizeChatPdmInput(rawQuery);
+  const downstreamQuery = normalization.status === 'refused'
+    ? rawQuery
+    : normalization.canonicalText;
+
+  if (normalization.status === 'refused') {
+    const resolutionOutput = {
+      type: 'NO_MATCH',
+      payload: {
+        normalized_query: downstreamQuery,
+        reason: 'normalization_refused',
+        normalization_refusal_code: normalization.refusalCode,
+      },
+    };
+    const finalOutput = validateAndExposeOutput(resolutionOutput);
+    const zeroglareDiagnostics = buildZeroglareDiagnostics(downstreamQuery);
+    const pipelineResult = {
+      raw_query: rawQuery,
+      normalized_query: downstreamQuery,
+      vocabulary_recognition: {
+        recognized: false,
+        type: 'unknown',
+      },
+      admission_state: ADMISSION_STATES.NOT_A_CONCEPT,
+      resolution_output: resolutionOutput,
+      final_output: finalOutput,
+      normalization,
+      phase_path: [...PIPELINE_PHASE_PATH],
+    };
+
+    Object.defineProperty(pipelineResult, 'zeroglare_diagnostics', {
+      value: zeroglareDiagnostics,
+      enumerable: false,
+      configurable: false,
+      writable: false,
+    });
+
+    return pipelineResult;
+  }
+
+  const preResolutionGuard = evaluatePreResolutionGuard(downstreamQuery);
   const normalizedQuery = preResolutionGuard.normalizedQuery;
   const vocabularyRecognition = recognizeLegalVocabulary(normalizedQuery);
 
@@ -40,7 +83,7 @@ function runFullPipeline(rawQuery) {
       },
     };
     const finalOutput = validateAndExposeOutput(resolutionOutput);
-    const zeroglareDiagnostics = buildZeroglareDiagnostics(rawQuery);
+    const zeroglareDiagnostics = buildZeroglareDiagnostics(downstreamQuery);
     const pipelineResult = {
       raw_query: rawQuery,
       normalized_query: normalizedQuery,
@@ -48,6 +91,7 @@ function runFullPipeline(rawQuery) {
       admission_state: ADMISSION_STATES.NOT_A_CONCEPT,
       resolution_output: resolutionOutput,
       final_output: finalOutput,
+      normalization,
       phase_path: [...PIPELINE_PHASE_PATH],
     };
 
@@ -68,7 +112,7 @@ function runFullPipeline(rawQuery) {
     normalized_query: normalizedQuery,
   });
   const finalOutput = validateAndExposeOutput(resolutionOutput);
-  const zeroglareDiagnostics = buildZeroglareDiagnostics(rawQuery);
+  const zeroglareDiagnostics = buildZeroglareDiagnostics(downstreamQuery);
 
   const pipelineResult = {
     raw_query: rawQuery,
@@ -77,6 +121,7 @@ function runFullPipeline(rawQuery) {
     admission_state: routedAdmissionState,
     resolution_output: resolutionOutput,
     final_output: finalOutput,
+    normalization,
     phase_path: [...PIPELINE_PHASE_PATH],
   };
 

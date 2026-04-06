@@ -1,10 +1,10 @@
 {
   "query": "authority",
   "normalizedQuery": "authority",
-  "contractVersion": "v1.4",
-  "normalizerVersion": "2026-03-27.v1",
-  "matcherVersion": "2026-03-27.v3",
-  "conceptSetVersion": "20260327.4",
+  "contractVersion": "v1.7",
+  "normalizerVersion": "2026-04-01.v2",
+  "matcherVersion": "2026-04-01.v4",
+  "conceptSetVersion": "20260401.2",
   "queryType": "exact_concept_query",
   "interpretation": null,
   "type": "concept_match",
@@ -47,7 +47,7 @@
       "canonicalBinding": {
         "conceptId": "authority",
         "conceptVersion": 1,
-        "canonicalHash": "3b531128a4db6c536a05cc682b8691391cd8f7d5a1f68d1a2d0b7d4d19231b05"
+        "canonicalHash": "8a747e670282bc46334fc54aa72e59c5f85c88d5786437a43b0605b48e6a7025"
       },
       "validation": {
         "availableModes": [

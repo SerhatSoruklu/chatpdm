@@ -20,6 +20,32 @@ function assertArray(value, fieldName, ruleName) {
   }
 }
 
+function getRuleIdentifier(rule) {
+  if (!rule || typeof rule !== 'object' || Array.isArray(rule)) {
+    return null;
+  }
+
+  if (typeof rule.id === 'string' && rule.id.trim() !== '') {
+    return rule.id.trim();
+  }
+
+  if (typeof rule.ruleId === 'string' && rule.ruleId.trim() !== '') {
+    return rule.ruleId.trim();
+  }
+
+  return null;
+}
+
+function describeRuleLocation(rule, collectionName, index) {
+  const ruleIdentifier = getRuleIdentifier(rule);
+
+  if (ruleIdentifier === null) {
+    return `${collectionName}[${index}]`;
+  }
+
+  return `${collectionName}[${index}] (id: ${ruleIdentifier})`;
+}
+
 function assertNormalizedKey(normalizedQuery, ruleName) {
   assertNonEmptyString(normalizedQuery, 'normalizedQuery', ruleName);
 
@@ -71,6 +97,28 @@ function validateSuggestionRule(rule, index) {
   }
 }
 
+function validateUniqueNormalizedQueries(rules, collectionName) {
+  const firstOccurrences = new Map();
+
+  rules.forEach((rule, index) => {
+    const normalizedQuery = rule.normalizedQuery;
+
+    if (typeof normalizedQuery !== 'string' || normalizedQuery.trim() === '') {
+      return;
+    }
+
+    if (firstOccurrences.has(normalizedQuery)) {
+      throw new Error(
+        `[resolve-rules-loader] Duplicate normalizedQuery "${normalizedQuery}" in ${collectionName}. `
+        + `First: ${firstOccurrences.get(normalizedQuery)}. `
+        + `Second: ${describeRuleLocation(rule, collectionName, index)}.`,
+      );
+    }
+
+    firstOccurrences.set(normalizedQuery, describeRuleLocation(rule, collectionName, index));
+  });
+}
+
 function loadResolveRules() {
   const rawFile = fs.readFileSync(resolveRulesPath, 'utf8');
   const parsed = JSON.parse(rawFile);
@@ -88,6 +136,8 @@ function loadResolveRules() {
 
   authorDefinedDisambiguations.forEach(validateDisambiguationRule);
   authorDefinedSuggestions.forEach(validateSuggestionRule);
+  validateUniqueNormalizedQueries(authorDefinedDisambiguations, 'authorDefinedDisambiguations');
+  validateUniqueNormalizedQueries(authorDefinedSuggestions, 'authorDefinedSuggestions');
 
   return {
     authorDefinedDisambiguations,

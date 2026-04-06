@@ -20,6 +20,9 @@ const {
 const {
   loadConceptSet,
 } = require('./concept-loader');
+const { loadAuthoredRelationPackets } = require('./concept-relation-loader');
+const { isDirectRelationReadExposedType } = require('./direct-relation-read-types');
+const { normalizeDirectRelationEntries } = require('./direct-relation-read-order');
 const { getConceptRuntimeGovernanceState } = require('./concept-validation-state-loader');
 const { buildReadingRegistersForConcept } = require('./reading-registers');
 const { getConceptReviewState } = require('./concept-review-state-loader');
@@ -39,6 +42,9 @@ const { classifyVocabularySurface } = require('../../vocabulary/vocabulary-servi
 const {
   buildCoreConceptResponsePayload,
 } = require('../inspectable-item-contract');
+const {
+  normalizeChatPdmInput,
+} = require('../../normalization/normalization.pipeline.ts');
 
 function buildContextPayload(context) {
   const appliesTo = Array.isArray(context.appliesTo) && context.appliesTo.length > 0
@@ -296,6 +302,128 @@ function buildUnsupportedQueryTypeResponse(baseResponse) {
   };
 }
 
+function buildDirectRelationRefusalInterpretation(concepts, message) {
+  const interpretation = {
+    interpretationType: 'relation_not_supported',
+    relationTerm: 'between',
+    message,
+  };
+
+  if (Array.isArray(concepts) && concepts.length > 0) {
+    interpretation.concepts = concepts;
+  }
+
+  return interpretation;
+}
+
+function buildDirectRelationRefusalResponse(baseResponse, concepts, message) {
+  return {
+    ...baseResponse,
+    type: 'no_exact_match',
+    interpretation: buildDirectRelationRefusalInterpretation(concepts, message),
+    resolution: {
+      method: 'no_exact_match',
+    },
+    message: NO_EXACT_MATCH_MESSAGE,
+    suggestions: [],
+  };
+}
+
+function buildDirectRelationReadResponse(baseResponse, queryConcepts, relations) {
+  return {
+    ...baseResponse,
+    type: 'relation_read',
+    interpretation: null,
+    resolution: {
+      method: 'authored_direct_relation',
+    },
+    relation: {
+      queryConcepts,
+      entries: relations,
+    },
+  };
+}
+
+function isDirectRelationPair(relation, conceptA, conceptB) {
+  const subjectConceptId = relation?.subject?.conceptId;
+  const targetConceptId = relation?.target?.conceptId;
+
+  return (
+    subjectConceptId === conceptA
+    && targetConceptId === conceptB
+  ) || (
+    subjectConceptId === conceptB
+    && targetConceptId === conceptA
+  );
+}
+
+function resolveDirectRelationReadResponse(baseResponse, relationConcepts, relationLoadReport) {
+  const queryConcepts = Array.isArray(relationConcepts)
+    ? relationConcepts
+    : [];
+
+  if (queryConcepts.length !== 2) {
+    return buildDirectRelationRefusalResponse(
+      baseResponse,
+      queryConcepts,
+      'This direct relation read requires exactly two admitted concepts.',
+    );
+  }
+
+  if (!queryConcepts.every((conceptId) => isLiveConceptId(conceptId))) {
+    return buildDirectRelationRefusalResponse(
+      baseResponse,
+      queryConcepts,
+      'This direct relation read requires two admitted live concepts.',
+    );
+  }
+
+  if (
+    !relationLoadReport
+    || relationLoadReport.source !== 'authored'
+    || relationLoadReport.relationDataPresent !== true
+  ) {
+    return buildDirectRelationRefusalResponse(
+      baseResponse,
+      queryConcepts,
+      'Authored relation packets are unavailable, so this direct relation read cannot resolve.',
+    );
+  }
+
+  const authoredRelations = Array.isArray(relationLoadReport.relations)
+    ? relationLoadReport.relations
+    : [];
+
+  const directRelations = authoredRelations.filter((relation) => (
+    isDirectRelationPair(relation, queryConcepts[0], queryConcepts[1])
+  ));
+  const normalizedDirectRelations = normalizeDirectRelationEntries(directRelations);
+
+  if (normalizedDirectRelations.length === 0) {
+    return buildDirectRelationRefusalResponse(
+      baseResponse,
+      queryConcepts,
+      'No direct authored relation exists for the admitted pair in the current phase.',
+    );
+  }
+
+  const nonExposedDirectRelations = normalizedDirectRelations.filter(
+    (relation) => !isDirectRelationReadExposedType(relation.type),
+  );
+
+  if (nonExposedDirectRelations.length > 0) {
+    const nonExposedRelationType = nonExposedDirectRelations[0]?.type ?? 'unknown';
+
+    return buildDirectRelationRefusalResponse(
+      baseResponse,
+      queryConcepts,
+      `The direct relation type "${nonExposedRelationType}" is not exposed on the public direct relation surface.`,
+    );
+  }
+
+  return buildDirectRelationReadResponse(baseResponse, queryConcepts, normalizedDirectRelations);
+}
+
 function finalizeResolvedResponse(response) {
   assertSingleRuntimeResolutionState(response);
   assertDeterministicPathFreeOfAiMarkers(response, 'Concept resolver response');
@@ -365,7 +493,24 @@ function resolveConceptQuery(rawQuery) {
     throw new TypeError('Expected query to be a non-empty string.');
   }
 
-  const preResolutionGuard = evaluatePreResolutionGuard(rawQuery);
+  const normalization = normalizeChatPdmInput(rawQuery);
+
+  if (normalization.status === 'refused') {
+    const response = buildInvalidQueryResponse(
+      buildBaseResponse(rawQuery, rawQuery, {
+        queryType: 'invalid_query',
+        interpretation: {
+          interpretationType: 'invalid_query',
+          message: INVALID_QUERY_MESSAGE,
+        },
+      }),
+    );
+
+    return finalizeResolvedResponse(response);
+  }
+
+  const pipelineQuery = normalization.canonicalText;
+  const preResolutionGuard = evaluatePreResolutionGuard(pipelineQuery);
   const normalizedQuery = preResolutionGuard.normalizedQuery;
   const routingQuery = preResolutionGuard.routingQuery;
   const canonicalId = preResolutionGuard.canonicalId;
@@ -419,13 +564,13 @@ function resolveConceptQuery(rawQuery) {
   const resolveRules = loadResolveRules();
   const conceptIndex = new Map(concepts.map((concept) => [concept.conceptId, concept]));
   const match = matchQuery({
-    rawQuery,
+    rawQuery: pipelineQuery,
     normalizedQuery,
     concepts,
     resolveRules,
   });
   const queryClassification = classifyQueryShape({
-    rawQuery,
+    rawQuery: pipelineQuery,
     normalizedQuery,
     concepts,
     resolveRules,
@@ -508,9 +653,20 @@ function resolveConceptQuery(rawQuery) {
 
   if (queryClassification.queryType === 'invalid_query') {
     response = buildInvalidQueryResponse(baseResponse);
+  } else if (queryClassification.queryType === 'relation_query') {
+    const relationConcepts = queryClassification.interpretation?.concepts ?? [];
+    const relationLoadReport = loadAuthoredRelationPackets({
+      requireAuthoredRelations: true,
+      allowFallback: false,
+    });
+
+    response = resolveDirectRelationReadResponse(
+      baseResponse,
+      relationConcepts,
+      relationLoadReport,
+    );
   } else if (
     queryClassification.queryType === 'role_or_actor_query'
-    || queryClassification.queryType === 'relation_query'
     || (
       queryClassification.queryType === 'unsupported_complex_query'
       && (match.type !== 'no_exact_match' || match.suggestions.length === 0)

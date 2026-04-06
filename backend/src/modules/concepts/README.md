@@ -19,7 +19,7 @@ Current shared V3 foundation:
   - exported relation example objects for internal fixtures and validator adoption
 - `concept-relation-loader.js`
   - loads authored relation packets from `data/concepts/relations/`
-  - prefers authored relation packets and only uses seed fallback in compatible mode
+  - fails closed by default when packets are missing, and can expose explicit seed fallback in compatible validation mode
   - supports `REQUIRE_AUTHORED_RELATIONS=true` for strict authored-only validation
 - `concept-validation-state-loader.js`
   - reads `artifacts/register-validation-report.json`

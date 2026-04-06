@@ -10,11 +10,12 @@ This document defines the only allowed product response shapes for ChatPDM v1. I
 
 This is a product response contract, not an API failure contract. Internal failures, malformed requests, dependency outages, and transport concerns are handled separately and are outside the scope of this document.
 
-Current runtime declarations for this contract:
+Current runtime declarations for this contract come from `backend/src/modules/concepts/constants.js`:
 
-- `contractVersion = "v1.4"`
-- `matcherVersion = "2026-03-27.v3"`
-- `normalizerVersion = "2026-03-27.v1"`
+- `contractVersion = "v1.7"`
+- `normalizerVersion = "2026-04-01.v2"`
+- `matcherVersion = "2026-04-01.v4"`
+- `conceptSetVersion = "20260401.2"`
 
 ## Determinism Contract
 
@@ -51,10 +52,10 @@ Shared top-level skeleton:
   "type": "concept_match",
   "query": "what is authority",
   "normalizedQuery": "authority",
-  "contractVersion": "v1.4",
-  "normalizerVersion": "2026-03-27.v1",
-  "matcherVersion": "2026-03-27.v3",
-  "conceptSetVersion": "20260327.4",
+  "contractVersion": "v1.7",
+  "normalizerVersion": "2026-04-01.v2",
+  "matcherVersion": "2026-04-01.v4",
+  "conceptSetVersion": "20260401.2",
   "queryType": "exact_concept_query",
   "interpretation": null
 }
@@ -115,6 +116,8 @@ Rules:
 - `ambiguous_alias`
 - `ambiguous_normalized_alias`
 - `author_defined_disambiguation`
+- `rejection_registry`
+- `authored_direct_relation`
 
 Each response type may use only the subset documented in its own section.
 
@@ -155,10 +158,12 @@ This contract currently governs response shape, not full domain-policy enforceme
 
 ## Response Types
 
-ChatPDM v1 currently allows these four product response types:
+ChatPDM v1 currently allows these six product response types:
 
 - `concept_match`
 - `comparison`
+- `relation_read`
+- `rejected_concept`
 - `no_exact_match`
 - `ambiguous_match`
 
@@ -365,7 +370,143 @@ For statement-only axes:
 
 The `comparison` object is the canonical payload boundary for this response type.
 
-### 3. rejected_concept
+### 3. relation_read
+
+#### Purpose (relation_read)
+
+Return authored direct relation entries for a strictly admitted pair of concepts.
+
+This is a read surface, not a reasoning surface. It exposes authored relation structure when a direct relation is present and supported in the current phase, and refuses otherwise.
+
+Field guarantees in this phase:
+
+- every successful `relation_read` response includes the shared top-level product fields plus `resolution` and `relation`
+- `relation.queryConcepts` always contains exactly two admitted concept IDs in query order
+- every emitted direct relation entry includes `schemaVersion`, `subject`, `type`, `target`, `basis`, `conditions`, `effect`, and `status`
+- every emitted `conditions` object includes `when` and `unless`
+- every emitted `status` object includes `active`, `blocking`, and `note`
+- direct relation failures reuse the standard `no_exact_match` refusal shape and do not emit a partial `relation_read` payload
+
+#### Required fields (relation_read)
+
+Top-level:
+
+- `type`: `"relation_read"`
+- `query`
+- `normalizedQuery`
+- `contractVersion`
+- `normalizerVersion`
+- `matcherVersion`
+- `conceptSetVersion`
+- `queryType`
+- `interpretation`
+- `resolution`
+- `relation`
+
+Allowed `queryType` values:
+
+- `relation_query`
+
+`interpretation`:
+
+- must be `null`
+
+`resolution` object:
+
+- `method`: `"authored_direct_relation"`
+
+`relation` object:
+
+- `queryConcepts`
+- `entries`
+
+`relation.queryConcepts`:
+
+- exactly two admitted concept IDs in query order
+
+`relation.entries` array object fields:
+
+- `schemaVersion`
+- `subject`
+- `type`
+- `target`
+- `basis`
+- `conditions`
+- `effect`
+- `status`
+
+`relation.entries.subject` object fields:
+
+- `conceptId`
+- `path`
+- `label`
+
+`relation.entries.target` object fields:
+
+- `conceptId`
+- `path`
+- `label`
+
+`relation.entries.basis` object fields:
+
+- `kind`
+- `description`
+
+`relation.entries.conditions` object fields:
+
+- `when`
+- `unless`
+
+`relation.entries.effect` object fields:
+
+- `kind`
+- `description`
+
+`relation.entries.status` object fields:
+
+- `active`
+- `blocking`
+- `note`
+
+Allowed `relation.entries.type` values in this phase:
+
+- `GROUNDS_DUTY`
+- `TRIGGERS_RESPONSIBILITY`
+- `VALIDATES_AUTHORITY`
+- `REQUIRES_AUTHORITY`
+- `DOES_NOT_IMPLY`
+
+`relation.entries` ordering:
+
+- entries are emitted in canonical direct-relation type priority order from `DIRECT_RELATION_READ_SUPPORTED_TYPES`
+- the runtime preserves authored subject/target direction and never swaps relation endpoints
+- stable tie-breakers use authored concept IDs, paths, labels, basis kind, effect kind, conditions, and status fields so the same input always yields the same visible order
+
+The `relation` object is the canonical payload boundary for this response type.
+
+#### Phase 12.8A.1 canonical freeze
+
+This is the canonical freeze for the direct relation read surface in Phase 12.8A.1.
+
+Phase law:
+
+- read-only
+- two-concept-only
+- direct authored relation only
+
+Approved equivalent phrasing in this phase: `the relation between <live concept id> and <live concept id>`
+
+Golden success example:
+
+- [docs/product/examples/relation_read.json](./examples/relation_read.json)
+
+Golden refusal example:
+
+- [docs/product/examples/relation_read_refusal.json](./examples/relation_read_refusal.json)
+
+Any change to the admitted shape, returned fields, or supported direct relation types is a contract change and must be advanced deliberately.
+
+### 4. rejected_concept
 
 #### Purpose (rejected_concept)
 
@@ -414,7 +555,7 @@ Allowed `queryType` values:
 - `decisionType`: `"STRUCTURAL_REJECTION"`
 - `finality`
 
-### 4. no_exact_match
+### 5. no_exact_match
 
 #### Purpose (no_exact_match)
 
@@ -494,15 +635,19 @@ Interpretation patterns allowed in this response type include:
 - governance-scope out-of-scope refusal
 - governance-scope clarification
 - unsupported comparison
+- direct relation data unavailable
+- unsupported direct relation type in this phase
 - unsupported inter-concept relation
 - unsupported actor or holder query
 - unsupported complex query shape
 
-### 5. ambiguous_match
+### 6. ambiguous_match
 
 #### Purpose (ambiguous_match)
 
 Return a disambiguation surface when multiple nearby canonical concepts are plausible and the user must choose explicitly.
+
+In the current runtime, higher-priority refusal guards may pre-empt some inputs before this branch is reached.
 
 #### Required fields (ambiguous_match)
 
@@ -564,12 +709,13 @@ The frontend must follow these rules exactly:
 4. Do not reorder the canonical `concept_match` answer blocks.
 5. Treat all canonical text fields as plain text in v1.
 6. Render `comparison` as a structured authored comparison, never as generated prose.
-7. Render `ambiguous_match` as explicit user choice, never as an already-resolved answer.
-8. Render `rejected_concept` as an explicit permanent refusal, never as a generic non-match.
-9. Render `no_exact_match` honestly even when `suggestions` is empty.
-10. Do not re-sort `contexts`, `sources`, `relatedConcepts`, `suggestions`, `candidates`, `comparison.axes`, or `interpretation.concepts` in the UI.
-11. Present `interpretation` as bounded system guidance, not as a generated answer.
-12. Cache product responses using at least:
+7. Render `relation_read` as a structured authored relation read, never as generated prose.
+8. Render `ambiguous_match` as explicit user choice, never as an already-resolved answer.
+9. Render `rejected_concept` as an explicit permanent refusal, never as a generic non-match.
+10. Render `no_exact_match` honestly even when `suggestions` is empty.
+11. Do not re-sort `contexts`, `sources`, `relatedConcepts`, `suggestions`, `candidates`, `comparison.axes`, `relation.entries`, or `interpretation.concepts` in the UI.
+12. Present `interpretation` as bounded system guidance, not as a generated answer.
+13. Cache product responses using at least:
 
     - `normalizedQuery`
     - `contractVersion`
@@ -595,9 +741,11 @@ The backend must enforce these rules:
 - `concept_match` must only return published canonical concepts
 - `rejected_concept` must only return concepts recorded in the rejection registry
 - `comparison` must only return authored allowlisted comparison pairs
+- `relation_read` must only return authored direct relation entries from the admitted pair
 - `no_exact_match` suggestions must be deterministic and must reference published canonical concepts only
 - `ambiguous_match` candidate ordering must be deterministic
 - `comparison` axis ordering must be deterministic
+- `relation_read` entry ordering must follow the canonical direct-relation type priority and stable authored-field tie-breakers
 - all ordered arrays must remain deterministic and version-stable
 
 Schema validation, versioning discipline, and golden tests are not optional if ChatPDM wants to claim deterministic behavior.
@@ -615,25 +763,28 @@ ChatPDM v1 product responses do not include:
 - best-effort fallback prose
 - confidence or probability theater
 - rich formatting assumptions inside canonical text fields
-- relation evaluation
+- open graph traversal, inferred relation discovery, or relation synthesis
 - actor or instance resolution
 
 ## Implementation Summary
 
-ChatPDM v1 currently defines four product response types:
+ChatPDM v1 currently defines six product response types:
 
 - one resolved concept
 - one deterministic authored comparison
+- one deterministic authored direct relation read
+- one structural rejection
 - one honest non-match
 - one explicit disambiguation state
 
 Phase 10 adds deterministic query-shape classification on top of those outcomes.
 Phase 11 adds deterministic comparison output for authored allowlisted pairs.
+Phase 12 adds deterministic direct relation output for authored direct relation entries.
 
 This means ChatPDM can now say:
 
 - what kind of query the user asked
-- whether that query points toward a subtype, comparison, relation, or actor-oriented request
+- whether that query points toward a subtype, comparison, direct relation, or actor-oriented request
 - where the authored runtime stops
 
 It still does not claim to reason compositionally or answer beyond authored scope.
@@ -653,4 +804,5 @@ The following contract decisions are locked for Phase 10:
 - `no_exact_match`, `invalid_query`, `unsupported_query_type`, and `ambiguous_match` must keep deterministic interpretation objects
 - query-shape classification must not invent new canonical concepts
 - allowlisted comparison queries may return deterministic comparison output
-- relation and actor queries remain refusal-first in the current runtime
+- direct relation queries resolve only through authored direct relation reads or honest refusals when direct relation data is unavailable or unsupported
+- actor queries remain refusal-first in the current runtime

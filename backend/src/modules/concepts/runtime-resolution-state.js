@@ -10,6 +10,7 @@ const RUNTIME_RESOLUTION_STATES = Object.freeze([
 const RESPONSE_TYPE_TO_RUNTIME_RESOLUTION_STATE = Object.freeze({
   concept_match: 'allowed',
   comparison: 'allowed',
+  relation_read: 'allowed',
   VOCABULARY_DETECTED: 'refused',
   invalid_query: 'invalid',
   ambiguous_match: 'conflict',

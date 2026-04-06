@@ -15,6 +15,7 @@
     "build:backend": "npm --prefix ./backend run build",
     "check": "npm run build",
     "validate:policy-governance": "node ./scripts/validate-policy-governance.js",
+    "audit:authority": "node ./scripts/authority-audit.js",
     "validate:policy-lifecycle-contract": "npm --prefix ./frontend run generate:policy-surface",
     "validate:policy-surface-split": "npm --prefix ./frontend run validate:policy-surface-split",
     "validate:phase-1-mapping": "node ./backend/scripts/validate-phase-1-mapping.js",
