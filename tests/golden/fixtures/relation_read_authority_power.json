@@ -1,0 +1,92 @@
+{
+  "query": "relation between authority and power",
+  "normalizedQuery": "relation between authority and power",
+  "contractVersion": "v1.7",
+  "normalizerVersion": "2026-04-01.v2",
+  "matcherVersion": "2026-04-01.v4",
+  "conceptSetVersion": "20260401.2",
+  "queryType": "relation_query",
+  "interpretation": null,
+  "type": "relation_read",
+  "resolution": {
+    "method": "authored_direct_relation"
+  },
+  "relation": {
+    "queryConcepts": [
+      "authority",
+      "power"
+    ],
+    "entries": [
+      {
+        "schemaVersion": 1,
+        "subject": {
+          "conceptId": "power",
+          "path": "structureV3.power.scope",
+          "label": "Power execution within governance scope"
+        },
+        "type": "REQUIRES_AUTHORITY",
+        "target": {
+          "conceptId": "authority",
+          "path": "structureV3.authority.scope",
+          "label": "Authority standing that may permit execution"
+        },
+        "basis": {
+          "kind": "scope_rule",
+          "description": "Power may require authority when execution is treated as permitted action inside a governance order."
+        },
+        "conditions": {
+          "when": [
+            "execution is claimed as permitted within governance scope"
+          ],
+          "unless": [
+            "the effect operates without recognized standing or permission"
+          ]
+        },
+        "effect": {
+          "kind": "depends_on",
+          "description": "Permitted execution may depend on authority without making power identical to authority."
+        },
+        "status": {
+          "active": true,
+          "blocking": false,
+          "note": "Authored relation packet for power requiring authority in permitted execution contexts."
+        }
+      },
+      {
+        "schemaVersion": 1,
+        "subject": {
+          "conceptId": "power",
+          "path": "canonical.adjacent.authority",
+          "label": "Power does not convert capacity into directive right"
+        },
+        "type": "DOES_NOT_IMPLY",
+        "target": {
+          "conceptId": "authority",
+          "path": "canonical.invariant",
+          "label": "Authority remains recognized standing rather than mere capacity"
+        },
+        "basis": {
+          "kind": "boundary_rule",
+          "description": "Effective capacity does not by itself imply permission, entitlement, or directive right."
+        },
+        "conditions": {
+          "when": [
+            "power is described as effective capacity or operative leverage"
+          ],
+          "unless": [
+            "recognized authority is independently established"
+          ]
+        },
+        "effect": {
+          "kind": "separates",
+          "description": "Power remains distinct from authority even when authority channels it."
+        },
+        "status": {
+          "active": true,
+          "blocking": false,
+          "note": "Authored relation packet for the power-authority non-implication law."
+        }
+      }
+    ]
+  }
+}

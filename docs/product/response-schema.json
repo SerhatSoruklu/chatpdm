@@ -1077,6 +1077,7 @@
         "type",
         "target",
         "basis",
+        "conditions",
         "effect",
         "status"
       ],
@@ -1125,6 +1126,10 @@
         "conditions": {
           "type": "object",
           "additionalProperties": false,
+          "required": [
+            "when",
+            "unless"
+          ],
           "properties": {
             "when": {
               "type": "array",
@@ -1171,7 +1176,8 @@
           "additionalProperties": false,
           "required": [
             "active",
-            "blocking"
+            "blocking",
+            "note"
           ],
           "properties": {
             "active": {

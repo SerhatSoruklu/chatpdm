@@ -84,6 +84,22 @@ function buildUnavailableRelationReport() {
   };
 }
 
+function buildRelationReportWithRelations(baseReport, relations) {
+  return {
+    ...baseReport,
+    source: 'authored',
+    relationDataPresent: true,
+    fallbackUsed: false,
+    relations,
+  };
+}
+
+function resolveRelationQueryWithReport(relationReport, query = 'relation between authority and power') {
+  return withMockedRelationLoader(relationReport, (resolveConceptQueryFresh) => (
+    resolveConceptQueryFresh(query)
+  ));
+}
+
 // Keep this slice bounded: anything outside the exact direct-relation admission shape
 // must stay outside the read path and remain a refusal or non-admission.
 const NON_ADMITTED_RELATION_QUERIES = [
@@ -109,17 +125,115 @@ const NON_ADMITTED_RELATION_QUERIES = [
   },
 ];
 
+const RELATION_READ_SUCCESS_KEYS = [
+  'query',
+  'normalizedQuery',
+  'contractVersion',
+  'normalizerVersion',
+  'matcherVersion',
+  'conceptSetVersion',
+  'queryType',
+  'interpretation',
+  'type',
+  'resolution',
+  'relation',
+];
+
+const RELATION_READ_REFUSAL_KEYS = [
+  'query',
+  'normalizedQuery',
+  'contractVersion',
+  'normalizerVersion',
+  'matcherVersion',
+  'conceptSetVersion',
+  'queryType',
+  'interpretation',
+  'type',
+  'resolution',
+  'message',
+  'suggestions',
+];
+
+const RELATION_READ_ENTRY_KEYS = [
+  'schemaVersion',
+  'subject',
+  'type',
+  'target',
+  'basis',
+  'conditions',
+  'effect',
+  'status',
+];
+
+function assertExactKeys(actual, expected, label) {
+  assert.deepEqual(
+    Object.keys(actual),
+    expected,
+    `${label} must keep the canonical field order and exact field set.`,
+  );
+}
+
+function assertRelationReadSuccessShape(response) {
+  assertExactKeys(response, RELATION_READ_SUCCESS_KEYS, 'relation_read success response');
+  assert.equal(Object.prototype.hasOwnProperty.call(response, 'message'), false);
+  assert.equal(Object.prototype.hasOwnProperty.call(response, 'suggestions'), false);
+  assert.equal(Object.prototype.hasOwnProperty.call(response, 'candidates'), false);
+  assert.equal(Object.prototype.hasOwnProperty.call(response, 'rejection'), false);
+  assert.equal(Object.prototype.hasOwnProperty.call(response, 'comparison'), false);
+  assert.equal(Object.prototype.hasOwnProperty.call(response, 'answer'), false);
+  assert.equal(Object.prototype.hasOwnProperty.call(response, 'mode'), false);
+
+  assertExactKeys(response.relation, ['queryConcepts', 'entries'], 'relation_read relation object');
+  assert.deepEqual(response.relation.queryConcepts, ['authority', 'power']);
+  assert.equal(response.relation.entries.length, 2);
+
+  for (const entry of response.relation.entries) {
+    assertExactKeys(entry, RELATION_READ_ENTRY_KEYS, 'relation_read entry');
+    assertExactKeys(entry.subject, ['conceptId', 'path', 'label'], 'relation_read entry.subject');
+    assertExactKeys(entry.target, ['conceptId', 'path', 'label'], 'relation_read entry.target');
+    assertExactKeys(entry.basis, ['kind', 'description'], 'relation_read entry.basis');
+    assertExactKeys(entry.conditions, ['when', 'unless'], 'relation_read entry.conditions');
+    assertExactKeys(entry.effect, ['kind', 'description'], 'relation_read entry.effect');
+    assertExactKeys(entry.status, ['active', 'blocking', 'note'], 'relation_read entry.status');
+  }
+}
+
+function assertRelationReadRefusalShape(response, expectedConcepts) {
+  assertExactKeys(response, RELATION_READ_REFUSAL_KEYS, 'relation_read refusal response');
+  assert.equal(Object.prototype.hasOwnProperty.call(response, 'relation'), false);
+  assert.equal(Object.prototype.hasOwnProperty.call(response, 'answer'), false);
+  assert.equal(Object.prototype.hasOwnProperty.call(response, 'comparison'), false);
+  assert.equal(Object.prototype.hasOwnProperty.call(response, 'candidates'), false);
+  assert.equal(Object.prototype.hasOwnProperty.call(response, 'rejection'), false);
+  assert.equal(Object.prototype.hasOwnProperty.call(response, 'mode'), false);
+  assertExactKeys(response.interpretation, [
+    'interpretationType',
+    'relationTerm',
+    'message',
+    'concepts',
+  ], 'relation_read refusal interpretation');
+  assertExactKeys(response.resolution, ['method'], 'relation_read refusal resolution');
+  assert.equal(response.type, 'no_exact_match');
+  assert.equal(response.queryType, 'relation_query');
+  assert.equal(response.resolution.method, 'no_exact_match');
+  assert.equal(response.interpretation.interpretationType, 'relation_not_supported');
+  assert.equal(response.interpretation.relationTerm, 'between');
+  assert.deepEqual(response.interpretation.concepts, expectedConcepts);
+  assert.equal(typeof response.interpretation.message, 'string');
+  assert.equal(Array.isArray(response.suggestions), true);
+  assert.deepEqual(response.suggestions, []);
+}
+
 test('direct relation read queries return authored direct relation entries', () => {
   const resolveConceptQuery = loadResolveConceptQueryFresh();
   const response = resolveConceptQuery('relation between authority and power');
 
+  assertRelationReadSuccessShape(response);
   assert.equal(response.queryType, 'relation_query');
   assert.equal(response.type, 'relation_read');
   assert.equal(deriveRuntimeResolutionStateFromResponse(response), 'allowed');
   assert.equal(response.interpretation, null);
   assert.equal(response.resolution.method, 'authored_direct_relation');
-  assert.deepEqual(response.relation.queryConcepts, ['authority', 'power']);
-  assert.equal(response.relation.entries.length, 2);
   assert.deepEqual(
     response.relation.entries.map((entry) => entry.type),
     ['REQUIRES_AUTHORITY', 'DOES_NOT_IMPLY'],
@@ -134,6 +248,32 @@ test('direct relation read queries return authored direct relation entries', () 
   );
   assert.deepEqual(
     response.relation.entries.map((entry) => entry.target.conceptId),
+    ['authority', 'authority'],
+  );
+});
+
+test('direct relation read entries normalize to a stable canonical order regardless of packet order', () => {
+  const authoredReport = loadAuthoredRelationPackets({
+    requireAuthoredRelations: true,
+    allowFallback: false,
+  });
+  const canonicalReport = buildRelationReportWithRelations(authoredReport, authoredReport.relations);
+  const reversedReport = buildRelationReportWithRelations(authoredReport, [...authoredReport.relations].reverse());
+
+  const canonicalResponse = resolveRelationQueryWithReport(canonicalReport);
+  const reversedResponse = resolveRelationQueryWithReport(reversedReport);
+
+  assert.deepEqual(reversedResponse.relation.entries, canonicalResponse.relation.entries);
+  assert.deepEqual(
+    canonicalResponse.relation.entries.map((entry) => entry.type),
+    ['REQUIRES_AUTHORITY', 'DOES_NOT_IMPLY'],
+  );
+  assert.deepEqual(
+    canonicalResponse.relation.entries.map((entry) => entry.subject.conceptId),
+    ['power', 'power'],
+  );
+  assert.deepEqual(
+    canonicalResponse.relation.entries.map((entry) => entry.target.conceptId),
     ['authority', 'authority'],
   );
 });
@@ -154,11 +294,8 @@ test('direct relation reads refuse cleanly when no authored direct relation exis
   const resolveConceptQuery = loadResolveConceptQueryFresh();
   const response = resolveConceptQuery('relation between duty and power');
 
-  assert.equal(response.queryType, 'relation_query');
-  assert.equal(response.type, 'no_exact_match');
+  assertRelationReadRefusalShape(response, ['duty', 'power']);
   assert.equal(deriveRuntimeResolutionStateFromResponse(response), 'refused');
-  assert.equal(response.interpretation.interpretationType, 'relation_not_supported');
-  assert.deepEqual(response.interpretation.concepts, ['duty', 'power']);
   assert.match(response.interpretation.message, /no direct authored relation/i);
 });
 
@@ -168,11 +305,8 @@ test('direct relation reads refuse cleanly when relation packets are unavailable
   withMockedRelationLoader(unavailableRelationReport, (resolveConceptQueryFresh) => {
     const response = resolveConceptQueryFresh('relation between authority and power');
 
-    assert.equal(response.queryType, 'relation_query');
-    assert.equal(response.type, 'no_exact_match');
+    assertRelationReadRefusalShape(response, ['authority', 'power']);
     assert.equal(deriveRuntimeResolutionStateFromResponse(response), 'refused');
-    assert.equal(response.interpretation.interpretationType, 'relation_not_supported');
-    assert.deepEqual(response.interpretation.concepts, ['authority', 'power']);
     assert.match(response.interpretation.message, /unavailable/i);
   });
 });
@@ -194,10 +328,8 @@ test('direct relation reads refuse cleanly when the relation type is not exposed
   withMockedRelationLoader(unsupportedRelationReport, (resolveConceptQueryFresh) => {
     const response = resolveConceptQueryFresh('relation between authority and power');
 
-    assert.equal(response.queryType, 'relation_query');
-    assert.equal(response.type, 'no_exact_match');
+    assertRelationReadRefusalShape(response, ['authority', 'power']);
     assert.equal(deriveRuntimeResolutionStateFromResponse(response), 'refused');
-    assert.equal(response.interpretation.interpretationType, 'relation_not_supported');
     assert.match(response.interpretation.message, /not exposed/i);
   });
 });
@@ -219,10 +351,8 @@ test('direct relation reads refuse cleanly when the relation type is unknown', (
   withMockedRelationLoader(unknownRelationReport, (resolveConceptQueryFresh) => {
     const response = resolveConceptQueryFresh('relation between authority and power');
 
-    assert.equal(response.queryType, 'relation_query');
-    assert.equal(response.type, 'no_exact_match');
+    assertRelationReadRefusalShape(response, ['authority', 'power']);
     assert.equal(deriveRuntimeResolutionStateFromResponse(response), 'refused');
-    assert.equal(response.interpretation.interpretationType, 'relation_not_supported');
     assert.match(response.interpretation.message, /not exposed/i);
   });
 });

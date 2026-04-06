@@ -378,6 +378,15 @@ Return authored direct relation entries for a strictly admitted pair of concepts
 
 This is a read surface, not a reasoning surface. It exposes authored relation structure when a direct relation is present and supported in the current phase, and refuses otherwise.
 
+Field guarantees in this phase:
+
+- every successful `relation_read` response includes the shared top-level product fields plus `resolution` and `relation`
+- `relation.queryConcepts` always contains exactly two admitted concept IDs in query order
+- every emitted direct relation entry includes `schemaVersion`, `subject`, `type`, `target`, `basis`, `conditions`, `effect`, and `status`
+- every emitted `conditions` object includes `when` and `unless`
+- every emitted `status` object includes `active`, `blocking`, and `note`
+- direct relation failures reuse the standard `no_exact_match` refusal shape and do not emit a partial `relation_read` payload
+
 #### Required fields (relation_read)
 
 Top-level:
@@ -443,7 +452,7 @@ Allowed `queryType` values:
 - `kind`
 - `description`
 
-`relation.entries.conditions` object fields when present:
+`relation.entries.conditions` object fields:
 
 - `when`
 - `unless`
@@ -457,7 +466,7 @@ Allowed `queryType` values:
 
 - `active`
 - `blocking`
-- `note` (optional)
+- `note`
 
 Allowed `relation.entries.type` values in this phase:
 
@@ -466,6 +475,12 @@ Allowed `relation.entries.type` values in this phase:
 - `VALIDATES_AUTHORITY`
 - `REQUIRES_AUTHORITY`
 - `DOES_NOT_IMPLY`
+
+`relation.entries` ordering:
+
+- entries are emitted in canonical direct-relation type priority order from `DIRECT_RELATION_READ_SUPPORTED_TYPES`
+- the runtime preserves authored subject/target direction and never swaps relation endpoints
+- stable tie-breakers use authored concept IDs, paths, labels, basis kind, effect kind, conditions, and status fields so the same input always yields the same visible order
 
 The `relation` object is the canonical payload boundary for this response type.
 
@@ -728,7 +743,7 @@ The backend must enforce these rules:
 - `no_exact_match` suggestions must be deterministic and must reference published canonical concepts only
 - `ambiguous_match` candidate ordering must be deterministic
 - `comparison` axis ordering must be deterministic
-- `relation_read` entry ordering must be deterministic
+- `relation_read` entry ordering must follow the canonical direct-relation type priority and stable authored-field tie-breakers
 - all ordered arrays must remain deterministic and version-stable
 
 Schema validation, versioning discipline, and golden tests are not optional if ChatPDM wants to claim deterministic behavior.

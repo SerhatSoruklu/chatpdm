@@ -33,20 +33,14 @@ function createPacketEntry(code, conceptId, detail, filePath, relationIndex = nu
 }
 
 function isValidConditions(value) {
-  if (value === undefined) {
-    return true;
-  }
-
   if (!isPlainObject(value)) {
     return false;
   }
 
   return ['when', 'unless'].every((key) => (
-    value[key] === undefined
-    || (
-      Array.isArray(value[key])
-      && value[key].every(isNonEmptyString)
-    )
+    Array.isArray(value[key])
+    && value[key].length > 0
+    && value[key].every(isNonEmptyString)
   ));
 }
 
@@ -139,6 +133,14 @@ function validateRelationRecordShape(relation, conceptId, filePath, relationInde
       'RELATION_SCHEMA_VIOLATION',
       conceptId,
       'Relation status must include boolean active and blocking fields.',
+      filePath,
+      relationIndex,
+    ));
+  } else if (!isNonEmptyString(relation.status.note)) {
+    failures.push(createPacketEntry(
+      'RELATION_SCHEMA_VIOLATION',
+      conceptId,
+      'Relation status must include a non-empty note field.',
       filePath,
       relationIndex,
     ));

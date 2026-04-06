@@ -22,9 +22,76 @@ const contractPath = path.resolve(__dirname, '../../docs/product/response-contra
 const schemaPath = path.resolve(__dirname, '../../docs/product/response-schema.json');
 const successExamplePath = path.resolve(__dirname, '../../docs/product/examples/relation_read.json');
 const refusalExamplePath = path.resolve(__dirname, '../../docs/product/examples/relation_read_refusal.json');
+const successGoldenPath = path.resolve(__dirname, '../../tests/golden/fixtures/relation_read_authority_power.json');
+const refusalGoldenPath = path.resolve(__dirname, '../../tests/golden/fixtures/relation_read_duty_power_refusal.json');
+const RELATION_READ_SUCCESS_KEYS = [
+  'query',
+  'normalizedQuery',
+  'contractVersion',
+  'normalizerVersion',
+  'matcherVersion',
+  'conceptSetVersion',
+  'queryType',
+  'interpretation',
+  'type',
+  'resolution',
+  'relation',
+];
+const RELATION_READ_SCHEMA_REQUIRED_KEYS = [
+  'type',
+  'query',
+  'normalizedQuery',
+  'contractVersion',
+  'normalizerVersion',
+  'matcherVersion',
+  'conceptSetVersion',
+  'queryType',
+  'interpretation',
+  'resolution',
+  'relation',
+];
+const RELATION_READ_REFUSAL_KEYS = [
+  'query',
+  'normalizedQuery',
+  'contractVersion',
+  'normalizerVersion',
+  'matcherVersion',
+  'conceptSetVersion',
+  'queryType',
+  'interpretation',
+  'type',
+  'resolution',
+  'message',
+  'suggestions',
+];
+const RELATION_READ_ENTRY_KEYS = [
+  'schemaVersion',
+  'subject',
+  'type',
+  'target',
+  'basis',
+  'conditions',
+  'effect',
+  'status',
+];
+const RELATION_READ_ENDPOINT_KEYS = ['conceptId', 'path', 'label'];
+const RELATION_READ_BASIS_KEYS = ['kind', 'description'];
+const RELATION_READ_CONDITIONS_KEYS = ['when', 'unless'];
+const RELATION_READ_EFFECT_KEYS = ['kind', 'description'];
+const RELATION_READ_STATUS_KEYS = ['active', 'blocking', 'note'];
+const RELATION_READ_REFUSAL_INTERPRETATION_KEYS = [
+  'interpretationType',
+  'relationTerm',
+  'message',
+  'concepts',
+];
 
 function loadJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+}
+
+function stringifySnapshot(value) {
+  return JSON.stringify(value);
 }
 
 function extractContractAllowedTypes(contractText) {
@@ -77,6 +144,76 @@ function assertExactOrderedList(actual, expected, label) {
   );
 }
 
+function assertExactKeys(actual, expected, label) {
+  assert.deepEqual(
+    Object.keys(actual),
+    expected,
+    `${label} must keep the canonical field order and exact field set.`,
+  );
+}
+
+function assertStableSnapshot(actual, expected, label) {
+  assert.equal(
+    stringifySnapshot(actual),
+    stringifySnapshot(expected),
+    `${label} drifted from the canonical golden snapshot.`,
+  );
+}
+
+function assertRelationReadSuccessShape(response) {
+  assertExactKeys(response, RELATION_READ_SUCCESS_KEYS, 'relation_read success response');
+  assert.equal(Object.prototype.hasOwnProperty.call(response, 'message'), false);
+  assert.equal(Object.prototype.hasOwnProperty.call(response, 'suggestions'), false);
+  assert.equal(Object.prototype.hasOwnProperty.call(response, 'candidates'), false);
+  assert.equal(Object.prototype.hasOwnProperty.call(response, 'rejection'), false);
+  assert.equal(Object.prototype.hasOwnProperty.call(response, 'comparison'), false);
+  assert.equal(Object.prototype.hasOwnProperty.call(response, 'answer'), false);
+  assert.equal(Object.prototype.hasOwnProperty.call(response, 'mode'), false);
+
+  assertExactKeys(response.relation, ['queryConcepts', 'entries'], 'relation_read relation object');
+  assert.deepEqual(response.relation.queryConcepts, ['authority', 'power']);
+  assert.equal(
+    response.relation.entries.length,
+    2,
+    'relation_read must keep two emitted entries for the canonical success case.',
+  );
+
+  for (const entry of response.relation.entries) {
+    assertExactKeys(entry, RELATION_READ_ENTRY_KEYS, 'relation_read entry');
+    assertExactKeys(entry.subject, RELATION_READ_ENDPOINT_KEYS, 'relation_read entry.subject');
+    assertExactKeys(entry.target, RELATION_READ_ENDPOINT_KEYS, 'relation_read entry.target');
+    assertExactKeys(entry.basis, RELATION_READ_BASIS_KEYS, 'relation_read entry.basis');
+    assertExactKeys(entry.conditions, RELATION_READ_CONDITIONS_KEYS, 'relation_read entry.conditions');
+    assertExactKeys(entry.effect, RELATION_READ_EFFECT_KEYS, 'relation_read entry.effect');
+    assertExactKeys(entry.status, RELATION_READ_STATUS_KEYS, 'relation_read entry.status');
+  }
+}
+
+function assertRelationReadRefusalShape(response, expectedConcepts) {
+  assertExactKeys(response, RELATION_READ_REFUSAL_KEYS, 'relation_read refusal response');
+  assert.equal(Object.prototype.hasOwnProperty.call(response, 'relation'), false);
+  assert.equal(Object.prototype.hasOwnProperty.call(response, 'answer'), false);
+  assert.equal(Object.prototype.hasOwnProperty.call(response, 'comparison'), false);
+  assert.equal(Object.prototype.hasOwnProperty.call(response, 'candidates'), false);
+  assert.equal(Object.prototype.hasOwnProperty.call(response, 'rejection'), false);
+  assert.equal(Object.prototype.hasOwnProperty.call(response, 'mode'), false);
+  assertExactKeys(
+    response.interpretation,
+    RELATION_READ_REFUSAL_INTERPRETATION_KEYS,
+    'relation_read refusal interpretation',
+  );
+  assertExactKeys(response.resolution, ['method'], 'relation_read refusal resolution');
+  assert.equal(response.type, 'no_exact_match');
+  assert.equal(response.queryType, 'relation_query');
+  assert.equal(response.resolution.method, 'no_exact_match');
+  assert.equal(response.interpretation.interpretationType, 'relation_not_supported');
+  assert.equal(response.interpretation.relationTerm, 'between');
+  assert.deepEqual(response.interpretation.concepts, expectedConcepts);
+  assert.equal(typeof response.interpretation.message, 'string');
+  assert.equal(Array.isArray(response.suggestions), true);
+  assert.deepEqual(response.suggestions, []);
+}
+
 function verifyExposureAllowlistSource() {
   assertExactOrderedList(
     DIRECT_RELATION_READ_EXPOSED_TYPES,
@@ -110,12 +247,12 @@ function verifyExposureAllowlistSource() {
 function verifyRuntimeBehavior() {
   const response = loadResolveConceptQueryFresh()('relation between authority and power');
 
+  assertRelationReadSuccessShape(response);
   assert.equal(
     response.type,
     'relation_read',
     'Direct relation runtime must continue to return relation_read for the admitted success case.',
   );
-  assert.equal(Array.isArray(response.relation?.entries), true, 'relation_read response must expose relation entries.');
   response.relation.entries.forEach((entry) => {
     assert.equal(
       isDirectRelationReadExposedType(entry.type),
@@ -153,16 +290,7 @@ function verifyRuntimeExposureRefusal() {
     const resolveConceptQuery = loadResolveConceptQueryFresh();
     const response = resolveConceptQuery('relation between authority and power');
 
-    assert.equal(
-      response.type,
-      'no_exact_match',
-      'Direct relation runtime must refuse when an authored relation type is not exposed by policy.',
-    );
-    assert.equal(
-      response.interpretation.interpretationType,
-      'relation_not_supported',
-      'Direct relation runtime must surface relation_not_supported when exposure policy blocks the relation type.',
-    );
+    assertRelationReadRefusalShape(response, ['authority', 'power']);
     assert.match(
       response.interpretation.message,
       /not exposed/i,
@@ -196,17 +324,61 @@ function verifyContractDoc() {
     'docs/product/response-contract.md allowed relation types',
   );
 
+  [
+    'every successful `relation_read` response includes the shared top-level product fields plus `resolution` and `relation`',
+    '`relation.queryConcepts` always contains exactly two admitted concept IDs in query order',
+    'every emitted direct relation entry includes `schemaVersion`, `subject`, `type`, `target`, `basis`, `conditions`, `effect`, and `status`',
+    'every emitted `conditions` object includes `when` and `unless`',
+    'every emitted `status` object includes `active`, `blocking`, and `note`',
+    'direct relation failures reuse the standard `no_exact_match` refusal shape and do not emit a partial `relation_read` payload',
+  ].forEach((line) => {
+    assert.ok(
+      contractText.includes(line),
+      `docs/product/response-contract.md is missing the field guarantee line: ${line}`,
+    );
+  });
+
   process.stdout.write('PASS direct_relation_type_contract_alignment\n');
 }
 
 function verifySchema() {
   const schema = loadJson(schemaPath);
   const schemaTypes = schema?.$defs?.directRelationEntryObject?.properties?.type?.enum;
+  const responseRequired = schema?.$defs?.relationReadResponse?.required;
+  const relationRequired = schema?.$defs?.relationReadObject?.required;
+  const entryRequired = schema?.$defs?.directRelationEntryObject?.required;
+  const conditionsRequired = schema?.$defs?.directRelationEntryObject?.properties?.conditions?.required;
+  const statusRequired = schema?.$defs?.directRelationEntryObject?.properties?.status?.required;
 
   assertExactOrderedList(
     schemaTypes,
     DIRECT_RELATION_READ_EXPOSED_TYPES,
     'docs/product/response-schema.json directRelationEntryObject.type enum',
+  );
+  assertExactOrderedList(
+    responseRequired,
+    RELATION_READ_SCHEMA_REQUIRED_KEYS,
+    'docs/product/response-schema.json relationReadResponse.required',
+  );
+  assertExactOrderedList(
+    relationRequired,
+    ['queryConcepts', 'entries'],
+    'docs/product/response-schema.json relationReadObject.required',
+  );
+  assertExactOrderedList(
+    entryRequired,
+    RELATION_READ_ENTRY_KEYS,
+    'docs/product/response-schema.json directRelationEntryObject.required',
+  );
+  assertExactOrderedList(
+    conditionsRequired,
+    RELATION_READ_CONDITIONS_KEYS,
+    'docs/product/response-schema.json directRelationEntryObject.conditions.required',
+  );
+  assertExactOrderedList(
+    statusRequired,
+    RELATION_READ_STATUS_KEYS,
+    'docs/product/response-schema.json directRelationEntryObject.status.required',
   );
 
   process.stdout.write('PASS direct_relation_type_schema_alignment\n');
@@ -222,13 +394,22 @@ function verifyExamples() {
     'relation_query',
     'relation_read example must stay a relation_query payload.',
   );
+  assertExactKeys(successExample, RELATION_READ_SUCCESS_KEYS, 'docs/product/examples/relation_read.json');
   assert.equal(Array.isArray(successExample.relation?.entries), true, 'relation_read example must include relation entries.');
+  assertExactKeys(successExample.relation, ['queryConcepts', 'entries'], 'docs/product/examples/relation_read.json relation object');
   successExample.relation.entries.forEach((entry) => {
     assert.equal(
       isDirectRelationReadExposedType(entry.type),
       true,
       `docs/product/examples/relation_read.json contains unsupported relation type "${entry.type}".`,
     );
+    assertExactKeys(entry, RELATION_READ_ENTRY_KEYS, 'docs/product/examples/relation_read.json relation entry');
+    assertExactKeys(entry.subject, RELATION_READ_ENDPOINT_KEYS, 'docs/product/examples/relation_read.json relation entry.subject');
+    assertExactKeys(entry.target, RELATION_READ_ENDPOINT_KEYS, 'docs/product/examples/relation_read.json relation entry.target');
+    assertExactKeys(entry.basis, RELATION_READ_BASIS_KEYS, 'docs/product/examples/relation_read.json relation entry.basis');
+    assertExactKeys(entry.conditions, RELATION_READ_CONDITIONS_KEYS, 'docs/product/examples/relation_read.json relation entry.conditions');
+    assertExactKeys(entry.effect, RELATION_READ_EFFECT_KEYS, 'docs/product/examples/relation_read.json relation entry.effect');
+    assertExactKeys(entry.status, RELATION_READ_STATUS_KEYS, 'docs/product/examples/relation_read.json relation entry.status');
   });
 
   assert.equal(refusalExample.type, 'no_exact_match', 'relation_read_refusal example must stay a refusal payload.');
@@ -237,6 +418,13 @@ function verifyExamples() {
     'relation_query',
     'relation_read_refusal example must stay in the admitted relation query shape.',
   );
+  assertExactKeys(refusalExample, RELATION_READ_REFUSAL_KEYS, 'docs/product/examples/relation_read_refusal.json');
+  assertExactKeys(
+    refusalExample.interpretation,
+    RELATION_READ_REFUSAL_INTERPRETATION_KEYS,
+    'docs/product/examples/relation_read_refusal.json interpretation',
+  );
+  assertExactKeys(refusalExample.resolution, ['method'], 'docs/product/examples/relation_read_refusal.json resolution');
   assert.equal(
     Object.prototype.hasOwnProperty.call(refusalExample, 'relation'),
     false,
@@ -244,6 +432,60 @@ function verifyExamples() {
   );
 
   process.stdout.write('PASS direct_relation_type_example_alignment\n');
+}
+
+function buildRelationReportWithRelations(baseReport, relations) {
+  return {
+    ...baseReport,
+    source: 'authored',
+    relationDataPresent: true,
+    fallbackUsed: false,
+    relations,
+  };
+}
+
+function resolveRelationQueryWithReport(relationReport, query = 'relation between authority and power') {
+  const mockedLoader = mock.method(
+    relationLoaderModule,
+    'loadAuthoredRelationPackets',
+    () => relationReport,
+  );
+
+  try {
+    const resolveConceptQuery = loadResolveConceptQueryFresh();
+    return resolveConceptQuery(query);
+  } finally {
+    mockedLoader.mock.restore();
+    delete require.cache[require.resolve(RESOLVER_MODULE)];
+  }
+}
+
+function verifyGoldenSnapshots() {
+  const successGolden = loadJson(successGoldenPath);
+  const refusalGolden = loadJson(refusalGoldenPath);
+  const authoredReport = relationLoaderModule.loadAuthoredRelationPackets({
+    requireAuthoredRelations: true,
+    allowFallback: false,
+  });
+  const reversedReport = buildRelationReportWithRelations(
+    authoredReport,
+    [...authoredReport.relations].reverse(),
+  );
+
+  assertRelationReadSuccessShape(successGolden);
+  assertRelationReadRefusalShape(refusalGolden, ['duty', 'power']);
+
+  const runtimeSuccess = loadResolveConceptQueryFresh()('relation between authority and power');
+  const runtimeRefusal = loadResolveConceptQueryFresh()('relation between duty and power');
+  const reversedRuntimeSuccess = resolveRelationQueryWithReport(reversedReport);
+
+  assertStableSnapshot(runtimeSuccess, successGolden, 'relation_read canonical success runtime');
+  assertStableSnapshot(reversedRuntimeSuccess, successGolden, 'relation_read canonical success reversed-order runtime');
+  assertStableSnapshot(runtimeRefusal, refusalGolden, 'relation_read canonical refusal runtime');
+  assertStableSnapshot(loadJson(successExamplePath), successGolden, 'docs/product/examples/relation_read.json');
+  assertStableSnapshot(loadJson(refusalExamplePath), refusalGolden, 'docs/product/examples/relation_read_refusal.json');
+
+  process.stdout.write('PASS direct_relation_type_golden_snapshot_alignment\n');
 }
 
 function main() {
@@ -254,6 +496,7 @@ function main() {
   verifyContractDoc();
   verifySchema();
   verifyExamples();
+  verifyGoldenSnapshots();
   process.stdout.write('Direct relation exposure drift verification passed.\n');
 }
 

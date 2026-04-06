@@ -1,0 +1,24 @@
+{
+  "query": "relation between duty and power",
+  "normalizedQuery": "relation between duty and power",
+  "contractVersion": "v1.7",
+  "normalizerVersion": "2026-04-01.v2",
+  "matcherVersion": "2026-04-01.v4",
+  "conceptSetVersion": "20260401.2",
+  "queryType": "relation_query",
+  "interpretation": {
+    "interpretationType": "relation_not_supported",
+    "relationTerm": "between",
+    "message": "No direct authored relation exists for the admitted pair in the current phase.",
+    "concepts": [
+      "duty",
+      "power"
+    ]
+  },
+  "type": "no_exact_match",
+  "resolution": {
+    "method": "no_exact_match"
+  },
+  "message": "No exact canonical concept match was found for this query.",
+  "suggestions": []
+}

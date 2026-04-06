@@ -22,6 +22,7 @@ const {
 } = require('./concept-loader');
 const { loadAuthoredRelationPackets } = require('./concept-relation-loader');
 const { isDirectRelationReadExposedType } = require('./direct-relation-read-types');
+const { normalizeDirectRelationEntries } = require('./direct-relation-read-order');
 const { getConceptRuntimeGovernanceState } = require('./concept-validation-state-loader');
 const { buildReadingRegistersForConcept } = require('./reading-registers');
 const { getConceptReviewState } = require('./concept-review-state-loader');
@@ -393,8 +394,9 @@ function resolveDirectRelationReadResponse(baseResponse, relationConcepts, relat
   const directRelations = authoredRelations.filter((relation) => (
     isDirectRelationPair(relation, queryConcepts[0], queryConcepts[1])
   ));
+  const normalizedDirectRelations = normalizeDirectRelationEntries(directRelations);
 
-  if (directRelations.length === 0) {
+  if (normalizedDirectRelations.length === 0) {
     return buildDirectRelationRefusalResponse(
       baseResponse,
       queryConcepts,
@@ -402,7 +404,7 @@ function resolveDirectRelationReadResponse(baseResponse, relationConcepts, relat
     );
   }
 
-  const nonExposedDirectRelations = directRelations.filter(
+  const nonExposedDirectRelations = normalizedDirectRelations.filter(
     (relation) => !isDirectRelationReadExposedType(relation.type),
   );
 
@@ -416,7 +418,7 @@ function resolveDirectRelationReadResponse(baseResponse, relationConcepts, relat
     );
   }
 
-  return buildDirectRelationReadResponse(baseResponse, queryConcepts, directRelations);
+  return buildDirectRelationReadResponse(baseResponse, queryConcepts, normalizedDirectRelations);
 }
 
 function finalizeResolvedResponse(response) {
