@@ -85,6 +85,7 @@ const RELATION_READ_REFUSAL_INTERPRETATION_KEYS = [
   'message',
   'concepts',
 ];
+const APPROVED_EQUIVALENT_DIRECT_RELATION_QUERY = 'the relation between authority and power';
 
 function loadJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, 'utf8'));
@@ -158,6 +159,11 @@ function assertStableSnapshot(actual, expected, label) {
     stringifySnapshot(expected),
     `${label} drifted from the canonical golden snapshot.`,
   );
+}
+
+function stripDirectRelationQueryFields(response) {
+  const { query, normalizedQuery, ...rest } = response;
+  return rest;
 }
 
 function assertRelationReadSuccessShape(response) {
@@ -245,21 +251,38 @@ function verifyExposureAllowlistSource() {
 }
 
 function verifyRuntimeBehavior() {
-  const response = loadResolveConceptQueryFresh()('relation between authority and power');
+  const canonicalResponse = loadResolveConceptQueryFresh()('relation between authority and power');
+  const equivalentResponse = loadResolveConceptQueryFresh()(APPROVED_EQUIVALENT_DIRECT_RELATION_QUERY);
 
-  assertRelationReadSuccessShape(response);
+  assertRelationReadSuccessShape(canonicalResponse);
+  assertRelationReadSuccessShape(equivalentResponse);
   assert.equal(
-    response.type,
+    canonicalResponse.type,
     'relation_read',
     'Direct relation runtime must continue to return relation_read for the admitted success case.',
   );
-  response.relation.entries.forEach((entry) => {
+  canonicalResponse.relation.entries.forEach((entry) => {
     assert.equal(
       isDirectRelationReadExposedType(entry.type),
       true,
       `Runtime direct relation output contains unexposed type "${entry.type}".`,
     );
   });
+  assert.equal(
+    equivalentResponse.query,
+    APPROVED_EQUIVALENT_DIRECT_RELATION_QUERY,
+    'Approved equivalent phrasing must preserve its exact query text.',
+  );
+  assert.equal(
+    equivalentResponse.normalizedQuery,
+    APPROVED_EQUIVALENT_DIRECT_RELATION_QUERY,
+    'Approved equivalent phrasing must keep the normalized query text stable.',
+  );
+  assert.deepEqual(
+    stripDirectRelationQueryFields(equivalentResponse),
+    stripDirectRelationQueryFields(canonicalResponse),
+    'Approved equivalent phrasing must reuse the same relation_read payload apart from query text.',
+  );
 
   process.stdout.write('PASS direct_relation_type_runtime_alignment\n');
 }
@@ -331,6 +354,7 @@ function verifyContractDoc() {
     'every emitted `conditions` object includes `when` and `unless`',
     'every emitted `status` object includes `active`, `blocking`, and `note`',
     'direct relation failures reuse the standard `no_exact_match` refusal shape and do not emit a partial `relation_read` payload',
+    'Approved equivalent phrasing in this phase: `the relation between <live concept id> and <live concept id>`',
   ].forEach((line) => {
     assert.ok(
       contractText.includes(line),
@@ -476,10 +500,17 @@ function verifyGoldenSnapshots() {
   assertRelationReadRefusalShape(refusalGolden, ['duty', 'power']);
 
   const runtimeSuccess = loadResolveConceptQueryFresh()('relation between authority and power');
+  const equivalentRuntimeSuccess = loadResolveConceptQueryFresh()(APPROVED_EQUIVALENT_DIRECT_RELATION_QUERY);
   const runtimeRefusal = loadResolveConceptQueryFresh()('relation between duty and power');
   const reversedRuntimeSuccess = resolveRelationQueryWithReport(reversedReport);
 
   assertStableSnapshot(runtimeSuccess, successGolden, 'relation_read canonical success runtime');
+  assertRelationReadSuccessShape(equivalentRuntimeSuccess);
+  assert.deepEqual(
+    stripDirectRelationQueryFields(equivalentRuntimeSuccess),
+    stripDirectRelationQueryFields(runtimeSuccess),
+    'relation_read approved equivalent runtime',
+  );
   assertStableSnapshot(reversedRuntimeSuccess, successGolden, 'relation_read canonical success reversed-order runtime');
   assertStableSnapshot(runtimeRefusal, refusalGolden, 'relation_read canonical refusal runtime');
   assertStableSnapshot(loadJson(successExamplePath), successGolden, 'docs/product/examples/relation_read.json');

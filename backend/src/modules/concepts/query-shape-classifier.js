@@ -17,7 +17,10 @@ const COMPARISON_KEYWORDS = Object.freeze([
   ' same as ',
 ]);
 
-const DIRECT_RELATION_READ_PREFIX = 'relation between ';
+const DIRECT_RELATION_READ_PREFIXES = Object.freeze([
+  'the relation between ',
+  'relation between ',
+]);
 const DIRECT_RELATION_READ_CONNECTOR = ' and ';
 
 const ROLE_PREFIXES = Object.freeze([
@@ -281,11 +284,15 @@ function detectComparison(normalizedQuery, mentionedConcepts) {
 }
 
 function detectRelation(normalizedQuery, mentionedConcepts) {
-  if (!normalizedQuery.startsWith(DIRECT_RELATION_READ_PREFIX)) {
+  const matchedPrefix = DIRECT_RELATION_READ_PREFIXES.find((prefix) => (
+    normalizedQuery.startsWith(prefix)
+  ));
+
+  if (!matchedPrefix) {
     return null;
   }
 
-  const relationTail = normalizedQuery.slice(DIRECT_RELATION_READ_PREFIX.length);
+  const relationTail = normalizedQuery.slice(matchedPrefix.length);
   const segments = relationTail
     .split(DIRECT_RELATION_READ_CONNECTOR)
     .map((segment) => segment.trim())

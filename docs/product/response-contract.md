@@ -494,6 +494,8 @@ Phase law:
 - two-concept-only
 - direct authored relation only
 
+Approved equivalent phrasing in this phase: `the relation between <live concept id> and <live concept id>`
+
 Golden success example:
 
 - [docs/product/examples/relation_read.json](./examples/relation_read.json)

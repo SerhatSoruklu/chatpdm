@@ -10,7 +10,7 @@ This is an audit artifact, not a capability document. It maps what is enforced, 
 
 | Surface | Location | Status | Notes |
 | --- | --- | --- | --- |
-| Admission point | `backend/src/modules/concepts/query-shape-classifier.js`, `backend/src/modules/concepts/resolver.js` | authoritative, enforced, verifier-backed | Admits only the narrow `relation_query` shape for `relation between <live concept> and <live concept>` and rejects traversal, chaining, inference, explanation, discovery, and more-than-two-concept wording. |
+| Admission point | `backend/src/modules/concepts/query-shape-classifier.js`, `backend/src/modules/concepts/resolver.js` | authoritative, enforced, verifier-backed | Admits the narrow `relation_query` shape for `relation between <live concept> and <live concept>` plus the approved equivalent phrasing `the relation between <live concept> and <live concept>`, and rejects traversal, chaining, inference, explanation, discovery, and more-than-two-concept wording. |
 | Resolver path | `backend/src/modules/concepts/resolver.js` | authoritative, enforced | `resolveDirectRelationReadResponse()` returns either `relation_read` or an honest refusal. There is no partial relation answer path. |
 | Exposure authority | `backend/src/modules/concepts/direct-relation-read-types.js` | authoritative, enforced, verifier-backed | `DIRECT_RELATION_READ_EXPOSED_TYPES` is the single public exposure allowlist for the direct relation surface. |
 | Ordering normalization | `backend/src/modules/concepts/direct-relation-read-order.js`, `backend/src/modules/concepts/resolver.js` | authoritative, enforced, verifier-backed | Relation entries are normalized by canonical direct-relation type priority and stable authored-field tie-breakers while preserving authored subject/target direction. |
@@ -26,7 +26,7 @@ This is an audit artifact, not a capability document. It maps what is enforced, 
 
 The surface is locally coherent around these guarantees:
 
-- one admitted direct relation query shape
+- one direct relation query shape with one approved equivalent phrasing
 - one direct read path over authored relation data
 - one public exposure allowlist
 - one deterministic ordering rule
@@ -49,4 +49,3 @@ The direct relation surface is locally coherent:
 - refusals are explicit and structurally stable
 - no relation traversal, chaining, explanation, or discovery behavior is present
 - the surface is frozen enough to audit without pretending it is broader than it is
-

@@ -252,6 +252,36 @@ test('direct relation read queries return authored direct relation entries', () 
   );
 });
 
+test('direct relation read queries admit the approved equivalent phrasing', () => {
+  const resolveConceptQuery = loadResolveConceptQueryFresh();
+  const response = resolveConceptQuery('the relation between authority and power');
+
+  assertRelationReadSuccessShape(response);
+  assert.equal(response.query, 'the relation between authority and power');
+  assert.equal(response.normalizedQuery, 'the relation between authority and power');
+  assert.equal(response.queryType, 'relation_query');
+  assert.equal(response.type, 'relation_read');
+  assert.equal(deriveRuntimeResolutionStateFromResponse(response), 'allowed');
+  assert.equal(response.interpretation, null);
+  assert.equal(response.resolution.method, 'authored_direct_relation');
+  assert.deepEqual(
+    response.relation.entries.map((entry) => entry.type),
+    ['REQUIRES_AUTHORITY', 'DOES_NOT_IMPLY'],
+  );
+  assert.deepEqual(
+    response.relation.entries.map((entry) => entry.basis.kind),
+    ['scope_rule', 'boundary_rule'],
+  );
+  assert.deepEqual(
+    response.relation.entries.map((entry) => entry.subject.conceptId),
+    ['power', 'power'],
+  );
+  assert.deepEqual(
+    response.relation.entries.map((entry) => entry.target.conceptId),
+    ['authority', 'authority'],
+  );
+});
+
 test('direct relation read entries normalize to a stable canonical order regardless of packet order', () => {
   const authoredReport = loadAuthoredRelationPackets({
     requireAuthoredRelations: true,
