@@ -73,3 +73,11 @@ Every concept-facing PR should make it obvious:
 - which concepts are affected
 - whether meaning moved or only wording moved
 - whether register separation improved, weakened, or stayed stable
+
+## README Fixes
+
+When editing `README.md` or other public Markdown docs:
+
+- use real headings for section labels
+- do not use bold or emphasis text as a heading surrogate
+- keep heading structure MD036-safe so the README stays lint-clean
