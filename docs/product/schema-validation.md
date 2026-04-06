@@ -128,6 +128,8 @@ Use them to:
 
 The approved output commitments live under `tests/golden/fixtures/`.
 
+Some phase-specific surfaces, such as the direct relation read surface, also use dedicated verifiers that compare canonical runtime output against approved golden snapshots.
+
 Use golden fixtures to:
 
 - lock approved outputs for named scenarios

@@ -67,6 +67,7 @@ Array order is part of the contract for:
 - `answer.contexts`
 - `answer.sources`
 - `answer.relatedConcepts`
+- `relation.entries`
 - `suggestions`
 - `candidates`
 
@@ -83,6 +84,8 @@ python chatpdm/tests/golden/golden_test_runner.py
 The runner currently validates every golden fixture against `docs/product/response-schema.json`.
 
 It does not compare runtime output yet. That comes later.
+
+Some phase-specific surfaces, such as the direct relation read surface, also use dedicated verifiers that compare canonical runtime output against approved golden snapshots.
 
 ## Relationship To Docs Examples
 
