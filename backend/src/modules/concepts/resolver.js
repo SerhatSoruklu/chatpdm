@@ -42,6 +42,9 @@ const { classifyVocabularySurface } = require('../../vocabulary/vocabulary-servi
 const {
   buildCoreConceptResponsePayload,
 } = require('../inspectable-item-contract');
+const {
+  normalizeChatPdmInput,
+} = require('../../normalization/normalization.pipeline.ts');
 
 function buildContextPayload(context) {
   const appliesTo = Array.isArray(context.appliesTo) && context.appliesTo.length > 0
@@ -490,7 +493,24 @@ function resolveConceptQuery(rawQuery) {
     throw new TypeError('Expected query to be a non-empty string.');
   }
 
-  const preResolutionGuard = evaluatePreResolutionGuard(rawQuery);
+  const normalization = normalizeChatPdmInput(rawQuery);
+
+  if (normalization.status === 'refused') {
+    const response = buildInvalidQueryResponse(
+      buildBaseResponse(rawQuery, rawQuery, {
+        queryType: 'invalid_query',
+        interpretation: {
+          interpretationType: 'invalid_query',
+          message: INVALID_QUERY_MESSAGE,
+        },
+      }),
+    );
+
+    return finalizeResolvedResponse(response);
+  }
+
+  const pipelineQuery = normalization.canonicalText;
+  const preResolutionGuard = evaluatePreResolutionGuard(pipelineQuery);
   const normalizedQuery = preResolutionGuard.normalizedQuery;
   const routingQuery = preResolutionGuard.routingQuery;
   const canonicalId = preResolutionGuard.canonicalId;
@@ -544,13 +564,13 @@ function resolveConceptQuery(rawQuery) {
   const resolveRules = loadResolveRules();
   const conceptIndex = new Map(concepts.map((concept) => [concept.conceptId, concept]));
   const match = matchQuery({
-    rawQuery,
+    rawQuery: pipelineQuery,
     normalizedQuery,
     concepts,
     resolveRules,
   });
   const queryClassification = classifyQueryShape({
-    rawQuery,
+    rawQuery: pipelineQuery,
     normalizedQuery,
     concepts,
     resolveRules,
