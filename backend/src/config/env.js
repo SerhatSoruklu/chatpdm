@@ -21,14 +21,6 @@ function parseOrigins(value, fallbackValues) {
   return [...new Set(values.length ? values : fallbackValues.map(normalizeUrl))];
 }
 
-function parseBoolean(value, fallbackValue = false) {
-  if (typeof value !== 'string') {
-    return fallbackValue;
-  }
-
-  return ['1', 'true', 'yes', 'on'].includes(value.toLowerCase());
-}
-
 function parseTrustProxy(value, fallbackValue) {
   if (value === undefined || value === null || String(value).trim() === '') {
     return fallbackValue;
@@ -99,5 +91,4 @@ module.exports = {
   frontendOrigins,
   apiOrigin: normalizeUrl(process.env.API_ORIGIN || defaultApiOrigin),
   trustProxy: parseTrustProxy(process.env.TRUST_PROXY, isProduction ? 1 : false),
-  enableCompression: parseBoolean(process.env.ENABLE_COMPRESSION, true),
 };
