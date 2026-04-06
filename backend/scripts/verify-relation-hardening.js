@@ -50,7 +50,7 @@ function withTemporaryArtifact(mutator, callback) {
   }
 }
 
-function verifyFallbackWarningInCompatibleMode() {
+function verifyMissingRelationPacketsRemainUnavailableInCompatibleMode() {
   withCopiedRelationPackets((directory) => {
     fs.rmSync(path.join(directory, 'power.json'));
 
@@ -60,14 +60,20 @@ function verifyFallbackWarningInCompatibleMode() {
     });
 
     assert.equal(report.strictMode, false, 'compatible mode should not enable strict relation requirements.');
-    assert.equal(report.source, 'fallback', 'compatible mode should report fallback source when a packet is missing.');
-    assert.equal(report.fallbackUsed, true, 'compatible mode should report fallback usage.');
-    assert.equal(report.failures.length, 0, 'compatible mode should not fail on missing relation packets.');
+    assert.equal(report.source, 'unavailable', 'compatible mode should report unavailable source when a packet is missing.');
+    assert.equal(report.dataSource, 'none', 'compatible mode should not claim authored data source when a packet is missing.');
+    assert.equal(report.relationDataPresent, false, 'compatible mode should not report relation data present when a packet is missing.');
+    assert.equal(report.fallbackUsed, false, 'compatible mode should not report fallback usage when fallback seeding is not surfaced.');
+    assert.equal(report.passed, false, 'compatible mode should not pass on missing relation packets.');
     assert(report.warnings.some((entry) => entry.code === REASON_CODES.RELATION_PACKET_MISSING), 'missing packet warning not emitted in compatible mode.');
-    assert(report.warnings.some((entry) => entry.code === REASON_CODES.RELATION_FALLBACK_USED), 'fallback warning not emitted in compatible mode.');
+    assert.equal(
+      report.warnings.some((entry) => entry.code === REASON_CODES.RELATION_FALLBACK_USED),
+      false,
+      'fallback warning should not be emitted in compatible mode when fallback is not surfaced.',
+    );
   });
 
-  process.stdout.write('PASS relation_fallback_warning_compatible_mode\n');
+  process.stdout.write('PASS relation_missing_packets_remain_unavailable_compatible_mode\n');
 }
 
 function verifyStrictModeRequiresAuthoredRelations() {
@@ -80,8 +86,11 @@ function verifyStrictModeRequiresAuthoredRelations() {
     });
 
     assert.equal(report.strictMode, true, 'strict mode should enable authored relation requirements.');
-    assert.equal(report.source, 'authored', 'strict mode should preserve authored source semantics.');
+    assert.equal(report.source, 'unavailable', 'strict mode should report unavailable source when authored packets are missing.');
+    assert.equal(report.dataSource, 'none', 'strict mode should not claim authored data source when packets are missing.');
+    assert.equal(report.relationDataPresent, false, 'strict mode should not report relation data present when packets are missing.');
     assert.equal(report.fallbackUsed, false, 'strict mode must not claim fallback usage when fallback is disabled.');
+    assert.equal(report.passed, false, 'strict mode should not pass when authored packets are missing.');
     assert(report.failures.some((entry) => entry.code === REASON_CODES.RELATION_REQUIRED_MISSING_STRICT), 'strict mode missing-packet failure not emitted.');
   });
 
@@ -244,7 +253,7 @@ function verifyBlockedConceptIsRefusedAtRuntime() {
 }
 
 function main() {
-  verifyFallbackWarningInCompatibleMode();
+  verifyMissingRelationPacketsRemainUnavailableInCompatibleMode();
   verifyStrictModeRequiresAuthoredRelations();
   verifyMalformedRelationPacketFailsDeterministically();
   verifyConflictingRelationsFailDeterministically();

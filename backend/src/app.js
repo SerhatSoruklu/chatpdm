@@ -1,11 +1,9 @@
 'use strict';
 
 const express = require('express');
-const cors = require('cors');
-const compression = require('compression');
 const helmet = require('helmet');
 const env = require('./config/env');
-const { createCorsOptions } = require('./security/cors');
+const { createCorsMiddleware } = require('./security/cors');
 const healthRoute = require('./routes/health.route');
 const apiRoutes = require('./routes/api');
 
@@ -15,12 +13,7 @@ app.disable('x-powered-by');
 app.set('trust proxy', env.trustProxy);
 
 app.use(helmet());
-
-if (env.enableCompression) {
-  app.use(compression({ threshold: 1024 }));
-}
-
-app.use(cors(createCorsOptions(env.frontendOrigins)));
+app.use(createCorsMiddleware(env.frontendOrigins));
 app.use(express.json({ limit: '5mb' }));
 app.use(express.urlencoded({ extended: true, limit: '5mb' }));
 
