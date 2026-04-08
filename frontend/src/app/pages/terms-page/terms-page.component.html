@@ -107,6 +107,75 @@
         </div>
       </section>
 
+      <section class="pdm-terms-page__section" aria-labelledby="pdm-rmg-api-title">
+        <h2 class="pdm-terms-page__section-title" id="pdm-rmg-api-title">
+          {{ viewModel().riskMappingTitle }}
+        </h2>
+        <p class="pdm-terms-page__intro">
+          {{ viewModel().riskMappingIntro }}
+        </p>
+
+        <div class="pdm-terms-page__subsection">
+          <h3 class="pdm-terms-page__subsection-title">Risk Mapping endpoints</h3>
+          <div class="pdm-terms-page__table-wrap">
+            <table class="pdm-terms-page__table">
+              <thead>
+                <tr>
+                  <th>Operation</th>
+                  <th>Method</th>
+                  <th>Path</th>
+                  <th>Input</th>
+                  <th>Evidence</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (row of viewModel().riskMappingEndpointRows; track row.claimId) {
+                  <tr>
+                    <td>{{ row.operation }}</td>
+                    <td class="pdm-terms-page__mono-cell pdm-mono">{{ row.method }}</td>
+                    <td class="pdm-terms-page__mono-cell pdm-mono">{{ row.path }}</td>
+                    <td>{{ row.input }}</td>
+                    <td class="pdm-terms-page__evidence pdm-mono">{{ row.evidence }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="pdm-terms-page__subsection">
+          <h3 class="pdm-terms-page__subsection-title">Risk Mapping request fields</h3>
+          <div class="pdm-terms-page__table-wrap">
+            <table class="pdm-terms-page__table">
+              <thead>
+                <tr>
+                  <th>Field</th>
+                  <th>Rule</th>
+                  <th>Condition</th>
+                  <th>Evidence</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (row of viewModel().riskMappingFieldRows; track row.claimId) {
+                  <tr>
+                    <td class="pdm-terms-page__mono-cell pdm-mono">{{ row.field }}</td>
+                    <td>{{ row.rule }}</td>
+                    <td>{{ row.condition }}</td>
+                    <td class="pdm-terms-page__evidence pdm-mono">{{ row.evidence }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="pdm-terms-page__actions">
+          <a class="pdm-terms-page__inspect-link" [routerLink]="viewModel().riskMappingTrustRoute">
+            Open RMG trust page
+          </a>
+        </div>
+      </section>
+
       <section class="pdm-terms-page__section">
         <h2 class="pdm-terms-page__section-title">Platform rules</h2>
         <div class="pdm-terms-page__table-wrap">

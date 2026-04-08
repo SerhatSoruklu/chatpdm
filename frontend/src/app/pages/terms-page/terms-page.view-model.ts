@@ -56,6 +56,11 @@ export interface TermsPageViewModel {
   platformRuleRows: readonly TermsPageRuleRow[];
   runtimeBoundaryRows: readonly TermsPageBoundaryRow[];
   refusalBoundaryRows: readonly TermsPageBoundaryRow[];
+  riskMappingTitle: string;
+  riskMappingIntro: string;
+  riskMappingEndpointRows: readonly TermsPageEndpointRow[];
+  riskMappingFieldRows: readonly TermsPageFieldRow[];
+  riskMappingTrustRoute: string;
   inspectRoute: string;
 }
 
@@ -70,6 +75,81 @@ export function buildTermsPageViewModel(surface: PolicySurfaceDefinition): Terms
 
   const { endpointContracts, fieldContracts, platformRules, runtimeBoundaries, refusalBoundaries } =
     surface.termsTruth;
+  const riskMappingEndpointRows = [
+    {
+      claimId: 'rmg-api-1',
+      operation: 'resolve surface',
+      method: 'GET',
+      path: '/api/v1/risk-mapping/resolve',
+      input: 'query: entity, timeHorizon, scenarioType, domain, scope, evidenceSetVersion',
+      evidence: 'backend/src/routes/api/v1/risk-mapping.route.js:97-100',
+    },
+    {
+      claimId: 'rmg-api-2',
+      operation: 'explain surface',
+      method: 'GET',
+      path: '/api/v1/risk-mapping/explain',
+      input: 'query: entity, timeHorizon, scenarioType, domain, scope, evidenceSetVersion, queryText',
+      evidence: 'backend/src/routes/api/v1/risk-mapping.route.js:67-70',
+    },
+    {
+      claimId: 'rmg-api-3',
+      operation: 'audit surface',
+      method: 'GET',
+      path: '/api/v1/risk-mapping/audit',
+      input: 'query: entity, timeHorizon, scenarioType, domain, scope, evidenceSetVersion, queryText',
+      evidence: 'backend/src/routes/api/v1/risk-mapping.route.js:82-85',
+    },
+    {
+      claimId: 'rmg-api-4',
+      operation: 'node registry',
+      method: 'GET',
+      path: '/api/v1/risk-mapping/registries/nodes',
+      input: 'query: domain',
+      evidence: 'backend/src/routes/api/v1/risk-mapping.route.js:158-160',
+    },
+    {
+      claimId: 'rmg-api-5',
+      operation: 'threat registry',
+      method: 'GET',
+      path: '/api/v1/risk-mapping/registries/threats',
+      input: 'query: domain',
+      evidence: 'backend/src/routes/api/v1/risk-mapping.route.js:162-164',
+    },
+    {
+      claimId: 'rmg-api-6',
+      operation: 'compatibility registry',
+      method: 'GET',
+      path: '/api/v1/risk-mapping/registries/compatibility',
+      input: 'query: domain',
+      evidence: 'backend/src/routes/api/v1/risk-mapping.route.js:166-168',
+    },
+    {
+      claimId: 'rmg-api-7',
+      operation: 'falsifier registry',
+      method: 'GET',
+      path: '/api/v1/risk-mapping/registries/falsifiers',
+      input: 'query: domain',
+      evidence: 'backend/src/routes/api/v1/risk-mapping.route.js:170-172',
+    },
+  ] satisfies readonly TermsPageEndpointRow[];
+
+  const riskMappingFieldRows = [
+    {
+      claimId: 'rmg-field-1',
+      field: 'entity',
+      rule: 'accepted field',
+      condition: 'authoritative evidence-pack lookup key',
+      evidence: 'backend/src/modules/risk-mapping/contracts/riskMapQueryContract.js',
+    },
+    {
+      claimId: 'rmg-field-2',
+      field: 'queryText',
+      rule: 'accepted field',
+      condition: 'optional framing channel; classification only',
+      evidence: 'backend/src/modules/risk-mapping/contracts/riskMapQueryContract.js',
+    },
+  ] satisfies readonly TermsPageFieldRow[];
 
   return {
     eyebrow: 'API Reference',
@@ -105,6 +185,12 @@ export function buildTermsPageViewModel(surface: PolicySurfaceDefinition): Terms
     platformRuleRows: platformRules.map(buildPlatformRuleRow),
     runtimeBoundaryRows: runtimeBoundaries.map(buildRuntimeBoundaryRow),
     refusalBoundaryRows: refusalBoundaries.map(buildRefusalBoundaryRow),
+    riskMappingTitle: 'Risk Mapping Governance API',
+    riskMappingIntro:
+      'Risk Mapping Governance is exposed separately as a bounded API surface. The entity stays authoritative for evidence-pack lookup, while queryText is optional and used only for classification and framing detection.',
+    riskMappingEndpointRows,
+    riskMappingFieldRows,
+    riskMappingTrustRoute: '/risk-mapping-governance',
     inspectRoute: surface.route,
   };
 }
