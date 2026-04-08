@@ -46,6 +46,14 @@ function buildDetectionText(query) {
     .toLowerCase();
 }
 
+function buildFramingText(query) {
+  if (typeof query.queryText === 'string' && query.queryText.trim().length > 0) {
+    return query.queryText.trim().toLowerCase();
+  }
+
+  return buildDetectionText(query);
+}
+
 /**
  * @typedef {import('../contracts/riskMapQueryContract').RiskMapQuery} RiskMapQuery
  */
@@ -63,7 +71,7 @@ function buildDetectionText(query) {
  * }}
  */
 function classifyRiskMapQueryShape(query) {
-  const normalizedText = buildDetectionText(query);
+  const normalizedText = buildFramingText(query);
   const detectedDomain = query.domain === ORGANIZATION_RISK ? ORGANIZATION_RISK : null;
 
   let detectedScenarioType = null;

@@ -270,11 +270,9 @@ test('broad collapse framing narrows instead of admitting broad collapse', () =>
     domain: DOMAIN_ID,
     scope: ['regulatory', 'supply_chain'],
     evidenceSetVersion: EVIDENCE_SET_VERSION,
+    queryText: 'apple downfall in 5 years',
   });
-  const classification = classifyRiskMapQueryShape({
-    ...normalizedQuery,
-    entity: 'apple downfall',
-  });
+  const classification = classifyRiskMapQueryShape(normalizedQuery);
   const evidenceCoverageReport = buildEvidenceCoverageReport({
     normalizedQuery,
     registryIndex: bundle.registryIndex,

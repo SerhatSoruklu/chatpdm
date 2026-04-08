@@ -10,6 +10,7 @@ const { INVALID_INPUT_CONTRACT } = require('../constants/rmgReasonCodes');
  * @property {string} domain
  * @property {string[]} scope
  * @property {string} evidenceSetVersion
+ * @property {string} [queryText]
  */
 
 /**
@@ -44,10 +45,17 @@ function validateRiskMapQueryContract(value) {
 
   const query = /** @type {Record<string, unknown>} */ (value);
   const requiredStringFields = ['entity', 'timeHorizon', 'scenarioType', 'domain', 'evidenceSetVersion'];
+  const optionalStringFields = ['queryText'];
 
   for (const field of requiredStringFields) {
     if (!isNonEmptyTrimmedString(query[field])) {
       errors.push(`${field} must be a non-empty string.`);
+    }
+  }
+
+  for (const field of optionalStringFields) {
+    if (query[field] !== undefined && !isNonEmptyTrimmedString(query[field])) {
+      errors.push(`${field} must be a non-empty string when provided.`);
     }
   }
 
@@ -69,4 +77,3 @@ function validateRiskMapQueryContract(value) {
 module.exports = Object.freeze({
   validateRiskMapQueryContract,
 });
-
