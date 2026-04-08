@@ -1,0 +1,45 @@
+{
+  "domainId": "organization_risk",
+  "version": "v1",
+  "entries": [
+    {
+      "id": "demand_erosion",
+      "domainId": "organization_risk",
+      "label": "Demand erosion",
+      "description": "Reduced demand for a core product or service line.",
+      "targetScopes": [
+        "revenue_concentration"
+      ]
+    },
+    {
+      "id": "platform_control_weakening",
+      "domainId": "organization_risk",
+      "label": "Platform control weakening",
+      "description": "Loss of control over platform rules, distribution, or ecosystem terms.",
+      "targetScopes": [
+        "platform_dependency",
+        "regulatory"
+      ]
+    },
+    {
+      "id": "regulatory_pressure",
+      "domainId": "organization_risk",
+      "label": "Regulatory pressure",
+      "description": "Policy or legal pressure that increases operational constraints.",
+      "targetScopes": [
+        "regulatory",
+        "platform_dependency"
+      ]
+    },
+    {
+      "id": "supply_chain_disruption",
+      "domainId": "organization_risk",
+      "label": "Supply chain disruption",
+      "description": "Operational disruption affecting manufacturing or logistics.",
+      "targetScopes": [
+        "supply_chain"
+      ]
+    }
+  ]
+}
+

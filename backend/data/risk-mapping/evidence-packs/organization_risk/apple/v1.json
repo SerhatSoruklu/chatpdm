@@ -1,0 +1,97 @@
+{
+  "domainId": "organization_risk",
+  "version": "v1",
+  "entity": "apple",
+  "evidenceSetVersion": "v1",
+  "records": [
+    {
+      "id": "apple-node-app-store-regulatory-exposure-1",
+      "domainId": "organization_risk",
+      "entity": "apple",
+      "evidenceClass": "regulatory_action",
+      "targetType": "node",
+      "targetId": "app_store_regulatory_exposure",
+      "summary": "Public regulatory pressure and policy scrutiny affect platform rules.",
+      "sourceLabel": "Seeded authored evidence",
+      "supportLevel": "direct"
+    },
+    {
+      "id": "apple-node-china-supply-chain-exposure-1",
+      "domainId": "organization_risk",
+      "entity": "apple",
+      "evidenceClass": "supply_chain_report",
+      "targetType": "node",
+      "targetId": "china_supply_chain_exposure",
+      "summary": "Manufacturing concentration creates supply chain exposure in one region.",
+      "sourceLabel": "Seeded authored evidence",
+      "supportLevel": "direct"
+    },
+    {
+      "id": "apple-node-iphone-revenue-concentration-1",
+      "domainId": "organization_risk",
+      "entity": "apple",
+      "evidenceClass": "market_report",
+      "targetType": "node",
+      "targetId": "iphone_revenue_concentration",
+      "summary": "Revenue remains concentrated in a major product line.",
+      "sourceLabel": "Seeded authored evidence",
+      "supportLevel": "contextual"
+    },
+    {
+      "id": "apple-node-platform-dependency-exposure-1",
+      "domainId": "organization_risk",
+      "entity": "apple",
+      "evidenceClass": "company_statement",
+      "targetType": "node",
+      "targetId": "platform_dependency_exposure",
+      "summary": "Distribution and ecosystem dependency remain visible in the platform layer.",
+      "sourceLabel": "Seeded authored evidence",
+      "supportLevel": "contextual"
+    },
+    {
+      "id": "apple-threat-regulatory-pressure-1",
+      "domainId": "organization_risk",
+      "entity": "apple",
+      "evidenceClass": "regulatory_action",
+      "targetType": "threat",
+      "targetId": "regulatory_pressure",
+      "summary": "Regulatory scrutiny can tighten rules around platform behavior.",
+      "sourceLabel": "Seeded authored evidence",
+      "supportLevel": "direct"
+    },
+    {
+      "id": "apple-threat-supply-chain-disruption-1",
+      "domainId": "organization_risk",
+      "entity": "apple",
+      "evidenceClass": "supply_chain_report",
+      "targetType": "threat",
+      "targetId": "supply_chain_disruption",
+      "summary": "Regional manufacturing dependence can be disrupted by logistics or production changes.",
+      "sourceLabel": "Seeded authored evidence",
+      "supportLevel": "direct"
+    },
+    {
+      "id": "apple-threat-demand-erosion-1",
+      "domainId": "organization_risk",
+      "entity": "apple",
+      "evidenceClass": "market_report",
+      "targetType": "threat",
+      "targetId": "demand_erosion",
+      "summary": "Core product demand can weaken gradually as replacement cycles extend.",
+      "sourceLabel": "Seeded authored evidence",
+      "supportLevel": "contextual"
+    },
+    {
+      "id": "apple-threat-platform-control-weakening-1",
+      "domainId": "organization_risk",
+      "entity": "apple",
+      "evidenceClass": "company_statement",
+      "targetType": "threat",
+      "targetId": "platform_control_weakening",
+      "summary": "Platform control can weaken when distribution terms or ecosystem rules change.",
+      "sourceLabel": "Seeded authored evidence",
+      "supportLevel": "contextual"
+    }
+  ]
+}
+

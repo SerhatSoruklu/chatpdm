@@ -1,0 +1,45 @@
+{
+  "domainId": "organization_risk",
+  "version": "v1",
+  "entries": [
+    {
+      "id": "dependency_reduction",
+      "domainId": "organization_risk",
+      "label": "Dependency reduction",
+      "description": "Material reduction in dependency concentration or single-point exposure.",
+      "applicableNodeIds": [
+        "iphone_revenue_concentration",
+        "platform_dependency_exposure"
+      ]
+    },
+    {
+      "id": "new_category_growth_offset",
+      "domainId": "organization_risk",
+      "label": "New category growth offset",
+      "description": "New category growth offsetting concentration risk in an existing line.",
+      "applicableNodeIds": [
+        "iphone_revenue_concentration"
+      ]
+    },
+    {
+      "id": "regulatory_risk_resolution",
+      "domainId": "organization_risk",
+      "label": "Regulatory risk resolution",
+      "description": "Material reduction in active regulatory pressure.",
+      "applicableNodeIds": [
+        "app_store_regulatory_exposure",
+        "platform_dependency_exposure"
+      ]
+    },
+    {
+      "id": "successful_geographic_supply_diversification",
+      "domainId": "organization_risk",
+      "label": "Successful geographic supply diversification",
+      "description": "Production and supply dependencies diversified across more than one region.",
+      "applicableNodeIds": [
+        "china_supply_chain_exposure"
+      ]
+    }
+  ]
+}
+

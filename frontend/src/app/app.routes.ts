@@ -5,6 +5,7 @@ import { HowItWorksPageComponent } from './pages/how-it-works-page/how-it-works-
 import { InspectIndexPageComponent } from './pages/inspect-index-page/inspect-index-page.component';
 import { LandingPageComponent } from './pages/landing/landing-page.component';
 import { LiveConceptsPageComponent } from './pages/live-concepts-page/live-concepts-page.component';
+import { RiskMappingGovernancePageComponent } from './pages/risk-mapping-governance-page/risk-mapping-governance-page.component';
 import { PolicyPageComponent } from './pages/policy-page/policy-page.component';
 import { PublicPageComponent } from './pages/public-page/public-page.component';
 import { ZeroglareComponent } from './zeroglare/zeroglare.component';
@@ -76,6 +77,11 @@ export const routes: Routes = [
     path: 'how-it-works',
     component: HowItWorksPageComponent,
     data: seoRouteData('static.how-it-works'),
+  },
+  {
+    path: 'risk-mapping-governance',
+    component: RiskMappingGovernancePageComponent,
+    data: seoRouteData('static.risk-mapping-governance'),
   },
   {
     path: 'vision',

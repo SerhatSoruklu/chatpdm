@@ -1,0 +1,53 @@
+{
+  "domainId": "organization_risk",
+  "version": "v1",
+  "entries": [
+    {
+      "id": "app_store_regulatory_exposure",
+      "domainId": "organization_risk",
+      "entityType": "company",
+      "scope": "regulatory",
+      "label": "App store regulatory exposure",
+      "description": "Exposure to platform regulation and policy shifts.",
+      "supportedThreatIds": [
+        "regulatory_pressure",
+        "platform_control_weakening"
+      ]
+    },
+    {
+      "id": "china_supply_chain_exposure",
+      "domainId": "organization_risk",
+      "entityType": "company",
+      "scope": "supply_chain",
+      "label": "China supply chain exposure",
+      "description": "Exposure to manufacturing concentration and regional disruption.",
+      "supportedThreatIds": [
+        "supply_chain_disruption"
+      ]
+    },
+    {
+      "id": "iphone_revenue_concentration",
+      "domainId": "organization_risk",
+      "entityType": "company",
+      "scope": "revenue_concentration",
+      "label": "iPhone revenue concentration",
+      "description": "Revenue dependency concentrated in a major product line.",
+      "supportedThreatIds": [
+        "demand_erosion"
+      ]
+    },
+    {
+      "id": "platform_dependency_exposure",
+      "domainId": "organization_risk",
+      "entityType": "company",
+      "scope": "platform_dependency",
+      "label": "Platform dependency exposure",
+      "description": "Exposure to dependency on external platform rules and distribution channels.",
+      "supportedThreatIds": [
+        "platform_control_weakening",
+        "regulatory_pressure"
+      ]
+    }
+  ]
+}
+

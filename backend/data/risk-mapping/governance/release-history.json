@@ -1,0 +1,14 @@
+{
+  "domainId": "organization_risk",
+  "currentReleaseId": "organization_risk__apple__v1",
+  "events": [
+    {
+      "eventId": "organization_risk__apple__v1_activated",
+      "releaseId": "organization_risk__apple__v1",
+      "eventType": "activated",
+      "status": "active",
+      "changedAt": "2026-04-08T16:04:19.099Z",
+      "notes": "Initial seeded active release."
+    }
+  ]
+}

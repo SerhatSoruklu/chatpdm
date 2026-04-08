@@ -1,0 +1,475 @@
+:host {
+  display: block;
+}
+
+.pdm-rmg {
+  min-height: 100%;
+}
+
+.pdm-rmg__main {
+  justify-content: center;
+  padding: 28px 18px 56px;
+}
+
+.pdm-rmg__frame {
+  display: grid;
+  gap: 18px;
+}
+
+.pdm-rmg__hero,
+.pdm-rmg__section,
+.pdm-rmg__closing {
+  position: relative;
+  border-radius: 30px;
+}
+
+.pdm-rmg__hero {
+  overflow: hidden;
+}
+
+.pdm-rmg__hero::after {
+  content: '';
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle at top left, rgba(37, 99, 235, 0.11), transparent 68%);
+  pointer-events: none;
+}
+
+.pdm-rmg__eyebrow,
+.pdm-rmg__section-label,
+.pdm-rmg__hero-card-label,
+.pdm-rmg__step-label,
+.pdm-rmg__micro-label,
+.pdm-rmg__endpoint-label {
+  margin: 0;
+  color: #2563eb;
+  font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pdm-rmg__title,
+.pdm-rmg__section-title,
+.pdm-rmg__hero-card-title,
+.pdm-rmg__card-title,
+.pdm-rmg__step-title,
+.pdm-rmg__closing-line {
+  margin: 0;
+  color: #0f172a;
+  letter-spacing: -0.04em;
+}
+
+.pdm-rmg__title {
+  max-width: 14ch;
+  margin-top: 12px;
+  font-size: clamp(2.7rem, 6vw, 4.5rem);
+  font-weight: 700;
+  line-height: 0.94;
+}
+
+.pdm-rmg__subtitle,
+.pdm-rmg__support-line,
+.pdm-rmg__section-copy,
+.pdm-rmg__card-copy,
+.pdm-rmg__step-copy,
+.pdm-rmg__closing-copy,
+.pdm-rmg__example-note,
+.pdm-rmg__diagram-caption,
+.pdm-rmg__list {
+  color: #475569;
+  line-height: 1.72;
+}
+
+.pdm-rmg__subtitle {
+  max-width: 43rem;
+  margin: 18px 0 0;
+  font-size: clamp(1.04rem, 1.5vw, 1.18rem);
+}
+
+.pdm-rmg__support-line {
+  max-width: 42rem;
+  margin: 14px 0 0;
+  color: #1f2937;
+  font-size: clamp(1rem, 1.4vw, 1.08rem);
+  font-weight: 600;
+}
+
+.pdm-rmg__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.pdm-rmg__action-link,
+.pdm-rmg__audit-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.8rem;
+  padding: 0.72rem 1rem;
+  border: 1px solid rgba(37, 99, 235, 0.18);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.78);
+  color: #0f172a;
+  font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  transition:
+    border-color 140ms ease,
+    transform 140ms ease,
+    background-color 140ms ease;
+}
+
+.pdm-rmg__action-link:hover,
+.pdm-rmg__audit-link:hover {
+  border-color: rgba(37, 99, 235, 0.34);
+  background: rgba(255, 255, 255, 0.96);
+  transform: translateY(-1px);
+}
+
+.pdm-rmg__hero-grid,
+.pdm-rmg__two-up,
+.pdm-rmg__how-grid,
+.pdm-rmg__guarantee-grid,
+.pdm-rmg__audit-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.pdm-rmg__hero-grid {
+  margin-top: 22px;
+}
+
+.pdm-rmg__hero-card,
+.pdm-rmg__card,
+.pdm-rmg__diagram-card,
+.pdm-rmg__step-card,
+.pdm-rmg__endpoint-link {
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 24px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 250, 255, 0.88)),
+    rgba(255, 255, 255, 0.88);
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.04),
+    0 12px 32px rgba(15, 23, 42, 0.05);
+}
+
+.pdm-rmg__hero-card,
+.pdm-rmg__card,
+.pdm-rmg__step-card {
+  padding: 18px;
+}
+
+.pdm-rmg__hero-card-title {
+  margin-top: 8px;
+  font-size: 1.08rem;
+  font-weight: 700;
+  line-height: 1.26;
+}
+
+.pdm-rmg__hero-card-copy,
+.pdm-rmg__card-copy,
+.pdm-rmg__step-copy {
+  margin: 10px 0 0;
+}
+
+.pdm-rmg__section {
+  display: grid;
+  gap: 18px;
+  padding: 20px;
+}
+
+.pdm-rmg__section-head {
+  display: grid;
+  gap: 8px;
+}
+
+.pdm-rmg__section-title {
+  max-width: 22ch;
+  font-size: clamp(1.5rem, 2vw, 2rem);
+  font-weight: 700;
+  line-height: 1.08;
+}
+
+.pdm-rmg__section-copy {
+  max-width: 52rem;
+  margin: 0;
+}
+
+.pdm-rmg__two-up,
+.pdm-rmg__guarantee-grid {
+  align-items: start;
+}
+
+.pdm-rmg__card-title {
+  font-size: 1.08rem;
+  font-weight: 700;
+  line-height: 1.24;
+}
+
+.pdm-rmg__list {
+  margin: 12px 0 0;
+  padding-left: 18px;
+}
+
+.pdm-rmg__list li + li {
+  margin-top: 10px;
+}
+
+.pdm-rmg__how-grid {
+  align-items: start;
+}
+
+.pdm-rmg__diagram-card {
+  overflow: hidden;
+}
+
+.pdm-rmg__diagram {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  background: #f8fafc;
+}
+
+.pdm-rmg__diagram-caption {
+  margin: 0;
+  padding: 14px 16px 16px;
+  font-size: 0.95rem;
+}
+
+.pdm-rmg__steps {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pdm-rmg__step-label {
+  margin-bottom: 8px;
+}
+
+.pdm-rmg__step-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.pdm-rmg__guarantee-grid {
+  grid-template-columns: 1fr;
+}
+
+.pdm-rmg__example-shell {
+  display: grid;
+  gap: 14px;
+}
+
+.pdm-rmg__example-input,
+.pdm-rmg__example-output {
+  padding: 18px;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.88);
+}
+
+.pdm-rmg__example-query {
+  margin: 10px 0 0;
+  color: #0f172a;
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.pdm-rmg__example-note {
+  margin: 14px 0 0;
+  font-weight: 600;
+  color: #334155;
+}
+
+.pdm-rmg__code-block {
+  margin: 0;
+  padding: 18px;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 22px;
+  background: #f8fbff;
+  color: #0f172a;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  overflow-x: auto;
+}
+
+.pdm-rmg__json-shell {
+  padding: 18px;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 22px;
+  background:
+    linear-gradient(180deg, rgba(248, 250, 252, 0.98), rgba(243, 248, 255, 0.92)),
+    #f8fbff;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.72),
+    0 10px 26px rgba(15, 23, 42, 0.04);
+  overflow-x: auto;
+}
+
+.pdm-rmg__json-line {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: baseline;
+  min-height: 1.68rem;
+  white-space: pre;
+  color: #0f172a;
+  font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+.pdm-rmg__json-indent {
+  display: inline-block;
+  width: 1rem;
+}
+
+.pdm-rmg__json-indent--deep {
+  width: 2rem;
+}
+
+.pdm-rmg__json-key {
+  color: #1d4ed8;
+  font-weight: 600;
+}
+
+.pdm-rmg__json-string {
+  color: #0f766e;
+}
+
+.pdm-rmg__json-string--accent {
+  color: #7c3aed;
+  font-weight: 700;
+}
+
+.pdm-rmg__json-punctuation {
+  color: #94a3b8;
+}
+
+.pdm-rmg__audit-grid {
+  grid-template-columns: 1fr;
+}
+
+.pdm-rmg__link-cloud {
+  display: grid;
+  gap: 12px;
+}
+
+.pdm-rmg__endpoint-link {
+  display: grid;
+  gap: 4px;
+  padding: 16px 18px;
+  color: #0f172a;
+  text-decoration: none;
+}
+
+.pdm-rmg__endpoint-title {
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.pdm-rmg__endpoint-label {
+  color: #64748b;
+  font-size: 0.74rem;
+}
+
+.pdm-rmg__closing {
+  padding: 22px;
+}
+
+.pdm-rmg__closing-line {
+  max-width: 24ch;
+  margin-top: 10px;
+  font-size: clamp(1.8rem, 2.8vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.08;
+}
+
+.pdm-rmg__closing-copy {
+  max-width: 40rem;
+  margin: 12px 0 0;
+  color: #334155;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+@media (min-width: 600px) {
+  .pdm-rmg__main {
+    padding: 36px 28px 72px;
+  }
+
+  .pdm-rmg__hero,
+  .pdm-rmg__section,
+  .pdm-rmg__closing {
+    border-radius: 32px;
+  }
+
+  .pdm-rmg__how-grid {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  }
+
+  .pdm-rmg__guarantee-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pdm-rmg__audit-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pdm-rmg__link-cloud {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 840px) {
+  .pdm-rmg__main {
+    padding: 44px 32px 88px;
+  }
+
+  .pdm-rmg__hero-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pdm-rmg__two-up {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1200px) {
+  .pdm-rmg__main {
+    padding: 52px 40px 96px;
+  }
+
+  .pdm-rmg__section,
+  .pdm-rmg__closing {
+    padding: 28px;
+  }
+
+  .pdm-rmg__guarantee-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .pdm-rmg__audit-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1440px) {
+  .pdm-rmg__main {
+    padding: 60px 48px 104px;
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "availableDomains": [
+    "organization_risk"
+  ],
+  "currentDomainVersions": {
+    "organization_risk": "v1"
+  },
+  "registryPaths": {
+    "organization_risk": {
+      "domainManifest": "data/risk-mapping/domains/organization-risk/domain-manifest.json",
+      "nodeRegistry": "data/risk-mapping/registries/organization-risk/node-registry.json",
+      "threatRegistry": "data/risk-mapping/registries/organization-risk/threat-registry.json",
+      "causalCompatibilityRegistry": "data/risk-mapping/registries/organization-risk/causal-compatibility-registry.json",
+      "falsifierRegistry": "data/risk-mapping/registries/organization-risk/falsifier-registry.json"
+    }
+  }
+}
+

@@ -51,6 +51,7 @@ export class SiteFooterComponent {
       links: [
         { label: 'What ChatPDM is', route: '/what-is-chatpdm' },
         { label: 'Reasoning structure', route: '/reasoning-structure' },
+        { label: 'Risk Mapping Governance', route: '/risk-mapping-governance' },
         { label: 'Vocabulary Boundary', route: '/vocabulary' },
         { label: 'Zeroglare', route: '/zeroglare' },
         { label: 'Scope model', route: '/scope-model' },
