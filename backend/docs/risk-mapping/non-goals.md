@@ -15,6 +15,4 @@ RMG will not:
 - modify external systems
 - replace LLGS concept resolution
 - infer unsupported causal bridges from weak evidence
-
 RMG is not a general research agent. It is not a freeform scenario generator. It does not decide what will happen in the world. It only governs whether a scenario query is admissible within explicit rules and evidence boundaries.
-

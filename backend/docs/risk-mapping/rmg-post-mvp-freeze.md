@@ -44,4 +44,3 @@ Any of the following requires a new phase:
 - output contract expansion
 - registry schema changes
 - new reasoning types
-

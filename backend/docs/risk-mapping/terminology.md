@@ -14,4 +14,3 @@
 - **scenario query**: a request about a bounded risk scenario rather than a concept definition
 - **governance**: the rule system that constrains what can be admitted, narrowed, validated, or refused
 - **admission diagnostics**: a structured explanation of why a query was admitted, narrowed, or refused
-
