@@ -1,0 +1,38 @@
+{
+  "domainId": "organization_risk",
+  "version": "v1",
+  "entries": [
+    {
+      "id": "demand_erosion__iphone_revenue_concentration",
+      "domainId": "organization_risk",
+      "threatId": "demand_erosion",
+      "targetNodeId": "iphone_revenue_concentration",
+      "compatibilityType": "direct",
+      "notes": "Demand erosion is compatible with concentrated revenue risk."
+    },
+    {
+      "id": "platform_control_weakening__platform_dependency_exposure",
+      "domainId": "organization_risk",
+      "threatId": "platform_control_weakening",
+      "targetNodeId": "platform_dependency_exposure",
+      "compatibilityType": "direct",
+      "notes": "Weakening platform control maps directly to dependency exposure."
+    },
+    {
+      "id": "regulatory_pressure__app_store_regulatory_exposure",
+      "domainId": "organization_risk",
+      "threatId": "regulatory_pressure",
+      "targetNodeId": "app_store_regulatory_exposure",
+      "compatibilityType": "direct",
+      "notes": "Regulatory pressure maps directly to app store regulatory exposure."
+    },
+    {
+      "id": "supply_chain_disruption__china_supply_chain_exposure",
+      "domainId": "organization_risk",
+      "threatId": "supply_chain_disruption",
+      "targetNodeId": "china_supply_chain_exposure",
+      "compatibilityType": "direct",
+      "notes": "Supply chain disruption maps directly to geographic supply concentration exposure."
+    }
+  ]
+}

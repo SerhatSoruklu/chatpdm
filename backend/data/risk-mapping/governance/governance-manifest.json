@@ -1,0 +1,24 @@
+{
+  "currentReleaseId": "organization_risk__apple__v1",
+  "releases": [
+    {
+      "releaseId": "organization_risk__apple__v1",
+      "domainId": "organization_risk",
+      "entity": "apple",
+      "evidenceSetVersion": "v1",
+      "registryVersion": "v1",
+      "status": "active",
+      "frozenAt": "2026-04-08T16:04:19.099Z",
+      "registryHash": "8da4f82e502af54d8d9e398633a25820490e261e4a74e3ddfc538150194cf2e5",
+      "notes": "Seeded active release for the organization_risk / apple / v1 governance baseline.",
+      "artifactPaths": {
+        "domainManifest": "data/risk-mapping/domains/organization-risk/domain-manifest.json",
+        "nodeRegistry": "data/risk-mapping/registries/organization-risk/node-registry.json",
+        "threatRegistry": "data/risk-mapping/registries/organization-risk/threat-registry.json",
+        "causalCompatibilityRegistry": "data/risk-mapping/registries/organization-risk/causal-compatibility-registry.json",
+        "falsifierRegistry": "data/risk-mapping/registries/organization-risk/falsifier-registry.json",
+        "evidencePack": "data/risk-mapping/evidence-packs/organization_risk/apple/v1.json"
+      }
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "domainId": "organization_risk",
+  "version": "v1",
+  "supportedScenarioTypes": [
+    "decline_risk",
+    "disruption_risk",
+    "fragility_risk"
+  ],
+  "supportedScopes": [
+    "regulatory",
+    "supply_chain",
+    "revenue_concentration",
+    "platform_dependency"
+  ],
+  "allowedEntityTypes": [
+    "company"
+  ],
+  "description": "Bounded organization risk domain for authored scenario structure.",
+  "notes": "Seeded proof domain for deterministic registry validation.",
+  "narrowingPolicy": "Narrow unsupported queries to supported scopes only.",
+  "refusalPolicy": "Refuse unsupported scope, domain mismatch, or missing authored structure."
+}
+

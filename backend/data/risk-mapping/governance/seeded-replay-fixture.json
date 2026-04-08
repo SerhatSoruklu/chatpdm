@@ -1,0 +1,72 @@
+{
+  "input": {
+    "entity": "apple",
+    "timeHorizon": "5 years",
+    "scenarioType": "decline_risk",
+    "domain": "organization_risk",
+    "scope": [
+      "regulatory",
+      "supply_chain"
+    ],
+    "evidenceSetVersion": "v1"
+  },
+  "expectedOutput": {
+    "status": "admitted",
+    "reasonCode": "ADMISSIBLE_QUERY",
+    "reason": "The query is admissible under authored evidence support.",
+    "domain": "organization_risk",
+    "scenarioType": "decline_risk",
+    "entity": "apple",
+    "supportedNodes": [
+      "app_store_regulatory_exposure",
+      "china_supply_chain_exposure"
+    ],
+    "supportedThreatVectors": [
+      "platform_control_weakening",
+      "regulatory_pressure",
+      "supply_chain_disruption"
+    ],
+    "supportedCausalPaths": [
+      "regulatory_pressure->app_store_regulatory_exposure",
+      "supply_chain_disruption->china_supply_chain_exposure"
+    ],
+    "unsupportedBridges": [
+      "missing_compatibility_rule:platform_control_weakening->app_store_regulatory_exposure"
+    ],
+    "assumptions": [
+      "local_structural_support_only",
+      "scope_isolated_without_cross_scope_propagation"
+    ],
+    "unknowns": [
+      "no_cross_scope_propagation_support",
+      "no_multi_hop_chain_support",
+      "no_timeline_progression_support"
+    ],
+    "falsifiers": [
+      "regulatory_risk_resolution@app_store_regulatory_exposure",
+      "successful_geographic_supply_diversification@china_supply_chain_exposure"
+    ],
+    "boundedConfidenceClass": "MEDIUM_BOUNDED_SUPPORT",
+    "diagnostics": {
+      "hasBroadCollapseLanguage": false,
+      "hasUnsupportedFraming": false,
+      "admittedScopes": [
+        "regulatory",
+        "supply_chain"
+      ],
+      "narrowedFromScopes": [],
+      "refusedScopes": [],
+      "supportedNodeIds": [
+        "app_store_regulatory_exposure",
+        "china_supply_chain_exposure"
+      ],
+      "unsupportedNodeIds": [],
+      "supportedThreatIds": [
+        "platform_control_weakening",
+        "regulatory_pressure",
+        "supply_chain_disruption"
+      ],
+      "unsupportedThreatIds": []
+    }
+  }
+}

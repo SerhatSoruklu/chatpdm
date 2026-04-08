@@ -75,6 +75,21 @@ export const seoStaticEntries = {
     sitemapChangeFrequency: 'monthly',
     sitemapPriority: 0.7,
   },
+  'static.risk-mapping-governance': {
+    title: 'Risk Mapping Governance (RMG) | Deterministic Risk Mapping',
+    description: 'Risk Mapping Governance (RMG) is a deterministic, bounded system for supported structural risk paths under explicit evidence, registries, and audit-ready rules.',
+    canonicalPath: '/risk-mapping-governance',
+    includeInSitemap: true,
+    sitemapChangeFrequency: 'monthly',
+    sitemapPriority: 0.68,
+    structuredData: {
+      '@context': 'https://schema.org',
+      '@type': 'WebPage',
+      name: 'Risk Mapping Governance (RMG)',
+      url: 'https://chatpdm.com/risk-mapping-governance',
+      description: 'Risk Mapping Governance (RMG) is a deterministic, bounded system for supported structural risk paths under explicit evidence, registries, and audit-ready rules.',
+    },
+  },
   'static.vision': {
     title: 'Vision - ChatPDM',
     description: 'Read the long-term direction behind ChatPDM: deterministic meaning infrastructure that expands only through proof.',
