@@ -47,6 +47,95 @@ function main(): void {
     'Endpoint contract rows must remain separate from field and boundary rows.',
   );
 
+  assert.equal(viewModel.riskMappingTitle, 'Risk Mapping Governance API');
+  assert.equal(
+    viewModel.riskMappingIntro,
+    'Risk Mapping Governance is exposed separately as a bounded API surface. The entity stays authoritative for evidence-pack lookup, while queryText is optional and used only for classification and framing detection.',
+  );
+  assert.deepEqual(
+    viewModel.riskMappingEndpointRows,
+    [
+      {
+        claimId: 'rmg-api-1',
+        operation: 'resolve surface',
+        method: 'GET',
+        path: '/api/v1/risk-mapping/resolve',
+        input: 'query: entity, timeHorizon, scenarioType, domain, scope, evidenceSetVersion',
+        evidence: 'backend/src/routes/api/v1/risk-mapping.route.js:97-100',
+      },
+      {
+        claimId: 'rmg-api-2',
+        operation: 'explain surface',
+        method: 'GET',
+        path: '/api/v1/risk-mapping/explain',
+        input: 'query: entity, timeHorizon, scenarioType, domain, scope, evidenceSetVersion, queryText',
+        evidence: 'backend/src/routes/api/v1/risk-mapping.route.js:67-70',
+      },
+      {
+        claimId: 'rmg-api-3',
+        operation: 'audit surface',
+        method: 'GET',
+        path: '/api/v1/risk-mapping/audit',
+        input: 'query: entity, timeHorizon, scenarioType, domain, scope, evidenceSetVersion, queryText',
+        evidence: 'backend/src/routes/api/v1/risk-mapping.route.js:82-85',
+      },
+      {
+        claimId: 'rmg-api-4',
+        operation: 'node registry',
+        method: 'GET',
+        path: '/api/v1/risk-mapping/registries/nodes',
+        input: 'query: domain',
+        evidence: 'backend/src/routes/api/v1/risk-mapping.route.js:158-160',
+      },
+      {
+        claimId: 'rmg-api-5',
+        operation: 'threat registry',
+        method: 'GET',
+        path: '/api/v1/risk-mapping/registries/threats',
+        input: 'query: domain',
+        evidence: 'backend/src/routes/api/v1/risk-mapping.route.js:162-164',
+      },
+      {
+        claimId: 'rmg-api-6',
+        operation: 'compatibility registry',
+        method: 'GET',
+        path: '/api/v1/risk-mapping/registries/compatibility',
+        input: 'query: domain',
+        evidence: 'backend/src/routes/api/v1/risk-mapping.route.js:166-168',
+      },
+      {
+        claimId: 'rmg-api-7',
+        operation: 'falsifier registry',
+        method: 'GET',
+        path: '/api/v1/risk-mapping/registries/falsifiers',
+        input: 'query: domain',
+        evidence: 'backend/src/routes/api/v1/risk-mapping.route.js:170-172',
+      },
+    ],
+    'Risk Mapping endpoint rows must remain explicit and separate from the core terms contract.',
+  );
+  assert.deepEqual(
+    viewModel.riskMappingFieldRows,
+    [
+      {
+        claimId: 'rmg-field-1',
+        field: 'entity',
+        rule: 'accepted field',
+        condition: 'authoritative evidence-pack lookup key',
+        evidence: 'backend/src/modules/risk-mapping/contracts/riskMapQueryContract.js',
+      },
+      {
+        claimId: 'rmg-field-2',
+        field: 'queryText',
+        rule: 'accepted field',
+        condition: 'optional framing channel; classification only',
+        evidence: 'backend/src/modules/risk-mapping/contracts/riskMapQueryContract.js',
+      },
+    ],
+    'Risk Mapping request fields must keep entity lookup separate from framing detection.',
+  );
+  assert.equal(viewModel.riskMappingTrustRoute, '/risk-mapping-governance');
+
   assert.equal(viewModel.requestFieldRows.length, 12);
   assert.equal(viewModel.acceptedValueRows.length, 10);
   assert.deepEqual(
