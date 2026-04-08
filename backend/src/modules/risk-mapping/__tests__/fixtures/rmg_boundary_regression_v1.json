@@ -1,0 +1,285 @@
+{
+  "suiteName": "rmg_boundary_regression_v1",
+  "description": "Deterministic boundary regression cases for the authored RMG pipeline.",
+  "cases": [
+    {
+      "name": "broad_collapse_framing",
+      "query": {
+        "entity": "apple",
+        "timeHorizon": "5 years",
+        "scenarioType": "decline_risk",
+        "domain": "organization_risk",
+        "scope": [
+          "regulatory",
+          "supply_chain"
+        ],
+        "evidenceSetVersion": "v1",
+        "queryText": "apple downfall in 5 years"
+      },
+      "expected": {
+        "status": "narrowed",
+        "reasonCode": "BROAD_COLLAPSE_FRAMING",
+        "entity": "apple",
+        "boundedConfidenceClass": "MEDIUM_BOUNDED_SUPPORT",
+        "diagnostics": {
+          "hasBroadCollapseLanguage": true,
+          "hasUnsupportedFraming": false,
+          "admittedScopes": [
+            "regulatory",
+            "supply_chain"
+          ]
+        }
+      },
+      "requiredInclusions": {
+        "supportedNodes": [
+          "app_store_regulatory_exposure",
+          "china_supply_chain_exposure"
+        ],
+        "supportedThreatVectors": [
+          "platform_control_weakening",
+          "regulatory_pressure",
+          "supply_chain_disruption"
+        ],
+        "supportedCausalPaths": [
+          "regulatory_pressure->app_store_regulatory_exposure",
+          "supply_chain_disruption->china_supply_chain_exposure"
+        ],
+        "unsupportedBridges": [
+          "broad_collapse_overreach:apple",
+          "missing_compatibility_rule:platform_control_weakening->app_store_regulatory_exposure"
+        ],
+        "assumptions": [
+          "local_structural_support_only",
+          "scope_isolated_without_cross_scope_propagation"
+        ],
+        "unknowns": [
+          "no_cross_scope_propagation_support",
+          "no_multi_hop_chain_support",
+          "no_timeline_progression_support"
+        ],
+        "falsifiers": [
+          "regulatory_risk_resolution@app_store_regulatory_exposure",
+          "successful_geographic_supply_diversification@china_supply_chain_exposure"
+        ]
+      },
+      "mustBeEmpty": []
+    },
+    {
+      "name": "clean_admitted",
+      "query": {
+        "entity": "apple",
+        "timeHorizon": "5 years",
+        "scenarioType": "decline_risk",
+        "domain": "organization_risk",
+        "scope": [
+          "regulatory",
+          "supply_chain"
+        ],
+        "evidenceSetVersion": "v1"
+      },
+      "expected": {
+        "status": "admitted",
+        "reasonCode": "ADMISSIBLE_QUERY",
+        "entity": "apple",
+        "boundedConfidenceClass": "MEDIUM_BOUNDED_SUPPORT",
+        "diagnostics": {
+          "hasBroadCollapseLanguage": false,
+          "hasUnsupportedFraming": false,
+          "admittedScopes": [
+            "regulatory",
+            "supply_chain"
+          ]
+        }
+      },
+      "requiredInclusions": {
+        "supportedNodes": [
+          "app_store_regulatory_exposure",
+          "china_supply_chain_exposure"
+        ],
+        "supportedThreatVectors": [
+          "platform_control_weakening",
+          "regulatory_pressure",
+          "supply_chain_disruption"
+        ],
+        "supportedCausalPaths": [
+          "regulatory_pressure->app_store_regulatory_exposure",
+          "supply_chain_disruption->china_supply_chain_exposure"
+        ],
+        "unsupportedBridges": [
+          "missing_compatibility_rule:platform_control_weakening->app_store_regulatory_exposure"
+        ],
+        "assumptions": [
+          "local_structural_support_only",
+          "scope_isolated_without_cross_scope_propagation"
+        ],
+        "unknowns": [
+          "no_cross_scope_propagation_support",
+          "no_multi_hop_chain_support",
+          "no_timeline_progression_support"
+        ],
+        "falsifiers": [
+          "regulatory_risk_resolution@app_store_regulatory_exposure",
+          "successful_geographic_supply_diversification@china_supply_chain_exposure"
+        ]
+      },
+      "mustBeEmpty": []
+    },
+    {
+      "name": "unsupported_scope_refusal",
+      "query": {
+        "entity": "apple",
+        "timeHorizon": "5 years",
+        "scenarioType": "decline_risk",
+        "domain": "organization_risk",
+        "scope": [
+          "leadership_psychology"
+        ],
+        "evidenceSetVersion": "v1"
+      },
+      "expected": {
+        "status": "refused",
+        "reasonCode": "UNSUPPORTED_SCOPE",
+        "entity": "apple",
+        "boundedConfidenceClass": "LOW_BOUNDED_SUPPORT",
+        "diagnostics": {
+          "hasBroadCollapseLanguage": false,
+          "hasUnsupportedFraming": false,
+          "admittedScopes": []
+        }
+      },
+      "requiredInclusions": {},
+      "mustBeEmpty": [
+        "supportedNodes",
+        "supportedThreatVectors",
+        "supportedCausalPaths",
+        "unsupportedBridges",
+        "assumptions",
+        "unknowns",
+        "falsifiers"
+      ]
+    },
+    {
+      "name": "mixed_scope_narrowing",
+      "query": {
+        "entity": "apple",
+        "timeHorizon": "5 years",
+        "scenarioType": "decline_risk",
+        "domain": "organization_risk",
+        "scope": [
+          "regulatory",
+          "leadership_psychology",
+          "supply_chain"
+        ],
+        "evidenceSetVersion": "v1"
+      },
+      "expected": {
+        "status": "admitted",
+        "reasonCode": "ADMISSIBLE_QUERY",
+        "entity": "apple",
+        "boundedConfidenceClass": "MEDIUM_BOUNDED_SUPPORT",
+        "diagnostics": {
+          "hasBroadCollapseLanguage": false,
+          "hasUnsupportedFraming": false,
+          "admittedScopes": [
+            "regulatory",
+            "supply_chain"
+          ]
+        }
+      },
+      "requiredInclusions": {
+        "supportedNodes": [
+          "app_store_regulatory_exposure",
+          "china_supply_chain_exposure"
+        ],
+        "supportedThreatVectors": [
+          "platform_control_weakening",
+          "regulatory_pressure",
+          "supply_chain_disruption"
+        ],
+        "supportedCausalPaths": [
+          "regulatory_pressure->app_store_regulatory_exposure",
+          "supply_chain_disruption->china_supply_chain_exposure"
+        ],
+        "unsupportedBridges": [
+          "missing_compatibility_rule:platform_control_weakening->app_store_regulatory_exposure",
+          "scope_not_admitted:leadership_psychology"
+        ],
+        "assumptions": [
+          "local_structural_support_only",
+          "scope_isolated_without_cross_scope_propagation"
+        ],
+        "unknowns": [
+          "no_cross_scope_propagation_support",
+          "no_multi_hop_chain_support",
+          "no_timeline_progression_support"
+        ],
+        "falsifiers": [
+          "regulatory_risk_resolution@app_store_regulatory_exposure",
+          "successful_geographic_supply_diversification@china_supply_chain_exposure"
+        ]
+      },
+      "mustBeEmpty": []
+    },
+    {
+      "name": "unsupported_framing_language",
+      "query": {
+        "entity": "apple",
+        "timeHorizon": "5 years",
+        "scenarioType": "decline_risk",
+        "domain": "organization_risk",
+        "scope": [
+          "regulatory",
+          "supply_chain"
+        ],
+        "evidenceSetVersion": "v1",
+        "queryText": "what will happen to apple in 5 years"
+      },
+      "expected": {
+        "status": "admitted",
+        "reasonCode": "ADMISSIBLE_QUERY",
+        "entity": "apple",
+        "boundedConfidenceClass": "MEDIUM_BOUNDED_SUPPORT",
+        "diagnostics": {
+          "hasBroadCollapseLanguage": false,
+          "hasUnsupportedFraming": true,
+          "admittedScopes": [
+            "regulatory",
+            "supply_chain"
+          ]
+        }
+      },
+      "requiredInclusions": {
+        "supportedNodes": [
+          "app_store_regulatory_exposure",
+          "china_supply_chain_exposure"
+        ],
+        "supportedThreatVectors": [
+          "platform_control_weakening",
+          "regulatory_pressure",
+          "supply_chain_disruption"
+        ],
+        "supportedCausalPaths": [
+          "regulatory_pressure->app_store_regulatory_exposure",
+          "supply_chain_disruption->china_supply_chain_exposure"
+        ],
+        "unsupportedBridges": [
+          "missing_compatibility_rule:platform_control_weakening->app_store_regulatory_exposure"
+        ],
+        "assumptions": [
+          "local_structural_support_only",
+          "scope_isolated_without_cross_scope_propagation"
+        ],
+        "unknowns": [
+          "no_cross_scope_propagation_support",
+          "no_multi_hop_chain_support",
+          "no_timeline_progression_support"
+        ],
+        "falsifiers": [
+          "regulatory_risk_resolution@app_store_regulatory_exposure",
+          "successful_geographic_supply_diversification@china_supply_chain_exposure"
+        ]
+      },
+      "mustBeEmpty": []
+    }
+  ]
+}

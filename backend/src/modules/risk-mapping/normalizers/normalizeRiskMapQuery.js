@@ -27,19 +27,23 @@ function normalizeRiskMapQuery(value) {
     throw new TypeError(`Invalid RiskMapQuery contract: ${validation.errors.join(' | ')}`);
   }
 
-  const query = /** @type {Record<string, string | string[]>} */ (value);
-
-  return Object.freeze({
+  const query = /** @type {Record<string, string | string[] | undefined>} */ (value);
+  const normalizedQuery = {
     entity: normalizeLowercaseString(query.entity),
     timeHorizon: normalizeString(query.timeHorizon),
     scenarioType: normalizeLowercaseString(query.scenarioType),
     domain: normalizeLowercaseString(query.domain),
     scope: normalizeScopeList(/** @type {string[]} */ (query.scope)),
     evidenceSetVersion: normalizeString(query.evidenceSetVersion),
-  });
+  };
+
+  if (typeof query.queryText === 'string') {
+    normalizedQuery.queryText = normalizeString(query.queryText);
+  }
+
+  return Object.freeze(normalizedQuery);
 }
 
 module.exports = Object.freeze({
   normalizeRiskMapQuery,
 });
-
