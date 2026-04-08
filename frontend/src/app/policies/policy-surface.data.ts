@@ -2742,7 +2742,7 @@ export const POLICY_SURFACE_DATA = {
         "policySentence": "The platform shares upstream `set-cookie` headers with the client response through the SSR layer.",
         "canonicalClaim": "The platform shares upstream `set-cookie` headers with the client response through the SSR layer.",
         "claimClass": "shares",
-        "systemMapping": "`frontend/src/server.ts:103-120`",
+        "systemMapping": "`frontend/src/server.ts:129-135`",
         "status": "mapped",
         "notes": "internal SSR transport only",
         "specialNotes": [
@@ -2758,9 +2758,9 @@ export const POLICY_SURFACE_DATA = {
         },
         "traces": [
           {
-            "source": "frontend/src/server.ts:103-120",
+            "source": "frontend/src/server.ts:129-135",
             "path": "frontend/src/server.ts",
-            "lines": "103-120"
+            "lines": "129-135"
           }
         ]
       },
@@ -2858,9 +2858,9 @@ export const POLICY_SURFACE_DATA = {
         "browserNoteRelevance": "direct",
         "evidence": [
           {
-            "source": "frontend/src/server.ts:103-120",
+            "source": "frontend/src/server.ts:129-135",
             "path": "frontend/src/server.ts",
-            "lines": "103-120"
+            "lines": "129-135"
           }
         ]
       },

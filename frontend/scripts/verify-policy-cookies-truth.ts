@@ -45,9 +45,9 @@ function main(): void {
         browserNoteRelevance: 'direct',
         evidence: [
           {
-            source: 'frontend/src/server.ts:103-120',
+            source: 'frontend/src/server.ts:129-135',
             path: 'frontend/src/server.ts',
-            lines: '103-120',
+            lines: '129-135',
           },
         ],
       },
