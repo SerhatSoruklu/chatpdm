@@ -167,9 +167,9 @@ function loadFrameBufferFromPath(rawPath, frameNumber) {
   return {
     buffer,
     byteLength: buffer.length,
-    sourceLabel: path.basename(resolvedPath) || `frame-${frameNumber}`,
-    sourcePath: resolvedPath,
-    sourceType: 'path',
+    artifactId: `frame-${frameNumber}`,
+    sourceId: null,
+    sourceLabel: `frame-${frameNumber}`,
   };
 }
 
@@ -182,9 +182,9 @@ function normalizeFrameSource(candidate, index) {
     return {
       buffer: candidate,
       byteLength: candidate.length,
+      artifactId: `frame-${frameNumber}`,
+      sourceId: null,
       sourceLabel: `frame-${frameNumber}`,
-      sourcePath: null,
-      sourceType: 'buffer',
     };
   }
 
@@ -208,12 +208,9 @@ function normalizeFrameSource(candidate, index) {
       return {
         buffer: candidate.buffer,
         byteLength: candidate.buffer.length,
+        artifactId: rawSourceId || `frame-${frameNumber}`,
         sourceId: rawSourceId,
         sourceLabel: rawLabel || `frame-${frameNumber}`,
-        sourcePath: typeof candidate.path === 'string' && candidate.path.trim() !== ''
-          ? path.resolve(candidate.path.trim())
-          : null,
-        sourceType: 'buffer',
       };
     }
 
@@ -223,6 +220,7 @@ function normalizeFrameSource(candidate, index) {
 
       return {
         ...normalized,
+        artifactId: rawSourceId || normalized.artifactId,
         sourceId: rawSourceId,
         sourceLabel: rawLabel || normalized.sourceLabel,
       };

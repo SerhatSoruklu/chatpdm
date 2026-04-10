@@ -3,13 +3,22 @@
 const {
   ZEE_INTERNAL_ENGINE_ERROR_CODES,
   ZEE_INTERNAL_ENGINE_MEASUREMENT_LAYER,
-  ZEE_INTERNAL_ENGINE_MEASUREMENT_NON_MEASURABLE_NOTE,
-  ZEE_INTERNAL_ENGINE_MEASUREMENT_NOTE,
   ZEE_INTERNAL_ENGINE_MEASUREMENT_NUMERIC_PRECISION,
   ZEE_INTERNAL_ENGINE_MEASUREMENT_SUPPORTED_SIGNAL_KINDS,
+  ZEE_INTERNAL_ENGINE_MEASUREMENT_SCHEMA,
+  ZEE_INTERNAL_ENGINE_MEASUREMENT_POLICY,
   ZEE_INTERNAL_ENGINE_MEASUREMENT_VERSION,
+  ZEE_INTERNAL_ENGINE_RESULT_TAXONOMY,
+  ZEE_INTERNAL_ENGINE_RESULT_TAXONOMY_VERSION,
   ZEE_INTERNAL_ENGINE_STABILITY_LAYER,
 } = require('./constants');
+const {
+  compareCanonicalNumber,
+  compareCanonicalText,
+} = require('./policy');
+const {
+  createZeeArtifactMarker,
+} = require('./artifact-markers');
 const { ZeeObservedInputError } = require('./input-contract');
 
 const SIGNAL_KIND_PRIORITY = new Map(
@@ -79,25 +88,27 @@ function selectMode(values) {
 
   return [...counts.entries()]
     .sort((left, right) => (
-      right[1] - left[1]
-      || String(left[0]).localeCompare(String(right[0]))
+      compareCanonicalNumber(right[1], left[1])
+      || compareCanonicalText(left[0], right[0])
     ))[0][0];
 }
 
 function compareSignalOrder(left, right) {
   return (
-    (SIGNAL_KIND_PRIORITY.get(left.signalKind) ?? Number.MAX_SAFE_INTEGER)
-    - (SIGNAL_KIND_PRIORITY.get(right.signalKind) ?? Number.MAX_SAFE_INTEGER)
-    || left.firstFrameIndex - right.firstFrameIndex
-    || left.signalKey.localeCompare(right.signalKey)
-    || left.signalId.localeCompare(right.signalId)
+    compareCanonicalNumber(
+      SIGNAL_KIND_PRIORITY.get(left.signalKind) ?? Number.MAX_SAFE_INTEGER,
+      SIGNAL_KIND_PRIORITY.get(right.signalKind) ?? Number.MAX_SAFE_INTEGER,
+    )
+    || compareCanonicalNumber(left.firstFrameIndex, right.firstFrameIndex)
+    || compareCanonicalText(left.signalKey, right.signalKey)
+    || compareCanonicalText(left.signalId, right.signalId)
   );
 }
 
 function normalizeObservationOrder(observations) {
   return [...observations].sort((left, right) => (
-    left.frameIndex - right.frameIndex
-    || String(left.signalKind ?? '').localeCompare(String(right.signalKind ?? ''))
+    compareCanonicalNumber(left.frameIndex, right.frameIndex)
+    || compareCanonicalText(String(left.signalKind ?? ''), String(right.signalKind ?? ''))
   ));
 }
 
@@ -188,6 +199,7 @@ function normalizeMeasurementInput(input) {
 
 function buildMeasuredRecord(signal, measurementType, measurementValue, measurementDiagnostics) {
   return {
+    outcomeCategory: ZEE_INTERNAL_ENGINE_RESULT_TAXONOMY.measurement.measured,
     measurementDiagnostics,
     measurementType,
     measurementValue,
@@ -202,6 +214,7 @@ function buildDiscardedRecord(signal, reasonCode, reasonMessage, details) {
 
   return {
     discardReasons: [reason],
+    outcomeCategory: ZEE_INTERNAL_ENGINE_RESULT_TAXONOMY.measurement.discarded,
     measurementDiagnostics: [reason],
     measurementType: null,
     measurementValue: null,
@@ -244,14 +257,15 @@ function buildDominantColorMeasurement(signal) {
     return buildDiscardedRecord(
       signal,
       'missing_observation_values',
-      'The stable dominant color signal did not include measurable color observations.',
+      'missing_observation_values',
       {
         supportedKinds: ['dominant_color'],
       },
     );
   }
 
-  const hex = String(observations[0].hex).trim().toLowerCase();
+  const hex = selectMode(observations.map((observation) => String(observation.hex).trim().toLowerCase()))
+    ?? String(observations[0].hex).trim().toLowerCase();
   const ratios = observations.map((observation) => observation.ratio);
   const reds = observations.map((observation) => Number.isFinite(observation.rgba.red) ? observation.rgba.red : 0);
   const greens = observations.map((observation) => Number.isFinite(observation.rgba.green) ? observation.rgba.green : 0);
@@ -279,21 +293,21 @@ function buildDominantColorMeasurement(signal) {
   return buildMeasuredRecord(signal, 'dominant_palette_distribution', measurementValue, [
     makeNote(
       'observation_count',
-      `Measured ${observations.length} stable dominant color observation${observations.length === 1 ? '' : 's'}.`,
+      'observation_count',
       {
         frameIndices,
       },
     ),
     makeNote(
       'normalization_precision',
-      `Numeric color measurements are rounded to ${ZEE_INTERNAL_ENGINE_MEASUREMENT_NUMERIC_PRECISION} decimal places.`,
+      'normalization_precision',
       {
         precision: ZEE_INTERNAL_ENGINE_MEASUREMENT_NUMERIC_PRECISION,
       },
     ),
     makeNote(
       'value_span',
-      'The dominant palette distribution is summarized from stable observations only.',
+      'value_span',
       {
         ratioAverage: roundTo(average(ratios)),
         ratioMax: roundTo(Math.max(...ratios)),
@@ -377,7 +391,7 @@ function buildVisibleRegionMeasurement(signal) {
     return buildDiscardedRecord(
       signal,
       'missing_observation_values',
-      'The stable visible region signal did not include measurable region observations.',
+      'missing_observation_values',
       {
         supportedKinds: ['visible_region'],
       },
@@ -417,21 +431,21 @@ function buildVisibleRegionMeasurement(signal) {
   return buildMeasuredRecord(signal, 'region_geometry_profile', measurementValue, [
     makeNote(
       'observation_count',
-      `Measured ${observations.length} stable visible region observation${observations.length === 1 ? '' : 's'}.`,
+      'observation_count',
       {
         frameIndices,
       },
     ),
     makeNote(
       'normalization_precision',
-      `Numeric region measurements are rounded to ${ZEE_INTERNAL_ENGINE_MEASUREMENT_NUMERIC_PRECISION} decimal places.`,
+      'normalization_precision',
       {
         precision: ZEE_INTERNAL_ENGINE_MEASUREMENT_NUMERIC_PRECISION,
       },
     ),
     makeNote(
       'value_span',
-      'The region geometry profile is summarized from stable observations only.',
+      'value_span',
       {
         areaCoverage: summarizeNumericSeries(areaCoverages, 'ratio'),
         aspectRatio: summarizeNumericSeries(aspectRatios, 'ratio'),
@@ -447,7 +461,7 @@ function measureStableSignal(signal) {
     return buildDiscardedRecord(
       signal,
       'unsupported_signal_kind',
-      `The stable signal kind "${signal.signalKind}" is not measurable in the ZEE measurement layer.`,
+      'unsupported_signal_kind',
       {
         supportedKinds: [...ZEE_INTERNAL_ENGINE_MEASUREMENT_SUPPORTED_SIGNAL_KINDS],
       },
@@ -458,7 +472,7 @@ function measureStableSignal(signal) {
     return buildDiscardedRecord(
       signal,
       'missing_observations',
-      'The stable signal did not include observations to measure.',
+      'missing_observations',
       {
         supportedKinds: [...ZEE_INTERNAL_ENGINE_MEASUREMENT_SUPPORTED_SIGNAL_KINDS],
       },
@@ -476,7 +490,7 @@ function measureStableSignal(signal) {
   return buildDiscardedRecord(
     signal,
     'unsupported_signal_kind',
-    `The stable signal kind "${signal.signalKind}" is not measurable in the ZEE measurement layer.`,
+    'unsupported_signal_kind',
     {
       supportedKinds: [...ZEE_INTERNAL_ENGINE_MEASUREMENT_SUPPORTED_SIGNAL_KINDS],
     },
@@ -515,7 +529,7 @@ function buildDiagnosticNotes(summary) {
   return [
     makeNote(
       'measurement_layer',
-      ZEE_INTERNAL_ENGINE_MEASUREMENT_NOTE,
+      'measurement_layer',
       {
         discardedCount: summary.discardedCount,
         measuredCount: summary.measuredCount,
@@ -524,7 +538,7 @@ function buildDiagnosticNotes(summary) {
     ),
     makeNote(
       'measurement_non_measurable',
-      ZEE_INTERNAL_ENGINE_MEASUREMENT_NON_MEASURABLE_NOTE,
+      'measurement_non_measurable',
       {
         discardedCount: summary.discardedCount,
         supportedKinds: [...ZEE_INTERNAL_ENGINE_MEASUREMENT_SUPPORTED_SIGNAL_KINDS],
@@ -556,10 +570,15 @@ function buildZeeMeasurementReport(signalStabilityReport) {
   );
 
   return {
+    ...createZeeArtifactMarker('measurement'),
     diagnosticNotes: buildDiagnosticNotes(summary),
     discardedMeasurements,
     frameCount: normalizedInput.frameCount,
     layer: ZEE_INTERNAL_ENGINE_MEASUREMENT_LAYER,
+    policyVersion: ZEE_INTERNAL_ENGINE_MEASUREMENT_POLICY.version,
+    resultTaxonomy: ZEE_INTERNAL_ENGINE_RESULT_TAXONOMY.measurement,
+    resultTaxonomyVersion: ZEE_INTERNAL_ENGINE_RESULT_TAXONOMY_VERSION,
+    schemaVersion: ZEE_INTERNAL_ENGINE_MEASUREMENT_SCHEMA.version,
     measurements,
     sourceLayer: normalizedInput.sourceLayer,
     sourceVersion: normalizedInput.sourceVersion,

@@ -4,16 +4,22 @@ const {
   ZEE_INTERNAL_ENGINE_INPUT_CONTRACT,
   ZEE_INTERNAL_ENGINE_LAYER,
   ZEE_INTERNAL_ENGINE_NAME,
-  ZEE_INTERNAL_ENGINE_NON_OPERATIONAL_NOTE,
-  ZEE_INTERNAL_ENGINE_OBSERVED_ONLY_NOTE,
+  ZEE_INTERNAL_ENGINE_POLICY_MANIFEST,
+  ZEE_INTERNAL_ENGINE_TRACE_CONTRACT,
   ZEE_INTERNAL_ENGINE_SUPPORTED_FORMATS,
   ZEE_INTERNAL_ENGINE_VERSION,
 } = require('./constants');
+const {
+  buildCanonicalTraceArtifactId,
+} = require('./policy');
 const { normalizeObservedInput } = require('./input-contract');
 const { analyzeObservedPngFrame } = require('./png-observed-extractor');
 const { buildZeeInferenceGateReport } = require('./inference-gate');
 const { buildZeeMeasurementReport } = require('./measurement-layer');
 const { buildZeeSignalStabilityReport } = require('./signal-stability-layer');
+const {
+  createZeeArtifactMarker,
+} = require('./artifact-markers');
 
 function buildSharedDominantColors(frameReports) {
   if (frameReports.length === 0) {
@@ -57,27 +63,43 @@ function buildTopLevelDiagnosticNotes(frameReports, signalStability, measurement
   return [
     {
       code: 'observed_only',
-      message: ZEE_INTERNAL_ENGINE_OBSERVED_ONLY_NOTE,
+      message: 'observed_only',
     },
     {
       code: 'module_isolation',
-      message: ZEE_INTERNAL_ENGINE_NON_OPERATIONAL_NOTE,
+      message: 'module_isolation',
     },
     {
       code: 'frame_count',
-      message: `Processed ${frameReports.length} frame${frameReports.length === 1 ? '' : 's'} through the observed-only pipeline.`,
+      message: 'frame_count',
+      details: {
+        frameCount: frameReports.length,
+      },
     },
     {
       code: 'signal_stability',
-      message: `Signal stability retained ${signalStability.stableSignals.length} stable track${signalStability.stableSignals.length === 1 ? '' : 's'} and discarded ${signalStability.discardedSignals.length} unstable track${signalStability.discardedSignals.length === 1 ? '' : 's'}.`,
+      message: 'signal_stability',
+      details: {
+        discardedCount: signalStability.discardedSignals.length,
+        stableCount: signalStability.stableSignals.length,
+      },
     },
     {
       code: 'measurement_layer',
-      message: `Measurement layer produced ${measurementLayer.measurements.length} stable measurement${measurementLayer.measurements.length === 1 ? '' : 's'} and discarded ${measurementLayer.discardedMeasurements.length} non-measurable stable signal${measurementLayer.discardedMeasurements.length === 1 ? '' : 's'}.`,
+      message: 'measurement_layer',
+      details: {
+        discardedCount: measurementLayer.discardedMeasurements.length,
+        measuredCount: measurementLayer.measurements.length,
+      },
     },
     {
       code: 'inference_gate',
-      message: `Inference gate supported ${inferenceGate.supported_inferences.length} bounded structural similarity inference${inferenceGate.supported_inferences.length === 1 ? '' : 's'} and rejected ${inferenceGate.rejected_claims.length} unsupported claim${inferenceGate.rejected_claims.length === 1 ? '' : 's'}.`,
+      message: 'inference_gate',
+      details: {
+        rejectedClaimCount: inferenceGate.rejected_claims.length,
+        supportedInferenceCount: inferenceGate.supported_inferences.length,
+        unknownCount: inferenceGate.unknowns.length,
+      },
     },
   ];
 }
@@ -88,31 +110,43 @@ function analyzeZeeObservedFrames(input) {
   const signalStability = buildZeeSignalStabilityReport(frameReports);
   const measurementLayer = buildZeeMeasurementReport(signalStability);
   const inferenceGate = buildZeeInferenceGateReport(measurementLayer);
+  const artifactId = buildCanonicalTraceArtifactId(
+    frameReports.map((frameReport) => frameReport.frameId),
+    normalizedInput.options,
+    ZEE_INTERNAL_ENGINE_POLICY_MANIFEST.version,
+  );
 
   return {
+    ...createZeeArtifactMarker('canonical_trace'),
+    artifactId,
     diagnosticNotes: buildTopLevelDiagnosticNotes(frameReports, signalStability, measurementLayer, inferenceGate),
     engine: {
       inputContract: ZEE_INTERNAL_ENGINE_INPUT_CONTRACT,
       layer: ZEE_INTERNAL_ENGINE_LAYER,
       name: ZEE_INTERNAL_ENGINE_NAME,
+      policyVersion: ZEE_INTERNAL_ENGINE_POLICY_MANIFEST.version,
+      traceContract: ZEE_INTERNAL_ENGINE_TRACE_CONTRACT,
       supportedFormats: [...ZEE_INTERNAL_ENGINE_SUPPORTED_FORMATS],
       version: ZEE_INTERNAL_ENGINE_VERSION,
     },
     input: {
+      artifactId,
       frameCount: normalizedInput.frames.length,
       frames: normalizedInput.frames.map((frame) => ({
+        artifactId: frame.artifactId,
         frameIndex: frame.frameIndex,
         sourceId: frame.sourceId ?? null,
         sourceLabel: frame.sourceLabel,
-        sourcePath: frame.sourcePath,
-        sourceType: frame.sourceType,
       })),
       options: normalizedInput.options,
     },
+    policyVersion: ZEE_INTERNAL_ENGINE_POLICY_MANIFEST.version,
+    schemaVersion: ZEE_INTERNAL_ENGINE_TRACE_CONTRACT.canonicalTraceSchemaVersion,
     observedSummary: buildObservedSummary(frameReports),
     measurementLayer,
     inferenceGate,
     signalStability,
+    traceContract: ZEE_INTERNAL_ENGINE_TRACE_CONTRACT,
     frames: frameReports,
   };
 }

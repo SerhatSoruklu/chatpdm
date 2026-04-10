@@ -1,5 +1,7 @@
 'use strict';
 
+const fs = require('node:fs');
+const path = require('node:path');
 const test = require('node:test');
 const assert = require('node:assert/strict');
 
@@ -7,8 +9,17 @@ const {
   buildZeroglareDiagnostics,
 } = require('../../src/modules/concepts/zeroglare-diagnostics');
 const {
+  validateAndExposeOutput,
+} = require('../../src/modules/concepts/output-validation-gate');
+const {
   runFullPipeline,
 } = require('../../src/modules/concepts/pipeline-runner');
+const { analyzeZeeObservedFrames } = require('../../src/modules/zeroglare-evidence-engine');
+
+const ZEE_INFRASTRUCTURE_FRAME_PATH = path.resolve(
+  __dirname,
+  '../../../frontend/public/assets/zee/44e767cb-bfa1-4f8c-884c-473dfd7eaefd.png',
+);
 
 test('Zeroglare diagnostics flag the full signal stack for a noisy bridge query', () => {
   const diagnostics = buildZeroglareDiagnostics(
@@ -87,4 +98,55 @@ test('runFullPipeline exposes Zeroglare diagnostics without changing the enumera
     false,
   );
   assert.equal(Object.keys(result).includes('zeroglare_diagnostics'), false);
+});
+
+test('runFullPipeline rejects ZEE-shaped artifacts at the runtime boundary', () => {
+  assert.throws(
+    () => runFullPipeline({
+      artifactId: 'zee-trace:deadbeef',
+      engine: {
+        name: 'ZEE Internal Engine',
+      },
+      frames: [],
+      inferenceGate: {
+        layer: 'Inference Gate',
+      },
+      measurementLayer: {
+        layer: 'Measured',
+      },
+      observedSummary: {
+        frameCount: 0,
+      },
+      signalStability: {
+        layer: 'Signal Stability',
+      },
+      traceContract: {
+        version: 'v1',
+      },
+    }),
+    (error) => {
+      assert.equal(error.code, 'ZEE_ARTIFACT_CONSUMPTION_BLOCKED');
+      assert.match(error.message, /non-consumption boundary/i);
+      return true;
+    },
+  );
+});
+
+test('validateAndExposeOutput rejects ZEE artifact shapes with a structured governance error', () => {
+  const zeeArtifact = analyzeZeeObservedFrames({
+    frames: [
+      fs.readFileSync(ZEE_INFRASTRUCTURE_FRAME_PATH),
+    ],
+  });
+
+  assert.throws(
+    () => validateAndExposeOutput(zeeArtifact),
+    (error) => {
+      assert.equal(error.code, 'ZEE_ARTIFACT_CONSUMPTION_BLOCKED');
+      assert.equal(error.name, 'ZeeGovernanceBoundaryError');
+      assert.equal(error.details.marker.type, 'ZEE_EVIDENCE_TRACE');
+      assert.match(error.message, /non-consumption boundary/i);
+      return true;
+    },
+  );
 });
