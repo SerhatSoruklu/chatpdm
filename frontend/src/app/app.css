@@ -5,11 +5,14 @@
 
 .pdm-app-shell {
   display: grid;
+  width: 100%;
   min-height: 100vh;
   min-height: 100svh;
+  grid-template-columns: minmax(0, 1fr);
   grid-template-rows: auto 1fr auto;
 }
 
 .pdm-app-shell__content {
+  min-width: 0;
   min-height: 0;
 }
