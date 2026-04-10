@@ -16,6 +16,138 @@
   gap: 18px;
 }
 
+.pdm-terms-page__jump-nav {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid rgba(120, 113, 108, 0.16);
+  border-radius: 22px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.88)),
+    rgba(255, 255, 255, 0.92);
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.04),
+    0 10px 24px rgba(15, 23, 42, 0.05);
+}
+
+.pdm-terms-page__jump-label {
+  margin: 0;
+  color: #78716c;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pdm-terms-page__jump-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pdm-terms-page__jump-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.3rem;
+  padding: 0.48rem 0.8rem;
+  border: 1px solid rgba(120, 113, 108, 0.14);
+  border-radius: 999px;
+  color: #0f172a;
+  background: rgba(255, 255, 255, 0.82);
+  font-size: 0.84rem;
+  font-weight: 600;
+  line-height: 1.35;
+  text-decoration: none;
+  transition:
+    border-color 0.16s ease,
+    background-color 0.16s ease,
+    color 0.16s ease;
+}
+
+.pdm-terms-page__jump-link:hover {
+  border-color: rgba(37, 99, 235, 0.22);
+  background: rgba(255, 255, 255, 0.98);
+}
+
+.pdm-terms-page__jump-link--active {
+  border-color: rgba(37, 99, 235, 0.34);
+  background: rgba(239, 246, 255, 0.98);
+  color: #1d4ed8;
+  font-weight: 700;
+}
+
+.pdm-terms-page__docs-layout {
+  display: grid;
+  gap: 18px;
+  align-items: start;
+}
+
+.pdm-terms-page__nav {
+  display: none;
+}
+
+.pdm-terms-page__nav-group {
+  display: grid;
+  gap: 10px;
+}
+
+.pdm-terms-page__nav-group-title {
+  margin: 0;
+  color: #78716c;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pdm-terms-page__nav-list {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pdm-terms-page__nav-link {
+  display: block;
+  padding: 0.72rem 0.8rem;
+  border: 1px solid rgba(120, 113, 108, 0.14);
+  border-radius: 14px;
+  color: #0f172a;
+  background: rgba(255, 255, 255, 0.8);
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.45;
+  text-decoration: none;
+  transition:
+    border-color 0.16s ease,
+    background-color 0.16s ease,
+    color 0.16s ease;
+}
+
+.pdm-terms-page__nav-link:hover {
+  border-color: rgba(37, 99, 235, 0.22);
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.pdm-terms-page__nav-link--active {
+  border-color: rgba(37, 99, 235, 0.34);
+  background: rgba(239, 246, 255, 0.98);
+  color: #1d4ed8;
+  box-shadow: inset 3px 0 0 rgba(37, 99, 235, 0.52);
+  font-weight: 700;
+}
+
+.pdm-terms-page__nav-item {
+  margin: 0;
+}
+
+.pdm-terms-page__content {
+  display: grid;
+  gap: 18px;
+  min-width: 0;
+}
+
 .pdm-terms-page__hero,
 .pdm-terms-page__section {
   border: 1px solid rgba(120, 113, 108, 0.16);
@@ -25,6 +157,7 @@
   box-shadow:
     0 1px 2px rgba(15, 23, 42, 0.04),
     0 14px 34px rgba(15, 23, 42, 0.06);
+  scroll-margin-top: 120px;
 }
 
 .pdm-terms-page__hero {
@@ -36,20 +169,23 @@
 
 .pdm-terms-page__section {
   display: grid;
-  gap: 14px;
-  padding: 20px;
+  gap: 16px;
+  padding: 22px 20px 20px;
   border-radius: 24px;
+}
+
+.pdm-terms-page__hero--active,
+.pdm-terms-page__section--active {
+  border-color: rgba(37, 99, 235, 0.24);
 }
 
 .pdm-terms-page__subsection {
   display: grid;
-  gap: 12px;
+  gap: 14px;
 }
 
 .pdm-terms-page__eyebrow,
-.pdm-terms-page__badge-label,
-.pdm-terms-page__evidence,
-.pdm-terms-page__mono-cell {
+.pdm-terms-page__badge-label {
   color: #78716c;
   font-size: 0.74rem;
   font-weight: 600;
@@ -140,31 +276,164 @@
 }
 
 .pdm-terms-page__table-wrap {
+  border: 1px solid rgba(120, 113, 108, 0.14);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
   overflow-x: auto;
 }
 
 .pdm-terms-page__table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
+  min-width: 40rem;
 }
 
 .pdm-terms-page__table th,
 .pdm-terms-page__table td {
-  padding: 12px 10px;
+  padding: 12px 12px;
   border-bottom: 1px solid rgba(120, 113, 108, 0.12);
   text-align: left;
   vertical-align: top;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  white-space: normal;
 }
 
 .pdm-terms-page__table th {
+  background: rgba(248, 250, 252, 0.92);
   color: #57534e;
   font-size: 0.8rem;
   font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .pdm-terms-page__table td {
-  color: #292524;
+  color: #1f2937;
   line-height: 1.55;
+}
+
+.pdm-terms-page__table tr:last-child td {
+  border-bottom-color: transparent;
+}
+
+.pdm-terms-page__mono-cell {
+  color: #0f172a;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  font-variant-numeric: tabular-nums;
+}
+
+.pdm-terms-page__evidence {
+  color: #475569;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.pdm-terms-page__table--endpoint {
+  min-width: 56rem;
+}
+
+.pdm-terms-page__table--endpoint th:nth-child(1),
+.pdm-terms-page__table--endpoint td:nth-child(1) {
+  width: 20%;
+}
+
+.pdm-terms-page__table--endpoint th:nth-child(2),
+.pdm-terms-page__table--endpoint td:nth-child(2) {
+  width: 9%;
+}
+
+.pdm-terms-page__table--endpoint th:nth-child(3),
+.pdm-terms-page__table--endpoint td:nth-child(3) {
+  width: 25%;
+}
+
+.pdm-terms-page__table--endpoint th:nth-child(4),
+.pdm-terms-page__table--endpoint td:nth-child(4) {
+  width: 18%;
+}
+
+.pdm-terms-page__table--endpoint th:nth-child(5),
+.pdm-terms-page__table--endpoint td:nth-child(5) {
+  width: 28%;
+}
+
+.pdm-terms-page__table--field {
+  min-width: 48rem;
+}
+
+.pdm-terms-page__table--field th:nth-child(1),
+.pdm-terms-page__table--field td:nth-child(1) {
+  width: 18%;
+}
+
+.pdm-terms-page__table--field th:nth-child(2),
+.pdm-terms-page__table--field td:nth-child(2) {
+  width: 18%;
+}
+
+.pdm-terms-page__table--field th:nth-child(3),
+.pdm-terms-page__table--field td:nth-child(3) {
+  width: 28%;
+}
+
+.pdm-terms-page__table--field th:nth-child(4),
+.pdm-terms-page__table--field td:nth-child(4) {
+  width: 36%;
+}
+
+.pdm-terms-page__table--rule {
+  min-width: 38rem;
+}
+
+.pdm-terms-page__table--rule th:nth-child(1),
+.pdm-terms-page__table--rule td:nth-child(1) {
+  width: 26%;
+}
+
+.pdm-terms-page__table--rule th:nth-child(2),
+.pdm-terms-page__table--rule td:nth-child(2) {
+  width: 32%;
+}
+
+.pdm-terms-page__table--rule th:nth-child(3),
+.pdm-terms-page__table--rule td:nth-child(3) {
+  width: 42%;
+}
+
+.pdm-terms-page__table--boundary {
+  min-width: 48rem;
+}
+
+.pdm-terms-page__table--boundary th:nth-child(1),
+.pdm-terms-page__table--boundary td:nth-child(1) {
+  width: 30%;
+}
+
+.pdm-terms-page__table--boundary th:nth-child(2),
+.pdm-terms-page__table--boundary td:nth-child(2) {
+  width: 24%;
+}
+
+.pdm-terms-page__table--boundary th:nth-child(3),
+.pdm-terms-page__table--boundary td:nth-child(3) {
+  width: 20%;
+}
+
+.pdm-terms-page__table--boundary th:nth-child(4),
+.pdm-terms-page__table--boundary td:nth-child(4) {
+  width: 26%;
 }
 
 @media (min-width: 600px) {
@@ -174,11 +443,47 @@
 }
 
 @media (min-width: 840px) {
+  .pdm-terms-page__jump-nav {
+    display: none;
+  }
+
+  .pdm-terms-page__docs-layout {
+    grid-template-columns: minmax(0, 260px) minmax(0, 1fr);
+    gap: 24px;
+  }
+
   .pdm-terms-page__main {
     padding: 44px 32px 88px;
   }
 
   .pdm-terms-page__badge-list {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .pdm-terms-page__nav {
+    display: grid;
+    gap: 14px;
+    min-width: 0;
+    align-self: start;
+    padding: 18px;
+    border: 1px solid rgba(120, 113, 108, 0.16);
+    border-radius: 24px;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.97), rgba(255, 255, 255, 0.86)),
+      rgba(255, 255, 255, 0.9);
+    box-shadow:
+      0 1px 2px rgba(15, 23, 42, 0.04),
+      0 10px 24px rgba(15, 23, 42, 0.05);
+    position: sticky;
+    top: 24px;
+    max-height: calc(100dvh - 48px);
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+}
+
+@media (min-width: 1200px) {
+  .pdm-terms-page__docs-layout {
+    grid-template-columns: minmax(0, 280px) minmax(0, 1fr);
   }
 }
