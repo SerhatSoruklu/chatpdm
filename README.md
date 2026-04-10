@@ -1,34 +1,37 @@
 # ChatPDM
 
-ChatPDM guarantees that rewriting or simplifying text never changes its meaning.
+ChatPDM is a deterministic concept system, not a chatbot.
 
-It resolves text to a canonical concept, then returns fixed views of that same meaning.
-If it cannot preserve meaning safely, it refuses instead of guessing.
+It does not generate answers.
+It resolves queries only against a fixed set of authored, versioned concepts. If a query cannot be matched within those constraints, it refuses.
+
+There is no guessing, no probabilistic output, and no runtime meaning creation.
+The same input, under the same concept set and version state, produces the same result or the same refusal.
 
 ## Why This Exists
 
-Most systems treat wording as flexible. That is fine for chat, but unsafe when meaning must stay anchored.
-A rewrite, summary, or simplification can silently change the semantic payload.
-ChatPDM exists to stop that drift.
+Most systems treat wording as flexible. That is acceptable for open-ended text, but unsafe when concept meaning must stay fixed.
+A rewrite, summary, or simplification can change the authored concept.
+ChatPDM exists to prevent that drift.
 
 ## Normal Systems vs ChatPDM
 
 | Normal system | ChatPDM |
 | --- | --- |
-| Rewriting can change meaning | Rewriting or simplifying keeps the same canonical meaning |
-| Answers vary by wording | Same concept, same versions, same output |
-| Ambiguity gets smoothed over | Unsafe ambiguity is refused |
+| Rewriting can change concept meaning | Rewriting or simplifying keeps the same authored meaning |
+| Outputs vary by wording | Same concept, same version, same result |
+| Ambiguity gets smoothed over | Unsupported ambiguity is refused |
 | The system guesses when it is unsure | The system stops at the boundary |
 
 ## Concrete Example
 
 A user asks about `authority`.
 
-A normal system might answer with slightly different meanings depending on the wording: "the power to command", "recognized standing", or "legitimate control".
+A conventional system might paraphrase `authority` as "the power to command", "recognized standing", or "legitimate control".
 Those are not guaranteed to stay identical across rewrites.
 
 ChatPDM resolves `authority` to one canonical concept and returns fixed views of that concept, such as a short definition, core meaning, and full definition.
-Different wording. Same meaning. Guaranteed.
+Different wording. Same concept. Same result.
 
 ## API Examples
 
@@ -101,15 +104,15 @@ That is the intended posture: resolve authored concepts deterministically, and r
 - Input is normalized before matching.
 - Matching is bounded by authored concepts and explicit contract rules.
 - Resolution is deterministic, not probabilistic.
-- Unsupported queries do not get a guessed answer.
+- Unsupported queries do not get a guessed response.
 - Meaning is authored before runtime and then resolved through fixed views, not invented on demand.
 
 ## What ChatPDM Is / Is Not
 
 ChatPDM is:
 
-- a deterministic meaning system
-- a bounded concept engine
+- a deterministic concept system
+- a bounded concept system
 - authored, versioned, and inspectable
 - refusal-first outside authored scope
 
@@ -117,7 +120,7 @@ ChatPDM is not:
 
 - a chatbot
 - a generic Q&A system
-- open-world reasoning
+- an unconstrained system
 - an inference engine
 - a universal ontology platform
 - Product Data Management software
@@ -145,7 +148,7 @@ Meaning is authored before runtime, executed within explicit boundaries, and rej
 
 Most concept tools drift into one of two failures:
 
-- fluent answers that can change meaning when text is reworded
+- fluent responses that can change meaning when text is reworded
 - flat lookup behavior that cannot represent ambiguity or refusal cleanly
 
 ChatPDM sits between those failures.
@@ -168,9 +171,9 @@ Rules:
 - scope must be preserved in canonical outputs, comparison outputs, relation outputs, documentation, and UI/API surfaces
 - non-governance usage must produce scoped clarification or explicit `out_of_scope` refusal
 
-## AI Governance Boundary
+## Advisory Boundary
 
-If AI is introduced, it remains advisory only.
+If an advisory layer is introduced, it remains read-only.
 It must not become canonical authority.
 
 Current governance boundary docs:
@@ -182,7 +185,7 @@ Current governance boundary docs:
 - [AI Automated Integrity Checks](./docs/governance/AI_AUTOMATED_INTEGRITY_CHECKS.md)
 - [Language Contract](./LANGUAGE_CONTRACT.md)
 
-Known AI governance regressions are stored as machine-readable replay fixtures under [governance/violations](./governance/violations).
+Known advisory regressions are stored as machine-readable replay fixtures under [governance/violations](./governance/violations).
 
 ## Current Status
 
@@ -194,7 +197,7 @@ Current runtime posture:
 - Express runtime resolver
 - file-backed canonical concept set
 - response contract and schema validation
-- semantic pressure-testing harness
+- boundary stress-testing harness
 - live runtime seed concepts: `authority`, `power`, `legitimacy`, `responsibility`, `duty`
 
 The live runtime is intentionally smaller than the authored v1 scope.
@@ -205,7 +208,7 @@ The live runtime is intentionally smaller than the authored v1 scope.
 - [backend](./backend): Express resolver runtime and validation scripts
 - [docs](./docs): product, architecture, governance, and validation docs
 - [data](./data): canonical source artifacts and concept packets
-- [tests](./tests): golden fixtures and runtime pressure harnesses
+- [tests](./tests): golden fixtures and runtime validation harnesses
 - [governance](./governance): machine-readable governance replay fixtures and supporting artifacts
 - [chatpdm-reference](./chatpdm-reference): grounding stack for concept authoring discipline
 
@@ -304,14 +307,14 @@ ChatPDM is being built in phases.
 Current posture:
 
 - keep the runtime narrow
-- validate meaning before scale
-- prefer stronger authoring and pressure testing over premature growth
+- validate concepts before scale
+- prefer stronger authoring and structural stress checks over premature growth
 
 The repo should not drift into:
 
 - broad concept expansion without validation
 - chatbot behavior
-- feature growth that outruns semantic discipline
+- feature growth that outruns boundary discipline
 
 ## Community
 
