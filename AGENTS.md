@@ -184,6 +184,17 @@ Protected branch expectations for `main`:
   - never assume one commit is appropriate if the diff is clearly multi-cluster
   - give the user a reversible, reviewable, recoverable publication path even when the worktree is messy
 
+### GitLens Usage Policy
+
+- GitLens is allowed as a read/inspect tool inside VS Code.
+- Use GitLens for blame annotations, file history, commit history, line history, revision comparison, and branch or repo visualization.
+- Do not use GitLens as the primary control surface for push, sync, pull, merge, rebase, reset, stash choreography, or branch publication decisions.
+- Keep state-changing git operations terminal-first, especially in mixed or multi-branch workflows.
+- Prefer hover blame, file history, and commit inspection when you need context.
+- Keep Sync buttons disabled or ignored during complex publication work.
+- Prefer `git pull --rebase` and explicit `git push` in the terminal over UI sync actions.
+- Do not replace `AGENTS.md` git policy with GitLens UI actions.
+
 ## Validation and Push Safety
 
 - Do not stage or commit secrets, `.env` files, API keys, tokens, private keys, or credentials.
