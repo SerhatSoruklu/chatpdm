@@ -149,7 +149,6 @@
 
 .pdm-rmg__hero-card,
 .pdm-rmg__card,
-.pdm-rmg__diagram-card,
 .pdm-rmg__step-card,
 .pdm-rmg__endpoint-link {
   border: 1px solid rgba(148, 163, 184, 0.16);
@@ -229,22 +228,85 @@
 }
 
 .pdm-rmg__diagram-card {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+}
+
+.pdm-rmg__diagram-button {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: zoom-in;
+  text-align: left;
+}
+
+.pdm-rmg__diagram-button:hover .pdm-rmg__diagram-shell,
+.pdm-rmg__diagram-button:focus-visible .pdm-rmg__diagram-shell {
+  transform: translateY(-1px);
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.03),
+    0 18px 36px rgba(15, 23, 42, 0.08);
+}
+
+.pdm-rmg__diagram-button:hover .pdm-rmg__diagram-badge,
+.pdm-rmg__diagram-button:focus-visible .pdm-rmg__diagram-badge {
+  background: rgba(29, 78, 216, 0.94);
+}
+
+.pdm-rmg__diagram-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 1;
+  padding: 0.5rem 0.8rem;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.86);
+  color: #ffffff;
+  font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+  box-shadow: 0 12px 26px rgba(15, 23, 42, 0.18);
+}
+
+.pdm-rmg__diagram-shell {
+  display: block;
   overflow: hidden;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 20px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(241, 245, 249, 0.92)),
+    rgba(255, 255, 255, 0.92);
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.03),
+    0 14px 32px rgba(15, 23, 42, 0.06);
 }
 
 .pdm-rmg__diagram {
   display: block;
   width: 100%;
   height: auto;
-  aspect-ratio: 3 / 2;
-  object-fit: cover;
-  background: #f8fafc;
 }
 
 .pdm-rmg__diagram-caption {
   margin: 0;
-  padding: 14px 16px 16px;
+  color: #475569;
   font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.pdm-rmg__diagram-caption span {
+  display: block;
+  margin-top: 4px;
+  color: #334155;
+  font-weight: 600;
 }
 
 .pdm-rmg__steps {

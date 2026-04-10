@@ -1,7 +1,18 @@
 import { CommonModule, DOCUMENT } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { resolveApiOrigin } from '../../core/api/api-origin';
+import {
+  RMG_DIAGRAM_ALT,
+  RMG_DIAGRAM_CAPTION,
+  RMG_DIAGRAM_CAPTION_DETAIL,
+  RMG_DIAGRAM_EXPAND_LABEL,
+  RMG_DIAGRAM_PATH,
+  RMG_PAGE_TITLE,
+  RMG_ROUTE_PATH,
+} from './risk-mapping-governance-page.constants';
+import { RiskMappingGovernanceImageDialogComponent } from './risk-mapping-governance-image-dialog.component';
 
 interface GuaranteeCard {
   title: string;
@@ -24,23 +35,92 @@ interface AuditLinkCard {
 @Component({
   selector: 'app-risk-mapping-governance-page',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, MatDialogModule],
   templateUrl: './risk-mapping-governance-page.component.html',
   styleUrl: './risk-mapping-governance-page.component.css',
 })
 export class RiskMappingGovernancePageComponent {
-  private readonly document = inject(DOCUMENT);
+  protected readonly pageTitle = RMG_PAGE_TITLE;
+  protected readonly diagramPath = RMG_DIAGRAM_PATH;
+  protected readonly diagramAltText = RMG_DIAGRAM_ALT;
+  protected readonly diagramExpandLabel = RMG_DIAGRAM_EXPAND_LABEL;
+  protected readonly diagramCaption = RMG_DIAGRAM_CAPTION;
+  protected readonly diagramCaptionDetail = RMG_DIAGRAM_CAPTION_DETAIL;
+  protected readonly apiOrigin: string;
+  protected readonly pageRoute = RMG_ROUTE_PATH;
+  protected readonly explainEndpoint: string;
+  protected readonly auditEndpoint: string;
+  protected readonly nodesEndpoint: string;
+  protected readonly threatsEndpoint: string;
+  protected readonly compatibilityEndpoint: string;
+  protected readonly falsifiersEndpoint: string;
+  protected readonly auditSurfaceCards: readonly AuditLinkCard[];
+  protected readonly apiSurfaceLinks: readonly AuditLinkCard[];
 
-  protected readonly diagramPath = '/assets/rmg/8c3d46e2-6f74-456b-afb3-cc0cd299b8a9.png';
-  protected readonly diagramAltText = 'Diagram showing how Risk Mapping Governance turns a question into a bounded, evidence-backed structural risk map through admissibility, registries, mapping, explicit gaps, and audit output.';
-  protected readonly apiOrigin = resolveApiOrigin(this.document);
-  protected readonly pageRoute = '/risk-mapping-governance';
-  protected readonly explainEndpoint = `${this.apiOrigin}/api/v1/risk-mapping/explain`;
-  protected readonly auditEndpoint = `${this.apiOrigin}/api/v1/risk-mapping/audit`;
-  protected readonly nodesEndpoint = `${this.apiOrigin}/api/v1/risk-mapping/registries/nodes`;
-  protected readonly threatsEndpoint = `${this.apiOrigin}/api/v1/risk-mapping/registries/threats`;
-  protected readonly compatibilityEndpoint = `${this.apiOrigin}/api/v1/risk-mapping/registries/compatibility`;
-  protected readonly falsifiersEndpoint = `${this.apiOrigin}/api/v1/risk-mapping/registries/falsifiers`;
+  constructor(
+    private readonly dialog: MatDialog,
+    @Inject(DOCUMENT) private readonly document: Document | null | undefined,
+  ) {
+    this.apiOrigin = resolveApiOrigin(document);
+    this.explainEndpoint = `${this.apiOrigin}/api/v1/risk-mapping/explain`;
+    this.auditEndpoint = `${this.apiOrigin}/api/v1/risk-mapping/audit`;
+    this.nodesEndpoint = `${this.apiOrigin}/api/v1/risk-mapping/registries/nodes`;
+    this.threatsEndpoint = `${this.apiOrigin}/api/v1/risk-mapping/registries/threats`;
+    this.compatibilityEndpoint = `${this.apiOrigin}/api/v1/risk-mapping/registries/compatibility`;
+    this.falsifiersEndpoint = `${this.apiOrigin}/api/v1/risk-mapping/registries/falsifiers`;
+    this.auditSurfaceCards = [
+      {
+        title: 'Explanation surface',
+        copy: 'A bounded structural explanation that mirrors the resolve decision without adding narrative drift.',
+        href: this.explainEndpoint,
+        label: '/api/v1/risk-mapping/explain',
+      },
+      {
+        title: 'Audit report',
+        copy: 'A provenance-backed audit surface that bundles input, output, explanation, and invariants.',
+        href: this.auditEndpoint,
+        label: '/api/v1/risk-mapping/audit',
+      },
+      {
+        title: 'Registry views',
+        copy: 'Deterministic registry read models for nodes, threats, compatibility, and falsifiers.',
+        href: this.nodesEndpoint,
+        label: '/api/v1/risk-mapping/registries/*',
+      },
+      {
+        title: 'Governed releases',
+        copy: 'Versioned releases, diffs, freeze validation, and replay checks keep change control explicit.',
+        href: this.auditEndpoint,
+        label: 'Governance + replay surfaces',
+      },
+    ] as const;
+    this.apiSurfaceLinks = [
+      {
+        title: 'Nodes',
+        copy: 'Inspection-ready node registry.',
+        href: this.nodesEndpoint,
+        label: '/api/v1/risk-mapping/registries/nodes',
+      },
+      {
+        title: 'Threats',
+        copy: 'Inspection-ready threat registry.',
+        href: this.threatsEndpoint,
+        label: '/api/v1/risk-mapping/registries/threats',
+      },
+      {
+        title: 'Compatibility',
+        copy: 'Inspection-ready compatibility registry.',
+        href: this.compatibilityEndpoint,
+        label: '/api/v1/risk-mapping/registries/compatibility',
+      },
+      {
+        title: 'Falsifiers',
+        copy: 'Inspection-ready falsifier registry.',
+        href: this.falsifiersEndpoint,
+        label: '/api/v1/risk-mapping/registries/falsifiers',
+      },
+    ] as const;
+  }
 
   protected readonly whatItIsCards: readonly GuaranteeCard[] = [
     {
@@ -142,57 +222,20 @@ export class RiskMappingGovernancePageComponent {
     'Bounded support confidence does not mean prediction.',
   ] as const;
 
-  protected readonly auditSurfaceCards: readonly AuditLinkCard[] = [
-    {
-      title: 'Explanation surface',
-      copy: 'A bounded structural explanation that mirrors the resolve decision without adding narrative drift.',
-      href: this.explainEndpoint,
-      label: '/api/v1/risk-mapping/explain',
-    },
-    {
-      title: 'Audit report',
-      copy: 'A provenance-backed audit surface that bundles input, output, explanation, and invariants.',
-      href: this.auditEndpoint,
-      label: '/api/v1/risk-mapping/audit',
-    },
-    {
-      title: 'Registry views',
-      copy: 'Deterministic registry read models for nodes, threats, compatibility, and falsifiers.',
-      href: this.nodesEndpoint,
-      label: '/api/v1/risk-mapping/registries/*',
-    },
-    {
-      title: 'Governed releases',
-      copy: 'Versioned releases, diffs, freeze validation, and replay checks keep change control explicit.',
-      href: this.auditEndpoint,
-      label: 'Governance + replay surfaces',
-    },
-  ] as const;
-
-  protected readonly apiSurfaceLinks: readonly AuditLinkCard[] = [
-    {
-      title: 'Nodes',
-      copy: 'Inspection-ready node registry.',
-      href: this.nodesEndpoint,
-      label: '/api/v1/risk-mapping/registries/nodes',
-    },
-    {
-      title: 'Threats',
-      copy: 'Inspection-ready threat registry.',
-      href: this.threatsEndpoint,
-      label: '/api/v1/risk-mapping/registries/threats',
-    },
-    {
-      title: 'Compatibility',
-      copy: 'Inspection-ready compatibility registry.',
-      href: this.compatibilityEndpoint,
-      label: '/api/v1/risk-mapping/registries/compatibility',
-    },
-    {
-      title: 'Falsifiers',
-      copy: 'Inspection-ready falsifier registry.',
-      href: this.falsifiersEndpoint,
-      label: '/api/v1/risk-mapping/registries/falsifiers',
-    },
-  ] as const;
+  openDiagramDialog(): void {
+    this.dialog.open(RiskMappingGovernanceImageDialogComponent, {
+      width: 'calc(100vw - 32px)',
+      maxWidth: '1120px',
+      maxHeight: 'calc(100dvh - 32px)',
+      autoFocus: false,
+      panelClass: 'pdm-rmg-image-dialog-panel',
+      restoreFocus: true,
+      data: {
+        title: this.pageTitle,
+        imagePath: this.diagramPath,
+        imageAlt: this.diagramAltText,
+        caption: `${this.diagramCaption} ${this.diagramCaptionDetail}`,
+      },
+    });
+  }
 }

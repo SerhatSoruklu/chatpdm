@@ -1,0 +1,26 @@
+<div class="pdm-rmg-image-dialog">
+  <div class="pdm-rmg-image-dialog__header">
+    <div class="pdm-rmg-image-dialog__title-group">
+      <p class="pdm-rmg-image-dialog__eyebrow">{{ dialogTitle }}</p>
+      <h2 class="pdm-rmg-image-dialog__title">{{ data.title }}</h2>
+    </div>
+
+    <button type="button" class="pdm-rmg-image-dialog__close" (click)="close()">
+      {{ closeLabel }}
+    </button>
+  </div>
+
+  <div class="pdm-rmg-image-dialog__body">
+    <img
+      class="pdm-rmg-image-dialog__image"
+      [src]="data.imagePath"
+      [alt]="data.imageAlt"
+      width="1536"
+      height="1024"
+      loading="eager"
+      decoding="async"
+    />
+  </div>
+
+  <p class="pdm-rmg-image-dialog__caption">{{ data.caption }}</p>
+</div>

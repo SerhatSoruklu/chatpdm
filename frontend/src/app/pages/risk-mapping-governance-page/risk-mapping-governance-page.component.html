@@ -3,7 +3,7 @@
     <div class="pdm-shell__frame pdm-rmg__frame">
       <header class="pdm-rmg__hero pdm-site-surface pdm-site-panel">
         <p class="pdm-rmg__eyebrow">Transparency / trust / architecture</p>
-        <h1 class="pdm-rmg__title" id="pdm-rmg-title">Risk Mapping Governance (RMG)</h1>
+        <h1 class="pdm-rmg__title" id="pdm-rmg-title">{{ pageTitle }}</h1>
         <p class="pdm-rmg__subtitle">
           A deterministic system for admitting, constraining, and mapping supported risk scenarios
           under explicit evidence and domain rules.
@@ -89,18 +89,29 @@
 
         <div class="pdm-rmg__how-grid">
           <figure class="pdm-rmg__diagram-card">
-            <img
-              class="pdm-rmg__diagram"
-              [src]="diagramPath"
-              [alt]="diagramAltText"
-              width="1536"
-              height="1024"
-              loading="lazy"
-              decoding="async"
-            />
+            <button
+              type="button"
+              class="pdm-rmg__diagram-button"
+              (click)="openDiagramDialog()"
+              [attr.aria-label]="'Open the RMG diagram in a dialog'"
+            >
+              <span class="pdm-rmg__diagram-badge">{{ diagramExpandLabel }}</span>
+              <span class="pdm-rmg__diagram-shell">
+                <img
+                  class="pdm-rmg__diagram"
+                  [src]="diagramPath"
+                  [alt]="diagramAltText"
+                  width="1536"
+                  height="1024"
+                  loading="eager"
+                  fetchpriority="high"
+                  decoding="async"
+                />
+              </span>
+            </button>
             <figcaption class="pdm-rmg__diagram-caption">
-              Diagram of the RMG pipeline from admissibility through registries, supported
-              structural mapping, explicit gaps, and audit output.
+              {{ diagramCaption }}
+              <span>{{ diagramCaptionDetail }}</span>
             </figcaption>
           </figure>
 
