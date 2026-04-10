@@ -50,7 +50,8 @@ Deploy contract for shared env files:
 `nginx` should proxy:
 
 - `chatpdm.com` and `www.chatpdm.com` to the frontend SSR process on `127.0.0.1:4101`
-- `/api/` and `/health` to the backend on `127.0.0.1:4301`
+- `/api/` and `/api` on `chatpdm.com` and `www.chatpdm.com` to the frontend SSR process on `127.0.0.1:4101`
+- `/health` to the backend on `127.0.0.1:4301`
 - `api.chatpdm.com` directly to the backend on `127.0.0.1:4301`
 
 Recommended public host split:
