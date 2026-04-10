@@ -19,10 +19,15 @@ const {
 const {
   evaluatePreResolutionGuard,
 } = require('./pre-resolution-guard');
+const {
+  assertNotZeeArtifact,
+} = require('../../lib/zee-governance-guard');
 
 const PIPELINE_PHASE_PATH = Object.freeze([0, 1, 2, 3, 4, 5]);
 
 function runFullPipeline(rawQuery) {
+  assertNotZeeArtifact(rawQuery, 'Concept runtime pipeline input');
+
   if (typeof rawQuery !== 'string') {
     throw new TypeError('Expected rawQuery to be a string.');
   }

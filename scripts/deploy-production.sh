@@ -151,6 +151,7 @@ on_error() {
 require_cmd git
 require_cmd npm
 require_cmd pm2
+require_cmd node
 require_cmd curl
 require_cmd rsync
 require_cmd find
@@ -217,6 +218,9 @@ wait_for_health "http://127.0.0.1:4301/health" 30 1
 
 log "Running frontend SSR health check"
 wait_for_health "http://127.0.0.1:4101/" 30 1
+
+log "Running public route verification (stable api-docs marker contract)"
+node "$CURRENT_LINK/scripts/verify-public-routes.js"
 
 ROLLBACK_ENABLED=0
 prune_old_releases "$KEEP_RELEASES"

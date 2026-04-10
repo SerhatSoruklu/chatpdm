@@ -7,6 +7,9 @@ architecturally isolated from the runtime path.
 ## Core Invariant
 
 ZEE outputs are non-authoritative and cannot be consumed as inputs by any other system surface.
+Canonical ZEE artifacts carry an explicit `ZEE_EVIDENCE_TRACE` marker plus a contract marker,
+and runtime code must reject them structurally with `assertNotZeeArtifact(...)` if they reach a
+runtime path.
 
 This invariant exists to prevent future coupling drift, accidental runtime reuse, and the common
 “just plug it in later” expansion pattern that turns a surface into an authority.

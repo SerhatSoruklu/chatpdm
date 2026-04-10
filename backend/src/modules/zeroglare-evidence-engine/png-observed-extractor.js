@@ -7,10 +7,21 @@ const {
   ZEE_INTERNAL_ENGINE_DEFAULT_MAX_DOMINANT_COLORS,
   ZEE_INTERNAL_ENGINE_DEFAULT_MAX_REGION_CANDIDATES,
   ZEE_INTERNAL_ENGINE_DEFAULT_TILE_SIZE,
+  ZEE_INTERNAL_ENGINE_EXTRACTOR_POLICY,
   ZEE_INTERNAL_ENGINE_ERROR_CODES,
-  ZEE_INTERNAL_ENGINE_NON_OPERATIONAL_NOTE,
-  ZEE_INTERNAL_ENGINE_OBSERVED_ONLY_NOTE,
+  ZEE_INTERNAL_ENGINE_OBSERVED_FRAME_SCHEMA,
+  ZEE_INTERNAL_ENGINE_PNG_POLICY,
+  ZEE_INTERNAL_ENGINE_POLICY_MANIFEST,
+  ZEE_INTERNAL_ENGINE_TRACE_CONTRACT,
 } = require('./constants');
+const {
+  createZeeArtifactMarker,
+} = require('./artifact-markers');
+const {
+  buildCanonicalFrameArtifactId,
+  compareCanonicalNumber,
+  computeCrc32,
+} = require('./policy');
 const { ZeeObservedInputError } = require('./input-contract');
 
 const PNG_SIGNATURE = Buffer.from('89504e470d0a1a0a', 'hex');
@@ -23,7 +34,7 @@ const PNG_COLOR_TYPE_LABELS = Object.freeze({
   6: 'truecolor_alpha',
 });
 
-function roundTo(value, precision = 4) {
+function roundTo(value, precision = ZEE_INTERNAL_ENGINE_EXTRACTOR_POLICY.roundingPrecision) {
   if (!Number.isFinite(value)) {
     return 0;
   }
@@ -83,6 +94,7 @@ function parsePngStructure(buffer) {
   let transparency = null;
   const idatParts = [];
   const chunkTypes = [];
+  let seenIend = false;
 
   while (offset < buffer.length) {
     if (offset + 8 > buffer.length) {
@@ -97,6 +109,13 @@ function parsePngStructure(buffer) {
     const chunkType = buffer.toString('ascii', offset, offset + 4);
     offset += 4;
 
+    if (chunkLength > ZEE_INTERNAL_ENGINE_PNG_POLICY.maxChunkDataBytes) {
+      throw new ZeeObservedInputError(
+        `The PNG chunk "${chunkType}" exceeds the maximum supported size of ${ZEE_INTERNAL_ENGINE_PNG_POLICY.maxChunkDataBytes} bytes.`,
+        ZEE_INTERNAL_ENGINE_ERROR_CODES.INVALID_IMAGE,
+      );
+    }
+
     if (offset + chunkLength + 4 > buffer.length) {
       throw new ZeeObservedInputError(
         `The PNG chunk "${chunkType}" exceeds the available frame bytes.`,
@@ -106,7 +125,20 @@ function parsePngStructure(buffer) {
 
     const chunkData = buffer.subarray(offset, offset + chunkLength);
     offset += chunkLength;
-    offset += 4; // CRC, not validated in v1.
+    const storedCrc = buffer.readUInt32BE(offset);
+    offset += 4;
+    const computedCrc = computeCrc32([
+      Buffer.from(chunkType, 'ascii'),
+      chunkData,
+    ]);
+
+    if (ZEE_INTERNAL_ENGINE_PNG_POLICY.requireCrc && storedCrc !== computedCrc) {
+      throw new ZeeObservedInputError(
+        `The PNG chunk "${chunkType}" failed CRC validation.`,
+        ZEE_INTERNAL_ENGINE_ERROR_CODES.INVALID_IMAGE,
+      );
+    }
+
     chunkTypes.push(chunkType);
 
     if (chunkType === 'IHDR') {
@@ -144,8 +176,29 @@ function parsePngStructure(buffer) {
     }
 
     if (chunkType === 'IEND') {
+      seenIend = true;
+      if (chunkLength !== 0) {
+        throw new ZeeObservedInputError(
+          'The PNG frame contains a malformed IEND chunk.',
+          ZEE_INTERNAL_ENGINE_ERROR_CODES.INVALID_IMAGE,
+        );
+      }
       break;
     }
+  }
+
+  if (ZEE_INTERNAL_ENGINE_PNG_POLICY.requireIend && !seenIend) {
+    throw new ZeeObservedInputError(
+      'The PNG frame is missing the required IEND chunk.',
+      ZEE_INTERNAL_ENGINE_ERROR_CODES.INVALID_IMAGE,
+    );
+  }
+
+  if (offset !== buffer.length) {
+    throw new ZeeObservedInputError(
+      'The PNG frame contains trailing bytes after the IEND chunk.',
+      ZEE_INTERNAL_ENGINE_ERROR_CODES.INVALID_IMAGE,
+    );
   }
 
   if (width === null || height === null || bitDepth === null || colorType === null) {
@@ -165,6 +218,13 @@ function parsePngStructure(buffer) {
   if (interlaceMethod !== 0) {
     throw new ZeeObservedInputError(
       'ZEE Internal Engine v1 only supports non-interlaced PNG frames.',
+      ZEE_INTERNAL_ENGINE_ERROR_CODES.INVALID_IMAGE,
+    );
+  }
+
+  if (bitDepth === 16) {
+    throw new ZeeObservedInputError(
+      'ZEE Internal Engine v1 rejects 16-bit PNG frames; normalize them to 8-bit before ingestion.',
       ZEE_INTERNAL_ENGINE_ERROR_CODES.INVALID_IMAGE,
     );
   }
@@ -322,7 +382,10 @@ function scaledGraySample(sample, bitDepth) {
   }
 
   if (bitDepth === 16) {
-    return sample;
+    throw new ZeeObservedInputError(
+      'ZEE Internal Engine v1 rejects 16-bit PNG frames; normalize them to 8-bit before ingestion.',
+      ZEE_INTERNAL_ENGINE_ERROR_CODES.INVALID_IMAGE,
+    );
   }
 
   const maxValue = (1 << bitDepth) - 1;
@@ -353,6 +416,10 @@ function rgbaToHex(rgba) {
 }
 
 function analyzeTileGrid(tileStats, tilesX, tilesY, imageWidth, imageHeight, tileSize, options) {
+  const activityWeights = ZEE_INTERNAL_ENGINE_EXTRACTOR_POLICY.tileActivityWeights;
+  const activeTileThresholds = ZEE_INTERNAL_ENGINE_EXTRACTOR_POLICY.activeTileThresholds;
+  const candidateScoreWeights = ZEE_INTERNAL_ENGINE_EXTRACTOR_POLICY.candidateScoreWeights;
+  const classificationThresholds = ZEE_INTERNAL_ENGINE_EXTRACTOR_POLICY.classificationThresholds;
   const tileSummaries = tileStats.map((tile, index) => {
     if (tile.pixelCount === 0) {
       return {
@@ -412,9 +479,9 @@ function analyzeTileGrid(tileStats, tilesX, tilesY, imageWidth, imageHeight, til
       : populatedNeighbors.reduce((sum, neighborIndex) => sum + Math.abs(tile.meanLuma - tileSummaries[neighborIndex].meanLuma), 0) / populatedNeighbors.length;
 
     const activity = clamp(
-      ((tile.edgeDensity / 0.24) * 0.45)
-      + ((tile.variance / 4800) * 0.35)
-      + ((contrast / 90) * 0.20),
+      ((tile.edgeDensity / activityWeights.edgeDensityScale) * activityWeights.edgeDensityContribution)
+      + ((tile.variance / activityWeights.varianceScale) * activityWeights.varianceContribution)
+      + ((contrast / activityWeights.contrastScale) * activityWeights.contrastContribution),
       0,
       1,
     );
@@ -427,16 +494,21 @@ function analyzeTileGrid(tileStats, tilesX, tilesY, imageWidth, imageHeight, til
   });
 
   const activeTiles = tileSummaries.filter((tile) => tile.pixelCount > 0 && (
-    tile.activity >= 0.16
-    || tile.edgeDensity >= 0.08
-    || tile.variance >= 420
+    tile.activity >= activeTileThresholds.activity
+    || tile.edgeDensity >= activeTileThresholds.edgeDensity
+    || tile.variance >= activeTileThresholds.variance
   ));
 
   const seedTiles = activeTiles.length > 0
     ? activeTiles
     : [...tileSummaries]
       .filter((tile) => tile.pixelCount > 0)
-      .sort((left, right) => right.activity - left.activity || right.edgeDensity - left.edgeDensity || right.variance - left.variance)
+      .sort((left, right) => (
+        compareCanonicalNumber(right.activity, left.activity)
+        || compareCanonicalNumber(right.edgeDensity, left.edgeDensity)
+        || compareCanonicalNumber(right.variance, left.variance)
+        || compareCanonicalNumber(left.tileIndex, right.tileIndex)
+      ))
       .slice(0, Math.min(6, tileSummaries.length));
 
   const activeTileLookup = new Set(seedTiles.map((tile) => tile.tileIndex));
@@ -463,27 +535,34 @@ function analyzeTileGrid(tileStats, tilesX, tilesY, imageWidth, imageHeight, til
     const aspect = component.bounds.width / component.bounds.height;
     const area = component.bounds.width * component.bounds.height;
 
-    if (component.tileCount <= 2 && aspect >= 1.6) {
+    if (component.tileCount <= 2 && aspect >= classificationThresholds.horizontalStripAspect) {
       return 'horizontal_strip';
     }
 
-    if (component.tileCount <= 2 && aspect <= 0.625) {
+    if (component.tileCount <= 2 && aspect <= classificationThresholds.verticalStripAspect) {
       return 'vertical_strip';
     }
 
-    if (component.meanEdgeDensity >= 0.22 && component.meanVariance >= 1200) {
+    if (
+      component.meanEdgeDensity >= classificationThresholds.densePatchEdgeDensity
+      && component.meanVariance >= classificationThresholds.densePatchVariance
+    ) {
       return 'dense_patch';
     }
 
-    if (aspect >= 1.8) {
+    if (aspect >= classificationThresholds.widePanelAspect) {
       return 'wide_panel';
     }
 
-    if (aspect <= 0.55) {
+    if (aspect <= classificationThresholds.tallStripAspect) {
       return 'tall_strip';
     }
 
-    if (aspect >= 0.85 && aspect <= 1.15 && area <= tileSize * tileSize * 9) {
+    if (
+      aspect >= classificationThresholds.squareBlockAspectMin
+      && aspect <= classificationThresholds.squareBlockAspectMax
+      && area <= tileSize * tileSize * classificationThresholds.squareBlockAreaMultiplier
+    ) {
       return 'square_block';
     }
 
@@ -517,8 +596,8 @@ function analyzeTileGrid(tileStats, tilesX, tilesY, imageWidth, imageHeight, til
     const meanContrast = componentTiles.reduce((sum, tile) => sum + tile.contrast, 0) / componentTiles.length;
     const score = clamp(
       meanActivity
-      + Math.min(0.25, Math.log(componentTiles.length + 1) / 18)
-      + Math.min(0.12, meanContrast / 1400),
+      + Math.min(candidateScoreWeights.sizeContributionCap, Math.log(componentTiles.length + 1) / candidateScoreWeights.sizeContributionScale)
+      + Math.min(candidateScoreWeights.contrastContribution, meanContrast / candidateScoreWeights.contrastScale),
       0,
       1,
     );
@@ -538,11 +617,11 @@ function analyzeTileGrid(tileStats, tilesX, tilesY, imageWidth, imageHeight, til
         width,
       },
       contrast: roundTo(meanContrast, 2),
-      edgeDensity: roundTo(meanEdgeDensity, 4),
+      edgeDensity: roundTo(meanEdgeDensity, ZEE_INTERNAL_ENGINE_EXTRACTOR_POLICY.roundingPrecision),
       geometryClass,
       kind: 'region_candidate',
       pixelCoverage: roundTo((width * height) / (imageWidth * imageHeight), 6),
-      score: roundTo(score, 4),
+      score: roundTo(score, ZEE_INTERNAL_ENGINE_EXTRACTOR_POLICY.roundingPrecision),
       tileCoverage: componentTiles.length,
       variance: roundTo(meanVariance, 2),
     };
@@ -603,14 +682,23 @@ function analyzeTileGrid(tileStats, tilesX, tilesY, imageWidth, imageHeight, til
   if (regionCandidates.length === 0) {
     const fallbackTile = [...tileSummaries]
       .filter((tile) => tile.pixelCount > 0)
-      .sort((left, right) => right.activity - left.activity || right.edgeDensity - left.edgeDensity || right.variance - left.variance)[0];
+      .sort((left, right) => (
+        compareCanonicalNumber(right.activity, left.activity)
+        || compareCanonicalNumber(right.edgeDensity, left.edgeDensity)
+        || compareCanonicalNumber(right.variance, left.variance)
+        || compareCanonicalNumber(left.tileIndex, right.tileIndex)
+      ))[0];
 
     if (fallbackTile) {
       regionCandidates.push(buildCandidateFromTiles([fallbackTile]));
     }
   }
 
-  regionCandidates.sort((left, right) => right.score - left.score || left.bounds.top - right.bounds.top || left.bounds.left - right.bounds.left);
+  regionCandidates.sort((left, right) => (
+    compareCanonicalNumber(right.score, left.score)
+    || compareCanonicalNumber(left.bounds.top, right.bounds.top)
+    || compareCanonicalNumber(left.bounds.left, right.bounds.left)
+  ));
 
   return {
     regionCandidates: regionCandidates.slice(0, options.maxRegionCandidates),
@@ -621,6 +709,7 @@ function analyzeTileGrid(tileStats, tilesX, tilesY, imageWidth, imageHeight, til
 function analyzeObservedPngFrame(frame, options) {
   const png = parsePngStructure(frame.buffer);
   const frameFingerprint = crypto.createHash('sha256').update(frame.buffer).digest('hex');
+  const frameArtifactId = buildCanonicalFrameArtifactId(frameFingerprint);
   const samplesPerPixel = getSamplesPerPixel(png.colorType);
   const bytesPerPixel = getChannelBytesPerPixel(png.bitDepth, samplesPerPixel);
   const rowByteLength = calculateRowBytes(png.width, png.bitDepth, samplesPerPixel);
@@ -719,13 +808,6 @@ function analyzeObservedPngFrame(frame, options) {
           green = gray;
           blue = gray;
           alpha = 255;
-        } else if (png.bitDepth === 16) {
-          const byteIndex = x * 2;
-          const gray = decodedRow.readUInt8(byteIndex);
-          red = gray;
-          green = gray;
-          blue = gray;
-          alpha = 255;
         } else {
           const gray = decodedRow.readUInt8(x);
           red = gray;
@@ -734,49 +816,24 @@ function analyzeObservedPngFrame(frame, options) {
           alpha = 255;
         }
       } else if (png.colorType === 2) {
-        if (png.bitDepth === 16) {
-          const byteIndex = x * 6;
-          red = decodedRow.readUInt8(byteIndex);
-          green = decodedRow.readUInt8(byteIndex + 2);
-          blue = decodedRow.readUInt8(byteIndex + 4);
-          alpha = 255;
-        } else {
-          const byteIndex = x * 3;
-          red = decodedRow.readUInt8(byteIndex);
-          green = decodedRow.readUInt8(byteIndex + 1);
-          blue = decodedRow.readUInt8(byteIndex + 2);
-          alpha = 255;
-        }
+        const byteIndex = x * 3;
+        red = decodedRow.readUInt8(byteIndex);
+        green = decodedRow.readUInt8(byteIndex + 1);
+        blue = decodedRow.readUInt8(byteIndex + 2);
+        alpha = 255;
       } else if (png.colorType === 4) {
-        if (png.bitDepth === 16) {
-          const byteIndex = x * 4;
-          const gray = decodedRow.readUInt8(byteIndex);
-          red = gray;
-          green = gray;
-          blue = gray;
-          alpha = decodedRow.readUInt8(byteIndex + 2);
-        } else {
-          const byteIndex = x * 2;
-          const gray = decodedRow.readUInt8(byteIndex);
-          red = gray;
-          green = gray;
-          blue = gray;
-          alpha = decodedRow.readUInt8(byteIndex + 1);
-        }
+        const byteIndex = x * 2;
+        const gray = decodedRow.readUInt8(byteIndex);
+        red = gray;
+        green = gray;
+        blue = gray;
+        alpha = decodedRow.readUInt8(byteIndex + 1);
       } else if (png.colorType === 6) {
-        if (png.bitDepth === 16) {
-          const byteIndex = x * 8;
-          red = decodedRow.readUInt8(byteIndex);
-          green = decodedRow.readUInt8(byteIndex + 2);
-          blue = decodedRow.readUInt8(byteIndex + 4);
-          alpha = decodedRow.readUInt8(byteIndex + 6);
-        } else {
-          const byteIndex = x * 4;
-          red = decodedRow.readUInt8(byteIndex);
-          green = decodedRow.readUInt8(byteIndex + 1);
-          blue = decodedRow.readUInt8(byteIndex + 2);
-          alpha = decodedRow.readUInt8(byteIndex + 3);
-        }
+        const byteIndex = x * 4;
+        red = decodedRow.readUInt8(byteIndex);
+        green = decodedRow.readUInt8(byteIndex + 1);
+        blue = decodedRow.readUInt8(byteIndex + 2);
+        alpha = decodedRow.readUInt8(byteIndex + 3);
       } else {
         throw new ZeeObservedInputError(
           `ZEE Internal Engine v1 does not support PNG color type ${png.colorType}.`,
@@ -871,22 +928,23 @@ function analyzeObservedPngFrame(frame, options) {
 
   return {
     diagnosticNotes: [
-      createNote('png_signature_verified', 'PNG signature verified for observed-only extraction.'),
+      createNote('png_signature_verified', 'png_signature_verified'),
       createNote(
         'png_decoded',
-        `Decoded ${png.width} x ${png.height} ${PNG_COLOR_TYPE_LABELS[png.colorType]} PNG with bit depth ${png.bitDepth}.`,
+        'png_decoded',
         {
           chunkTypes: [...new Set(png.chunkTypes)],
           colorType: png.colorType,
           colorTypeLabel: PNG_COLOR_TYPE_LABELS[png.colorType],
+          bitDepth: png.bitDepth,
+          height: png.height,
           interlaceMethod: png.interlaceMethod,
+          width: png.width,
         },
       ),
       createNote(
         'palette_usage',
-        png.colorType === 3
-          ? `Palette entries used: ${usedPaletteIndices.size} of ${paletteEntries.length}.`
-          : `Distinct observed colors: ${colorCounts.size}.`,
+        'palette_usage',
         {
           distinctColors: colorCounts.size,
           paletteEntries: paletteEntries.length,
@@ -896,13 +954,13 @@ function analyzeObservedPngFrame(frame, options) {
       ),
       createNote(
         'scanline_filters',
-        `Scanline filters encountered: ${[...scanlineFilters].sort((left, right) => left - right).join(', ') || 'none'}.`,
+        'scanline_filters',
         {
           filters: [...scanlineFilters].sort((left, right) => left - right),
         },
       ),
-      createNote('observed_only', ZEE_INTERNAL_ENGINE_OBSERVED_ONLY_NOTE),
-      createNote('module_isolation', ZEE_INTERNAL_ENGINE_NON_OPERATIONAL_NOTE),
+      createNote('observed_only', 'observed_only'),
+      createNote('module_isolation', 'module_isolation'),
     ],
     frameMetadata: {
       byteLength: frame.byteLength,
@@ -910,23 +968,28 @@ function analyzeObservedPngFrame(frame, options) {
       colorType: png.colorType,
       colorTypeLabel: PNG_COLOR_TYPE_LABELS[png.colorType],
       compressionMethod: png.compressionMethod,
+      artifactId: frameArtifactId,
+      artifactSchemaVersion: ZEE_INTERNAL_ENGINE_TRACE_CONTRACT.observedFrameArtifactSchemaVersion,
       fingerprint: frameFingerprint,
-      fileName: frame.sourcePath ? frame.sourcePath.split(/[\\/]/).pop() : null,
       height: png.height,
       imageFormat: 'png',
       interlaceMethod: png.interlaceMethod,
       paletteEntries: paletteEntries.length,
       pixelCount: totalPixels,
       rowByteLength,
+      policyVersion: ZEE_INTERNAL_ENGINE_POLICY_MANIFEST.version,
+      schemaVersion: ZEE_INTERNAL_ENGINE_OBSERVED_FRAME_SCHEMA.version,
       sourceId: frame.sourceId ?? null,
       sourceLabel: frame.sourceLabel,
-      sourcePath: frame.sourcePath,
-      sourceType: frame.sourceType,
       transparentPaletteEntries,
       width: png.width,
     },
+    artifactId: frameArtifactId,
+    ...createZeeArtifactMarker('observed_frame'),
     frameIndex: frame.frameIndex,
     frameId: frameFingerprint,
+    policyVersion: ZEE_INTERNAL_ENGINE_POLICY_MANIFEST.version,
+    schemaVersion: ZEE_INTERNAL_ENGINE_OBSERVED_FRAME_SCHEMA.version,
     observedFeatures: {
       dominantColors,
       edgeMetrics,

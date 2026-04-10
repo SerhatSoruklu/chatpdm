@@ -8,15 +8,49 @@ function main(): void {
 
   assert.equal(viewModel.inspectRoute, '/inspect/terms');
   assert.equal(viewModel.eyebrow, 'API Reference');
-  assert.equal(viewModel.title, 'Current runtime contract for public endpoints and feedback boundaries.');
+  assert.equal(viewModel.title, 'Current public API reference.');
+  assert.equal(
+    viewModel.intro,
+    'This page models the public API as a scoped runtime section plus separate Risk Mapping Governance and ZEE surfaces. The hero counts are scoped to the runtime section only.',
+  );
   assert.equal(
     viewModel.summaryLine,
-    'Current API surface shows 2 public endpoints, 22 field rules, 1 platform rule, 1 runtime boundary, and 8 refusal boundaries.',
+    'Runtime section shows 7 public endpoints, 22 field rules, 1 platform rule, 1 runtime boundary, and 8 refusal boundaries.',
+  );
+  assert.deepEqual(
+    viewModel.sectionGroups.map((group) => group.label),
+    ['Overview', 'Concepts', 'Feedback', 'Risk Mapping Governance', 'Support / Notes'],
+  );
+  assert.deepEqual(viewModel.sectionGroups.map((group) => group.sections.length), [1, 1, 1, 1, 4]);
+  assert.deepEqual(viewModel.sectionOrder.map((section) => section.id), [
+    'overview',
+    'endpoint-contract',
+    'field-contract',
+    'risk-mapping-governance',
+    'platform-rules',
+    'runtime-boundaries',
+    'refusal-boundaries',
+    'zee-api',
+  ]);
+  assert.equal(viewModel.sectionOrder[0].title, 'Current public API reference.');
+  assert.equal(
+    viewModel.sectionOrder[0].summary,
+    'This page models the public API as a scoped runtime section plus separate Risk Mapping Governance and ZEE surfaces. The hero counts are scoped to the runtime section only.',
+  );
+  assert.equal(viewModel.sectionOrder[3].title, 'Risk Mapping Governance API');
+  assert.equal(
+    viewModel.sectionOrder[3].summary,
+    'Risk Mapping Governance is exposed separately as a bounded API surface. The current public route resolves only entity, timeHorizon, scenarioType, domain, scope, and evidenceSetVersion. queryText is not forwarded by the route handler.',
+  );
+  assert.equal(viewModel.sectionOrder[7].title, 'ZeroGlare Evidence Engine API');
+  assert.equal(
+    viewModel.sectionOrder[7].summary,
+    'ZEE is exposed separately as a bounded read-only contract surface. These endpoints exist for inspectability and contract framing only. They do not perform live evidence analysis and are not part of ChatPDM runtime resolution.',
   );
   assert.deepEqual(
     viewModel.badges,
     [
-      { label: 'Endpoints', value: '2 public' },
+      { label: 'Endpoints', value: '7 public' },
       { label: 'Field rules', value: '22 typed' },
       { label: 'Platform rules', value: '1 active' },
       { label: 'Boundaries', value: '9 mapped' },
@@ -36,12 +70,52 @@ function main(): void {
         evidence: 'backend/src/routes/api/v1/concepts.route.js:16-31',
       },
       {
+        claimId: 'terms-35',
+        operation: 'concept resolution',
+        method: 'POST',
+        path: '/api/v1/concepts/resolve',
+        input: 'request body',
+        evidence: 'backend/src/routes/api/v1/concepts.route.js:49-55',
+      },
+      {
+        claimId: 'terms-36',
+        operation: 'concept detail',
+        method: 'GET',
+        path: '/api/v1/concepts/:conceptId',
+        input: 'route: conceptId',
+        evidence: 'backend/src/routes/api/v1/concepts.route.js:57-93',
+      },
+      {
+        claimId: 'terms-37',
+        operation: 'feedback index',
+        method: 'GET',
+        path: '/api/v1/feedback',
+        input: 'none',
+        evidence: 'backend/src/routes/api/v1/feedback.route.js:12-18',
+      },
+      {
         claimId: 'terms-2',
         operation: 'feedback submission',
         method: 'POST',
         path: '/api/v1/feedback',
         input: 'request body',
         evidence: 'backend/src/routes/api/v1/feedback.route.js:20-23',
+      },
+      {
+        claimId: 'terms-38',
+        operation: 'feedback export',
+        method: 'GET',
+        path: '/api/v1/feedback/session/:sessionId/export',
+        input: 'route: sessionId',
+        evidence: 'backend/src/routes/api/v1/feedback.route.js:45-68',
+      },
+      {
+        claimId: 'terms-39',
+        operation: 'feedback delete',
+        method: 'DELETE',
+        path: '/api/v1/feedback/session/:sessionId',
+        input: 'route: sessionId',
+        evidence: 'backend/src/routes/api/v1/feedback.route.js:70-93',
       },
     ],
     'Endpoint contract rows must remain separate from field and boundary rows.',
@@ -50,7 +124,7 @@ function main(): void {
   assert.equal(viewModel.riskMappingTitle, 'Risk Mapping Governance API');
   assert.equal(
     viewModel.riskMappingIntro,
-    'Risk Mapping Governance is exposed separately as a bounded API surface. The entity stays authoritative for evidence-pack lookup, while queryText is optional and used only for classification and framing detection.',
+    'Risk Mapping Governance is exposed separately as a bounded API surface. The current public route resolves only entity, timeHorizon, scenarioType, domain, scope, and evidenceSetVersion. queryText is not forwarded by the route handler.',
   );
   assert.deepEqual(
     viewModel.riskMappingEndpointRows,
@@ -68,7 +142,7 @@ function main(): void {
         operation: 'explain surface',
         method: 'GET',
         path: '/api/v1/risk-mapping/explain',
-        input: 'query: entity, timeHorizon, scenarioType, domain, scope, evidenceSetVersion, queryText',
+        input: 'query: entity, timeHorizon, scenarioType, domain, scope, evidenceSetVersion',
         evidence: 'backend/src/routes/api/v1/risk-mapping.route.js:67-70',
       },
       {
@@ -76,7 +150,7 @@ function main(): void {
         operation: 'audit surface',
         method: 'GET',
         path: '/api/v1/risk-mapping/audit',
-        input: 'query: entity, timeHorizon, scenarioType, domain, scope, evidenceSetVersion, queryText',
+        input: 'query: entity, timeHorizon, scenarioType, domain, scope, evidenceSetVersion',
         evidence: 'backend/src/routes/api/v1/risk-mapping.route.js:82-85',
       },
       {
@@ -124,17 +198,45 @@ function main(): void {
         condition: 'authoritative evidence-pack lookup key',
         evidence: 'backend/src/modules/risk-mapping/contracts/riskMapQueryContract.js',
       },
-      {
-        claimId: 'rmg-field-2',
-        field: 'queryText',
-        rule: 'accepted field',
-        condition: 'optional framing channel; classification only',
-        evidence: 'backend/src/modules/risk-mapping/contracts/riskMapQueryContract.js',
-      },
     ],
     'Risk Mapping request fields must keep entity lookup separate from framing detection.',
   );
   assert.equal(viewModel.riskMappingTrustRoute, '/risk-mapping-governance');
+  assert.equal(viewModel.zeeApiTitle, 'ZeroGlare Evidence Engine API');
+  assert.equal(
+    viewModel.zeeApiIntro,
+    'ZEE is exposed separately as a bounded read-only contract surface. These endpoints exist for inspectability and contract framing only. They do not perform live evidence analysis and are not part of ChatPDM runtime resolution.',
+  );
+  assert.deepEqual(
+    viewModel.zeeApiEndpointRows,
+    [
+      {
+        claimId: 'zee-api-1',
+        operation: 'contract surface',
+        method: 'GET',
+        path: '/api/v1/zee/contract',
+        input: 'none',
+        evidence: 'backend/src/routes/api/v1/zee.route.js:45-53',
+      },
+      {
+        claimId: 'zee-api-2',
+        operation: 'explain surface',
+        method: 'GET',
+        path: '/api/v1/zee/explain',
+        input: 'none',
+        evidence: 'backend/src/routes/api/v1/zee.route.js:55-74',
+      },
+      {
+        claimId: 'zee-api-3',
+        operation: 'audit surface',
+        method: 'GET',
+        path: '/api/v1/zee/audit',
+        input: 'none',
+        evidence: 'backend/src/routes/api/v1/zee.route.js:76-88',
+      },
+    ],
+    'ZEE endpoint rows must remain a separate bounded API section.',
+  );
 
   assert.equal(viewModel.requestFieldRows.length, 12);
   assert.equal(viewModel.acceptedValueRows.length, 10);

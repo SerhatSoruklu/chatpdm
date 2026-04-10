@@ -59,6 +59,13 @@ Recommended public host split:
 - `chatpdm.com` and `www.chatpdm.com` for the frontend
 - `api.chatpdm.com` for direct API access
 
+Resolved incident note:
+
+- status: resolved
+- root cause: stale live nginx vhost on `chatpdm.com` still proxied `/api/` to the backend, colliding with the frontend docs route
+- fix: remove the `/api/` backend proxy from `chatpdm.com` ingress and reload nginx
+- `www.chatpdm.com` redirect behavior was left unchanged on purpose so the canonical host remains `chatpdm.com`
+
 ## Expected deploy flow
 
 1. Update `/srv/chatpdm/repo` to the target branch.
@@ -69,7 +76,26 @@ Recommended public host split:
 6. Switch `/srv/chatpdm/current` to the new release.
 7. Reload the frontend SSR and backend processes through `pm2`.
 8. Run backend and frontend health checks.
-9. Keep the release on success, or roll back on failure.
+9. Run public route verification for:
+   - `https://chatpdm.com/api/`
+   - `https://chatpdm.com/health`
+   - `https://api.chatpdm.com/api/`
+   - `https://www.chatpdm.com/api/`
+10. Keep the release on success, or roll back on failure.
+
+The public route verification step is intentionally strict:
+
+- `https://chatpdm.com/api/` must return `200` and serve the frontend docs route
+- the docs route must expose the stable identity marker `data-route-surface="api-docs"`
+- `https://chatpdm.com/health` must return `200`
+- `https://api.chatpdm.com/api/` must still resolve to the backend and return the backend's bounded `404` for `/api/`
+- `https://www.chatpdm.com/api/` may return `301` or `302` to the canonical host and that is valid
+
+Operational note:
+
+- if the frontend marker change has not yet been deployed, live route verification will fail until the new release reaches production
+- once deployed, `data-route-surface="api-docs"` is part of the required route contract
+- `scripts/verify-public-routes.js --json` is available for CI or monitoring when structured output is preferred
 
 The deploy script is safe to run repeatedly:
 

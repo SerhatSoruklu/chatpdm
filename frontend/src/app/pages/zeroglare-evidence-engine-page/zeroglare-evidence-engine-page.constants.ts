@@ -4,8 +4,8 @@ export const ZEE_SEO_KEY = 'static.zeroglare-evidence-engine' as const;
 
 export const ZEE_PAGE_TITLE = 'ZeroGlare Evidence Engine' as const;
 export const ZEE_SEO_TITLE = 'ZEE (ZeroGlare Evidence Engine) - ChatPDM' as const;
-export const ZEE_PAGE_SUBTITLE = 'Deterministic evidence analysis with bounded output.' as const;
-export const ZEE_PAGE_DESCRIPTION = "ZEE is ChatPDM's deterministic evidence analyzer: bounded output, explicit contract framing, and no truth or identity inference." as const;
+export const ZEE_PAGE_SUBTITLE = 'Deterministic evidence support with bounded output and explicit contract metadata.' as const;
+export const ZEE_PAGE_DESCRIPTION = "ZEE is ChatPDM's deterministic evidence surface: bounded output, explicit cross-kind support rule, explicit outcome taxonomy, and no truth or identity inference." as const;
 export const ZEE_PAGE_BOUNDARY_LINE = 'ZEE adds capability, not authority.' as const;
 export const ZEE_INFOGRAPHIC_DIALOG_TITLE = 'ZEE infographic' as const;
 export const ZEE_INFOGRAPHIC_EXPAND_LABEL = 'Open larger view' as const;

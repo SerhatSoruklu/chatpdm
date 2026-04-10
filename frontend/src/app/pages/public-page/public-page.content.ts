@@ -11,36 +11,36 @@ import {
 const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
   about: {
     eyebrow: 'About',
-    title: 'Deterministic meaning under authored scope.',
+    title: 'Deterministic concept resolution under authored scope.',
     intro:
-      'ChatPDM is built for cases where wording, source grounding, and output stability matter more than open-ended fluency.',
+      'ChatPDM is built for cases where authored wording, source grounding, and output stability matter more than open-ended fluency.',
     sections: [
       {
         title: 'What the product does',
         paragraphs: [
-          'ChatPDM resolves authored concepts into bounded outputs with explicit runtime rules. It is designed to stay inspectable instead of sounding broader than it is.',
+          'ChatPDM resolves authored concepts into bounded outputs with explicit runtime rules. It is designed to stay inspectable and contract-bound.',
         ],
       },
       {
         title: 'What the product refuses',
         bullets: [
-          'No chatbot-style improvisation beyond the authored concept set',
-          'No hidden inference layer that silently expands meaning',
-          'No vague answer surface that hides ambiguity behind fluent wording',
+          'No open-ended improvisation beyond the authored concept set',
+          'No hidden inference layer that silently expands the concept set',
+          'No vague response surface that hides ambiguity behind fluent wording',
         ],
       },
     ],
   },
   'what-is-chatpdm': {
     eyebrow: 'Definition',
-    title: 'ChatPDM is a deterministic reasoning system.',
+    title: 'ChatPDM is a deterministic concept system.',
     intro:
       'It resolves authored concepts into bounded outputs. It is not Product Data Management software, and it is not a CAD or engineering workflow tool.',
     sections: [
       {
         title: 'What ChatPDM is',
         paragraphs: [
-          'ChatPDM is a deterministic concept-resolution system. It works with authored concept structures, explicit refusal, and source-backed output instead of open-ended answer generation.',
+          'ChatPDM is a deterministic concept-resolution system. It works with authored concept structures, explicit refusal, and source-backed output instead of open-ended generation.',
           'The system is designed for cases where meaning must stay stable enough to inspect, compare, and reuse without silent drift.',
         ],
       },
@@ -49,14 +49,14 @@ const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
         bullets: [
           'not Product Data Management software',
           'not a CAD, BOM, or engineering workflow tool',
-          'not a chatbot or general-purpose text generator',
-          'not a knowledge base that tries to answer everything',
+          'not a general-purpose text generator',
+          'not a knowledge base that tries to resolve everything',
         ],
       },
       {
         title: 'Why the distinction matters',
         paragraphs: [
-          'The term “PDM” is often read as Product Data Management. ChatPDM uses the name differently. It refers to a deterministic reasoning system with bounded concept resolution, not engineering document control.',
+          'The term “PDM” is often read as Product Data Management. ChatPDM uses the name differently. It refers to a deterministic concept system with bounded concept resolution, not engineering document control.',
           'That distinction matters because the public product surface, runtime behavior, and API contract belong to a different category entirely.',
         ],
       },
@@ -64,14 +64,14 @@ const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
   },
   'how-it-works': {
     eyebrow: 'How it works',
-    title: 'A bounded answer model with visible constraints.',
+    title: 'A bounded resolution model with visible constraints.',
     intro:
-      'ChatPDM classifies query shape, resolves only authored concepts, and returns explicit ambiguity or refusal when the runtime should not pretend to know more.',
+      'ChatPDM classifies query shape, resolves only authored concepts, and returns explicit ambiguity or refusal when the runtime should not claim a result it cannot support.',
     sections: [
       {
         title: 'Runtime path',
         paragraphs: [
-          '“This system only answers when it can map input to a defined concept. Otherwise it refuses”',
+          '“This system only resolves when it can map input to a defined concept. Otherwise it refuses”',
         ],
         bullets: [
           'normalize the incoming query',
@@ -82,7 +82,7 @@ const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
       {
         title: 'Why it matters',
         paragraphs: [
-          'The system is optimized for wording-sensitive concept work. Stability, inspectability, and refusal matter more here than broad generative range.',
+          'The system is optimized for wording-sensitive concept work. Stability, inspectability, and refusal matter more here than broad coverage or generative range.',
         ],
       },
     ],
@@ -91,7 +91,7 @@ const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
     eyebrow: 'FAQ',
     title: 'Questions about scope, behavior, and direction.',
     intro:
-      'This system does not attempt to answer everything. It defines what it can do, and refuses what it cannot.',
+      'This system does not attempt to resolve everything. It defines what it can do, and refuses what it cannot.',
     sections: [
       {
         title: 'System',
@@ -99,27 +99,27 @@ const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
           {
             question: 'Is ChatPDM a chatbot?',
             answer:
-              'No. It does not generate answers. ChatPDM resolves concepts within a bounded system and refuses when the structure does not support the request.',
+              'No. It does not generate responses. ChatPDM resolves concepts within a bounded system and refuses when the structure does not support the request.',
           },
           {
-            question: 'How is this different from AI systems?',
+            question: 'How is this different from generative systems?',
             answer:
-              'Most AI systems generate likely answers. ChatPDM validates whether a concept can exist within a defined structure. The goal is not fluency. The goal is correctness under constraint.',
+              'Most generative systems produce likely outputs. ChatPDM validates whether a concept can exist within a defined structure. The goal is not fluency. The goal is correctness under constraint.',
           },
           {
-            question: 'Does ChatPDM use probabilistic reasoning?',
+            question: 'Does ChatPDM use probabilistic output?',
             answer:
               'No. It does not generate outputs based on likelihood or pattern matching. All results are derived from defined concepts and explicit system rules.',
           },
           {
             question: 'Is ChatPDM related to Product Data Management (PDM)?',
             answer:
-              'No. ChatPDM is a deterministic reasoning system. It is not Product Data Management software, and it is not a CAD or engineering workflow tool.',
+              'No. ChatPDM is a deterministic concept system. It is not Product Data Management software, and it is not a CAD or engineering workflow tool.',
           },
           {
             question: 'Why does the system refuse so often?',
             answer:
-              'Refusal is part of the system. If a concept is out of scope, incomplete, or collapses into another concept, it is rejected instead of being dressed up as an answer.',
+              'Refusal is part of the system. If a concept is out of scope, incomplete, or collapses into another concept, it is rejected instead of being dressed up as a response.',
           },
         ],
       },
@@ -167,7 +167,7 @@ const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
               'Dictionaries describe usage. ChatPDM enforces structure. It is designed to keep concepts distinct, bounded, and stable across use and interpretation.',
           },
           {
-            question: 'Does the product try to answer everything?',
+            question: 'Does the product try to resolve everything?',
             answer:
               'No. It should classify the request honestly and refuse unsupported compositions instead of masking gaps with fluent output.',
           },
@@ -524,7 +524,7 @@ const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
       {
         title: 'Staged capability order',
         paragraphs: [
-          'Expansion follows controlled order rather than coverage pressure. Capability order exists to protect runtime integrity before new surface area is exposed.',
+          'Expansion follows controlled order rather than coverage demand. Capability order exists to protect runtime integrity before new surface area is exposed.',
         ],
         bullets: [
           'scope is tightened before capability is broadened',
@@ -546,8 +546,8 @@ const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
       {
         title: 'Scope versus architecture',
         paragraphs: [
-          'This page defines what the system permits and how it expands. It does not define how reasoning systems are structured internally.',
-          'Architectural reasoning models are described separately in /reasoning-structure.',
+          'This page defines what the system permits and how it expands. It does not define how broader system layers are structured internally.',
+          'Architectural validation layers are described separately in /reasoning-structure.',
         ],
       },
       {
@@ -604,9 +604,9 @@ const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
             note: 'Inspect the validation path from input to bounded output.',
           },
           {
-            label: 'Reasoning structure',
+            label: 'Validation structure',
             route: '/reasoning-structure',
-            note: 'See how deterministic authority stays primary over any future advisory reasoning.',
+            note: 'See how deterministic authority stays primary over any future secondary layer.',
           },
           {
             label: 'Vision',
@@ -626,7 +626,7 @@ const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
           {
             label: 'Resolution contract',
             route: '/resolution-contract',
-            note: 'Inspect the stable semantic result states returned by the runtime and how review-state metadata stays separate from admission.',
+            note: 'Inspect the stable result states returned by the runtime and how review-state metadata stays separate from admission.',
           },
           {
             label: 'Version policy',
@@ -760,7 +760,7 @@ const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
       {
         title: 'Conflict handling',
         paragraphs: [
-          'Conflicting source pressure must be resolved during authoring and review.',
+          'Conflicting source tension must be resolved during authoring and review.',
           'The runtime does not merge contradictory source claims into a single vague meaning.',
         ],
       },
@@ -846,7 +846,7 @@ const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
       {
         title: 'Core rule',
         bullets: [
-          'a concept must remain distinct under pressure',
+          'a concept must remain distinct under structural stress',
           'a concept that collapses into a nearby concept is not ready',
           'runtime compensation is not a substitute for weak authoring',
         ],
@@ -871,7 +871,7 @@ const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
       {
         title: 'Collapse checks',
         bullets: [
-          'does it reduce to another concept under pressure',
+          'does it reduce to another concept under structural stress',
           'does it duplicate an existing concept structurally',
           'can the same shortDefinition or mechanism survive a title swap',
         ],
@@ -921,7 +921,7 @@ const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
         bullets: [
           'boundary clarity',
           'non-collapse against nearby concepts',
-          'pressure-term grounding where structural wording depends on it',
+          'boundary-term grounding where structural wording depends on it',
         ],
       },
       {
@@ -1069,7 +1069,7 @@ const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
     eyebrow: 'Handbooks',
     title: 'Runtime discipline',
     intro:
-      'This handbook route will hold the operational guide for preserving refusal behavior, scope boundaries, and canonical runtime meaning during change.',
+      'This handbook route will hold the operational guide for preserving refusal behavior, scope boundaries, and canonical runtime contract during change.',
     sections: [
       {
         title: 'Current scope',

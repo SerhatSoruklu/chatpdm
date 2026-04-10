@@ -40,12 +40,12 @@ export class VisionPageComponent {
     {
       label: 'Stage 1',
       title: 'Governance concepts',
-      copy: 'Start where ambiguity already breaks institutions, rules, and public reasoning.',
+      copy: 'Start where ambiguity already breaks institutions, rules, and public decision systems.',
     },
     {
       label: 'Stage 2',
       title: 'Adjacent institutional concepts',
-      copy: 'Expand only into nearby structures once concept stability has been proven under pressure.',
+      copy: 'Expand only into nearby structures once concept stability has been validated.',
     },
     {
       label: 'Stage 3',
