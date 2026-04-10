@@ -46,7 +46,14 @@ function normalizeOrigins(value) {
 }
 
 function normalizeOrigin(value) {
-  return String(value ?? '').trim().replace(/\/+$/, '');
+  const trimmed = String(value ?? '').trim();
+  let end = trimmed.length;
+
+  while (end > 0 && trimmed.charCodeAt(end - 1) === 47) {
+    end -= 1;
+  }
+
+  return trimmed.slice(0, end);
 }
 
 module.exports = {
