@@ -169,6 +169,21 @@ Protected branch expectations for `main`:
   - validating the branch and deploy surface
   - never bypassing protected-branch rules to deploy through `main`
 
+### Push Modes
+
+- `PUSH safely` means preserve-first publication.
+- `push to git` means publish the intended work through a branch-first workflow after scope review, preservation checks, and lightweight validation.
+- `push ALL` means preserve all current work first, then determine whether the full worktree should be published as one coherent unit or split into multiple coherent branches/commits.
+- When the user says `PUSH safely`, first create a recovery point if the worktree is mixed or risky:
+  - prefer a named safety branch or snapshot branch as the primary recovery point
+  - use stash only as a temporary recovery mechanism when a branch snapshot is not sufficient or not practical
+  - audit the diff for scope coherence before staging or restructuring
+  - if the diff spans multiple clusters, split or branch the work instead of forcing one commit
+  - prefer preserving all work over forcing a premature clean push
+  - never discard local work silently
+  - never assume one commit is appropriate if the diff is clearly multi-cluster
+  - give the user a reversible, reviewable, recoverable publication path even when the worktree is messy
+
 ## Validation and Push Safety
 
 - Do not stage or commit secrets, `.env` files, API keys, tokens, private keys, or credentials.
@@ -195,6 +210,9 @@ Non-blocking by default:
 
 ### Scope Discipline
 
+- Before any risky rebranching, resetting, splitting, or stashing, preserve the current state with a recoverable snapshot if the worktree is mixed or the diff spans multiple clusters.
+- Do not publish blindly as one commit when the worktree is mixed unless the user explicitly wants that exact shape.
+- Protect user work first, then split or publish.
 - Do not bundle unrelated fixes into the same commit.
 - If unrelated issues are discovered, surface them separately instead of fixing them during the same task.
 - Keep commits tightly scoped to the original intent.
