@@ -833,6 +833,126 @@
           "lines": "20-22,46-55"
         }
       ]
+    },
+    {
+      "id": "terms-35",
+      "version": 1,
+      "state": "published",
+      "policyFile": "terms.md",
+      "section": "Data and Behavior — Endpoint access",
+      "policySentence": "The platform allows concept resolution through `POST /api/v1/concepts/resolve`.",
+      "canonicalClaim": "The platform allows concept resolution through `POST /api/v1/concepts/resolve`.",
+      "claimClass": "allows",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/routes/api/v1/concepts.route.js:49-55",
+          "path": "backend/src/routes/api/v1/concepts.route.js",
+          "lines": "49-55"
+        }
+      ]
+    },
+    {
+      "id": "terms-36",
+      "version": 1,
+      "state": "published",
+      "policyFile": "terms.md",
+      "section": "Data and Behavior — Endpoint access",
+      "policySentence": "The platform allows concept detail through `GET /api/v1/concepts/:conceptId`.",
+      "canonicalClaim": "The platform allows concept detail through `GET /api/v1/concepts/:conceptId`.",
+      "claimClass": "allows",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/routes/api/v1/concepts.route.js:57-93",
+          "path": "backend/src/routes/api/v1/concepts.route.js",
+          "lines": "57-93"
+        }
+      ]
+    },
+    {
+      "id": "terms-37",
+      "version": 1,
+      "state": "published",
+      "policyFile": "terms.md",
+      "section": "Data and Behavior — Endpoint access",
+      "policySentence": "The platform allows feedback index through `GET /api/v1/feedback`.",
+      "canonicalClaim": "The platform allows feedback index through `GET /api/v1/feedback`.",
+      "claimClass": "allows",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/routes/api/v1/feedback.route.js:12-18",
+          "path": "backend/src/routes/api/v1/feedback.route.js",
+          "lines": "12-18"
+        }
+      ]
+    },
+    {
+      "id": "terms-38",
+      "version": 1,
+      "state": "published",
+      "policyFile": "terms.md",
+      "section": "Data and Behavior — Endpoint access",
+      "policySentence": "The platform allows feedback export through `GET /api/v1/feedback/session/:sessionId/export`.",
+      "canonicalClaim": "The platform allows feedback export through `GET /api/v1/feedback/session/:sessionId/export`.",
+      "claimClass": "allows",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/routes/api/v1/feedback.route.js:45-68",
+          "path": "backend/src/routes/api/v1/feedback.route.js",
+          "lines": "45-68"
+        }
+      ]
+    },
+    {
+      "id": "terms-39",
+      "version": 1,
+      "state": "published",
+      "policyFile": "terms.md",
+      "section": "Data and Behavior — Endpoint access",
+      "policySentence": "The platform allows feedback delete through `DELETE /api/v1/feedback/session/:sessionId`.",
+      "canonicalClaim": "The platform allows feedback delete through `DELETE /api/v1/feedback/session/:sessionId`.",
+      "claimClass": "allows",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/routes/api/v1/feedback.route.js:70-93",
+          "path": "backend/src/routes/api/v1/feedback.route.js",
+          "lines": "70-93"
+        }
+      ]
     }
   ]
 }

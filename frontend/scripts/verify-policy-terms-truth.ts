@@ -17,7 +17,7 @@ function main(): void {
     'Cookies must not gain terms truth rows.',
   );
 
-  assert.equal(termsTruth.endpointContracts.length, 2);
+  assert.equal(termsTruth.endpointContracts.length, 7);
   assert.equal(termsTruth.fieldContracts.length, 22);
   assert.equal(termsTruth.platformRules.length, 1);
   assert.equal(termsTruth.runtimeBoundaries.length, 1);
@@ -35,11 +35,49 @@ function main(): void {
         evidence: POLICY_SURFACE_DATA.terms.claims.find((claim) => claim.id === 'terms-1')!.traces,
       },
       {
+        claimId: 'terms-35',
+        operation: 'concept_resolution',
+        method: 'POST',
+        path: '/api/v1/concepts/resolve',
+        evidence: POLICY_SURFACE_DATA.terms.claims.find((claim) => claim.id === 'terms-35')!.traces,
+      },
+      {
+        claimId: 'terms-36',
+        operation: 'concept_detail',
+        method: 'GET',
+        path: '/api/v1/concepts/:conceptId',
+        requiredRouteParam: 'conceptId',
+        evidence: POLICY_SURFACE_DATA.terms.claims.find((claim) => claim.id === 'terms-36')!.traces,
+      },
+      {
+        claimId: 'terms-37',
+        operation: 'feedback_index',
+        method: 'GET',
+        path: '/api/v1/feedback',
+        evidence: POLICY_SURFACE_DATA.terms.claims.find((claim) => claim.id === 'terms-37')!.traces,
+      },
+      {
         claimId: 'terms-2',
         operation: 'feedback_submission',
         method: 'POST',
         path: '/api/v1/feedback',
         evidence: POLICY_SURFACE_DATA.terms.claims.find((claim) => claim.id === 'terms-2')!.traces,
+      },
+      {
+        claimId: 'terms-38',
+        operation: 'feedback_export',
+        method: 'GET',
+        path: '/api/v1/feedback/session/:sessionId/export',
+        requiredRouteParam: 'sessionId',
+        evidence: POLICY_SURFACE_DATA.terms.claims.find((claim) => claim.id === 'terms-38')!.traces,
+      },
+      {
+        claimId: 'terms-39',
+        operation: 'feedback_delete',
+        method: 'DELETE',
+        path: '/api/v1/feedback/session/:sessionId',
+        requiredRouteParam: 'sessionId',
+        evidence: POLICY_SURFACE_DATA.terms.claims.find((claim) => claim.id === 'terms-39')!.traces,
       },
     ],
     'Endpoint contracts must remain separate, typed rows.',

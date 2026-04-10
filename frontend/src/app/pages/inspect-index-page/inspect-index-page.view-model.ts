@@ -93,10 +93,10 @@ const SURFACE_META: Record<
   },
   terms: {
     title: 'Terms of Service Inspect',
-    subtitle: 'runtime operations, field rules, and refusal boundaries',
+    subtitle: 'runtime and support operations, field rules, and refusal boundaries',
     route: '/inspect/terms',
     detail:
-      'Current inspectable terms surface for runtime operations, field rules, and refusal boundaries.',
+      'Current inspectable terms surface for runtime and support operations, field rules, and refusal boundaries.',
   },
 };
 
@@ -104,7 +104,7 @@ const GUARANTEE_DEFINITIONS: readonly GuaranteeDefinition[] = [
   {
     title: 'Public runtime access stays bounded',
     summary:
-      'The live public contract exposes only the current resolver and feedback endpoints as explicit runtime surfaces.',
+      'The live public contract exposes the current resolver and feedback submission endpoints as explicit runtime surfaces, while concept detail, feedback index, and feedback control routes remain separate public support surfaces.',
     detail: 'Endpoint access is represented as claim objects and mapped back to route handlers.',
     evidence: [
       { surfaceKey: 'terms', claimId: 'terms-1', label: 'concept resolution endpoint' },

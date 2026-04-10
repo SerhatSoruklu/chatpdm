@@ -2168,6 +2168,141 @@ export const POLICY_SURFACE_DATA = {
             "lines": "20-22,46-55"
           }
         ]
+      },
+      {
+        "id": "terms-35",
+        "version": 1,
+        "state": "published",
+        "policyFile": "terms.md",
+        "section": "Data and Behavior — Endpoint access",
+        "policySentence": "The platform allows concept resolution through `POST /api/v1/concepts/resolve`.",
+        "canonicalClaim": "The platform allows concept resolution through `POST /api/v1/concepts/resolve`.",
+        "claimClass": "allows",
+        "systemMapping": "`backend/src/routes/api/v1/concepts.route.js:49-55`",
+        "status": "mapped",
+        "notes": "",
+        "specialNotes": [],
+        "hasInternalTransportNote": false,
+        "lifecycle": {
+          "lifecycleClass": "not_applicable",
+          "deletionTrigger": "not_stored",
+          "enforcementStatus": "declared_only"
+        },
+        "traces": [
+          {
+            "source": "backend/src/routes/api/v1/concepts.route.js:49-55",
+            "path": "backend/src/routes/api/v1/concepts.route.js",
+            "lines": "49-55"
+          }
+        ]
+      },
+      {
+        "id": "terms-36",
+        "version": 1,
+        "state": "published",
+        "policyFile": "terms.md",
+        "section": "Data and Behavior — Endpoint access",
+        "policySentence": "The platform allows concept detail through `GET /api/v1/concepts/:conceptId`.",
+        "canonicalClaim": "The platform allows concept detail through `GET /api/v1/concepts/:conceptId`.",
+        "claimClass": "allows",
+        "systemMapping": "`backend/src/routes/api/v1/concepts.route.js:57-93`",
+        "status": "mapped",
+        "notes": "",
+        "specialNotes": [],
+        "hasInternalTransportNote": false,
+        "lifecycle": {
+          "lifecycleClass": "not_applicable",
+          "deletionTrigger": "not_stored",
+          "enforcementStatus": "declared_only"
+        },
+        "traces": [
+          {
+            "source": "backend/src/routes/api/v1/concepts.route.js:57-93",
+            "path": "backend/src/routes/api/v1/concepts.route.js",
+            "lines": "57-93"
+          }
+        ]
+      },
+      {
+        "id": "terms-37",
+        "version": 1,
+        "state": "published",
+        "policyFile": "terms.md",
+        "section": "Data and Behavior — Endpoint access",
+        "policySentence": "The platform allows feedback index through `GET /api/v1/feedback`.",
+        "canonicalClaim": "The platform allows feedback index through `GET /api/v1/feedback`.",
+        "claimClass": "allows",
+        "systemMapping": "`backend/src/routes/api/v1/feedback.route.js:12-18`",
+        "status": "mapped",
+        "notes": "",
+        "specialNotes": [],
+        "hasInternalTransportNote": false,
+        "lifecycle": {
+          "lifecycleClass": "not_applicable",
+          "deletionTrigger": "not_stored",
+          "enforcementStatus": "declared_only"
+        },
+        "traces": [
+          {
+            "source": "backend/src/routes/api/v1/feedback.route.js:12-18",
+            "path": "backend/src/routes/api/v1/feedback.route.js",
+            "lines": "12-18"
+          }
+        ]
+      },
+      {
+        "id": "terms-38",
+        "version": 1,
+        "state": "published",
+        "policyFile": "terms.md",
+        "section": "Data and Behavior — Endpoint access",
+        "policySentence": "The platform allows feedback export through `GET /api/v1/feedback/session/:sessionId/export`.",
+        "canonicalClaim": "The platform allows feedback export through `GET /api/v1/feedback/session/:sessionId/export`.",
+        "claimClass": "allows",
+        "systemMapping": "`backend/src/routes/api/v1/feedback.route.js:45-68`",
+        "status": "mapped",
+        "notes": "",
+        "specialNotes": [],
+        "hasInternalTransportNote": false,
+        "lifecycle": {
+          "lifecycleClass": "not_applicable",
+          "deletionTrigger": "not_stored",
+          "enforcementStatus": "declared_only"
+        },
+        "traces": [
+          {
+            "source": "backend/src/routes/api/v1/feedback.route.js:45-68",
+            "path": "backend/src/routes/api/v1/feedback.route.js",
+            "lines": "45-68"
+          }
+        ]
+      },
+      {
+        "id": "terms-39",
+        "version": 1,
+        "state": "published",
+        "policyFile": "terms.md",
+        "section": "Data and Behavior — Endpoint access",
+        "policySentence": "The platform allows feedback delete through `DELETE /api/v1/feedback/session/:sessionId`.",
+        "canonicalClaim": "The platform allows feedback delete through `DELETE /api/v1/feedback/session/:sessionId`.",
+        "claimClass": "allows",
+        "systemMapping": "`backend/src/routes/api/v1/feedback.route.js:70-93`",
+        "status": "mapped",
+        "notes": "",
+        "specialNotes": [],
+        "hasInternalTransportNote": false,
+        "lifecycle": {
+          "lifecycleClass": "not_applicable",
+          "deletionTrigger": "not_stored",
+          "enforcementStatus": "declared_only"
+        },
+        "traces": [
+          {
+            "source": "backend/src/routes/api/v1/feedback.route.js:70-93",
+            "path": "backend/src/routes/api/v1/feedback.route.js",
+            "lines": "70-93"
+          }
+        ]
       }
     ],
     "termsTruth": {
@@ -2187,6 +2322,46 @@ export const POLICY_SURFACE_DATA = {
           ]
         },
         {
+          "claimId": "terms-35",
+          "operation": "concept_resolution",
+          "method": "POST",
+          "path": "/api/v1/concepts/resolve",
+          "evidence": [
+            {
+              "source": "backend/src/routes/api/v1/concepts.route.js:49-55",
+              "path": "backend/src/routes/api/v1/concepts.route.js",
+              "lines": "49-55"
+            }
+          ]
+        },
+        {
+          "claimId": "terms-36",
+          "operation": "concept_detail",
+          "method": "GET",
+          "path": "/api/v1/concepts/:conceptId",
+          "requiredRouteParam": "conceptId",
+          "evidence": [
+            {
+              "source": "backend/src/routes/api/v1/concepts.route.js:57-93",
+              "path": "backend/src/routes/api/v1/concepts.route.js",
+              "lines": "57-93"
+            }
+          ]
+        },
+        {
+          "claimId": "terms-37",
+          "operation": "feedback_index",
+          "method": "GET",
+          "path": "/api/v1/feedback",
+          "evidence": [
+            {
+              "source": "backend/src/routes/api/v1/feedback.route.js:12-18",
+              "path": "backend/src/routes/api/v1/feedback.route.js",
+              "lines": "12-18"
+            }
+          ]
+        },
+        {
           "claimId": "terms-2",
           "operation": "feedback_submission",
           "method": "POST",
@@ -2196,6 +2371,34 @@ export const POLICY_SURFACE_DATA = {
               "source": "backend/src/routes/api/v1/feedback.route.js:20-23",
               "path": "backend/src/routes/api/v1/feedback.route.js",
               "lines": "20-23"
+            }
+          ]
+        },
+        {
+          "claimId": "terms-38",
+          "operation": "feedback_export",
+          "method": "GET",
+          "path": "/api/v1/feedback/session/:sessionId/export",
+          "requiredRouteParam": "sessionId",
+          "evidence": [
+            {
+              "source": "backend/src/routes/api/v1/feedback.route.js:45-68",
+              "path": "backend/src/routes/api/v1/feedback.route.js",
+              "lines": "45-68"
+            }
+          ]
+        },
+        {
+          "claimId": "terms-39",
+          "operation": "feedback_delete",
+          "method": "DELETE",
+          "path": "/api/v1/feedback/session/:sessionId",
+          "requiredRouteParam": "sessionId",
+          "evidence": [
+            {
+              "source": "backend/src/routes/api/v1/feedback.route.js:70-93",
+              "path": "backend/src/routes/api/v1/feedback.route.js",
+              "lines": "70-93"
             }
           ]
         }
@@ -2680,8 +2883,8 @@ export const POLICY_SURFACE_DATA = {
       ]
     },
     "summary": {
-      "totalClaims": 34,
-      "mappedClaims": 34,
+      "totalClaims": 39,
+      "mappedClaims": 39,
       "claimClasses": [
         "allows",
         "does_not_allow"
