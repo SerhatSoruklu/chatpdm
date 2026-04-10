@@ -10,7 +10,13 @@
 
         <nav class="pdm-zee__section-nav" aria-label="ZEE sections">
           @for (anchor of content.hero.anchors; track anchor.fragment) {
-            <a class="pdm-zee__section-link" [href]="'#' + anchor.fragment">{{ anchor.label }}</a>
+            <a
+              class="pdm-zee__section-link"
+              [routerLink]="anchor.route"
+              [fragment]="anchor.fragment"
+            >
+              {{ anchor.label }}
+            </a>
           }
         </nav>
 

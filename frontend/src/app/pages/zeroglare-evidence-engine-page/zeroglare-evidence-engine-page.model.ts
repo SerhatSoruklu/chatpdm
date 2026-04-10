@@ -1,6 +1,7 @@
 import {
   ZEE_PAGE_BOUNDARY_LINE,
   ZEE_INFOGRAPHIC_EXPAND_LABEL,
+  ZEE_ROUTE_PATH,
   ZEE_PAGE_SUBTITLE,
   ZEE_PAGE_TITLE,
 } from './zeroglare-evidence-engine-page.constants';
@@ -12,6 +13,7 @@ export interface ZeeSurfaceCard {
 
 export interface ZeeSectionAnchor {
   label: string;
+  route: string;
   fragment: string;
 }
 
@@ -87,12 +89,12 @@ export const ZEE_PAGE_CONTENT: ZeePageContent = {
       'ZEE is a standalone public surface for inspecting evidence. It does not participate in ChatPDM runtime resolution, admission, or registry behavior.',
     boundaryLine: ZEE_PAGE_BOUNDARY_LINE,
     anchors: [
-      { label: 'What it is', fragment: 'pdm-zee-what-it-is' },
-      { label: 'What it is not', fragment: 'pdm-zee-what-it-is-not' },
-      { label: 'Core contract', fragment: 'pdm-zee-core-contract' },
-      { label: 'Pipeline', fragment: 'pdm-zee-pipeline' },
-      { label: 'Example case', fragment: 'pdm-zee-example-case' },
-      { label: 'Boundary framing', fragment: 'pdm-zee-boundary-framing' },
+      { label: 'What it is', route: ZEE_ROUTE_PATH, fragment: 'pdm-zee-what-it-is' },
+      { label: 'What it is not', route: ZEE_ROUTE_PATH, fragment: 'pdm-zee-what-it-is-not' },
+      { label: 'Core contract', route: ZEE_ROUTE_PATH, fragment: 'pdm-zee-core-contract' },
+      { label: 'Pipeline', route: ZEE_ROUTE_PATH, fragment: 'pdm-zee-pipeline' },
+      { label: 'Example case', route: ZEE_ROUTE_PATH, fragment: 'pdm-zee-example-case' },
+      { label: 'Boundary framing', route: ZEE_ROUTE_PATH, fragment: 'pdm-zee-boundary-framing' },
     ],
     cards: [
       {

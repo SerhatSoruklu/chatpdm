@@ -3,6 +3,7 @@ import '@angular/compiler';
 import { describe, expect, it, vi } from 'vitest';
 
 import type { MatDialog } from '@angular/material/dialog';
+import { ZEE_ROUTE_PATH } from './zeroglare-evidence-engine-page.constants';
 import { ZeroglareEvidenceEnginePageComponent } from './zeroglare-evidence-engine-page.component';
 import { ZeeInfographicDialogComponent } from './zeroglare-evidence-engine-image-dialog.component';
 
@@ -31,5 +32,6 @@ describe('ZeroglareEvidenceEnginePageComponent', () => {
         }),
       }),
     );
+    expect(component['content'].hero.anchors.every((anchor) => anchor.route === ZEE_ROUTE_PATH)).toBe(true);
   });
 });
