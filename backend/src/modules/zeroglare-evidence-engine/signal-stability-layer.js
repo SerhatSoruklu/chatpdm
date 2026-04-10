@@ -10,20 +10,33 @@ const {
   ZEE_INTERNAL_ENGINE_STABILITY_REGION_AREA_SHIFT_THRESHOLD,
   ZEE_INTERNAL_ENGINE_STABILITY_REGION_CENTER_SHIFT_THRESHOLD,
   ZEE_INTERNAL_ENGINE_STABILITY_REGION_SIZE_SHIFT_THRESHOLD,
+  ZEE_INTERNAL_ENGINE_SIGNAL_STABILITY_SCHEMA,
+  ZEE_INTERNAL_ENGINE_RESULT_TAXONOMY,
+  ZEE_INTERNAL_ENGINE_RESULT_TAXONOMY_VERSION,
+  ZEE_INTERNAL_ENGINE_STABILITY_POLICY,
   ZEE_INTERNAL_ENGINE_STABILITY_VERSION,
   ZEE_INTERNAL_ENGINE_ERROR_CODES,
 } = require('./constants');
+const {
+  compareCanonicalNumber,
+  compareCanonicalText,
+} = require('./policy');
+const {
+  createZeeArtifactMarker,
+} = require('./artifact-markers');
 const { ZeeObservedInputError } = require('./input-contract');
 
 const KIND_PRIORITY = new Map(
   ZEE_INTERNAL_ENGINE_STABILITY_KIND_ORDER.map((kind, index) => [kind, index]),
 );
+const DOMINANT_COLOR_SCORE_WEIGHTS = ZEE_INTERNAL_ENGINE_STABILITY_POLICY.dominantColorScoreWeights;
+const VISUAL_REGION_SCORE_WEIGHTS = ZEE_INTERNAL_ENGINE_STABILITY_POLICY.visibleRegionScoreWeights;
 
 function clamp(value, minimum, maximum) {
   return Math.min(maximum, Math.max(minimum, value));
 }
 
-function roundTo(value, precision = 4) {
+function roundTo(value, precision = ZEE_INTERNAL_ENGINE_STABILITY_POLICY.roundingPrecision) {
   if (!Number.isFinite(value)) {
     return 0;
   }
@@ -170,15 +183,15 @@ function summarizeVisibleRegion(frameReport, region) {
       x: roundTo(centerX, 6),
       y: roundTo(centerY, 6),
     },
-    edgeDensity: roundTo(edgeDensity, 4),
+    edgeDensity: roundTo(edgeDensity, ZEE_INTERNAL_ENGINE_STABILITY_POLICY.roundingPrecision),
     frameIndex: frameReport.frameIndex,
     frameHeight,
     frameWidth,
     geometryClass,
     observationType: 'visible_region',
     pixelCoverage: roundTo(pixelCoverage, 6),
-    score: roundTo(score, 4),
-    variance: roundTo(variance, 4),
+    score: roundTo(score, ZEE_INTERNAL_ENGINE_STABILITY_POLICY.roundingPrecision),
+    variance: roundTo(variance, ZEE_INTERNAL_ENGINE_STABILITY_POLICY.roundingPrecision),
   };
 }
 
@@ -193,7 +206,10 @@ function buildFrameCandidates(frameReport) {
       sortRank: Number.isInteger(color.rank) ? color.rank : index + 1,
       source: color,
     }))
-    .sort((left, right) => left.sortRank - right.sortRank || left.signalKey.localeCompare(right.signalKey));
+    .sort((left, right) => (
+      compareCanonicalNumber(left.sortRank, right.sortRank)
+      || compareCanonicalText(left.signalKey, right.signalKey)
+    ));
 
   const visibleRegions = [...frameReport.observedFeatures.visibleGeometricRegions]
     .map((region) => ({
@@ -212,7 +228,10 @@ function buildFrameCandidates(frameReport) {
       sortRank: Number.isFinite(region.score) ? -region.score : 0,
       source: region,
     }))
-    .sort((left, right) => left.sortRank - right.sortRank || left.signalKey.localeCompare(right.signalKey));
+    .sort((left, right) => (
+      compareCanonicalNumber(left.sortRank, right.sortRank)
+      || compareCanonicalText(left.signalKey, right.signalKey)
+    ));
 
   return [...dominantColors, ...visibleRegions];
 }
@@ -227,9 +246,9 @@ function compareDominantColors(left, right) {
   const rankDistance = Math.abs(left.observation.rank - right.observation.rank);
   const score = clamp(
     1
-    - ((colorDistance / 765) * 0.75)
-    - (ratioDistance * 0.2)
-    - (Math.min(rankDistance, 4) * 0.0125),
+    - ((colorDistance / DOMINANT_COLOR_SCORE_WEIGHTS.colorDistanceScale) * DOMINANT_COLOR_SCORE_WEIGHTS.colorDistanceWeight)
+    - (ratioDistance * DOMINANT_COLOR_SCORE_WEIGHTS.ratioWeight)
+    - (Math.min(rankDistance, DOMINANT_COLOR_SCORE_WEIGHTS.rankDistanceCap) * DOMINANT_COLOR_SCORE_WEIGHTS.rankDistanceWeight),
     0,
     1,
   );
@@ -238,7 +257,7 @@ function compareDominantColors(left, right) {
   if (colorDistance > ZEE_INTERNAL_ENGINE_STABILITY_DOMINANT_COLOR_DISTANCE_THRESHOLD) {
     reasons.push(makeReason(
       'identity_change',
-      'The dominant color changed too much across adjacent frames.',
+      'identity_change',
       {
         colorDistance,
       },
@@ -248,7 +267,7 @@ function compareDominantColors(left, right) {
   if (ratioDistance > ZEE_INTERNAL_ENGINE_STABILITY_DOMINANT_COLOR_RATIO_THRESHOLD) {
     reasons.push(makeReason(
       'form_change',
-      'The dominant color prominence changed too much across adjacent frames.',
+      'form_change',
       {
         ratioDistance: roundTo(ratioDistance, 6),
       },
@@ -271,11 +290,11 @@ function compareVisibleRegions(left, right) {
   const geometryClassMatches = left.observation.geometryClass === right.observation.geometryClass;
   const score = clamp(
     1
-    - (centerShift * 1.9)
-    - (widthShift * 1.2)
-    - (heightShift * 1.2)
-    - (areaShift * 1.5)
-    - (geometryClassMatches ? 0 : 0.28),
+    - (centerShift * VISUAL_REGION_SCORE_WEIGHTS.centerShiftWeight)
+    - (widthShift * VISUAL_REGION_SCORE_WEIGHTS.widthShiftWeight)
+    - (heightShift * VISUAL_REGION_SCORE_WEIGHTS.heightShiftWeight)
+    - (areaShift * VISUAL_REGION_SCORE_WEIGHTS.areaShiftWeight)
+    - (geometryClassMatches ? 0 : VISUAL_REGION_SCORE_WEIGHTS.geometryMismatchPenalty),
     0,
     1,
   );
@@ -284,7 +303,7 @@ function compareVisibleRegions(left, right) {
   if (!geometryClassMatches) {
     reasons.push(makeReason(
       'form_change',
-      'The visible region changed geometry class across adjacent frames.',
+      'form_change',
       {
         from: left.observation.geometryClass,
         to: right.observation.geometryClass,
@@ -295,7 +314,7 @@ function compareVisibleRegions(left, right) {
   if (centerShift > ZEE_INTERNAL_ENGINE_STABILITY_REGION_CENTER_SHIFT_THRESHOLD) {
     reasons.push(makeReason(
       'location_shift',
-      'The visible region moved beyond the adjacent-frame location tolerance.',
+      'location_shift',
       {
         centerShift: roundTo(centerShift, 6),
       },
@@ -309,7 +328,7 @@ function compareVisibleRegions(left, right) {
   ) {
     reasons.push(makeReason(
       'form_change',
-      'The visible region changed shape or area too much across adjacent frames.',
+      'form_change',
       {
         areaShift: roundTo(areaShift, 6),
         heightShift: roundTo(heightShift, 6),
@@ -321,7 +340,7 @@ function compareVisibleRegions(left, right) {
   if (score < ZEE_INTERNAL_ENGINE_STABILITY_MATCH_SCORE_THRESHOLD && reasons.length === 0) {
     reasons.push(makeReason(
       'weak_similarity',
-      'The visible region did not remain similar enough across adjacent frames.',
+      'weak_similarity',
       {
         score: roundTo(score, 6),
       },
@@ -347,7 +366,7 @@ function compareCandidates(left, right) {
     reasons: [
       makeReason(
         'unsupported_signal_kind',
-        `The signal kind "${left.signalKind}" is not supported by the stability layer.`,
+        'unsupported_signal_kind',
       ),
     ],
     score: 0,
@@ -412,9 +431,12 @@ function finalizeTrack(track, status, details) {
 
   return {
     discardReasons: status === 'discarded' ? details.discardReasons : [],
+    outcomeCategory: status === 'stable'
+      ? ZEE_INTERNAL_ENGINE_RESULT_TAXONOMY.signalStability.stable
+      : ZEE_INTERNAL_ENGINE_RESULT_TAXONOMY.signalStability.discarded,
     observations: track.observations,
     retainedReason: status === 'stable'
-      ? 'The signal remained bounded across adjacent frames and was retained for downstream use.'
+      ? 'stable_signal_retained'
       : null,
     signalId: track.signalId,
     signalKey: track.signalKey,
@@ -451,10 +473,11 @@ function selectBestTrack(trackPool, candidate) {
     }
 
     if (comparison.score === bestComparison.score) {
-      const trackRank = [track.firstFrameIndex, track.signalKey, track.trackId].join('|');
-      const bestRank = [bestTrack.firstFrameIndex, bestTrack.signalKey, bestTrack.trackId].join('|');
+      const trackRank = compareCanonicalNumber(track.firstFrameIndex, bestTrack.firstFrameIndex)
+        || compareCanonicalText(track.signalKey, bestTrack.signalKey)
+        || compareCanonicalNumber(track.trackId, bestTrack.trackId);
 
-      if (trackRank < bestRank) {
+      if (trackRank < 0) {
         bestTrack = track;
         bestComparison = comparison;
       }
@@ -490,7 +513,7 @@ function buildDiagnosticNotes(summary) {
   return [
     makeReason(
       'signal_stability_layer',
-      'Adjacent-frame stability comparisons retained only signals that remained bounded in form, location, and signature.',
+      'signal_stability_layer',
       {
         discardedCount: summary.discardedCount,
         stableCount: summary.stableCount,
@@ -498,7 +521,7 @@ function buildDiagnosticNotes(summary) {
     ),
     makeReason(
       'signal_stability_summary',
-      `Stability kept ${summary.stableCount} signal${summary.stableCount === 1 ? '' : 's'} and discarded ${summary.discardedCount} unstable signal${summary.discardedCount === 1 ? '' : 's'}.`,
+      'signal_stability_summary',
     ),
   ];
 }
@@ -543,7 +566,7 @@ function buildZeeSignalStabilityReport(frameReports) {
       let discardReasons = [
         makeReason(
           'missing_adjacent_match',
-          'The signal did not remain present in the adjacent frame.',
+          'missing_adjacent_match',
         ),
       ];
       let comparisonScore = 0;
@@ -560,9 +583,9 @@ function buildZeeSignalStabilityReport(frameReports) {
             return candidate;
           }
           if (candidateComparison.score === bestCandidateComparison.score) {
-            const bestRank = [bestCandidate.signalKey, bestCandidate.frameIndex].join('|');
-            const candidateRank = [candidate.signalKey, candidate.frameIndex].join('|');
-            return candidateRank < bestRank ? candidate : bestCandidate;
+            const candidateRank = compareCanonicalText(candidate.signalKey, bestCandidate.signalKey)
+              || compareCanonicalNumber(candidate.frameIndex, bestCandidate.frameIndex);
+            return candidateRank < 0 ? candidate : bestCandidate;
           }
           return bestCandidate;
         }, null);
@@ -583,6 +606,7 @@ function buildZeeSignalStabilityReport(frameReports) {
           signalId,
           stability: {
             averageTransitionScore: roundTo(comparisonScore, 6),
+            outcomeCategory: ZEE_INTERNAL_ENGINE_RESULT_TAXONOMY.signalStability.discarded,
             status: 'discarded',
             transitionCount: track.comparisons.length,
           },
@@ -604,7 +628,7 @@ function buildZeeSignalStabilityReport(frameReports) {
         discardReasons: [
           makeReason(
             'insufficient_support',
-            'The signal was observed in only one frame and could not be treated as stable.',
+            'insufficient_support',
           ),
         ],
         extraFields: {
@@ -625,21 +649,25 @@ function buildZeeSignalStabilityReport(frameReports) {
   const stableSignals = finishedTracks
     .filter((signal) => signal.status === 'stable')
     .sort((left, right) => (
-      (KIND_PRIORITY.get(left.signalKind) ?? Number.MAX_SAFE_INTEGER)
-      - (KIND_PRIORITY.get(right.signalKind) ?? Number.MAX_SAFE_INTEGER)
-      || left.support.firstFrameIndex - right.support.firstFrameIndex
-      || left.signalKey.localeCompare(right.signalKey)
-      || left.signalId.localeCompare(right.signalId)
+      compareCanonicalNumber(
+        KIND_PRIORITY.get(left.signalKind) ?? Number.MAX_SAFE_INTEGER,
+        KIND_PRIORITY.get(right.signalKind) ?? Number.MAX_SAFE_INTEGER,
+      )
+      || compareCanonicalNumber(left.support.firstFrameIndex, right.support.firstFrameIndex)
+      || compareCanonicalText(left.signalKey, right.signalKey)
+      || compareCanonicalText(left.signalId, right.signalId)
     ));
 
   const discardedSignals = finishedTracks
     .filter((signal) => signal.status === 'discarded')
     .sort((left, right) => (
-      (KIND_PRIORITY.get(left.signalKind) ?? Number.MAX_SAFE_INTEGER)
-      - (KIND_PRIORITY.get(right.signalKind) ?? Number.MAX_SAFE_INTEGER)
-      || left.support.firstFrameIndex - right.support.firstFrameIndex
-      || left.signalKey.localeCompare(right.signalKey)
-      || left.signalId.localeCompare(right.signalId)
+      compareCanonicalNumber(
+        KIND_PRIORITY.get(left.signalKind) ?? Number.MAX_SAFE_INTEGER,
+        KIND_PRIORITY.get(right.signalKind) ?? Number.MAX_SAFE_INTEGER,
+      )
+      || compareCanonicalNumber(left.support.firstFrameIndex, right.support.firstFrameIndex)
+      || compareCanonicalText(left.signalKey, right.signalKey)
+      || compareCanonicalText(left.signalId, right.signalId)
     ));
 
   const summary = buildComparisonSummary(stableSignals, discardedSignals);
@@ -649,6 +677,11 @@ function buildZeeSignalStabilityReport(frameReports) {
     discardedSignals,
     frameCount: normalizedFrameReports.length,
     layer: ZEE_INTERNAL_ENGINE_STABILITY_LAYER,
+    ...createZeeArtifactMarker('signal_stability'),
+    policyVersion: ZEE_INTERNAL_ENGINE_STABILITY_POLICY.version,
+    resultTaxonomy: ZEE_INTERNAL_ENGINE_RESULT_TAXONOMY.signalStability,
+    resultTaxonomyVersion: ZEE_INTERNAL_ENGINE_RESULT_TAXONOMY_VERSION,
+    schemaVersion: ZEE_INTERNAL_ENGINE_SIGNAL_STABILITY_SCHEMA.version,
     stableSignals,
     summary,
     version: ZEE_INTERNAL_ENGINE_STABILITY_VERSION,

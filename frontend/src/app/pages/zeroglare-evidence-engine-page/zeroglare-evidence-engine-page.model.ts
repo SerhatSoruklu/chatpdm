@@ -111,17 +111,17 @@ export const ZEE_PAGE_CONTENT: ZeePageContent = {
   },
   whatItIs: {
     label: 'What it is',
-    title: 'A deterministic evidence analyzer with a public explanation surface.',
+    title: 'A deterministic evidence surface with a public contract.',
     intro:
-      'ZEE explains how evidence is isolated, measured, gated, and bounded before any output leaves the surface.',
+      'ZEE isolates evidence, measures stable signals, applies a declared cross-kind support rule, and returns bounded output.',
     cards: [
       {
-        title: 'Evidence analysis',
-        copy: 'It turns visible cues into bounded statements about what the frame supports.',
+        title: 'Evidence support',
+        copy: 'It turns visible cues into bounded support statements about what the frame can support.',
       },
       {
         title: 'Inspectable contract',
-        copy: 'It makes the rules, limits, and pipeline phases visible on the page.',
+        copy: 'It makes the rules, limits, replay manifest, schema versions, and explicit outcome categories visible on the page.',
       },
       {
         title: 'Separated surface',
@@ -164,20 +164,20 @@ export const ZEE_PAGE_CONTENT: ZeePageContent = {
         copy: 'Separate the observation window from unsupported context before interpretation proceeds.',
       },
       {
-        title: 'Bounded measurement',
-        copy: 'Measure stable cues instead of promoting uncertain signals into claims.',
-      },
-      {
-        title: 'Inference gate',
-        copy: 'Allow only supportable statements that remain inside the declared contract.',
-      },
-      {
         title: 'Non-consumption invariant',
         copy: 'ZEE outputs are non-authoritative and cannot be consumed as inputs by any other system surface.',
       },
       {
-        title: 'Isolation rule',
-        copy: 'ZEE does not connect to resolver logic, concept registry behavior, or admission logic.',
+        title: 'Inference gate',
+        copy: 'Allow only cross-kind measured signals that satisfy the declared support rule.',
+      },
+      {
+        title: 'Outcome taxonomy',
+        copy: 'STABLE, MEASURED, DISCARDED, SUPPORTED, REFUSED, UNSUPPORTED, and UNKNOWN are explicit phase-local outcomes.',
+      },
+      {
+        title: 'Replay manifest',
+        copy: 'Replay and inspector outputs carry explicit artifact, schema, taxonomy, support-rule, and policy versions.',
       },
     ],
   },
@@ -214,12 +214,12 @@ export const ZEE_PAGE_CONTENT: ZeePageContent = {
       {
         step: '5',
         title: 'Inference Gate',
-        copy: 'Allow only evidence-backed interpretations that satisfy the declared support threshold.',
+        copy: 'Allow only cross-kind measured signals that satisfy the declared support rule.',
       },
       {
         step: '6',
         title: 'Bounded Output',
-        copy: 'Return compact support statements, explicit unknowns, and rejection notes where evidence is insufficient.',
+        copy: 'Return compact support statements, explicit unknowns, and phase-local refusal notes where evidence is insufficient.',
       },
     ],
   },
@@ -251,7 +251,7 @@ export const ZEE_PAGE_CONTENT: ZeePageContent = {
     intro:
       'The surface is published so people can inspect the contract. It is not promoted into the ChatPDM runtime contract.',
     closing:
-      'ZEE outputs are non-authoritative, non-operational outside the page scaffold, and never inputs to runtime systems.',
+      'ZEE outputs are non-authoritative, non-operational outside the page scaffold, and never inputs to runtime systems. The replay manifest, support policy, and outcome taxonomy remain explicit.',
     relatedSurfaces: [
       {
         label: 'ZeroGlare',

@@ -251,7 +251,12 @@ test('measurement layer normalizes stable signals into deterministic comparable 
 
   assert.deepEqual(reversed, canonical);
   assert.equal(canonical.layer, 'Measured');
+  assert.equal(canonical.type, 'ZEE_EVIDENCE_TRACE');
+  assert.equal(canonical.artifactKind, 'measurement');
+  assert.equal(canonical.contractMarker, 'ZEE_NON_CONSUMABLE_EVIDENCE_SURFACE');
+  assert.equal(canonical.policyVersion, 'v1');
   assert.equal(canonical.measurements.length, 2);
+  assert.equal(canonical.measurements[0].outcomeCategory, 'MEASURED');
   assert.equal(canonical.measurements[0].measurementType, 'dominant_palette_distribution');
   assert.equal(canonical.measurements[0].measurementValue.hex.value, '#f28c28');
   assert.equal(canonical.measurements[0].measurementValue.averageRatio.value, 0.4);
@@ -259,6 +264,10 @@ test('measurement layer normalizes stable signals into deterministic comparable 
   assert.equal(canonical.measurements[1].measurementValue.geometryClass.value, 'vertical_strip');
   assert.equal(canonical.measurements[1].measurementValue.aspectRatio.value, 0.5);
   assert.equal(canonical.measurements[1].measurementValue.centerX.value, 0.16);
+  assert.equal(canonical.schemaVersion, 'v1');
+  assert.equal(canonical.resultTaxonomyVersion, 'v1');
+  assert.equal(canonical.resultTaxonomy.measured, 'MEASURED');
+  assert.equal(canonical.resultTaxonomy.discarded, 'DISCARDED');
 });
 
 test('measurement layer rejects unstable signals before quantification', () => {
@@ -287,6 +296,7 @@ test('measurement layer discards non-measurable stable signals with explicit dia
   assert.equal(report.discardedMeasurements.length, 1);
   assert.ok(discarded, 'Expected the non-measurable stable signal to be discarded.');
   assert.equal(discarded.status, 'discarded');
+  assert.equal(discarded.outcomeCategory, 'DISCARDED');
   assert.equal(discarded.measurementType, null);
   assert.ok(
     discarded.discardReasons.some((reason) => reason.code === 'unsupported_signal_kind'),
