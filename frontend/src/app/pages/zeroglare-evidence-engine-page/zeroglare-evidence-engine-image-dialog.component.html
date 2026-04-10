@@ -1,0 +1,26 @@
+<div class="pdm-zee-image-dialog">
+  <div class="pdm-zee-image-dialog__header">
+    <div class="pdm-zee-image-dialog__title-group">
+      <p class="pdm-zee-image-dialog__eyebrow">{{ dialogTitle }}</p>
+      <h2 class="pdm-zee-image-dialog__title">{{ data.title }}</h2>
+    </div>
+
+    <button type="button" class="pdm-zee-image-dialog__close" (click)="close()">
+      {{ closeLabel }}
+    </button>
+  </div>
+
+  <div class="pdm-zee-image-dialog__body">
+    <img
+      class="pdm-zee-image-dialog__image"
+      [src]="data.imagePath"
+      [alt]="data.imageAlt"
+      width="1369"
+      height="1149"
+      loading="eager"
+      decoding="async"
+    />
+  </div>
+
+  <p class="pdm-zee-image-dialog__caption">{{ data.caption }}</p>
+</div>

@@ -3,6 +3,7 @@ import { RouterLink } from '@angular/router';
 import { ChatPdmLogoComponent } from '../../brand/chatpdm-logo/chatpdm-logo.component';
 import { PdmTooltipDirective } from '../../ui/tooltip/pdm-tooltip.directive';
 import { SITE_CONTACT_EMAIL } from '../site-navigation.data';
+import { ZEE_ROUTE_PATH } from '../../../pages/zeroglare-evidence-engine-page/zeroglare-evidence-engine-page.constants';
 
 const COUPYN_PROFILE_URL = 'https://coupyn.com';
 const COUPYN_PROFILE_LABEL = 'Visit Coupyn';
@@ -54,6 +55,7 @@ export class SiteFooterComponent {
         { label: 'Risk Mapping Governance', route: '/risk-mapping-governance' },
         { label: 'Vocabulary Boundary', route: '/vocabulary' },
         { label: 'Zeroglare', route: '/zeroglare' },
+        { label: 'Evidence Engine (ZEE)', route: ZEE_ROUTE_PATH },
         { label: 'Scope model', route: '/scope-model' },
         { label: 'Resolution contract', route: '/resolution-contract' },
         { label: 'Version policy', route: '/version-policy' },
