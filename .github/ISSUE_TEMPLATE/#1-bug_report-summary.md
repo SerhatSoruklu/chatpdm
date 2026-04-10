@@ -1,7 +1,7 @@
 ---
-name: Bug report
+name: "#1-Bug_Report-Summary"
 about: Report a ChatPDM behavior, boundary, or resolution issue
-title: "[BIUG]"
+title: "[BUG-SUMMARY]"
 labels: ''
 assignees: SerhatSoruklu
 

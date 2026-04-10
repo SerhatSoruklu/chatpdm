@@ -1,8 +1,10 @@
 ---
-name: Bug report
+name: "#2-Bug_Report-Steps"
 about: Report a problem or unexpected behavior
-title: "[BUG] "
-labels: bug
+title: "[BUG-Steps] "
+labels: ''
+assignees: SerhatSoruklu
+
 ---
 
 ## Description

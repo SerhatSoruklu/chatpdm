@@ -1,7 +1,7 @@
 ---
-name: Feature request
+name: "#3-Feature_Request-Summary"
 about: Propose a bounded ChatPDM improvement
-title: "[FEATURE]"
+title: "[FEATURE-Summary]"
 labels: ''
 assignees: SerhatSoruklu
 

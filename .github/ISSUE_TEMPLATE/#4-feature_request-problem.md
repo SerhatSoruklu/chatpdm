@@ -1,8 +1,10 @@
 ---
-name: Feature request
+name: "#4-Feature_Request-Problem"
 about: Suggest an improvement or new feature
-title: "[FEATURE] "
-labels: enhancement
+title: "[FEATURE-Problem] "
+labels: ''
+assignees: SerhatSoruklu
+
 ---
 
 ## Problem
