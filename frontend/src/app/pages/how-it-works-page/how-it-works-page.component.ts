@@ -49,17 +49,17 @@ export class HowItWorksPageComponent {
     },
     {
       label: '02',
-      title: 'Semantic Gatekeeper',
-      copy: 'Checks meaning alignment and domain scope before a concept can proceed.',
+      title: 'Scope Gatekeeper',
+      copy: 'Checks authored scope and domain fit before a concept can proceed.',
       bullets: [
         'tests whether the query belongs to the admitted domain',
-        'refuses meaning mismatch instead of smoothing it over',
+        'refuses scope mismatch instead of forcing it into the structure',
       ],
     },
     {
       label: '03',
       title: 'Profile Gatekeeper',
-      copy: 'Ensures the standard, simplified, and formal profiles remain structurally valid without changing meaning.',
+      copy: 'Ensures the standard, simplified, and formal profiles remain structurally valid without changing the authored concept.',
       bullets: [
         'keeps register forms aligned',
         'does not broaden or repair meaning',
@@ -76,8 +76,8 @@ export class HowItWorksPageComponent {
     },
     {
       label: '05',
-      title: 'Register Generator',
-      copy: 'Produces the exposed standard, simplified, and formal outputs from the same admitted concept.',
+      title: 'Register Renderer',
+      copy: 'Renders the exposed standard, simplified, and formal outputs from the same admitted concept.',
       bullets: [
         'standard',
         'simplified',
@@ -87,9 +87,9 @@ export class HowItWorksPageComponent {
     {
       label: '06',
       title: 'Equivalence Validator',
-      copy: 'Checks that all exposed outputs preserve the same meaning across registers.',
+      copy: 'Checks that all exposed outputs preserve the same concept across registers.',
       bullets: [
-        'no semantic drift across representations',
+        'no structural drift across representations',
         'no register-level contradiction',
       ],
     },
@@ -99,7 +99,7 @@ export class HowItWorksPageComponent {
     {
       kind: 'valid',
       title: 'Valid',
-      copy: 'An admitted concept resolves cleanly with stable output.',
+      copy: 'An admitted concept resolves to a stable output.',
     },
     {
       kind: 'partial',
@@ -120,7 +120,7 @@ export class HowItWorksPageComponent {
 
   protected readonly refusalConditions = [
     'out of scope',
-    'semantic mismatch',
+    'scope mismatch',
     'missing anchor',
   ] as const;
 
@@ -139,12 +139,12 @@ export class HowItWorksPageComponent {
     {
       label: 'Phase 1',
       title: 'Structural validation',
-      copy: 'Invariant, boundary, and non-collapse are pressure-tested.',
+      copy: 'Invariant, boundary, and non-collapse are structurally verified.',
     },
     {
       label: 'Phase 2',
       title: 'Stability lock',
-      copy: 'Definitions are constrained until meaning remains stable across registers.',
+      copy: 'Definitions are constrained until the registers stay aligned across versions.',
     },
     {
       label: 'Runtime',

@@ -51,7 +51,7 @@ export class ResolutionContractPageComponent {
       ],
       doesNotGuarantee: [
         'Coverage outside the authored concept scope.',
-        'Any broader answer surface beyond the canonical concept packet.',
+        'Any broader response surface beyond the canonical concept packet.',
       ],
     },
     {
@@ -65,7 +65,7 @@ export class ResolutionContractPageComponent {
         'The output remains bounded to the authored comparison payload.',
       ],
       doesNotGuarantee: [
-        'Freeform comparative reasoning.',
+        'Freeform comparative output.',
         'Comparison of arbitrary or unsupported concept pairs.',
       ],
     },
@@ -79,14 +79,14 @@ export class ResolutionContractPageComponent {
         'The runtime stays explicit about ambiguity instead of silently picking one concept.',
       ],
       doesNotGuarantee: [
-        'A resolved canonical answer before the ambiguity is narrowed.',
+        'A resolved canonical response before the ambiguity is narrowed.',
         'Permission to collapse multiple concepts into one output.',
       ],
     },
     {
       type: 'no_exact_match',
       when: [
-        'The query is semantically formed enough to inspect, but no exact canonical concept resolves.',
+        'The query has enough structure to inspect, but no exact canonical concept resolves.',
       ],
       guarantees: [
         'The non-match is explicit rather than approximated.',
@@ -94,7 +94,7 @@ export class ResolutionContractPageComponent {
         'Suggestions remain bounded and deterministic when present.',
       ],
       doesNotGuarantee: [
-        'A fallback answer.',
+        'A fallback response.',
         'Runtime admission for missing or non-allowlisted concepts.',
       ],
     },
@@ -109,7 +109,7 @@ export class ResolutionContractPageComponent {
       ],
       doesNotGuarantee: [
         'Interpretation as a real concept query.',
-        'Any inferred meaning beyond the entered input.',
+        'Any inferred content beyond the entered input.',
       ],
     },
     {
@@ -122,7 +122,7 @@ export class ResolutionContractPageComponent {
         'Interpretation metadata records the detected query shape.',
       ],
       doesNotGuarantee: [
-        'Actor reasoning, relation reasoning, or consequence-chain output.',
+        'Actor, relation, or consequence-chain output.',
         'Silent conversion into a simpler exact-concept query.',
       ],
     },
@@ -155,7 +155,7 @@ export class ResolutionContractPageComponent {
     },
     {
       field: 'type',
-      meaning: 'Semantic outcome type returned by the runtime.',
+      meaning: 'Outcome type returned by the runtime.',
       presence: 'Always present. Stable top-level field.',
     },
     {
@@ -165,7 +165,7 @@ export class ResolutionContractPageComponent {
     },
     {
       field: 'interpretation',
-      meaning: 'Structured query-shape metadata. It explains the detected shape without fabricating an answer.',
+      meaning: 'Structured query-shape metadata. It explains the detected shape without fabricating a result.',
       presence: 'Always present. Null for direct concept_match and comparison results. Structured for refusal and rejection results.',
     },
     {
@@ -200,14 +200,14 @@ export class ResolutionContractPageComponent {
     },
     {
       field: 'contractVersion',
-      meaning: 'Declared semantic contract version for the runtime result.',
+      meaning: 'Declared contract version for the runtime result.',
       presence: 'Always present. Stable top-level field.',
     },
   ] as const;
 
   protected readonly refusalPrinciples = [
     'Refusal is part of the runtime contract, not a transport failure.',
-    'Meaningless input, semantically unmatched input, and unsupported query structures are refused through distinct top-level result types.',
+    'Meaningless input, structurally unmatched input, and unsupported query structures are refused through distinct top-level result types.',
     'The runtime does not guess, soften invalid structure, or synthesize unsupported output.',
   ] as const;
 
@@ -258,14 +258,14 @@ export class ResolutionContractPageComponent {
       type: 'invalid_query',
       queryType: 'invalid_query',
       reviewState: null,
-      meaning: 'Continuous noise input is refused as invalid_query instead of being treated as a semantic miss.',
+      meaning: 'Continuous noise input is refused as invalid_query instead of being treated as a structure miss.',
     },
     {
       query: 'who creates law?',
       type: 'unsupported_query_type',
       queryType: 'role_or_actor_query',
       reviewState: null,
-      meaning: 'The query has recognizable structure, but actor reasoning is not supported in the current runtime.',
+      meaning: 'The query has recognizable structure, but actor output is not supported in the current runtime.',
     },
     {
       query: 'obligation',

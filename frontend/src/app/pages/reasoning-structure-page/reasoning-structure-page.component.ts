@@ -33,13 +33,13 @@ interface DeterministicReason {
 export class ReasoningStructurePageComponent {
   protected readonly activeTruths = [
     'ChatPDM currently operates on a deterministic main core.',
-    'This is the only authoritative reasoning layer live in the public runtime today.',
+    'This is the only authoritative layer live in the public runtime today.',
     'Canonical concepts, admitted comparisons, refusal, and review state remain anchored there.',
   ] as const;
 
   protected readonly reasoningLayers: readonly ReasoningLayerRow[] = [
     {
-      label: 'Deterministic reasoning',
+      label: 'Deterministic core',
       role: 'Main core',
       goodAt: 'Exact definitions, hard boundaries, refusal, and structural validation.',
       mustNeverDo: 'Guess, soften invalid structure, or produce unsupported output.',
@@ -49,7 +49,7 @@ export class ReasoningStructurePageComponent {
     },
     {
       label: 'Symbolic / modal logic',
-      role: 'Rule interpreter',
+      role: 'Rule layer',
       goodAt: 'Formal relations, permissions, obligations, and conditional structures.',
       mustNeverDo: 'Override deterministic definitions or self-admit into runtime.',
       statusTitle: 'Not part of runtime',
@@ -57,16 +57,16 @@ export class ReasoningStructurePageComponent {
       tone: 'future',
     },
     {
-      label: 'Fuzzy reasoning',
-      role: 'Ambiguity scaler',
-      goodAt: 'Degrees, partial fit, and soft thresholds for advisory analysis.',
+      label: 'Fuzzy layer',
+      role: 'Ambiguity layer',
+      goodAt: 'Degrees, partial fit, and soft thresholds for secondary analysis.',
       mustNeverDo: 'Produce final truth claims or soften runtime boundaries.',
       statusTitle: 'Not part of runtime',
       statusNote: 'Future bounded layer.',
       tone: 'future',
     },
     {
-      label: 'Probabilistic reasoning',
+      label: 'Probabilistic layer',
       role: 'Hypothesis layer',
       goodAt: 'Likelihoods, uncertainty modeling, and candidate hypotheses.',
       mustNeverDo: 'Define concepts, finalize validity, or write into canon.',
@@ -75,16 +75,16 @@ export class ReasoningStructurePageComponent {
       tone: 'future',
     },
     {
-      label: 'Heuristic reasoning',
+      label: 'Heuristic layer',
       role: 'Fast shortcut layer',
       goodAt: 'Efficient approximations, triage, and prioritization.',
-      mustNeverDo: 'Replace validated reasoning or bypass refusal.',
+      mustNeverDo: 'Replace validated output or bypass refusal.',
       statusTitle: 'Not part of runtime',
       statusNote: 'Future bounded layer.',
       tone: 'future',
     },
     {
-      label: 'Dialogical reasoning',
+      label: 'Clarification layer',
       role: 'Clarification layer',
       goodAt: 'Asking for clarification, reducing ambiguity, and guiding interaction.',
       mustNeverDo: 'Redefine system rules or resolve canonically.',
@@ -98,19 +98,19 @@ export class ReasoningStructurePageComponent {
     {
       rank: '1',
       title: 'Deterministic core',
-      copy: 'Final. This layer alone can produce trusted public outputs.',
+      copy: 'Final. This layer alone can produce trusted public responses.',
       tone: 'active',
     },
     {
       rank: '2',
       title: 'Symbolic / modal',
-      copy: 'Conditional and bounded. It may interpret formal structure, but not overrule canon.',
+      copy: 'Conditional and bounded. It may read formal structure, but not overrule canon.',
       tone: 'bounded',
     },
     {
       rank: '3',
       title: 'Fuzzy / probabilistic / heuristic',
-      copy: 'Advisory only. These modes may suggest, rank, or pressure-test without deciding truth.',
+      copy: 'Advisory only. These modes may suggest, rank, or stress-test without deciding truth.',
       tone: 'advisory',
     },
     {
