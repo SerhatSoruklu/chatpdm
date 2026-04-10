@@ -4,6 +4,11 @@ const {
   assertDeterministicPathFreeOfAiMarkers,
 } = require('../../lib/ai-governance-guard');
 const {
+  assertNotZeeArtifact,
+  ZEE_GOVERNANCE_ERROR_CODES,
+  ZeeGovernanceBoundaryError,
+} = require('../../lib/zee-governance-guard');
+const {
   RESOLUTION_ENGINE_TYPES,
 } = require('./resolution-engine');
 
@@ -124,7 +129,15 @@ function assertPayloadMatchesType(type, payload) {
 
 function validateAndExposeOutput(resolutionOutput) {
   try {
+    assertNotZeeArtifact(
+      resolutionOutput,
+      'Phase 5 output validation gate',
+    );
     const finalState = assertResolutionOutputShape(resolutionOutput);
+    assertNotZeeArtifact(
+      resolutionOutput.payload,
+      'Phase 5 output validation gate payload',
+    );
 
     assertDeterministicPathFreeOfAiMarkers(
       resolutionOutput,
@@ -137,7 +150,12 @@ function validateAndExposeOutput(resolutionOutput) {
       type: resolutionOutput.type,
       payload: resolutionOutput.payload,
     };
-  } catch {
+  } catch (error) {
+    if (error instanceof ZeeGovernanceBoundaryError
+      || error?.code === ZEE_GOVERNANCE_ERROR_CODES.ARTIFACT_CONSUMPTION_BLOCKED) {
+      throw error;
+    }
+
     return buildValidationFailure();
   }
 }
