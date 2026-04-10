@@ -51,7 +51,7 @@ export const seoLegalEntries = {
   },
   'legal.terms.inspect': {
     title: 'Terms of Service (Inspect) - ChatPDM',
-    description: 'Current inspectable terms surface for ChatPDM runtime operations, field rules, and refusal boundaries.',
+    description: 'Current inspectable terms surface for ChatPDM runtime and support operations, field rules, and refusal boundaries.',
     canonicalPath: '/inspect/terms',
     includeInSitemap: false,
     sitemapChangeFrequency: 'yearly',

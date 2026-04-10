@@ -7,6 +7,130 @@ import type {
   PolicySurfaceDefinition,
 } from '../../policies/policy-surface.types';
 
+export type TermsPageSectionGroupId =
+  | 'overview'
+  | 'concepts'
+  | 'feedback'
+  | 'risk-mapping-governance'
+  | 'support-notes';
+
+export interface TermsPageSection {
+  id: string;
+  groupId: TermsPageSectionGroupId;
+  groupLabel: string;
+  sectionLabel: string;
+  title: string;
+  summary?: string;
+  endpointOperation?: string;
+}
+
+export interface TermsPageSectionGroup {
+  id: TermsPageSectionGroupId;
+  label: string;
+  sections: readonly TermsPageSection[];
+}
+
+export const TERMS_PAGE_SECTION_GROUPS = [
+  {
+    id: 'overview',
+    label: 'Overview',
+    sections: [
+      {
+        id: 'overview',
+        groupId: 'overview',
+        groupLabel: 'Overview',
+        sectionLabel: 'Overview',
+        title: 'Current public API reference.',
+        summary:
+          'This page models the public API as a scoped runtime section plus separate Risk Mapping Governance and ZEE surfaces. The hero counts are scoped to the runtime section only.',
+      },
+    ],
+  },
+  {
+    id: 'concepts',
+    label: 'Concepts',
+    sections: [
+      {
+        id: 'endpoint-contract',
+        groupId: 'concepts',
+        groupLabel: 'Concepts',
+        sectionLabel: 'Endpoint contract',
+        title: 'Endpoint contract',
+      },
+    ],
+  },
+  {
+    id: 'feedback',
+    label: 'Feedback',
+    sections: [
+      {
+        id: 'field-contract',
+        groupId: 'feedback',
+        groupLabel: 'Feedback',
+        sectionLabel: 'Field contract',
+        title: 'Field contract',
+      },
+    ],
+  },
+  {
+    id: 'risk-mapping-governance',
+    label: 'Risk Mapping Governance',
+    sections: [
+      {
+        id: 'risk-mapping-governance',
+        groupId: 'risk-mapping-governance',
+        groupLabel: 'Risk Mapping Governance',
+        sectionLabel: 'Risk Mapping Governance API',
+        title: 'Risk Mapping Governance API',
+        summary:
+          'Risk Mapping Governance is exposed separately as a bounded API surface. The current public route resolves only entity, timeHorizon, scenarioType, domain, scope, and evidenceSetVersion. queryText is not forwarded by the route handler.',
+      },
+    ],
+  },
+  {
+    id: 'support-notes',
+    label: 'Support / Notes',
+    sections: [
+      {
+        id: 'platform-rules',
+        groupId: 'support-notes',
+        groupLabel: 'Support / Notes',
+        sectionLabel: 'Platform rules',
+        title: 'Platform rules',
+      },
+      {
+        id: 'runtime-boundaries',
+        groupId: 'support-notes',
+        groupLabel: 'Support / Notes',
+        sectionLabel: 'Runtime boundaries',
+        title: 'Runtime boundaries',
+      },
+      {
+        id: 'refusal-boundaries',
+        groupId: 'support-notes',
+        groupLabel: 'Support / Notes',
+        sectionLabel: 'Refusal boundaries',
+        title: 'Refusal boundaries',
+      },
+      {
+        id: 'zee-api',
+        groupId: 'support-notes',
+        groupLabel: 'Support / Notes',
+        sectionLabel: 'ZeroGlare Evidence Engine API',
+        title: 'ZeroGlare Evidence Engine API',
+        summary:
+          'ZEE is exposed separately as a bounded read-only contract surface. These endpoints exist for inspectability and contract framing only. They do not perform live evidence analysis and are not part of ChatPDM runtime resolution.',
+      },
+    ],
+  },
+] as const satisfies readonly TermsPageSectionGroup[];
+
+export function flattenTermsPageSections(
+  groups: readonly TermsPageSectionGroup[],
+): readonly TermsPageSection[] {
+  return groups.flatMap((group) => group.sections);
+}
+
 export interface TermsPageBadge {
   label: string;
   value: string;
@@ -50,6 +174,8 @@ export interface TermsPageViewModel {
   intro: string;
   summaryLine: string;
   badges: readonly TermsPageBadge[];
+  sectionGroups: readonly TermsPageSectionGroup[];
+  sectionOrder: readonly TermsPageSection[];
   endpointRows: readonly TermsPageEndpointRow[];
   requestFieldRows: readonly TermsPageFieldRow[];
   acceptedValueRows: readonly TermsPageFieldRow[];
@@ -61,6 +187,9 @@ export interface TermsPageViewModel {
   riskMappingEndpointRows: readonly TermsPageEndpointRow[];
   riskMappingFieldRows: readonly TermsPageFieldRow[];
   riskMappingTrustRoute: string;
+  zeeApiTitle: string;
+  zeeApiIntro: string;
+  zeeApiEndpointRows: readonly TermsPageEndpointRow[];
   inspectRoute: string;
 }
 
@@ -73,6 +202,11 @@ export function buildTermsPageViewModel(surface: PolicySurfaceDefinition): Terms
     throw new Error('Terms page requires typed terms truth rows before UI rendering can proceed.');
   }
 
+  const sectionGroups = TERMS_PAGE_SECTION_GROUPS;
+  const sectionOrder = flattenTermsPageSections(sectionGroups);
+  const overviewSection = requireSection(sectionOrder, 'overview');
+  const riskMappingSection = requireSection(sectionOrder, 'risk-mapping-governance');
+  const zeeSection = requireSection(sectionOrder, 'zee-api');
   const { endpointContracts, fieldContracts, platformRules, runtimeBoundaries, refusalBoundaries } =
     surface.termsTruth;
   const riskMappingEndpointRows = [
@@ -89,7 +223,7 @@ export function buildTermsPageViewModel(surface: PolicySurfaceDefinition): Terms
       operation: 'explain surface',
       method: 'GET',
       path: '/api/v1/risk-mapping/explain',
-      input: 'query: entity, timeHorizon, scenarioType, domain, scope, evidenceSetVersion, queryText',
+      input: 'query: entity, timeHorizon, scenarioType, domain, scope, evidenceSetVersion',
       evidence: 'backend/src/routes/api/v1/risk-mapping.route.js:67-70',
     },
     {
@@ -97,7 +231,7 @@ export function buildTermsPageViewModel(surface: PolicySurfaceDefinition): Terms
       operation: 'audit surface',
       method: 'GET',
       path: '/api/v1/risk-mapping/audit',
-      input: 'query: entity, timeHorizon, scenarioType, domain, scope, evidenceSetVersion, queryText',
+      input: 'query: entity, timeHorizon, scenarioType, domain, scope, evidenceSetVersion',
       evidence: 'backend/src/routes/api/v1/risk-mapping.route.js:82-85',
     },
     {
@@ -142,21 +276,40 @@ export function buildTermsPageViewModel(surface: PolicySurfaceDefinition): Terms
       condition: 'authoritative evidence-pack lookup key',
       evidence: 'backend/src/modules/risk-mapping/contracts/riskMapQueryContract.js',
     },
-    {
-      claimId: 'rmg-field-2',
-      field: 'queryText',
-      rule: 'accepted field',
-      condition: 'optional framing channel; classification only',
-      evidence: 'backend/src/modules/risk-mapping/contracts/riskMapQueryContract.js',
-    },
   ] satisfies readonly TermsPageFieldRow[];
+
+  const zeeApiEndpointRows = [
+    {
+      claimId: 'zee-api-1',
+      operation: 'contract surface',
+      method: 'GET',
+      path: '/api/v1/zee/contract',
+      input: 'none',
+      evidence: 'backend/src/routes/api/v1/zee.route.js:45-53',
+    },
+    {
+      claimId: 'zee-api-2',
+      operation: 'explain surface',
+      method: 'GET',
+      path: '/api/v1/zee/explain',
+      input: 'none',
+      evidence: 'backend/src/routes/api/v1/zee.route.js:55-74',
+    },
+    {
+      claimId: 'zee-api-3',
+      operation: 'audit surface',
+      method: 'GET',
+      path: '/api/v1/zee/audit',
+      input: 'none',
+      evidence: 'backend/src/routes/api/v1/zee.route.js:76-88',
+    },
+  ] satisfies readonly TermsPageEndpointRow[];
 
   return {
     eyebrow: 'API Reference',
-    title: 'Current runtime contract for public endpoints and feedback boundaries.',
-    intro:
-      'Current API behavior is rendered here as a modeled runtime contract: active public endpoints, concept detail access, feedback controls, accepted feedback fields and values, platform rules, and mapped runtime and refusal boundaries. Scaffold discovery routes and placeholder resources are not part of this contract view.',
-    summaryLine: `Current API surface shows ${formatCount(endpointContracts.length, 'public endpoint')}, ${formatCount(fieldContracts.length, 'field rule')}, ${formatCount(platformRules.length, 'platform rule')}, ${formatCount(runtimeBoundaries.length, 'runtime boundary')}, and ${formatCount(refusalBoundaries.length, 'refusal boundary')}.`,
+    title: overviewSection.title,
+    intro: overviewSection.summary ?? '',
+    summaryLine: `Runtime section shows ${formatCount(endpointContracts.length, 'public endpoint')}, ${formatCount(fieldContracts.length, 'field rule')}, ${formatCount(platformRules.length, 'platform rule')}, ${formatCount(runtimeBoundaries.length, 'runtime boundary')}, and ${formatCount(refusalBoundaries.length, 'refusal boundary')}.`,
     badges: [
       {
         label: 'Endpoints',
@@ -175,6 +328,8 @@ export function buildTermsPageViewModel(surface: PolicySurfaceDefinition): Terms
         value: `${runtimeBoundaries.length + refusalBoundaries.length} mapped`,
       },
     ],
+    sectionGroups,
+    sectionOrder,
     endpointRows: endpointContracts.map(buildEndpointRow),
     requestFieldRows: fieldContracts
       .filter((fact) => fact.fieldContractType === 'request_field')
@@ -185,12 +340,14 @@ export function buildTermsPageViewModel(surface: PolicySurfaceDefinition): Terms
     platformRuleRows: platformRules.map(buildPlatformRuleRow),
     runtimeBoundaryRows: runtimeBoundaries.map(buildRuntimeBoundaryRow),
     refusalBoundaryRows: refusalBoundaries.map(buildRefusalBoundaryRow),
-    riskMappingTitle: 'Risk Mapping Governance API',
-    riskMappingIntro:
-      'Risk Mapping Governance is exposed separately as a bounded API surface. The entity stays authoritative for evidence-pack lookup, while queryText is optional and used only for classification and framing detection.',
+    riskMappingTitle: riskMappingSection.title,
+    riskMappingIntro: riskMappingSection.summary ?? '',
     riskMappingEndpointRows,
     riskMappingFieldRows,
     riskMappingTrustRoute: '/risk-mapping-governance',
+    zeeApiTitle: zeeSection.title,
+    zeeApiIntro: zeeSection.summary ?? '',
+    zeeApiEndpointRows,
     inspectRoute: surface.route,
   };
 }
@@ -245,12 +402,24 @@ function buildRefusalBoundaryRow(boundary: PolicyTermsRefusalBoundary): TermsPag
   };
 }
 
+function requireSection(sectionOrder: readonly TermsPageSection[], sectionId: string): TermsPageSection {
+  const section = sectionOrder.find((candidate) => candidate.id === sectionId);
+
+  if (!section) {
+    throw new Error(`Terms page canonical section ${sectionId} is missing.`);
+  }
+
+  return section;
+}
+
 function formatEndpointOperation(contract: PolicyTermsEndpointContract): string {
   switch (contract.operation) {
     case 'concept_resolution':
       return 'concept resolution';
     case 'concept_detail':
       return 'concept detail';
+    case 'feedback_index':
+      return 'feedback index';
     case 'feedback_submission':
       return 'feedback submission';
     case 'feedback_export':
@@ -267,6 +436,10 @@ function formatEndpointInput(contract: PolicyTermsEndpointContract): string {
 
   if (contract.requiredRouteParam) {
     return `route: ${contract.requiredRouteParam}`;
+  }
+
+  if (contract.method === 'GET') {
+    return 'none';
   }
 
   return 'request body';

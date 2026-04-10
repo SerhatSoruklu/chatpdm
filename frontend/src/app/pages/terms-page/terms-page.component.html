@@ -1,256 +1,341 @@
-<div class="pdm-terms-page">
+<div class="pdm-terms-page" data-route-surface="api-docs">
   <main class="pdm-terms-page__main pdm-shell" aria-labelledby="pdm-terms-title">
     <div class="pdm-shell__frame pdm-terms-page__frame">
-      <header class="pdm-terms-page__hero">
-        <p class="pdm-terms-page__eyebrow pdm-mono">{{ viewModel().eyebrow }}</p>
-        <h1 class="pdm-terms-page__title" id="pdm-terms-title">{{ viewModel().title }}</h1>
-        <p class="pdm-terms-page__intro">{{ viewModel().intro }}</p>
-        <p class="pdm-terms-page__summary">{{ viewModel().summaryLine }}</p>
-
-        <div class="pdm-terms-page__badge-list" aria-label="Current terms posture">
-          @for (badge of viewModel().badges; track badge.label) {
-            <article class="pdm-terms-page__badge">
-              <p class="pdm-terms-page__badge-label pdm-mono">{{ badge.label }}</p>
-              <p class="pdm-terms-page__badge-value">{{ badge.value }}</p>
-            </article>
+      <nav class="pdm-terms-page__jump-nav" aria-label="API sections">
+        <p class="pdm-terms-page__jump-label pdm-mono">Jump to</p>
+        <div class="pdm-terms-page__jump-list">
+          @for (section of viewModel().sectionOrder; track section.id) {
+            <a
+              class="pdm-terms-page__jump-link"
+              [class.pdm-terms-page__jump-link--active]="section.id === activeSectionId()"
+              [attr.aria-current]="section.id === activeSectionId() ? 'location' : null"
+              [routerLink]="[]"
+              [fragment]="section.id"
+            >
+              {{ section.sectionLabel }}
+            </a>
           }
         </div>
+      </nav>
 
-        <div class="pdm-terms-page__actions">
-          <a class="pdm-terms-page__inspect-link" [routerLink]="viewModel().inspectRoute">
-            Open inspect surface
-          </a>
-        </div>
-      </header>
-
-      <section class="pdm-terms-page__section">
-        <h2 class="pdm-terms-page__section-title">Endpoint contract</h2>
-        <div class="pdm-terms-page__table-wrap">
-          <table class="pdm-terms-page__table">
-            <thead>
-              <tr>
-                <th>Operation</th>
-                <th>Method</th>
-                <th>Path</th>
-                <th>Input</th>
-                <th>Evidence</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (row of viewModel().endpointRows; track row.claimId) {
-                <tr>
-                  <td>{{ row.operation }}</td>
-                  <td class="pdm-terms-page__mono-cell pdm-mono">{{ row.method }}</td>
-                  <td class="pdm-terms-page__mono-cell pdm-mono">{{ row.path }}</td>
-                  <td>{{ row.input }}</td>
-                  <td class="pdm-terms-page__evidence pdm-mono">{{ row.evidence }}</td>
-                </tr>
-              }
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <section class="pdm-terms-page__section">
-        <h2 class="pdm-terms-page__section-title">Field contract</h2>
-
-        <div class="pdm-terms-page__subsection">
-          <h3 class="pdm-terms-page__subsection-title">Accepted request fields</h3>
-          <div class="pdm-terms-page__table-wrap">
-            <table class="pdm-terms-page__table">
-              <thead>
-                <tr>
-                  <th>Field</th>
-                  <th>Rule</th>
-                  <th>Condition</th>
-                  <th>Evidence</th>
-                </tr>
-              </thead>
-              <tbody>
-                @for (row of viewModel().requestFieldRows; track row.claimId) {
-                  <tr>
-                    <td class="pdm-terms-page__mono-cell pdm-mono">{{ row.field }}</td>
-                    <td>{{ row.rule }}</td>
-                    <td>{{ row.condition }}</td>
-                    <td class="pdm-terms-page__evidence pdm-mono">{{ row.evidence }}</td>
-                  </tr>
+      <div class="pdm-terms-page__docs-layout">
+        <nav class="pdm-terms-page__nav" aria-label="API sections">
+          @for (group of viewModel().sectionGroups; track group.id) {
+            <section class="pdm-terms-page__nav-group">
+              <p class="pdm-terms-page__nav-group-title">{{ group.label }}</p>
+              <ul class="pdm-terms-page__nav-list">
+                @for (section of group.sections; track section.id) {
+                  <li class="pdm-terms-page__nav-item">
+                    <a
+                      class="pdm-terms-page__nav-link"
+                      [class.pdm-terms-page__nav-link--active]="section.id === activeSectionId()"
+                      [attr.aria-current]="section.id === activeSectionId() ? 'location' : null"
+                      [routerLink]="[]"
+                      [fragment]="section.id"
+                    >
+                      {{ section.sectionLabel }}
+                    </a>
+                  </li>
                 }
-              </tbody>
-            </table>
-          </div>
-        </div>
+              </ul>
+            </section>
+          }
+        </nav>
 
-        <div class="pdm-terms-page__subsection">
-          <h3 class="pdm-terms-page__subsection-title">Accepted values and conditional options</h3>
-          <div class="pdm-terms-page__table-wrap">
-            <table class="pdm-terms-page__table">
-              <thead>
-                <tr>
-                  <th>Field</th>
-                  <th>Rule</th>
-                  <th>Condition</th>
-                  <th>Evidence</th>
-                </tr>
-              </thead>
-              <tbody>
-                @for (row of viewModel().acceptedValueRows; track row.claimId) {
-                  <tr>
-                    <td class="pdm-terms-page__mono-cell pdm-mono">{{ row.field }}</td>
-                    <td>{{ row.rule }}</td>
-                    <td>{{ row.condition }}</td>
-                    <td class="pdm-terms-page__evidence pdm-mono">{{ row.evidence }}</td>
-                  </tr>
+        <div class="pdm-terms-page__content">
+          @for (section of viewModel().sectionOrder; track section.id) {
+            @if (section.id === 'overview') {
+              <header
+                #apiSection
+                class="pdm-terms-page__hero"
+                [class.pdm-terms-page__hero--active]="section.id === activeSectionId()"
+                [attr.id]="section.id"
+                aria-labelledby="pdm-terms-title"
+              >
+                <p class="pdm-terms-page__eyebrow pdm-mono">{{ viewModel().eyebrow }}</p>
+                <h1 class="pdm-terms-page__title" id="pdm-terms-title">{{ section.title }}</h1>
+                @if (section.summary) {
+                  <p class="pdm-terms-page__intro">{{ section.summary }}</p>
                 }
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
+                <p class="pdm-terms-page__summary">{{ viewModel().summaryLine }}</p>
 
-      <section class="pdm-terms-page__section" aria-labelledby="pdm-rmg-api-title">
-        <h2 class="pdm-terms-page__section-title" id="pdm-rmg-api-title">
-          {{ viewModel().riskMappingTitle }}
-        </h2>
-        <p class="pdm-terms-page__intro">
-          {{ viewModel().riskMappingIntro }}
-        </p>
+                <div class="pdm-terms-page__badge-list" aria-label="Current terms posture">
+                  @for (badge of viewModel().badges; track badge.label) {
+                    <article class="pdm-terms-page__badge">
+                      <p class="pdm-terms-page__badge-label pdm-mono">{{ badge.label }}</p>
+                      <p class="pdm-terms-page__badge-value">{{ badge.value }}</p>
+                    </article>
+                  }
+                </div>
 
-        <div class="pdm-terms-page__subsection">
-          <h3 class="pdm-terms-page__subsection-title">Risk Mapping endpoints</h3>
-          <div class="pdm-terms-page__table-wrap">
-            <table class="pdm-terms-page__table">
-              <thead>
-                <tr>
-                  <th>Operation</th>
-                  <th>Method</th>
-                  <th>Path</th>
-                  <th>Input</th>
-                  <th>Evidence</th>
-                </tr>
-              </thead>
-              <tbody>
-                @for (row of viewModel().riskMappingEndpointRows; track row.claimId) {
-                  <tr>
-                    <td>{{ row.operation }}</td>
-                    <td class="pdm-terms-page__mono-cell pdm-mono">{{ row.method }}</td>
-                    <td class="pdm-terms-page__mono-cell pdm-mono">{{ row.path }}</td>
-                    <td>{{ row.input }}</td>
-                    <td class="pdm-terms-page__evidence pdm-mono">{{ row.evidence }}</td>
-                  </tr>
+                <div class="pdm-terms-page__actions">
+                  <a class="pdm-terms-page__inspect-link" [routerLink]="viewModel().inspectRoute">
+                    Open inspect surface
+                  </a>
+                </div>
+              </header>
+            } @else {
+              <section
+                #apiSection
+                class="pdm-terms-page__section"
+                [class.pdm-terms-page__section--active]="section.id === activeSectionId()"
+                [attr.id]="section.id"
+                [attr.aria-labelledby]="section.id + '-title'"
+              >
+                <h2 class="pdm-terms-page__section-title" [id]="section.id + '-title'">
+                  {{ section.title }}
+                </h2>
+
+                @if (section.summary) {
+                  <p class="pdm-terms-page__intro">{{ section.summary }}</p>
                 }
-              </tbody>
-            </table>
-          </div>
-        </div>
 
-        <div class="pdm-terms-page__subsection">
-          <h3 class="pdm-terms-page__subsection-title">Risk Mapping request fields</h3>
-          <div class="pdm-terms-page__table-wrap">
-            <table class="pdm-terms-page__table">
-              <thead>
-                <tr>
-                  <th>Field</th>
-                  <th>Rule</th>
-                  <th>Condition</th>
-                  <th>Evidence</th>
-                </tr>
-              </thead>
-              <tbody>
-                @for (row of viewModel().riskMappingFieldRows; track row.claimId) {
-                  <tr>
-                    <td class="pdm-terms-page__mono-cell pdm-mono">{{ row.field }}</td>
-                    <td>{{ row.rule }}</td>
-                    <td>{{ row.condition }}</td>
-                    <td class="pdm-terms-page__evidence pdm-mono">{{ row.evidence }}</td>
-                  </tr>
+                @switch (section.id) {
+                  @case ('endpoint-contract') {
+                    <div class="pdm-terms-page__table-wrap">
+                      <table class="pdm-terms-page__table pdm-terms-page__table--endpoint">
+                        <thead>
+                          <tr>
+                            <th>Operation</th>
+                            <th>Method</th>
+                            <th>Path</th>
+                            <th>Input</th>
+                            <th>Evidence</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          @for (row of viewModel().endpointRows; track row.claimId) {
+                            <tr>
+                              <td>{{ row.operation }}</td>
+                              <td class="pdm-terms-page__mono-cell pdm-mono">{{ row.method }}</td>
+                              <td class="pdm-terms-page__mono-cell pdm-mono">{{ row.path }}</td>
+                              <td>{{ row.input }}</td>
+                              <td class="pdm-terms-page__evidence pdm-mono">{{ row.evidence }}</td>
+                            </tr>
+                          }
+                        </tbody>
+                      </table>
+                    </div>
+                  }
+                  @case ('field-contract') {
+                    <div class="pdm-terms-page__subsection">
+                      <h3 class="pdm-terms-page__subsection-title">Accepted request fields</h3>
+                      <div class="pdm-terms-page__table-wrap">
+                        <table class="pdm-terms-page__table pdm-terms-page__table--field">
+                          <thead>
+                            <tr>
+                              <th>Field</th>
+                              <th>Rule</th>
+                              <th>Condition</th>
+                              <th>Evidence</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @for (row of viewModel().requestFieldRows; track row.claimId) {
+                              <tr>
+                                <td class="pdm-terms-page__mono-cell pdm-mono">{{ row.field }}</td>
+                                <td>{{ row.rule }}</td>
+                                <td>{{ row.condition }}</td>
+                                <td class="pdm-terms-page__evidence pdm-mono">{{ row.evidence }}</td>
+                              </tr>
+                            }
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+                    <div class="pdm-terms-page__subsection">
+                      <h3 class="pdm-terms-page__subsection-title">Accepted values and conditional options</h3>
+                      <div class="pdm-terms-page__table-wrap">
+                        <table class="pdm-terms-page__table pdm-terms-page__table--field">
+                          <thead>
+                            <tr>
+                              <th>Field</th>
+                              <th>Rule</th>
+                              <th>Condition</th>
+                              <th>Evidence</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @for (row of viewModel().acceptedValueRows; track row.claimId) {
+                              <tr>
+                                <td class="pdm-terms-page__mono-cell pdm-mono">{{ row.field }}</td>
+                                <td>{{ row.rule }}</td>
+                                <td>{{ row.condition }}</td>
+                                <td class="pdm-terms-page__evidence pdm-mono">{{ row.evidence }}</td>
+                              </tr>
+                            }
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  }
+                  @case ('risk-mapping-governance') {
+                    <div class="pdm-terms-page__subsection">
+                      <h3 class="pdm-terms-page__subsection-title">Risk Mapping endpoints</h3>
+                      <div class="pdm-terms-page__table-wrap">
+                        <table class="pdm-terms-page__table pdm-terms-page__table--endpoint">
+                          <thead>
+                            <tr>
+                              <th>Operation</th>
+                              <th>Method</th>
+                              <th>Path</th>
+                              <th>Input</th>
+                              <th>Evidence</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @for (row of viewModel().riskMappingEndpointRows; track row.claimId) {
+                              <tr>
+                                <td>{{ row.operation }}</td>
+                                <td class="pdm-terms-page__mono-cell pdm-mono">{{ row.method }}</td>
+                                <td class="pdm-terms-page__mono-cell pdm-mono">{{ row.path }}</td>
+                                <td>{{ row.input }}</td>
+                                <td class="pdm-terms-page__evidence pdm-mono">{{ row.evidence }}</td>
+                              </tr>
+                            }
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+                    <div class="pdm-terms-page__subsection">
+                      <h3 class="pdm-terms-page__subsection-title">Risk Mapping request fields</h3>
+                      <div class="pdm-terms-page__table-wrap">
+                        <table class="pdm-terms-page__table pdm-terms-page__table--field">
+                          <thead>
+                            <tr>
+                              <th>Field</th>
+                              <th>Rule</th>
+                              <th>Condition</th>
+                              <th>Evidence</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @for (row of viewModel().riskMappingFieldRows; track row.claimId) {
+                              <tr>
+                                <td class="pdm-terms-page__mono-cell pdm-mono">{{ row.field }}</td>
+                                <td>{{ row.rule }}</td>
+                                <td>{{ row.condition }}</td>
+                                <td class="pdm-terms-page__evidence pdm-mono">{{ row.evidence }}</td>
+                              </tr>
+                            }
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+                    <div class="pdm-terms-page__actions">
+                      <a class="pdm-terms-page__inspect-link" [routerLink]="viewModel().riskMappingTrustRoute">
+                        Open RMG trust page
+                      </a>
+                    </div>
+                  }
+                  @case ('platform-rules') {
+                    <div class="pdm-terms-page__table-wrap">
+                      <table class="pdm-terms-page__table pdm-terms-page__table--rule">
+                        <thead>
+                          <tr>
+                            <th>Rule</th>
+                            <th>Effect</th>
+                            <th>Evidence</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          @for (row of viewModel().platformRuleRows; track row.claimId) {
+                            <tr>
+                              <td>{{ row.rule }}</td>
+                              <td>{{ row.effect }}</td>
+                              <td class="pdm-terms-page__evidence pdm-mono">{{ row.evidence }}</td>
+                            </tr>
+                          }
+                        </tbody>
+                      </table>
+                    </div>
+                  }
+                  @case ('runtime-boundaries') {
+                    <div class="pdm-terms-page__table-wrap">
+                      <table class="pdm-terms-page__table pdm-terms-page__table--boundary">
+                        <thead>
+                          <tr>
+                            <th>Boundary</th>
+                            <th>Condition</th>
+                            <th>Effect</th>
+                            <th>Evidence</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          @for (row of viewModel().runtimeBoundaryRows; track row.claimId) {
+                            <tr>
+                              <td>{{ row.boundary }}</td>
+                              <td>{{ row.condition }}</td>
+                              <td>{{ row.effect }}</td>
+                              <td class="pdm-terms-page__evidence pdm-mono">{{ row.evidence }}</td>
+                            </tr>
+                          }
+                        </tbody>
+                      </table>
+                    </div>
+                  }
+                  @case ('refusal-boundaries') {
+                    <div class="pdm-terms-page__table-wrap">
+                      <table class="pdm-terms-page__table pdm-terms-page__table--boundary">
+                        <thead>
+                          <tr>
+                            <th>Boundary</th>
+                            <th>Condition</th>
+                            <th>Effect</th>
+                            <th>Evidence</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          @for (row of viewModel().refusalBoundaryRows; track row.claimId) {
+                            <tr>
+                              <td>{{ row.boundary }}</td>
+                              <td>{{ row.condition }}</td>
+                              <td>{{ row.effect }}</td>
+                              <td class="pdm-terms-page__evidence pdm-mono">{{ row.evidence }}</td>
+                            </tr>
+                          }
+                        </tbody>
+                      </table>
+                    </div>
+                  }
+                  @case ('zee-api') {
+                    <div class="pdm-terms-page__subsection">
+                      <h3 class="pdm-terms-page__subsection-title">ZEE endpoints</h3>
+                      <div class="pdm-terms-page__table-wrap">
+                        <table class="pdm-terms-page__table pdm-terms-page__table--endpoint">
+                          <thead>
+                            <tr>
+                              <th>Operation</th>
+                              <th>Method</th>
+                              <th>Path</th>
+                              <th>Input</th>
+                              <th>Evidence</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @for (row of viewModel().zeeApiEndpointRows; track row.claimId) {
+                              <tr>
+                                <td>{{ row.operation }}</td>
+                                <td class="pdm-terms-page__mono-cell pdm-mono">{{ row.method }}</td>
+                                <td class="pdm-terms-page__mono-cell pdm-mono">{{ row.path }}</td>
+                                <td>{{ row.input }}</td>
+                                <td class="pdm-terms-page__evidence pdm-mono">{{ row.evidence }}</td>
+                              </tr>
+                            }
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  }
                 }
-              </tbody>
-            </table>
-          </div>
+              </section>
+            }
+          }
         </div>
-
-        <div class="pdm-terms-page__actions">
-          <a class="pdm-terms-page__inspect-link" [routerLink]="viewModel().riskMappingTrustRoute">
-            Open RMG trust page
-          </a>
-        </div>
-      </section>
-
-      <section class="pdm-terms-page__section">
-        <h2 class="pdm-terms-page__section-title">Platform rules</h2>
-        <div class="pdm-terms-page__table-wrap">
-          <table class="pdm-terms-page__table">
-            <thead>
-              <tr>
-                <th>Rule</th>
-                <th>Effect</th>
-                <th>Evidence</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (row of viewModel().platformRuleRows; track row.claimId) {
-                <tr>
-                  <td>{{ row.rule }}</td>
-                  <td>{{ row.effect }}</td>
-                  <td class="pdm-terms-page__evidence pdm-mono">{{ row.evidence }}</td>
-                </tr>
-              }
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <section class="pdm-terms-page__section">
-        <h2 class="pdm-terms-page__section-title">Runtime boundaries</h2>
-        <div class="pdm-terms-page__table-wrap">
-          <table class="pdm-terms-page__table">
-            <thead>
-              <tr>
-                <th>Boundary</th>
-                <th>Condition</th>
-                <th>Effect</th>
-                <th>Evidence</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (row of viewModel().runtimeBoundaryRows; track row.claimId) {
-                <tr>
-                  <td>{{ row.boundary }}</td>
-                  <td>{{ row.condition }}</td>
-                  <td>{{ row.effect }}</td>
-                  <td class="pdm-terms-page__evidence pdm-mono">{{ row.evidence }}</td>
-                </tr>
-              }
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <section class="pdm-terms-page__section">
-        <h2 class="pdm-terms-page__section-title">Refusal boundaries</h2>
-        <div class="pdm-terms-page__table-wrap">
-          <table class="pdm-terms-page__table">
-            <thead>
-              <tr>
-                <th>Boundary</th>
-                <th>Condition</th>
-                <th>Effect</th>
-                <th>Evidence</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (row of viewModel().refusalBoundaryRows; track row.claimId) {
-                <tr>
-                  <td>{{ row.boundary }}</td>
-                  <td>{{ row.condition }}</td>
-                  <td>{{ row.effect }}</td>
-                  <td class="pdm-terms-page__evidence pdm-mono">{{ row.evidence }}</td>
-                </tr>
-              }
-            </tbody>
-          </table>
-        </div>
-      </section>
+      </div>
     </div>
   </main>
 </div>
