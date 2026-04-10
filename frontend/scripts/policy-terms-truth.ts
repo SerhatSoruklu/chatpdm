@@ -9,11 +9,21 @@ import type {
 } from '../src/app/policies/policy-surface.types.ts';
 
 const endpointPattern =
-  /^The platform allows (?<operation>.+) through `(?<method>GET|POST) (?<path>\/[^`]+)`\.$/;
+  /^The platform allows (?<operation>.+) through `(?<method>GET|POST|DELETE) (?<path>\/[^`]+)`\.$/;
 const feedbackFieldPattern = /^The platform allows feedback field `(?<fieldName>[^`]+)`\.$/;
 const responseTypePattern = /^The platform allows feedback response type `(?<value>[^`]+)`\.$/;
 const feedbackOptionPattern =
   /^The platform allows feedback option `(?<value>[^`]+)` for `(?<responseType>[^`]+)`\.$/;
+
+const ENDPOINT_CONTRACT_ORDER: ReadonlyMap<string, number> = new Map([
+  ['GET /api/v1/concepts/resolve', 0],
+  ['POST /api/v1/concepts/resolve', 1],
+  ['GET /api/v1/concepts/:conceptId', 2],
+  ['GET /api/v1/feedback', 3],
+  ['POST /api/v1/feedback', 4],
+  ['GET /api/v1/feedback/session/:sessionId/export', 5],
+  ['DELETE /api/v1/feedback/session/:sessionId', 6],
+]);
 
 export function buildPolicyTermsTruth(claims: readonly PolicyClaim[]): PolicyTermsTruth | undefined {
   const termsClaims = claims.filter((claim) => claim.policyFile === 'terms.md');
@@ -67,6 +77,22 @@ export function buildPolicyTermsTruth(claims: readonly PolicyClaim[]): PolicyTer
     throw new Error(`Terms truth extraction could not classify claim ${claim.id}.`);
   }
 
+  endpointContracts.sort((left, right) => {
+    const leftOrder = getEndpointContractOrder(left);
+    const rightOrder = getEndpointContractOrder(right);
+
+    if (leftOrder !== rightOrder) {
+      return leftOrder - rightOrder;
+    }
+
+    const methodComparison = left.method.localeCompare(right.method);
+    if (methodComparison !== 0) {
+      return methodComparison;
+    }
+
+    return left.claimId.localeCompare(right.claimId);
+  });
+
   const classifiedCount =
     endpointContracts.length +
     fieldContracts.length +
@@ -103,9 +129,17 @@ function resolveEndpointContract(claim: PolicyClaim): PolicyTermsEndpointContrac
   const operation =
     match.groups.operation === 'concept resolution'
       ? 'concept_resolution'
-      : match.groups.operation === 'feedback submission'
-        ? 'feedback_submission'
-        : null;
+      : match.groups.operation === 'concept detail'
+        ? 'concept_detail'
+        : match.groups.operation === 'feedback index'
+          ? 'feedback_index'
+          : match.groups.operation === 'feedback submission'
+            ? 'feedback_submission'
+            : match.groups.operation === 'feedback export'
+              ? 'feedback_export'
+              : match.groups.operation === 'feedback delete'
+                ? 'feedback_delete'
+                : null;
 
   if (!operation) {
     throw new Error(`Unable to derive endpoint operation for claim ${claim.id}.`);
@@ -113,6 +147,7 @@ function resolveEndpointContract(claim: PolicyClaim): PolicyTermsEndpointContrac
 
   const [path, query] = match.groups.path.split('?');
   const queryParam = query?.split('=')[0];
+  const routeParam = path.match(/:(?<routeParam>[A-Za-z0-9_]+)/)?.groups?.routeParam;
 
   return {
     claimId: claim.id,
@@ -120,8 +155,14 @@ function resolveEndpointContract(claim: PolicyClaim): PolicyTermsEndpointContrac
     method: match.groups.method as PolicyTermsEndpointContract['method'],
     path,
     requiredQueryParam: queryParam,
+    requiredRouteParam: routeParam,
     evidence: claim.traces,
   };
+}
+
+function getEndpointContractOrder(contract: PolicyTermsEndpointContract): number {
+  const key = `${contract.method} ${contract.path}`;
+  return ENDPOINT_CONTRACT_ORDER.get(key) ?? 1000;
 }
 
 function resolveFieldContract(claim: PolicyClaim): PolicyTermsFieldContract | null {

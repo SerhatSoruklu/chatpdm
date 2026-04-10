@@ -62,6 +62,7 @@ export type PolicyTermsEndpointMethod = 'GET' | 'POST' | 'DELETE';
 export type PolicyTermsEndpointOperation =
   | 'concept_resolution'
   | 'concept_detail'
+  | 'feedback_index'
   | 'feedback_submission'
   | 'feedback_export'
   | 'feedback_delete';

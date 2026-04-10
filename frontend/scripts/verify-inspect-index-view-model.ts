@@ -14,8 +14,8 @@ function main(): void {
     [
       {
         label: 'Mapped claims',
-        value: '116',
-        detail: '116 of 116 published claims currently map to implementation evidence.',
+        value: '121',
+        detail: '121 of 121 published claims currently map to implementation evidence.',
       },
       {
         label: 'Refusal boundaries',
@@ -102,8 +102,8 @@ function main(): void {
       },
       {
         route: '/inspect/terms',
-        mappedClaims: 34,
-        totalClaims: 34,
+        mappedClaims: 39,
+        totalClaims: 39,
         refusalBoundaryCount: 9,
         integrityStatus: 'fully mapped',
       },

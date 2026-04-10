@@ -114,8 +114,10 @@ test('signal stability retains recurring stable signals across adjacent frames',
   assert.ok(stableColor, 'Expected the recurring dominant color to be retained.');
   assert.ok(stableRegion, 'Expected the recurring region to be retained.');
   assert.equal(stableColor.status, 'stable');
+  assert.equal(stableColor.outcomeCategory, 'STABLE');
   assert.equal(stableColor.support.frameCount, 3);
   assert.equal(stableRegion.status, 'stable');
+  assert.equal(stableRegion.outcomeCategory, 'STABLE');
   assert.equal(stableRegion.support.frameCount, 3);
   assert.equal(report.discardedSignals.some((signal) => signal.signalKind === 'dominant_color'), false);
 });
@@ -129,6 +131,7 @@ test('signal stability discards unstable region signals with explicit reasons', 
 
   assert.ok(discardedRegion, 'Expected the unstable region to be discarded.');
   assert.equal(discardedRegion.status, 'discarded');
+  assert.equal(discardedRegion.outcomeCategory, 'DISCARDED');
   assert.equal(discardedRegion.support.frameCount, 2);
   assert.ok(
     discardedRegion.discardReasons.some((reason) => reason.code === 'location_shift' || reason.code === 'form_change'),
@@ -150,4 +153,12 @@ test('signal stability output ordering is deterministic', () => {
     first.stableSignals.map((signal) => signal.signalKind),
     ['dominant_color', 'dominant_color', 'visible_region'],
   );
+  assert.equal(first.type, 'ZEE_EVIDENCE_TRACE');
+  assert.equal(first.artifactKind, 'signal_stability');
+  assert.equal(first.contractMarker, 'ZEE_NON_CONSUMABLE_EVIDENCE_SURFACE');
+  assert.equal(first.policyVersion, 'v1');
+  assert.equal(first.schemaVersion, 'v1');
+  assert.equal(first.resultTaxonomyVersion, 'v1');
+  assert.equal(first.resultTaxonomy.stable, 'STABLE');
+  assert.equal(first.resultTaxonomy.discarded, 'DISCARDED');
 });

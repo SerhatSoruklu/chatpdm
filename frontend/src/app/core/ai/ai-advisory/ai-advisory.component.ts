@@ -21,7 +21,7 @@ export class AiAdvisoryComponent implements AfterViewInit {
 
   protected readonly interactionState = signal<'idle' | 'ai_followed' | 'canonical_used'>('idle');
   protected readonly advisoryLead = computed(() =>
-    `Use this panel as a secondary reading layer for ${this.conceptTitle()}. The canonical response above remains authoritative.`,
+    `Use this panel as a read-only diagnostic layer for ${this.conceptTitle()}. The canonical response above remains authoritative.`,
   );
   protected readonly advisoryGuidance = computed(() => {
     const firstSentence = this.coreMeaning()
@@ -36,11 +36,11 @@ export class AiAdvisoryComponent implements AfterViewInit {
   protected readonly interactionMessage = computed(() => {
     switch (this.interactionState()) {
       case 'ai_followed':
-        return 'Advisory reading noted. The canonical response above remains the system truth.';
+        return 'Diagnostic reading noted. The canonical response above remains authoritative.';
       case 'canonical_used':
-        return 'Canonical response confirmed. The advisory layer stays secondary.';
+        return 'Canonical response confirmed. The diagnostic layer stays secondary.';
       default:
-        return 'AI content here is assistive only and never changes canonical meaning.';
+        return 'This content is read-only and never changes canonical meaning.';
     }
   });
 
