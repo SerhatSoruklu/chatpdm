@@ -4,20 +4,39 @@ const {
   ZEE_INTERNAL_ENGINE_ERROR_CODES,
   ZEE_INTERNAL_ENGINE_INFERENCE_LAYER,
   ZEE_INTERNAL_ENGINE_INFERENCE_MIN_SUPPORT,
-  ZEE_INTERNAL_ENGINE_INFERENCE_NON_AUTHORITATIVE_NOTE,
-  ZEE_INTERNAL_ENGINE_INFERENCE_NOTE,
+  ZEE_INTERNAL_ENGINE_INFERENCE_SUPPORT_POLICY,
   ZEE_INTERNAL_ENGINE_INFERENCE_REJECTED_CLAIM_TYPES,
   ZEE_INTERNAL_ENGINE_INFERENCE_SUPPORTED_CLAIM_TYPES,
   ZEE_INTERNAL_ENGINE_INFERENCE_UNKNOWN_TYPES,
+  ZEE_INTERNAL_ENGINE_INFERENCE_GATE_SCHEMA,
+  ZEE_INTERNAL_ENGINE_INFERENCE_POLICY,
   ZEE_INTERNAL_ENGINE_INFERENCE_VERSION,
+  ZEE_INTERNAL_ENGINE_RESULT_TAXONOMY,
+  ZEE_INTERNAL_ENGINE_RESULT_TAXONOMY_VERSION,
   ZEE_INTERNAL_ENGINE_MEASUREMENT_LAYER,
   ZEE_INTERNAL_ENGINE_STABILITY_LAYER,
 } = require('./constants');
+const {
+  compareCanonicalNumber,
+  compareCanonicalText,
+} = require('./policy');
+const {
+  createZeeArtifactMarker,
+} = require('./artifact-markers');
 const { ZeeObservedInputError } = require('./input-contract');
 
 const MEASUREMENT_KIND_PRIORITY = new Map(
   ['dominant_color', 'visible_region'].map((kind, index) => [kind, index]),
 );
+const INFERENCE_OUTCOME_CATEGORY_BY_CLAIM_TYPE = Object.freeze({
+  cross_kind_support_required: 'UNSUPPORTED',
+  identity_inference: 'REFUSED',
+  intent_inference: 'REFUSED',
+  location_certainty: 'REFUSED',
+  meaning_reconstruction: 'REFUSED',
+  single_signal_inference: 'UNSUPPORTED',
+  truth_claim: 'REFUSED',
+});
 
 function isPlainObject(value) {
   return Boolean(value) && typeof value === 'object' && !Array.isArray(value) && !Buffer.isBuffer(value);
@@ -38,11 +57,62 @@ function makeNote(code, message, details) {
 
 function compareMeasurementOrder(left, right) {
   return (
-    (MEASUREMENT_KIND_PRIORITY.get(left.signalKind) ?? Number.MAX_SAFE_INTEGER)
-    - (MEASUREMENT_KIND_PRIORITY.get(right.signalKind) ?? Number.MAX_SAFE_INTEGER)
-    || String(left.measurementType).localeCompare(String(right.measurementType))
-    || String(left.stableSignalId).localeCompare(String(right.stableSignalId))
+    compareCanonicalNumber(
+      MEASUREMENT_KIND_PRIORITY.get(left.signalKind) ?? Number.MAX_SAFE_INTEGER,
+      MEASUREMENT_KIND_PRIORITY.get(right.signalKind) ?? Number.MAX_SAFE_INTEGER,
+    )
+    || compareCanonicalText(String(left.measurementType), String(right.measurementType))
+    || compareCanonicalText(String(left.stableSignalId), String(right.stableSignalId))
   );
+}
+
+function summarizeSupportPolicy() {
+  return {
+    minimumDistinctMeasurementTypes: ZEE_INTERNAL_ENGINE_INFERENCE_SUPPORT_POLICY.minimumDistinctMeasurementTypes,
+    minimumDistinctSignalKinds: ZEE_INTERNAL_ENGINE_INFERENCE_SUPPORT_POLICY.minimumDistinctSignalKinds,
+    minimumMeasuredSignals: ZEE_INTERNAL_ENGINE_INFERENCE_SUPPORT_POLICY.minimumMeasuredSignals,
+    minDistinctMeasurementTypes: ZEE_INTERNAL_ENGINE_INFERENCE_SUPPORT_POLICY.minDistinctMeasurementTypes,
+    minDistinctSignalKinds: ZEE_INTERNAL_ENGINE_INFERENCE_SUPPORT_POLICY.minDistinctSignalKinds,
+    minMeasuredSignals: ZEE_INTERNAL_ENGINE_INFERENCE_SUPPORT_POLICY.minMeasuredSignals,
+    policyVersion: ZEE_INTERNAL_ENGINE_INFERENCE_SUPPORT_POLICY.policyVersion,
+    requiresCrossKindDiversity: ZEE_INTERNAL_ENGINE_INFERENCE_SUPPORT_POLICY.requiresCrossKindDiversity,
+    requiresDistinctMeasurementTypes: ZEE_INTERNAL_ENGINE_INFERENCE_SUPPORT_POLICY.requiresDistinctMeasurementTypes,
+    requireDistinctStableSignalIds: ZEE_INTERNAL_ENGINE_INFERENCE_SUPPORT_POLICY.requireDistinctStableSignalIds,
+    requiresDistinctStableSignalIds: ZEE_INTERNAL_ENGINE_INFERENCE_SUPPORT_POLICY.requiresDistinctStableSignalIds,
+    supportRule: ZEE_INTERNAL_ENGINE_INFERENCE_SUPPORT_POLICY.supportRule,
+    supportRuleVersion: ZEE_INTERNAL_ENGINE_INFERENCE_SUPPORT_POLICY.supportRuleVersion,
+    supportType: ZEE_INTERNAL_ENGINE_INFERENCE_SUPPORT_POLICY.supportType,
+    supportTypeVersion: ZEE_INTERNAL_ENGINE_INFERENCE_SUPPORT_POLICY.supportTypeVersion,
+    version: ZEE_INTERNAL_ENGINE_INFERENCE_SUPPORT_POLICY.version,
+  };
+}
+
+function summarizeSupportSignals(measurements) {
+  const supportSignalIds = measurements.map((signal) => signal.stableSignalId);
+  const supportSignalKinds = [...new Set(measurements.map((signal) => signal.signalKind))];
+  const supportMeasurementTypes = [...new Set(measurements.map((signal) => signal.measurementType))];
+
+  return {
+    distinctMeasurementTypeCount: supportMeasurementTypes.length,
+    distinctSignalKindCount: supportSignalKinds.length,
+    distinctStableSignalIdCount: new Set(supportSignalIds).size,
+    supportMeasurementTypes,
+    supportSignalIds,
+    supportSignalKinds,
+    supportingSignalCount: measurements.length,
+  };
+}
+
+function supportsMultiSignalInference(measurements) {
+  const summary = summarizeSupportSignals(measurements);
+  const supportPolicy = ZEE_INTERNAL_ENGINE_INFERENCE_SUPPORT_POLICY;
+
+  return summary.supportingSignalCount >= supportPolicy.minimumMeasuredSignals
+    && summary.distinctSignalKindCount >= supportPolicy.minimumDistinctSignalKinds
+    && summary.distinctMeasurementTypeCount >= supportPolicy.minimumDistinctMeasurementTypes
+    && supportPolicy.requiresCrossKindDiversity
+    && supportPolicy.requiresDistinctMeasurementTypes
+    && summary.distinctStableSignalIdCount === summary.supportingSignalCount;
 }
 
 function normalizeMeasuredSignal(measurement, index) {
@@ -153,63 +223,70 @@ function buildSignalSnapshot(measurement) {
 }
 
 function buildSupportedInference(measurements) {
-  if (measurements.length < ZEE_INTERNAL_ENGINE_INFERENCE_MIN_SUPPORT) {
+  if (!supportsMultiSignalInference(measurements)) {
     return null;
   }
 
+  const supportSnapshot = summarizeSupportSignals(measurements);
   const supportingSignals = measurements.map(buildSignalSnapshot);
-  const supportSignalIds = supportingSignals.map((signal) => signal.stable_signal_id);
-  const supportSignalKinds = [...new Set(supportingSignals.map((signal) => signal.signal_kind))];
-  const supportMeasurementTypes = [...new Set(supportingSignals.map((signal) => signal.measurement_type))];
 
   return {
-    claim: 'Multiple independent measured signals support a bounded structural similarity claim.',
+    claim: ZEE_INTERNAL_ENGINE_INFERENCE_SUPPORTED_CLAIM_TYPES[0],
     claim_type: ZEE_INTERNAL_ENGINE_INFERENCE_SUPPORTED_CLAIM_TYPES[0],
-    inference_id: `multi_signal_structural_similarity:${supportSignalIds[0]}`,
+    inference_id: `multi_signal_structural_similarity:${supportSnapshot.supportSignalIds[0]}`,
     inference_type: ZEE_INTERNAL_ENGINE_INFERENCE_SUPPORTED_CLAIM_TYPES[0],
+    outcomeCategory: ZEE_INTERNAL_ENGINE_RESULT_TAXONOMY.inference.supported,
     reasoning: [
       makeNote(
         'multi_signal_requirement',
-        `Inference support requires at least ${ZEE_INTERNAL_ENGINE_INFERENCE_MIN_SUPPORT} independent measured signals; ${supportingSignals.length} were provided.`,
+        'cross_kind_distinct_multi_signal',
         {
-          measuredSignalCount: supportingSignals.length,
-          minimumSupport: ZEE_INTERNAL_ENGINE_INFERENCE_MIN_SUPPORT,
+          measuredSignalCount: supportSnapshot.supportingSignalCount,
+          minimumDistinctMeasurementTypes: ZEE_INTERNAL_ENGINE_INFERENCE_SUPPORT_POLICY.minimumDistinctMeasurementTypes,
+          minimumDistinctSignalKinds: ZEE_INTERNAL_ENGINE_INFERENCE_SUPPORT_POLICY.minimumDistinctSignalKinds,
+          minimumSupport: ZEE_INTERNAL_ENGINE_INFERENCE_SUPPORT_POLICY.minimumMeasuredSignals,
         },
       ),
       makeNote(
         'independence_check',
-        'Each supporting signal has a distinct stable signal identifier.',
+        'distinct_stable_signal_ids',
         {
-          supportingSignalIds: supportSignalIds,
+          supportingSignalIds: supportSnapshot.supportSignalIds,
         },
       ),
       makeNote(
-        'signal_diversity',
-        'The gate preserves the measured signal set without turning it into identity, intent, location, or truth claims.',
+        'support_policy',
+        ZEE_INTERNAL_ENGINE_INFERENCE_SUPPORT_POLICY.supportRule,
         {
-          distinctMeasurementTypes: supportMeasurementTypes,
-          distinctSignalKinds: supportSignalKinds,
+          distinctMeasurementTypeCount: supportSnapshot.distinctMeasurementTypeCount,
+          distinctSignalKindCount: supportSnapshot.distinctSignalKindCount,
+          supportRule: ZEE_INTERNAL_ENGINE_INFERENCE_SUPPORT_POLICY.supportRule,
+          supportRuleVersion: ZEE_INTERNAL_ENGINE_INFERENCE_SUPPORT_POLICY.supportRuleVersion,
+          supportPolicyVersion: ZEE_INTERNAL_ENGINE_INFERENCE_SUPPORT_POLICY.version,
         },
       ),
     ],
     status: 'supported',
     support_summary: {
-      distinct_measurement_type_count: supportMeasurementTypes.length,
-      distinct_signal_kind_count: supportSignalKinds.length,
-      supporting_signal_count: supportingSignals.length,
+      distinct_measurement_type_count: supportSnapshot.distinctMeasurementTypeCount,
+      distinct_signal_kind_count: supportSnapshot.distinctSignalKindCount,
+      distinct_stable_signal_id_count: supportSnapshot.distinctStableSignalIdCount,
+      supporting_signal_count: supportSnapshot.supportingSignalCount,
     },
+    support_policy: summarizeSupportPolicy(),
     supporting_signals: supportingSignals,
   };
 }
 
 function buildRejectedSingleSignalClaim(measurements) {
   return {
-    claim: 'A single measured signal cannot support inference.',
+    claim: 'single_signal_inference',
     claim_type: 'single_signal_inference',
+    outcomeCategory: INFERENCE_OUTCOME_CATEGORY_BY_CLAIM_TYPE.single_signal_inference,
     reasoning: [
       makeNote(
         'insufficient_signal_support',
-        `Inference requires at least ${ZEE_INTERNAL_ENGINE_INFERENCE_MIN_SUPPORT} independent measured signals.`,
+        'insufficient_signal_support',
         {
           measuredSignalCount: measurements.length,
           minimumSupport: ZEE_INTERNAL_ENGINE_INFERENCE_MIN_SUPPORT,
@@ -218,12 +295,44 @@ function buildRejectedSingleSignalClaim(measurements) {
     ],
     reason: makeNote(
       'insufficient_signal_support',
-      `Inference requires at least ${ZEE_INTERNAL_ENGINE_INFERENCE_MIN_SUPPORT} independent measured signals.`,
+      'insufficient_signal_support',
       {
         measuredSignalCount: measurements.length,
       },
     ),
-    status: 'rejected',
+    status: 'unsupported',
+    supporting_signals: measurements.map(buildSignalSnapshot),
+  };
+}
+
+function buildRejectedCrossKindClaim(measurements) {
+  const supportSnapshot = summarizeSupportSignals(measurements);
+
+  return {
+    claim: 'cross_kind_support_required',
+    claim_type: 'cross_kind_support_required',
+    outcomeCategory: INFERENCE_OUTCOME_CATEGORY_BY_CLAIM_TYPE.cross_kind_support_required,
+    reason: makeNote(
+      'cross_kind_support_required',
+      'cross_kind_support_required',
+      {
+        distinctMeasurementTypeCount: supportSnapshot.distinctMeasurementTypeCount,
+        distinctSignalKindCount: supportSnapshot.distinctSignalKindCount,
+        measuredSignalCount: supportSnapshot.supportingSignalCount,
+      },
+    ),
+    reasoning: [
+      makeNote(
+        'cross_kind_support_required',
+        'cross_kind_support_required',
+        {
+          distinctMeasurementTypeCount: supportSnapshot.distinctMeasurementTypeCount,
+          distinctSignalKindCount: supportSnapshot.distinctSignalKindCount,
+          measuredSignalCount: supportSnapshot.supportingSignalCount,
+        },
+      ),
+    ],
+    status: 'unsupported',
     supporting_signals: measurements.map(buildSignalSnapshot),
   };
 }
@@ -232,14 +341,15 @@ function buildRejectedScopeClaim(claimType, claim, code, message) {
   return {
     claim,
     claim_type: claimType,
+    outcomeCategory: INFERENCE_OUTCOME_CATEGORY_BY_CLAIM_TYPE[claimType] ?? ZEE_INTERNAL_ENGINE_RESULT_TAXONOMY.inference.refused,
     reason: makeNote(code, message),
     reasoning: [
       makeNote(
         code,
-        message,
+        code,
       ),
     ],
-    status: 'rejected',
+    status: 'refused',
     supporting_signals: [],
   };
 }
@@ -247,11 +357,12 @@ function buildRejectedScopeClaim(claimType, claim, code, message) {
 function buildUnknowns(measurements) {
   return [
     {
-      question: 'Whether the measured signals carry a broader semantic meaning remains unknown.',
+      question: 'bounded_support_scope_unknown',
       reason: makeNote(
         ZEE_INTERNAL_ENGINE_INFERENCE_UNKNOWN_TYPES[0],
-        'The inference gate only produces bounded structural similarity claims and does not reconstruct meaning.',
+        ZEE_INTERNAL_ENGINE_INFERENCE_UNKNOWN_TYPES[0],
       ),
+      outcomeCategory: ZEE_INTERNAL_ENGINE_RESULT_TAXONOMY.inference.unknown,
       status: 'unknown',
       unknown_type: ZEE_INTERNAL_ENGINE_INFERENCE_UNKNOWN_TYPES[0],
       support_summary: {
@@ -264,13 +375,17 @@ function buildUnknowns(measurements) {
 function buildSummary(supportedInferences, rejectedClaims, unknowns, measurements) {
   const distinctSignalKinds = new Set(measurements.map((measurement) => measurement.signalKind));
   const distinctMeasurementTypes = new Set(measurements.map((measurement) => measurement.measurementType));
+  const refusedClaimCount = rejectedClaims.filter((claim) => claim.outcomeCategory === ZEE_INTERNAL_ENGINE_RESULT_TAXONOMY.inference.refused).length;
+  const unsupportedClaimCount = rejectedClaims.filter((claim) => claim.outcomeCategory === ZEE_INTERNAL_ENGINE_RESULT_TAXONOMY.inference.unsupported).length;
 
   return {
     distinct_measurement_type_count: distinctMeasurementTypes.size,
     distinct_signal_kind_count: distinctSignalKinds.size,
     measured_signal_count: measurements.length,
+    refused_claim_count: refusedClaimCount,
     rejected_claim_count: rejectedClaims.length,
     supported_inference_count: supportedInferences.length,
+    unsupported_claim_count: unsupportedClaimCount,
     unknown_count: unknowns.length,
   };
 }
@@ -279,17 +394,21 @@ function buildDiagnosticNotes(summary) {
   return [
     makeNote(
       'inference_gate',
-      ZEE_INTERNAL_ENGINE_INFERENCE_NOTE,
+      'cross_kind_distinct_multi_signal',
       {
         measuredSignalCount: summary.measured_signal_count,
         supportedInferenceCount: summary.supported_inference_count,
+        supportRule: ZEE_INTERNAL_ENGINE_INFERENCE_SUPPORT_POLICY.supportRule,
+        supportRuleVersion: ZEE_INTERNAL_ENGINE_INFERENCE_SUPPORT_POLICY.supportRuleVersion,
       },
     ),
     makeNote(
       'inference_scope',
-      ZEE_INTERNAL_ENGINE_INFERENCE_NON_AUTHORITATIVE_NOTE,
+      'bounded_non_authoritative',
       {
+        refusedClaimCount: summary.refused_claim_count,
         rejectedClaimCount: summary.rejected_claim_count,
+        unsupportedClaimCount: summary.unsupported_claim_count,
         unknownCount: summary.unknown_count,
       },
     ),
@@ -301,17 +420,22 @@ function buildRejectedClaims(measurements) {
 
   if (measurements.length < ZEE_INTERNAL_ENGINE_INFERENCE_MIN_SUPPORT) {
     rejectedClaims.push(buildRejectedSingleSignalClaim(measurements));
+    return rejectedClaims;
+  }
+
+  if (!supportsMultiSignalInference(measurements)) {
+    rejectedClaims.push(buildRejectedCrossKindClaim(measurements));
   }
 
   ZEE_INTERNAL_ENGINE_INFERENCE_REJECTED_CLAIM_TYPES
-    .filter((claimType) => claimType !== 'single_signal_inference')
+    .filter((claimType) => claimType !== 'single_signal_inference' && claimType !== 'cross_kind_support_required')
     .forEach((claimType) => {
       if (claimType === 'identity_inference') {
         rejectedClaims.push(buildRejectedScopeClaim(
           claimType,
-          'Identity inference is not supported by the inference gate.',
+          'identity_inference',
           'identity_inference_disallowed',
-          'The gate does not infer identity.',
+          'identity_inference_disallowed',
         ));
         return;
       }
@@ -319,9 +443,9 @@ function buildRejectedClaims(measurements) {
       if (claimType === 'intent_inference') {
         rejectedClaims.push(buildRejectedScopeClaim(
           claimType,
-          'Intent inference is not supported by the inference gate.',
+          'intent_inference',
           'intent_inference_disallowed',
-          'The gate does not infer intent.',
+          'intent_inference_disallowed',
         ));
         return;
       }
@@ -329,9 +453,9 @@ function buildRejectedClaims(measurements) {
       if (claimType === 'location_certainty') {
         rejectedClaims.push(buildRejectedScopeClaim(
           claimType,
-          'Location certainty is not supported by the inference gate.',
+          'location_certainty',
           'location_certainty_disallowed',
-          'The gate does not infer location certainty.',
+          'location_certainty_disallowed',
         ));
         return;
       }
@@ -339,9 +463,9 @@ function buildRejectedClaims(measurements) {
       if (claimType === 'truth_claim') {
         rejectedClaims.push(buildRejectedScopeClaim(
           claimType,
-          'Truth claims are not supported by the inference gate.',
+          'truth_claim',
           'truth_claim_disallowed',
-          'The gate does not produce truth claims.',
+          'truth_claim_disallowed',
         ));
         return;
       }
@@ -349,9 +473,9 @@ function buildRejectedClaims(measurements) {
       if (claimType === 'meaning_reconstruction') {
         rejectedClaims.push(buildRejectedScopeClaim(
           claimType,
-          'Meaning reconstruction is not supported by the inference gate.',
+          'meaning_reconstruction',
           'meaning_reconstruction_disallowed',
-          'The gate does not reconstruct semantic meaning from measured signals.',
+          'meaning_reconstruction_disallowed',
         ));
       }
     });
@@ -362,6 +486,7 @@ function buildRejectedClaims(measurements) {
 function buildZeeInferenceGateReport(measurementReport) {
   const normalizedInput = normalizeInferenceInput(measurementReport);
   const supportedInferences = [];
+  const supportPolicy = summarizeSupportPolicy();
 
   const supportedInference = buildSupportedInference(normalizedInput.measurements);
   if (supportedInference) {
@@ -378,13 +503,19 @@ function buildZeeInferenceGateReport(measurementReport) {
   );
 
   return {
+    ...createZeeArtifactMarker('inference_gate'),
     diagnostic_notes: buildDiagnosticNotes(summary),
     frame_count: normalizedInput.frameCount,
     layer: ZEE_INTERNAL_ENGINE_INFERENCE_LAYER,
+    policyVersion: ZEE_INTERNAL_ENGINE_INFERENCE_POLICY.version,
+    resultTaxonomy: ZEE_INTERNAL_ENGINE_RESULT_TAXONOMY.inference,
+    resultTaxonomyVersion: ZEE_INTERNAL_ENGINE_RESULT_TAXONOMY_VERSION,
+    schemaVersion: ZEE_INTERNAL_ENGINE_INFERENCE_GATE_SCHEMA.version,
     rejected_claims: rejectedClaims,
     source_layer: normalizedInput.sourceLayer,
     source_version: normalizedInput.sourceVersion,
     summary,
+    supportPolicy,
     supported_inferences: supportedInferences,
     unknowns,
     version: ZEE_INTERNAL_ENGINE_INFERENCE_VERSION,
