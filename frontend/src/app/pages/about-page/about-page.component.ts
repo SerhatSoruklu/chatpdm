@@ -33,16 +33,16 @@ export class AboutPageComponent {
       copy: 'It does not accept a concept because it sounds familiar or conventional.',
     },
     {
-      title: 'Not an AI chatbot',
-      copy: 'It does not generate fluid answers outside the admitted concept boundary.',
+      title: 'Not a chatbot',
+      copy: 'It does not generate responses outside the admitted concept boundary.',
     },
     {
       title: 'Not a knowledge base',
-      copy: 'It does not collect loose facts without enforcing structural meaning.',
+      copy: 'It does not collect loose facts without enforcing concept boundaries.',
     },
     {
-      title: 'Validation system for meaning',
-      copy: 'Concepts must survive structural distinction before they are allowed to exist in runtime.',
+      title: 'Validation system for authored concepts',
+      copy: 'Concepts must survive structural distinction before they are admitted to runtime.',
     },
   ];
 
@@ -55,12 +55,12 @@ export class AboutPageComponent {
     {
       label: 'Phase 1',
       title: 'Structural validation',
-      copy: 'Invariant, boundary, and non-collapse checks are pressure-tested.',
+      copy: 'Invariant, boundary, and non-collapse checks are structurally verified.',
     },
     {
       label: 'Phase 2',
       title: 'Stability and boundary lock',
-      copy: 'Definitions are tightened until meaning remains stable across registers.',
+      copy: 'Definitions are tightened until the registers stay aligned across versions.',
     },
     {
       label: 'Runtime',

@@ -2,10 +2,10 @@
   <main class="pdm-reasoning__main pdm-shell" aria-labelledby="pdm-reasoning-title">
     <div class="pdm-shell__frame pdm-reasoning__frame">
       <section class="pdm-reasoning__hero pdm-site-surface pdm-site-panel">
-        <p class="pdm-reasoning__eyebrow">Reasoning structure</p>
-        <h1 class="pdm-reasoning__title" id="pdm-reasoning-title">Reasoning structure</h1>
+        <p class="pdm-reasoning__eyebrow">Validation structure</p>
+        <h1 class="pdm-reasoning__title" id="pdm-reasoning-title">Validation structure</h1>
         <p class="pdm-reasoning__subtitle">
-          The current system is deterministic first. Future reasoning layers may be added only if
+          The current system is deterministic first. Future secondary layers may be added only if
           they remain subordinate to deterministic validation and never weaken runtime guarantees.
         </p>
       </section>
@@ -42,10 +42,10 @@
         >
           <p class="pdm-reasoning__section-label">Core rule</p>
           <h2 class="pdm-reasoning__rule-line" id="pdm-reasoning-core-rule">
-            No lower reasoning layer may override a stricter layer above it.
+            No lower layer may override a stricter layer above it.
           </h2>
           <p class="pdm-reasoning__copy">
-            Deterministic validation remains sovereign. Any future reasoning mode may complement,
+            Deterministic validation remains sovereign. Any future secondary mode may complement,
             inspect, or clarify, but it may never define canon or bypass refusal.
           </p>
         </section>
@@ -56,13 +56,13 @@
         aria-labelledby="pdm-reasoning-table"
       >
         <div class="pdm-reasoning__section-head">
-          <p class="pdm-reasoning__section-label">Reasoning table</p>
+          <p class="pdm-reasoning__section-label">Layer table</p>
           <h2 class="pdm-reasoning__section-title" id="pdm-reasoning-table">
             Bounded roles, bounded authority.
           </h2>
         </div>
 
-        <div class="pdm-reasoning__layer-cards" aria-label="Reasoning layer cards">
+        <div class="pdm-reasoning__layer-cards" aria-label="Layer cards">
           @for (layer of reasoningLayers; track layer.label) {
             <article class="pdm-reasoning__layer-card" [attr.data-tone]="layer.tone">
               <div class="pdm-reasoning__layer-head">
@@ -91,7 +91,7 @@
           }
         </div>
 
-        <div class="pdm-reasoning__table-shell" aria-label="Reasoning layer table">
+        <div class="pdm-reasoning__table-shell" aria-label="Layer table">
           <table class="pdm-reasoning__table">
             <thead>
               <tr>
@@ -179,11 +179,11 @@
         </div>
 
         <p class="pdm-reasoning__copy">
-          Future reasoning layers are possible, but they will be introduced only if they preserve
+          Future secondary layers are possible, but they will be introduced only if they preserve
           determinism, refusal integrity, and traceability. Expansion is conditional, not automatic.
         </p>
         <p class="pdm-reasoning__copy">
-          Advisory reasoning, if it appears later, will live on separate surfaces. It will not be
+          Advisory reading, if it appears later, will live on separate surfaces. It will not be
           mixed into runtime outputs or allowed to rewrite canonical meaning.
         </p>
       </section>
