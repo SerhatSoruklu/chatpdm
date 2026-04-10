@@ -1,0 +1,191 @@
+<div class="pdm-zee">
+  <main class="pdm-zee__main pdm-shell" aria-labelledby="pdm-zee-title">
+    <div class="pdm-shell__frame pdm-zee__frame">
+      <section class="pdm-zee__hero pdm-site-surface pdm-site-panel">
+        <p class="pdm-zee__eyebrow">{{ content.hero.eyebrow }}</p>
+        <h1 class="pdm-zee__title" id="pdm-zee-title">{{ pageTitle }}</h1>
+        <p class="pdm-zee__subtitle">{{ content.hero.subtitle }}</p>
+        <p class="pdm-zee__lead">{{ content.hero.lead }}</p>
+        <p class="pdm-zee__boundary-line">{{ content.hero.boundaryLine }}</p>
+
+        <nav class="pdm-zee__section-nav" aria-label="ZEE sections">
+          @for (anchor of content.hero.anchors; track anchor.fragment) {
+            <a class="pdm-zee__section-link" [href]="'#' + anchor.fragment">{{ anchor.label }}</a>
+          }
+        </nav>
+
+        <div class="pdm-zee__hero-grid">
+          @for (card of content.hero.cards; track card.title) {
+            <article class="pdm-zee__hero-card">
+              <p class="pdm-zee__hero-card-title">{{ card.title }}</p>
+              <p class="pdm-zee__hero-card-copy">{{ card.copy }}</p>
+            </article>
+          }
+        </div>
+      </section>
+
+      <div class="pdm-zee__split">
+        <section
+          class="pdm-zee__section pdm-site-surface pdm-site-panel"
+          id="pdm-zee-what-it-is"
+          aria-labelledby="pdm-zee-what-it-is-title"
+        >
+          <div class="pdm-zee__section-head">
+            <p class="pdm-zee__section-label">{{ content.whatItIs.label }}</p>
+            <h2 class="pdm-zee__section-title" id="pdm-zee-what-it-is-title">{{ content.whatItIs.title }}</h2>
+            <p class="pdm-zee__section-copy">{{ content.whatItIs.intro }}</p>
+          </div>
+
+          <div class="pdm-zee__card-grid">
+            @for (card of content.whatItIs.cards; track card.title) {
+              <article class="pdm-zee__card">
+                <h3 class="pdm-zee__card-title">{{ card.title }}</h3>
+                <p class="pdm-zee__card-copy">{{ card.copy }}</p>
+              </article>
+            }
+          </div>
+        </section>
+
+        <section
+          class="pdm-zee__section pdm-site-surface pdm-site-panel"
+          id="pdm-zee-what-it-is-not"
+          aria-labelledby="pdm-zee-what-it-is-not-title"
+        >
+          <div class="pdm-zee__section-head">
+            <p class="pdm-zee__section-label">{{ content.whatItIsNot.label }}</p>
+            <h2 class="pdm-zee__section-title" id="pdm-zee-what-it-is-not-title">{{ content.whatItIsNot.title }}</h2>
+            <p class="pdm-zee__section-copy">{{ content.whatItIsNot.intro }}</p>
+          </div>
+
+          <div class="pdm-zee__card-grid">
+            @for (card of content.whatItIsNot.cards; track card.title) {
+              <article class="pdm-zee__card">
+                <h3 class="pdm-zee__card-title">{{ card.title }}</h3>
+                <p class="pdm-zee__card-copy">{{ card.copy }}</p>
+              </article>
+            }
+          </div>
+        </section>
+      </div>
+
+      <section
+        class="pdm-zee__section pdm-site-surface pdm-site-panel"
+        id="pdm-zee-core-contract"
+        aria-labelledby="pdm-zee-core-contract-title"
+      >
+        <div class="pdm-zee__section-head">
+          <p class="pdm-zee__section-label">{{ content.coreContract.label }}</p>
+          <h2 class="pdm-zee__section-title" id="pdm-zee-core-contract-title">{{ content.coreContract.title }}</h2>
+          <p class="pdm-zee__section-copy">{{ content.coreContract.intro }}</p>
+        </div>
+
+        <div class="pdm-zee__contract-grid">
+          @for (card of content.coreContract.cards; track card.title) {
+            <article class="pdm-zee__contract-card">
+              <h3 class="pdm-zee__card-title">{{ card.title }}</h3>
+              <p class="pdm-zee__card-copy">{{ card.copy }}</p>
+            </article>
+          }
+        </div>
+      </section>
+
+      <section
+        class="pdm-zee__section pdm-site-surface pdm-site-panel"
+        id="pdm-zee-pipeline"
+        aria-labelledby="pdm-zee-pipeline-title"
+      >
+        <div class="pdm-zee__section-head">
+          <p class="pdm-zee__section-label">{{ content.pipeline.label }}</p>
+          <h2 class="pdm-zee__section-title" id="pdm-zee-pipeline-title">{{ content.pipeline.title }}</h2>
+          <p class="pdm-zee__section-copy">{{ content.pipeline.intro }}</p>
+        </div>
+
+        <div class="pdm-zee__pipeline-layout">
+          <figure class="pdm-zee__figure">
+            <button
+              type="button"
+              class="pdm-zee__image-button"
+              (click)="openInfographicDialog()"
+              [attr.aria-label]="'Open the ZEE infographic in a dialog'"
+            >
+              <span class="pdm-zee__image-badge">{{ content.pipeline.expandLabel }}</span>
+              <span class="pdm-zee__image-shell">
+                <img
+                  class="pdm-zee__image"
+                  [src]="infographicPath"
+                  [alt]="infographicAlt"
+                  width="1369"
+                  height="1149"
+                  loading="eager"
+                  fetchpriority="high"
+                  decoding="async"
+                />
+              </span>
+            </button>
+
+            <figcaption class="pdm-zee__caption">
+              {{ content.pipeline.imageNote }}
+              <span>{{ content.pipeline.caption }}</span>
+            </figcaption>
+          </figure>
+
+          <ol class="pdm-zee__pipeline-list" aria-label="ZEE six-phase pipeline">
+            @for (step of content.pipeline.steps; track step.step) {
+              <li class="pdm-zee__pipeline-step">
+                <p class="pdm-zee__pipeline-step-label">Phase {{ step.step }}</p>
+                <h3 class="pdm-zee__pipeline-step-title">{{ step.title }}</h3>
+                <p class="pdm-zee__pipeline-step-copy">{{ step.copy }}</p>
+              </li>
+            }
+          </ol>
+        </div>
+      </section>
+
+      <section
+        class="pdm-zee__section pdm-site-surface pdm-site-panel"
+        id="pdm-zee-example-case"
+        aria-labelledby="pdm-zee-example-case-title"
+      >
+        <div class="pdm-zee__section-head">
+          <p class="pdm-zee__section-label">{{ content.example.label }}</p>
+          <h2 class="pdm-zee__section-title" id="pdm-zee-example-case-title">{{ content.example.title }}</h2>
+          <p class="pdm-zee__section-copy">{{ content.example.intro }}</p>
+        </div>
+
+        <div class="pdm-zee__example-grid">
+          @for (card of content.example.cards; track card.title) {
+            <article class="pdm-zee__example-card">
+              <p class="pdm-zee__example-label">{{ card.title }}</p>
+              <p class="pdm-zee__example-copy">{{ card.copy }}</p>
+            </article>
+          }
+        </div>
+
+        <p class="pdm-zee__example-note">{{ content.example.note }}</p>
+      </section>
+
+      <section
+        class="pdm-zee__section pdm-site-surface pdm-site-panel"
+        id="pdm-zee-boundary-framing"
+        aria-labelledby="pdm-zee-boundary-framing-title"
+      >
+        <div class="pdm-zee__section-head">
+          <p class="pdm-zee__section-label">{{ content.boundaryFraming.label }}</p>
+          <h2 class="pdm-zee__section-title" id="pdm-zee-boundary-framing-title">{{ content.boundaryFraming.title }}</h2>
+          <p class="pdm-zee__section-copy">{{ content.boundaryFraming.intro }}</p>
+        </div>
+
+        <p class="pdm-zee__boundary-copy">{{ content.boundaryFraming.closing }}</p>
+
+        <div class="pdm-zee__related-grid">
+          @for (surface of content.boundaryFraming.relatedSurfaces; track surface.route) {
+            <article class="pdm-zee__related-card">
+              <a class="pdm-zee__related-link" [routerLink]="surface.route">{{ surface.label }}</a>
+              <p class="pdm-zee__related-copy">{{ surface.note }}</p>
+            </article>
+          }
+        </div>
+      </section>
+    </div>
+  </main>
+</div>

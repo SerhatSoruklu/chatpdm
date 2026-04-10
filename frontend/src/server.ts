@@ -42,7 +42,20 @@ app.get('/health', async (_req: Request, res: ExpressResponse) => {
   }
 });
 
-app.all('/api/{*splat}', express.json({ limit: '32kb' }), async (req: Request, res: ExpressResponse) => {
+app.use('/api/ai-events', express.json({ limit: '32kb' }), async (req: Request, res: ExpressResponse) => {
+  try {
+    await proxyRequest(req, res, req.method === 'GET' || req.method === 'HEAD' ? undefined : req.body ?? {});
+  } catch (error) {
+    console.error('ChatPDM SSR API proxy failed:', error);
+    res.status(502).json({
+      success: false,
+      code: 'CHATPDM_API_PROXY_FAILED',
+      message: 'ChatPDM API is currently unavailable.',
+    });
+  }
+});
+
+app.use('/api/v1', express.json({ limit: '32kb' }), async (req: Request, res: ExpressResponse) => {
   try {
     await proxyRequest(req, res, req.method === 'GET' || req.method === 'HEAD' ? undefined : req.body ?? {});
   } catch (error) {

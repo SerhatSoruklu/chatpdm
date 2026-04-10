@@ -43,6 +43,21 @@ export const seoStaticEntries = {
     sitemapChangeFrequency: 'monthly',
     sitemapPriority: 0.71,
   },
+  'static.zeroglare-evidence-engine': {
+    title: 'ZEE (ZeroGlare Evidence Engine) - ChatPDM',
+    description: "ZEE is ChatPDM's deterministic evidence analyzer: bounded output, explicit contract framing, and no truth, recognition, or identity inference.",
+    canonicalPath: '/zeroglare-evidence-engine',
+    includeInSitemap: true,
+    sitemapChangeFrequency: 'monthly',
+    sitemapPriority: 0.69,
+    structuredData: {
+      '@context': 'https://schema.org',
+      '@type': 'WebPage',
+      name: 'ZEE (ZeroGlare Evidence Engine)',
+      url: 'https://chatpdm.com/zeroglare-evidence-engine',
+      description: "ZEE is ChatPDM's deterministic evidence analyzer: bounded output, explicit contract framing, and no truth, recognition, or identity inference.",
+    },
+  },
   'static.runtime': {
     title: 'Runtime - ChatPDM',
     description: 'Query the live ChatPDM runtime, inspect reviewed but not-yet-live concepts, and observe bounded refusal behavior directly.',

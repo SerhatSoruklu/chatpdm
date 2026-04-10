@@ -8,6 +8,8 @@ import { LiveConceptsPageComponent } from './pages/live-concepts-page/live-conce
 import { RiskMappingGovernancePageComponent } from './pages/risk-mapping-governance-page/risk-mapping-governance-page.component';
 import { PolicyPageComponent } from './pages/policy-page/policy-page.component';
 import { PublicPageComponent } from './pages/public-page/public-page.component';
+import { ZeroglareEvidenceEnginePageComponent } from './pages/zeroglare-evidence-engine-page/zeroglare-evidence-engine-page.component';
+import { ZEE_ROUTE_SEGMENT, ZEE_SEO_KEY } from './pages/zeroglare-evidence-engine-page/zeroglare-evidence-engine-page.constants';
 import { ZeroglareComponent } from './zeroglare/zeroglare.component';
 import { ReasoningStructurePageComponent } from './pages/reasoning-structure-page/reasoning-structure-page.component';
 import { ResolutionContractPageComponent } from './pages/resolution-contract-page/resolution-contract-page.component';
@@ -57,6 +59,11 @@ export const routes: Routes = [
     path: 'zeroglare',
     component: ZeroglareComponent,
     data: seoRouteData('static.zeroglare'),
+  },
+  {
+    path: ZEE_ROUTE_SEGMENT,
+    component: ZeroglareEvidenceEnginePageComponent,
+    data: seoRouteData(ZEE_SEO_KEY),
   },
   {
     path: 'runtime',
