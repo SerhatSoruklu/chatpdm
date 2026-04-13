@@ -1,0 +1,16 @@
+[
+  {
+    "clauseId": "CL-VBSS-AUTH-001",
+    "sourceId": "NEWPORT-ROE-2022",
+    "locator": "authoring-flow/vbss-authority-gate",
+    "jurisdiction": "US",
+    "layer": "POLICY_OVERLAY",
+    "clauseType": "AUTHORITY_GATE",
+    "rawText": "Escalatory boarding force requires designated authority and explicit delegation.",
+    "normalizedText": "Escalatory force requires designated authority and explicit delegation.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Reviewed overlay authority gate for the maritime VBSS slice."
+  }
+]

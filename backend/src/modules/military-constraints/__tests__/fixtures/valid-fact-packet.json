@@ -1,0 +1,50 @@
+{
+  "bundleId": "mil-us-example-valid",
+  "bundleVersion": "1.0.0",
+  "bundleHash": "sha256:TO-BE-COMPUTED",
+  "actor": {
+    "id": "UNIT-ALPHA",
+    "role": "BATTALION_COMMANDER",
+    "authorityLevelId": "BATTALION"
+  },
+  "action": {
+    "kind": "STRIKE",
+    "forceLevel": "DEADLY",
+    "method": "AIRSTRIKE",
+    "domain": "AIR"
+  },
+  "target": {
+    "id": "OBJ-Z",
+    "protectedClass": "CIVILIAN",
+    "militaryObjectiveStatus": "UNCONFIRMED",
+    "horsDeCombatStatus": false
+  },
+  "context": {
+    "zone": "ZONE-3",
+    "missionType": "ARMED_CONFLICT",
+    "operationPhase": "ACTIVE_COMBAT",
+    "coalitionMode": "JOINT",
+    "timeWindowStart": "2026-04-13T18:00:00.000Z",
+    "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+  },
+  "threat": {
+    "hostileAct": false,
+    "hostileIntent": false,
+    "imminence": "NONE",
+    "necessity": "UNRESOLVED"
+  },
+  "civilianRisk": {
+    "civilianPresence": true,
+    "civilianObjectPresence": true,
+    "estimatedIncidentalHarm": "HIGH",
+    "feasiblePrecautionsTaken": false,
+    "expectedMilitaryAdvantage": "UNDECLARED",
+    "estimatedIncidentalHarmScore": 90,
+    "expectedMilitaryAdvantageScore": 10
+  },
+  "authority": {
+    "reservedToHigherCommand": false,
+    "nationalCaveat": false,
+    "delegatedToUnit": true
+  }
+}

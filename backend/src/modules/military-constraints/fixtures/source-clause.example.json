@@ -1,0 +1,15 @@
+{
+  "clauseId": "CLAUSE-LEGAL-FLOOR-0001",
+  "sourceId": "DOD-LOW-2023",
+  "locator": "chapter-5/5.3.2",
+  "jurisdiction": "US",
+  "layer": "LEGAL_FLOOR",
+  "clauseType": "PROHIBITION",
+  "rawText": "No direct attack may be made against civilians.",
+  "normalizedText": "Civilian direct attacks are prohibited.",
+  "machineCandidate": true,
+  "ambiguityStatus": "CLEAR",
+  "reviewStatus": "APPROVED",
+  "reviewNotes": "Preserved provenance; clause is normative and bounded.",
+  "notes": "Example reviewed clause artifact."
+}

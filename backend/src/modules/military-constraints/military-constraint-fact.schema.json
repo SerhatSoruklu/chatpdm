@@ -1,0 +1,285 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chatpdm.local/schemas/military-constraint-fact.schema.json",
+  "title": "Military Constraint Fact Packet",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "bundleId",
+    "bundleVersion",
+    "bundleHash",
+    "actor",
+    "action",
+    "target",
+    "context",
+    "threat",
+    "civilianRisk",
+    "authority"
+  ],
+  "properties": {
+    "bundleId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "bundleVersion": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "bundleHash": {
+      "type": "string",
+      "minLength": 1
+    },
+    "actor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "role",
+        "authorityLevelId"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "role": {
+          "type": "string",
+          "minLength": 1
+        },
+        "authorityLevelId": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "forceLevel",
+        "method",
+        "domain"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "minLength": 1
+        },
+        "forceLevel": {
+          "type": "string",
+          "enum": [
+            "NON_LETHAL",
+            "LETHAL",
+            "DEADLY"
+          ]
+        },
+        "method": {
+          "type": "string",
+          "minLength": 1
+        },
+        "domain": {
+          "type": "string",
+          "enum": [
+            "LAND",
+            "AIR",
+            "MARITIME",
+            "CYBER",
+            "SPACE",
+            "MULTI_DOMAIN"
+          ]
+        }
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "protectedClass",
+        "militaryObjectiveStatus",
+        "horsDeCombatStatus"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "protectedClass": {
+          "type": "string",
+          "enum": [
+            "CIVILIAN",
+            "CIVILIAN_OBJECT",
+            "MILITARY",
+            "UNKNOWN"
+          ]
+        },
+        "militaryObjectiveStatus": {
+          "type": "string",
+          "enum": [
+            "CONFIRMED_TRUE",
+            "CONFIRMED_FALSE",
+            "UNCONFIRMED",
+            "UNKNOWN"
+          ]
+        },
+        "horsDeCombatStatus": {
+          "type": "boolean"
+        }
+      }
+    },
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "zone",
+        "missionType",
+        "operationPhase",
+        "coalitionMode",
+        "timeWindowStart",
+        "timeWindowEnd"
+      ],
+      "properties": {
+        "zone": {
+          "type": "string",
+          "minLength": 1
+        },
+        "missionType": {
+          "type": "string",
+          "minLength": 1
+        },
+        "operationPhase": {
+          "type": "string",
+          "minLength": 1
+        },
+        "coalitionMode": {
+          "type": "string",
+          "enum": [
+            "NATIONAL",
+            "JOINT",
+            "COALITION"
+          ]
+        },
+        "timeWindowStart": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "timeWindowEnd": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "threat": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "hostileAct",
+        "hostileIntent",
+        "imminence",
+        "necessity"
+      ],
+      "properties": {
+        "hostileAct": {
+          "type": "boolean"
+        },
+        "hostileIntent": {
+          "type": "boolean"
+        },
+        "imminence": {
+          "type": "string",
+          "enum": [
+            "NONE",
+            "LOW",
+            "MEDIUM",
+            "HIGH",
+            "IMMINENT"
+          ]
+        },
+        "necessity": {
+          "type": "string",
+          "enum": [
+            "UNRESOLVED",
+            "LOW",
+            "MEDIUM",
+            "HIGH",
+            "IMMEDIATE"
+          ]
+        }
+      }
+    },
+    "civilianRisk": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "civilianPresence",
+        "civilianObjectPresence",
+        "estimatedIncidentalHarm",
+        "feasiblePrecautionsTaken",
+        "expectedMilitaryAdvantage",
+        "estimatedIncidentalHarmScore",
+        "expectedMilitaryAdvantageScore"
+      ],
+      "properties": {
+        "civilianPresence": {
+          "type": "boolean"
+        },
+        "civilianObjectPresence": {
+          "type": "boolean"
+        },
+        "estimatedIncidentalHarm": {
+          "type": "string",
+          "enum": [
+            "NONE",
+            "LOW",
+            "MEDIUM",
+            "HIGH",
+            "UNRESOLVED"
+          ]
+        },
+        "feasiblePrecautionsTaken": {
+          "type": "boolean"
+        },
+        "expectedMilitaryAdvantage": {
+          "type": "string",
+          "enum": [
+            "UNDECLARED",
+            "LOW",
+            "MEDIUM",
+            "HIGH"
+          ]
+        },
+        "estimatedIncidentalHarmScore": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "expectedMilitaryAdvantageScore": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        }
+      }
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reservedToHigherCommand",
+        "nationalCaveat",
+        "delegatedToUnit"
+      ],
+      "properties": {
+        "reservedToHigherCommand": {
+          "type": "boolean"
+        },
+        "nationalCaveat": {
+          "type": "boolean"
+        },
+        "delegatedToUnit": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

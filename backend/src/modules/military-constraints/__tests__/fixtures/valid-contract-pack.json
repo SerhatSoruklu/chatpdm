@@ -1,0 +1,271 @@
+{
+  "bundleId": "mil-us-example-valid",
+  "bundleVersion": "1.0.0",
+  "bundleHash": "sha256:5851d1a28f47e54dbfcf9e5395ef15044c3ae10df1e7e57387acb1259d60b86a",
+  "status": "ACTIVE",
+  "jurisdiction": "US",
+  "authorityOwner": "NATIONAL_COMMAND",
+  "precedencePolicy": {
+    "stageOrder": [
+      "ADMISSIBILITY",
+      "LEGAL_FLOOR",
+      "POLICY_OVERLAY"
+    ],
+    "defaultDecision": "REFUSED",
+    "missingFactDecision": "REFUSED_INCOMPLETE",
+    "sameStageConflictPolicy": "REFUSE"
+  },
+  "factSchemaVersion": "1.0.0",
+  "authorityGraphId": "AUTH-GRAPH-US-001",
+  "authorityGraph": {
+    "authorityGraphId": "AUTH-GRAPH-US-001",
+    "version": 1,
+    "status": "ACTIVE",
+    "levels": [
+      {
+        "levelId": "NATIONAL_COMMAND",
+        "rank": 700
+      },
+      {
+        "levelId": "THEATER_COMMAND",
+        "rank": 600
+      },
+      {
+        "levelId": "JOINT_TASK_FORCE",
+        "rank": 500
+      },
+      {
+        "levelId": "BRIGADE",
+        "rank": 400
+      },
+      {
+        "levelId": "BATTALION",
+        "rank": 300
+      },
+      {
+        "levelId": "COMPANY",
+        "rank": 200
+      },
+      {
+        "levelId": "PLATOON",
+        "rank": 100
+      },
+      {
+        "levelId": "INDIVIDUAL",
+        "rank": 50
+      }
+    ],
+    "delegationEdges": [
+      {
+        "edgeId": "DEL-THEATER-BRIGADE-SELF-DEFENSE",
+        "fromLevelId": "THEATER_COMMAND",
+        "toLevelId": "BRIGADE",
+        "actionKinds": [
+          "SELF_DEFENSE_RESPONSE"
+        ],
+        "forceLevels": [
+          "NON_LETHAL",
+          "LETHAL"
+        ],
+        "scope": {
+          "missionTypes": [
+            "ARMED_CONFLICT"
+          ],
+          "domains": [
+            "LAND",
+            "AIR"
+          ]
+        }
+      }
+    ]
+  },
+  "sourceRegistrySnapshot": [
+    {
+      "sourceId": "DOD-LOW-2023",
+      "role": "LEGAL_FLOOR",
+      "sourceVersion": "2023-07",
+      "trustTier": "LEGAL_FLOOR",
+      "locator": "chapter-5"
+    },
+    {
+      "sourceId": "NEWPORT-ROE-2022",
+      "role": "ROE_STRUCTURE",
+      "sourceVersion": "2022",
+      "trustTier": "ROE_STRUCTURE",
+      "locator": "authoring-flow"
+    },
+    {
+      "sourceId": "UNODC-GMCP-ROE",
+      "role": "EXAMPLE_ONLY",
+      "sourceVersion": "2024",
+      "trustTier": "EXAMPLE_ONLY",
+      "locator": "vbss-and-gangway-access-control"
+    }
+  ],
+  "rules": [
+    {
+      "ruleId": "MIL-ADM-0001",
+      "version": 1,
+      "stage": "ADMISSIBILITY",
+      "priority": 1000,
+      "status": "ACTIVE",
+      "effect": {
+        "decision": "REFUSED_INCOMPLETE",
+        "reasonCode": "MISSING_REQUIRED_FACT"
+      },
+      "scope": {
+        "jurisdiction": "US",
+        "domains": [
+          "LAND",
+          "AIR",
+          "MARITIME"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "STRIKE",
+          "ENGAGE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "PLATOON",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "context.missionType"
+      ],
+      "predicate": {
+        "not_exists": [
+          {
+            "fact": "target.militaryObjectiveStatus"
+          }
+        ]
+      },
+      "sourceRefs": [
+        {
+          "sourceId": "DOD-LOW-2023",
+          "locator": "admissibility"
+        }
+      ]
+    },
+    {
+      "ruleId": "MIL-LF-TGT-0001",
+      "version": 1,
+      "stage": "LEGAL_FLOOR",
+      "priority": 900,
+      "status": "ACTIVE",
+      "effect": {
+        "decision": "REFUSED",
+        "reasonCode": "PROHIBITED_TARGET"
+      },
+      "scope": {
+        "jurisdiction": "US",
+        "domains": [
+          "LAND",
+          "AIR",
+          "MARITIME"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "STRIKE",
+          "ENGAGE",
+          "FIRE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "BATTALION",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "target.protectedClass",
+        "target.militaryObjectiveStatus"
+      ],
+      "predicate": {
+        "all": [
+          {
+            "eq": [
+              {
+                "fact": "target.protectedClass"
+              },
+              {
+                "value": "CIVILIAN"
+              }
+            ]
+          },
+          {
+            "neq": [
+              {
+                "fact": "target.militaryObjectiveStatus"
+              },
+              {
+                "value": "CONFIRMED_TRUE"
+              }
+            ]
+          }
+        ]
+      },
+      "sourceRefs": [
+        {
+          "sourceId": "DOD-LOW-2023",
+          "locator": "chapter-5"
+        }
+      ]
+    },
+    {
+      "ruleId": "MIL-PO-AUTH-0001",
+      "version": 1,
+      "stage": "POLICY_OVERLAY",
+      "priority": 800,
+      "status": "ACTIVE",
+      "effect": {
+        "decision": "REFUSED",
+        "reasonCode": "AUTHORITY_INVALID"
+      },
+      "scope": {
+        "jurisdiction": "US",
+        "domains": [
+          "AIR"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "STRIKE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "BRIGADE",
+        "requiresExplicitDelegation": true,
+        "delegationEdgeIds": [
+          "DEL-THEATER-BRIGADE-SELF-DEFENSE"
+        ]
+      },
+      "requiredFacts": [
+        "actor.authorityLevelId",
+        "action.kind"
+      ],
+      "predicate": {
+        "neq": [
+          {
+            "fact": "actor.authorityLevelId"
+          },
+          {
+            "value": "BRIGADE"
+          }
+        ]
+      },
+      "sourceRefs": [
+        {
+          "sourceId": "NEWPORT-ROE-2022",
+          "locator": "authority-structure"
+        }
+      ]
+    }
+  ],
+  "compiledAt": "2026-04-13T18:00:00Z"
+}

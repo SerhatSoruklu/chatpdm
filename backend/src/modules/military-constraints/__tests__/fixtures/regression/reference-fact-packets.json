@@ -1,0 +1,218 @@
+[
+  {
+    "caseId": "legal-floor-refusal",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "mil-us-core-reference-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "UNIT-ALPHA",
+        "role": "BATTALION_COMMANDER",
+        "authorityLevelId": "BATTALION"
+      },
+      "action": {
+        "kind": "STRIKE",
+        "forceLevel": "DEADLY",
+        "method": "AIRSTRIKE",
+        "domain": "AIR"
+      },
+      "target": {
+        "id": "OBJ-Z",
+        "protectedClass": "CIVILIAN",
+        "militaryObjectiveStatus": "UNCONFIRMED",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "ZONE-3",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "ACTIVE_COMBAT",
+        "coalitionMode": "JOINT",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "UNRESOLVED"
+      },
+      "civilianRisk": {
+        "civilianPresence": true,
+        "civilianObjectPresence": true,
+        "estimatedIncidentalHarm": "HIGH",
+        "feasiblePrecautionsTaken": false,
+        "expectedMilitaryAdvantage": "UNDECLARED",
+        "estimatedIncidentalHarmScore": 90,
+        "expectedMilitaryAdvantageScore": 10
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true
+      }
+    }
+  },
+  {
+    "caseId": "authority-refusal",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "mil-us-core-reference-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "UNIT-ALPHA",
+        "role": "COMPANY_COMMANDER",
+        "authorityLevelId": "COMPANY"
+      },
+      "action": {
+        "kind": "STRIKE",
+        "forceLevel": "DEADLY",
+        "method": "AIRSTRIKE",
+        "domain": "AIR"
+      },
+      "target": {
+        "id": "OBJ-Z",
+        "protectedClass": "MILITARY",
+        "militaryObjectiveStatus": "CONFIRMED_TRUE",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "ZONE-3",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "ACTIVE_COMBAT",
+        "coalitionMode": "JOINT",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "UNRESOLVED"
+      },
+      "civilianRisk": {
+        "civilianPresence": true,
+        "civilianObjectPresence": true,
+        "estimatedIncidentalHarm": "HIGH",
+        "feasiblePrecautionsTaken": false,
+        "expectedMilitaryAdvantage": "UNDECLARED",
+        "estimatedIncidentalHarmScore": 90,
+        "expectedMilitaryAdvantageScore": 10
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true
+      }
+    }
+  },
+  {
+    "caseId": "missing-fact-refusal",
+    "bundleVariant": "admissibility",
+    "facts": {
+      "bundleId": "mil-us-core-reference-admissibility",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "UNIT-ALPHA",
+        "role": "BRIGADE_COMMANDER",
+        "authorityLevelId": "BRIGADE"
+      },
+      "action": {
+        "kind": "STRIKE",
+        "forceLevel": "DEADLY",
+        "method": "AIRSTRIKE",
+        "domain": "AIR"
+      },
+      "target": {
+        "id": "OBJ-Z",
+        "protectedClass": "MILITARY",
+        "militaryObjectiveStatus": "CONFIRMED_TRUE",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "ZONE-3",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "ACTIVE_COMBAT",
+        "coalitionMode": "JOINT",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "UNRESOLVED"
+      },
+      "civilianRisk": {
+        "civilianPresence": true,
+        "civilianObjectPresence": true,
+        "estimatedIncidentalHarm": "HIGH",
+        "feasiblePrecautionsTaken": false,
+        "expectedMilitaryAdvantage": "UNDECLARED",
+        "estimatedIncidentalHarmScore": 90,
+        "expectedMilitaryAdvantageScore": 10
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true
+      }
+    }
+  },
+  {
+    "caseId": "allowed-case",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "mil-us-core-reference-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "UNIT-ALPHA",
+        "role": "BRIGADE_COMMANDER",
+        "authorityLevelId": "BRIGADE"
+      },
+      "action": {
+        "kind": "STRIKE",
+        "forceLevel": "DEADLY",
+        "method": "AIRSTRIKE",
+        "domain": "AIR"
+      },
+      "target": {
+        "id": "OBJ-Z",
+        "protectedClass": "MILITARY",
+        "militaryObjectiveStatus": "CONFIRMED_TRUE",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "ZONE-3",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "ACTIVE_COMBAT",
+        "coalitionMode": "JOINT",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "UNRESOLVED"
+      },
+      "civilianRisk": {
+        "civilianPresence": true,
+        "civilianObjectPresence": true,
+        "estimatedIncidentalHarm": "HIGH",
+        "feasiblePrecautionsTaken": false,
+        "expectedMilitaryAdvantage": "UNDECLARED",
+        "estimatedIncidentalHarmScore": 90,
+        "expectedMilitaryAdvantageScore": 10
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true
+      }
+    }
+  }
+]

@@ -1,0 +1,212 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chatpdm.local/schemas/military-source-registry.schema.json",
+  "title": "Military Source Registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "sourceId",
+    "title",
+    "localPath",
+    "jurisdiction",
+    "role",
+    "authorityTier",
+    "admissibility",
+    "extractionQuality",
+    "exampleOnly"
+  ],
+  "properties": {
+    "sourceId": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Z0-9-]+$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "localPath": {
+      "type": "string",
+      "minLength": 1
+    },
+    "jurisdiction": {
+      "type": "string",
+      "minLength": 1
+    },
+    "role": {
+      "type": "string",
+      "enum": [
+        "LEGAL_FLOOR",
+        "ROE_STRUCTURE",
+        "DOCTRINE_FRAME",
+        "EXAMPLE_ONLY",
+        "EXTRACTION_AID"
+      ]
+    },
+    "authorityTier": {
+      "type": "string",
+      "enum": [
+        "NORMATIVE",
+        "STRUCTURAL",
+        "EXAMPLE",
+        "METHODOLOGY"
+      ]
+    },
+    "admissibility": {
+      "type": "string",
+      "enum": [
+        "ADMISSIBLE",
+        "ADMISSIBLE_AFTER_REPAIR",
+        "BOUNDED_EXAMPLE",
+        "NOT_LEGAL_SOURCE"
+      ]
+    },
+    "extractionQuality": {
+      "type": "string",
+      "enum": [
+        "HIGH",
+        "MEDIUM",
+        "LOW",
+        "NOISY",
+        "OCR_HEAVY"
+      ]
+    },
+    "exampleOnly": {
+      "type": "boolean"
+    },
+    "sourceVersion": {
+      "type": "string",
+      "minLength": 1
+    },
+    "trustTier": {
+      "type": "string",
+      "enum": [
+        "LEGAL_FLOOR",
+        "ROE_STRUCTURE",
+        "DOCTRINE_FRAME",
+        "EXAMPLE_ONLY",
+        "EXTRACTION_AID"
+      ]
+    },
+    "locator": {
+      "type": "string",
+      "minLength": 1
+    },
+    "normativeOverride": {
+      "type": "boolean"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "role": {
+            "const": "EXAMPLE_ONLY"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "exampleOnly": {
+            "const": true
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "exampleOnly": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "authorityTier": {
+                  "const": "NORMATIVE"
+                }
+              },
+              "required": [
+                "authorityTier"
+              ]
+            },
+            "then": {
+              "required": [
+                "normativeOverride"
+              ],
+              "properties": {
+                "normativeOverride": {
+                  "const": true
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "role": {
+                  "const": "EXAMPLE_ONLY"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "exampleOnly": {
+                  "const": true
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "normativeOverride": {
+            "const": true
+          }
+        },
+        "required": [
+          "normativeOverride"
+        ]
+      },
+      "then": {
+        "properties": {
+          "exampleOnly": {
+            "const": true
+          }
+        },
+        "required": [
+          "exampleOnly"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "authorityTier": {
+            "const": "NORMATIVE"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "admissibility": {
+            "enum": [
+              "ADMISSIBLE",
+              "ADMISSIBLE_AFTER_REPAIR"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

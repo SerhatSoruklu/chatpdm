@@ -1,0 +1,66 @@
+{
+  "ruleId": "MIL-LF-TGT-0001",
+  "version": 1,
+  "stage": "LEGAL_FLOOR",
+  "priority": 900,
+  "status": "ACTIVE",
+  "effect": {
+    "decision": "REFUSED",
+    "reasonCode": "PROHIBITED_TARGET"
+  },
+  "scope": {
+    "jurisdiction": "US",
+    "domains": [
+      "LAND",
+      "AIR",
+      "MARITIME"
+    ],
+    "missionTypes": [
+      "ARMED_CONFLICT"
+    ],
+    "actionKinds": [
+      "STRIKE",
+      "ENGAGE",
+      "FIRE"
+    ]
+  },
+  "authority": {
+    "minimumLevelId": "BATTALION",
+    "requiresExplicitDelegation": false,
+    "delegationEdgeIds": []
+  },
+  "requiredFacts": [
+    "target.protectedClass",
+    "target.militaryObjectiveStatus"
+  ],
+  "predicate": {
+    "all": [
+      {
+        "eq": [
+          {
+            "fact": "target.protectedClass"
+          },
+          {
+            "value": "CIVILIAN"
+          }
+        ]
+      },
+      {
+        "neq": [
+          {
+            "fact": "target.militaryObjectiveStatus"
+          },
+          {
+            "value": "CONFIRMED_TRUE"
+          }
+        ]
+      }
+    ]
+  },
+  "sourceRefs": [
+    {
+      "sourceId": "DOD-LOW-2023",
+      "locator": "chapter-5"
+    }
+  ]
+}

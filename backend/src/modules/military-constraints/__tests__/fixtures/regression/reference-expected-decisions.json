@@ -1,0 +1,40 @@
+[
+  {
+    "caseId": "legal-floor-refusal",
+    "bundleVariant": "reference",
+    "decision": "REFUSED",
+    "reasonCode": "PROHIBITED_TARGET",
+    "failedStage": "LEGAL_FLOOR",
+    "failingRuleIds": [
+      "CR-CLAUSE-LF-0001"
+    ]
+  },
+  {
+    "caseId": "authority-refusal",
+    "bundleVariant": "reference",
+    "decision": "REFUSED",
+    "reasonCode": "AUTHORITY_INVALID",
+    "failedStage": "POLICY_OVERLAY",
+    "failingRuleIds": [
+      "CR-CLAUSE-AUTH-0001"
+    ]
+  },
+  {
+    "caseId": "missing-fact-refusal",
+    "bundleVariant": "admissibility",
+    "decision": "REFUSED_INCOMPLETE",
+    "reasonCode": "MISSING_REQUIRED_FACT",
+    "failedStage": "ADMISSIBILITY",
+    "failingRuleIds": [
+      "CR-CLAUSE-LF-0004"
+    ]
+  },
+  {
+    "caseId": "allowed-case",
+    "bundleVariant": "reference",
+    "decision": "ALLOWED",
+    "reasonCode": null,
+    "failedStage": null,
+    "failingRuleIds": []
+  }
+]

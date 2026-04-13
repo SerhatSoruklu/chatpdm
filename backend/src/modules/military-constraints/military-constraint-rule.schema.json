@@ -1,0 +1,208 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chatpdm.local/schemas/military-constraint-rule.schema.json",
+  "title": "Military Constraint Rule",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "ruleId",
+    "version",
+    "stage",
+    "priority",
+    "status",
+    "effect",
+    "scope",
+    "authority",
+    "requiredFacts",
+    "predicate",
+    "sourceRefs"
+  ],
+  "properties": {
+    "ruleId": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Z0-9-]+$"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "stage": {
+      "type": "string",
+      "enum": [
+        "ADMISSIBILITY",
+        "LEGAL_FLOOR",
+        "POLICY_OVERLAY"
+      ]
+    },
+    "priority": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1000000
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "ACTIVE",
+        "INACTIVE",
+        "SUPERSEDED"
+      ]
+    },
+    "effect": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "decision",
+        "reasonCode"
+      ],
+      "properties": {
+        "decision": {
+          "type": "string",
+          "enum": [
+            "ALLOWED",
+            "REFUSED",
+            "REFUSED_INCOMPLETE"
+          ]
+        },
+        "reasonCode": {
+          "type": "string",
+          "enum": [
+            "AUTHORITY_INVALID",
+            "AUTHORITY_UNRESOLVED",
+            "BUNDLE_HASH_MISMATCH",
+            "BUNDLE_VERSION_IMMUTABLE_VIOLATION",
+            "CIVILIAN_RISK_UNRESOLVED",
+            "COALITION_RULE_CONFLICT",
+            "EXCESSIVE_INCIDENTAL_HARM_RISK",
+            "FORCE_LEVEL_NOT_AUTHORIZED",
+            "HORS_DE_COMBAT_PROTECTED",
+            "ILLEGAL_OVERLAY",
+            "MISSING_REQUIRED_FACT",
+            "NATIONAL_CAVEAT_BLOCK",
+            "NOT_A_MILITARY_OBJECTIVE",
+            "PREDICATE_INVALID",
+            "PREDICATE_OPERAND_TYPE_INVALID",
+            "POLICY_BUNDLE_INVALID",
+            "PROHIBITED_TARGET",
+            "RESERVED_TO_HIGHER_COMMAND",
+            "RULE_CONFLICT",
+            "RULE_SHAPE_INVALID",
+            "SCOPE_VIOLATION"
+          ]
+        }
+      }
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "jurisdiction",
+        "domains",
+        "missionTypes",
+        "actionKinds"
+      ],
+      "properties": {
+        "jurisdiction": {
+          "type": "string",
+          "minLength": 1
+        },
+        "domains": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "LAND",
+              "AIR",
+              "MARITIME",
+              "CYBER",
+              "SPACE",
+              "MULTI_DOMAIN"
+            ]
+          }
+        },
+        "missionTypes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "actionKinds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "minimumLevelId",
+        "requiresExplicitDelegation",
+        "delegationEdgeIds"
+      ],
+      "properties": {
+        "minimumLevelId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "requiresExplicitDelegation": {
+          "type": "boolean"
+        },
+        "delegationEdgeIds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "requiredFacts": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9_]+(?:\\.[A-Za-z0-9_]+)*$"
+      }
+    },
+    "predicate": {
+      "$ref": "./military-constraint-predicate.schema.json"
+    },
+    "sourceRefs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "sourceId",
+          "locator"
+        ],
+        "properties": {
+          "sourceId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "locator": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}
