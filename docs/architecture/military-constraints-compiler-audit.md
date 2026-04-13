@@ -408,4 +408,3 @@ Exit condition:
 Exit condition:
 
 - the human artifact is only a projection, never a source of authority
-

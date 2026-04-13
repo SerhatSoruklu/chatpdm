@@ -78,4 +78,3 @@ Forbidden behavior:
 6. compare with stored `bundleHash`
 
 Any mismatch is a hard refusal.
-

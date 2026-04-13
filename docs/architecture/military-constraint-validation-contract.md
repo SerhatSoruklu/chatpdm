@@ -163,4 +163,3 @@ The runtime decision space remains closed:
 - `REFUSED_INCOMPLETE`
 
 Refusal reasons must come from the closed reason-code enum in `military-constraint-reason-codes.js`.
-
