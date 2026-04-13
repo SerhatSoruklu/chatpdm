@@ -1,0 +1,62 @@
+{
+  "authorityGraphId": "AUTH-GRAPH-US-001",
+  "version": 1,
+  "status": "ACTIVE",
+  "levels": [
+    {
+      "levelId": "NATIONAL_COMMAND",
+      "rank": 700
+    },
+    {
+      "levelId": "THEATER_COMMAND",
+      "rank": 600
+    },
+    {
+      "levelId": "JOINT_TASK_FORCE",
+      "rank": 500
+    },
+    {
+      "levelId": "BRIGADE",
+      "rank": 400
+    },
+    {
+      "levelId": "BATTALION",
+      "rank": 300
+    },
+    {
+      "levelId": "COMPANY",
+      "rank": 200
+    },
+    {
+      "levelId": "PLATOON",
+      "rank": 100
+    },
+    {
+      "levelId": "INDIVIDUAL",
+      "rank": 50
+    }
+  ],
+  "delegationEdges": [
+    {
+      "edgeId": "DEL-THEATER-BRIGADE-SELF-DEFENSE",
+      "fromLevelId": "THEATER_COMMAND",
+      "toLevelId": "BRIGADE",
+      "actionKinds": [
+        "SELF_DEFENSE_RESPONSE"
+      ],
+      "forceLevels": [
+        "NON_LETHAL",
+        "LETHAL"
+      ],
+      "scope": {
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "domains": [
+          "LAND",
+          "AIR"
+        ]
+      }
+    }
+  ]
+}

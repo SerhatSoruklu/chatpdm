@@ -1,0 +1,44 @@
+{
+  "ruleId": "MIL-INV-0001",
+  "version": 1,
+  "stage": "ADMISSIBILITY",
+  "priority": 100,
+  "status": "ACTIVE",
+  "effect": {
+    "decision": "REFUSED_INCOMPLETE",
+    "reasonCode": "MISSING_REQUIRED_FACT"
+  },
+  "scope": {
+    "jurisdiction": "US",
+    "domains": [
+      "AIR"
+    ],
+    "missionTypes": [
+      "ARMED_CONFLICT"
+    ],
+    "actionKinds": [
+      "STRIKE"
+    ]
+  },
+  "authority": {
+    "minimumLevelId": "PLATOON",
+    "requiresExplicitDelegation": false,
+    "delegationEdgeIds": []
+  },
+  "requiredFacts": [
+    "target.militaryObjectiveStatus"
+  ],
+  "predicate": {
+    "not_exists": [
+      {
+        "fact": "target.militaryObjectiveStatus"
+      }
+    ]
+  },
+  "sourceRefs": [
+    {
+      "sourceId": "DOD-LOW-2023",
+      "locator": "admissibility"
+    }
+  ]
+}

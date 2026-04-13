@@ -1,0 +1,447 @@
+'use strict';
+
+const {
+  isPlainObject,
+} = require('./fact-schema-utils');
+const {
+  MILITARY_CONSTRAINT_REASON_CODES,
+} = require('./military-constraint-reason-codes');
+
+const COMPILER_VERSION = '1.0.0';
+
+const SOURCE_ROLE_BY_LAYER = {
+  LEGAL_FLOOR: new Set(['LEGAL_FLOOR']),
+  POLICY_OVERLAY: new Set(['ROE_STRUCTURE', 'DOCTRINE_FRAME', 'EXAMPLE_ONLY']),
+  ADMISSIBILITY: new Set(['LEGAL_FLOOR', 'ROE_STRUCTURE', 'DOCTRINE_FRAME']),
+};
+
+const RESOLVED_AMBIGUITY_STATUSES = new Set([
+  'CLEAR',
+  'RESOLVED',
+]);
+
+const COMPILATION_REVIEW_STATUSES = new Set([
+  'COMPILATION_READY',
+  'APPROVED',
+]);
+
+const LEGAL_FLOOR_PROHIBITION_TEMPLATE = Object.freeze({
+  stage: 'LEGAL_FLOOR',
+  priority: 900,
+  effect: {
+    decision: 'REFUSED',
+    reasonCode: 'PROHIBITED_TARGET',
+  },
+  scope: {
+    domains: ['LAND', 'AIR', 'MARITIME'],
+    missionTypes: ['ARMED_CONFLICT'],
+    actionKinds: ['STRIKE', 'ENGAGE', 'FIRE'],
+  },
+  authority: {
+    minimumLevelId: 'BATTALION',
+    requiresExplicitDelegation: false,
+    delegationEdgeIds: [],
+  },
+  requiredFacts: ['target.protectedClass', 'target.militaryObjectiveStatus'],
+  predicate: {
+    all: [
+      {
+        eq: [
+          { fact: 'target.protectedClass' },
+          { value: 'CIVILIAN' },
+        ],
+      },
+      {
+        neq: [
+          { fact: 'target.militaryObjectiveStatus' },
+          { value: 'CONFIRMED_TRUE' },
+        ],
+      },
+    ],
+  },
+});
+
+const POLICY_OVERLAY_AUTHORITY_GATE_TEMPLATE = Object.freeze({
+  stage: 'POLICY_OVERLAY',
+  priority: 800,
+  effect: {
+    decision: 'REFUSED',
+    reasonCode: 'AUTHORITY_INVALID',
+  },
+  scope: {
+    domains: ['AIR'],
+    missionTypes: ['ARMED_CONFLICT'],
+    actionKinds: ['STRIKE'],
+  },
+  authority: {
+    minimumLevelId: 'BRIGADE',
+    requiresExplicitDelegation: true,
+    delegationEdgeIds: ['DEL-THEATER-BRIGADE-SELF-DEFENSE'],
+  },
+  requiredFacts: ['actor.authorityLevelId', 'action.kind'],
+  predicate: {
+    neq: [
+      { fact: 'actor.authorityLevelId' },
+      { value: 'BRIGADE' },
+    ],
+  },
+});
+
+function cloneJson(value) {
+  return JSON.parse(JSON.stringify(value));
+}
+
+function sortStrings(values) {
+  return [...new Set(values)].sort((left, right) => left.localeCompare(right));
+}
+
+function makeResult() {
+  return {
+    valid: true,
+    reasonCode: null,
+    errors: [],
+    compiledRule: null,
+  };
+}
+
+function fail(result, reasonCode, message) {
+  result.valid = false;
+  if (result.reasonCode === null) {
+    result.reasonCode = reasonCode;
+  }
+  result.errors.push(message);
+}
+
+function finish(result) {
+  return Object.freeze({
+    valid: result.valid,
+    reasonCode: result.reasonCode,
+    errors: Object.freeze([...result.errors]),
+    compiledRule: result.compiledRule ? Object.freeze(result.compiledRule) : null,
+  });
+}
+
+function buildSourceRegistryIndex(sourceRegistry) {
+  const registry = new Map();
+
+  if (!Array.isArray(sourceRegistry)) {
+    return registry;
+  }
+
+  sourceRegistry.forEach((entry) => {
+    if (isPlainObject(entry) && typeof entry.sourceId === 'string' && entry.sourceId.length > 0) {
+      registry.set(entry.sourceId, entry);
+    }
+  });
+
+  return registry;
+}
+
+function isCompilableClause(clause) {
+  return isPlainObject(clause)
+    && typeof clause.clauseId === 'string'
+    && clause.clauseId.length > 0
+    && typeof clause.sourceId === 'string'
+    && clause.sourceId.length > 0
+    && typeof clause.locator === 'string'
+    && clause.locator.length > 0
+    && typeof clause.jurisdiction === 'string'
+    && clause.jurisdiction.length > 0
+    && typeof clause.layer === 'string'
+    && typeof clause.clauseType === 'string'
+    && typeof clause.rawText === 'string'
+    && typeof clause.normalizedText === 'string'
+    && typeof clause.machineCandidate === 'boolean'
+    && typeof clause.ambiguityStatus === 'string'
+    && typeof clause.reviewStatus === 'string'
+    && typeof clause.reviewNotes === 'string';
+}
+
+function sortRuleForBundle(rule) {
+  const clone = cloneJson(rule);
+
+  if (isPlainObject(clone.scope)) {
+    if (Array.isArray(clone.scope.actionKinds)) {
+      clone.scope.actionKinds = sortStrings(clone.scope.actionKinds);
+    }
+    if (Array.isArray(clone.scope.domains)) {
+      clone.scope.domains = sortStrings(clone.scope.domains);
+    }
+    if (Array.isArray(clone.scope.missionTypes)) {
+      clone.scope.missionTypes = sortStrings(clone.scope.missionTypes);
+    }
+  }
+
+  if (isPlainObject(clone.authority) && Array.isArray(clone.authority.delegationEdgeIds)) {
+    clone.authority.delegationEdgeIds = sortStrings(clone.authority.delegationEdgeIds);
+  }
+
+  if (Array.isArray(clone.requiredFacts)) {
+    clone.requiredFacts = sortStrings(clone.requiredFacts);
+  }
+
+  if (Array.isArray(clone.sourceRefs)) {
+    clone.sourceRefs = [...clone.sourceRefs].sort((left, right) => {
+      const leftSource = typeof left.sourceId === 'string' ? left.sourceId : '';
+      const rightSource = typeof right.sourceId === 'string' ? right.sourceId : '';
+      if (leftSource !== rightSource) {
+        return leftSource.localeCompare(rightSource);
+      }
+
+      const leftLocator = typeof left.locator === 'string' ? left.locator : '';
+      const rightLocator = typeof right.locator === 'string' ? right.locator : '';
+      return leftLocator.localeCompare(rightLocator);
+    });
+  }
+
+  return clone;
+}
+
+function buildNotes(clause, sourceEntry, compilerVersion) {
+  return [
+    `compiledFromClauseId=${clause.clauseId}`,
+    `sourceId=${sourceEntry.sourceId}`,
+    `locator=${clause.locator}`,
+    `compilerVersion=${compilerVersion}`,
+  ].join('; ');
+}
+
+function buildLegalFloorRule(clause, sourceEntry, compilerVersion) {
+  const rule = {
+    ruleId: `CR-${clause.clauseId}`,
+    version: 1,
+    stage: LEGAL_FLOOR_PROHIBITION_TEMPLATE.stage,
+    priority: LEGAL_FLOOR_PROHIBITION_TEMPLATE.priority,
+    status: 'ACTIVE',
+    effect: cloneJson(LEGAL_FLOOR_PROHIBITION_TEMPLATE.effect),
+    scope: {
+      jurisdiction: clause.jurisdiction,
+      domains: [...LEGAL_FLOOR_PROHIBITION_TEMPLATE.scope.domains],
+      missionTypes: [...LEGAL_FLOOR_PROHIBITION_TEMPLATE.scope.missionTypes],
+      actionKinds: [...LEGAL_FLOOR_PROHIBITION_TEMPLATE.scope.actionKinds],
+    },
+    authority: cloneJson(LEGAL_FLOOR_PROHIBITION_TEMPLATE.authority),
+    requiredFacts: [...LEGAL_FLOOR_PROHIBITION_TEMPLATE.requiredFacts],
+    predicate: cloneJson(LEGAL_FLOOR_PROHIBITION_TEMPLATE.predicate),
+    sourceRefs: [
+      {
+        sourceId: sourceEntry.sourceId,
+        locator: clause.locator,
+      },
+    ],
+    notes: buildNotes(clause, sourceEntry, compilerVersion),
+  };
+
+  return sortRuleForBundle(rule);
+}
+
+function buildPolicyOverlayRule(clause, sourceEntry, compilerVersion) {
+  const rule = {
+    ruleId: `CR-${clause.clauseId}`,
+    version: 1,
+    stage: POLICY_OVERLAY_AUTHORITY_GATE_TEMPLATE.stage,
+    priority: POLICY_OVERLAY_AUTHORITY_GATE_TEMPLATE.priority,
+    status: 'ACTIVE',
+    effect: cloneJson(POLICY_OVERLAY_AUTHORITY_GATE_TEMPLATE.effect),
+    scope: {
+      jurisdiction: clause.jurisdiction,
+      domains: [...POLICY_OVERLAY_AUTHORITY_GATE_TEMPLATE.scope.domains],
+      missionTypes: [...POLICY_OVERLAY_AUTHORITY_GATE_TEMPLATE.scope.missionTypes],
+      actionKinds: [...POLICY_OVERLAY_AUTHORITY_GATE_TEMPLATE.scope.actionKinds],
+    },
+    authority: cloneJson(POLICY_OVERLAY_AUTHORITY_GATE_TEMPLATE.authority),
+    requiredFacts: [...POLICY_OVERLAY_AUTHORITY_GATE_TEMPLATE.requiredFacts],
+    predicate: cloneJson(POLICY_OVERLAY_AUTHORITY_GATE_TEMPLATE.predicate),
+    sourceRefs: [
+      {
+        sourceId: sourceEntry.sourceId,
+        locator: clause.locator,
+      },
+    ],
+    notes: buildNotes(clause, sourceEntry, compilerVersion),
+  };
+
+  return sortRuleForBundle(rule);
+}
+
+function buildRequirementRule(clause, sourceEntry, compilerVersion, result) {
+  const hint = isPlainObject(clause.compilationHint) ? clause.compilationHint : null;
+
+  if (!isPlainObject(hint)) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `requirement clause ${clause.clauseId} requires a compilationHint.`);
+    return null;
+  }
+
+  if (typeof hint.stage !== 'string' || hint.stage.length === 0) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `requirement clause ${clause.clauseId} requires a stage in the compilationHint.`);
+    return null;
+  }
+
+  if (!Number.isInteger(hint.priority)) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `requirement clause ${clause.clauseId} requires an integer priority in the compilationHint.`);
+    return null;
+  }
+
+  if (!isPlainObject(hint.effect) || typeof hint.effect.decision !== 'string' || typeof hint.effect.reasonCode !== 'string') {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `requirement clause ${clause.clauseId} requires an effect object in the compilationHint.`);
+    return null;
+  }
+
+  if (!isPlainObject(hint.scope) || !isPlainObject(hint.authority)) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `requirement clause ${clause.clauseId} requires scope and authority objects in the compilationHint.`);
+    return null;
+  }
+
+  if (hint.stage === 'POLICY_OVERLAY' && clause.layer === 'LEGAL_FLOOR') {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.ILLEGAL_OVERLAY, `legal-floor requirement clause ${clause.clauseId} cannot compile to POLICY_OVERLAY.`);
+    return null;
+  }
+
+  if (hint.stage === 'LEGAL_FLOOR' && clause.layer === 'POLICY_OVERLAY') {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.ILLEGAL_OVERLAY, `policy-overlay requirement clause ${clause.clauseId} cannot compile to LEGAL_FLOOR.`);
+    return null;
+  }
+
+  if (hint.effect && hint.effect.decision !== 'ALLOWED') {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `requirement clause ${clause.clauseId} must compile to an ALLOWED effect.`);
+    return null;
+  }
+
+  if (!Array.isArray(hint.requiredFacts) || hint.requiredFacts.length === 0) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `requirement clause ${clause.clauseId} requires non-empty requiredFacts in the compilationHint.`);
+    return null;
+  }
+
+  if (!isPlainObject(hint.predicate)) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `requirement clause ${clause.clauseId} requires a predicate in the compilationHint.`);
+    return null;
+  }
+
+  const rule = {
+    ruleId: `CR-${clause.clauseId}`,
+    version: 1,
+    stage: hint.stage,
+    priority: hint.priority,
+    status: 'ACTIVE',
+    effect: cloneJson(hint.effect),
+    scope: {
+      jurisdiction: clause.jurisdiction,
+      domains: Array.isArray(hint.scope && hint.scope.domains) ? [...hint.scope.domains] : [],
+      missionTypes: Array.isArray(hint.scope && hint.scope.missionTypes) ? [...hint.scope.missionTypes] : [],
+      actionKinds: Array.isArray(hint.scope && hint.scope.actionKinds) ? [...hint.scope.actionKinds] : [],
+    },
+    authority: {
+      minimumLevelId: hint.authority && typeof hint.authority.minimumLevelId === 'string' ? hint.authority.minimumLevelId : 'PLATOON',
+      requiresExplicitDelegation: Boolean(hint.authority && hint.authority.requiresExplicitDelegation),
+      delegationEdgeIds: Array.isArray(hint.authority && hint.authority.delegationEdgeIds)
+        ? [...hint.authority.delegationEdgeIds]
+        : [],
+    },
+    requiredFacts: [...hint.requiredFacts],
+    predicate: cloneJson(hint.predicate),
+    sourceRefs: [
+      {
+        sourceId: sourceEntry.sourceId,
+        locator: clause.locator,
+      },
+    ],
+    notes: buildNotes(clause, sourceEntry, compilerVersion),
+  };
+
+  return sortRuleForBundle(rule);
+}
+
+/**
+ * Compile a reviewed source clause into a deterministic compiled rule.
+ *
+ * @param {{ clause: object, sourceRegistry: Array<object>, compilerVersion?: string }} input
+ * @returns {{ valid: boolean, reasonCode: string|null, errors: string[], compiledRule: object|null }}
+ */
+function compileClauseToRule(input) {
+  const result = makeResult();
+  const clause = isPlainObject(input) ? input.clause : null;
+  const sourceRegistry = isPlainObject(input) && Array.isArray(input.sourceRegistry) ? input.sourceRegistry : [];
+  const compilerVersion = isPlainObject(input) && typeof input.compilerVersion === 'string' && input.compilerVersion.length > 0
+    ? input.compilerVersion
+    : COMPILER_VERSION;
+
+  if (!isCompilableClause(clause)) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, 'clause must be a reviewed clause artifact.');
+    return finish(result);
+  }
+
+  const sourceIndex = buildSourceRegistryIndex(sourceRegistry);
+  const sourceEntry = sourceIndex.get(clause.sourceId);
+
+  if (!isPlainObject(sourceEntry)) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, `sourceId "${clause.sourceId}" is not registered.`);
+    return finish(result);
+  }
+
+  if (sourceEntry.jurisdiction !== clause.jurisdiction) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.SCOPE_VIOLATION, `clause ${clause.clauseId} jurisdiction must match registered source jurisdiction.`);
+    return finish(result);
+  }
+
+  if (clause.machineCandidate !== true) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `clause ${clause.clauseId} is not marked machineCandidate.`);
+  }
+
+  if (!RESOLVED_AMBIGUITY_STATUSES.has(clause.ambiguityStatus)) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `clause ${clause.clauseId} must have CLEAR or RESOLVED ambiguity status.`);
+  }
+
+  if (!COMPILATION_REVIEW_STATUSES.has(clause.reviewStatus)) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `clause ${clause.clauseId} must be COMPILATION_READY or APPROVED.`);
+  }
+
+  if (clause.layer === 'EXAMPLE_ONLY') {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `clause ${clause.clauseId} cannot compile from EXAMPLE_ONLY layer.`);
+  }
+
+  if (sourceEntry.exampleOnly === true && sourceEntry.normativeOverride !== true) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `sourceId "${sourceEntry.sourceId}" is example-only without an explicit normative override.`);
+  }
+
+  const allowedLayers = SOURCE_ROLE_BY_LAYER[clause.layer];
+  if (!(allowedLayers instanceof Set) || !allowedLayers.has(sourceEntry.role)) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.ILLEGAL_OVERLAY, `source role "${sourceEntry.role}" cannot compile clause layer "${clause.layer}".`);
+  }
+
+  if (!result.valid) {
+    return finish(result);
+  }
+
+  if (clause.layer === 'LEGAL_FLOOR') {
+    if (clause.clauseType !== 'PROHIBITION') {
+      if (clause.clauseType === 'REQUIREMENT') {
+        result.compiledRule = buildRequirementRule(clause, sourceEntry, compilerVersion, result);
+        return finish(result);
+      }
+
+      fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `legal-floor clauses only compile from PROHIBITION or REQUIREMENT clauses in this bridge.`);
+      return finish(result);
+    }
+
+    result.compiledRule = buildLegalFloorRule(clause, sourceEntry, compilerVersion);
+    return finish(result);
+  }
+
+  if (clause.layer === 'POLICY_OVERLAY') {
+    if (clause.clauseType !== 'AUTHORITY_GATE') {
+      fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `policy-overlay clauses only compile from AUTHORITY_GATE clauses in this bridge.`);
+      return finish(result);
+    }
+
+    result.compiledRule = buildPolicyOverlayRule(clause, sourceEntry, compilerVersion);
+    return finish(result);
+  }
+
+  fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `unsupported clause layer "${clause.layer}".`);
+  return finish(result);
+}
+
+module.exports = {
+  COMPILER_VERSION,
+  compileClauseToRule,
+};

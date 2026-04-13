@@ -1,0 +1,342 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chatpdm.local/schemas/military-constraint-predicate.schema.json",
+  "title": "Military Constraint Predicate",
+  "type": "object",
+  "unevaluatedProperties": false,
+  "oneOf": [
+    {
+      "additionalProperties": false,
+      "required": ["all"],
+      "properties": {
+        "all": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#"
+          }
+        }
+      }
+    },
+    {
+      "additionalProperties": false,
+      "required": ["any"],
+      "properties": {
+        "any": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#"
+          }
+        }
+      }
+    },
+    {
+      "additionalProperties": false,
+      "required": ["not"],
+      "properties": {
+        "not": {
+          "$ref": "#"
+        }
+      }
+    },
+    {
+      "additionalProperties": false,
+      "required": ["eq"],
+      "properties": {
+        "eq": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "$ref": "#/$defs/equalityOperand"
+          }
+        }
+      }
+    },
+    {
+      "additionalProperties": false,
+      "required": ["neq"],
+      "properties": {
+        "neq": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "$ref": "#/$defs/equalityOperand"
+          }
+        }
+      }
+    },
+    {
+      "additionalProperties": false,
+      "required": ["gt"],
+      "properties": {
+        "gt": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "$ref": "#/$defs/comparisonOperand"
+          }
+        }
+      }
+    },
+    {
+      "additionalProperties": false,
+      "required": ["gte"],
+      "properties": {
+        "gte": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "$ref": "#/$defs/comparisonOperand"
+          }
+        }
+      }
+    },
+    {
+      "additionalProperties": false,
+      "required": ["lt"],
+      "properties": {
+        "lt": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "$ref": "#/$defs/comparisonOperand"
+          }
+        }
+      }
+    },
+    {
+      "additionalProperties": false,
+      "required": ["lte"],
+      "properties": {
+        "lte": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "$ref": "#/$defs/comparisonOperand"
+          }
+        }
+      }
+    },
+    {
+      "additionalProperties": false,
+      "required": ["in"],
+      "properties": {
+        "in": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "prefixItems": [
+            {
+              "$ref": "#/$defs/membershipLeftOperand"
+            },
+            {
+              "$ref": "#/$defs/membershipRightOperand"
+            }
+          ],
+          "items": false
+        }
+      }
+    },
+    {
+      "additionalProperties": false,
+      "required": ["not_in"],
+      "properties": {
+        "not_in": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "prefixItems": [
+            {
+              "$ref": "#/$defs/membershipLeftOperand"
+            },
+            {
+              "$ref": "#/$defs/membershipRightOperand"
+            }
+          ],
+          "items": false
+        }
+      }
+    },
+    {
+      "additionalProperties": false,
+      "required": ["exists"],
+      "properties": {
+        "exists": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1,
+          "items": {
+            "$ref": "#/$defs/factOperand"
+          }
+        }
+      }
+    },
+    {
+      "additionalProperties": false,
+      "required": ["not_exists"],
+      "properties": {
+        "not_exists": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1,
+          "items": {
+            "$ref": "#/$defs/factOperand"
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "factPath": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_]+(?:\\.[A-Za-z0-9_]+)*$"
+    },
+    "factOperand": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fact"],
+      "properties": {
+        "fact": {
+          "$ref": "#/$defs/factPath"
+        }
+      }
+    },
+    "scalarValue": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "scalarArrayValue": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/scalarValue"
+      }
+    },
+    "anyValueOperand": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value"],
+      "properties": {
+        "value": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/scalarValue"
+            },
+            {
+              "$ref": "#/$defs/scalarArrayValue"
+            }
+          ]
+        }
+      }
+    },
+    "equalityOperand": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/factOperand"
+        },
+        {
+          "$ref": "#/$defs/anyValueOperand"
+        }
+      ]
+    },
+    "comparisonValue": {
+      "oneOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "string",
+          "format": "date-time"
+        }
+      ]
+    },
+    "comparisonValueOperand": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value"],
+      "properties": {
+        "value": {
+          "$ref": "#/$defs/comparisonValue"
+        }
+      }
+    },
+    "comparisonOperand": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/factOperand"
+        },
+        {
+          "$ref": "#/$defs/comparisonValueOperand"
+        }
+      ]
+    },
+    "membershipLeftValue": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/scalarValue"
+        },
+        {
+          "type": "string",
+          "format": "date-time"
+        }
+      ]
+    },
+    "membershipLeftOperand": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/factOperand"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["value"],
+          "properties": {
+            "value": {
+              "$ref": "#/$defs/membershipLeftValue"
+            }
+          }
+        }
+      ]
+    },
+    "membershipRightOperand": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/factOperand"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["value"],
+          "properties": {
+            "value": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "$ref": "#/$defs/scalarValue"
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

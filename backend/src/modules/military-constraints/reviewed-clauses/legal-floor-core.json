@@ -1,0 +1,139 @@
+[
+  {
+    "clauseId": "CLAUSE-LF-0001",
+    "sourceId": "DOD-LOW-2023",
+    "locator": "chapter-5/5.3.2",
+    "jurisdiction": "US",
+    "layer": "LEGAL_FLOOR",
+    "clauseType": "PROHIBITION",
+    "rawText": "Direct attacks against civilians are prohibited.",
+    "normalizedText": "Direct attacks against civilians are prohibited.",
+    "machineCandidate": true,
+    "ambiguityStatus": "CLEAR",
+    "reviewStatus": "COMPILATION_READY",
+    "reviewNotes": "Reviewed legal-floor prohibition with bounded machine mapping."
+  },
+  {
+    "clauseId": "CLAUSE-LF-0002",
+    "sourceId": "DOD-LOW-2023",
+    "locator": "chapter-5/5.3.3",
+    "jurisdiction": "US",
+    "layer": "LEGAL_FLOOR",
+    "clauseType": "PROHIBITION",
+    "rawText": "Civilian objects must not be treated as lawful targets.",
+    "normalizedText": "Civilian objects must not be treated as lawful targets.",
+    "machineCandidate": false,
+    "ambiguityStatus": "CLEAR",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Review-only floor clause retained for corpus credibility."
+  },
+  {
+    "clauseId": "CLAUSE-LF-0003",
+    "sourceId": "DOD-LOW-2023",
+    "locator": "chapter-5/5.4.1",
+    "jurisdiction": "US",
+    "layer": "LEGAL_FLOOR",
+    "clauseType": "PROHIBITION",
+    "rawText": "Persons hors de combat remain protected.",
+    "normalizedText": "Persons hors de combat remain protected.",
+    "machineCandidate": false,
+    "ambiguityStatus": "CLEAR",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Review-only floor clause kept out of the compilation set."
+  },
+  {
+    "clauseId": "CLAUSE-LF-0004",
+    "sourceId": "DOD-LOW-2023",
+    "locator": "chapter-5/5.4.2",
+    "jurisdiction": "US",
+    "layer": "LEGAL_FLOOR",
+    "clauseType": "REQUIREMENT",
+    "rawText": "Positive identification of the target is required before attack.",
+    "normalizedText": "Positive identification of the target is required before attack.",
+    "machineCandidate": true,
+    "ambiguityStatus": "CLEAR",
+    "reviewStatus": "COMPILATION_READY",
+    "reviewNotes": "Compilation-ready admissibility gate that refuses incomplete packets when positive identification is absent.",
+    "compilationHint": {
+      "stage": "ADMISSIBILITY",
+      "priority": 1200,
+      "effect": {
+        "decision": "ALLOWED",
+        "reasonCode": "MISSING_REQUIRED_FACT"
+      },
+      "scope": {
+        "jurisdiction": "US",
+        "domains": [
+          "AIR"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "STRIKE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "PLATOON",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "target.positiveIdentificationStatus"
+      ],
+      "predicate": {
+        "eq": [
+          {
+            "fact": "action.kind"
+          },
+          {
+            "value": "STRIKE"
+          }
+        ]
+      },
+      "notes": "Reviewed admissibility gate for positive identification."
+    }
+  },
+  {
+    "clauseId": "CLAUSE-LF-0005",
+    "sourceId": "DOD-LOW-2023",
+    "locator": "chapter-5/5.5.1",
+    "jurisdiction": "US",
+    "layer": "LEGAL_FLOOR",
+    "clauseType": "PROHIBITION",
+    "rawText": "Objects are not lawful targets unless they qualify as military objectives.",
+    "normalizedText": "Objects are not lawful targets unless they qualify as military objectives.",
+    "machineCandidate": false,
+    "ambiguityStatus": "CLEAR",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Review-only floor paraphrase retained as source-backed context."
+  },
+  {
+    "clauseId": "CLAUSE-LF-0006",
+    "sourceId": "DOD-LOW-2023",
+    "locator": "chapter-5/5.5.2",
+    "jurisdiction": "US",
+    "layer": "LEGAL_FLOOR",
+    "clauseType": "CAVEAT",
+    "rawText": "Proportionality concerns require separate review before action.",
+    "normalizedText": "Proportionality concerns require separate review before action.",
+    "machineCandidate": false,
+    "ambiguityStatus": "CLEAR",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Review-only caution clause not compiled yet."
+  },
+  {
+    "clauseId": "CLAUSE-LF-0007",
+    "sourceId": "DOD-LOW-2023",
+    "locator": "chapter-5/5.5.3",
+    "jurisdiction": "US",
+    "layer": "LEGAL_FLOOR",
+    "clauseType": "PROHIBITION",
+    "rawText": "Medical units retain protected status absent loss of protection.",
+    "normalizedText": "Medical units retain protected status absent loss of protection.",
+    "machineCandidate": false,
+    "ambiguityStatus": "CLEAR",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Review-only legal-floor clause preserved for corpus coverage."
+  }
+]

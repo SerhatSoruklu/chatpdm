@@ -1,0 +1,314 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chatpdm.local/schemas/source-clause.schema.json",
+  "title": "Military Source Clause",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "clauseId",
+    "sourceId",
+    "locator",
+    "jurisdiction",
+    "layer",
+    "clauseType",
+    "rawText",
+    "normalizedText",
+    "machineCandidate",
+    "ambiguityStatus",
+    "reviewStatus",
+    "reviewNotes"
+  ],
+  "properties": {
+    "clauseId": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Z0-9-]+$"
+    },
+    "sourceId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "locator": {
+      "type": "string",
+      "minLength": 1
+    },
+    "jurisdiction": {
+      "type": "string",
+      "minLength": 1
+    },
+    "layer": {
+      "type": "string",
+      "enum": [
+        "LEGAL_FLOOR",
+        "POLICY_OVERLAY",
+        "EXAMPLE_ONLY"
+      ]
+    },
+    "clauseType": {
+      "type": "string",
+      "enum": [
+        "PROHIBITION",
+        "REQUIREMENT",
+        "AUTHORITY_GATE",
+        "DELEGATION",
+        "CAVEAT",
+        "DEFINITIONAL"
+      ]
+    },
+    "rawText": {
+      "type": "string",
+      "minLength": 1
+    },
+    "normalizedText": {
+      "type": "string",
+      "minLength": 1
+    },
+    "machineCandidate": {
+      "type": "boolean"
+    },
+    "ambiguityStatus": {
+      "type": "string",
+      "enum": [
+        "CLEAR",
+        "RESOLVED",
+        "AMBIGUOUS",
+        "OPEN",
+        "UNRESOLVED"
+      ]
+    },
+    "reviewStatus": {
+      "type": "string",
+      "enum": [
+        "DRAFT",
+        "REVIEWED",
+        "APPROVED",
+        "COMPILATION_READY",
+        "REJECTED"
+      ]
+    },
+    "reviewNotes": {
+      "type": "string"
+    },
+    "compilationHint": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "stage": {
+          "type": "string",
+          "enum": [
+            "ADMISSIBILITY",
+            "LEGAL_FLOOR",
+            "POLICY_OVERLAY"
+          ]
+        },
+        "priority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "effect": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "decision",
+            "reasonCode"
+          ],
+          "properties": {
+            "decision": {
+              "type": "string",
+              "enum": [
+                "ALLOWED",
+                "REFUSED",
+                "REFUSED_INCOMPLETE"
+              ]
+            },
+            "reasonCode": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "scope": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "jurisdiction": {
+              "type": "string",
+              "minLength": 1
+            },
+            "domains": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "LAND",
+                  "AIR",
+                  "MARITIME",
+                  "CYBER",
+                  "SPACE",
+                  "MULTI_DOMAIN"
+                ]
+              }
+            },
+            "missionTypes": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "actionKinds": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "authority": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "minimumLevelId": {
+              "type": "string",
+              "minLength": 1
+            },
+            "requiresExplicitDelegation": {
+              "type": "boolean"
+            },
+            "delegationEdgeIds": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "requiredFacts": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_]+(?:\\.[A-Za-z0-9_]+)*$"
+          }
+        },
+        "predicate": {
+          "$ref": "./military-constraint-predicate.schema.json"
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "layer": {
+            "const": "EXAMPLE_ONLY"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "machineCandidate": {
+            "const": false
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "ambiguityStatus": {
+            "enum": [
+              "AMBIGUOUS",
+              "OPEN",
+              "UNRESOLVED"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "machineCandidate": {
+            "const": false
+          }
+        },
+        "not": {
+          "properties": {
+            "reviewStatus": {
+              "const": "COMPILATION_READY"
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "machineCandidate": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "ambiguityStatus": {
+            "enum": [
+              "CLEAR",
+              "RESOLVED"
+            ]
+          },
+          "reviewStatus": {
+            "enum": [
+              "APPROVED",
+              "COMPILATION_READY"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "reviewStatus": {
+            "const": "COMPILATION_READY"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+            "machineCandidate": {
+              "const": true
+            },
+            "ambiguityStatus": {
+              "enum": [
+                "CLEAR",
+                "RESOLVED"
+              ]
+            },
+            "layer": {
+              "enum": [
+                "LEGAL_FLOOR",
+                "POLICY_OVERLAY"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

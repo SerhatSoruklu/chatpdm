@@ -1,0 +1,350 @@
+[
+  {
+    "clauseId": "CL-VBSS-SCOPE-001",
+    "sourceId": "DOD-LOW-2023",
+    "locator": "chapter-5/vbss-scope",
+    "jurisdiction": "US",
+    "layer": "LEGAL_FLOOR",
+    "clauseType": "REQUIREMENT",
+    "rawText": "VBSS rules apply only during maritime boarding missions under delegated unit authority.",
+    "normalizedText": "VBSS applicability requires mission.type == VBSS, action.domain == MARITIME, and authority.delegatedToUnit == true.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Reviewed scope gate for the maritime VBSS slice.",
+    "compilationHint": {
+      "stage": "ADMISSIBILITY",
+      "priority": 1500,
+      "effect": {
+        "decision": "ALLOWED",
+        "reasonCode": "MISSING_REQUIRED_FACT"
+      },
+      "scope": {
+        "jurisdiction": "US",
+        "domains": [
+          "MARITIME"
+        ],
+        "missionTypes": [
+          "VBSS"
+        ],
+        "actionKinds": [
+          "BOARD_VESSEL",
+          "SEARCH_VESSEL",
+          "CONTROL_ACCESS_POINT",
+          "RESTRAIN_PERSON",
+          "SELF_DEFENSE_RESPONSE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "PLATOON",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "context.missionType",
+        "action.domain",
+        "authority.delegatedToUnit"
+      ],
+      "predicate": {
+        "all": [
+          {
+            "eq": [
+              {
+                "fact": "context.missionType"
+              },
+              {
+                "value": "VBSS"
+              }
+            ]
+          },
+          {
+            "eq": [
+              {
+                "fact": "action.domain"
+              },
+              {
+                "value": "MARITIME"
+              }
+            ]
+          },
+          {
+            "eq": [
+              {
+                "fact": "authority.delegatedToUnit"
+              },
+              {
+                "value": true
+              }
+            ]
+          }
+        ]
+      },
+      "notes": "Reviewed scope gate for the maritime VBSS slice."
+    }
+  },
+  {
+    "clauseId": "CL-VBSS-PURPOSE-001",
+    "sourceId": "DOD-LOW-2023",
+    "locator": "chapter-5/vbss-purpose",
+    "jurisdiction": "US",
+    "layer": "LEGAL_FLOOR",
+    "clauseType": "REQUIREMENT",
+    "rawText": "VBSS force is authorized only for boarding control, search, seizure, restraint, or self-defense response.",
+    "normalizedText": "Authorized VBSS action kinds are limited to boarding control, search, seizure, restraint, and self-defense response.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Reviewed authorized-purpose gate for the maritime VBSS slice.",
+    "compilationHint": {
+      "stage": "LEGAL_FLOOR",
+      "priority": 1400,
+      "effect": {
+        "decision": "ALLOWED",
+        "reasonCode": "MISSING_REQUIRED_FACT"
+      },
+      "scope": {
+        "jurisdiction": "US",
+        "domains": [
+          "MARITIME"
+        ],
+        "missionTypes": [
+          "VBSS"
+        ],
+        "actionKinds": [
+          "BOARD_VESSEL",
+          "SEARCH_VESSEL",
+          "CONTROL_ACCESS_POINT",
+          "SEIZE_EVIDENCE",
+          "SEIZE_DANGEROUS_ITEM",
+          "RESTRAIN_PERSON",
+          "SELF_DEFENSE_RESPONSE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "PLATOON",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "action.kind"
+      ],
+      "predicate": {
+        "in": [
+          {
+            "fact": "action.kind"
+          },
+          {
+            "value": [
+              "BOARD_VESSEL",
+              "SEARCH_VESSEL",
+              "CONTROL_ACCESS_POINT",
+              "SEIZE_EVIDENCE",
+              "SEIZE_DANGEROUS_ITEM",
+              "RESTRAIN_PERSON",
+              "SELF_DEFENSE_RESPONSE"
+            ]
+          }
+        ]
+      },
+      "notes": "Reviewed purpose gate for the maritime VBSS slice."
+    }
+  },
+  {
+    "clauseId": "CL-VBSS-NONDEADLY-001",
+    "sourceId": "DOD-LOW-2023",
+    "locator": "chapter-5/vbss-nondeadly",
+    "jurisdiction": "US",
+    "layer": "LEGAL_FLOOR",
+    "clauseType": "REQUIREMENT",
+    "rawText": "Mission-accomplishment actions during VBSS are non-deadly only.",
+    "normalizedText": "If action.kind is a mission-accomplishment VBSS action, action.forceLevel must be NON_LETHAL.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Reviewed non-deadly constraint for mission-accomplishment actions.",
+    "compilationHint": {
+      "stage": "LEGAL_FLOOR",
+      "priority": 1300,
+      "effect": {
+        "decision": "ALLOWED",
+        "reasonCode": "MISSING_REQUIRED_FACT"
+      },
+      "scope": {
+        "jurisdiction": "US",
+        "domains": [
+          "MARITIME"
+        ],
+        "missionTypes": [
+          "VBSS"
+        ],
+        "actionKinds": [
+          "SEARCH_VESSEL",
+          "SEARCH_PERSON",
+          "SEIZE_EVIDENCE",
+          "SEIZE_DANGEROUS_ITEM",
+          "RESTRAIN_INTERFERING_PERSON",
+          "RESTRAIN_SECURITY_THREAT",
+          "CONTROL_VESSEL",
+          "BREAK_OBSTRUCTION",
+          "BREAK_OPEN_CONTAINER"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "PLATOON",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "action.kind",
+        "action.forceLevel"
+      ],
+      "predicate": {
+        "all": [
+          {
+            "in": [
+              {
+                "fact": "action.kind"
+              },
+              {
+                "value": [
+                  "SEARCH_VESSEL",
+                  "SEARCH_PERSON",
+                  "SEIZE_EVIDENCE",
+                  "SEIZE_DANGEROUS_ITEM",
+                  "RESTRAIN_INTERFERING_PERSON",
+                  "RESTRAIN_SECURITY_THREAT",
+                  "CONTROL_VESSEL",
+                  "BREAK_OBSTRUCTION",
+                  "BREAK_OPEN_CONTAINER"
+                ]
+              }
+            ]
+          },
+          {
+            "eq": [
+              {
+                "fact": "action.forceLevel"
+              },
+              {
+                "value": "NON_LETHAL"
+              }
+            ]
+          }
+        ]
+      },
+      "notes": "Reviewed non-deadly mission action gate."
+    }
+  },
+  {
+    "clauseId": "CL-VBSS-SD-DEADLY-001",
+    "sourceId": "DOD-LOW-2023",
+    "locator": "chapter-5/vbss-self-defense-deadly",
+    "jurisdiction": "US",
+    "layer": "LEGAL_FLOOR",
+    "clauseType": "REQUIREMENT",
+    "rawText": "Deadly self-defense during VBSS requires an immediate threat and no lesser means.",
+    "normalizedText": "Deadly VBSS self-defense requires action.kind == SELF_DEFENSE_RESPONSE, action.forceLevel == DEADLY, and immediate threat and necessity facts.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Reviewed deadly-force self-defense gate for the maritime VBSS slice.",
+    "compilationHint": {
+      "stage": "LEGAL_FLOOR",
+      "priority": 1200,
+      "effect": {
+        "decision": "ALLOWED",
+        "reasonCode": "MISSING_REQUIRED_FACT"
+      },
+      "scope": {
+        "jurisdiction": "US",
+        "domains": [
+          "MARITIME"
+        ],
+        "missionTypes": [
+          "VBSS"
+        ],
+        "actionKinds": [
+          "SELF_DEFENSE_RESPONSE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "PLATOON",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "action.kind",
+        "action.forceLevel",
+        "threat.hostileAct",
+        "threat.hostileIntent",
+        "threat.imminence",
+        "threat.necessity"
+      ],
+      "predicate": {
+        "all": [
+          {
+            "eq": [
+              {
+                "fact": "action.kind"
+              },
+              {
+                "value": "SELF_DEFENSE_RESPONSE"
+              }
+            ]
+          },
+          {
+            "eq": [
+              {
+                "fact": "action.forceLevel"
+              },
+              {
+                "value": "DEADLY"
+              }
+            ]
+          },
+          {
+            "eq": [
+              {
+                "fact": "threat.hostileAct"
+              },
+              {
+                "value": true
+              }
+            ]
+          },
+          {
+            "eq": [
+              {
+                "fact": "threat.hostileIntent"
+              },
+              {
+                "value": true
+              }
+            ]
+          },
+          {
+            "eq": [
+              {
+                "fact": "threat.imminence"
+              },
+              {
+                "value": "IMMINENT"
+              }
+            ]
+          },
+          {
+            "eq": [
+              {
+                "fact": "threat.necessity"
+              },
+              {
+                "value": "IMMEDIATE"
+              }
+            ]
+          }
+        ]
+      },
+      "notes": "Reviewed deadly self-defense gate."
+    }
+  }
+]

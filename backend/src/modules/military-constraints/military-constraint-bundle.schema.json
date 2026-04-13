@@ -1,0 +1,164 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chatpdm.local/schemas/military-constraint-bundle.schema.json",
+  "title": "Military Constraint Bundle",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "bundleId",
+    "bundleVersion",
+    "bundleHash",
+    "status",
+    "jurisdiction",
+    "authorityOwner",
+    "precedencePolicy",
+    "factSchemaVersion",
+    "authorityGraphId",
+    "authorityGraph",
+    "sourceRegistrySnapshot",
+    "rules",
+    "compiledAt"
+  ],
+  "properties": {
+    "bundleId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "bundleVersion": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "bundleHash": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "ACTIVE",
+        "INACTIVE",
+        "SUPERSEDED"
+      ]
+    },
+    "jurisdiction": {
+      "type": "string",
+      "minLength": 1
+    },
+    "authorityOwner": {
+      "type": "string",
+      "minLength": 1
+    },
+    "precedencePolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "stageOrder",
+        "defaultDecision",
+        "missingFactDecision",
+        "sameStageConflictPolicy"
+      ],
+      "properties": {
+        "stageOrder": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "type": "string",
+            "enum": [
+              "ADMISSIBILITY",
+              "LEGAL_FLOOR",
+              "POLICY_OVERLAY"
+            ]
+          }
+        },
+        "defaultDecision": {
+          "type": "string",
+          "enum": [
+            "REFUSED"
+          ]
+        },
+        "missingFactDecision": {
+          "type": "string",
+          "enum": [
+            "REFUSED_INCOMPLETE"
+          ]
+        },
+        "sameStageConflictPolicy": {
+          "type": "string",
+          "enum": [
+            "REFUSE"
+          ]
+        }
+      }
+    },
+    "factSchemaVersion": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "authorityGraphId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "authorityGraph": {
+      "$ref": "./military-constraint-authority-graph.schema.json"
+    },
+    "sourceRegistrySnapshot": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "sourceId",
+          "role",
+          "sourceVersion",
+          "trustTier"
+        ],
+        "properties": {
+          "sourceId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "role": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sourceVersion": {
+            "type": "string",
+            "minLength": 1
+          },
+          "trustTier": {
+            "type": "string",
+            "enum": [
+              "LEGAL_FLOOR",
+              "ROE_STRUCTURE",
+              "DOCTRINE_FRAME",
+              "EXAMPLE_ONLY",
+              "EXTRACTION_AID"
+            ]
+          },
+          "locator": {
+            "type": "string"
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "rules": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "./military-constraint-rule.schema.json"
+      }
+    },
+    "compiledAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}
