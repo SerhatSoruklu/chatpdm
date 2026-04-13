@@ -100,6 +100,25 @@ test('risk mapping route surfaces deterministic audit and registry payloads', as
   }
 });
 
+test('risk mapping route refuses missing domain instead of defaulting scope', async () => {
+  const { server, baseUrl } = await startServer();
+
+  try {
+    const audit = await fetchJson(`${baseUrl}/api/v1/risk-mapping/audit?entity=apple&timeHorizon=5%20years&scenarioType=decline_risk&scope=regulatory,supply_chain&evidenceSetVersion=v1`);
+    const registry = await fetchJson(`${baseUrl}/api/v1/risk-mapping/registries/nodes`);
+
+    assert.equal(audit.status, 400);
+    assert.equal(audit.body.error.code, 'invalid_risk_map_query');
+    assert.match(audit.body.error.message, /domain must be a non-empty string/i);
+
+    assert.equal(registry.status, 400);
+    assert.equal(registry.body.error.code, 'invalid_risk_map_query');
+    assert.match(registry.body.error.message, /domain must be a non-empty string/i);
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
+  }
+});
+
 test('explain route remains bounded and does not expose raw internal structures', async () => {
   const { server, baseUrl } = await startServer();
 
