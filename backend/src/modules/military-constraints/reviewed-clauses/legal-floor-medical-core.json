@@ -1,0 +1,286 @@
+[
+  {
+    "clauseId": "CL-MED-ADM-001",
+    "sourceId": "DOD-LOW-2023",
+    "locator": "chapter-5/medical-classification",
+    "jurisdiction": "US",
+    "layer": "LEGAL_FLOOR",
+    "clauseType": "REQUIREMENT",
+    "rawText": "Medical object status must be explicit before any protected medical assessment is applied.",
+    "normalizedText": "If target.objectType is a medical object and target.protectedClass is missing, refuse incompletely.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Admissibility blocker for unresolved medical protected-class classification.",
+    "compilationHint": {
+      "stage": "ADMISSIBILITY",
+      "priority": 1800,
+      "effect": {
+        "decision": "REFUSED_INCOMPLETE",
+        "reasonCode": "MISSING_REQUIRED_FACT"
+      },
+      "scope": {
+        "jurisdiction": "US",
+        "domains": [
+          "LAND",
+          "AIR",
+          "MARITIME"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "STRIKE",
+          "ENGAGE",
+          "FIRE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "PLATOON",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "target.objectType"
+      ],
+      "predicate": {
+        "all": [
+          {
+            "in": [
+              {
+                "fact": "target.objectType"
+              },
+              {
+                "value": [
+                  "HOSPITAL",
+                  "MEDICAL_UNIT",
+                  "MEDICAL_TRANSPORT"
+                ]
+              }
+            ]
+          },
+          {
+            "not_exists": [
+              {
+                "fact": "target.protectedClass"
+              }
+            ]
+          }
+        ]
+      },
+      "notes": "Pack 3 protected-medical classification blocker."
+    }
+  },
+  {
+    "clauseId": "CL-MED-ADM-002",
+    "sourceId": "DOD-LOW-2023",
+    "locator": "chapter-5/medical-loss-of-protection",
+    "jurisdiction": "US",
+    "layer": "LEGAL_FLOOR",
+    "clauseType": "REQUIREMENT",
+    "rawText": "Medical protection status must be explicit before loss-of-protection analysis can continue.",
+    "normalizedText": "If target.protectedClass is MEDICAL and target.lossOfProtectionStatus is missing, refuse incompletely.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Admissibility blocker for unresolved medical loss-of-protection status.",
+    "compilationHint": {
+      "stage": "ADMISSIBILITY",
+      "priority": 1700,
+      "effect": {
+        "decision": "REFUSED_INCOMPLETE",
+        "reasonCode": "MISSING_REQUIRED_FACT"
+      },
+      "scope": {
+        "jurisdiction": "US",
+        "domains": [
+          "LAND",
+          "AIR",
+          "MARITIME"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "STRIKE",
+          "ENGAGE",
+          "FIRE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "PLATOON",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "target.protectedClass"
+      ],
+      "predicate": {
+        "all": [
+          {
+            "eq": [
+              {
+                "fact": "target.protectedClass"
+              },
+              {
+                "value": "MEDICAL"
+              }
+            ]
+          },
+          {
+            "not_exists": [
+              {
+                "fact": "target.lossOfProtectionStatus"
+              }
+            ]
+          }
+        ]
+      },
+      "notes": "Pack 3 missing-loss-of-protection blocker."
+    }
+  },
+  {
+    "clauseId": "CL-MED-ADM-003",
+    "sourceId": "DOD-LOW-2023",
+    "locator": "chapter-5/medical-explicit-loss-gate",
+    "jurisdiction": "US",
+    "layer": "LEGAL_FLOOR",
+    "clauseType": "REQUIREMENT",
+    "rawText": "Explicit confirmed loss of protection is the only basis for continuing medical protected-object evaluation.",
+    "normalizedText": "If target.protectedClass is MEDICAL and target.lossOfProtectionStatus is CONFIRMED_TRUE, evaluation may continue.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Continuation gate for explicit medical loss-of-protection confirmation.",
+    "compilationHint": {
+      "stage": "ADMISSIBILITY",
+      "priority": 1600,
+      "effect": {
+        "decision": "ALLOWED",
+        "reasonCode": "MISSING_REQUIRED_FACT"
+      },
+      "scope": {
+        "jurisdiction": "US",
+        "domains": [
+          "LAND",
+          "AIR",
+          "MARITIME"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "STRIKE",
+          "ENGAGE",
+          "FIRE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "PLATOON",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "target.protectedClass",
+        "target.lossOfProtectionStatus"
+      ],
+      "predicate": {
+        "all": [
+          {
+            "eq": [
+              {
+                "fact": "target.protectedClass"
+              },
+              {
+                "value": "MEDICAL"
+              }
+            ]
+          },
+          {
+            "eq": [
+              {
+                "fact": "target.lossOfProtectionStatus"
+              },
+              {
+                "value": "CONFIRMED_TRUE"
+              }
+            ]
+          }
+        ]
+      },
+      "notes": "Pack 3 explicit-loss continuation gate."
+    }
+  },
+  {
+    "clauseId": "CL-MED-LF-001",
+    "sourceId": "DOD-LOW-2023",
+    "locator": "chapter-5/medical-default-protection",
+    "jurisdiction": "US",
+    "layer": "LEGAL_FLOOR",
+    "clauseType": "REQUIREMENT",
+    "rawText": "Protected medical objects remain protected unless loss of protection is confirmed.",
+    "normalizedText": "If target.protectedClass is MEDICAL and target.lossOfProtectionStatus is not CONFIRMED_TRUE, refuse.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Core protected-object refusal rule for Pack 3.",
+    "compilationHint": {
+      "stage": "LEGAL_FLOOR",
+      "priority": 1500,
+      "effect": {
+        "decision": "REFUSED",
+        "reasonCode": "PROHIBITED_TARGET"
+      },
+      "scope": {
+        "jurisdiction": "US",
+        "domains": [
+          "LAND",
+          "AIR",
+          "MARITIME"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "STRIKE",
+          "ENGAGE",
+          "FIRE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "BATTALION",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "target.protectedClass",
+        "target.lossOfProtectionStatus"
+      ],
+      "predicate": {
+        "all": [
+          {
+            "eq": [
+              {
+                "fact": "target.protectedClass"
+              },
+              {
+                "value": "MEDICAL"
+              }
+            ]
+          },
+          {
+            "neq": [
+              {
+                "fact": "target.lossOfProtectionStatus"
+              },
+              {
+                "value": "CONFIRMED_TRUE"
+              }
+            ]
+          }
+        ]
+      },
+      "notes": "Pack 3 default medical protection refusal."
+    }
+  }
+]

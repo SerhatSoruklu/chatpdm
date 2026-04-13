@@ -94,34 +94,34 @@ function getManifestSuffix(manifestPath) {
 function buildPackRegressionBundle(rootDir, manifestPath) {
   const suffix = getManifestSuffix(manifestPath);
 
-  if (suffix === '.maritime-vbss') {
+  if (suffix === '') {
     return buildReferenceBundle({
       rootDir,
       manifestPath,
+      clauseIds: ['CLAUSE-AUTH-0001', 'CLAUSE-LF-0001'],
     });
   }
 
   return buildReferenceBundle({
     rootDir,
     manifestPath,
-    clauseIds: ['CLAUSE-AUTH-0001', 'CLAUSE-LF-0001'],
   });
 }
 
 function buildPackAdmissibilityBundle(rootDir, manifestPath) {
   const suffix = getManifestSuffix(manifestPath);
 
-  if (suffix === '.maritime-vbss') {
+  if (suffix === '') {
     return buildReferenceBundle({
       rootDir,
       manifestPath,
+      clauseIds: ['CLAUSE-AUTH-0001', 'CLAUSE-LF-0001', 'CLAUSE-LF-0004'],
     });
   }
 
   return buildReferenceBundle({
     rootDir,
     manifestPath,
-    clauseIds: ['CLAUSE-AUTH-0001', 'CLAUSE-LF-0001', 'CLAUSE-LF-0004'],
   });
 }
 

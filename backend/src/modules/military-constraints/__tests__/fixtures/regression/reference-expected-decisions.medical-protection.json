@@ -1,0 +1,40 @@
+[
+  {
+    "caseId": "medical-protected-refusal",
+    "bundleVariant": "reference",
+    "decision": "REFUSED",
+    "reasonCode": "PROHIBITED_TARGET",
+    "failedStage": "LEGAL_FLOOR",
+    "failingRuleIds": [
+      "CR-CL-MED-LF-001"
+    ]
+  },
+  {
+    "caseId": "medical-missing-loss-of-protection",
+    "bundleVariant": "reference",
+    "decision": "REFUSED_INCOMPLETE",
+    "reasonCode": "MISSING_REQUIRED_FACT",
+    "failedStage": "ADMISSIBILITY",
+    "failingRuleIds": [
+      "CR-CL-MED-ADM-002"
+    ]
+  },
+  {
+    "caseId": "medical-unauthorized-confirmed-loss",
+    "bundleVariant": "reference",
+    "decision": "REFUSED",
+    "reasonCode": "AUTHORITY_INVALID",
+    "failedStage": "POLICY_OVERLAY",
+    "failingRuleIds": [
+      "CR-CL-MED-AUTH-001"
+    ]
+  },
+  {
+    "caseId": "medical-authorized-confirmed-loss",
+    "bundleVariant": "reference",
+    "decision": "ALLOWED",
+    "reasonCode": null,
+    "failedStage": null,
+    "failingRuleIds": []
+  }
+]

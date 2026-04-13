@@ -1,0 +1,233 @@
+[
+  {
+    "caseId": "school-protected-refusal",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "mil-us-civilian-school-protection-core-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "SCHOOL-TEAM-01",
+        "role": "PROTECTION_LEAD",
+        "authorityLevelId": "BATTALION"
+      },
+      "action": {
+        "kind": "ENGAGE",
+        "forceLevel": "NON_LETHAL",
+        "method": "ACCESS_CONTROL",
+        "domain": "LAND"
+      },
+      "target": {
+        "id": "SCHOOL-01",
+        "objectType": "SCHOOL",
+        "protectedClass": "CIVILIAN_OBJECT",
+        "militaryObjectiveStatus": "CONFIRMED_FALSE",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "CIVILIAN-SCHOOL-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "PROTECTION",
+        "operationalSlice": "CIVILIAN_SCHOOL_PROTECTION",
+        "coalitionMode": "NATIONAL",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "UNRESOLVED"
+      },
+      "civilianRisk": {
+        "civilianPresence": true,
+        "civilianObjectPresence": true,
+        "estimatedIncidentalHarm": "HIGH",
+        "feasiblePrecautionsTaken": false,
+        "expectedMilitaryAdvantage": "LOW",
+        "estimatedIncidentalHarmScore": 80,
+        "expectedMilitaryAdvantageScore": 20
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedRoeActive": true,
+        "designatedActionAuthorized": false
+      }
+    }
+  },
+  {
+    "caseId": "school-missing-protected-class",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "mil-us-civilian-school-protection-core-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "SCHOOL-TEAM-01",
+        "role": "PROTECTION_LEAD",
+        "authorityLevelId": "BATTALION"
+      },
+      "action": {
+        "kind": "ENGAGE",
+        "forceLevel": "NON_LETHAL",
+        "method": "ACCESS_CONTROL",
+        "domain": "LAND"
+      },
+      "target": {
+        "id": "SCHOOL-01",
+        "objectType": "SCHOOL",
+        "militaryObjectiveStatus": "CONFIRMED_FALSE",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "CIVILIAN-SCHOOL-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "PROTECTION",
+        "operationalSlice": "CIVILIAN_SCHOOL_PROTECTION",
+        "coalitionMode": "NATIONAL",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "UNRESOLVED"
+      },
+      "civilianRisk": {
+        "civilianPresence": true,
+        "civilianObjectPresence": true,
+        "estimatedIncidentalHarm": "HIGH",
+        "feasiblePrecautionsTaken": false,
+        "expectedMilitaryAdvantage": "LOW",
+        "estimatedIncidentalHarmScore": 80,
+        "expectedMilitaryAdvantageScore": 20
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedRoeActive": true,
+        "designatedActionAuthorized": false
+      }
+    }
+  },
+  {
+    "caseId": "school-unauthorized-confirmed-objective",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "mil-us-civilian-school-protection-core-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "SCHOOL-TEAM-01",
+        "role": "PROTECTION_LEAD",
+        "authorityLevelId": "BATTALION"
+      },
+      "action": {
+        "kind": "ENGAGE",
+        "forceLevel": "NON_LETHAL",
+        "method": "ACCESS_CONTROL",
+        "domain": "LAND"
+      },
+      "target": {
+        "id": "SCHOOL-01",
+        "objectType": "SCHOOL",
+        "protectedClass": "CIVILIAN_OBJECT",
+        "militaryObjectiveStatus": "CONFIRMED_TRUE",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "CIVILIAN-SCHOOL-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "PROTECTION",
+        "operationalSlice": "CIVILIAN_SCHOOL_PROTECTION",
+        "coalitionMode": "NATIONAL",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "UNRESOLVED"
+      },
+      "civilianRisk": {
+        "civilianPresence": true,
+        "civilianObjectPresence": true,
+        "estimatedIncidentalHarm": "HIGH",
+        "feasiblePrecautionsTaken": false,
+        "expectedMilitaryAdvantage": "LOW",
+        "estimatedIncidentalHarmScore": 80,
+        "expectedMilitaryAdvantageScore": 20
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedRoeActive": true,
+        "designatedActionAuthorized": false
+      }
+    }
+  },
+  {
+    "caseId": "school-authorized-confirmed-objective",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "mil-us-civilian-school-protection-core-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "SCHOOL-TEAM-01",
+        "role": "PROTECTION_LEAD",
+        "authorityLevelId": "BATTALION"
+      },
+      "action": {
+        "kind": "ENGAGE",
+        "forceLevel": "NON_LETHAL",
+        "method": "ACCESS_CONTROL",
+        "domain": "LAND"
+      },
+      "target": {
+        "id": "SCHOOL-01",
+        "objectType": "SCHOOL",
+        "protectedClass": "CIVILIAN_OBJECT",
+        "militaryObjectiveStatus": "CONFIRMED_TRUE",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "CIVILIAN-SCHOOL-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "PROTECTION",
+        "operationalSlice": "CIVILIAN_SCHOOL_PROTECTION",
+        "coalitionMode": "NATIONAL",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "UNRESOLVED"
+      },
+      "civilianRisk": {
+        "civilianPresence": true,
+        "civilianObjectPresence": true,
+        "estimatedIncidentalHarm": "LOW",
+        "feasiblePrecautionsTaken": true,
+        "expectedMilitaryAdvantage": "MEDIUM",
+        "estimatedIncidentalHarmScore": 15,
+        "expectedMilitaryAdvantageScore": 60
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedRoeActive": true,
+        "designatedActionAuthorized": true
+      }
+    }
+  }
+]

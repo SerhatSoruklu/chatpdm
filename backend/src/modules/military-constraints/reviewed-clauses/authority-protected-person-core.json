@@ -1,0 +1,104 @@
+[
+  {
+    "clauseId": "CL-PER-AUTH-001",
+    "sourceId": "NEWPORT-ROE-2022",
+    "locator": "authoring-flow/protected-person-authorization-refusal",
+    "jurisdiction": "US",
+    "layer": "POLICY_OVERLAY",
+    "clauseType": "REQUIREMENT",
+    "rawText": "Confirmed direct participation still requires designated action authorization.",
+    "normalizedText": "If person.status is CIVILIAN, NON_COMBATANT, MEDICAL_PERSONNEL, or RELIGIOUS_PERSONNEL, person.directParticipationStatus is CONFIRMED_TRUE, and authority.designatedActionAuthorized is not true, refuse.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Authority refusal rule for confirmed direct-participation cases.",
+    "compilationHint": {
+      "stage": "POLICY_OVERLAY",
+      "priority": 1200,
+      "effect": {
+        "decision": "REFUSED",
+        "reasonCode": "AUTHORITY_INVALID"
+      },
+      "scope": {
+        "jurisdiction": "US",
+        "domains": [
+          "LAND",
+          "AIR",
+          "MARITIME"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "STRIKE",
+          "ENGAGE",
+          "FIRE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "PLATOON",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "person.status",
+        "person.directParticipationStatus",
+        "authority.designatedActionAuthorized"
+      ],
+      "predicate": {
+        "all": [
+          {
+            "in": [
+              {
+                "fact": "person.status"
+              },
+              {
+                "value": [
+                  "CIVILIAN",
+                  "NON_COMBATANT",
+                  "MEDICAL_PERSONNEL",
+                  "RELIGIOUS_PERSONNEL"
+                ]
+              }
+            ]
+          },
+          {
+            "eq": [
+              {
+                "fact": "person.directParticipationStatus"
+              },
+              {
+                "value": "CONFIRMED_TRUE"
+              }
+            ]
+          },
+          {
+            "neq": [
+              {
+                "fact": "authority.designatedActionAuthorized"
+              },
+              {
+                "value": true
+              }
+            ]
+          }
+        ]
+      },
+      "notes": "Pack 5 authority refusal after direct-participation confirmation."
+    }
+  },
+  {
+    "clauseId": "CL-PER-AUTH-002",
+    "sourceId": "NEWPORT-ROE-2022",
+    "locator": "authoring-flow/protected-person-authorization-continuation",
+    "jurisdiction": "US",
+    "layer": "POLICY_OVERLAY",
+    "clauseType": "REQUIREMENT",
+    "rawText": "Confirmed direct participation with designated action authorization may continue.",
+    "normalizedText": "If person.status is CIVILIAN, NON_COMBATANT, MEDICAL_PERSONNEL, or RELIGIOUS_PERSONNEL, person.directParticipationStatus is CONFIRMED_TRUE, and authority.designatedActionAuthorized is true, evaluation may continue.",
+    "machineCandidate": false,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Review-only continuation note for confirmed direct-participation authorization; non-executable by design."
+  }
+]

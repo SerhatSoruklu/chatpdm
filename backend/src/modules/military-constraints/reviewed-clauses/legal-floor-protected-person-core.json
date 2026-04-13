@@ -1,0 +1,300 @@
+[
+  {
+    "clauseId": "CL-PER-ADM-002",
+    "sourceId": "DOD-LOW-2023",
+    "locator": "chapter-5/protected-person-direct-participation",
+    "jurisdiction": "US",
+    "layer": "LEGAL_FLOOR",
+    "clauseType": "REQUIREMENT",
+    "rawText": "Protected-person review requires direct-participation status before continuation.",
+    "normalizedText": "If person.status is CIVILIAN, NON_COMBATANT, MEDICAL_PERSONNEL, or RELIGIOUS_PERSONNEL and person.directParticipationStatus is missing, refuse incompletely.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Admissibility blocker for unresolved direct-participation status.",
+    "compilationHint": {
+      "stage": "ADMISSIBILITY",
+      "priority": 1800,
+      "effect": {
+        "decision": "REFUSED_INCOMPLETE",
+        "reasonCode": "MISSING_REQUIRED_FACT"
+      },
+      "scope": {
+        "jurisdiction": "US",
+        "domains": [
+          "LAND",
+          "AIR",
+          "MARITIME"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "STRIKE",
+          "ENGAGE",
+          "FIRE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "PLATOON",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "person.status"
+      ],
+      "predicate": {
+        "all": [
+          {
+            "in": [
+              {
+                "fact": "person.status"
+              },
+              {
+                "value": [
+                  "CIVILIAN",
+                  "NON_COMBATANT",
+                  "MEDICAL_PERSONNEL",
+                  "RELIGIOUS_PERSONNEL"
+                ]
+              }
+            ]
+          },
+          {
+            "not_exists": [
+              {
+                "fact": "person.directParticipationStatus"
+              }
+            ]
+          }
+        ]
+      },
+      "notes": "Pack 5 direct-participation blocker."
+    }
+  },
+  {
+    "clauseId": "CL-PER-LF-001",
+    "sourceId": "DOD-LOW-2023",
+    "locator": "chapter-5/civilian-default-protection",
+    "jurisdiction": "US",
+    "layer": "LEGAL_FLOOR",
+    "clauseType": "REQUIREMENT",
+    "rawText": "Civilians and non-combatants remain protected unless direct participation is confirmed.",
+    "normalizedText": "If person.status is CIVILIAN or NON_COMBATANT and person.directParticipationStatus is not CONFIRMED_TRUE, refuse.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Core civilian and non-combatant refusal rule for Pack 5.",
+    "compilationHint": {
+      "stage": "LEGAL_FLOOR",
+      "priority": 1700,
+      "effect": {
+        "decision": "REFUSED",
+        "reasonCode": "PROHIBITED_TARGET"
+      },
+      "scope": {
+        "jurisdiction": "US",
+        "domains": [
+          "LAND",
+          "AIR",
+          "MARITIME"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "STRIKE",
+          "ENGAGE",
+          "FIRE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "PLATOON",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "person.status",
+        "person.directParticipationStatus"
+      ],
+      "predicate": {
+        "all": [
+          {
+            "in": [
+              {
+                "fact": "person.status"
+              },
+              {
+                "value": [
+                  "CIVILIAN",
+                  "NON_COMBATANT"
+                ]
+              }
+            ]
+          },
+          {
+            "neq": [
+              {
+                "fact": "person.directParticipationStatus"
+              },
+              {
+                "value": "CONFIRMED_TRUE"
+              }
+            ]
+          }
+        ]
+      },
+      "notes": "Pack 5 civilian/non-combatant default protection."
+    }
+  },
+  {
+    "clauseId": "CL-PER-LF-002",
+    "sourceId": "DOD-LOW-2023",
+    "locator": "chapter-5/medical-religious-personnel-protection",
+    "jurisdiction": "US",
+    "layer": "LEGAL_FLOOR",
+    "clauseType": "REQUIREMENT",
+    "rawText": "Medical and religious personnel remain protected unless direct participation is confirmed.",
+    "normalizedText": "If person.status is MEDICAL_PERSONNEL or RELIGIOUS_PERSONNEL and person.directParticipationStatus is not CONFIRMED_TRUE, refuse.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Core protected-person rule for medical and religious personnel.",
+    "compilationHint": {
+      "stage": "LEGAL_FLOOR",
+      "priority": 1600,
+      "effect": {
+        "decision": "REFUSED",
+        "reasonCode": "PROHIBITED_TARGET"
+      },
+      "scope": {
+        "jurisdiction": "US",
+        "domains": [
+          "LAND",
+          "AIR",
+          "MARITIME"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "STRIKE",
+          "ENGAGE",
+          "FIRE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "PLATOON",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "person.status",
+        "person.directParticipationStatus"
+      ],
+      "predicate": {
+        "all": [
+          {
+            "in": [
+              {
+                "fact": "person.status"
+              },
+              {
+                "value": [
+                  "MEDICAL_PERSONNEL",
+                  "RELIGIOUS_PERSONNEL"
+                ]
+              }
+            ]
+          },
+          {
+            "neq": [
+              {
+                "fact": "person.directParticipationStatus"
+              },
+              {
+                "value": "CONFIRMED_TRUE"
+              }
+            ]
+          }
+        ]
+      },
+      "notes": "Pack 5 medical and religious personnel protection."
+    }
+  },
+  {
+    "clauseId": "CL-PER-LF-003",
+    "sourceId": "DOD-LOW-2023",
+    "locator": "chapter-5/hors-de-combat-and-detention",
+    "jurisdiction": "US",
+    "layer": "LEGAL_FLOOR",
+    "clauseType": "REQUIREMENT",
+    "rawText": "Persons hors de combat or in custody remain protected.",
+    "normalizedText": "If person.horsDeCombatStatus is true or person.detentionStatus is DETAINED or IN_CUSTODY, refuse.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Core protected-person rule for hors de combat and detainees.",
+    "compilationHint": {
+      "stage": "LEGAL_FLOOR",
+      "priority": 1500,
+      "effect": {
+        "decision": "REFUSED",
+        "reasonCode": "HORS_DE_COMBAT_PROTECTED"
+      },
+      "scope": {
+        "jurisdiction": "US",
+        "domains": [
+          "LAND",
+          "AIR",
+          "MARITIME"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "STRIKE",
+          "ENGAGE",
+          "FIRE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "PLATOON",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "person.horsDeCombatStatus",
+        "person.detentionStatus"
+      ],
+      "predicate": {
+        "any": [
+          {
+            "eq": [
+              {
+                "fact": "person.horsDeCombatStatus"
+              },
+              {
+                "value": true
+              }
+            ]
+          },
+          {
+            "in": [
+              {
+                "fact": "person.detentionStatus"
+              },
+              {
+                "value": [
+                  "DETAINED",
+                  "IN_CUSTODY"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "notes": "Pack 5 hors de combat and detention protection."
+    }
+  }
+]

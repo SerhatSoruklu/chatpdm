@@ -96,8 +96,6 @@
       "additionalProperties": false,
       "required": [
         "id",
-        "protectedClass",
-        "militaryObjectiveStatus",
         "horsDeCombatStatus"
       ],
       "properties": {
@@ -110,8 +108,28 @@
           "enum": [
             "CIVILIAN",
             "CIVILIAN_OBJECT",
+            "MEDICAL",
             "MILITARY",
             "UNKNOWN"
+          ]
+        },
+        "objectType": {
+          "type": "string",
+          "enum": [
+            "CIVILIAN_CAMPUS",
+            "EDUCATIONAL_FACILITY",
+            "HOSPITAL",
+            "MEDICAL_UNIT",
+            "MEDICAL_TRANSPORT",
+            "SCHOOL",
+            "OTHER"
+          ]
+        },
+        "lossOfProtectionStatus": {
+          "type": "string",
+          "enum": [
+            "NOT_LOST",
+            "CONFIRMED_TRUE"
           ]
         },
         "militaryObjectiveStatus": {
@@ -125,6 +143,53 @@
         },
         "horsDeCombatStatus": {
           "type": "boolean"
+        }
+      }
+    },
+    "person": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "CIVILIAN",
+            "NON_COMBATANT",
+            "MEDICAL_PERSONNEL",
+            "RELIGIOUS_PERSONNEL",
+            "DETAINEE",
+            "COMBATANT",
+            "UNKNOWN"
+          ]
+        },
+        "directParticipationStatus": {
+          "type": "string",
+          "enum": [
+            "CONFIRMED_TRUE",
+            "CONFIRMED_FALSE",
+            "UNKNOWN"
+          ]
+        },
+        "horsDeCombatStatus": {
+          "type": "boolean"
+        },
+        "detentionStatus": {
+          "type": "string",
+          "enum": [
+            "DETAINED",
+            "IN_CUSTODY",
+            "RELEASED",
+            "UNKNOWN"
+          ]
+        },
+        "medicalRoleStatus": {
+          "type": "string",
+          "enum": [
+            "MEDICAL",
+            "RELIGIOUS",
+            "NONE",
+            "UNKNOWN"
+          ]
         }
       }
     },
@@ -151,6 +216,14 @@
         "operationPhase": {
           "type": "string",
           "minLength": 1
+        },
+        "operationalSlice": {
+          "type": "string",
+          "enum": [
+            "CIVILIAN_SCHOOL_PROTECTION",
+            "MEDICAL_PROTECTION",
+            "PROTECTED_PERSON_STATE"
+          ]
         },
         "coalitionMode": {
           "type": "string",
@@ -277,6 +350,12 @@
           "type": "boolean"
         },
         "delegatedToUnit": {
+          "type": "boolean"
+        },
+        "designatedRoeActive": {
+          "type": "boolean"
+        },
+        "designatedActionAuthorized": {
           "type": "boolean"
         }
       }

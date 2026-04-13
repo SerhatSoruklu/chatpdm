@@ -1,0 +1,14 @@
+{
+  "packId": "mil-us-medical-protection-core-v0.1.0",
+  "jurisdiction": "US",
+  "bundleId": "mil-us-medical-protection-core-bundle",
+  "bundleVersion": "0.1.0",
+  "reviewedClauseSetIds": [
+    "legal-floor-medical-core",
+    "authority-medical-core",
+    "policy-overlay-medical-core"
+  ],
+  "authorityGraphId": "AUTH-GRAPH-US-001",
+  "sourceRegistryVersion": "1.0.0",
+  "regressionSuiteVersion": "0.1.0"
+}

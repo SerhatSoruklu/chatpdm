@@ -1,0 +1,117 @@
+[
+  {
+    "clauseId": "CL-CIV-AUTH-001",
+    "sourceId": "NEWPORT-ROE-2022",
+    "locator": "authoring-flow/civilian-school-authorization-refusal",
+    "jurisdiction": "US",
+    "layer": "POLICY_OVERLAY",
+    "clauseType": "REQUIREMENT",
+    "rawText": "Confirmed continuation of a civilian-school object still requires designated action authorization.",
+    "normalizedText": "If target.objectType is a school-type civilian object, target.protectedClass is CIVILIAN or CIVILIAN_OBJECT, target.militaryObjectiveStatus is CONFIRMED_TRUE, and authority.designatedActionAuthorized is not true, refuse.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Authority refusal rule for confirmed school-object continuation cases.",
+    "compilationHint": {
+      "stage": "POLICY_OVERLAY",
+      "priority": 1200,
+      "effect": {
+        "decision": "REFUSED",
+        "reasonCode": "AUTHORITY_INVALID"
+      },
+      "scope": {
+        "jurisdiction": "US",
+        "domains": [
+          "LAND",
+          "AIR",
+          "MARITIME"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "STRIKE",
+          "ENGAGE",
+          "FIRE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "PLATOON",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "target.objectType",
+        "target.protectedClass",
+        "target.militaryObjectiveStatus",
+        "authority.designatedActionAuthorized"
+      ],
+      "predicate": {
+        "all": [
+          {
+            "in": [
+              {
+                "fact": "target.objectType"
+              },
+              {
+                "value": [
+                  "SCHOOL",
+                  "EDUCATIONAL_FACILITY",
+                  "CIVILIAN_CAMPUS"
+                ]
+              }
+            ]
+          },
+          {
+            "in": [
+              {
+                "fact": "target.protectedClass"
+              },
+              {
+                "value": [
+                  "CIVILIAN",
+                  "CIVILIAN_OBJECT"
+                ]
+              }
+            ]
+          },
+          {
+            "eq": [
+              {
+                "fact": "target.militaryObjectiveStatus"
+              },
+              {
+                "value": "CONFIRMED_TRUE"
+              }
+            ]
+          },
+          {
+            "neq": [
+              {
+                "fact": "authority.designatedActionAuthorized"
+              },
+              {
+                "value": true
+              }
+            ]
+          }
+        ]
+      },
+      "notes": "Pack 4 authority refusal after confirmed school-object continuation."
+    }
+  },
+  {
+    "clauseId": "CL-CIV-AUTH-002",
+    "sourceId": "NEWPORT-ROE-2022",
+    "locator": "authoring-flow/civilian-school-authorization-continuation",
+    "jurisdiction": "US",
+    "layer": "POLICY_OVERLAY",
+    "clauseType": "REQUIREMENT",
+    "rawText": "Confirmed continuation of a civilian-school object with designated action authorization may proceed.",
+    "normalizedText": "If target.objectType is a school-type civilian object, target.protectedClass is CIVILIAN or CIVILIAN_OBJECT, target.militaryObjectiveStatus is CONFIRMED_TRUE, and authority.designatedActionAuthorized is true, evaluation may continue.",
+    "machineCandidate": false,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Review-only continuation note for confirmed school-object authorization; non-executable by design."
+  }
+]

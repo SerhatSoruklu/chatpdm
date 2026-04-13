@@ -2,6 +2,8 @@
 
 Phase 6 is the first downstream human-readable layer after the deterministic military-constraints core.
 
+The concrete contract is defined in [execution-card-projection-contract.md](./execution-card-projection-contract.md).
+
 Its job is not to decide anything.
 Its job is to present an already validated runtime result as a stable execution card.
 
