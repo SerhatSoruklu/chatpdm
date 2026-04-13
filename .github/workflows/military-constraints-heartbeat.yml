@@ -1,0 +1,55 @@
+name: military-constraints-heartbeat
+
+on:
+  pull_request:
+    paths:
+      - "backend/src/modules/military-constraints/**"
+      - "docs/architecture/bundle-release-contract.md"
+      - "docs/architecture/clause-normalization-contract.md"
+      - "docs/architecture/clause-review-checklist.md"
+      - "docs/architecture/corpus-change-checklist.md"
+      - "docs/architecture/reference-pack-coverage-map.md"
+      - "docs/architecture/weakauras-to-deterministic-kernel-mapping.md"
+      - "package.json"
+      - "package-lock.json"
+      - "scripts/run-all-military-constraint-checks.js"
+      - ".github/workflows/military-constraints-heartbeat.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "backend/src/modules/military-constraints/**"
+      - "docs/architecture/bundle-release-contract.md"
+      - "docs/architecture/clause-normalization-contract.md"
+      - "docs/architecture/clause-review-checklist.md"
+      - "docs/architecture/corpus-change-checklist.md"
+      - "docs/architecture/reference-pack-coverage-map.md"
+      - "docs/architecture/weakauras-to-deterministic-kernel-mapping.md"
+      - "package.json"
+      - "package-lock.json"
+      - "scripts/run-all-military-constraint-checks.js"
+      - ".github/workflows/military-constraints-heartbeat.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  military-constraints-heartbeat:
+    name: military-constraints-heartbeat
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run military constraints heartbeat
+        run: npm run military-constraints:heartbeat

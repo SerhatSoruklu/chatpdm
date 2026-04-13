@@ -404,6 +404,7 @@ Exit condition:
 - derive a human-readable execution card from the already validated bundle
 - keep it strictly downstream of the validated machine bundle
 - do not allow it to create new meaning
+- see [phase-6-execution-card-projection.md](./phase-6-execution-card-projection.md) for the projection contract
 
 Exit condition:
 
