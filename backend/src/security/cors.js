@@ -46,7 +46,13 @@ function normalizeOrigins(value) {
 }
 
 function normalizeOrigin(value) {
-  return String(value ?? '').trim().replace(/\/+$/, '');
+  let normalized = String(value ?? '').trim();
+
+  while (normalized.endsWith('/')) {
+    normalized = normalized.slice(0, -1);
+  }
+
+  return normalized;
 }
 
 module.exports = {
