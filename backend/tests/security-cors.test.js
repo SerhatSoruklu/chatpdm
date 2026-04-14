@@ -3,7 +3,7 @@
 const assert = require('node:assert/strict');
 const test = require('node:test');
 
-const { createCorsMiddleware } = require('../src/security/cors');
+const { createCorsMiddleware, normalizeOrigin } = require('../src/security/cors');
 
 function createRequest(origin, method = 'GET') {
   return {
@@ -68,4 +68,17 @@ test('createCorsMiddleware ignores disallowed origins', () => {
   assert.equal(res.ended, false);
   assert.equal(res.statusCode, 200);
   assert.equal(nextCalls, 1);
+});
+
+test('normalizeOrigin strips trailing slashes without changing path content', () => {
+  assert.equal(normalizeOrigin(undefined), '');
+  assert.equal(normalizeOrigin(null), '');
+  assert.equal(normalizeOrigin(''), '');
+  assert.equal(normalizeOrigin('   '), '');
+  assert.equal(normalizeOrigin('https://example.com/'), 'https://example.com');
+  assert.equal(normalizeOrigin('https://example.com///'), 'https://example.com');
+  assert.equal(normalizeOrigin(' https://example.com///  '), 'https://example.com');
+  assert.equal(normalizeOrigin('https://example.com/path'), 'https://example.com/path');
+  assert.equal(normalizeOrigin('////'), '');
+  assert.equal(normalizeOrigin(`${'https://example.com'.padEnd(20, '/')}${'/'.repeat(5000)}`), 'https://example.com');
 });
