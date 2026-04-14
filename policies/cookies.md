@@ -16,4 +16,4 @@
 ## Boundaries — Conditional forwarding
 
 - The platform does not allow SSR forwarding of cookie headers when the incoming request omits them.
-- The platform does not allow SSR forwarding of upstream set-cookie headers when upstream responses omit them.
+- The platform does not allow SSR forwarding of upstream `set-cookie` headers when upstream responses omit them.

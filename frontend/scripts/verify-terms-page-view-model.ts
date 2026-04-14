@@ -11,46 +11,62 @@ function main(): void {
   assert.equal(viewModel.title, 'Current public API reference.');
   assert.equal(
     viewModel.intro,
-    'This page models the public API as a scoped runtime section plus separate Risk Mapping Governance and ZEE surfaces. The hero counts are scoped to the runtime section only.',
+    'This page models the public API as a scoped runtime section plus separate Risk Mapping Governance, Military Constraints Compiler, and ZEE surfaces. The hero counts are scoped to the runtime section only.',
   );
   assert.equal(
     viewModel.summaryLine,
-    'Runtime section shows 7 public endpoints, 22 field rules, 1 platform rule, 1 runtime boundary, and 8 refusal boundaries.',
+    'Runtime section shows 8 public endpoints, 22 field rules, 1 platform rule, 1 runtime boundary, and 8 refusal boundaries.',
   );
   assert.deepEqual(
     viewModel.sectionGroups.map((group) => group.label),
-    ['Overview', 'Concepts', 'Feedback', 'Risk Mapping Governance', 'Support / Notes'],
+    [
+      'Overview',
+      'Concepts',
+      'Feedback',
+      'Risk Mapping Governance',
+      'Military Constraints Compiler',
+      'ZeroGlare Evidence Engine',
+      'Support / Notes',
+    ],
   );
-  assert.deepEqual(viewModel.sectionGroups.map((group) => group.sections.length), [1, 1, 1, 1, 4]);
+  assert.deepEqual(viewModel.sectionGroups.map((group) => group.sections.length), [
+    1, 1, 1, 1, 1, 1, 3,
+  ]);
   assert.deepEqual(viewModel.sectionOrder.map((section) => section.id), [
     'overview',
     'endpoint-contract',
     'field-contract',
     'risk-mapping-governance',
+    'military-constraints',
+    'zee-api',
     'platform-rules',
     'runtime-boundaries',
     'refusal-boundaries',
-    'zee-api',
   ]);
   assert.equal(viewModel.sectionOrder[0].title, 'Current public API reference.');
   assert.equal(
     viewModel.sectionOrder[0].summary,
-    'This page models the public API as a scoped runtime section plus separate Risk Mapping Governance and ZEE surfaces. The hero counts are scoped to the runtime section only.',
+    'This page models the public API as a scoped runtime section plus separate Risk Mapping Governance, Military Constraints Compiler, and ZEE surfaces. The hero counts are scoped to the runtime section only.',
   );
   assert.equal(viewModel.sectionOrder[3].title, 'Risk Mapping Governance API');
   assert.equal(
     viewModel.sectionOrder[3].summary,
-    'Risk Mapping Governance is exposed separately as a bounded API surface. The current public route resolves only entity, timeHorizon, scenarioType, domain, scope, and evidenceSetVersion. queryText is not forwarded by the route handler.',
+    'Risk Mapping Governance is exposed separately as a bounded API surface. The current route set includes discovery, governance, diff, explain, resolve, and registry endpoints. The query contract accepts entity, timeHorizon, scenarioType, domain, scope, evidenceSetVersion, and optional queryText; queryText is normalized by the contract but not forwarded by the route handler.',
   );
-  assert.equal(viewModel.sectionOrder[7].title, 'ZeroGlare Evidence Engine API');
+  assert.equal(viewModel.sectionOrder[4].title, 'Military Constraints Compiler API');
   assert.equal(
-    viewModel.sectionOrder[7].summary,
-    'ZEE is exposed separately as a bounded read-only contract surface. These endpoints exist for inspectability and contract framing only. They do not perform live evidence analysis and are not part of ChatPDM runtime resolution.',
+    viewModel.sectionOrder[4].summary,
+    'Military Constraints Compiler is exposed as a deterministic admissibility surface under validated packs. It accepts structured facts only, fails closed, and returns ALLOWED, REFUSED, or REFUSED_INCOMPLETE. The current backend exposes discovery, pack catalog, pack detail, and evaluation routes only; no /schema or /examples routes are implemented.',
+  );
+  assert.equal(viewModel.sectionOrder[5].title, 'ZeroGlare Evidence Engine API');
+  assert.equal(
+    viewModel.sectionOrder[5].summary,
+    'ZeroGlare Evidence Engine is exposed through a read-only ZEE scaffold and a separate zeroglare analysis route. The ZEE scaffold exposes discovery, contract, explain, and audit metadata only; the zeroglare analysis route accepts structured text input through q or input and returns bounded diagnostics.',
   );
   assert.deepEqual(
     viewModel.badges,
     [
-      { label: 'Endpoints', value: '7 public' },
+      { label: 'Endpoints', value: '8 public' },
       { label: 'Field rules', value: '22 typed' },
       { label: 'Platform rules', value: '1 active' },
       { label: 'Boundaries', value: '9 mapped' },
@@ -61,6 +77,14 @@ function main(): void {
   assert.deepEqual(
     viewModel.endpointRows,
     [
+      {
+        claimId: 'terms-40',
+        operation: 'concept discovery',
+        method: 'GET',
+        path: '/api/v1/concepts',
+        input: 'none',
+        evidence: 'backend/src/routes/api/v1/concepts.route.js:33-39',
+      },
       {
         claimId: 'terms-1',
         operation: 'concept resolution',
@@ -124,11 +148,35 @@ function main(): void {
   assert.equal(viewModel.riskMappingTitle, 'Risk Mapping Governance API');
   assert.equal(
     viewModel.riskMappingIntro,
-    'Risk Mapping Governance is exposed separately as a bounded API surface. The current public route resolves only entity, timeHorizon, scenarioType, domain, scope, and evidenceSetVersion. queryText is not forwarded by the route handler.',
+    'Risk Mapping Governance is exposed separately as a bounded API surface. The current route set includes discovery, governance, diff, explain, resolve, and registry endpoints. The query contract accepts entity, timeHorizon, scenarioType, domain, scope, evidenceSetVersion, and optional queryText; queryText is normalized by the contract but not forwarded by the route handler.',
   );
   assert.deepEqual(
     viewModel.riskMappingEndpointRows,
     [
+      {
+        claimId: 'rmg-api-0',
+        operation: 'surface summary',
+        method: 'GET',
+        path: '/api/v1/risk-mapping/',
+        input: 'none',
+        evidence: 'backend/src/routes/api/v1/risk-mapping.route.js:147-153',
+      },
+      {
+        claimId: 'rmg-api-8',
+        operation: 'governance report',
+        method: 'GET',
+        path: '/api/v1/risk-mapping/governance',
+        input: 'none',
+        evidence: 'backend/src/routes/api/v1/risk-mapping.route.js:115-122',
+      },
+      {
+        claimId: 'rmg-api-9',
+        operation: 'artifact diff',
+        method: 'GET',
+        path: '/api/v1/risk-mapping/diff',
+        input: 'none',
+        evidence: 'backend/src/routes/api/v1/risk-mapping.route.js:124-136',
+      },
       {
         claimId: 'rmg-api-1',
         operation: 'resolve surface',
@@ -194,22 +242,102 @@ function main(): void {
       {
         claimId: 'rmg-field-1',
         field: 'entity',
-        rule: 'accepted field',
-        condition: 'authoritative evidence-pack lookup key',
-        evidence: 'backend/src/modules/risk-mapping/contracts/riskMapQueryContract.js',
+        rule: 'required request field',
+        condition: 'authoritative entity lookup key',
+        evidence: 'backend/src/modules/risk-mapping/contracts/riskMapQueryContract.js:46-74',
+      },
+      {
+        claimId: 'rmg-field-2',
+        field: 'timeHorizon',
+        rule: 'required request field',
+        condition: 'temporal horizon selector',
+        evidence: 'backend/src/modules/risk-mapping/contracts/riskMapQueryContract.js:46-74',
+      },
+      {
+        claimId: 'rmg-field-3',
+        field: 'scenarioType',
+        rule: 'required request field',
+        condition: 'scenario classifier',
+        evidence: 'backend/src/modules/risk-mapping/contracts/riskMapQueryContract.js:46-74',
+      },
+      {
+        claimId: 'rmg-field-4',
+        field: 'domain',
+        rule: 'required request field',
+        condition: 'domain scoping key',
+        evidence: 'backend/src/modules/risk-mapping/contracts/riskMapQueryContract.js:46-74',
+      },
+      {
+        claimId: 'rmg-field-5',
+        field: 'scope',
+        rule: 'required request field',
+        condition: 'non-empty string array',
+        evidence: 'backend/src/modules/risk-mapping/contracts/riskMapQueryContract.js:62-72',
+      },
+      {
+        claimId: 'rmg-field-6',
+        field: 'evidenceSetVersion',
+        rule: 'required request field',
+        condition: 'evidence set version key',
+        evidence: 'backend/src/modules/risk-mapping/contracts/riskMapQueryContract.js:46-74',
+      },
+      {
+        claimId: 'rmg-field-7',
+        field: 'queryText',
+        rule: 'optional request field',
+        condition: 'accepted by the contract and normalized when present; not forwarded by the route handler',
+        evidence:
+          'backend/src/modules/risk-mapping/contracts/riskMapQueryContract.js:46-74 | backend/src/modules/risk-mapping/normalizers/normalizeRiskMapQuery.js:23-43',
       },
     ],
     'Risk Mapping request fields must keep entity lookup separate from framing detection.',
   );
+  assert.deepEqual(
+    viewModel.riskMappingBoundaryRows,
+    [
+      {
+        claimId: 'rmg-boundary-1',
+        boundary: 'invalid query contract',
+        condition:
+          'missing or malformed entity, timeHorizon, scenarioType, domain, scope, evidenceSetVersion, or optional queryText',
+        effect: 'rejected with invalid_risk_map_query',
+        evidence:
+          'backend/src/routes/api/v1/risk-mapping.route.js:70-113 | backend/src/modules/risk-mapping/contracts/riskMapQueryContract.js:38-74',
+      },
+      {
+        claimId: 'rmg-boundary-2',
+        boundary: 'registry domain required',
+        condition: 'registry routes omit domain or supply an empty domain',
+        effect: 'rejected with invalid_risk_map_query',
+        evidence: 'backend/src/routes/api/v1/risk-mapping.route.js:161-203',
+      },
+      {
+        claimId: 'rmg-boundary-3',
+        boundary: 'diff artifact unavailable',
+        condition: 'no generated diff report is present',
+        effect: 'rejected with risk_map_diff_unavailable',
+        evidence: 'backend/src/routes/api/v1/risk-mapping.route.js:124-136',
+      },
+    ],
+  );
   assert.equal(viewModel.riskMappingTrustRoute, '/risk-mapping-governance');
+  assert.equal(viewModel.militaryConstraintsTrustRoute, '/military-constraints-compiler');
   assert.equal(viewModel.zeeApiTitle, 'ZeroGlare Evidence Engine API');
   assert.equal(
     viewModel.zeeApiIntro,
-    'ZEE is exposed separately as a bounded read-only contract surface. These endpoints exist for inspectability and contract framing only. They do not perform live evidence analysis and are not part of ChatPDM runtime resolution.',
+    'ZeroGlare Evidence Engine is exposed through a read-only ZEE scaffold and a separate zeroglare analysis route. The ZEE scaffold exposes discovery, contract, explain, and audit metadata only; the zeroglare analysis route accepts structured text input through q or input and returns bounded diagnostics.',
   );
   assert.deepEqual(
     viewModel.zeeApiEndpointRows,
     [
+      {
+        claimId: 'zee-api-0',
+        operation: 'surface summary',
+        method: 'GET',
+        path: '/api/v1/zee',
+        input: 'none',
+        evidence: 'backend/src/routes/api/v1/zee.route.js:36-43',
+      },
       {
         claimId: 'zee-api-1',
         operation: 'contract surface',
@@ -237,6 +365,74 @@ function main(): void {
     ],
     'ZEE endpoint rows must remain a separate bounded API section.',
   );
+  assert.deepEqual(
+    viewModel.zeroglareEndpointRows,
+    [
+      {
+        claimId: 'zg-api-0',
+        operation: 'surface summary',
+        method: 'GET',
+        path: '/api/v1/zeroglare',
+        input: 'none',
+        evidence: 'backend/src/routes/api/v1/zeroglare.route.js:56-63',
+      },
+      {
+        claimId: 'zg-api-1',
+        operation: 'analysis surface',
+        method: 'GET',
+        path: '/api/v1/zeroglare/analyze',
+        input: 'query: q',
+        evidence: 'backend/src/routes/api/v1/zeroglare.route.js:65-71',
+      },
+      {
+        claimId: 'zg-api-2',
+        operation: 'analysis surface',
+        method: 'POST',
+        path: '/api/v1/zeroglare/analyze',
+        input: 'query: q or body: input',
+        evidence: 'backend/src/routes/api/v1/zeroglare.route.js:12-22,73-79',
+      },
+    ],
+  );
+  assert.deepEqual(
+    viewModel.zeroglareFieldRows,
+    [
+      {
+        claimId: 'zg-field-1',
+        field: 'q',
+        rule: 'required query field for GET analyze; accepted on POST analyze',
+        condition: 'must be a non-empty string',
+        evidence: 'backend/src/routes/api/v1/zeroglare.route.js:12-22,65-79',
+      },
+      {
+        claimId: 'zg-field-2',
+        field: 'input',
+        rule: 'required body field for POST analyze when q is absent',
+        condition: 'must be a non-empty string',
+        evidence: 'backend/src/routes/api/v1/zeroglare.route.js:12-22,73-79',
+      },
+    ],
+  );
+  assert.deepEqual(
+    viewModel.zeroglareBoundaryRows,
+    [
+      {
+        claimId: 'zg-boundary-1',
+        boundary: 'missing analysis input',
+        condition: 'q and input are both missing or empty',
+        effect: 'rejected with invalid_zeroglare_input',
+        evidence: 'backend/src/routes/api/v1/zeroglare.route.js:24-33,65-79',
+      },
+      {
+        claimId: 'zg-boundary-2',
+        boundary: 'oversized analysis input',
+        condition: 'input exceeds 1,000,000 characters',
+        effect: 'rejected with INPUT_TOO_LARGE',
+        evidence: 'backend/src/routes/api/v1/zeroglare.route.js:35-40',
+      },
+    ],
+  );
+  assert.equal(viewModel.zeeApiTrustRoute, '/zeroglare-evidence-engine');
 
   assert.equal(viewModel.requestFieldRows.length, 12);
   assert.equal(viewModel.acceptedValueRows.length, 10);

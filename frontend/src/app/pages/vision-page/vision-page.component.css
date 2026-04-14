@@ -26,6 +26,9 @@
 }
 
 .pdm-vision__hero {
+  display: grid;
+  gap: 22px;
+  align-items: start;
   overflow: hidden;
 }
 
@@ -37,6 +40,95 @@
   height: 260px;
   background: radial-gradient(circle at top left, rgba(96, 165, 250, 0.14), transparent 70%);
   pointer-events: none;
+}
+
+.pdm-vision__hero-copy {
+  position: relative;
+  z-index: 1;
+}
+
+.pdm-vision__hero-visual {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  width: min(100%, 24rem);
+}
+
+.pdm-vision__hero-image-button {
+  appearance: none;
+  display: grid;
+  gap: 10px;
+  width: 100%;
+  padding: 14px;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 24px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 250, 255, 0.9)),
+    rgba(255, 255, 255, 0.9);
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.03),
+    0 18px 32px rgba(15, 23, 42, 0.08);
+  cursor: pointer;
+  text-align: left;
+  transition:
+    transform 150ms ease,
+    box-shadow 150ms ease,
+    border-color 150ms ease;
+}
+
+.pdm-vision__hero-image-button:hover,
+.pdm-vision__hero-image-button:focus-visible {
+  transform: translateY(-1px);
+  border-color: rgba(37, 99, 235, 0.2);
+  box-shadow:
+    0 2px 6px rgba(15, 23, 42, 0.04),
+    0 22px 40px rgba(15, 23, 42, 0.1);
+}
+
+.pdm-vision__hero-image-badge {
+  justify-self: start;
+  padding: 0.42rem 0.72rem;
+  border: 1px solid rgba(37, 99, 235, 0.16);
+  border-radius: 999px;
+  background: rgba(37, 99, 235, 0.08);
+  color: #1d4ed8;
+  font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.pdm-vision__hero-image-shell {
+  display: block;
+  overflow: hidden;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(240, 245, 255, 0.88)),
+    rgba(255, 255, 255, 0.88);
+}
+
+.pdm-vision__hero-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.pdm-vision__hero-visual-caption {
+  margin: 0 4px;
+  color: #64748b;
+  font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+  text-transform: uppercase;
 }
 
 .pdm-vision__eyebrow,
@@ -199,11 +291,25 @@
   .pdm-vision__closing {
     border-radius: 32px;
   }
+
+  .pdm-vision__hero {
+    gap: 24px;
+  }
 }
 
 @media (min-width: 840px) {
   .pdm-vision__main {
     padding: 44px 32px 88px;
+  }
+
+  .pdm-vision__hero {
+    grid-template-columns: minmax(0, 1fr) minmax(16rem, 24rem);
+    align-items: center;
+  }
+
+  .pdm-vision__hero-visual {
+    justify-self: end;
+    width: min(100%, 22rem);
   }
 
   .pdm-vision__split {
@@ -229,6 +335,10 @@
     padding: 28px;
   }
 
+  .pdm-vision__hero-visual {
+    width: min(100%, 24rem);
+  }
+
   .pdm-vision__signal-grid,
   .pdm-vision__stage-grid,
   .pdm-vision__continuity-grid {
@@ -239,5 +349,21 @@
 @media (min-width: 1440px) {
   .pdm-vision__main {
     padding: 60px 48px 104px;
+  }
+}
+
+@media (max-width: 839px) {
+  .pdm-vision__hero-visual {
+    width: min(100%, 26rem);
+  }
+}
+
+@media (max-width: 599px) {
+  .pdm-vision__hero-image-button {
+    padding: 12px;
+  }
+
+  .pdm-vision__hero-visual-caption {
+    font-size: 0.62rem;
   }
 }

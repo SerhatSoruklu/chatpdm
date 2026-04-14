@@ -2,20 +2,25 @@
 
 ## Scope — Runtime operation boundaries
 
-- concept resolution access
-- feedback submission access
+- concept discovery, resolution, and detail access
+- feedback submission and session control
 - feedback input schema
 - response type limits
 - comparison output limits
 
 ## Data and Behavior — Endpoint access
 
+- The platform allows concept discovery through `GET /api/v1/concepts`.
 - The platform allows concept resolution through `GET /api/v1/concepts/resolve?q=...`.
+- The platform allows concept resolution through `POST /api/v1/concepts/resolve`.
+- The platform allows concept detail access through `GET /api/v1/concepts/:conceptId`.
 - The platform allows feedback submission through `POST /api/v1/feedback`.
+- The platform allows feedback export through `GET /api/v1/feedback/session/:sessionId/export`.
+- The platform allows feedback deletion through `DELETE /api/v1/feedback/session/:sessionId`.
 
 ## Data and Behavior — Feedback fields I
 
-- The platform allows feedback field `sessionId`.
+- The platform allows feedback field `sessionId` when provided.
 - The platform allows feedback field `rawQuery`.
 - The platform allows feedback field `normalizedQuery`.
 - The platform allows feedback field `responseType`.
@@ -23,9 +28,9 @@
 
 ## Data and Behavior — Feedback fields II
 
-- The platform allows feedback field `resolvedConceptId`.
-- The platform allows feedback field `candidateConceptIds`.
-- The platform allows feedback field `suggestionConceptIds`.
+- The platform allows feedback field `resolvedConceptId` when the response type permits it.
+- The platform allows feedback field `candidateConceptIds` when the response type permits it.
+- The platform allows feedback field `suggestionConceptIds` when the response type permits it.
 - The platform allows feedback field `contractVersion`.
 - The platform allows feedback field `normalizerVersion`.
 

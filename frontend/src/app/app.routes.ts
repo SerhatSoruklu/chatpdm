@@ -5,6 +5,11 @@ import { HowItWorksPageComponent } from './pages/how-it-works-page/how-it-works-
 import { InspectIndexPageComponent } from './pages/inspect-index-page/inspect-index-page.component';
 import { LandingPageComponent } from './pages/landing/landing-page.component';
 import { LiveConceptsPageComponent } from './pages/live-concepts-page/live-concepts-page.component';
+import {
+  MCPP_ROUTE_SEGMENT,
+  MCPP_SEO_KEY,
+} from './pages/military-constraints-compiler-page/military-constraints-compiler-page.constants';
+import { MilitaryConstraintsCompilerPageComponent } from './pages/military-constraints-compiler-page/military-constraints-compiler-page.component';
 import { RiskMappingGovernancePageComponent } from './pages/risk-mapping-governance-page/risk-mapping-governance-page.component';
 import { PolicyPageComponent } from './pages/policy-page/policy-page.component';
 import { PublicPageComponent } from './pages/public-page/public-page.component';
@@ -74,6 +79,11 @@ export const routes: Routes = [
     path: 'live-concepts',
     component: LiveConceptsPageComponent,
     data: seoRouteData('static.live-concepts'),
+  },
+  {
+    path: MCPP_ROUTE_SEGMENT,
+    component: MilitaryConstraintsCompilerPageComponent,
+    data: seoRouteData(MCPP_SEO_KEY),
   },
   {
     path: 'controlled-comparisons',

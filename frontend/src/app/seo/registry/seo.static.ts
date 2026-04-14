@@ -66,6 +66,14 @@ export const seoStaticEntries = {
     sitemapChangeFrequency: 'weekly',
     sitemapPriority: 0.8,
   },
+  'static.military-constraints-compiler': {
+    title: 'Military Constraints Compiler - ChatPDM',
+    description: 'Military Constraints Compiler is ChatPDM\'s deterministic admissibility surface for validated packs, structured facts, and refusal-first evaluation.',
+    canonicalPath: '/military-constraints-compiler',
+    includeInSitemap: true,
+    sitemapChangeFrequency: 'monthly',
+    sitemapPriority: 0.66,
+  },
   'static.live-concepts': {
     title: 'Live Concepts - ChatPDM',
     description: 'Inspect the concepts currently admitted to the ChatPDM public runtime without querying them individually.',

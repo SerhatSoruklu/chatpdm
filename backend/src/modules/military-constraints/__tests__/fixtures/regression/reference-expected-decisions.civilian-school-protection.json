@@ -1,0 +1,40 @@
+[
+  {
+    "caseId": "school-protected-refusal",
+    "bundleVariant": "reference",
+    "decision": "REFUSED",
+    "reasonCode": "PROHIBITED_TARGET",
+    "failedStage": "LEGAL_FLOOR",
+    "failingRuleIds": [
+      "CR-CL-CIV-LF-001"
+    ]
+  },
+  {
+    "caseId": "school-missing-protected-class",
+    "bundleVariant": "reference",
+    "decision": "REFUSED_INCOMPLETE",
+    "reasonCode": "MISSING_REQUIRED_FACT",
+    "failedStage": "ADMISSIBILITY",
+    "failingRuleIds": [
+      "CR-CL-CIV-ADM-001"
+    ]
+  },
+  {
+    "caseId": "school-unauthorized-confirmed-objective",
+    "bundleVariant": "reference",
+    "decision": "REFUSED",
+    "reasonCode": "AUTHORITY_INVALID",
+    "failedStage": "POLICY_OVERLAY",
+    "failingRuleIds": [
+      "CR-CL-CIV-AUTH-001"
+    ]
+  },
+  {
+    "caseId": "school-authorized-confirmed-objective",
+    "bundleVariant": "reference",
+    "decision": "ALLOWED",
+    "reasonCode": null,
+    "failedStage": null,
+    "failingRuleIds": []
+  }
+]

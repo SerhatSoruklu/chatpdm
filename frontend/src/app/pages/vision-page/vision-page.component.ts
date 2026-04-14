@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { VisionPageImageDialogComponent } from './vision-page-image-dialog.component';
 
 interface VisionSectionCard {
   title: string;
@@ -15,11 +17,20 @@ interface VisionStage {
 @Component({
   selector: 'app-vision-page',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MatDialogModule],
   templateUrl: './vision-page.component.html',
   styleUrl: './vision-page.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VisionPageComponent {
+  constructor(private readonly dialog: MatDialog) {}
+
+  protected readonly heroImagePath = '/assets/vision/refused-vision-page.png';
+  protected readonly heroImageAlt =
+    'Refused vision page reference image showing the ChatPDM vision hero strip';
+  protected readonly heroImageTitle = 'Refused vision page';
+  protected readonly heroImageCaption = 'Open the full image in a dialog.';
+
   protected readonly instabilitySignals = [
     'Images can be fabricated',
     'Text can be manipulated',
@@ -74,4 +85,21 @@ export class VisionPageComponent {
       copy: 'MIT licensing matters because the system should outlast its creator and remain maintainable over time.',
     },
   ];
+
+  openHeroImageDialog(): void {
+    this.dialog.open(VisionPageImageDialogComponent, {
+      width: 'calc(100vw - 24px)',
+      maxWidth: '1240px',
+      maxHeight: 'calc(100dvh - 24px)',
+      autoFocus: false,
+      panelClass: 'pdm-vision-image-dialog-panel',
+      restoreFocus: true,
+      data: {
+        title: this.heroImageTitle,
+        imagePath: this.heroImagePath,
+        imageAlt: this.heroImageAlt,
+        caption: this.heroImageCaption,
+      },
+    });
+  }
 }

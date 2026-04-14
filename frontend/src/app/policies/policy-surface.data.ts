@@ -6,14 +6,13 @@ export const POLICY_SURFACE_DATA = {
     "route": "/inspect/privacy",
     "title": "Privacy Policy",
     "subtitle": "Inspectable privacy behavior",
-    "intro": "Current rendered policy claims covering feedback event storage, browser session storage, internal proxy header transport, request controls, and runtime refusal boundaries.",
+    "intro": "Current rendered policy claims covering feedback event storage, browser session storage, internal proxy header transport, and request controls.",
     "sourceTitle": "Privacy Policy — Data Handling",
     "scopeBullets": [
       "feedback event storage",
       "browser session storage",
       "internal proxy header transport",
-      "request controls",
-      "runtime refusal boundaries"
+      "request controls"
     ],
     "claims": [
       {
@@ -1226,16 +1225,43 @@ export const POLICY_SURFACE_DATA = {
     "route": "/inspect/terms",
     "title": "Terms of Service",
     "subtitle": "Runtime operations, field rules, and refusal boundaries",
-    "intro": "Current rendered policy claims covering concept resolution access, feedback submission access, feedback input schema, response type limits, and comparison output limits.",
+    "intro": "Current rendered policy claims covering concept discovery, resolution, and detail access, feedback submission and session control, feedback input schema, response type limits, and comparison output limits.",
     "sourceTitle": "Terms of Service — Runtime Operations",
     "scopeBullets": [
-      "concept resolution access",
-      "feedback submission access",
+      "concept discovery, resolution, and detail access",
+      "feedback submission and session control",
       "feedback input schema",
       "response type limits",
       "comparison output limits"
     ],
     "claims": [
+      {
+        "id": "terms-40",
+        "version": 1,
+        "state": "published",
+        "policyFile": "terms.md",
+        "section": "Data and Behavior — Endpoint access",
+        "policySentence": "The platform allows concept discovery through `GET /api/v1/concepts`.",
+        "canonicalClaim": "The platform allows concept discovery through `GET /api/v1/concepts`.",
+        "claimClass": "allows",
+        "systemMapping": "`backend/src/routes/api/v1/concepts.route.js:33-39`",
+        "status": "mapped",
+        "notes": "",
+        "specialNotes": [],
+        "hasInternalTransportNote": false,
+        "lifecycle": {
+          "lifecycleClass": "not_applicable",
+          "deletionTrigger": "not_stored",
+          "enforcementStatus": "declared_only"
+        },
+        "traces": [
+          {
+            "source": "backend/src/routes/api/v1/concepts.route.js:33-39",
+            "path": "backend/src/routes/api/v1/concepts.route.js",
+            "lines": "33-39"
+          }
+        ]
+      },
       {
         "id": "terms-1",
         "version": 1,
@@ -2308,6 +2334,19 @@ export const POLICY_SURFACE_DATA = {
     "termsTruth": {
       "endpointContracts": [
         {
+          "claimId": "terms-40",
+          "operation": "concept_discovery",
+          "method": "GET",
+          "path": "/api/v1/concepts",
+          "evidence": [
+            {
+              "source": "backend/src/routes/api/v1/concepts.route.js:33-39",
+              "path": "backend/src/routes/api/v1/concepts.route.js",
+              "lines": "33-39"
+            }
+          ]
+        },
+        {
           "claimId": "terms-1",
           "operation": "concept_resolution",
           "method": "GET",
@@ -2883,8 +2922,8 @@ export const POLICY_SURFACE_DATA = {
       ]
     },
     "summary": {
-      "totalClaims": 39,
-      "mappedClaims": 39,
+      "totalClaims": 40,
+      "mappedClaims": 40,
       "claimClasses": [
         "allows",
         "does_not_allow"
@@ -3119,13 +3158,14 @@ export const POLICY_SURFACE_DATA = {
     "route": "/inspect/data-retention",
     "title": "Data Retention / Data Usage",
     "subtitle": "Lifecycle, storage, expiry, and session-bound control evidence",
-    "intro": "Current rendered policy claims covering feedback persistence lifecycle and expiry, browser session continuity for feedback controls, request-bound internal SSR transport evidence, and session-bound export and delete controls.",
+    "intro": "Current rendered policy claims covering feedback persistence lifecycle and expiry, browser session continuity for feedback controls, request-bound internal SSR transport evidence, session-bound export/delete controls, and hashed audit records for feedback session actions.",
     "sourceTitle": "Data Retention / Data Usage",
     "scopeBullets": [
       "feedback persistence lifecycle and expiry",
       "browser session continuity for feedback controls",
       "request-bound internal SSR transport evidence",
-      "session-bound export and delete controls"
+      "session-bound export/delete controls",
+      "hashed audit records for feedback session actions"
     ],
     "claims": [
       {
@@ -3584,12 +3624,12 @@ export const POLICY_SURFACE_DATA = {
     "route": "/inspect/acceptable-use",
     "title": "Acceptable Use",
     "subtitle": "Runtime scope, refusal, and feedback constraints",
-    "intro": "Current rendered policy claims covering public concept resolution access, comparison output limited to authored allowlisted pairs, refusal of unsupported query forms and out-of-scope usage, and feedback submission and session-bound feedback controls.",
+    "intro": "Current rendered policy claims covering concept discovery and detail access, public concept resolution access, comparison output limited to authored allowlisted pairs, and feedback submission and session-bound feedback controls.",
     "sourceTitle": "Acceptable Use",
     "scopeBullets": [
+      "concept discovery and detail access",
       "public concept resolution access",
       "comparison output limited to authored allowlisted pairs",
-      "refusal of unsupported query forms and out-of-scope usage",
       "feedback submission and session-bound feedback controls"
     ],
     "claims": [

@@ -1,102 +1,134 @@
 <footer class="pdm-site-footer">
   <div class="pdm-site-footer__inner">
-    <div class="pdm-site-footer__main">
+    <div class="pdm-site-footer__layout">
       <section class="pdm-site-footer__intro" aria-labelledby="pdm-site-footer-title">
         <a class="pdm-site-footer__brand" routerLink="/" aria-label="ChatPDM home">
           <app-chatpdm-logo class="pdm-site-footer__logo" variant="footer" />
         </a>
         <p class="pdm-site-footer__title" id="pdm-site-footer-title">
-          Deterministic concept resolution inside a bounded runtime.
+          {{ footerIntroTitle }}
         </p>
         <div class="pdm-site-footer__summary">
           <p class="pdm-site-footer__copy">
-            ChatPDM validates reasoning like a compiler validates code.
+            {{ footerIntroSummary }}
           </p>
-          <p class="pdm-site-footer__copy">Given an argument, it checks:</p>
           <ul class="pdm-site-footer__checklist">
-            <li>are all terms defined?</li>
-            <li>does each claim have support?</li>
-            <li>are there contradictions?</li>
+            @for (item of footerIntroBullets; track item) {
+              <li>{{ item }}</li>
+            }
           </ul>
-          <div class="pdm-site-footer__example">
-            <p class="pdm-site-footer__example-label">Example</p>
-            <p class="pdm-site-footer__example-line">
-              <span class="pdm-site-footer__example-key">Input:</span>
-              “Company policy overrides statutory law in all cases.”
+          <div
+            class="pdm-site-footer__preview-card"
+            [class.pdm-site-footer__preview-card--static]="prefersReducedMotion()"
+            #previewCard
+          >
+            <div class="pdm-site-footer__preview-head">
+              <p class="pdm-site-footer__preview-label">Live runtime preview</p>
+            </div>
+            @let preview = activePreview();
+            <div class="pdm-site-footer__preview-body">
+              <p class="pdm-site-footer__preview-input pdm-mono">
+                {{ displayedInput() }}
+              </p>
+              <div
+                class="pdm-site-footer__preview-result"
+                [class.pdm-site-footer__preview-result--visible]="showOutcome()"
+              >
+                <span class="pdm-site-footer__preview-key">Outcome</span>
+                <span class="pdm-site-footer__preview-value">{{ preview.outcome }}</span>
+              </div>
+              @if (preview.reason) {
+                <p
+                  class="pdm-site-footer__preview-reason"
+                  [class.pdm-site-footer__preview-reason--visible]="showReason()"
+                >
+                  <span class="pdm-site-footer__preview-key">Reason</span>
+                  <span class="pdm-site-footer__preview-value">{{ preview.reason }}</span>
+                </p>
+              }
+            </div>
+          </div>
+          <div class="pdm-site-footer__safety-note" aria-label="Footer motto">
+            <p class="pdm-site-footer__safety-note-line pdm-site-footer__safety-note-line--primary">
+              Fails safely.
             </p>
-            <p class="pdm-site-footer__example-line">
-              <span class="pdm-site-footer__example-key">Result:</span>
-              Invalid — contradicts defined legal hierarchy.
+            <p class="pdm-site-footer__safety-note-line pdm-site-footer__safety-note-line--secondary">
+              <span class="pdm-site-footer__safety-note-signal">Never drifts.</span>
             </p>
           </div>
-          <p class="pdm-site-footer__support">
-            If the system cannot map the input to known concepts, it refuses instead of guessing.
-            <br />
-            Refusal is a correct outcome, not a failure.
-          </p>
-          <p class="pdm-site-footer__trust-anchor">
-            Every output is traceable, bounded, and derived only from defined concepts.
-            <br />
-            No hidden reasoning. No probabilistic guesses.
-          </p>
-        </div>
-        <div class="pdm-site-footer__meta">
-          <section class="pdm-site-footer__contact" aria-label="Footer contact">
-            <p class="pdm-site-footer__contact-label">Contact</p>
-            <a class="pdm-site-footer__contact-link" [href]="'mailto:' + contactEmail">{{ contactEmail }}</a>
-          </section>
-
-          <p class="pdm-site-footer__credit">
-            Built by Serhat Soruklu, founder of
-            <a
-              class="pdm-site-footer__credit-link"
-              [href]="coupynProfileUrl"
-              target="_blank"
-              rel="noopener noreferrer"
-              [pdmTooltip]="coupynProfileLabel"
-            >
-              Coupyn
-            </a>
-            .
-          </p>
-          <p class="pdm-site-footer__orcid">
-            <a
-              class="pdm-site-footer__orcid-link"
-              [href]="orcidProfileUrl"
-              target="_blank"
-              rel="me noopener noreferrer"
-              [pdmTooltip]="orcidProfileLabel"
-              [attr.aria-label]="orcidProfileLabel"
-            >
-              <img
-                class="pdm-site-footer__orcid-icon"
-                [src]="orcidIconPath"
-                alt=""
-                aria-hidden="true"
-                width="16"
-                height="16"
-                loading="lazy"
-                decoding="async"
-              />
-              <span class="pdm-site-footer__orcid-text">ORCID iD</span>
-            </a>
-          </p>
         </div>
       </section>
 
-      <nav class="pdm-site-footer__grid" aria-label="System footer">
-        @for (column of footerColumns; track column.title) {
-          <section
-            class="pdm-site-footer__column"
-            [class.pdm-site-footer__column--secondary]="column.tone === 'secondary'"
-          >
-            <h3>{{ column.title }}</h3>
-            @for (link of column.links; track link.route + link.label) {
-              <a [routerLink]="link.route" [fragment]="link.fragment">{{ link.label }}</a>
+      <div class="pdm-site-footer__nav-zones">
+        <nav class="pdm-site-footer__nav-zone" aria-label="System and runtime">
+          @for (column of systemRuntimeColumns; track column.title) {
+            <section class="pdm-site-footer__column">
+              <h3>{{ column.title }}</h3>
+              @for (link of column.links; track link.route + link.label) {
+                <a
+                  [routerLink]="link.route"
+                  [fragment]="link.fragment"
+                  [class.pdm-site-footer__column-link--featured]="link.featured === true"
+                >
+                  {{ link.label }}
+                </a>
+              }
+            </section>
+          }
+        </nav>
+
+        <nav class="pdm-site-footer__nav-zone pdm-site-footer__nav-zone--secondary" aria-label="Legal and contact">
+          <section class="pdm-site-footer__column pdm-site-footer__column--secondary">
+            <h3>{{ legalFooterColumn.title }}</h3>
+            @for (link of legalFooterColumn.links; track link.route + link.label) {
+              <a [routerLink]="link.route">{{ link.label }}</a>
             }
           </section>
-        }
-      </nav>
+
+          <section class="pdm-site-footer__meta-block pdm-site-footer__column--secondary" aria-label="Contact">
+            <h3>Contact / Meta</h3>
+            @for (link of contactLinks; track link.route + link.label) {
+              <a class="pdm-site-footer__contact-link" [href]="link.route">{{ link.label }}</a>
+            }
+          </section>
+        </nav>
+      </div>
+    </div>
+
+    <div class="pdm-site-footer__bottom-strip">
+      <p class="pdm-site-footer__credit">
+        {{ footerBuiltByLabel }}
+        <a
+          class="pdm-site-footer__credit-link"
+          [href]="coupynProfileUrl"
+          target="_blank"
+          rel="noopener noreferrer"
+          [pdmTooltip]="coupynProfileLabel"
+        >
+          {{ footerBuiltByLinkLabel }}
+        </a>
+        .
+      </p>
+      <a
+        class="pdm-site-footer__orcid-link"
+        [href]="orcidLink.route"
+        target="_blank"
+        rel="me noopener noreferrer"
+        [pdmTooltip]="orcidProfileLabel"
+        [attr.aria-label]="orcidProfileLabel"
+      >
+        <img
+          class="pdm-site-footer__orcid-icon"
+          [src]="orcidIconPath"
+          alt=""
+          aria-hidden="true"
+          width="16"
+          height="16"
+          loading="lazy"
+          decoding="async"
+        />
+        <span class="pdm-site-footer__orcid-text">ORCID iD</span>
+      </a>
     </div>
 
     <section class="pdm-site-footer__identity" aria-label="Zeroglare identity">

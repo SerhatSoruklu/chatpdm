@@ -1,6 +1,5 @@
 'use strict';
 
-const path = require('node:path');
 const { freezePlainObject } = require('../utils/freezePlainObject');
 const { stableUniqueStrings } = require('../utils/stableUniqueStrings');
 const { stableDeterministicStringify } = require('../utils/stableDeterministicStringify');

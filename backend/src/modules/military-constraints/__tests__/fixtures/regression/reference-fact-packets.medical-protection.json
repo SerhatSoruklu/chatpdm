@@ -1,0 +1,237 @@
+[
+  {
+    "caseId": "medical-protected-refusal",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "mil-us-medical-protection-core-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "MED-TEAM-01",
+        "role": "SECURITY_LEAD",
+        "authorityLevelId": "BATTALION"
+      },
+      "action": {
+        "kind": "ENGAGE",
+        "forceLevel": "NON_LETHAL",
+        "method": "ACCESS_CONTROL",
+        "domain": "LAND"
+      },
+      "target": {
+        "id": "HOSPITAL-01",
+        "objectType": "HOSPITAL",
+        "protectedClass": "MEDICAL",
+        "lossOfProtectionStatus": "NOT_LOST",
+        "militaryObjectiveStatus": "CONFIRMED_FALSE",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "HOSPITAL-SECURITY-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "ACCESS_CONTROL",
+        "operationalSlice": "MEDICAL_PROTECTION",
+        "coalitionMode": "NATIONAL",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "UNRESOLVED"
+      },
+      "civilianRisk": {
+        "civilianPresence": true,
+        "civilianObjectPresence": true,
+        "estimatedIncidentalHarm": "HIGH",
+        "feasiblePrecautionsTaken": false,
+        "expectedMilitaryAdvantage": "LOW",
+        "estimatedIncidentalHarmScore": 85,
+        "expectedMilitaryAdvantageScore": 15
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedRoeActive": true,
+        "designatedActionAuthorized": false
+      }
+    }
+  },
+  {
+    "caseId": "medical-missing-loss-of-protection",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "mil-us-medical-protection-core-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "MED-TEAM-01",
+        "role": "SECURITY_LEAD",
+        "authorityLevelId": "BATTALION"
+      },
+      "action": {
+        "kind": "ENGAGE",
+        "forceLevel": "NON_LETHAL",
+        "method": "ACCESS_CONTROL",
+        "domain": "LAND"
+      },
+      "target": {
+        "id": "HOSPITAL-01",
+        "objectType": "HOSPITAL",
+        "protectedClass": "MEDICAL",
+        "militaryObjectiveStatus": "CONFIRMED_FALSE",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "HOSPITAL-SECURITY-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "ACCESS_CONTROL",
+        "operationalSlice": "MEDICAL_PROTECTION",
+        "coalitionMode": "NATIONAL",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "UNRESOLVED"
+      },
+      "civilianRisk": {
+        "civilianPresence": true,
+        "civilianObjectPresence": true,
+        "estimatedIncidentalHarm": "HIGH",
+        "feasiblePrecautionsTaken": false,
+        "expectedMilitaryAdvantage": "LOW",
+        "estimatedIncidentalHarmScore": 85,
+        "expectedMilitaryAdvantageScore": 15
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedRoeActive": true,
+        "designatedActionAuthorized": false
+      }
+    }
+  },
+  {
+    "caseId": "medical-unauthorized-confirmed-loss",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "mil-us-medical-protection-core-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "MED-TEAM-01",
+        "role": "SECURITY_LEAD",
+        "authorityLevelId": "BATTALION"
+      },
+      "action": {
+        "kind": "ENGAGE",
+        "forceLevel": "NON_LETHAL",
+        "method": "ACCESS_CONTROL",
+        "domain": "LAND"
+      },
+      "target": {
+        "id": "HOSPITAL-01",
+        "objectType": "HOSPITAL",
+        "protectedClass": "MEDICAL",
+        "lossOfProtectionStatus": "CONFIRMED_TRUE",
+        "militaryObjectiveStatus": "CONFIRMED_FALSE",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "HOSPITAL-SECURITY-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "ACCESS_CONTROL",
+        "operationalSlice": "MEDICAL_PROTECTION",
+        "coalitionMode": "NATIONAL",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "UNRESOLVED"
+      },
+      "civilianRisk": {
+        "civilianPresence": true,
+        "civilianObjectPresence": true,
+        "estimatedIncidentalHarm": "HIGH",
+        "feasiblePrecautionsTaken": false,
+        "expectedMilitaryAdvantage": "LOW",
+        "estimatedIncidentalHarmScore": 85,
+        "expectedMilitaryAdvantageScore": 15
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedRoeActive": true,
+        "designatedActionAuthorized": false
+      }
+    }
+  },
+  {
+    "caseId": "medical-authorized-confirmed-loss",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "mil-us-medical-protection-core-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "MED-TEAM-01",
+        "role": "SECURITY_LEAD",
+        "authorityLevelId": "BATTALION"
+      },
+      "action": {
+        "kind": "ENGAGE",
+        "forceLevel": "NON_LETHAL",
+        "method": "ACCESS_CONTROL",
+        "domain": "LAND"
+      },
+      "target": {
+        "id": "HOSPITAL-01",
+        "objectType": "HOSPITAL",
+        "protectedClass": "MEDICAL",
+        "lossOfProtectionStatus": "CONFIRMED_TRUE",
+        "militaryObjectiveStatus": "CONFIRMED_FALSE",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "HOSPITAL-SECURITY-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "ACCESS_CONTROL",
+        "operationalSlice": "MEDICAL_PROTECTION",
+        "coalitionMode": "NATIONAL",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "UNRESOLVED"
+      },
+      "civilianRisk": {
+        "civilianPresence": true,
+        "civilianObjectPresence": true,
+        "estimatedIncidentalHarm": "HIGH",
+        "feasiblePrecautionsTaken": false,
+        "expectedMilitaryAdvantage": "LOW",
+        "estimatedIncidentalHarmScore": 85,
+        "expectedMilitaryAdvantageScore": 15
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedRoeActive": true,
+        "designatedActionAuthorized": true
+      }
+    }
+  }
+]

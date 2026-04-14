@@ -1,0 +1,264 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chatpdm.local/schemas/execution-card.schema.json",
+  "title": "Military Constraint Execution Card",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "cardId",
+    "packId",
+    "bundleId",
+    "bundleVersion",
+    "bundleHash",
+    "jurisdiction",
+    "decision",
+    "reasonCode",
+    "failedStage",
+    "failingRuleIds",
+    "missingFactIds",
+    "authorityTrace",
+    "ruleTrace"
+  ],
+  "properties": {
+    "cardId": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "packId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "bundleId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "bundleVersion": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "bundleHash": {
+      "type": "string",
+      "minLength": 1
+    },
+    "jurisdiction": {
+      "type": "string",
+      "minLength": 1
+    },
+    "decision": {
+      "type": "string",
+      "enum": [
+        "ALLOWED",
+        "REFUSED",
+        "REFUSED_INCOMPLETE"
+      ]
+    },
+    "reasonCode": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "AUTHORITY_INVALID",
+            "AUTHORITY_UNRESOLVED",
+            "BUNDLE_HASH_MISMATCH",
+            "BUNDLE_VERSION_IMMUTABLE_VIOLATION",
+            "CIVILIAN_RISK_UNRESOLVED",
+            "COALITION_RULE_CONFLICT",
+            "EXCESSIVE_INCIDENTAL_HARM_RISK",
+            "FACT_PACKET_INVALID",
+            "FORCE_LEVEL_NOT_AUTHORIZED",
+            "HORS_DE_COMBAT_PROTECTED",
+            "ILLEGAL_OVERLAY",
+            "MISSING_REQUIRED_FACT",
+            "NATIONAL_CAVEAT_BLOCK",
+            "NOT_A_MILITARY_OBJECTIVE",
+            "PREDICATE_INVALID",
+            "PREDICATE_OPERAND_TYPE_INVALID",
+            "POLICY_BUNDLE_INVALID",
+            "PROHIBITED_TARGET",
+            "RESERVED_TO_HIGHER_COMMAND",
+            "RULE_CONFLICT",
+            "RULE_SHAPE_INVALID",
+            "SCOPE_VIOLATION"
+          ]
+        }
+      ]
+    },
+    "failedStage": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "ADMISSIBILITY",
+            "LEGAL_FLOOR",
+            "POLICY_OVERLAY",
+            "BUNDLE_INTEGRITY"
+          ]
+        }
+      ]
+    },
+    "failingRuleIds": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "missingFactIds": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "authorityTrace": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "valid",
+        "reasonCode",
+        "errors",
+        "authorityGraphId"
+      ],
+      "properties": {
+        "valid": {
+          "type": "boolean"
+        },
+        "reasonCode": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "enum": [
+                "AUTHORITY_INVALID",
+                "AUTHORITY_UNRESOLVED",
+                "BUNDLE_HASH_MISMATCH",
+                "BUNDLE_VERSION_IMMUTABLE_VIOLATION",
+                "CIVILIAN_RISK_UNRESOLVED",
+                "COALITION_RULE_CONFLICT",
+                "EXCESSIVE_INCIDENTAL_HARM_RISK",
+                "FACT_PACKET_INVALID",
+                "FORCE_LEVEL_NOT_AUTHORIZED",
+                "HORS_DE_COMBAT_PROTECTED",
+                "ILLEGAL_OVERLAY",
+                "MISSING_REQUIRED_FACT",
+                "NATIONAL_CAVEAT_BLOCK",
+                "NOT_A_MILITARY_OBJECTIVE",
+                "PREDICATE_INVALID",
+                "PREDICATE_OPERAND_TYPE_INVALID",
+                "POLICY_BUNDLE_INVALID",
+                "PROHIBITED_TARGET",
+                "RESERVED_TO_HIGHER_COMMAND",
+                "RULE_CONFLICT",
+                "RULE_SHAPE_INVALID",
+                "SCOPE_VIOLATION"
+              ]
+            }
+          ]
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "authorityGraphId": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "ruleTrace": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "ruleId",
+          "stage",
+          "priority",
+          "outcome",
+          "matched",
+          "missingFactIds",
+          "usedFacts"
+        ],
+        "properties": {
+          "ruleId": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "minLength": 1
+              }
+            ]
+          },
+          "stage": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "ADMISSIBILITY",
+                  "LEGAL_FLOOR",
+                  "POLICY_OVERLAY"
+                ]
+              }
+            ]
+          },
+          "priority": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "integer"
+              }
+            ]
+          },
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "NOT_APPLICABLE",
+              "NO_MATCH",
+              "REFUSED_INCOMPLETE",
+              "MATCHED_EFFECT"
+            ]
+          },
+          "matched": {
+            "type": "boolean"
+          },
+          "missingFactIds": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "usedFacts": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      }
+    }
+  }
+}

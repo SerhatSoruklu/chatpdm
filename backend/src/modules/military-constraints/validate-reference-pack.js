@@ -9,7 +9,6 @@ const {
 const { isPlainObject } = require('./fact-schema-utils');
 const { validateReviewedClauseCorpus } = require('./validate-reviewed-clause-corpus');
 const {
-  getRegressionFixturePath,
   getReviewedClauseSetPath,
   readJsonFile,
   resolveModuleRoot,
@@ -49,7 +48,7 @@ function readManifest(manifestPath) {
   try {
     const manifest = readJsonFile(manifestPath);
     return isPlainObject(manifest) ? manifest : null;
-  } catch (error) {
+  } catch {
     return null;
   }
 }

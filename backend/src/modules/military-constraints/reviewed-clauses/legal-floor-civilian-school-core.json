@@ -1,0 +1,340 @@
+[
+  {
+    "clauseId": "CL-CIV-ADM-001",
+    "sourceId": "DOD-LOW-2023",
+    "locator": "chapter-5/civilian-school-classification",
+    "jurisdiction": "US",
+    "layer": "LEGAL_FLOOR",
+    "clauseType": "REQUIREMENT",
+    "rawText": "School-type civilian objects require explicit protected-class classification before review.",
+    "normalizedText": "If target.objectType is a school-type civilian object and target.protectedClass is missing, refuse incompletely.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Admissibility blocker for unresolved civilian-school protected-class classification.",
+    "compilationHint": {
+      "stage": "ADMISSIBILITY",
+      "priority": 1900,
+      "effect": {
+        "decision": "REFUSED_INCOMPLETE",
+        "reasonCode": "MISSING_REQUIRED_FACT"
+      },
+      "scope": {
+        "jurisdiction": "US",
+        "domains": [
+          "LAND",
+          "AIR",
+          "MARITIME"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "STRIKE",
+          "ENGAGE",
+          "FIRE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "PLATOON",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "target.objectType"
+      ],
+      "predicate": {
+        "all": [
+          {
+            "in": [
+              {
+                "fact": "target.objectType"
+              },
+              {
+                "value": [
+                  "SCHOOL",
+                  "EDUCATIONAL_FACILITY",
+                  "CIVILIAN_CAMPUS"
+                ]
+              }
+            ]
+          },
+          {
+            "not_exists": [
+              {
+                "fact": "target.protectedClass"
+              }
+            ]
+          }
+        ]
+      },
+      "notes": "Pack 4 civilian-school protected-class blocker."
+    }
+  },
+  {
+    "clauseId": "CL-CIV-ADM-002",
+    "sourceId": "DOD-LOW-2023",
+    "locator": "chapter-5/civilian-school-objective-status",
+    "jurisdiction": "US",
+    "layer": "LEGAL_FLOOR",
+    "clauseType": "REQUIREMENT",
+    "rawText": "School-type civilian objects require explicit military-objective status before continuation.",
+    "normalizedText": "If target.objectType is a school-type civilian object and target.protectedClass is CIVILIAN or CIVILIAN_OBJECT and target.militaryObjectiveStatus is missing, refuse incompletely.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Admissibility blocker for unresolved civilian-school military-objective status.",
+    "compilationHint": {
+      "stage": "ADMISSIBILITY",
+      "priority": 1800,
+      "effect": {
+        "decision": "REFUSED_INCOMPLETE",
+        "reasonCode": "MISSING_REQUIRED_FACT"
+      },
+      "scope": {
+        "jurisdiction": "US",
+        "domains": [
+          "LAND",
+          "AIR",
+          "MARITIME"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "STRIKE",
+          "ENGAGE",
+          "FIRE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "PLATOON",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "target.objectType",
+        "target.protectedClass"
+      ],
+      "predicate": {
+        "all": [
+          {
+            "in": [
+              {
+                "fact": "target.objectType"
+              },
+              {
+                "value": [
+                  "SCHOOL",
+                  "EDUCATIONAL_FACILITY",
+                  "CIVILIAN_CAMPUS"
+                ]
+              }
+            ]
+          },
+          {
+            "in": [
+              {
+                "fact": "target.protectedClass"
+              },
+              {
+                "value": [
+                  "CIVILIAN",
+                  "CIVILIAN_OBJECT"
+                ]
+              }
+            ]
+          },
+          {
+            "not_exists": [
+              {
+                "fact": "target.militaryObjectiveStatus"
+              }
+            ]
+          }
+        ]
+      },
+      "notes": "Pack 4 missing military-objective blocker."
+    }
+  },
+  {
+    "clauseId": "CL-CIV-LF-001",
+    "sourceId": "DOD-LOW-2023",
+    "locator": "chapter-5/civilian-school-default-protection",
+    "jurisdiction": "US",
+    "layer": "LEGAL_FLOOR",
+    "clauseType": "REQUIREMENT",
+    "rawText": "Civilian school objects remain protected unless military-objective status is confirmed.",
+    "normalizedText": "If target.objectType is a school-type civilian object and target.protectedClass is CIVILIAN or CIVILIAN_OBJECT and target.militaryObjectiveStatus is not CONFIRMED_TRUE, refuse.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Core protected-object refusal rule for Pack 4.",
+    "compilationHint": {
+      "stage": "LEGAL_FLOOR",
+      "priority": 1700,
+      "effect": {
+        "decision": "REFUSED",
+        "reasonCode": "PROHIBITED_TARGET"
+      },
+      "scope": {
+        "jurisdiction": "US",
+        "domains": [
+          "LAND",
+          "AIR",
+          "MARITIME"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "STRIKE",
+          "ENGAGE",
+          "FIRE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "PLATOON",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "target.objectType",
+        "target.protectedClass",
+        "target.militaryObjectiveStatus"
+      ],
+      "predicate": {
+        "all": [
+          {
+            "in": [
+              {
+                "fact": "target.objectType"
+              },
+              {
+                "value": [
+                  "SCHOOL",
+                  "EDUCATIONAL_FACILITY",
+                  "CIVILIAN_CAMPUS"
+                ]
+              }
+            ]
+          },
+          {
+            "in": [
+              {
+                "fact": "target.protectedClass"
+              },
+              {
+                "value": [
+                  "CIVILIAN",
+                  "CIVILIAN_OBJECT"
+                ]
+              }
+            ]
+          },
+          {
+            "neq": [
+              {
+                "fact": "target.militaryObjectiveStatus"
+              },
+              {
+                "value": "CONFIRMED_TRUE"
+              }
+            ]
+          }
+        ]
+      },
+      "notes": "Pack 4 default civilian-school refusal rule."
+    }
+  },
+  {
+    "clauseId": "CL-CIV-LF-002",
+    "sourceId": "DOD-LOW-2023",
+    "locator": "chapter-5/civilian-school-explicit-continuation",
+    "jurisdiction": "US",
+    "layer": "LEGAL_FLOOR",
+    "clauseType": "REQUIREMENT",
+    "rawText": "Confirmed military-objective status allows the civilian-school slice to continue to later gates.",
+    "normalizedText": "If target.objectType is a school-type civilian object and target.protectedClass is CIVILIAN or CIVILIAN_OBJECT and target.militaryObjectiveStatus is CONFIRMED_TRUE, evaluation may continue.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Continuation gate for the Pack 4 civilian-school slice.",
+    "compilationHint": {
+      "stage": "LEGAL_FLOOR",
+      "priority": 1600,
+      "effect": {
+        "decision": "ALLOWED",
+        "reasonCode": "MISSING_REQUIRED_FACT"
+      },
+      "scope": {
+        "jurisdiction": "US",
+        "domains": [
+          "LAND",
+          "AIR",
+          "MARITIME"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "STRIKE",
+          "ENGAGE",
+          "FIRE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "PLATOON",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "target.objectType",
+        "target.protectedClass",
+        "target.militaryObjectiveStatus"
+      ],
+      "predicate": {
+        "all": [
+          {
+            "in": [
+              {
+                "fact": "target.objectType"
+              },
+              {
+                "value": [
+                  "SCHOOL",
+                  "EDUCATIONAL_FACILITY",
+                  "CIVILIAN_CAMPUS"
+                ]
+              }
+            ]
+          },
+          {
+            "in": [
+              {
+                "fact": "target.protectedClass"
+              },
+              {
+                "value": [
+                  "CIVILIAN",
+                  "CIVILIAN_OBJECT"
+                ]
+              }
+            ]
+          },
+          {
+            "eq": [
+              {
+                "fact": "target.militaryObjectiveStatus"
+              },
+              {
+                "value": "CONFIRMED_TRUE"
+              }
+            ]
+          }
+        ]
+      },
+      "notes": "Pack 4 explicit continuation gate."
+    }
+  }
+]

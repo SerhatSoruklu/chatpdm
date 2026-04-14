@@ -10,13 +10,8 @@ const {
 const { evaluateRule } = require('./evaluate-rule');
 const {
   isPlainObject,
-  resolveFactPath,
   validateFactPacket,
 } = require('./fact-schema-utils');
-
-function cloneJson(value) {
-  return JSON.parse(JSON.stringify(value));
-}
 
 function sortByEvaluationOrder(rules, stageOrder) {
   const stageIndex = new Map(stageOrder.map((stage, index) => [stage, index]));

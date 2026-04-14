@@ -2,13 +2,39 @@
   <main class="pdm-vision__main pdm-shell" aria-labelledby="pdm-vision-title">
     <div class="pdm-shell__frame pdm-vision__frame">
       <section class="pdm-vision__hero pdm-site-surface pdm-site-panel">
-        <p class="pdm-vision__eyebrow">Vision</p>
-        <h1 class="pdm-vision__title" id="pdm-vision-title">Infrastructure for authored concepts.</h1>
-        <p class="pdm-vision__subtitle">
-          ChatPDM is being built as long-term concept infrastructure. Not to control information.
-          Not to claim universal authority. But to make concepts reliable enough for systems to
-          depend on without ambiguity.
-        </p>
+        <div class="pdm-vision__hero-copy">
+          <p class="pdm-vision__eyebrow">Vision</p>
+          <h1 class="pdm-vision__title" id="pdm-vision-title">Infrastructure for authored concepts.</h1>
+          <p class="pdm-vision__subtitle">
+            ChatPDM is being built as long-term concept infrastructure. Not to control information.
+            Not to claim universal authority. But to make concepts reliable enough for systems to
+            depend on without ambiguity.
+          </p>
+        </div>
+
+        <figure class="pdm-vision__hero-visual">
+          <button
+            type="button"
+            class="pdm-vision__hero-image-button"
+            (click)="openHeroImageDialog()"
+            [attr.aria-label]="'Open the vision reference image in a dialog'"
+          >
+            <span class="pdm-vision__hero-image-badge">Open full image</span>
+            <span class="pdm-vision__hero-image-shell">
+              <img
+                class="pdm-vision__hero-image"
+                [src]="heroImagePath"
+                [alt]="heroImageAlt"
+                width="676"
+                height="1024"
+                loading="eager"
+                fetchpriority="high"
+                decoding="async"
+              />
+            </span>
+          </button>
+          <figcaption class="pdm-vision__hero-visual-caption">{{ heroImageCaption }}</figcaption>
+        </figure>
       </section>
 
       <section class="pdm-vision__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-vision-now">
@@ -23,6 +49,30 @@
               <p class="pdm-vision__signal-copy">{{ signal }}</p>
             </article>
           }
+        </div>
+      </section>
+
+      <section class="pdm-vision__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-vision-confidence">
+        <div class="pdm-vision__section-head">
+          <p class="pdm-vision__section-label">Confidence wording</p>
+          <h2 class="pdm-vision__section-title" id="pdm-vision-confidence">Some outputs sound trustworthy before they are trustworthy.</h2>
+        </div>
+
+        <p class="pdm-vision__copy">
+          A statement can be fluent, certain, and well-structured while still lacking support, scope,
+          or boundary clarity. This is one reason confident wording can distort judgment: tone can
+          make a claim feel resolved before it has actually been validated.
+        </p>
+
+        <p class="pdm-vision__copy">
+          ChatPDM is not being built to sound convincing. It is being built to keep confidence
+          subordinate to structure, evidence, and admission rules.
+        </p>
+
+        <div class="pdm-vision__chip-row" aria-label="Confidence wording takeaways">
+          <span class="pdm-vision__chip pdm-site-chip">Confidence is not evidence</span>
+          <span class="pdm-vision__chip pdm-site-chip">Fluency is not validation</span>
+          <span class="pdm-vision__chip pdm-site-chip">Certainty is not scope</span>
         </div>
       </section>
 

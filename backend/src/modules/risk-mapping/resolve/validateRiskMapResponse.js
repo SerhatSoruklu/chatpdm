@@ -93,7 +93,7 @@ function validateRiskMapResponse(value) {
         if (!arraysEqual(uniqueSorted, /** @type {string[]} */ (diagnostics[fieldName]))) {
           errors.push(`diagnostics.${fieldName} must be sorted and deduplicated.`);
         }
-      } catch (error) {
+      } catch {
         errors.push(`diagnostics.${fieldName} must contain only strings.`);
       }
     }

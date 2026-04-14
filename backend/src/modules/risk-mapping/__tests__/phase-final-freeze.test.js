@@ -1,6 +1,5 @@
 'use strict';
 
-const fs = require('node:fs');
 const path = require('node:path');
 const http = require('node:http');
 const test = require('node:test');
@@ -99,4 +98,3 @@ test('freeze surface route shapes remain exact and bounded', async () => {
     await new Promise((resolve) => server.close(resolve));
   }
 });
-

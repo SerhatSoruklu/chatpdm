@@ -302,11 +302,6 @@ function buildRequirementRule(clause, sourceEntry, compilerVersion, result) {
     return null;
   }
 
-  if (hint.effect && hint.effect.decision !== 'ALLOWED') {
-    fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `requirement clause ${clause.clauseId} must compile to an ALLOWED effect.`);
-    return null;
-  }
-
   if (!Array.isArray(hint.requiredFacts) || hint.requiredFacts.length === 0) {
     fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `requirement clause ${clause.clauseId} requires non-empty requiredFacts in the compilationHint.`);
     return null;
@@ -428,8 +423,13 @@ function compileClauseToRule(input) {
   }
 
   if (clause.layer === 'POLICY_OVERLAY') {
+    if (clause.clauseType === 'REQUIREMENT') {
+      result.compiledRule = buildRequirementRule(clause, sourceEntry, compilerVersion, result);
+      return finish(result);
+    }
+
     if (clause.clauseType !== 'AUTHORITY_GATE') {
-      fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `policy-overlay clauses only compile from AUTHORITY_GATE clauses in this bridge.`);
+      fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `policy-overlay clauses only compile from REQUIREMENT or AUTHORITY_GATE clauses in this bridge.`);
       return finish(result);
     }
 

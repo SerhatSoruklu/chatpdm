@@ -17,7 +17,7 @@ function main(): void {
     'Cookies must not gain terms truth rows.',
   );
 
-  assert.equal(termsTruth.endpointContracts.length, 7);
+  assert.equal(termsTruth.endpointContracts.length, 8);
   assert.equal(termsTruth.fieldContracts.length, 22);
   assert.equal(termsTruth.platformRules.length, 1);
   assert.equal(termsTruth.runtimeBoundaries.length, 1);
@@ -26,6 +26,13 @@ function main(): void {
   assert.deepEqual(
     termsTruth.endpointContracts,
     [
+      {
+        claimId: 'terms-40',
+        operation: 'concept_discovery',
+        method: 'GET',
+        path: '/api/v1/concepts',
+        evidence: POLICY_SURFACE_DATA.terms.claims.find((claim) => claim.id === 'terms-40')!.traces,
+      },
       {
         claimId: 'terms-1',
         operation: 'concept_resolution',

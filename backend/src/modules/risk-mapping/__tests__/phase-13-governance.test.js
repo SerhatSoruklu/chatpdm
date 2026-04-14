@@ -15,7 +15,6 @@ const { validateArtifactCompatibility } = require('../governance/validateArtifac
 const { evaluateReleaseAdmission } = require('../governance/evaluateReleaseAdmission');
 const { buildGovernanceReport } = require('../governance/buildGovernanceReport');
 const { inspectRiskMapGovernanceReport } = require('../inspect/inspectRiskMapGovernanceReport');
-const { inspectRiskMapArtifactDiff } = require('../inspect/inspectRiskMapArtifactDiff');
 const { buildRegistryHashFromArtifacts } = require('../utils/buildRegistryHash');
 const { safeJsonRead } = require('../utils/safeJsonRead');
 const validateGovernanceScript = require('../../../../scripts/risk-mapping/validate-risk-mapping-governance');
@@ -28,7 +27,6 @@ const GOVERNANCE_REPLAY_FIXTURE_PATH = path.resolve(
 );
 const GOVERNANCE_REPORT_PATH = validateGovernanceScript.GOVERNANCE_REPORT_PATH;
 const ARTIFACT_DIFF_REPORT_PATH = diffGovernanceScript.ARTIFACT_DIFF_REPORT_PATH;
-const FROZEN_RELEASE_REPORT_PATH = freezeGovernanceScript.FROZEN_RELEASE_REPORT_PATH;
 
 function startServer() {
   return new Promise((resolve) => {
@@ -49,10 +47,6 @@ async function fetchJson(url) {
     status: response.status,
     body: await response.json(),
   };
-}
-
-function clone(value) {
-  return JSON.parse(JSON.stringify(value));
 }
 
 test('governance manifest loads and validates successfully', () => {

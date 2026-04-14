@@ -1,0 +1,157 @@
+[
+  {
+    "clauseId": "CL-CIV-PO-001",
+    "sourceId": "NEWPORT-ROE-2022",
+    "locator": "authoring-flow/civilian-school-scope",
+    "jurisdiction": "US",
+    "layer": "POLICY_OVERLAY",
+    "clauseType": "REQUIREMENT",
+    "rawText": "The civilian-school protection slice applies only when the designated ROE is active in a land-domain armed-conflict context.",
+    "normalizedText": "If context.operationalSlice is CIVILIAN_SCHOOL_PROTECTION, authority.designatedRoeActive is true, action.domain is LAND, and context.missionType is ARMED_CONFLICT, evaluation may proceed.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Scope gate for the Pack 4 civilian-school slice.",
+    "compilationHint": {
+      "stage": "POLICY_OVERLAY",
+      "priority": 1400,
+      "effect": {
+        "decision": "REFUSED",
+        "reasonCode": "SCOPE_VIOLATION"
+      },
+      "scope": {
+        "jurisdiction": "US",
+        "domains": [
+          "LAND"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "STRIKE",
+          "ENGAGE",
+          "FIRE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "PLATOON",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "context.operationalSlice",
+        "authority.designatedRoeActive",
+        "action.domain",
+        "context.missionType"
+      ],
+      "predicate": {
+        "not": {
+          "all": [
+            {
+              "eq": [
+                {
+                  "fact": "context.operationalSlice"
+                },
+                {
+                  "value": "CIVILIAN_SCHOOL_PROTECTION"
+                }
+              ]
+            },
+            {
+              "eq": [
+                {
+                  "fact": "authority.designatedRoeActive"
+                },
+                {
+                  "value": true
+                }
+              ]
+            },
+            {
+              "eq": [
+                {
+                  "fact": "action.domain"
+                },
+                {
+                  "value": "LAND"
+                }
+              ]
+            },
+            {
+              "eq": [
+                {
+                  "fact": "context.missionType"
+                },
+                {
+                  "value": "ARMED_CONFLICT"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "notes": "Pack 4 scope restriction for the civilian-school slice."
+    }
+  },
+  {
+    "clauseId": "CL-CIV-PO-002",
+    "sourceId": "NEWPORT-ROE-2022",
+    "locator": "authoring-flow/civilian-school-action-kind-limit",
+    "jurisdiction": "US",
+    "layer": "POLICY_OVERLAY",
+    "clauseType": "REQUIREMENT",
+    "rawText": "Only a narrow set of action kinds remain admissible within the civilian-school protection slice.",
+    "normalizedText": "If action.kind is outside the civilian-school action set, refuse.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Action-kind gate for the Pack 4 civilian-school slice.",
+    "compilationHint": {
+      "stage": "POLICY_OVERLAY",
+      "priority": 1300,
+      "effect": {
+        "decision": "REFUSED",
+        "reasonCode": "SCOPE_VIOLATION"
+      },
+      "scope": {
+        "jurisdiction": "US",
+        "domains": [
+          "LAND",
+          "AIR",
+          "MARITIME"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "STRIKE",
+          "ENGAGE",
+          "FIRE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "PLATOON",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "action.kind"
+      ],
+      "predicate": {
+        "not_in": [
+          {
+            "fact": "action.kind"
+          },
+          {
+            "value": [
+              "STRIKE",
+              "ENGAGE",
+              "FIRE"
+            ]
+          }
+        ]
+      },
+      "notes": "Pack 4 action-kind restriction."
+    }
+  }
+]

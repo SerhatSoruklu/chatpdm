@@ -1,0 +1,128 @@
+app-vision-page-image-dialog {
+  display: block;
+}
+
+.pdm-vision-image-dialog-panel .mat-mdc-dialog-surface {
+  overflow: hidden;
+  border-radius: 30px;
+  background: #ffffff;
+}
+
+.pdm-vision-image-dialog-panel .mat-mdc-dialog-container {
+  padding: 0;
+}
+
+.pdm-vision-image-dialog {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: min(100%, 1240px);
+  max-height: calc(100dvh - 24px);
+  padding: clamp(16px, 2.5vw, 28px);
+  box-sizing: border-box;
+  color: #0f172a;
+}
+
+.pdm-vision-image-dialog__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.pdm-vision-image-dialog__title-group {
+  display: grid;
+  gap: 6px;
+}
+
+.pdm-vision-image-dialog__eyebrow {
+  margin: 0;
+  color: #2563eb;
+  font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pdm-vision-image-dialog__title {
+  margin: 0;
+  color: #0f172a;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: clamp(1.3rem, 2vw, 1.8rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.04em;
+}
+
+.pdm-vision-image-dialog__close {
+  appearance: none;
+  cursor: pointer;
+  min-height: 2.5rem;
+  padding: 0.55rem 0.95rem;
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #1e293b;
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.pdm-vision-image-dialog__close:hover,
+.pdm-vision-image-dialog__close:focus-visible {
+  border-color: rgba(37, 99, 235, 0.28);
+  color: #1d4ed8;
+}
+
+.pdm-vision-image-dialog__body {
+  min-height: 0;
+  overflow: auto;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 24px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(241, 245, 249, 0.92)),
+    rgba(255, 255, 255, 0.92);
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.03),
+    0 18px 36px rgba(15, 23, 42, 0.08);
+}
+
+.pdm-vision-image-dialog__image {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+}
+
+.pdm-vision-image-dialog__caption {
+  margin: 0;
+  color: #475569;
+  font-size: 0.96rem;
+  line-height: 1.7;
+}
+
+@media (max-width: 839px) {
+  .pdm-vision-image-dialog {
+    gap: 16px;
+    padding: 14px;
+    max-height: calc(100dvh - 24px);
+  }
+
+  .pdm-vision-image-dialog__header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .pdm-vision-image-dialog__close {
+    align-self: flex-end;
+  }
+
+  .pdm-vision-image-dialog__title {
+    font-size: clamp(1.1rem, 5vw, 1.5rem);
+  }
+
+  .pdm-vision-image-dialog__caption {
+    font-size: 0.92rem;
+  }
+}

@@ -243,29 +243,16 @@
   color: #0f172a;
 }
 
+.pdm-home__title-line {
+  display: block;
+}
+
 .pdm-home__support-line {
-  max-width: 34rem;
+  max-width: 32rem;
   margin: 18px 0 0;
   color: #1f2937;
   font-size: clamp(1rem, 1.6vw, 1.14rem);
   font-weight: 600;
-}
-
-.pdm-home__lead {
-  max-width: 40rem;
-  margin: 18px 0 0;
-  color: #334155;
-  font-size: clamp(1.02rem, 1.44vw, 1.14rem);
-  line-height: 1.68;
-}
-
-.pdm-home__lead--secondary {
-  color: #526277;
-}
-
-.pdm-home__lead--scope {
-  margin-top: 2px;
-  opacity: 0.88;
 }
 
 .pdm-home__hero-query {
@@ -283,6 +270,10 @@
   display: grid;
   gap: 12px;
   align-items: center;
+}
+
+.pdm-home button:not(:disabled) {
+  cursor: pointer;
 }
 
 .pdm-home__hero-input {
@@ -306,6 +297,24 @@
 .pdm-home__hero-input:focus-visible {
   outline: none;
   box-shadow: none;
+}
+
+.pdm-home__hero-input-example {
+  margin: 2px 0 0;
+  color: #526277;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.pdm-home__hero-input-trust {
+  margin: 4px 0 0;
+  color: #475569;
+  font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  font-size: clamp(0.66rem, 1vw, 0.74rem);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  line-height: 1.4;
+  text-transform: uppercase;
 }
 
 .pdm-home__hero-scope {
@@ -436,6 +445,7 @@
 
 .pdm-home__walkthrough-switch-option {
   appearance: none;
+  cursor: pointer;
   min-height: 40px;
   padding: 0 14px;
   border: 1px solid transparent;
@@ -814,6 +824,28 @@
 .pdm-home__result-query {
   display: grid;
   gap: 6px;
+}
+
+.pdm-home__result-reset {
+  appearance: none;
+  width: fit-content;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #1d4ed8;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  line-height: 1.45;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.pdm-home__result-reset:hover,
+.pdm-home__result-reset:focus-visible {
+  color: #1e40af;
+  text-decoration: underline;
+  text-underline-offset: 0.16em;
 }
 
 .pdm-home__result-query-text,

@@ -60,6 +60,7 @@ export type PolicyCookiesTruthBrowserNoteRelevance = 'direct' | 'not_applicable'
 export type PolicyTermsEndpointMethod = 'GET' | 'POST' | 'DELETE';
 
 export type PolicyTermsEndpointOperation =
+  | 'concept_discovery'
   | 'concept_resolution'
   | 'concept_detail'
   | 'feedback_index'

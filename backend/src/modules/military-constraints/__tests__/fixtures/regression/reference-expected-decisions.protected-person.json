@@ -1,0 +1,60 @@
+[
+  {
+    "caseId": "protected-civilian-refusal",
+    "bundleVariant": "reference",
+    "decision": "REFUSED",
+    "reasonCode": "PROHIBITED_TARGET",
+    "failedStage": "LEGAL_FLOOR",
+    "failingRuleIds": [
+      "CR-CL-PER-LF-001"
+    ]
+  },
+  {
+    "caseId": "protected-medical-personnel-refusal",
+    "bundleVariant": "reference",
+    "decision": "REFUSED",
+    "reasonCode": "PROHIBITED_TARGET",
+    "failedStage": "LEGAL_FLOOR",
+    "failingRuleIds": [
+      "CR-CL-PER-LF-002"
+    ]
+  },
+  {
+    "caseId": "protected-missing-direct-participation",
+    "bundleVariant": "reference",
+    "decision": "REFUSED_INCOMPLETE",
+    "reasonCode": "MISSING_REQUIRED_FACT",
+    "failedStage": "ADMISSIBILITY",
+    "failingRuleIds": [
+      "CR-CL-PER-ADM-002"
+    ]
+  },
+  {
+    "caseId": "protected-hors-de-combat-refusal",
+    "bundleVariant": "reference",
+    "decision": "REFUSED",
+    "reasonCode": "HORS_DE_COMBAT_PROTECTED",
+    "failedStage": "LEGAL_FLOOR",
+    "failingRuleIds": [
+      "CR-CL-PER-LF-003"
+    ]
+  },
+  {
+    "caseId": "protected-unauthorized-confirmed-participation",
+    "bundleVariant": "reference",
+    "decision": "REFUSED",
+    "reasonCode": "AUTHORITY_INVALID",
+    "failedStage": "POLICY_OVERLAY",
+    "failingRuleIds": [
+      "CR-CL-PER-AUTH-001"
+    ]
+  },
+  {
+    "caseId": "protected-authorized-confirmed-participation",
+    "bundleVariant": "reference",
+    "decision": "ALLOWED",
+    "reasonCode": null,
+    "failedStage": null,
+    "failingRuleIds": []
+  }
+]

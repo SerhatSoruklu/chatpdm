@@ -84,24 +84,6 @@ const sampleBuckets: VocabularyBoundaryBuckets = {
   rejected_candidate: 535,
 };
 
-const sampleBoundaryResponse = {
-  total: 3,
-  terms: sampleEntries.map((entry) => entry.term),
-  entries: sampleEntries,
-  buckets: sampleBuckets,
-  surfaceCounts: {
-    publishedConceptPackets: 99,
-    liveRuntimeConcepts: 12,
-    visibleOnlyConcepts: 6,
-    rejectedConcepts: 3,
-  },
-} as const;
-
-const sampleBoundaryState = {
-  status: 'ready',
-  data: sampleBoundaryResponse,
-} as const;
-
 describe('VocabularyPage helpers', () => {
   it('filters registry entries by search text across metadata', () => {
     expect(filterVocabularyEntries(sampleEntries, 'burden', 'all').map((entry) => entry.term)).toEqual([

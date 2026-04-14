@@ -16,13 +16,14 @@ const feedbackOptionPattern =
   /^The platform allows feedback option `(?<value>[^`]+)` for `(?<responseType>[^`]+)`\.$/;
 
 const ENDPOINT_CONTRACT_ORDER: ReadonlyMap<string, number> = new Map([
-  ['GET /api/v1/concepts/resolve', 0],
-  ['POST /api/v1/concepts/resolve', 1],
-  ['GET /api/v1/concepts/:conceptId', 2],
-  ['GET /api/v1/feedback', 3],
-  ['POST /api/v1/feedback', 4],
-  ['GET /api/v1/feedback/session/:sessionId/export', 5],
-  ['DELETE /api/v1/feedback/session/:sessionId', 6],
+  ['GET /api/v1/concepts', 0],
+  ['GET /api/v1/concepts/resolve', 1],
+  ['POST /api/v1/concepts/resolve', 2],
+  ['GET /api/v1/concepts/:conceptId', 3],
+  ['GET /api/v1/feedback', 4],
+  ['POST /api/v1/feedback', 5],
+  ['GET /api/v1/feedback/session/:sessionId/export', 6],
+  ['DELETE /api/v1/feedback/session/:sessionId', 7],
 ]);
 
 export function buildPolicyTermsTruth(claims: readonly PolicyClaim[]): PolicyTermsTruth | undefined {
@@ -127,7 +128,9 @@ function resolveEndpointContract(claim: PolicyClaim): PolicyTermsEndpointContrac
   }
 
   const operation =
-    match.groups.operation === 'concept resolution'
+    match.groups.operation === 'concept discovery'
+      ? 'concept_discovery'
+      : match.groups.operation === 'concept resolution'
       ? 'concept_resolution'
       : match.groups.operation === 'concept detail'
         ? 'concept_detail'

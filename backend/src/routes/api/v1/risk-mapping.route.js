@@ -1,7 +1,6 @@
 'use strict';
 
 const { Router } = require('express');
-const { ORGANIZATION_RISK } = require('../../../modules/risk-mapping/constants/rmgDomains');
 const { inspectNodeRegistry } = require('../../../modules/risk-mapping/inspect/inspectNodeRegistry');
 const { inspectThreatRegistry } = require('../../../modules/risk-mapping/inspect/inspectThreatRegistry');
 const { inspectCompatibilityRegistry } = require('../../../modules/risk-mapping/inspect/inspectCompatibilityRegistry');
@@ -49,10 +48,14 @@ function buildRiskMapInput(query) {
     entity: toSingleString(query.entity, query.entity),
     timeHorizon: toSingleString(query.timeHorizon, query.timeHorizon),
     scenarioType: toSingleString(query.scenarioType, query.scenarioType),
-    domain: toSingleString(query.domain, ORGANIZATION_RISK),
+    domain: toSingleString(query.domain, query.domain),
     scope: toStringArray(query.scope),
     evidenceSetVersion: toSingleString(query.evidenceSetVersion, query.evidenceSetVersion),
   };
+}
+
+function readRequiredDomain(query) {
+  return toSingleString(query.domain, query.domain);
 }
 
 function writeError(res, statusCode, code, message) {
@@ -156,19 +159,47 @@ router.get('/governance', handleGovernanceRequest);
 router.get('/diff', handleDiffRequest);
 
 router.get('/registries/nodes', (req, res) => {
-  handleRegistryRequest(res, inspectNodeRegistry, toSingleString(req.query.domain, ORGANIZATION_RISK));
+  const domainId = readRequiredDomain(req.query);
+
+  if (typeof domainId !== 'string') {
+    writeError(res, 400, 'invalid_risk_map_query', 'domain must be a non-empty string.');
+    return;
+  }
+
+  handleRegistryRequest(res, inspectNodeRegistry, domainId);
 });
 
 router.get('/registries/threats', (req, res) => {
-  handleRegistryRequest(res, inspectThreatRegistry, toSingleString(req.query.domain, ORGANIZATION_RISK));
+  const domainId = readRequiredDomain(req.query);
+
+  if (typeof domainId !== 'string') {
+    writeError(res, 400, 'invalid_risk_map_query', 'domain must be a non-empty string.');
+    return;
+  }
+
+  handleRegistryRequest(res, inspectThreatRegistry, domainId);
 });
 
 router.get('/registries/compatibility', (req, res) => {
-  handleRegistryRequest(res, inspectCompatibilityRegistry, toSingleString(req.query.domain, ORGANIZATION_RISK));
+  const domainId = readRequiredDomain(req.query);
+
+  if (typeof domainId !== 'string') {
+    writeError(res, 400, 'invalid_risk_map_query', 'domain must be a non-empty string.');
+    return;
+  }
+
+  handleRegistryRequest(res, inspectCompatibilityRegistry, domainId);
 });
 
 router.get('/registries/falsifiers', (req, res) => {
-  handleRegistryRequest(res, inspectFalsifierRegistry, toSingleString(req.query.domain, ORGANIZATION_RISK));
+  const domainId = readRequiredDomain(req.query);
+
+  if (typeof domainId !== 'string') {
+    writeError(res, 400, 'invalid_risk_map_query', 'domain must be a non-empty string.');
+    return;
+  }
+
+  handleRegistryRequest(res, inspectFalsifierRegistry, domainId);
 });
 
 module.exports = router;

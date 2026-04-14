@@ -1,24 +1,26 @@
 # Data Retention / Data Usage
 
-Implementation-backed view over lifecycle, storage, and expiry behavior.
+Implementation-backed view over lifecycle, storage minimization, expiry, and session-bound controls.
 
 ## Scope — Confirmed retention evidence
 
 - feedback persistence lifecycle and expiry
 - browser session continuity for feedback controls
 - request-bound internal SSR transport evidence
-- session-bound export and delete controls
+- session-bound export/delete controls
+- hashed audit records for feedback session actions
 
 ## Runtime Snapshot
 
 - The platform derives `expiresAt` before feedback event persistence.
 - The platform stores `expiresAt` in feedback event documents.
 - The platform exposes feedback export and delete controls by `sessionId`.
+- The platform records hashed audit trails for session export and delete actions.
 
 ## Lifecycle Bands — Short-lived persistence
 
-- The platform stores `rawQuery` in feedback event documents as a `sha256` digest.
-- The platform stores `normalizedQuery` in feedback event documents as a `sha256` digest.
+- The platform minimizes `rawQuery` to `sha256:<digest>` before persistence.
+- The platform minimizes `normalizedQuery` to `sha256:<digest>` before persistence.
 - The platform deletes feedback event documents through a TTL index on `expiresAt`.
 
 ## Lifecycle Bands — Session-bound continuity
@@ -36,19 +38,12 @@ Implementation-backed view over lifecycle, storage, and expiry behavior.
 - The platform minimizes `rawQuery` before persistence.
 - The platform minimizes `normalizedQuery` before persistence.
 - The platform derives `expiresAt` from `createdAt` using the live feedback lifecycle contract before persistence.
-
-## Controls
-
 - The platform allows feedback export by `sessionId`.
 - The platform allows feedback deletion by `sessionId`.
 
 ## Implementation Boundaries
 
-This file keeps feedback persistence, browser storage continuity, and request-bound internal SSR transport separate.
-
-Storage form claims and expiry claims are not interchangeable in this surface.
-
-## Non-claim Guardrail
+Storage form and expiry form are separate in this surface.
 
 This file reports current retention declarations and lifecycle evidence only.
 

@@ -79,6 +79,7 @@
                 #apiSection
                 class="pdm-terms-page__section"
                 [class.pdm-terms-page__section--active]="section.id === activeSectionId()"
+                [class.pdm-terms-page__section--support]="section.groupId === 'support-notes'"
                 [attr.id]="section.id"
                 [attr.aria-labelledby]="section.id + '-title'"
               >
@@ -225,9 +226,144 @@
                       </div>
                     </div>
 
+                    <div class="pdm-terms-page__subsection">
+                      <h3 class="pdm-terms-page__subsection-title">Risk Mapping refusal boundaries</h3>
+                      <div class="pdm-terms-page__table-wrap">
+                        <table class="pdm-terms-page__table pdm-terms-page__table--boundary">
+                          <thead>
+                            <tr>
+                              <th>Boundary</th>
+                              <th>Condition</th>
+                              <th>Effect</th>
+                              <th>Evidence</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @for (row of viewModel().riskMappingBoundaryRows; track row.claimId) {
+                              <tr>
+                                <td>{{ row.boundary }}</td>
+                                <td>{{ row.condition }}</td>
+                                <td>{{ row.effect }}</td>
+                                <td class="pdm-terms-page__evidence pdm-mono">{{ row.evidence }}</td>
+                              </tr>
+                            }
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
                     <div class="pdm-terms-page__actions">
                       <a class="pdm-terms-page__inspect-link" [routerLink]="viewModel().riskMappingTrustRoute">
                         Open RMG trust page
+                      </a>
+                    </div>
+                  }
+                  @case ('military-constraints') {
+                    <div class="pdm-terms-page__subsection">
+                      <h3 class="pdm-terms-page__subsection-title">Overview</h3>
+                      <div
+                        class="pdm-terms-page__badge-list pdm-terms-page__badge-list--military-constraints"
+                        aria-label="Military Constraints overview"
+                      >
+                        @for (badge of viewModel().militaryConstraintsHighlights; track badge.label) {
+                          <article class="pdm-terms-page__badge">
+                            <p class="pdm-terms-page__badge-label pdm-mono">{{ badge.label }}</p>
+                            <p class="pdm-terms-page__badge-value">{{ badge.value }}</p>
+                          </article>
+                        }
+                      </div>
+                      <p class="pdm-terms-page__intro">
+                        The current backend exposes discovery, pack catalog, pack detail, and
+                        evaluation routes only. No /schema or /examples routes are implemented.
+                      </p>
+                    </div>
+
+                    <div class="pdm-terms-page__subsection">
+                      <h3 class="pdm-terms-page__subsection-title">Military Constraints endpoints</h3>
+                      <div class="pdm-terms-page__table-wrap">
+                        <table class="pdm-terms-page__table pdm-terms-page__table--endpoint">
+                          <thead>
+                            <tr>
+                              <th>Operation</th>
+                              <th>Method</th>
+                              <th>Path</th>
+                              <th>Input</th>
+                              <th>Evidence</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @for (row of viewModel().militaryConstraintsEndpointRows; track row.claimId) {
+                              <tr>
+                                <td>{{ row.operation }}</td>
+                                <td class="pdm-terms-page__mono-cell pdm-mono">{{ row.method }}</td>
+                                <td class="pdm-terms-page__mono-cell pdm-mono">{{ row.path }}</td>
+                                <td>{{ row.input }}</td>
+                                <td class="pdm-terms-page__evidence pdm-mono">{{ row.evidence }}</td>
+                              </tr>
+                            }
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+                    <div class="pdm-terms-page__subsection">
+                      <h3 class="pdm-terms-page__subsection-title">Military Constraints request fields</h3>
+                      <div class="pdm-terms-page__table-wrap">
+                        <table class="pdm-terms-page__table pdm-terms-page__table--field">
+                          <thead>
+                            <tr>
+                              <th>Field</th>
+                              <th>Rule</th>
+                              <th>Condition</th>
+                              <th>Evidence</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @for (row of viewModel().militaryConstraintsFieldRows; track row.claimId) {
+                              <tr>
+                                <td class="pdm-terms-page__mono-cell pdm-mono">{{ row.field }}</td>
+                                <td>{{ row.rule }}</td>
+                                <td>{{ row.condition }}</td>
+                                <td class="pdm-terms-page__evidence pdm-mono">{{ row.evidence }}</td>
+                              </tr>
+                            }
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+                    <div class="pdm-terms-page__subsection">
+                      <h3 class="pdm-terms-page__subsection-title">Military Constraints refusal boundaries</h3>
+                      <div class="pdm-terms-page__table-wrap">
+                        <table class="pdm-terms-page__table pdm-terms-page__table--boundary">
+                          <thead>
+                            <tr>
+                              <th>Boundary</th>
+                              <th>Condition</th>
+                              <th>Effect</th>
+                              <th>Evidence</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @for (row of viewModel().militaryConstraintsBoundaryRows; track row.claimId) {
+                              <tr>
+                                <td>{{ row.boundary }}</td>
+                                <td>{{ row.condition }}</td>
+                                <td>{{ row.effect }}</td>
+                                <td class="pdm-terms-page__evidence pdm-mono">{{ row.evidence }}</td>
+                              </tr>
+                            }
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+                    <div class="pdm-terms-page__actions">
+                      <a
+                        class="pdm-terms-page__inspect-link"
+                        [routerLink]="viewModel().militaryConstraintsTrustRoute"
+                      >
+                        Open compiler page
                       </a>
                     </div>
                   }
@@ -303,7 +439,7 @@
                   }
                   @case ('zee-api') {
                     <div class="pdm-terms-page__subsection">
-                      <h3 class="pdm-terms-page__subsection-title">ZEE endpoints</h3>
+                      <h3 class="pdm-terms-page__subsection-title">ZEE scaffold endpoints</h3>
                       <div class="pdm-terms-page__table-wrap">
                         <table class="pdm-terms-page__table pdm-terms-page__table--endpoint">
                           <thead>
@@ -328,6 +464,92 @@
                           </tbody>
                         </table>
                       </div>
+                    </div>
+
+                    <div class="pdm-terms-page__subsection">
+                      <h3 class="pdm-terms-page__subsection-title">ZeroGlare analysis endpoints</h3>
+                      <div class="pdm-terms-page__table-wrap">
+                        <table class="pdm-terms-page__table pdm-terms-page__table--endpoint">
+                          <thead>
+                            <tr>
+                              <th>Operation</th>
+                              <th>Method</th>
+                              <th>Path</th>
+                              <th>Input</th>
+                              <th>Evidence</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @for (row of viewModel().zeroglareEndpointRows; track row.claimId) {
+                              <tr>
+                                <td>{{ row.operation }}</td>
+                                <td class="pdm-terms-page__mono-cell pdm-mono">{{ row.method }}</td>
+                                <td class="pdm-terms-page__mono-cell pdm-mono">{{ row.path }}</td>
+                                <td>{{ row.input }}</td>
+                                <td class="pdm-terms-page__evidence pdm-mono">{{ row.evidence }}</td>
+                              </tr>
+                            }
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+                    <div class="pdm-terms-page__subsection">
+                      <h3 class="pdm-terms-page__subsection-title">ZeroGlare request fields</h3>
+                      <div class="pdm-terms-page__table-wrap">
+                        <table class="pdm-terms-page__table pdm-terms-page__table--field">
+                          <thead>
+                            <tr>
+                              <th>Field</th>
+                              <th>Rule</th>
+                              <th>Condition</th>
+                              <th>Evidence</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @for (row of viewModel().zeroglareFieldRows; track row.claimId) {
+                              <tr>
+                                <td class="pdm-terms-page__mono-cell pdm-mono">{{ row.field }}</td>
+                                <td>{{ row.rule }}</td>
+                                <td>{{ row.condition }}</td>
+                                <td class="pdm-terms-page__evidence pdm-mono">{{ row.evidence }}</td>
+                              </tr>
+                            }
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+                    <div class="pdm-terms-page__subsection">
+                      <h3 class="pdm-terms-page__subsection-title">ZeroGlare refusal boundaries</h3>
+                      <div class="pdm-terms-page__table-wrap">
+                        <table class="pdm-terms-page__table pdm-terms-page__table--boundary">
+                          <thead>
+                            <tr>
+                              <th>Boundary</th>
+                              <th>Condition</th>
+                              <th>Effect</th>
+                              <th>Evidence</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @for (row of viewModel().zeroglareBoundaryRows; track row.claimId) {
+                              <tr>
+                                <td>{{ row.boundary }}</td>
+                                <td>{{ row.condition }}</td>
+                                <td>{{ row.effect }}</td>
+                                <td class="pdm-terms-page__evidence pdm-mono">{{ row.evidence }}</td>
+                              </tr>
+                            }
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+                    <div class="pdm-terms-page__actions">
+                      <a class="pdm-terms-page__inspect-link" [routerLink]="viewModel().zeeApiTrustRoute">
+                        Open ZEE page
+                      </a>
                     </div>
                   }
                 }

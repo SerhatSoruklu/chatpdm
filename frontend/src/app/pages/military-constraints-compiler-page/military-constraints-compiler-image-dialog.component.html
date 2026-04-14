@@ -1,0 +1,26 @@
+<div class="pdm-mcc-image-dialog">
+  <div class="pdm-mcc-image-dialog__header">
+    <div class="pdm-mcc-image-dialog__title-group">
+      <p class="pdm-mcc-image-dialog__eyebrow">Military Constraints Compiler</p>
+      <h2 class="pdm-mcc-image-dialog__title">{{ data.title }}</h2>
+    </div>
+
+    <button type="button" class="pdm-mcc-image-dialog__close" (click)="close()">
+      {{ data.closeLabel }}
+    </button>
+  </div>
+
+  <div class="pdm-mcc-image-dialog__body">
+    <img
+      class="pdm-mcc-image-dialog__image"
+      [src]="data.imagePath"
+      [alt]="data.imageAlt"
+      width="1024"
+      height="1536"
+      loading="eager"
+      decoding="async"
+    />
+  </div>
+
+  <p class="pdm-mcc-image-dialog__caption">{{ data.caption }}</p>
+</div>

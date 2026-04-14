@@ -1,0 +1,137 @@
+[
+  {
+    "clauseId": "CL-MED-PO-001",
+    "sourceId": "NEWPORT-ROE-2022",
+    "locator": "authoring-flow/medical-slice-scope",
+    "jurisdiction": "US",
+    "layer": "POLICY_OVERLAY",
+    "clauseType": "REQUIREMENT",
+    "rawText": "The medical protection slice applies only when the slice is active and ROE is designated for the unit.",
+    "normalizedText": "If context.operationalSlice is MEDICAL_PROTECTION and authority.designatedRoeActive is true, evaluation may proceed.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Scope gate for the Pack 3 medical protection slice.",
+    "compilationHint": {
+      "stage": "POLICY_OVERLAY",
+      "priority": 1400,
+      "effect": {
+        "decision": "REFUSED",
+        "reasonCode": "SCOPE_VIOLATION"
+      },
+      "scope": {
+        "jurisdiction": "US",
+        "domains": [
+          "LAND",
+          "AIR",
+          "MARITIME"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "STRIKE",
+          "ENGAGE",
+          "FIRE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "PLATOON",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "context.operationalSlice",
+        "authority.designatedRoeActive"
+      ],
+      "predicate": {
+        "not": {
+          "all": [
+            {
+              "eq": [
+                {
+                  "fact": "context.operationalSlice"
+                },
+                {
+                  "value": "MEDICAL_PROTECTION"
+                }
+              ]
+            },
+            {
+              "eq": [
+                {
+                  "fact": "authority.designatedRoeActive"
+                },
+                {
+                  "value": true
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "notes": "Pack 3 scope restriction for the medical protection slice."
+    }
+  },
+  {
+    "clauseId": "CL-MED-PO-002",
+    "sourceId": "NEWPORT-ROE-2022",
+    "locator": "authoring-flow/medical-action-kind-limit",
+    "jurisdiction": "US",
+    "layer": "POLICY_OVERLAY",
+    "clauseType": "REQUIREMENT",
+    "rawText": "Only the limited action kinds in this slice remain admissible under the overlay.",
+    "normalizedText": "If action.kind is outside the medical-protection action set, refuse.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Action-kind gate for the Pack 3 medical protection slice.",
+    "compilationHint": {
+      "stage": "POLICY_OVERLAY",
+      "priority": 1300,
+      "effect": {
+        "decision": "REFUSED",
+        "reasonCode": "SCOPE_VIOLATION"
+      },
+      "scope": {
+        "jurisdiction": "US",
+        "domains": [
+          "LAND",
+          "AIR",
+          "MARITIME"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "STRIKE",
+          "ENGAGE",
+          "FIRE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "PLATOON",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "action.kind"
+      ],
+      "predicate": {
+        "not_in": [
+          {
+            "fact": "action.kind"
+          },
+          {
+            "value": [
+              "STRIKE",
+              "ENGAGE",
+              "FIRE"
+            ]
+          }
+        ]
+      },
+      "notes": "Pack 3 action-kind restriction."
+    }
+  }
+]
