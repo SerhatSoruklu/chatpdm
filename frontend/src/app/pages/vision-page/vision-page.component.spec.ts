@@ -26,7 +26,7 @@ describe('VisionPageComponent', () => {
         restoreFocus: true,
         data: expect.objectContaining({
           title: 'Refused vision page',
-          imagePath: '/assets/vision/refused-vision-page.png',
+          imagePath: '/assets/vision/refused-vision-page.png?v=20260414-1',
           imageAlt: 'Refused vision page reference image showing the ChatPDM vision hero strip',
           caption: 'Open the full image in a dialog.',
         }),

@@ -57,4 +57,5 @@ function normalizeOrigin(value) {
 
 module.exports = {
   createCorsMiddleware,
+  normalizeOrigin,
 };

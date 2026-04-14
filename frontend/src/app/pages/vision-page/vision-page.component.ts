@@ -25,7 +25,7 @@ interface VisionStage {
 export class VisionPageComponent {
   constructor(private readonly dialog: MatDialog) {}
 
-  protected readonly heroImagePath = '/assets/vision/refused-vision-page.png';
+  protected readonly heroImagePath = '/assets/vision/refused-vision-page.png?v=20260414-1';
   protected readonly heroImageAlt =
     'Refused vision page reference image showing the ChatPDM vision hero strip';
   protected readonly heroImageTitle = 'Refused vision page';
