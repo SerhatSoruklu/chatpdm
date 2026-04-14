@@ -18,22 +18,12 @@
 
             <p class="pdm-home__eyebrow">Bounded resolution</p>
             <h1 class="pdm-home__title" id="pdm-home-title">
-              Deterministic concept resolution without guessing.
+              <span class="pdm-home__title-line">Deterministic answers.</span>
+              <span class="pdm-home__title-line">No guessing.</span>
             </h1>
             <p class="pdm-home__support-line">
-              Enter any query. Get a structured result within scope or an explicit refusal.
-            </p>
-            <p class="pdm-home__lead">
-              Concepts here are validated, not improvised.
-            </p>
-            <p class="pdm-home__lead pdm-home__lead--secondary">
-              Deterministic, source-backed resolution within defined domains.
-            </p>
-            <p class="pdm-home__lead pdm-home__lead--secondary pdm-home__lead--scope">
-              ChatPDM is a deterministic concept system, not Product Data Management software.
-            </p>
-            <p class="pdm-home__lead pdm-home__lead--scope">
-              Starting with law and governance.
+              Returns a structured result within scope or a clear refusal. No guessing. No drift.
+              No hidden reasoning.
             </p>
 
             <form class="pdm-home__hero-query" (ngSubmit)="submitDraft()">
@@ -41,7 +31,7 @@
                 <label class="pdm-home__sr-only" for="pdm-home-hero-query">Concept query</label>
                 <div class="pdm-home__hero-query-row">
                   <input
-                    id="pdm-home-hero-query"
+                    id="hero-input"
                     class="pdm-home__hero-input"
                     type="text"
                     name="hero-query"
@@ -51,7 +41,7 @@
                     autocapitalize="off"
                     autocomplete="off"
                     autofocus
-                    placeholder="Enter any query"
+                    placeholder="Enter a claim or comparison…"
                   >
 
                   <span
@@ -84,14 +74,21 @@
                     </button>
                   </span>
                 </div>
+                <p class="pdm-home__hero-input-example">Example: authority vs power</p>
+                <p class="pdm-home__hero-input-trust">Deterministic. Refusal-first. Bounded.</p>
 
                 <div class="pdm-home__hero-scope" aria-label="Visible concept groups">
                   <p class="pdm-home__micro-label">Current scope</p>
                   <div class="pdm-home__scope-chips pdm-home__scope-chips--hero">
                     @for (concept of liveRuntimeConceptIds; track concept) {
-                      <span class="pdm-home__scope-chip pdm-home__scope-chip--live pdm-site-chip">
+                      <button
+                        class="pdm-home__scope-chip pdm-home__scope-chip--live pdm-site-chip"
+                        type="button"
+                        [disabled]="isSubmitting()"
+                        (click)="populateHeroQueryFromScope(concept)"
+                      >
                         {{ concept }}
-                      </span>
+                      </button>
                     }
                   </div>
 
@@ -168,6 +165,13 @@
               <div class="pdm-home__result-query">
                 <p class="pdm-home__micro-label">Current query</p>
                 <p class="pdm-home__result-query-text">{{ entry.submittedQuery }}</p>
+                <button
+                  class="pdm-home__result-reset"
+                  type="button"
+                  (click)="returnToHeroInput()"
+                >
+                  Try another query →
+                </button>
               </div>
 
               @if (entry.status === 'loading') {

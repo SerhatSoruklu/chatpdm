@@ -11,7 +11,6 @@ const { inspectNodeRegistry } = require('../inspect/inspectNodeRegistry');
 const { inspectThreatRegistry } = require('../inspect/inspectThreatRegistry');
 const { inspectCompatibilityRegistry } = require('../inspect/inspectCompatibilityRegistry');
 const { inspectFalsifierRegistry } = require('../inspect/inspectFalsifierRegistry');
-const { buildRiskMapExplanation } = require('../explain/buildRiskMapExplanation');
 const { buildReasonExplanation } = require('../explain/buildReasonExplanation');
 const { assertSortedUniqueStringArray } = require('../utils/assertSortedUniqueStringArray');
 

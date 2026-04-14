@@ -4,7 +4,7 @@ const SUPPORTED_PATH_PATTERN = /^[a-z0-9_]+->[a-z0-9_]+$/;
 const UNSUPPORTED_BRIDGE_PATTERN = /^[a-z0-9_]+:[a-z0-9_]+(?:->[a-z0-9_]+)?$/;
 const FALSIFIER_PATTERN = /^[a-z0-9_]+@[a-z0-9_]+$/;
 const COMPACT_IDENTIFIER_PATTERN = /^[a-z0-9_]+$/;
-const COMPACT_ALLOWED_CHAR_PATTERN = /^[a-z0-9_:@>\-]+$/;
+const COMPACT_ALLOWED_CHAR_PATTERN = /^[a-z0-9_:@>-]+$/;
 
 function isString(value) {
   return typeof value === 'string';

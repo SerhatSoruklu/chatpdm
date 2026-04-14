@@ -28,7 +28,7 @@ export class ExamplePreviewComponent implements OnInit {
       case 'ready':
         return 'Comparison result';
       case 'partial':
-        return 'Seeded runtime preview';
+        return 'Live system output';
       case 'error':
         return 'Runtime preview unavailable';
       default:

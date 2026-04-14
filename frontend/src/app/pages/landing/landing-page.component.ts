@@ -339,6 +339,28 @@ export class LandingPageComponent {
     }
   }
 
+  protected returnToHeroInput(): void {
+    if (typeof window === 'undefined' || typeof document === 'undefined') {
+      return;
+    }
+
+    const input = document.getElementById('hero-input') as HTMLInputElement | null;
+    if (!input) {
+      return;
+    }
+
+    input.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+    });
+
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => {
+        input.focus({ preventScroll: true });
+      });
+    });
+  }
+
   private scheduleScrollToResult(): void {
     if (typeof window === 'undefined') {
       return;
@@ -416,6 +438,15 @@ export class LandingPageComponent {
     await this.submitQuery(concept, {
       displayQuery: this.formatConceptLabel(concept),
     });
+  }
+
+  protected populateHeroQueryFromScope(concept: string): void {
+    if (!this.isLiveConcept(concept)) {
+      return;
+    }
+
+    this.queryDraft.set(concept);
+    this.returnToHeroInput();
   }
 
   protected async resolveRelatedConcept(relatedConcept: RelatedConcept): Promise<void> {

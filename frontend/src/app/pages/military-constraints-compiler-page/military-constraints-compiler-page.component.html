@@ -1,0 +1,130 @@
+<main class="pdm-mcc pdm-shell" aria-labelledby="pdm-mcc-title">
+  <div class="pdm-shell__frame pdm-mcc__frame">
+    <header class="pdm-mcc__hero pdm-site-surface pdm-site-panel">
+      <p class="pdm-mcc__eyebrow">Systems / protocol-grade admissibility</p>
+      <div class="pdm-mcc__hero-grid">
+        <div class="pdm-mcc__hero-copy">
+          <h1 class="pdm-mcc__title" id="pdm-mcc-title">{{ pageTitle }}</h1>
+          <p class="pdm-mcc__subtitle">
+            Deterministic admissibility under validated constraint packs.
+          </p>
+          <p class="pdm-mcc__support">
+            The compiler checks structured facts against frozen packs and returns one of three
+            outcomes:
+          </p>
+          <div class="pdm-mcc__status-pills" aria-label="Decision outcomes">
+            <span class="pdm-mcc__status-pill pdm-mcc__status-pill--allowed">ALLOWED</span>
+            <span class="pdm-mcc__status-pill pdm-mcc__status-pill--refused">REFUSED</span>
+            <span class="pdm-mcc__status-pill pdm-mcc__status-pill--incomplete"
+              >REFUSED_INCOMPLETE</span
+            >
+          </div>
+        </div>
+
+        <figure class="pdm-mcc__hero-figure">
+          <button
+            type="button"
+            class="pdm-mcc__hero-image-button"
+            (click)="openHeroImageDialog()"
+            [attr.aria-label]="heroImageButtonLabel"
+          >
+            <span class="pdm-mcc__hero-image-badge">Zoom image</span>
+            <span class="pdm-mcc__hero-image-shell">
+              <img
+                class="pdm-mcc__hero-image"
+                [src]="heroImagePath"
+                [alt]="heroImageAlt"
+                width="1024"
+                height="1536"
+                loading="eager"
+                fetchpriority="high"
+                decoding="async"
+              />
+            </span>
+          </button>
+          <figcaption class="pdm-mcc__hero-caption">
+            {{ heroImageCaption }}
+          </figcaption>
+        </figure>
+      </div>
+    </header>
+
+    <section class="pdm-mcc__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-mcc-what-is-title">
+      <div class="pdm-mcc__section-head">
+        <p class="pdm-mcc__section-label">What it is</p>
+        <h2 class="pdm-mcc__section-title" id="pdm-mcc-what-is-title">A protocol-grade rules engine.</h2>
+        <p class="pdm-mcc__section-copy">
+          It evaluates a proposed action against a validated pack. It does not invent meaning,
+          infer missing facts, or make tactical recommendations.
+        </p>
+      </div>
+
+      <div class="pdm-mcc__card-grid">
+        @for (item of whatItIsCards; track item.label) {
+          <article class="pdm-mcc__card">
+            <h3 class="pdm-mcc__card-title">{{ item.label }}</h3>
+            <p class="pdm-mcc__card-copy">{{ item.copy }}</p>
+          </article>
+        }
+      </div>
+    </section>
+
+    <section class="pdm-mcc__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-mcc-not-title">
+      <div class="pdm-mcc__section-head">
+        <p class="pdm-mcc__section-label">What it is not</p>
+        <h2 class="pdm-mcc__section-title" id="pdm-mcc-not-title">Not an advice or targeting surface.</h2>
+      </div>
+
+      <ul class="pdm-mcc__bullets">
+        @for (item of whatItIsNotItems; track item) {
+          <li>{{ item }}</li>
+        }
+      </ul>
+    </section>
+
+    <section class="pdm-mcc__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-mcc-decision-title">
+      <div class="pdm-mcc__section-head">
+        <p class="pdm-mcc__section-label">Decision contract</p>
+        <h2 class="pdm-mcc__section-title" id="pdm-mcc-decision-title">Three explicit outcomes.</h2>
+      </div>
+
+      <div class="pdm-mcc__card-grid pdm-mcc__card-grid--three">
+        @for (state of decisionStates; track state.label) {
+          <article class="pdm-mcc__card">
+            <p class="pdm-mcc__mono">{{ state.label }}</p>
+            <p class="pdm-mcc__card-copy">{{ state.copy }}</p>
+          </article>
+        }
+      </div>
+    </section>
+
+    <section class="pdm-mcc__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-mcc-packs-title">
+      <div class="pdm-mcc__section-head">
+        <p class="pdm-mcc__section-label">Pack overview</p>
+        <h2 class="pdm-mcc__section-title" id="pdm-mcc-packs-title">Validated packs 1 through 5.</h2>
+      </div>
+
+      <div class="pdm-mcc__pack-grid">
+        @for (pack of packOverview; track pack.packId) {
+          <article class="pdm-mcc__pack-card">
+            <p class="pdm-mcc__mono">{{ pack.packId }}</p>
+            <h3 class="pdm-mcc__card-title">{{ pack.title }}</h3>
+            <p class="pdm-mcc__card-copy">{{ pack.copy }}</p>
+          </article>
+        }
+      </div>
+    </section>
+
+    <section class="pdm-mcc__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-mcc-example-title">
+      <div class="pdm-mcc__section-head">
+        <p class="pdm-mcc__section-label">Example JSON</p>
+        <h2 class="pdm-mcc__section-title" id="pdm-mcc-example-title">Static evaluation example.</h2>
+        <p class="pdm-mcc__section-copy">
+          The API accepts structured facts only. No prose scenario input.
+        </p>
+      </div>
+
+      <pre class="pdm-mcc__json" aria-label="Example military constraints evaluation JSON">{{ exampleJson }}</pre>
+    </section>
+  </div>
+</main>

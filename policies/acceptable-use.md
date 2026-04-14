@@ -4,14 +4,17 @@ Implementation-backed view over allowed runtime use, refusal boundaries, and fee
 
 ## Scope — Confirmed acceptable-use evidence
 
+- concept discovery and detail access
 - public concept resolution access
 - comparison output limited to authored allowlisted pairs
-- refusal of unsupported query forms and out-of-scope usage
 - feedback submission and session-bound feedback controls
 
 ## Runtime Scope
 
+- The platform allows concept discovery through `GET /api/v1/concepts`.
 - The platform allows concept resolution through `GET /api/v1/concepts/resolve?q=...`.
+- The platform allows concept resolution through `POST /api/v1/concepts/resolve`.
+- The platform allows concept detail access through `GET /api/v1/concepts/:conceptId`.
 - The platform allows comparison output only for authored allowlisted concept pairs with authored comparison axes.
 - The platform allows feedback submission through `POST /api/v1/feedback`.
 - The platform allows feedback export by `sessionId`.
@@ -50,7 +53,7 @@ Implementation-backed view over allowed runtime use, refusal boundaries, and fee
 
 This file keeps supported runtime actions, refused runtime actions, and unsupported compositions separate.
 
-Comparison output, feedback controls, and refusal outputs are reported as current product behavior, not as broad conduct enforcement.
+Comparison output, feedback controls, and refusal outputs are reported as current product behavior.
 
 ## Implementation Guardrails
 

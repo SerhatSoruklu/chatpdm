@@ -1,6 +1,7 @@
 # POLICY_AUDIT_PHASE_D.md
 
-Phase D traceability pass for current policy surfaces.
+Historical Phase D traceability pass for a prior policy snapshot.
+Superseded by `docs/architecture/policy-layer-audit.md` for the current baseline.
 
 Inputs:
 

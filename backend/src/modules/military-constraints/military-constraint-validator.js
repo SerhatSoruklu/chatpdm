@@ -76,10 +76,6 @@ function computeBundleHash(bundle) {
   return `sha256:${crypto.createHash('sha256').update(canonicalJson, 'utf8').digest('hex')}`;
 }
 
-function parseFactPath(path) {
-  return typeof path === 'string' && path.length > 0 ? path.split('.') : [];
-}
-
 function getSchemaType(node) {
   if (!isPlainObject(node)) {
     return null;
@@ -163,14 +159,6 @@ function buildFactCatalog(factSchema) {
   const catalog = new Map();
   collectFactCatalog(factSchema, [], catalog);
   return catalog;
-}
-
-function normalizeOperandValue(operand) {
-  if (!isPlainObject(operand) || !Object.prototype.hasOwnProperty.call(operand, 'value')) {
-    return null;
-  }
-
-  return operand.value;
 }
 
 function getOperandKind(operand, factCatalog) {
@@ -343,19 +331,6 @@ function getRuleSemanticSignature(rule) {
     },
     stage: rule.stage,
   }));
-}
-
-function buildRulesById(rules) {
-  const byId = new Map();
-  rules.forEach((rule) => {
-    if (rule && typeof rule.ruleId === 'string') {
-      if (!byId.has(rule.ruleId)) {
-        byId.set(rule.ruleId, []);
-      }
-      byId.get(rule.ruleId).push(rule);
-    }
-  });
-  return byId;
 }
 
 function validateBundleIntegrity({ bundle, rules, authorityGraph }) {

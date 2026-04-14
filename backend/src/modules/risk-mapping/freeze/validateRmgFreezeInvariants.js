@@ -8,7 +8,6 @@ const {
 const {
   validateCompactOutputFormats,
   SUPPORTED_PATH_PATTERN,
-  UNSUPPORTED_BRIDGE_PATTERN,
   FALSIFIER_PATTERN,
   COMPACT_IDENTIFIER_PATTERN,
 } = require('../utils/validateCompactOutputFormats');
@@ -135,8 +134,8 @@ function validateCompactArray(values, label, pattern, errors) {
 
   try {
     assertSortedUniqueStringArray(values, label);
-  } catch (error) {
-    errors.push(error instanceof Error ? error.message : String(error));
+  } catch {
+    errors.push('diagnostics field validation failed.');
     return;
   }
 
@@ -155,8 +154,8 @@ function validateUnsupportedBridgeValues(values, errors) {
 
   try {
     assertSortedUniqueStringArray(values, 'unsupportedBridges');
-  } catch (error) {
-    errors.push(error instanceof Error ? error.message : String(error));
+  } catch {
+    errors.push('unsupportedBridges field validation failed.');
     return;
   }
 

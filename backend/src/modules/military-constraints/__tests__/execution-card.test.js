@@ -11,7 +11,6 @@ const addFormats = require('ajv-formats');
 const { buildReferenceBundle } = require('../build-reference-pack');
 const { evaluateBundle } = require('../evaluate-bundle');
 const { projectExecutionCard } = require('../project-execution-card');
-const { computeBundleHash } = require('../military-constraint-validator');
 
 const BASE_DIR = path.resolve(__dirname);
 const MODULE_DIR = path.resolve(BASE_DIR, '..');

@@ -37,7 +37,7 @@ function listReferencePacks(input) {
           reviewedClauseSetIds: Array.isArray(manifest.reviewedClauseSetIds) ? [...manifest.reviewedClauseSetIds] : [],
           manifestPath,
         };
-      } catch (error) {
+      } catch {
         return null;
       }
     })

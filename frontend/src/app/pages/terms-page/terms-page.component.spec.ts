@@ -2,7 +2,10 @@ import '@angular/compiler';
 
 import { describe, expect, it } from 'vitest';
 
-import { resolveActiveTermsPageSectionId } from './terms-page.component';
+import {
+  resolveActiveTermsPageSectionId,
+  resolveActiveTermsPageSectionIdFromHash,
+} from './terms-page.component';
 
 describe('resolveActiveTermsPageSectionId', () => {
   it('keeps the earliest section active until the next section crosses the activation offset', () => {
@@ -34,5 +37,21 @@ describe('resolveActiveTermsPageSectionId', () => {
 
   it('returns an empty value when no section metrics are available', () => {
     expect(resolveActiveTermsPageSectionId([], 120)).toBe('');
+  });
+});
+
+describe('resolveActiveTermsPageSectionIdFromHash', () => {
+  it('returns the matching section id for a known fragment', () => {
+    expect(
+      resolveActiveTermsPageSectionIdFromHash(
+        ['overview', 'endpoint-contract', 'zee-api'],
+        '#zee-api',
+      ),
+    ).toBe('zee-api');
+  });
+
+  it('returns an empty value for unknown or missing fragments', () => {
+    expect(resolveActiveTermsPageSectionIdFromHash(['overview'], '#missing')).toBe('');
+    expect(resolveActiveTermsPageSectionIdFromHash(['overview'], '')).toBe('');
   });
 });

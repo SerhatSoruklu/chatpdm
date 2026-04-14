@@ -4,6 +4,30 @@
   "state": "published",
   "claims": [
     {
+      "id": "terms-40",
+      "version": 1,
+      "state": "published",
+      "policyFile": "terms.md",
+      "section": "Data and Behavior — Endpoint access",
+      "policySentence": "The platform allows concept discovery through `GET /api/v1/concepts`.",
+      "canonicalClaim": "The platform allows concept discovery through `GET /api/v1/concepts`.",
+      "claimClass": "allows",
+      "status": "mapped",
+      "notes": "",
+      "lifecycle": {
+        "lifecycleClass": "not_applicable",
+        "deletionTrigger": "not_stored",
+        "enforcementStatus": "declared_only"
+      },
+      "evidenceLinks": [
+        {
+          "source": "backend/src/routes/api/v1/concepts.route.js:33-39",
+          "path": "backend/src/routes/api/v1/concepts.route.js",
+          "lines": "33-39"
+        }
+      ]
+    },
+    {
       "id": "terms-1",
       "version": 1,
       "state": "published",

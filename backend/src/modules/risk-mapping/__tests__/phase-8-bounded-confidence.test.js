@@ -1,7 +1,5 @@
 'use strict';
 
-const fs = require('node:fs');
-const path = require('node:path');
 const test = require('node:test');
 const assert = require('node:assert/strict');
 
@@ -13,20 +11,10 @@ const { buildConfidenceExplanation } = require('../confidence/buildConfidenceExp
 const { classifyBoundedConfidence } = require('../confidence/classifyBoundedConfidence');
 const { validateRiskMapResponse } = require('../resolve/validateRiskMapResponse');
 const { LOW_BOUNDED_SUPPORT, MEDIUM_BOUNDED_SUPPORT, HIGH_BOUNDED_SUPPORT } = require('../constants/rmgConfidenceClasses');
-const { buildSupportedRiskPaths } = require('../paths/buildSupportedRiskPaths');
-const { buildUnsupportedBridgeLedger } = require('../ledgers/buildUnsupportedBridgeLedger');
-const { buildAssumptionsLedger } = require('../ledgers/buildAssumptionsLedger');
-const { buildUnknownsLedger } = require('../ledgers/buildUnknownsLedger');
-const { buildFalsifierLedger } = require('../ledgers/buildFalsifierLedger');
 
 const DOMAIN_ID = 'organization_risk';
 const ENTITY = 'apple';
 const EVIDENCE_SET_VERSION = 'v1';
-
-function loadSnapshot(snapshotName) {
-  const snapshotPath = path.join(__dirname, 'fixtures', `${snapshotName}.snapshot.json`);
-  return JSON.parse(fs.readFileSync(snapshotPath, 'utf8'));
-}
 
 function buildSeededPipeline() {
   return buildRiskMapPipeline({

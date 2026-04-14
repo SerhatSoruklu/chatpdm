@@ -10,16 +10,10 @@ const {
   listReferencePacks,
 } = require('../list-reference-packs');
 const {
-  buildReferencePack,
-} = require('../build-reference-pack');
-const {
   releaseAllReferencePacks,
   releaseReferencePack,
   runAllMilitaryConstraintChecks,
 } = require('../reference-pack-lifecycle');
-const {
-  runReferencePackRegression,
-} = require('../run-reference-pack-regression');
 
 const BASE_DIR = path.resolve(__dirname);
 const MODULE_DIR = path.resolve(BASE_DIR, '..');
@@ -34,10 +28,6 @@ function cleanupRoot(rootDir) {
 
 function copyModuleRoot(targetRoot) {
   fs.cpSync(MODULE_DIR, targetRoot, { recursive: true });
-}
-
-function cloneJson(value) {
-  return JSON.parse(JSON.stringify(value));
 }
 
 function readJson(filePath) {

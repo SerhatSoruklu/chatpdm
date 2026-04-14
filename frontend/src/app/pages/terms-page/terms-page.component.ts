@@ -4,6 +4,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
+  HostListener,
   OnDestroy,
   QueryList,
   ViewChildren,
@@ -40,6 +41,25 @@ export function resolveActiveTermsPageSectionId(
   }
 
   return activeSectionId;
+}
+
+export function resolveActiveTermsPageSectionIdFromHash(
+  sectionIds: readonly string[],
+  hash: string,
+): string {
+  if (!hash || !hash.startsWith('#')) {
+    return '';
+  }
+
+  let candidateId = '';
+
+  try {
+    candidateId = decodeURIComponent(hash.slice(1));
+  } catch {
+    return '';
+  }
+
+  return sectionIds.includes(candidateId) ? candidateId : '';
 }
 
 @Component({
@@ -88,6 +108,7 @@ export class TermsPageComponent implements AfterViewInit, OnDestroy {
       this.scrollSpyObserver.observe(section);
     }
 
+    this.syncActiveSectionFromHash();
     this.scheduleActiveSectionSync();
   }
 
@@ -95,6 +116,22 @@ export class TermsPageComponent implements AfterViewInit, OnDestroy {
     this.scrollSpyObserver?.disconnect();
     this.scrollSpyObserver = undefined;
     this.cancelScheduledActiveSectionSync();
+  }
+
+  @HostListener('window:scroll')
+  protected onWindowScroll(): void {
+    this.scheduleActiveSectionSync();
+  }
+
+  @HostListener('window:resize')
+  protected onWindowResize(): void {
+    this.scheduleActiveSectionSync();
+  }
+
+  @HostListener('window:hashchange')
+  protected onWindowHashChange(): void {
+    this.syncActiveSectionFromHash();
+    this.scheduleActiveSectionSync();
   }
 
   private getObservedSections(): readonly HTMLElement[] {
@@ -124,6 +161,17 @@ export class TermsPageComponent implements AfterViewInit, OnDestroy {
 
     cancelAnimationFrame(this.scrollSpyFrameId);
     this.scrollSpyFrameId = null;
+  }
+
+  private syncActiveSectionFromHash(): void {
+    const nextActiveSectionId = resolveActiveTermsPageSectionIdFromHash(
+      this.viewModel().sectionOrder.map((section) => section.id),
+      typeof window !== 'undefined' ? window.location.hash : '',
+    );
+
+    if (nextActiveSectionId) {
+      this.activeSectionId.set(nextActiveSectionId);
+    }
   }
 
   private syncActiveSection(): void {

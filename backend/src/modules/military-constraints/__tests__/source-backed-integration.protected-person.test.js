@@ -16,10 +16,6 @@ const { computeBundleHash } = require('../military-constraint-validator');
 const BASE_DIR = path.resolve(__dirname);
 const MODULE_DIR = path.resolve(BASE_DIR, '..');
 
-function readJson(relativePath) {
-  return JSON.parse(fs.readFileSync(path.join(BASE_DIR, 'fixtures', 'regression', relativePath), 'utf8'));
-}
-
 function readModuleJson(relativePath) {
   return JSON.parse(fs.readFileSync(path.join(MODULE_DIR, relativePath), 'utf8'));
 }

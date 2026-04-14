@@ -16,19 +16,6 @@ function isNonEmptyString(value) {
   return typeof value === 'string' && value.trim().length > 0;
 }
 
-function validateStringArray(value, fieldName, errors) {
-  if (!Array.isArray(value)) {
-    errors.push(`${fieldName} must be an array of strings.`);
-    return;
-  }
-
-  value.forEach((entry, index) => {
-    if (!isNonEmptyString(entry)) {
-      errors.push(`${fieldName}[${index}] must be a non-empty string.`);
-    }
-  });
-}
-
 function buildValidationResult(errors) {
   return Object.freeze({
     valid: errors.length === 0,

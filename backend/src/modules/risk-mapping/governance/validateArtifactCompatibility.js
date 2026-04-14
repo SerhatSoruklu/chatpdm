@@ -21,7 +21,6 @@ const { buildRiskMapResponse } = require('../resolve/buildRiskMapResponse');
 const { validateRiskMapResponse } = require('../resolve/validateRiskMapResponse');
 const { validateCompactOutputFormats } = require('../utils/validateCompactOutputFormats');
 const { buildArtifactDiffReport } = require('./buildArtifactDiffReport');
-const { loadGovernanceReleaseBundle } = require('./loadGovernanceReleaseBundle');
 const { stableUniqueStrings } = require('../utils/stableUniqueStrings');
 
 function validateArtifactErrorsForBundle(bundle, label) {
@@ -134,8 +133,8 @@ function replayBundle(bundle, replayFixture) {
 
 /**
  * @param {{
- *   baselineRelease: ReturnType<typeof loadGovernanceReleaseBundle>,
- *   candidateRelease: ReturnType<typeof loadGovernanceReleaseBundle>,
+ *   baselineRelease: object,
+ *   candidateRelease: object,
  *   replayFixture: { input: Record<string, unknown>, expectedOutput: Record<string, unknown> },
  * }} input
  * @returns {{ compatible: boolean, errors: readonly string[] }}
