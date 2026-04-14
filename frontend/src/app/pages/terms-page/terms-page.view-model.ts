@@ -84,8 +84,8 @@ export const TERMS_PAGE_SECTION_GROUPS = [
         id: 'risk-mapping-governance',
         groupId: 'risk-mapping-governance',
         groupLabel: 'Risk Mapping Governance',
-        sectionLabel: 'Risk Mapping Governance',
-        title: 'Risk Mapping Governance',
+        sectionLabel: 'Risk Mapping Governance API',
+        title: 'Risk Mapping Governance API',
         summary:
           'Risk Mapping Governance is exposed separately as a bounded API surface. The current route set includes discovery, governance, diff, explain, resolve, and registry endpoints. The query contract accepts entity, timeHorizon, scenarioType, domain, scope, evidenceSetVersion, and optional queryText; queryText is normalized by the contract but not forwarded by the route handler.',
       },
@@ -99,8 +99,8 @@ export const TERMS_PAGE_SECTION_GROUPS = [
         id: 'military-constraints',
         groupId: 'military-constraints',
         groupLabel: 'Military Constraints Compiler',
-        sectionLabel: 'Military Constraints Compiler',
-        title: 'Military Constraints Compiler',
+        sectionLabel: 'Military Constraints Compiler API',
+        title: 'Military Constraints Compiler API',
         summary:
           'Military Constraints Compiler is exposed as a deterministic admissibility surface under validated packs. It accepts structured facts only, fails closed, and returns ALLOWED, REFUSED, or REFUSED_INCOMPLETE. The current backend exposes discovery, pack catalog, pack detail, and evaluation routes only; no /schema or /examples routes are implemented.',
       },
@@ -114,8 +114,8 @@ export const TERMS_PAGE_SECTION_GROUPS = [
         id: 'zee-api',
         groupId: 'zee-api',
         groupLabel: 'ZeroGlare Evidence Engine',
-        sectionLabel: 'ZeroGlare Evidence Engine',
-        title: 'ZeroGlare Evidence Engine',
+        sectionLabel: 'ZeroGlare Evidence Engine API',
+        title: 'ZeroGlare Evidence Engine API',
         summary:
           'ZeroGlare Evidence Engine is exposed through a read-only ZEE scaffold and a separate zeroglare analysis route. The ZEE scaffold exposes discovery, contract, explain, and audit metadata only; the zeroglare analysis route accepts structured text input through q or input and returns bounded diagnostics.',
       },
