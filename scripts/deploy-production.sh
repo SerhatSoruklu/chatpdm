@@ -214,7 +214,7 @@ log "Saving PM2 state"
 pm2 save
 
 log "Running backend health check"
-wait_for_health "http://127.0.0.1:4301/health" 30 1
+wait_for_health "http://127.0.0.1:4301/health" 90 1
 
 log "Running frontend SSR health check"
 wait_for_health "http://127.0.0.1:4101/" 30 1
