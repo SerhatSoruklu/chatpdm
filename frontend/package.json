@@ -33,6 +33,11 @@
       }
     ]
   },
+  "overrides": {
+    "@hono/node-server": "1.19.13",
+    "hono": "4.12.12",
+    "vite": "7.3.2"
+  },
   "private": true,
   "packageManager": "npm@11.8.0",
   "dependencies": {
