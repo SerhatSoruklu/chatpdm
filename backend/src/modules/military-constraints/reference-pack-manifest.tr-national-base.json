@@ -1,0 +1,12 @@
+{
+  "packId": "TR_NATIONAL_BASE_V1",
+  "jurisdiction": "TR",
+  "bundleId": "tr-national-base-bundle",
+  "bundleVersion": "0.1.0",
+  "reviewedClauseSetIds": [
+    "tr-national-base-core"
+  ],
+  "authorityGraphId": "AUTH-GRAPH-TR-001",
+  "sourceRegistryVersion": "1.0.0",
+  "regressionSuiteVersion": "0.1.0"
+}

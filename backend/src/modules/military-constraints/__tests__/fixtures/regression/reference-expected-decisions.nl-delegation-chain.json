@@ -1,0 +1,30 @@
+[
+  {
+    "caseId": "nl-delegation-chain-allowed-case",
+    "bundleVariant": "reference",
+    "decision": "ALLOWED",
+    "reasonCode": null,
+    "failedStage": null,
+    "failingRuleIds": []
+  },
+  {
+    "caseId": "nl-delegation-chain-refusal",
+    "bundleVariant": "reference",
+    "decision": "REFUSED",
+    "reasonCode": "AUTHORITY_UNRESOLVED",
+    "failedStage": "ADMISSIBILITY",
+    "failingRuleIds": [
+      "CR-NL-DEL-001"
+    ]
+  },
+  {
+    "caseId": "nl-delegation-chain-missing-fact",
+    "bundleVariant": "reference",
+    "decision": "REFUSED_INCOMPLETE",
+    "reasonCode": "MISSING_REQUIRED_FACT",
+    "failedStage": "ADMISSIBILITY",
+    "failingRuleIds": [
+      "CR-NL-DEL-001"
+    ]
+  }
+]

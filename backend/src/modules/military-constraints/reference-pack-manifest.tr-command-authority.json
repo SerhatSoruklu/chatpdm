@@ -1,0 +1,12 @@
+{
+  "packId": "TR_COMMAND_AUTHORITY_V1",
+  "jurisdiction": "TR",
+  "bundleId": "tr-command-authority-bundle",
+  "bundleVersion": "0.1.0",
+  "reviewedClauseSetIds": [
+    "tr-command-authority-core"
+  ],
+  "authorityGraphId": "AUTH-GRAPH-TR-001",
+  "sourceRegistryVersion": "1.0.0",
+  "regressionSuiteVersion": "0.1.0"
+}

@@ -54,6 +54,42 @@ function getRegressionFixturePath(moduleRoot, fileName) {
   return path.join(moduleRoot, '__tests__', 'fixtures', 'regression', fileName);
 }
 
+function getAuthorityGraphPath(moduleRoot, manifest) {
+  const authorityGraphId = isPlainObject(manifest) && typeof manifest.authorityGraphId === 'string'
+    ? manifest.authorityGraphId
+    : null;
+
+  if (authorityGraphId === 'AUTH-GRAPH-INTL-001' || (isPlainObject(manifest) && manifest.jurisdiction === 'INTL')) {
+    return path.join(moduleRoot, '__tests__', 'fixtures', 'authority-graph-intl.json');
+  }
+
+  if (authorityGraphId === 'AUTH-GRAPH-UK-001' || (isPlainObject(manifest) && manifest.jurisdiction === 'UK')) {
+    return path.join(moduleRoot, '__tests__', 'fixtures', 'authority-graph-uk.json');
+  }
+
+  if (authorityGraphId === 'AUTH-GRAPH-CA-001' || (isPlainObject(manifest) && manifest.jurisdiction === 'CA')) {
+    return path.join(moduleRoot, '__tests__', 'fixtures', 'authority-graph-ca.json');
+  }
+
+  if (authorityGraphId === 'AUTH-GRAPH-AU-001' || (isPlainObject(manifest) && manifest.jurisdiction === 'AU')) {
+    return path.join(moduleRoot, '__tests__', 'fixtures', 'authority-graph-au.json');
+  }
+
+  if (authorityGraphId === 'AUTH-GRAPH-NL-001' || (isPlainObject(manifest) && manifest.jurisdiction === 'NL')) {
+    return path.join(moduleRoot, '__tests__', 'fixtures', 'authority-graph-nl.json');
+  }
+
+  if (authorityGraphId === 'AUTH-GRAPH-TR-001' || (isPlainObject(manifest) && manifest.jurisdiction === 'TR')) {
+    return path.join(moduleRoot, '__tests__', 'fixtures', 'authority-graph-tr.json');
+  }
+
+  if (authorityGraphId === 'AUTH-GRAPH-NATO-001' || (isPlainObject(manifest) && manifest.jurisdiction === 'NATO')) {
+    return path.join(moduleRoot, '__tests__', 'fixtures', 'authority-graph-nato.json');
+  }
+
+  return path.join(moduleRoot, '__tests__', 'fixtures', 'authority-graph.json');
+}
+
 function loadPackRegistry(moduleRoot) {
   const registryPath = getPackRegistryPath(moduleRoot);
 
@@ -237,6 +273,7 @@ module.exports = {
   buildPackRegistryIndex,
   getPackRegistryPath,
   getManifestPaths,
+  getAuthorityGraphPath,
   getRegressionFixturePath,
   getReviewedClausePaths,
   getReviewedClauseSetPath,

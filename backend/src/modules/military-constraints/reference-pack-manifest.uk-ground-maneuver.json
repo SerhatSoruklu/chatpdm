@@ -1,0 +1,12 @@
+{
+  "packId": "UK_GROUND_MANEUVER_V1",
+  "jurisdiction": "UK",
+  "bundleId": "uk-ground-maneuver-bundle",
+  "bundleVersion": "0.1.0",
+  "reviewedClauseSetIds": [
+    "uk-ground-maneuver-core"
+  ],
+  "authorityGraphId": "AUTH-GRAPH-UK-001",
+  "sourceRegistryVersion": "1.0.0",
+  "regressionSuiteVersion": "0.1.0"
+}

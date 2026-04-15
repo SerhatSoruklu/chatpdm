@@ -1,0 +1,50 @@
+[
+  {
+    "caseId": "intl-protected-person-allowed-case",
+    "bundleVariant": "reference",
+    "decision": "ALLOWED",
+    "reasonCode": null,
+    "failedStage": null,
+    "failingRuleIds": []
+  },
+  {
+    "caseId": "intl-protected-person-civilian-refusal",
+    "bundleVariant": "reference",
+    "decision": "REFUSED",
+    "reasonCode": "PROHIBITED_TARGET",
+    "failedStage": "LEGAL_FLOOR",
+    "failingRuleIds": [
+      "CR-INTL-PER-LF-001"
+    ]
+  },
+  {
+    "caseId": "intl-protected-person-medical-refusal",
+    "bundleVariant": "reference",
+    "decision": "REFUSED",
+    "reasonCode": "PROHIBITED_TARGET",
+    "failedStage": "LEGAL_FLOOR",
+    "failingRuleIds": [
+      "CR-INTL-PER-LF-002"
+    ]
+  },
+  {
+    "caseId": "intl-protected-person-hors-de-combat-refusal",
+    "bundleVariant": "reference",
+    "decision": "REFUSED",
+    "reasonCode": "HORS_DE_COMBAT_PROTECTED",
+    "failedStage": "LEGAL_FLOOR",
+    "failingRuleIds": [
+      "CR-INTL-PER-LF-003"
+    ]
+  },
+  {
+    "caseId": "intl-protected-person-missing-fact",
+    "bundleVariant": "reference",
+    "decision": "REFUSED_INCOMPLETE",
+    "reasonCode": "MISSING_REQUIRED_FACT",
+    "failedStage": "ADMISSIBILITY",
+    "failingRuleIds": [
+      "CR-INTL-PER-ADM-001"
+    ]
+  }
+]

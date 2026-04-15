@@ -1,0 +1,28 @@
+[
+  {
+    "caseId": "uk-command-authority-allowed-case",
+    "bundleVariant": "reference",
+    "decision": "ALLOWED",
+    "reasonCode": null,
+    "failedStage": null,
+    "failingRuleIds": []
+  },
+  {
+    "caseId": "uk-command-authority-refusal",
+    "bundleVariant": "reference",
+    "decision": "REFUSED",
+    "reasonCode": "RESERVED_TO_HIGHER_COMMAND",
+    "failedStage": "ADMISSIBILITY",
+    "failingRuleIds": [
+      "CR-UK-CMD-001"
+    ]
+  },
+  {
+    "caseId": "uk-command-authority-missing-fact",
+    "bundleVariant": "reference",
+    "decision": "REFUSED_INCOMPLETE",
+    "reasonCode": "FACT_PACKET_INVALID",
+    "failedStage": "ADMISSIBILITY",
+    "failingRuleIds": []
+  }
+]

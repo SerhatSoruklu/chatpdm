@@ -1,0 +1,100 @@
+[
+  {
+    "clauseId": "UK-AIR-001",
+    "sourceId": "UK-MOD-ROE-2024",
+    "locator": "roe-baseline/airspace-control-gate",
+    "jurisdiction": "UK",
+    "layer": "POLICY_OVERLAY",
+    "clauseType": "REQUIREMENT",
+    "rawText": "UK airspace control remains admissible only when it is delegated, active, and kept in the air domain for an armed-conflict mission.",
+    "normalizedText": "If action.domain is not AIR, context.missionType is not ARMED_CONFLICT, authority.delegatedToUnit is not true, or authority.designatedRoeActive is not true, refuse.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "UK first executable air-domain pack above the INTL and UK foundation layers.",
+    "compilationHint": {
+      "stage": "ADMISSIBILITY",
+      "priority": 1500,
+      "effect": {
+        "decision": "REFUSED",
+        "reasonCode": "SCOPE_VIOLATION"
+      },
+      "scope": {
+        "jurisdiction": "UK",
+        "domains": [
+          "LAND",
+          "AIR",
+          "MARITIME",
+          "CYBER",
+          "SPACE",
+          "MULTI_DOMAIN"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "SURVEILLANCE",
+          "ACCESS_CONTROL",
+          "CONTROL_ACCESS_POINT",
+          "SELF_DEFENSE_RESPONSE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "BRIGADE",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "action.domain",
+        "context.missionType",
+        "authority.delegatedToUnit",
+        "authority.designatedRoeActive"
+      ],
+      "predicate": {
+        "any": [
+          {
+            "neq": [
+              {
+                "fact": "action.domain"
+              },
+              {
+                "value": "AIR"
+              }
+            ]
+          },
+          {
+            "neq": [
+              {
+                "fact": "context.missionType"
+              },
+              {
+                "value": "ARMED_CONFLICT"
+              }
+            ]
+          },
+          {
+            "neq": [
+              {
+                "fact": "authority.delegatedToUnit"
+              },
+              {
+                "value": true
+              }
+            ]
+          },
+          {
+            "neq": [
+              {
+                "fact": "authority.designatedRoeActive"
+              },
+              {
+                "value": true
+              }
+            ]
+          }
+        ]
+      },
+      "notes": "UK airspace control gate."
+    }
+  }
+]

@@ -44,6 +44,15 @@ function listReferencePacks(input) {
           kind: packRegistryIndex.has(manifest.packId) ? packRegistryIndex.get(manifest.packId).entry.kind : null,
           status: packRegistryIndex.has(manifest.packId) ? packRegistryIndex.get(manifest.packId).entry.status : null,
           dependsOn: packRegistryIndex.has(manifest.packId) ? [...packRegistryIndex.get(manifest.packId).entry.dependsOn] : [],
+          overlayFamily: packRegistryIndex.has(manifest.packId) && typeof packRegistryIndex.get(manifest.packId).entry.overlayFamily === 'string'
+            ? packRegistryIndex.get(manifest.packId).entry.overlayFamily
+            : null,
+          overlayBoundary: packRegistryIndex.has(manifest.packId) && typeof packRegistryIndex.get(manifest.packId).entry.overlayBoundary === 'string'
+            ? packRegistryIndex.get(manifest.packId).entry.overlayBoundary
+            : null,
+          overlayScope: packRegistryIndex.has(manifest.packId) && typeof packRegistryIndex.get(manifest.packId).entry.overlayScope === 'string'
+            ? packRegistryIndex.get(manifest.packId).entry.overlayScope
+            : null,
           registryOrder: packRegistryIndex.has(manifest.packId) ? packRegistryIndex.get(manifest.packId).registryOrder : null,
           registryPresent,
           manifestPath,

@@ -1,0 +1,82 @@
+[
+  {
+    "clauseId": "TR-NAT-001",
+    "sourceId": "TR-MOD-NATIONAL-2024",
+    "locator": "national-baseline/coalition-mode-and-caveats",
+    "jurisdiction": "TR",
+    "layer": "POLICY_OVERLAY",
+    "clauseType": "REQUIREMENT",
+    "rawText": "The Turkey national baseline applies only in national context and without a national caveat.",
+    "normalizedText": "If context.coalitionMode is not NATIONAL or authority.nationalCaveat is true, refuse.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Turkey national baseline gate above the shared INTL layer.",
+    "compilationHint": {
+      "stage": "ADMISSIBILITY",
+      "priority": 1600,
+      "effect": {
+        "decision": "REFUSED",
+        "reasonCode": "NATIONAL_CAVEAT_BLOCK"
+      },
+      "scope": {
+        "jurisdiction": "TR",
+        "domains": [
+          "LAND",
+          "AIR",
+          "MARITIME",
+          "CYBER",
+          "SPACE",
+          "MULTI_DOMAIN"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "STRIKE",
+          "ENGAGE",
+          "FIRE",
+          "SELF_DEFENSE_RESPONSE",
+          "ACCESS_CONTROL",
+          "SEARCH",
+          "DETENTION",
+          "SURVEILLANCE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "TR_NATIONAL_COMMAND",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "context.coalitionMode",
+        "authority.nationalCaveat"
+      ],
+      "predicate": {
+        "any": [
+          {
+            "neq": [
+              {
+                "fact": "context.coalitionMode"
+              },
+              {
+                "value": "NATIONAL"
+              }
+            ]
+          },
+          {
+            "eq": [
+              {
+                "fact": "authority.nationalCaveat"
+              },
+              {
+                "value": true
+              }
+            ]
+          }
+        ]
+      },
+      "notes": "Turkey national baseline gate."
+    }
+  }
+]

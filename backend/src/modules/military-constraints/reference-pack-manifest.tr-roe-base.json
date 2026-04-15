@@ -1,0 +1,12 @@
+{
+  "packId": "TR_ROE_BASE_V1",
+  "jurisdiction": "TR",
+  "bundleId": "tr-roe-base-bundle",
+  "bundleVersion": "0.1.0",
+  "reviewedClauseSetIds": [
+    "tr-roe-base-core"
+  ],
+  "authorityGraphId": "AUTH-GRAPH-TR-001",
+  "sourceRegistryVersion": "1.0.0",
+  "regressionSuiteVersion": "0.1.0"
+}

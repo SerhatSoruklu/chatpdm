@@ -47,6 +47,9 @@ function sanitizeListedPackRecord(pack) {
     kind: typeof pack.kind === 'string' ? pack.kind : null,
     status: typeof pack.status === 'string' ? pack.status : null,
     dependsOn: Array.isArray(pack.dependsOn) ? [...pack.dependsOn] : [],
+    overlayFamily: typeof pack.overlayFamily === 'string' ? pack.overlayFamily : null,
+    overlayBoundary: typeof pack.overlayBoundary === 'string' ? pack.overlayBoundary : null,
+    overlayScope: typeof pack.overlayScope === 'string' ? pack.overlayScope : null,
     registryOrder: Number.isInteger(pack.registryOrder) ? pack.registryOrder : null,
     registryPresent: pack.registryPresent === true,
   };

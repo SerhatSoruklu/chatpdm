@@ -132,6 +132,14 @@
             "CONFIRMED_TRUE"
           ]
         },
+        "positiveIdentificationStatus": {
+          "type": "string",
+          "enum": [
+            "CONFIRMED_TRUE",
+            "CONFIRMED_FALSE",
+            "UNKNOWN"
+          ]
+        },
         "militaryObjectiveStatus": {
           "type": "string",
           "enum": [

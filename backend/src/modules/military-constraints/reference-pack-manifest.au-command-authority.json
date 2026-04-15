@@ -1,0 +1,12 @@
+{
+  "packId": "AU_COMMAND_AUTHORITY_V1",
+  "jurisdiction": "AU",
+  "bundleId": "au-command-authority-bundle",
+  "bundleVersion": "0.1.0",
+  "reviewedClauseSetIds": [
+    "au-command-authority-core"
+  ],
+  "authorityGraphId": "AUTH-GRAPH-AU-001",
+  "sourceRegistryVersion": "1.0.0",
+  "regressionSuiteVersion": "0.1.0"
+}

@@ -207,6 +207,10 @@ function buildNotes(clause, sourceEntry, compilerVersion) {
 }
 
 function buildLegalFloorRule(clause, sourceEntry, compilerVersion) {
+  const minimumLevelId = clause.jurisdiction === 'INTL'
+    ? 'UNIT'
+    : LEGAL_FLOOR_PROHIBITION_TEMPLATE.authority.minimumLevelId;
+
   const rule = {
     ruleId: `CR-${clause.clauseId}`,
     version: 1,
@@ -220,7 +224,10 @@ function buildLegalFloorRule(clause, sourceEntry, compilerVersion) {
       missionTypes: [...LEGAL_FLOOR_PROHIBITION_TEMPLATE.scope.missionTypes],
       actionKinds: [...LEGAL_FLOOR_PROHIBITION_TEMPLATE.scope.actionKinds],
     },
-    authority: cloneJson(LEGAL_FLOOR_PROHIBITION_TEMPLATE.authority),
+    authority: {
+      ...cloneJson(LEGAL_FLOOR_PROHIBITION_TEMPLATE.authority),
+      minimumLevelId,
+    },
     requiredFacts: [...LEGAL_FLOOR_PROHIBITION_TEMPLATE.requiredFacts],
     predicate: cloneJson(LEGAL_FLOOR_PROHIBITION_TEMPLATE.predicate),
     sourceRefs: [

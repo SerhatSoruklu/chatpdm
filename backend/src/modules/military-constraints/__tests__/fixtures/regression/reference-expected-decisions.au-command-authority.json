@@ -1,0 +1,28 @@
+[
+  {
+    "caseId": "au-command-authority-allowed-case",
+    "bundleVariant": "reference",
+    "decision": "ALLOWED",
+    "reasonCode": null,
+    "failedStage": null,
+    "failingRuleIds": []
+  },
+  {
+    "caseId": "au-command-authority-refusal",
+    "bundleVariant": "reference",
+    "decision": "REFUSED",
+    "reasonCode": "RESERVED_TO_HIGHER_COMMAND",
+    "failedStage": "ADMISSIBILITY",
+    "failingRuleIds": [
+      "CR-AU-CMD-001"
+    ]
+  },
+  {
+    "caseId": "au-command-authority-missing-fact",
+    "bundleVariant": "reference",
+    "decision": "REFUSED_INCOMPLETE",
+    "reasonCode": "FACT_PACKET_INVALID",
+    "failedStage": "ADMISSIBILITY",
+    "failingRuleIds": []
+  }
+]

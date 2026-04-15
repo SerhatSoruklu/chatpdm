@@ -1,0 +1,12 @@
+{
+  "packId": "NL_COMMAND_AUTHORITY_V1",
+  "jurisdiction": "NL",
+  "bundleId": "nl-command-authority-bundle",
+  "bundleVersion": "0.1.0",
+  "reviewedClauseSetIds": [
+    "nl-command-authority-core"
+  ],
+  "authorityGraphId": "AUTH-GRAPH-NL-001",
+  "sourceRegistryVersion": "1.0.0",
+  "regressionSuiteVersion": "0.1.0"
+}

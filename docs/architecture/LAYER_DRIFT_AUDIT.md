@@ -278,6 +278,6 @@ Everything else is either clean or a bounded watch item.
 
 Overall kernel semantics remain intact.
 
-The military-constraints subsystem is still refusal-first, deterministic, and locked at Packs 1 through 5.
+At the time of this audit, the military-constraints subsystem was still refusal-first, deterministic, and locked at Packs 1 through 5.
 Phase 6 remains a projection layer only.
 The audit did not find any kernel-wide semantic widening.

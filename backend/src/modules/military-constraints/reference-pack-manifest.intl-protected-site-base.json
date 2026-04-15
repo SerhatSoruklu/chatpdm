@@ -1,0 +1,12 @@
+{
+  "packId": "INTL_PROTECTED_SITE_BASE_V1",
+  "jurisdiction": "INTL",
+  "bundleId": "intl-protected-site-base-bundle",
+  "bundleVersion": "0.1.0",
+  "reviewedClauseSetIds": [
+    "intl-protected-site-base-core"
+  ],
+  "authorityGraphId": "AUTH-GRAPH-INTL-001",
+  "sourceRegistryVersion": "1.0.0",
+  "regressionSuiteVersion": "0.1.0"
+}

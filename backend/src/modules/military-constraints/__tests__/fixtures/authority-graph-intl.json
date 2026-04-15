@@ -1,0 +1,36 @@
+{
+  "authorityGraphId": "AUTH-GRAPH-INTL-001",
+  "version": 1,
+  "status": "ACTIVE",
+  "levels": [
+    {
+      "levelId": "INTERNATIONAL_COMMAND",
+      "rank": 700
+    },
+    {
+      "levelId": "OPERATIONAL_COMMAND",
+      "rank": 600
+    },
+    {
+      "levelId": "TASK_FORCE",
+      "rank": 500
+    },
+    {
+      "levelId": "UNIT",
+      "rank": 400
+    },
+    {
+      "levelId": "SUBUNIT",
+      "rank": 300
+    },
+    {
+      "levelId": "TEAM",
+      "rank": 200
+    },
+    {
+      "levelId": "INDIVIDUAL",
+      "rank": 100
+    }
+  ],
+  "delegationEdges": []
+}

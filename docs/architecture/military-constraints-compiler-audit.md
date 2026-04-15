@@ -1,6 +1,7 @@
 # Military Constraints Compiler: Phase 0 Audit
 
 This is an audit-only document for a new bounded ChatPDM subsystem.
+It records the original phase-0 pack lock and is now historical context for the current multi-jurisdiction surface.
 
 The subsystem is a closed deterministic constraint compiler plus validator.
 It is not a ROE reader, not a strategy engine, not a targeting system, and not part of general concept resolution.
@@ -20,7 +21,7 @@ Default deny applies on ambiguity, missing required facts, unresolved authority,
 
 The Military Constraints Compiler is a domain-bounded enforcement subsystem.
 Its job is to decide whether a proposed action is admissible under a validated military constraint bundle.
-The locked v1 pack surface is Packs 1 through 5; Pack 6+ is post-v1 expansion only.
+At the time of the original phase-0 audit, the locked v1 pack surface was Packs 1 through 5; Pack 6+ was post-v1 expansion only.
 
 It must only evaluate structured facts.
 It must not read PDFs, prose, or narrative text at runtime.
@@ -406,8 +407,8 @@ Exit condition:
 - keep it strictly downstream of the validated machine bundle
 - do not allow it to create new meaning
 - see [phase-6-execution-card-projection.md](./phase-6-execution-card-projection.md) for the projection contract
-- this phase does not change the locked v1 pack surface
-- Pack 6+ remains post-v1 expansion only
+  - this phase did not change the locked v1 pack surface
+  - Pack 6+ remained post-v1 expansion only at the time of the original audit
 
 Exit condition:
 

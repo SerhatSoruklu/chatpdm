@@ -98,19 +98,22 @@
       </div>
     </section>
 
-    <section class="pdm-mcc__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-mcc-packs-title">
+    <section
+      class="pdm-mcc__section pdm-site-surface pdm-site-panel"
+      aria-labelledby="pdm-mcc-truth-title"
+    >
       <div class="pdm-mcc__section-head">
-        <p class="pdm-mcc__section-label">Pack overview</p>
-        <h2 class="pdm-mcc__section-title" id="pdm-mcc-packs-title">Validated baseline and admitted waves.</h2>
+        <p class="pdm-mcc__section-label">Surface truth map</p>
+        <h2 class="pdm-mcc__section-title" id="pdm-mcc-truth-title">Shared, national, coalition, overlay, planned, and umbrella truth.</h2>
         <p class="pdm-mcc__section-copy">
-          The surfaced catalog distinguishes frozen baseline packs, admitted foundation/domain/overlay waves, and planned roadmap entries.
+          Only admitted packs are executable. Planned packs remain registry-visible only, and umbrella labels stay non-executable. The surface below separates shared INTL packs, national families, coalition packs, and overlay families.
         </p>
       </div>
 
-      <div class="pdm-mcc__pack-grid">
-        @for (pack of packOverview; track pack.packId) {
+      <div class="pdm-mcc__pack-grid pdm-mcc__pack-grid--truth">
+        @for (pack of surfaceTruthCards; track pack.label) {
           <article class="pdm-mcc__pack-card">
-            <p class="pdm-mcc__mono">{{ pack.packId }}</p>
+            <p class="pdm-mcc__mono">{{ pack.label }}</p>
             <h3 class="pdm-mcc__card-title">{{ pack.title }}</h3>
             <p class="pdm-mcc__card-copy">{{ pack.copy }}</p>
           </article>

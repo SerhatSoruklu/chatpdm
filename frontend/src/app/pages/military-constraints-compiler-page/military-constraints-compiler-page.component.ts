@@ -12,14 +12,14 @@ import {
 } from './military-constraints-compiler-page.constants';
 import { MilitaryConstraintsCompilerImageDialogComponent } from './military-constraints-compiler-image-dialog.component';
 
-interface PackOverviewCard {
-  readonly packId: string;
-  readonly title: string;
+interface ContractCard {
+  readonly label: string;
   readonly copy: string;
 }
 
-interface ContractCard {
+interface SurfaceTruthCard {
   readonly label: string;
+  readonly title: string;
   readonly copy: string;
 }
 
@@ -99,31 +99,36 @@ export class MilitaryConstraintsCompilerPageComponent {
     },
   ] as const;
 
-  protected readonly packOverview: readonly PackOverviewCard[] = [
+  protected readonly surfaceTruthCards: readonly SurfaceTruthCard[] = [
     {
-      packId: 'Baseline surface',
-      title: 'Frozen admitted base',
-      copy: 'Packs 1 through 5 remain the frozen baseline surface.',
+      label: 'Shared INTL baseline',
+      title: 'International baseline packs',
+      copy: 'INTL_LOAC_BASE_V1, INTL_PROTECTED_SITE_BASE_V1, and INTL_PROTECTED_PERSON_BASE_V1 are shared and reusable across national families.',
     },
     {
-      packId: 'Foundations',
-      title: 'Admitted foundation wave',
-      copy: 'ROE, LOAC, authority, delegation, protected site, and coalition interoperability stay reusable.',
+      label: 'National families',
+      title: 'Separate jurisdictions',
+      copy: 'US, UK, CA, AU, NL, and TR remain distinct national branches with explicit INTL ancestry where appropriate.',
     },
     {
-      packId: 'Domains',
-      title: 'Admitted executable domains',
-      copy: 'Airspace control, ground maneuver, checkpoint admissibility, search and seizure, and detention handling remain bounded.',
+      label: 'Coalition packs',
+      title: 'NATO and allied interoperability',
+      copy: 'NATO_INTEROP_BASE_V1, ALLIED_AUTHORITY_MERGE_V1, and NATO_ROE_COMPAT_V1 stay coalition-scoped, not national.',
     },
     {
-      packId: 'Overlays',
-      title: 'Admitted overlay wave',
-      copy: 'No-fly, approval, collateral-damage, protection, route, timing, interference, retention, and merge refinements stay scoped as overlays.',
+      label: 'Overlay families',
+      title: 'Scoped refinements',
+      copy: 'Protection, targeting_refinement, retention, operational_condition, and coalition_merge overlays stay explicit and dependency-driven.',
     },
     {
-      packId: 'Roadmap',
-      title: 'Planned remainder',
-      copy: 'Surveillance, drone, humanitarian, rescue, hostage, rapid response, EW, cyber, no-strike, and umbrella labels remain planned.',
+      label: 'Planned roadmap',
+      title: 'Not yet admitted',
+      copy: 'Planned packs remain registry-visible but non-executable until admitted.',
+    },
+    {
+      label: 'Umbrella labels',
+      title: 'Non-executable labels',
+      copy: 'US_AIR_V1 is an umbrella label only and is not an admitted executable pack.',
     },
   ] as const;
 

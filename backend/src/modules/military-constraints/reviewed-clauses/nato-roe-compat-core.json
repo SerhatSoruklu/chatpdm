@@ -1,0 +1,82 @@
+[
+  {
+    "clauseId": "NATO-ROE-001",
+    "sourceId": "NATO-ROE-COMPAT-2024",
+    "locator": "coalition-baseline/roe-compat",
+    "jurisdiction": "NATO",
+    "layer": "POLICY_OVERLAY",
+    "clauseType": "REQUIREMENT",
+    "rawText": "NATO coalition ROE compatibility requires coalition mode and active ROE.",
+    "normalizedText": "If context.coalitionMode is not COALITION or authority.designatedRoeActive is not true, refuse.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "NATO coalition ROE compatibility overlay.",
+    "compilationHint": {
+      "stage": "POLICY_OVERLAY",
+      "priority": 1400,
+      "effect": {
+        "decision": "REFUSED",
+        "reasonCode": "COALITION_RULE_CONFLICT"
+      },
+      "scope": {
+        "jurisdiction": "NATO",
+        "domains": [
+          "LAND",
+          "AIR",
+          "MARITIME",
+          "CYBER",
+          "SPACE",
+          "MULTI_DOMAIN"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "STRIKE",
+          "ENGAGE",
+          "FIRE",
+          "SELF_DEFENSE_RESPONSE",
+          "ACCESS_CONTROL",
+          "SEARCH",
+          "DETENTION",
+          "SURVEILLANCE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "NATO_COMMAND",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "context.coalitionMode",
+        "authority.designatedRoeActive"
+      ],
+      "predicate": {
+        "any": [
+          {
+            "neq": [
+              {
+                "fact": "context.coalitionMode"
+              },
+              {
+                "value": "COALITION"
+              }
+            ]
+          },
+          {
+            "neq": [
+              {
+                "fact": "authority.designatedRoeActive"
+              },
+              {
+                "value": true
+              }
+            ]
+          }
+        ]
+      },
+      "notes": "Coalition ROE compatibility gate."
+    }
+  }
+]

@@ -1,0 +1,12 @@
+{
+  "packId": "INTL_PROTECTED_PERSON_BASE_V1",
+  "jurisdiction": "INTL",
+  "bundleId": "intl-protected-person-base-bundle",
+  "bundleVersion": "0.1.0",
+  "reviewedClauseSetIds": [
+    "intl-protected-person-base-core"
+  ],
+  "authorityGraphId": "AUTH-GRAPH-INTL-001",
+  "sourceRegistryVersion": "1.0.0",
+  "regressionSuiteVersion": "0.1.0"
+}
