@@ -1,0 +1,101 @@
+[
+  {
+    "clauseId": "CLAUSE-LOAC-0001",
+    "sourceId": "DOD-LOW-2023",
+    "locator": "chapter-5/5.3.2",
+    "jurisdiction": "US",
+    "layer": "LEGAL_FLOOR",
+    "clauseType": "PROHIBITION",
+    "rawText": "Direct attacks against civilians are prohibited.",
+    "normalizedText": "Direct attacks against civilians are prohibited.",
+    "machineCandidate": true,
+    "ambiguityStatus": "CLEAR",
+    "reviewStatus": "COMPILATION_READY",
+    "reviewNotes": "Reusable LOAC floor prohibition kept in one compliance pack."
+  },
+  {
+    "clauseId": "CLAUSE-LOAC-0002",
+    "sourceId": "DOD-LOW-2023",
+    "locator": "chapter-5/5.4.2",
+    "jurisdiction": "US",
+    "layer": "LEGAL_FLOOR",
+    "clauseType": "REQUIREMENT",
+    "rawText": "Positive identification of the target is required before attack.",
+    "normalizedText": "Positive identification of the target is required before attack.",
+    "machineCandidate": true,
+    "ambiguityStatus": "CLEAR",
+    "reviewStatus": "COMPILATION_READY",
+    "reviewNotes": "Reusable LOAC admissibility gate for attack-like actions.",
+    "compilationHint": {
+      "stage": "ADMISSIBILITY",
+      "priority": 1200,
+      "effect": {
+        "decision": "ALLOWED",
+        "reasonCode": "MISSING_REQUIRED_FACT"
+      },
+      "scope": {
+        "jurisdiction": "US",
+        "domains": [
+          "LAND",
+          "AIR",
+          "MARITIME",
+          "CYBER",
+          "SPACE",
+          "MULTI_DOMAIN"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "STRIKE",
+          "ENGAGE",
+          "FIRE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "PLATOON",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "target.protectedClass",
+        "target.militaryObjectiveStatus"
+      ],
+      "predicate": {
+        "any": [
+          {
+            "eq": [
+              {
+                "fact": "action.kind"
+              },
+              {
+                "value": "STRIKE"
+              }
+            ]
+          },
+          {
+            "eq": [
+              {
+                "fact": "action.kind"
+              },
+              {
+                "value": "ENGAGE"
+              }
+            ]
+          },
+          {
+            "eq": [
+              {
+                "fact": "action.kind"
+              },
+              {
+                "value": "FIRE"
+              }
+            ]
+          }
+        ]
+      },
+      "notes": "Reusable LOAC admissibility gate."
+    }
+  }
+]

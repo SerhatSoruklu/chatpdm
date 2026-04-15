@@ -224,3 +224,14 @@ If any layer fails, the concept is not admitted.
 - Ambiguity must be rejected, not resolved.
 - Family pressure is the approval boundary.
 - Snapshots are the authority on stability.
+
+## Markdown Authoring
+
+Contract markdown files MUST keep blank lines around headings and tables so markdownlint rules such as `MD022` and `MD058` do not recur.
+
+When authoring a new contract document:
+
+- add one blank line after each heading
+- add one blank line before and after each table
+- keep tables and headings visually separated from surrounding paragraphs
+- keep contract prose in block form, not run together with headings

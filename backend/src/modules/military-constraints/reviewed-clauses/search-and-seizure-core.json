@@ -1,0 +1,109 @@
+[
+  {
+    "clauseId": "CL-SEARCH-SEIZURE-001",
+    "sourceId": "NEWPORT-ROE-2022",
+    "locator": "authoring-flow/search-and-seizure",
+    "jurisdiction": "US",
+    "layer": "POLICY_OVERLAY",
+    "clauseType": "REQUIREMENT",
+    "rawText": "Search and seizure actions remain admissible only in land missions under explicit delegated authority.",
+    "normalizedText": "If action.kind is not SEARCH, SEIZE_EVIDENCE, or SEIZE_DANGEROUS_ITEM; or action.domain is not LAND; or context.missionType is not ARMED_CONFLICT; or authority.delegatedToUnit is not true; or authority.designatedActionAuthorized is not true, refuse.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Bounded search and seizure admissibility gate for the first search domain pack.",
+    "compilationHint": {
+      "stage": "ADMISSIBILITY",
+      "priority": 1500,
+      "effect": {
+        "decision": "REFUSED",
+        "reasonCode": "SCOPE_VIOLATION"
+      },
+      "scope": {
+        "jurisdiction": "US",
+        "domains": [
+          "LAND"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "SEARCH",
+          "SEIZE_EVIDENCE",
+          "SEIZE_DANGEROUS_ITEM"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "PLATOON",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "action.kind",
+        "action.domain",
+        "context.missionType",
+        "authority.delegatedToUnit",
+        "authority.designatedActionAuthorized"
+      ],
+      "predicate": {
+        "any": [
+          {
+            "not_in": [
+              {
+                "fact": "action.kind"
+              },
+              {
+                "value": [
+                  "SEARCH",
+                  "SEIZE_EVIDENCE",
+                  "SEIZE_DANGEROUS_ITEM"
+                ]
+              }
+            ]
+          },
+          {
+            "neq": [
+              {
+                "fact": "action.domain"
+              },
+              {
+                "value": "LAND"
+              }
+            ]
+          },
+          {
+            "neq": [
+              {
+                "fact": "context.missionType"
+              },
+              {
+                "value": "ARMED_CONFLICT"
+              }
+            ]
+          },
+          {
+            "neq": [
+              {
+                "fact": "authority.delegatedToUnit"
+              },
+              {
+                "value": true
+              }
+            ]
+          },
+          {
+            "neq": [
+              {
+                "fact": "authority.designatedActionAuthorized"
+              },
+              {
+                "value": true
+              }
+            ]
+          }
+        ]
+      },
+      "notes": "Reusable search and seizure admissibility gate."
+    }
+  }
+]

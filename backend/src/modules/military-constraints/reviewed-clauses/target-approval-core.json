@@ -1,0 +1,94 @@
+[
+  {
+    "clauseId": "CL-TAP-001",
+    "sourceId": "NEWPORT-ROE-2022",
+    "locator": "authoring-flow/target-approval-gate",
+    "jurisdiction": "US",
+    "layer": "POLICY_OVERLAY",
+    "clauseType": "REQUIREMENT",
+    "rawText": "Target approval remains denied unless explicit action authorization and delegation are present.",
+    "normalizedText": "If context.operationPhase is TARGET_APPROVAL, authority.designatedActionAuthorized is true, authority.designatedRoeActive is true, and authority.reservedToHigherCommand is false, continue; otherwise refuse.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Operational approval overlay for the admitted overlay wave.",
+    "compilationHint": {
+      "stage": "POLICY_OVERLAY",
+      "priority": 1400,
+      "effect": {
+        "decision": "REFUSED",
+        "reasonCode": "AUTHORITY_INVALID"
+      },
+      "scope": {
+        "jurisdiction": "US",
+        "domains": [
+          "AIR"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "STRIKE",
+          "ENGAGE",
+          "FIRE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "BRIGADE",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "authority.designatedActionAuthorized",
+        "authority.designatedRoeActive"
+      ],
+      "predicate": {
+        "not": {
+          "all": [
+            {
+              "eq": [
+                {
+                  "fact": "context.operationPhase"
+                },
+                {
+                  "value": "TARGET_APPROVAL"
+                }
+              ]
+            },
+            {
+              "eq": [
+                {
+                  "fact": "authority.designatedActionAuthorized"
+                },
+                {
+                  "value": true
+                }
+              ]
+            },
+            {
+              "eq": [
+                {
+                  "fact": "authority.designatedRoeActive"
+                },
+                {
+                  "value": true
+                }
+              ]
+            },
+            {
+              "eq": [
+                {
+                  "fact": "authority.reservedToHigherCommand"
+                },
+                {
+                  "value": false
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "notes": "Target approval overlay."
+    }
+  }
+]

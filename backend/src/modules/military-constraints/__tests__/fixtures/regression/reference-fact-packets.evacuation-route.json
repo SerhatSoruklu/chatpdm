@@ -1,0 +1,175 @@
+[
+  {
+    "caseId": "evacuation-route-allowed-case",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "us-evacuation-route-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "EVAC-TEAM-01",
+        "role": "PROTECTION_LEAD",
+        "authorityLevelId": "BRIGADE"
+      },
+      "action": {
+        "kind": "ACCESS_CONTROL",
+        "forceLevel": "NON_LETHAL",
+        "method": "EVACUATION_ROUTE",
+        "domain": "LAND"
+      },
+      "target": {
+        "id": "EVAC-01",
+        "objectType": "OTHER",
+        "protectedClass": "CIVILIAN_OBJECT",
+        "lossOfProtectionStatus": "NOT_LOST",
+        "militaryObjectiveStatus": "CONFIRMED_FALSE",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "EVAC-ROUTE-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "EVACUATION_ROUTE",
+        "coalitionMode": "NATIONAL",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "LOW"
+      },
+      "civilianRisk": {
+        "civilianPresence": true,
+        "civilianObjectPresence": true,
+        "estimatedIncidentalHarm": "LOW",
+        "feasiblePrecautionsTaken": true,
+        "expectedMilitaryAdvantage": "LOW",
+        "estimatedIncidentalHarmScore": 10,
+        "expectedMilitaryAdvantageScore": 10
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedRoeActive": true,
+        "designatedActionAuthorized": true
+      }
+    }
+  },
+  {
+    "caseId": "evacuation-route-refusal",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "us-evacuation-route-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "EVAC-TEAM-01",
+        "role": "PROTECTION_LEAD",
+        "authorityLevelId": "BRIGADE"
+      },
+      "action": {
+        "kind": "ACCESS_CONTROL",
+        "forceLevel": "NON_LETHAL",
+        "method": "EVACUATION_ROUTE",
+        "domain": "LAND"
+      },
+      "target": {
+        "id": "EVAC-01",
+        "objectType": "OTHER",
+        "protectedClass": "CIVILIAN_OBJECT",
+        "lossOfProtectionStatus": "NOT_LOST",
+        "militaryObjectiveStatus": "CONFIRMED_FALSE",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "EVAC-ROUTE-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "EVACUATION_ROUTE",
+        "coalitionMode": "NATIONAL",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "LOW"
+      },
+      "civilianRisk": {
+        "civilianPresence": true,
+        "civilianObjectPresence": true,
+        "estimatedIncidentalHarm": "LOW",
+        "feasiblePrecautionsTaken": true,
+        "expectedMilitaryAdvantage": "LOW",
+        "estimatedIncidentalHarmScore": 10,
+        "expectedMilitaryAdvantageScore": 10
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedRoeActive": true,
+        "designatedActionAuthorized": false
+      }
+    }
+  },
+  {
+    "caseId": "evacuation-route-missing-fact",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "us-evacuation-route-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "EVAC-TEAM-01",
+        "role": "PROTECTION_LEAD",
+        "authorityLevelId": "BRIGADE"
+      },
+      "action": {
+        "kind": "ACCESS_CONTROL",
+        "forceLevel": "NON_LETHAL",
+        "method": "EVACUATION_ROUTE",
+        "domain": "LAND"
+      },
+      "target": {
+        "id": "EVAC-01",
+        "objectType": "OTHER",
+        "protectedClass": "CIVILIAN_OBJECT",
+        "lossOfProtectionStatus": "NOT_LOST",
+        "militaryObjectiveStatus": "CONFIRMED_FALSE",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "EVAC-ROUTE-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "EVACUATION_ROUTE",
+        "coalitionMode": "NATIONAL",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "LOW"
+      },
+      "civilianRisk": {
+        "civilianPresence": true,
+        "civilianObjectPresence": true,
+        "estimatedIncidentalHarm": "LOW",
+        "feasiblePrecautionsTaken": true,
+        "expectedMilitaryAdvantage": "LOW",
+        "estimatedIncidentalHarmScore": 10,
+        "expectedMilitaryAdvantageScore": 10
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedRoeActive": true
+      }
+    }
+  }
+]

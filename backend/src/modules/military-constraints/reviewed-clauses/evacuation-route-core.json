@@ -1,0 +1,96 @@
+[
+  {
+    "clauseId": "EVR-001",
+    "sourceId": "NEWPORT-ROE-2022",
+    "locator": "authoring-flow/evacuation-route-gate",
+    "jurisdiction": "US",
+    "layer": "POLICY_OVERLAY",
+    "clauseType": "REQUIREMENT",
+    "rawText": "Evacuation routes require designated action authorization when the evacuation-route slice is active.",
+    "normalizedText": "If context.operationPhase is EVACUATION_ROUTE, context.zone is EVAC-ROUTE-ZONE, action.kind is ACCESS_CONTROL, and authority.designatedActionAuthorized is not true, refuse.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Overlay gate for evacuation routes.",
+    "compilationHint": {
+      "stage": "POLICY_OVERLAY",
+      "priority": 1190,
+      "effect": {
+        "decision": "REFUSED",
+        "reasonCode": "AUTHORITY_INVALID"
+      },
+      "scope": {
+        "jurisdiction": "US",
+        "domains": [
+          "LAND",
+          "AIR",
+          "MARITIME"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "ACCESS_CONTROL",
+          "SEARCH",
+          "SURVEILLANCE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "PLATOON",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "context.operationPhase",
+        "context.zone",
+        "action.kind",
+        "authority.designatedActionAuthorized"
+      ],
+      "predicate": {
+        "all": [
+          {
+            "eq": [
+              {
+                "fact": "context.operationPhase"
+              },
+              {
+                "value": "EVACUATION_ROUTE"
+              }
+            ]
+          },
+          {
+            "eq": [
+              {
+                "fact": "context.zone"
+              },
+              {
+                "value": "EVAC-ROUTE-ZONE"
+              }
+            ]
+          },
+          {
+            "eq": [
+              {
+                "fact": "action.kind"
+              },
+              {
+                "value": "ACCESS_CONTROL"
+              }
+            ]
+          },
+          {
+            "neq": [
+              {
+                "fact": "authority.designatedActionAuthorized"
+              },
+              {
+                "value": true
+              }
+            ]
+          }
+        ]
+      },
+      "notes": "Evacuation-route refinement."
+    }
+  }
+]

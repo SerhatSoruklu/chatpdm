@@ -1,0 +1,27 @@
+[
+  {
+    "caseId": "hospital-protection-allowed-case",
+    "decision": "ALLOWED",
+    "reasonCode": null,
+    "failedStage": null,
+    "failingRuleIds": []
+  },
+  {
+    "caseId": "hospital-protection-refusal",
+    "decision": "REFUSED",
+    "reasonCode": "AUTHORITY_INVALID",
+    "failedStage": "POLICY_OVERLAY",
+    "failingRuleIds": [
+      "CR-HOSP-001"
+    ]
+  },
+  {
+    "caseId": "hospital-protection-missing-fact",
+    "decision": "REFUSED_INCOMPLETE",
+    "reasonCode": "MISSING_REQUIRED_FACT",
+    "failedStage": "POLICY_OVERLAY",
+    "failingRuleIds": [
+      "CR-HOSP-001"
+    ]
+  }
+]

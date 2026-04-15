@@ -1,0 +1,12 @@
+{
+  "packId": "US_EVACUATION_ROUTE_V1",
+  "jurisdiction": "US",
+  "bundleId": "us-evacuation-route-bundle",
+  "bundleVersion": "0.1.0",
+  "reviewedClauseSetIds": [
+    "evacuation-route-core"
+  ],
+  "authorityGraphId": "AUTH-GRAPH-US-001",
+  "sourceRegistryVersion": "1.0.0",
+  "regressionSuiteVersion": "0.1.0"
+}

@@ -1,0 +1,27 @@
+[
+  {
+    "caseId": "night-operation-allowed-case",
+    "decision": "ALLOWED",
+    "reasonCode": null,
+    "failedStage": null,
+    "failingRuleIds": []
+  },
+  {
+    "caseId": "night-operation-refusal",
+    "decision": "REFUSED",
+    "reasonCode": "AUTHORITY_INVALID",
+    "failedStage": "POLICY_OVERLAY",
+    "failingRuleIds": [
+      "CR-NIGHT-001"
+    ]
+  },
+  {
+    "caseId": "night-operation-missing-fact",
+    "decision": "REFUSED_INCOMPLETE",
+    "reasonCode": "MISSING_REQUIRED_FACT",
+    "failedStage": "POLICY_OVERLAY",
+    "failingRuleIds": [
+      "CR-NIGHT-001"
+    ]
+  }
+]

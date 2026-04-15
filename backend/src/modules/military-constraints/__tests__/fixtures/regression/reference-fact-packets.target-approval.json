@@ -1,0 +1,175 @@
+[
+  {
+    "caseId": "target-approval-allowed-case",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "us-target-approval-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "AIR-TEAM-03",
+        "role": "TARGETING_LEAD",
+        "authorityLevelId": "BRIGADE"
+      },
+      "action": {
+        "kind": "STRIKE",
+        "forceLevel": "LETHAL",
+        "method": "AIR_TARGET_APPROVAL",
+        "domain": "AIR"
+      },
+      "target": {
+        "id": "AIR-TARGET-01",
+        "protectedClass": "MILITARY",
+        "militaryObjectiveStatus": "CONFIRMED_TRUE",
+        "lossOfProtectionStatus": "NOT_LOST",
+        "objectType": "OTHER",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "TARGET-APPROVAL-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "TARGET_APPROVAL",
+        "coalitionMode": "NATIONAL",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "LOW"
+      },
+      "civilianRisk": {
+        "civilianPresence": false,
+        "civilianObjectPresence": false,
+        "estimatedIncidentalHarm": "LOW",
+        "feasiblePrecautionsTaken": true,
+        "expectedMilitaryAdvantage": "HIGH",
+        "estimatedIncidentalHarmScore": 5,
+        "expectedMilitaryAdvantageScore": 85
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedRoeActive": true,
+        "designatedActionAuthorized": true
+      }
+    }
+  },
+  {
+    "caseId": "target-approval-refusal",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "us-target-approval-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "AIR-TEAM-03",
+        "role": "TARGETING_LEAD",
+        "authorityLevelId": "BRIGADE"
+      },
+      "action": {
+        "kind": "STRIKE",
+        "forceLevel": "LETHAL",
+        "method": "AIR_TARGET_APPROVAL",
+        "domain": "AIR"
+      },
+      "target": {
+        "id": "AIR-TARGET-01",
+        "protectedClass": "MILITARY",
+        "militaryObjectiveStatus": "CONFIRMED_TRUE",
+        "lossOfProtectionStatus": "NOT_LOST",
+        "objectType": "OTHER",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "TARGET-APPROVAL-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "TARGET_APPROVAL",
+        "coalitionMode": "NATIONAL",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "LOW"
+      },
+      "civilianRisk": {
+        "civilianPresence": false,
+        "civilianObjectPresence": false,
+        "estimatedIncidentalHarm": "LOW",
+        "feasiblePrecautionsTaken": true,
+        "expectedMilitaryAdvantage": "HIGH",
+        "estimatedIncidentalHarmScore": 5,
+        "expectedMilitaryAdvantageScore": 85
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedRoeActive": true,
+        "designatedActionAuthorized": false
+      }
+    }
+  },
+  {
+    "caseId": "target-approval-missing-fact",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "us-target-approval-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "AIR-TEAM-03",
+        "role": "TARGETING_LEAD",
+        "authorityLevelId": "BRIGADE"
+      },
+      "action": {
+        "kind": "STRIKE",
+        "forceLevel": "LETHAL",
+        "method": "AIR_TARGET_APPROVAL",
+        "domain": "AIR"
+      },
+      "target": {
+        "id": "AIR-TARGET-01",
+        "protectedClass": "MILITARY",
+        "militaryObjectiveStatus": "CONFIRMED_TRUE",
+        "lossOfProtectionStatus": "NOT_LOST",
+        "objectType": "OTHER",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "TARGET-APPROVAL-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "TARGET_APPROVAL",
+        "coalitionMode": "NATIONAL",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "LOW"
+      },
+      "civilianRisk": {
+        "civilianPresence": false,
+        "civilianObjectPresence": false,
+        "estimatedIncidentalHarm": "LOW",
+        "feasiblePrecautionsTaken": true,
+        "expectedMilitaryAdvantage": "HIGH",
+        "estimatedIncidentalHarmScore": 5,
+        "expectedMilitaryAdvantageScore": 85
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedRoeActive": true
+      }
+    }
+  }
+]

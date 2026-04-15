@@ -1,0 +1,90 @@
+[
+  {
+    "clauseId": "CL-NFZ-001",
+    "sourceId": "NEWPORT-ROE-2022",
+    "locator": "authoring-flow/no-fly-zone-restriction",
+    "jurisdiction": "US",
+    "layer": "POLICY_OVERLAY",
+    "clauseType": "REQUIREMENT",
+    "rawText": "Air activity must stay outside declared no-fly zones while the airspace-control overlay is active.",
+    "normalizedText": "If context.operationPhase is NO_FLY_ZONE, context.zone is US-NO-FLY-ZONE-ALPHA, authority.delegatedToUnit is true, and authority.designatedRoeActive is true, refuse.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Airspace restriction overlay for the admitted overlay wave.",
+    "compilationHint": {
+      "stage": "POLICY_OVERLAY",
+      "priority": 1500,
+      "effect": {
+        "decision": "REFUSED",
+        "reasonCode": "SCOPE_VIOLATION"
+      },
+      "scope": {
+        "jurisdiction": "US",
+        "domains": [
+          "AIR"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "SURVEILLANCE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "PLATOON",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "context.zone",
+        "authority.designatedRoeActive"
+      ],
+      "predicate": {
+        "all": [
+          {
+            "eq": [
+              {
+                "fact": "context.operationPhase"
+              },
+              {
+                "value": "NO_FLY_ZONE"
+              }
+            ]
+          },
+          {
+            "eq": [
+              {
+                "fact": "context.zone"
+              },
+              {
+                "value": "US-NO-FLY-ZONE-ALPHA"
+              }
+            ]
+          },
+          {
+            "eq": [
+              {
+                "fact": "authority.delegatedToUnit"
+              },
+              {
+                "value": true
+              }
+            ]
+          },
+          {
+            "eq": [
+              {
+                "fact": "authority.designatedRoeActive"
+              },
+              {
+                "value": true
+              }
+            ]
+          }
+        ]
+      },
+      "notes": "Airspace restriction overlay."
+    }
+  }
+]

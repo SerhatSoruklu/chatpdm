@@ -1,0 +1,30 @@
+[
+  {
+    "caseId": "no-fly-zone-allowed-case",
+    "bundleVariant": "reference",
+    "decision": "ALLOWED",
+    "reasonCode": null,
+    "failedStage": null,
+    "failingRuleIds": []
+  },
+  {
+    "caseId": "no-fly-zone-refusal",
+    "bundleVariant": "reference",
+    "decision": "REFUSED",
+    "reasonCode": "SCOPE_VIOLATION",
+    "failedStage": "POLICY_OVERLAY",
+    "failingRuleIds": [
+      "CR-CL-NFZ-001"
+    ]
+  },
+  {
+    "caseId": "no-fly-zone-missing-fact",
+    "bundleVariant": "reference",
+    "decision": "REFUSED_INCOMPLETE",
+    "reasonCode": "MISSING_REQUIRED_FACT",
+    "failedStage": "POLICY_OVERLAY",
+    "failingRuleIds": [
+      "CR-CL-NFZ-001"
+    ]
+  }
+]

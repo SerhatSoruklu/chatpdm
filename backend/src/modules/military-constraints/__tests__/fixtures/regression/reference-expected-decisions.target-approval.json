@@ -1,0 +1,30 @@
+[
+  {
+    "caseId": "target-approval-allowed-case",
+    "bundleVariant": "reference",
+    "decision": "ALLOWED",
+    "reasonCode": null,
+    "failedStage": null,
+    "failingRuleIds": []
+  },
+  {
+    "caseId": "target-approval-refusal",
+    "bundleVariant": "reference",
+    "decision": "REFUSED",
+    "reasonCode": "AUTHORITY_INVALID",
+    "failedStage": "POLICY_OVERLAY",
+    "failingRuleIds": [
+      "CR-CL-TAP-001"
+    ]
+  },
+  {
+    "caseId": "target-approval-missing-fact",
+    "bundleVariant": "reference",
+    "decision": "REFUSED_INCOMPLETE",
+    "reasonCode": "MISSING_REQUIRED_FACT",
+    "failedStage": "POLICY_OVERLAY",
+    "failingRuleIds": [
+      "CR-CL-TAP-001"
+    ]
+  }
+]

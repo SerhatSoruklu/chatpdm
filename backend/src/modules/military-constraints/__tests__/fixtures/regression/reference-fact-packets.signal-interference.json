@@ -1,0 +1,175 @@
+[
+  {
+    "caseId": "signal-interference-allowed-case",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "us-signal-interference-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "SIGNAL-TEAM-01",
+        "role": "PROTECTION_LEAD",
+        "authorityLevelId": "BRIGADE"
+      },
+      "action": {
+        "kind": "SURVEILLANCE",
+        "forceLevel": "NON_LETHAL",
+        "method": "SIGNAL_INTERFERENCE",
+        "domain": "CYBER"
+      },
+      "target": {
+        "id": "SIGNAL-01",
+        "objectType": "OTHER",
+        "protectedClass": "MILITARY",
+        "lossOfProtectionStatus": "NOT_LOST",
+        "militaryObjectiveStatus": "CONFIRMED_TRUE",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "SIGNAL-INTERFERENCE-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "SIGNAL_INTERFERENCE",
+        "coalitionMode": "NATIONAL",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "LOW"
+      },
+      "civilianRisk": {
+        "civilianPresence": false,
+        "civilianObjectPresence": false,
+        "estimatedIncidentalHarm": "LOW",
+        "feasiblePrecautionsTaken": true,
+        "expectedMilitaryAdvantage": "MEDIUM",
+        "estimatedIncidentalHarmScore": 10,
+        "expectedMilitaryAdvantageScore": 60
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedRoeActive": true,
+        "designatedActionAuthorized": true
+      }
+    }
+  },
+  {
+    "caseId": "signal-interference-refusal",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "us-signal-interference-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "SIGNAL-TEAM-01",
+        "role": "PROTECTION_LEAD",
+        "authorityLevelId": "BRIGADE"
+      },
+      "action": {
+        "kind": "SURVEILLANCE",
+        "forceLevel": "NON_LETHAL",
+        "method": "SIGNAL_INTERFERENCE",
+        "domain": "CYBER"
+      },
+      "target": {
+        "id": "SIGNAL-01",
+        "objectType": "OTHER",
+        "protectedClass": "MILITARY",
+        "lossOfProtectionStatus": "NOT_LOST",
+        "militaryObjectiveStatus": "CONFIRMED_TRUE",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "SIGNAL-INTERFERENCE-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "SIGNAL_INTERFERENCE",
+        "coalitionMode": "NATIONAL",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "LOW"
+      },
+      "civilianRisk": {
+        "civilianPresence": false,
+        "civilianObjectPresence": false,
+        "estimatedIncidentalHarm": "LOW",
+        "feasiblePrecautionsTaken": true,
+        "expectedMilitaryAdvantage": "MEDIUM",
+        "estimatedIncidentalHarmScore": 10,
+        "expectedMilitaryAdvantageScore": 60
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedRoeActive": false,
+        "designatedActionAuthorized": true
+      }
+    }
+  },
+  {
+    "caseId": "signal-interference-missing-fact",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "us-signal-interference-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "SIGNAL-TEAM-01",
+        "role": "PROTECTION_LEAD",
+        "authorityLevelId": "BRIGADE"
+      },
+      "action": {
+        "kind": "SURVEILLANCE",
+        "forceLevel": "NON_LETHAL",
+        "method": "SIGNAL_INTERFERENCE",
+        "domain": "CYBER"
+      },
+      "target": {
+        "id": "SIGNAL-01",
+        "objectType": "OTHER",
+        "protectedClass": "MILITARY",
+        "lossOfProtectionStatus": "NOT_LOST",
+        "militaryObjectiveStatus": "CONFIRMED_TRUE",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "SIGNAL-INTERFERENCE-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "SIGNAL_INTERFERENCE",
+        "coalitionMode": "NATIONAL",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "LOW"
+      },
+      "civilianRisk": {
+        "civilianPresence": false,
+        "civilianObjectPresence": false,
+        "estimatedIncidentalHarm": "LOW",
+        "feasiblePrecautionsTaken": true,
+        "expectedMilitaryAdvantage": "MEDIUM",
+        "estimatedIncidentalHarmScore": 10,
+        "expectedMilitaryAdvantageScore": 60
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedActionAuthorized": true
+      }
+    }
+  }
+]

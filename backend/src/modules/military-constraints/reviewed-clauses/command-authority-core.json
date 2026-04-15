@@ -1,0 +1,162 @@
+[
+  {
+    "clauseId": "CMD-AUTH-001",
+    "sourceId": "NEWPORT-ROE-2022",
+    "locator": "authoring-flow/command-authority-reserved-command",
+    "jurisdiction": "US",
+    "layer": "POLICY_OVERLAY",
+    "clauseType": "REQUIREMENT",
+    "rawText": "Authority reserved to higher command blocks the action.",
+    "normalizedText": "If authority.reservedToHigherCommand is true, refuse.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Explicit command authority refusal for reserved authority.",
+    "compilationHint": {
+      "stage": "ADMISSIBILITY",
+      "priority": 1800,
+      "effect": {
+        "decision": "REFUSED",
+        "reasonCode": "RESERVED_TO_HIGHER_COMMAND"
+      },
+      "scope": {
+        "jurisdiction": "US",
+        "domains": [
+          "LAND",
+          "AIR",
+          "MARITIME",
+          "CYBER",
+          "SPACE",
+          "MULTI_DOMAIN"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "STRIKE",
+          "ENGAGE",
+          "FIRE",
+          "SELF_DEFENSE_RESPONSE",
+          "ACCESS_CONTROL",
+          "SEARCH",
+          "DETENTION",
+          "SURVEILLANCE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "PLATOON",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "authority.reservedToHigherCommand",
+        "authority.designatedRoeActive"
+      ],
+      "predicate": {
+        "any": [
+          {
+            "eq": [
+              {
+                "fact": "authority.reservedToHigherCommand"
+              },
+              {
+                "value": true
+              }
+            ]
+          },
+          {
+            "neq": [
+              {
+                "fact": "authority.designatedRoeActive"
+              },
+              {
+                "value": true
+              }
+            ]
+          }
+        ]
+      },
+      "notes": "Foundation command authority gate for reserved higher command."
+    }
+  },
+  {
+    "clauseId": "CMD-AUTH-002",
+    "sourceId": "NEWPORT-ROE-2022",
+    "locator": "authoring-flow/command-authority-national-caveat",
+    "jurisdiction": "US",
+    "layer": "POLICY_OVERLAY",
+    "clauseType": "REQUIREMENT",
+    "rawText": "A national caveat blocks continuation in the command authority baseline.",
+    "normalizedText": "If authority.nationalCaveat is true, refuse.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Explicit command authority refusal for national caveat.",
+    "compilationHint": {
+      "stage": "ADMISSIBILITY",
+      "priority": 1700,
+      "effect": {
+        "decision": "REFUSED",
+        "reasonCode": "NATIONAL_CAVEAT_BLOCK"
+      },
+      "scope": {
+        "jurisdiction": "US",
+        "domains": [
+          "LAND",
+          "AIR",
+          "MARITIME",
+          "CYBER",
+          "SPACE",
+          "MULTI_DOMAIN"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "STRIKE",
+          "ENGAGE",
+          "FIRE",
+          "SELF_DEFENSE_RESPONSE",
+          "ACCESS_CONTROL",
+          "SEARCH",
+          "DETENTION",
+          "SURVEILLANCE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "PLATOON",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "authority.nationalCaveat",
+        "authority.designatedActionAuthorized"
+      ],
+      "predicate": {
+        "any": [
+          {
+            "eq": [
+              {
+                "fact": "authority.nationalCaveat"
+              },
+              {
+                "value": true
+              }
+            ]
+          },
+          {
+            "neq": [
+              {
+                "fact": "authority.designatedActionAuthorized"
+              },
+              {
+                "value": true
+              }
+            ]
+          }
+        ]
+      },
+      "notes": "Foundation command authority gate for national caveats."
+    }
+  }
+]

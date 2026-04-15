@@ -1,0 +1,96 @@
+[
+  {
+    "clauseId": "NIGHT-001",
+    "sourceId": "NEWPORT-ROE-2022",
+    "locator": "authoring-flow/night-operation-gate",
+    "jurisdiction": "US",
+    "layer": "POLICY_OVERLAY",
+    "clauseType": "REQUIREMENT",
+    "rawText": "Night operations require active ROE when the night-operation slice is active.",
+    "normalizedText": "If context.operationPhase is NIGHT_OPERATION, context.zone is NIGHT-OPERATION-ZONE, action.kind is SURVEILLANCE, and authority.designatedRoeActive is not true, refuse.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Overlay gate for night operations.",
+    "compilationHint": {
+      "stage": "POLICY_OVERLAY",
+      "priority": 1180,
+      "effect": {
+        "decision": "REFUSED",
+        "reasonCode": "AUTHORITY_INVALID"
+      },
+      "scope": {
+        "jurisdiction": "US",
+        "domains": [
+          "LAND",
+          "AIR",
+          "MARITIME"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "SURVEILLANCE",
+          "SEARCH",
+          "ACCESS_CONTROL"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "PLATOON",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "context.operationPhase",
+        "context.zone",
+        "action.kind",
+        "authority.designatedRoeActive"
+      ],
+      "predicate": {
+        "all": [
+          {
+            "eq": [
+              {
+                "fact": "context.operationPhase"
+              },
+              {
+                "value": "NIGHT_OPERATION"
+              }
+            ]
+          },
+          {
+            "eq": [
+              {
+                "fact": "context.zone"
+              },
+              {
+                "value": "NIGHT-OPERATION-ZONE"
+              }
+            ]
+          },
+          {
+            "eq": [
+              {
+                "fact": "action.kind"
+              },
+              {
+                "value": "SURVEILLANCE"
+              }
+            ]
+          },
+          {
+            "neq": [
+              {
+                "fact": "authority.designatedRoeActive"
+              },
+              {
+                "value": true
+              }
+            ]
+          }
+        ]
+      },
+      "notes": "Night-operation refinement."
+    }
+  }
+]

@@ -1,0 +1,27 @@
+[
+  {
+    "caseId": "allied-roe-merge-allowed-case",
+    "decision": "ALLOWED",
+    "reasonCode": null,
+    "failedStage": null,
+    "failingRuleIds": []
+  },
+  {
+    "caseId": "allied-roe-merge-refusal",
+    "decision": "REFUSED",
+    "reasonCode": "COALITION_RULE_CONFLICT",
+    "failedStage": "POLICY_OVERLAY",
+    "failingRuleIds": [
+      "CR-ARO-001"
+    ]
+  },
+  {
+    "caseId": "allied-roe-merge-missing-fact",
+    "decision": "REFUSED_INCOMPLETE",
+    "reasonCode": "MISSING_REQUIRED_FACT",
+    "failedStage": "POLICY_OVERLAY",
+    "failingRuleIds": [
+      "CR-ARO-001"
+    ]
+  }
+]

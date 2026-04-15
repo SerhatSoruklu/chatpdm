@@ -101,29 +101,29 @@ export class MilitaryConstraintsCompilerPageComponent {
 
   protected readonly packOverview: readonly PackOverviewCard[] = [
     {
-      packId: 'Pack 1',
-      title: 'Baseline strike / legal floor',
-      copy: 'Core reference slice for the admissibility kernel.',
+      packId: 'Baseline surface',
+      title: 'Frozen admitted base',
+      copy: 'Packs 1 through 5 remain the frozen baseline surface.',
     },
     {
-      packId: 'Pack 2',
-      title: 'Maritime VBSS / access control',
-      copy: 'Boarding and authority-gating slice with narrow mission scope.',
+      packId: 'Foundations',
+      title: 'Admitted foundation wave',
+      copy: 'ROE, LOAC, authority, delegation, protected site, and coalition interoperability stay reusable.',
     },
     {
-      packId: 'Pack 3',
-      title: 'Medical / protected object',
-      copy: 'Protected medical object logic with explicit loss-of-protection handling.',
+      packId: 'Domains',
+      title: 'Admitted executable domains',
+      copy: 'Airspace control, ground maneuver, checkpoint admissibility, search and seizure, and detention handling remain bounded.',
     },
     {
-      packId: 'Pack 4',
-      title: 'Civilian / school protection',
-      copy: 'Protected civilian object logic with explicit scope and authority gates.',
+      packId: 'Overlays',
+      title: 'Admitted overlay wave',
+      copy: 'No-fly, approval, collateral-damage, protection, route, timing, interference, retention, and merge refinements stay scoped as overlays.',
     },
     {
-      packId: 'Pack 5',
-      title: 'Protected-person states',
-      copy: 'Protected-person logic for civilians, hors de combat, and related states.',
+      packId: 'Roadmap',
+      title: 'Planned remainder',
+      copy: 'Surveillance, drone, humanitarian, rescue, hostage, rapid response, EW, cyber, no-strike, and umbrella labels remain planned.',
     },
   ] as const;
 

@@ -1,0 +1,27 @@
+[
+  {
+    "caseId": "evacuation-route-allowed-case",
+    "decision": "ALLOWED",
+    "reasonCode": null,
+    "failedStage": null,
+    "failingRuleIds": []
+  },
+  {
+    "caseId": "evacuation-route-refusal",
+    "decision": "REFUSED",
+    "reasonCode": "AUTHORITY_INVALID",
+    "failedStage": "POLICY_OVERLAY",
+    "failingRuleIds": [
+      "CR-EVR-001"
+    ]
+  },
+  {
+    "caseId": "evacuation-route-missing-fact",
+    "decision": "REFUSED_INCOMPLETE",
+    "reasonCode": "MISSING_REQUIRED_FACT",
+    "failedStage": "POLICY_OVERLAY",
+    "failingRuleIds": [
+      "CR-EVR-001"
+    ]
+  }
+]

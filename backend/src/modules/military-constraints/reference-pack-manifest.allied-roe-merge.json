@@ -1,0 +1,12 @@
+{
+  "packId": "US_ALLIED_ROE_MERGE_V1",
+  "jurisdiction": "US",
+  "bundleId": "us-allied-roe-merge-bundle",
+  "bundleVersion": "0.1.0",
+  "reviewedClauseSetIds": [
+    "allied-roe-merge-core"
+  ],
+  "authorityGraphId": "AUTH-GRAPH-US-001",
+  "sourceRegistryVersion": "1.0.0",
+  "regressionSuiteVersion": "0.1.0"
+}

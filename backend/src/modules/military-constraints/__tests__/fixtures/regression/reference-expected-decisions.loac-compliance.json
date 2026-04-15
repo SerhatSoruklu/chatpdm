@@ -1,0 +1,30 @@
+[
+  {
+    "caseId": "loac-allowed-case",
+    "bundleVariant": "reference",
+    "decision": "ALLOWED",
+    "reasonCode": null,
+    "failedStage": null,
+    "failingRuleIds": []
+  },
+  {
+    "caseId": "loac-refusal",
+    "bundleVariant": "reference",
+    "decision": "REFUSED",
+    "reasonCode": "PROHIBITED_TARGET",
+    "failedStage": "LEGAL_FLOOR",
+    "failingRuleIds": [
+      "CR-CLAUSE-LOAC-0001"
+    ]
+  },
+  {
+    "caseId": "loac-missing-fact",
+    "bundleVariant": "reference",
+    "decision": "REFUSED_INCOMPLETE",
+    "reasonCode": "MISSING_REQUIRED_FACT",
+    "failedStage": "ADMISSIBILITY",
+    "failingRuleIds": [
+      "CR-CLAUSE-LOAC-0002"
+    ]
+  }
+]

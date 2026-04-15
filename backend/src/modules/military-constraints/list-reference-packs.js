@@ -1,7 +1,9 @@
 'use strict';
 
 const {
+  buildPackRegistryIndex,
   getManifestPaths,
+  loadPackRegistry,
   readJsonFile,
   resolveModuleRoot,
 } = require('./reference-pack-utils');
@@ -15,6 +17,10 @@ function listReferencePacks(input) {
   if (rootDir === null) {
     return [];
   }
+
+  const packRegistry = loadPackRegistry(rootDir);
+  const packRegistryIndex = buildPackRegistryIndex(packRegistry);
+  const registryPresent = Array.isArray(packRegistry);
 
   return getManifestPaths(rootDir)
     .map((manifestPath) => {
@@ -35,6 +41,11 @@ function listReferencePacks(input) {
           jurisdiction: typeof manifest.jurisdiction === 'string' ? manifest.jurisdiction : null,
           authorityGraphId: typeof manifest.authorityGraphId === 'string' ? manifest.authorityGraphId : null,
           reviewedClauseSetIds: Array.isArray(manifest.reviewedClauseSetIds) ? [...manifest.reviewedClauseSetIds] : [],
+          kind: packRegistryIndex.has(manifest.packId) ? packRegistryIndex.get(manifest.packId).entry.kind : null,
+          status: packRegistryIndex.has(manifest.packId) ? packRegistryIndex.get(manifest.packId).entry.status : null,
+          dependsOn: packRegistryIndex.has(manifest.packId) ? [...packRegistryIndex.get(manifest.packId).entry.dependsOn] : [],
+          registryOrder: packRegistryIndex.has(manifest.packId) ? packRegistryIndex.get(manifest.packId).registryOrder : null,
+          registryPresent,
           manifestPath,
         };
       } catch {
@@ -43,6 +54,23 @@ function listReferencePacks(input) {
     })
     .filter(Boolean)
     .sort((left, right) => {
+      const leftRegistryOrder = Number.isInteger(left.registryOrder) ? left.registryOrder : null;
+      const rightRegistryOrder = Number.isInteger(right.registryOrder) ? right.registryOrder : null;
+
+      if (leftRegistryOrder !== null || rightRegistryOrder !== null) {
+        if (leftRegistryOrder === null) {
+          return 1;
+        }
+
+        if (rightRegistryOrder === null) {
+          return -1;
+        }
+
+        if (leftRegistryOrder !== rightRegistryOrder) {
+          return leftRegistryOrder - rightRegistryOrder;
+        }
+      }
+
       const leftPack = String(left.packId);
       const rightPack = String(right.packId);
       if (leftPack !== rightPack) {

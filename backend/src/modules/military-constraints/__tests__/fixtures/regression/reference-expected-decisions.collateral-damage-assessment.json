@@ -1,0 +1,30 @@
+[
+  {
+    "caseId": "collateral-damage-assessment-allowed-case",
+    "bundleVariant": "reference",
+    "decision": "ALLOWED",
+    "reasonCode": null,
+    "failedStage": null,
+    "failingRuleIds": []
+  },
+  {
+    "caseId": "collateral-damage-assessment-refusal",
+    "bundleVariant": "reference",
+    "decision": "REFUSED",
+    "reasonCode": "EXCESSIVE_INCIDENTAL_HARM_RISK",
+    "failedStage": "POLICY_OVERLAY",
+    "failingRuleIds": [
+      "CR-CL-CDA-001"
+    ]
+  },
+  {
+    "caseId": "collateral-damage-assessment-missing-fact",
+    "bundleVariant": "reference",
+    "decision": "REFUSED_INCOMPLETE",
+    "reasonCode": "MISSING_REQUIRED_FACT",
+    "failedStage": "POLICY_OVERLAY",
+    "failingRuleIds": [
+      "CR-CL-CDA-001"
+    ]
+  }
+]

@@ -1,0 +1,175 @@
+[
+  {
+    "caseId": "allied-roe-merge-allowed-case",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "us-allied-roe-merge-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "ALLIED-TEAM-01",
+        "role": "PROTECTION_LEAD",
+        "authorityLevelId": "BRIGADE"
+      },
+      "action": {
+        "kind": "ACCESS_CONTROL",
+        "forceLevel": "NON_LETHAL",
+        "method": "ALLIED_ROE_MERGE",
+        "domain": "LAND"
+      },
+      "target": {
+        "id": "ALLIED-01",
+        "objectType": "OTHER",
+        "protectedClass": "MILITARY",
+        "lossOfProtectionStatus": "NOT_LOST",
+        "militaryObjectiveStatus": "CONFIRMED_TRUE",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "ALLIED-ROE-MERGE-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "ALLIED_ROE_MERGE",
+        "coalitionMode": "COALITION",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "LOW"
+      },
+      "civilianRisk": {
+        "civilianPresence": false,
+        "civilianObjectPresence": false,
+        "estimatedIncidentalHarm": "LOW",
+        "feasiblePrecautionsTaken": true,
+        "expectedMilitaryAdvantage": "MEDIUM",
+        "estimatedIncidentalHarmScore": 10,
+        "expectedMilitaryAdvantageScore": 60
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedRoeActive": true,
+        "designatedActionAuthorized": true
+      }
+    }
+  },
+  {
+    "caseId": "allied-roe-merge-refusal",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "us-allied-roe-merge-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "ALLIED-TEAM-01",
+        "role": "PROTECTION_LEAD",
+        "authorityLevelId": "BRIGADE"
+      },
+      "action": {
+        "kind": "ACCESS_CONTROL",
+        "forceLevel": "NON_LETHAL",
+        "method": "ALLIED_ROE_MERGE",
+        "domain": "LAND"
+      },
+      "target": {
+        "id": "ALLIED-01",
+        "objectType": "OTHER",
+        "protectedClass": "MILITARY",
+        "lossOfProtectionStatus": "NOT_LOST",
+        "militaryObjectiveStatus": "CONFIRMED_TRUE",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "ALLIED-ROE-MERGE-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "ALLIED_ROE_MERGE",
+        "coalitionMode": "COALITION",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "LOW"
+      },
+      "civilianRisk": {
+        "civilianPresence": false,
+        "civilianObjectPresence": false,
+        "estimatedIncidentalHarm": "LOW",
+        "feasiblePrecautionsTaken": true,
+        "expectedMilitaryAdvantage": "MEDIUM",
+        "estimatedIncidentalHarmScore": 10,
+        "expectedMilitaryAdvantageScore": 60
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": true,
+        "delegatedToUnit": true,
+        "designatedRoeActive": true,
+        "designatedActionAuthorized": true
+      }
+    }
+  },
+  {
+    "caseId": "allied-roe-merge-missing-fact",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "us-allied-roe-merge-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "ALLIED-TEAM-01",
+        "role": "PROTECTION_LEAD",
+        "authorityLevelId": "BRIGADE"
+      },
+      "action": {
+        "kind": "ACCESS_CONTROL",
+        "forceLevel": "NON_LETHAL",
+        "method": "ALLIED_ROE_MERGE",
+        "domain": "LAND"
+      },
+      "target": {
+        "id": "ALLIED-01",
+        "objectType": "OTHER",
+        "protectedClass": "MILITARY",
+        "lossOfProtectionStatus": "NOT_LOST",
+        "militaryObjectiveStatus": "CONFIRMED_TRUE",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "ALLIED-ROE-MERGE-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "ALLIED_ROE_MERGE",
+        "coalitionMode": "COALITION",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "LOW"
+      },
+      "civilianRisk": {
+        "civilianPresence": false,
+        "civilianObjectPresence": false,
+        "estimatedIncidentalHarm": "LOW",
+        "feasiblePrecautionsTaken": true,
+        "expectedMilitaryAdvantage": "MEDIUM",
+        "estimatedIncidentalHarmScore": 10,
+        "expectedMilitaryAdvantageScore": 60
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedRoeActive": true
+      }
+    }
+  }
+]

@@ -1,0 +1,199 @@
+[
+  {
+    "caseId": "detention-handling-allowed-case",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "us-detention-handling-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "DET-TEAM-01",
+        "role": "BRIGADE_COMMANDER",
+        "authorityLevelId": "BRIGADE"
+      },
+      "person": {
+        "status": "DETAINEE",
+        "directParticipationStatus": "CONFIRMED_FALSE",
+        "horsDeCombatStatus": false,
+        "detentionStatus": "IN_CUSTODY",
+        "medicalRoleStatus": "NONE"
+      },
+      "action": {
+        "kind": "DETENTION",
+        "forceLevel": "NON_LETHAL",
+        "method": "CUSTODY_HANDLING",
+        "domain": "LAND"
+      },
+      "target": {
+        "id": "DET-TARGET-01",
+        "protectedClass": "MILITARY",
+        "militaryObjectiveStatus": "CONFIRMED_TRUE",
+        "lossOfProtectionStatus": "NOT_LOST",
+        "objectType": "OTHER",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "DETENTION-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "CUSTODY",
+        "operationalSlice": "PROTECTED_PERSON_STATE",
+        "coalitionMode": "NATIONAL",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "LOW"
+      },
+      "civilianRisk": {
+        "civilianPresence": false,
+        "civilianObjectPresence": false,
+        "estimatedIncidentalHarm": "LOW",
+        "feasiblePrecautionsTaken": true,
+        "expectedMilitaryAdvantage": "MEDIUM",
+        "estimatedIncidentalHarmScore": 5,
+        "expectedMilitaryAdvantageScore": 50
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedRoeActive": true,
+        "designatedActionAuthorized": true
+      }
+    }
+  },
+  {
+    "caseId": "detention-handling-refusal",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "us-detention-handling-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "DET-TEAM-01",
+        "role": "BRIGADE_COMMANDER",
+        "authorityLevelId": "BRIGADE"
+      },
+      "person": {
+        "status": "DETAINEE",
+        "directParticipationStatus": "CONFIRMED_FALSE",
+        "horsDeCombatStatus": false,
+        "detentionStatus": "RELEASED",
+        "medicalRoleStatus": "NONE"
+      },
+      "action": {
+        "kind": "DETENTION",
+        "forceLevel": "NON_LETHAL",
+        "method": "CUSTODY_HANDLING",
+        "domain": "LAND"
+      },
+      "target": {
+        "id": "DET-TARGET-01",
+        "protectedClass": "MILITARY",
+        "militaryObjectiveStatus": "CONFIRMED_TRUE",
+        "lossOfProtectionStatus": "NOT_LOST",
+        "objectType": "OTHER",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "DETENTION-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "CUSTODY",
+        "operationalSlice": "PROTECTED_PERSON_STATE",
+        "coalitionMode": "NATIONAL",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "LOW"
+      },
+      "civilianRisk": {
+        "civilianPresence": false,
+        "civilianObjectPresence": false,
+        "estimatedIncidentalHarm": "LOW",
+        "feasiblePrecautionsTaken": true,
+        "expectedMilitaryAdvantage": "MEDIUM",
+        "estimatedIncidentalHarmScore": 5,
+        "expectedMilitaryAdvantageScore": 50
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedRoeActive": true,
+        "designatedActionAuthorized": true
+      }
+    }
+  },
+  {
+    "caseId": "detention-handling-missing-fact",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "us-detention-handling-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "DET-TEAM-01",
+        "role": "BRIGADE_COMMANDER",
+        "authorityLevelId": "BRIGADE"
+      },
+      "person": {
+        "status": "DETAINEE",
+        "directParticipationStatus": "CONFIRMED_FALSE",
+        "horsDeCombatStatus": false,
+        "medicalRoleStatus": "NONE"
+      },
+      "action": {
+        "kind": "DETENTION",
+        "forceLevel": "NON_LETHAL",
+        "method": "CUSTODY_HANDLING",
+        "domain": "LAND"
+      },
+      "target": {
+        "id": "DET-TARGET-01",
+        "protectedClass": "MILITARY",
+        "militaryObjectiveStatus": "CONFIRMED_TRUE",
+        "lossOfProtectionStatus": "NOT_LOST",
+        "objectType": "OTHER",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "DETENTION-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "CUSTODY",
+        "operationalSlice": "PROTECTED_PERSON_STATE",
+        "coalitionMode": "NATIONAL",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "LOW"
+      },
+      "civilianRisk": {
+        "civilianPresence": false,
+        "civilianObjectPresence": false,
+        "estimatedIncidentalHarm": "LOW",
+        "feasiblePrecautionsTaken": true,
+        "expectedMilitaryAdvantage": "MEDIUM",
+        "estimatedIncidentalHarmScore": 5,
+        "expectedMilitaryAdvantageScore": 50
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedRoeActive": true,
+        "designatedActionAuthorized": true
+      }
+    }
+  }
+]

@@ -1,0 +1,84 @@
+[
+  {
+    "clauseId": "SITE-LF-001",
+    "sourceId": "DOD-LOW-2023",
+    "locator": "chapter-5/protected-site-baseline",
+    "jurisdiction": "US",
+    "layer": "LEGAL_FLOOR",
+    "clauseType": "REQUIREMENT",
+    "rawText": "Protected sites remain protected unless loss of protection is confirmed.",
+    "normalizedText": "If target.objectType is a protected site type and target.lossOfProtectionStatus is not CONFIRMED_TRUE, refuse.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Reusable protected-site legal-floor baseline.",
+    "compilationHint": {
+      "stage": "LEGAL_FLOOR",
+      "priority": 1700,
+      "effect": {
+        "decision": "REFUSED",
+        "reasonCode": "PROHIBITED_TARGET"
+      },
+      "scope": {
+        "jurisdiction": "US",
+        "domains": [
+          "LAND",
+          "AIR",
+          "MARITIME",
+          "CYBER",
+          "SPACE",
+          "MULTI_DOMAIN"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "STRIKE",
+          "ENGAGE",
+          "FIRE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "PLATOON",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "target.objectType",
+        "target.lossOfProtectionStatus"
+      ],
+      "predicate": {
+        "all": [
+          {
+            "in": [
+              {
+                "fact": "target.objectType"
+              },
+              {
+                "value": [
+                  "HOSPITAL",
+                  "MEDICAL_UNIT",
+                  "MEDICAL_TRANSPORT",
+                  "EDUCATIONAL_FACILITY",
+                  "SCHOOL",
+                  "CIVILIAN_CAMPUS"
+                ]
+              }
+            ]
+          },
+          {
+            "neq": [
+              {
+                "fact": "target.lossOfProtectionStatus"
+              },
+              {
+                "value": "CONFIRMED_TRUE"
+              }
+            ]
+          }
+        ]
+      },
+      "notes": "Foundation protected-site legal-floor gate."
+    }
+  }
+]

@@ -1,0 +1,30 @@
+[
+  {
+    "caseId": "delegation-chain-allowed-case",
+    "bundleVariant": "reference",
+    "decision": "ALLOWED",
+    "reasonCode": null,
+    "failedStage": null,
+    "failingRuleIds": []
+  },
+  {
+    "caseId": "delegation-chain-refusal",
+    "bundleVariant": "reference",
+    "decision": "REFUSED",
+    "reasonCode": "AUTHORITY_UNRESOLVED",
+    "failedStage": "ADMISSIBILITY",
+    "failingRuleIds": [
+      "CR-DEL-001"
+    ]
+  },
+  {
+    "caseId": "delegation-chain-missing-fact",
+    "bundleVariant": "reference",
+    "decision": "REFUSED_INCOMPLETE",
+    "reasonCode": "MISSING_REQUIRED_FACT",
+    "failedStage": "ADMISSIBILITY",
+    "failingRuleIds": [
+      "CR-DEL-001"
+    ]
+  }
+]

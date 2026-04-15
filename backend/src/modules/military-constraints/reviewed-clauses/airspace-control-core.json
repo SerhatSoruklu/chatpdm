@@ -1,0 +1,100 @@
+[
+  {
+    "clauseId": "CL-AIRSPACE-001",
+    "sourceId": "NEWPORT-ROE-2022",
+    "locator": "authoring-flow/airspace-control-gate",
+    "jurisdiction": "US",
+    "layer": "POLICY_OVERLAY",
+    "clauseType": "REQUIREMENT",
+    "rawText": "Air activity stays controlled only when it is delegated, active, and in the air domain for an armed-conflict mission.",
+    "normalizedText": "If action.domain is not AIR, context.missionType is not ARMED_CONFLICT, authority.delegatedToUnit is not true, or authority.designatedRoeActive is not true, refuse.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Reusable airspace control gate for the first executable air-domain pack.",
+    "compilationHint": {
+      "stage": "ADMISSIBILITY",
+      "priority": 1500,
+      "effect": {
+        "decision": "REFUSED",
+        "reasonCode": "SCOPE_VIOLATION"
+      },
+      "scope": {
+        "jurisdiction": "US",
+        "domains": [
+          "LAND",
+          "AIR",
+          "MARITIME",
+          "CYBER",
+          "SPACE",
+          "MULTI_DOMAIN"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "SURVEILLANCE",
+          "ACCESS_CONTROL",
+          "CONTROL_ACCESS_POINT",
+          "SELF_DEFENSE_RESPONSE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "PLATOON",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "action.domain",
+        "context.missionType",
+        "authority.delegatedToUnit",
+        "authority.designatedRoeActive"
+      ],
+      "predicate": {
+        "any": [
+          {
+            "neq": [
+              {
+                "fact": "action.domain"
+              },
+              {
+                "value": "AIR"
+              }
+            ]
+          },
+          {
+            "neq": [
+              {
+                "fact": "context.missionType"
+              },
+              {
+                "value": "ARMED_CONFLICT"
+              }
+            ]
+          },
+          {
+            "neq": [
+              {
+                "fact": "authority.delegatedToUnit"
+              },
+              {
+                "value": true
+              }
+            ]
+          },
+          {
+            "neq": [
+              {
+                "fact": "authority.designatedRoeActive"
+              },
+              {
+                "value": true
+              }
+            ]
+          }
+        ]
+      },
+      "notes": "Reusable airspace control gate."
+    }
+  }
+]

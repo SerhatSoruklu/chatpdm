@@ -1,0 +1,175 @@
+[
+  {
+    "caseId": "night-operation-allowed-case",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "us-night-operation-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "NIGHT-TEAM-01",
+        "role": "PROTECTION_LEAD",
+        "authorityLevelId": "BRIGADE"
+      },
+      "action": {
+        "kind": "SURVEILLANCE",
+        "forceLevel": "NON_LETHAL",
+        "method": "NIGHT_OPS",
+        "domain": "AIR"
+      },
+      "target": {
+        "id": "NIGHT-01",
+        "objectType": "OTHER",
+        "protectedClass": "MILITARY",
+        "lossOfProtectionStatus": "NOT_LOST",
+        "militaryObjectiveStatus": "CONFIRMED_TRUE",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "NIGHT-OPERATION-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "NIGHT_OPERATION",
+        "coalitionMode": "NATIONAL",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "LOW"
+      },
+      "civilianRisk": {
+        "civilianPresence": false,
+        "civilianObjectPresence": false,
+        "estimatedIncidentalHarm": "LOW",
+        "feasiblePrecautionsTaken": true,
+        "expectedMilitaryAdvantage": "MEDIUM",
+        "estimatedIncidentalHarmScore": 10,
+        "expectedMilitaryAdvantageScore": 60
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedRoeActive": true,
+        "designatedActionAuthorized": true
+      }
+    }
+  },
+  {
+    "caseId": "night-operation-refusal",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "us-night-operation-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "NIGHT-TEAM-01",
+        "role": "PROTECTION_LEAD",
+        "authorityLevelId": "BRIGADE"
+      },
+      "action": {
+        "kind": "SURVEILLANCE",
+        "forceLevel": "NON_LETHAL",
+        "method": "NIGHT_OPS",
+        "domain": "AIR"
+      },
+      "target": {
+        "id": "NIGHT-01",
+        "objectType": "OTHER",
+        "protectedClass": "MILITARY",
+        "lossOfProtectionStatus": "NOT_LOST",
+        "militaryObjectiveStatus": "CONFIRMED_TRUE",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "NIGHT-OPERATION-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "NIGHT_OPERATION",
+        "coalitionMode": "NATIONAL",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "LOW"
+      },
+      "civilianRisk": {
+        "civilianPresence": false,
+        "civilianObjectPresence": false,
+        "estimatedIncidentalHarm": "LOW",
+        "feasiblePrecautionsTaken": true,
+        "expectedMilitaryAdvantage": "MEDIUM",
+        "estimatedIncidentalHarmScore": 10,
+        "expectedMilitaryAdvantageScore": 60
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedRoeActive": false,
+        "designatedActionAuthorized": true
+      }
+    }
+  },
+  {
+    "caseId": "night-operation-missing-fact",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "us-night-operation-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "NIGHT-TEAM-01",
+        "role": "PROTECTION_LEAD",
+        "authorityLevelId": "BRIGADE"
+      },
+      "action": {
+        "kind": "SURVEILLANCE",
+        "forceLevel": "NON_LETHAL",
+        "method": "NIGHT_OPS",
+        "domain": "AIR"
+      },
+      "target": {
+        "id": "NIGHT-01",
+        "objectType": "OTHER",
+        "protectedClass": "MILITARY",
+        "lossOfProtectionStatus": "NOT_LOST",
+        "militaryObjectiveStatus": "CONFIRMED_TRUE",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "NIGHT-OPERATION-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "NIGHT_OPERATION",
+        "coalitionMode": "NATIONAL",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "LOW"
+      },
+      "civilianRisk": {
+        "civilianPresence": false,
+        "civilianObjectPresence": false,
+        "estimatedIncidentalHarm": "LOW",
+        "feasiblePrecautionsTaken": true,
+        "expectedMilitaryAdvantage": "MEDIUM",
+        "estimatedIncidentalHarmScore": 10,
+        "expectedMilitaryAdvantageScore": 60
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedActionAuthorized": true
+      }
+    }
+  }
+]

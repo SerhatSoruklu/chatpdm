@@ -1,0 +1,27 @@
+[
+  {
+    "caseId": "weapon-status-allowed-case",
+    "decision": "ALLOWED",
+    "reasonCode": null,
+    "failedStage": null,
+    "failingRuleIds": []
+  },
+  {
+    "caseId": "weapon-status-refusal",
+    "decision": "REFUSED",
+    "reasonCode": "FORCE_LEVEL_NOT_AUTHORIZED",
+    "failedStage": "POLICY_OVERLAY",
+    "failingRuleIds": [
+      "CR-WPN-001"
+    ]
+  },
+  {
+    "caseId": "weapon-status-missing-fact",
+    "decision": "REFUSED_INCOMPLETE",
+    "reasonCode": "MISSING_REQUIRED_FACT",
+    "failedStage": "POLICY_OVERLAY",
+    "failingRuleIds": [
+      "CR-WPN-001"
+    ]
+  }
+]

@@ -1,0 +1,96 @@
+[
+  {
+    "clauseId": "HOSP-001",
+    "sourceId": "NEWPORT-ROE-2022",
+    "locator": "authoring-flow/hospital-protection-gate",
+    "jurisdiction": "US",
+    "layer": "POLICY_OVERLAY",
+    "clauseType": "REQUIREMENT",
+    "rawText": "Hospital-specific protection requires designated action authorization when the hospital protection slice is active.",
+    "normalizedText": "If context.operationPhase is HOSPITAL_PROTECTION, target.objectType is HOSPITAL, target.protectedClass is MEDICAL, and authority.designatedActionAuthorized is not true, refuse.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Overlay gate for the hospital-specific protection slice.",
+    "compilationHint": {
+      "stage": "POLICY_OVERLAY",
+      "priority": 1240,
+      "effect": {
+        "decision": "REFUSED",
+        "reasonCode": "AUTHORITY_INVALID"
+      },
+      "scope": {
+        "jurisdiction": "US",
+        "domains": [
+          "LAND",
+          "AIR",
+          "MARITIME"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "STRIKE",
+          "ENGAGE",
+          "FIRE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "PLATOON",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "context.operationPhase",
+        "target.objectType",
+        "target.protectedClass",
+        "authority.designatedActionAuthorized"
+      ],
+      "predicate": {
+        "all": [
+          {
+            "eq": [
+              {
+                "fact": "context.operationPhase"
+              },
+              {
+                "value": "HOSPITAL_PROTECTION"
+              }
+            ]
+          },
+          {
+            "eq": [
+              {
+                "fact": "target.objectType"
+              },
+              {
+                "value": "HOSPITAL"
+              }
+            ]
+          },
+          {
+            "eq": [
+              {
+                "fact": "target.protectedClass"
+              },
+              {
+                "value": "MEDICAL"
+              }
+            ]
+          },
+          {
+            "neq": [
+              {
+                "fact": "authority.designatedActionAuthorized"
+              },
+              {
+                "value": true
+              }
+            ]
+          }
+        ]
+      },
+      "notes": "Hospital-specific authorization refinement."
+    }
+  }
+]

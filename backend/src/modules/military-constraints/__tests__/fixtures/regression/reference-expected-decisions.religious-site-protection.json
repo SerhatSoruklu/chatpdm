@@ -1,0 +1,27 @@
+[
+  {
+    "caseId": "religious-site-protection-allowed-case",
+    "decision": "ALLOWED",
+    "reasonCode": null,
+    "failedStage": null,
+    "failingRuleIds": []
+  },
+  {
+    "caseId": "religious-site-protection-refusal",
+    "decision": "REFUSED",
+    "reasonCode": "PROHIBITED_TARGET",
+    "failedStage": "POLICY_OVERLAY",
+    "failingRuleIds": [
+      "CR-RSP-001"
+    ]
+  },
+  {
+    "caseId": "religious-site-protection-missing-fact",
+    "decision": "REFUSED_INCOMPLETE",
+    "reasonCode": "MISSING_REQUIRED_FACT",
+    "failedStage": "POLICY_OVERLAY",
+    "failingRuleIds": [
+      "CR-RSP-001"
+    ]
+  }
+]

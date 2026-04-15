@@ -1,0 +1,12 @@
+{
+  "packId": "US_CULTURAL_PROPERTY_PROTECTION_V1",
+  "jurisdiction": "US",
+  "bundleId": "us-cultural-property-protection-bundle",
+  "bundleVersion": "0.1.0",
+  "reviewedClauseSetIds": [
+    "cultural-property-protection-core"
+  ],
+  "authorityGraphId": "AUTH-GRAPH-US-001",
+  "sourceRegistryVersion": "1.0.0",
+  "regressionSuiteVersion": "0.1.0"
+}

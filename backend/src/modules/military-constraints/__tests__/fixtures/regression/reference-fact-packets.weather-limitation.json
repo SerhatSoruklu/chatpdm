@@ -1,0 +1,174 @@
+[
+  {
+    "caseId": "weather-limitation-allowed-case",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "us-weather-limitation-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "WEATHER-TEAM-01",
+        "role": "PROTECTION_LEAD",
+        "authorityLevelId": "BRIGADE"
+      },
+      "action": {
+        "kind": "SURVEILLANCE",
+        "forceLevel": "NON_LETHAL",
+        "method": "WEATHER_LIMITATION",
+        "domain": "AIR"
+      },
+      "target": {
+        "id": "WEATHER-01",
+        "objectType": "OTHER",
+        "protectedClass": "MILITARY",
+        "lossOfProtectionStatus": "NOT_LOST",
+        "militaryObjectiveStatus": "CONFIRMED_TRUE",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "WEATHER-LIMITED-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "WEATHER_LIMITATION",
+        "coalitionMode": "NATIONAL",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "LOW"
+      },
+      "civilianRisk": {
+        "civilianPresence": false,
+        "civilianObjectPresence": false,
+        "estimatedIncidentalHarm": "LOW",
+        "feasiblePrecautionsTaken": true,
+        "expectedMilitaryAdvantage": "MEDIUM",
+        "estimatedIncidentalHarmScore": 10,
+        "expectedMilitaryAdvantageScore": 60
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedRoeActive": true,
+        "designatedActionAuthorized": true
+      }
+    }
+  },
+  {
+    "caseId": "weather-limitation-refusal",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "us-weather-limitation-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "WEATHER-TEAM-01",
+        "role": "PROTECTION_LEAD",
+        "authorityLevelId": "BRIGADE"
+      },
+      "action": {
+        "kind": "SURVEILLANCE",
+        "forceLevel": "NON_LETHAL",
+        "method": "WEATHER_LIMITATION",
+        "domain": "AIR"
+      },
+      "target": {
+        "id": "WEATHER-01",
+        "objectType": "OTHER",
+        "protectedClass": "MILITARY",
+        "lossOfProtectionStatus": "NOT_LOST",
+        "militaryObjectiveStatus": "CONFIRMED_TRUE",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "WEATHER-LIMITED-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "WEATHER_LIMITATION",
+        "coalitionMode": "NATIONAL",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "LOW"
+      },
+      "civilianRisk": {
+        "civilianPresence": false,
+        "civilianObjectPresence": false,
+        "estimatedIncidentalHarm": "LOW",
+        "feasiblePrecautionsTaken": false,
+        "expectedMilitaryAdvantage": "MEDIUM",
+        "estimatedIncidentalHarmScore": 10,
+        "expectedMilitaryAdvantageScore": 60
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedRoeActive": true,
+        "designatedActionAuthorized": true
+      }
+    }
+  },
+  {
+    "caseId": "weather-limitation-missing-fact",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "us-weather-limitation-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "WEATHER-TEAM-01",
+        "role": "PROTECTION_LEAD",
+        "authorityLevelId": "BRIGADE"
+      },
+      "action": {
+        "kind": "SURVEILLANCE",
+        "forceLevel": "NON_LETHAL",
+        "method": "WEATHER_LIMITATION",
+        "domain": "AIR"
+      },
+      "target": {
+        "id": "WEATHER-01",
+        "objectType": "OTHER",
+        "protectedClass": "MILITARY",
+        "lossOfProtectionStatus": "NOT_LOST",
+        "militaryObjectiveStatus": "CONFIRMED_TRUE",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "WEATHER-LIMITED-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "WEATHER_LIMITATION",
+        "coalitionMode": "NATIONAL",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "LOW"
+      },
+      "civilianRisk": {
+        "civilianPresence": false,
+        "civilianObjectPresence": false,
+        "estimatedIncidentalHarm": "LOW",
+        "expectedMilitaryAdvantage": "MEDIUM",
+        "estimatedIncidentalHarmScore": 10,
+        "expectedMilitaryAdvantageScore": 60
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedRoeActive": true
+      }
+    }
+  }
+]

@@ -1,0 +1,12 @@
+{
+  "packId": "US_RULES_OF_ENGAGEMENT_BASE_V1",
+  "jurisdiction": "US",
+  "bundleId": "us-roe-base-bundle",
+  "bundleVersion": "0.1.0",
+  "reviewedClauseSetIds": [
+    "roe-base-core"
+  ],
+  "authorityGraphId": "AUTH-GRAPH-US-001",
+  "sourceRegistryVersion": "1.0.0",
+  "regressionSuiteVersion": "0.1.0"
+}
