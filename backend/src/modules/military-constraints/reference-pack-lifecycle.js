@@ -12,8 +12,11 @@ const { evaluateBundle } = require('./evaluate-bundle');
 const { listReferencePacks } = require('./list-reference-packs');
 const { validateReferencePack } = require('./validate-reference-pack');
 const {
+  buildPackRegistryIndex,
   readJsonFile,
+  loadPackRegistry,
   resolveModuleRoot,
+  validatePackRegistry,
 } = require('./reference-pack-utils');
 
 const RELEASE_ARTIFACT_ROOT_SEGMENTS = ['artifacts', 'military-constraints', 'releases'];
@@ -46,6 +49,94 @@ function finish(result) {
     errors: Object.freeze([...result.errors]),
     summary: result.summary ? Object.freeze(result.summary) : null,
   });
+}
+
+function summarizeRegistryContext(registryContext) {
+  return {
+    present: registryContext.present,
+    valid: registryContext.valid,
+    reasonCode: registryContext.reasonCode,
+    errors: [...registryContext.errors],
+    packCount: Array.isArray(registryContext.packRegistry) ? registryContext.packRegistry.length : 0,
+  };
+}
+
+function summarizeValidationResult(validationResult) {
+  return {
+    valid: validationResult.valid,
+    reasonCode: validationResult.reasonCode,
+    errors: [...validationResult.errors],
+  };
+}
+
+function loadValidatedPackRegistry(rootDir) {
+  const packRegistry = loadPackRegistry(rootDir);
+
+  if (packRegistry === null) {
+    return {
+      present: false,
+      valid: true,
+      reasonCode: null,
+      errors: [],
+      packRegistry: null,
+      packRegistryIndex: new Map(),
+    };
+  }
+
+  const validation = validatePackRegistry(packRegistry);
+  if (!validation.valid) {
+    return {
+      present: true,
+      valid: false,
+      reasonCode: validation.reasonCode,
+      errors: [...validation.errors],
+      packRegistry,
+      packRegistryIndex: buildPackRegistryIndex(packRegistry),
+    };
+  }
+
+  return {
+    present: true,
+    valid: true,
+    reasonCode: null,
+    errors: [],
+    packRegistry,
+    packRegistryIndex: buildPackRegistryIndex(packRegistry),
+  };
+}
+
+function getRegistryEntryOrNull(packRegistryIndex, packId) {
+  if (!(packRegistryIndex instanceof Map)) {
+    return null;
+  }
+
+  return packRegistryIndex.has(packId)
+    ? packRegistryIndex.get(packId)
+    : null;
+}
+
+function assertManifestPackRegistryEntry(result, registryContext, pack, manifestPath) {
+  if (!registryContext.present) {
+    return true;
+  }
+
+  const registryEntry = getRegistryEntryOrNull(registryContext.packRegistryIndex, pack.packId);
+  if (!registryEntry) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, `reference pack "${pack.packId}" at "${manifestPath}" is not declared in pack-registry.json.`);
+    return false;
+  }
+
+  if (registryEntry.entry.kind === 'umbrella-label') {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, `registry entry "${pack.packId}" is an umbrella-label and cannot be released as an executable pack.`);
+    return false;
+  }
+
+  if (registryEntry.entry.status === 'planned') {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, `reference pack "${pack.packId}" is registered as planned and cannot be admitted yet.`);
+    return false;
+  }
+
+  return true;
 }
 
 function resolveRepoRoot(input) {
@@ -240,6 +331,17 @@ function runAllMilitaryConstraintChecks(input) {
     return finish(result);
   }
 
+  const registryContext = loadValidatedPackRegistry(rootDir);
+  if (!registryContext.valid) {
+    fail(result, registryContext.reasonCode || MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, registryContext.errors[0] || 'pack registry validation failed.');
+    result.summary = {
+      packCount: 0,
+      packSummaries: [],
+      registry: summarizeRegistryContext(registryContext),
+    };
+    return finish(result);
+  }
+
   const packs = listReferencePacks({ rootDir });
   const packSummaries = [];
 
@@ -250,6 +352,14 @@ function runAllMilitaryConstraintChecks(input) {
 
   for (let index = 0; index < packs.length; index += 1) {
     const pack = packs[index];
+    if (!assertManifestPackRegistryEntry(result, registryContext, pack, pack.manifestPath)) {
+      result.summary = {
+        packCount: packs.length,
+        packSummaries,
+      };
+      return finish(result);
+    }
+
     const validation = validateReferencePack({
       rootDir,
       manifestPath: pack.manifestPath,
@@ -260,6 +370,10 @@ function runAllMilitaryConstraintChecks(input) {
       bundleId: pack.bundleId,
       bundleVersion: pack.bundleVersion,
       manifestPath: pack.manifestPath,
+      kind: pack.kind,
+      status: pack.status,
+      dependsOn: Array.isArray(pack.dependsOn) ? [...pack.dependsOn] : [],
+      registryOrder: Number.isInteger(pack.registryOrder) ? pack.registryOrder : null,
       validation: {
         valid: validation.valid,
         reasonCode: validation.reasonCode,
@@ -346,6 +460,37 @@ function releaseReferencePack(input) {
     return finish(result);
   }
 
+  const registryContext = loadValidatedPackRegistry(rootDir);
+  if (!registryContext.valid) {
+    fail(result, registryContext.reasonCode || MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, registryContext.errors[0] || 'pack registry validation failed.');
+    result.summary = {
+      registry: summarizeRegistryContext(registryContext),
+    };
+    return finish(result);
+  }
+
+  const manifestValidation = validateReferencePack({
+    rootDir,
+    manifestPath,
+  });
+
+  if (!manifestValidation.valid || !manifestValidation.manifest) {
+    fail(result, manifestValidation.reasonCode || MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, manifestValidation.errors[0] || 'reference pack validation failed.');
+    result.summary = {
+      manifestValidation: summarizeValidationResult(manifestValidation),
+      registry: summarizeRegistryContext(registryContext),
+    };
+    return finish(result);
+  }
+
+  if (!assertManifestPackRegistryEntry(result, registryContext, manifestValidation.manifest, manifestPath)) {
+    result.summary = {
+      manifestValidation: summarizeValidationResult(manifestValidation),
+      registry: summarizeRegistryContext(registryContext),
+    };
+    return finish(result);
+  }
+
   const build = buildReferenceBundle({
     rootDir,
     manifestPath,
@@ -429,6 +574,17 @@ function releaseAllReferencePacks(input) {
     return finish(result);
   }
 
+  const registryContext = loadValidatedPackRegistry(rootDir);
+  if (!registryContext.valid) {
+    fail(result, registryContext.reasonCode || MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, registryContext.errors[0] || 'pack registry validation failed.');
+    result.summary = {
+      packCount: 0,
+      packSummaries: [],
+      registry: summarizeRegistryContext(registryContext),
+    };
+    return finish(result);
+  }
+
   const packs = listReferencePacks({ rootDir });
   const packSummaries = [];
 
@@ -439,6 +595,14 @@ function releaseAllReferencePacks(input) {
 
   for (let index = 0; index < packs.length; index += 1) {
     const pack = packs[index];
+    if (!assertManifestPackRegistryEntry(result, registryContext, pack, pack.manifestPath)) {
+      result.summary = {
+        packCount: packs.length,
+        packSummaries,
+      };
+      return finish(result);
+    }
+
     const release = releaseReferencePack({
       rootDir,
       manifestPath: pack.manifestPath,
@@ -450,6 +614,10 @@ function releaseAllReferencePacks(input) {
       bundleId: pack.bundleId,
       bundleVersion: pack.bundleVersion,
       manifestPath: pack.manifestPath,
+      kind: pack.kind,
+      status: pack.status,
+      dependsOn: Array.isArray(pack.dependsOn) ? [...pack.dependsOn] : [],
+      registryOrder: Number.isInteger(pack.registryOrder) ? pack.registryOrder : null,
       release,
     });
 

@@ -1,0 +1,30 @@
+[
+  {
+    "caseId": "coalition-interop-allowed-case",
+    "bundleVariant": "reference",
+    "decision": "ALLOWED",
+    "reasonCode": null,
+    "failedStage": null,
+    "failingRuleIds": []
+  },
+  {
+    "caseId": "coalition-interop-refusal",
+    "bundleVariant": "reference",
+    "decision": "REFUSED",
+    "reasonCode": "COALITION_RULE_CONFLICT",
+    "failedStage": "POLICY_OVERLAY",
+    "failingRuleIds": [
+      "CR-COAL-001"
+    ]
+  },
+  {
+    "caseId": "coalition-interop-missing-fact",
+    "bundleVariant": "reference",
+    "decision": "REFUSED_INCOMPLETE",
+    "reasonCode": "MISSING_REQUIRED_FACT",
+    "failedStage": "POLICY_OVERLAY",
+    "failingRuleIds": [
+      "CR-COAL-001"
+    ]
+  }
+]

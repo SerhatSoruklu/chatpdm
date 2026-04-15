@@ -1,0 +1,30 @@
+[
+  {
+    "caseId": "search-and-seizure-allowed-case",
+    "bundleVariant": "reference",
+    "decision": "ALLOWED",
+    "reasonCode": null,
+    "failedStage": null,
+    "failingRuleIds": []
+  },
+  {
+    "caseId": "search-and-seizure-refusal",
+    "bundleVariant": "reference",
+    "decision": "REFUSED",
+    "reasonCode": "SCOPE_VIOLATION",
+    "failedStage": "ADMISSIBILITY",
+    "failingRuleIds": [
+      "CR-CL-SEARCH-SEIZURE-001"
+    ]
+  },
+  {
+    "caseId": "search-and-seizure-missing-fact",
+    "bundleVariant": "reference",
+    "decision": "REFUSED_INCOMPLETE",
+    "reasonCode": "MISSING_REQUIRED_FACT",
+    "failedStage": "ADMISSIBILITY",
+    "failingRuleIds": [
+      "CR-CL-SEARCH-SEIZURE-001"
+    ]
+  }
+]

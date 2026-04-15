@@ -1,0 +1,30 @@
+[
+  {
+    "caseId": "airspace-control-allowed-case",
+    "bundleVariant": "reference",
+    "decision": "ALLOWED",
+    "reasonCode": null,
+    "failedStage": null,
+    "failingRuleIds": []
+  },
+  {
+    "caseId": "airspace-control-refusal",
+    "bundleVariant": "reference",
+    "decision": "REFUSED",
+    "reasonCode": "SCOPE_VIOLATION",
+    "failedStage": "ADMISSIBILITY",
+    "failingRuleIds": [
+      "CR-CL-AIRSPACE-001"
+    ]
+  },
+  {
+    "caseId": "airspace-control-missing-fact",
+    "bundleVariant": "reference",
+    "decision": "REFUSED_INCOMPLETE",
+    "reasonCode": "MISSING_REQUIRED_FACT",
+    "failedStage": "ADMISSIBILITY",
+    "failingRuleIds": [
+      "CR-CL-AIRSPACE-001"
+    ]
+  }
+]

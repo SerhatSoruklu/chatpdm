@@ -1,0 +1,175 @@
+[
+  {
+    "caseId": "collateral-damage-assessment-allowed-case",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "us-collateral-damage-assessment-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "LAND-TEAM-04",
+        "role": "OPERATIONS_LEAD",
+        "authorityLevelId": "BATTALION"
+      },
+      "action": {
+        "kind": "STRIKE",
+        "forceLevel": "DEADLY",
+        "method": "COLLATERAL_ASSESSMENT",
+        "domain": "LAND"
+      },
+      "target": {
+        "id": "CIVILIAN-OBJECT-01",
+        "protectedClass": "CIVILIAN_OBJECT",
+        "militaryObjectiveStatus": "UNCONFIRMED",
+        "lossOfProtectionStatus": "NOT_LOST",
+        "objectType": "OTHER",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "COLLATERAL-ASSESSMENT-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "COLLATERAL_ASSESSMENT",
+        "coalitionMode": "NATIONAL",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "LOW"
+      },
+      "civilianRisk": {
+        "civilianPresence": false,
+        "civilianObjectPresence": false,
+        "estimatedIncidentalHarm": "LOW",
+        "feasiblePrecautionsTaken": true,
+        "expectedMilitaryAdvantage": "HIGH",
+        "estimatedIncidentalHarmScore": 20,
+        "expectedMilitaryAdvantageScore": 80
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedRoeActive": true,
+        "designatedActionAuthorized": true
+      }
+    }
+  },
+  {
+    "caseId": "collateral-damage-assessment-refusal",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "us-collateral-damage-assessment-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "LAND-TEAM-04",
+        "role": "OPERATIONS_LEAD",
+        "authorityLevelId": "BATTALION"
+      },
+      "action": {
+        "kind": "STRIKE",
+        "forceLevel": "DEADLY",
+        "method": "COLLATERAL_ASSESSMENT",
+        "domain": "LAND"
+      },
+      "target": {
+        "id": "CIVILIAN-OBJECT-01",
+        "protectedClass": "CIVILIAN_OBJECT",
+        "militaryObjectiveStatus": "UNCONFIRMED",
+        "lossOfProtectionStatus": "NOT_LOST",
+        "objectType": "OTHER",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "COLLATERAL-ASSESSMENT-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "COLLATERAL_ASSESSMENT",
+        "coalitionMode": "NATIONAL",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "LOW"
+      },
+      "civilianRisk": {
+        "civilianPresence": true,
+        "civilianObjectPresence": true,
+        "estimatedIncidentalHarm": "HIGH",
+        "feasiblePrecautionsTaken": false,
+        "expectedMilitaryAdvantage": "LOW",
+        "estimatedIncidentalHarmScore": 90,
+        "expectedMilitaryAdvantageScore": 10
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedRoeActive": true,
+        "designatedActionAuthorized": true
+      }
+    }
+  },
+  {
+    "caseId": "collateral-damage-assessment-missing-fact",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "us-collateral-damage-assessment-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "LAND-TEAM-04",
+        "role": "OPERATIONS_LEAD",
+        "authorityLevelId": "BATTALION"
+      },
+      "action": {
+        "kind": "STRIKE",
+        "forceLevel": "DEADLY",
+        "method": "COLLATERAL_ASSESSMENT",
+        "domain": "LAND"
+      },
+      "target": {
+        "id": "CIVILIAN-OBJECT-01",
+        "militaryObjectiveStatus": "UNCONFIRMED",
+        "lossOfProtectionStatus": "NOT_LOST",
+        "objectType": "OTHER",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "COLLATERAL-ASSESSMENT-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "COLLATERAL_ASSESSMENT",
+        "coalitionMode": "NATIONAL",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "LOW"
+      },
+      "civilianRisk": {
+        "civilianPresence": false,
+        "civilianObjectPresence": false,
+        "estimatedIncidentalHarm": "LOW",
+        "feasiblePrecautionsTaken": true,
+        "expectedMilitaryAdvantage": "HIGH",
+        "estimatedIncidentalHarmScore": 20,
+        "expectedMilitaryAdvantageScore": 80
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedRoeActive": true,
+        "designatedActionAuthorized": true
+      }
+    }
+  }
+]

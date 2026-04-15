@@ -1,0 +1,79 @@
+[
+  {
+    "clauseId": "CLAUSE-ROE-0001",
+    "sourceId": "NEWPORT-ROE-2022",
+    "locator": "authoring-flow/roe-activation-and-authorization",
+    "jurisdiction": "US",
+    "layer": "POLICY_OVERLAY",
+    "clauseType": "REQUIREMENT",
+    "rawText": "Designated ROE and designated action authorization must both be active before action proceeds.",
+    "normalizedText": "Designated ROE and designated action authorization must both be active before action proceeds.",
+    "machineCandidate": true,
+    "ambiguityStatus": "CLEAR",
+    "reviewStatus": "COMPILATION_READY",
+    "reviewNotes": "Reusable foundation gate for ROE activation and explicit action authorization.",
+    "compilationHint": {
+      "stage": "ADMISSIBILITY",
+      "priority": 1300,
+      "effect": {
+        "decision": "REFUSED",
+        "reasonCode": "AUTHORITY_INVALID"
+      },
+      "scope": {
+        "jurisdiction": "US",
+        "domains": [
+          "LAND",
+          "AIR",
+          "MARITIME",
+          "CYBER",
+          "SPACE",
+          "MULTI_DOMAIN"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "STRIKE",
+          "ENGAGE",
+          "FIRE",
+          "SELF_DEFENSE_RESPONSE",
+          "ACCESS_CONTROL"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "PLATOON",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "authority.designatedRoeActive",
+        "authority.designatedActionAuthorized"
+      ],
+      "predicate": {
+        "any": [
+          {
+            "neq": [
+              {
+                "fact": "authority.designatedRoeActive"
+              },
+              {
+                "value": true
+              }
+            ]
+          },
+          {
+            "neq": [
+              {
+                "fact": "authority.designatedActionAuthorized"
+              },
+              {
+                "value": true
+              }
+            ]
+          }
+        ]
+      },
+      "notes": "Reusable ROE admissibility gate."
+    }
+  }
+]

@@ -1,0 +1,175 @@
+[
+  {
+    "caseId": "religious-site-protection-allowed-case",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "us-religious-site-protection-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "RELIGIOUS-TEAM-01",
+        "role": "PROTECTION_LEAD",
+        "authorityLevelId": "BRIGADE"
+      },
+      "action": {
+        "kind": "STRIKE",
+        "forceLevel": "LETHAL",
+        "method": "RELIGIOUS_SITE_SECURITY",
+        "domain": "LAND"
+      },
+      "target": {
+        "id": "RELIGIOUS-SITE-01",
+        "objectType": "OTHER",
+        "protectedClass": "CIVILIAN_OBJECT",
+        "lossOfProtectionStatus": "NOT_LOST",
+        "militaryObjectiveStatus": "CONFIRMED_FALSE",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "RELIGIOUS-SITE-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "RELIGIOUS_SITE_PROTECTION",
+        "coalitionMode": "NATIONAL",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "LOW"
+      },
+      "civilianRisk": {
+        "civilianPresence": true,
+        "civilianObjectPresence": true,
+        "estimatedIncidentalHarm": "LOW",
+        "feasiblePrecautionsTaken": true,
+        "expectedMilitaryAdvantage": "LOW",
+        "estimatedIncidentalHarmScore": 10,
+        "expectedMilitaryAdvantageScore": 10
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedRoeActive": true,
+        "designatedActionAuthorized": true
+      }
+    }
+  },
+  {
+    "caseId": "religious-site-protection-refusal",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "us-religious-site-protection-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "RELIGIOUS-TEAM-01",
+        "role": "PROTECTION_LEAD",
+        "authorityLevelId": "BRIGADE"
+      },
+      "action": {
+        "kind": "STRIKE",
+        "forceLevel": "LETHAL",
+        "method": "RELIGIOUS_SITE_SECURITY",
+        "domain": "LAND"
+      },
+      "target": {
+        "id": "RELIGIOUS-SITE-01",
+        "objectType": "OTHER",
+        "protectedClass": "CIVILIAN_OBJECT",
+        "lossOfProtectionStatus": "NOT_LOST",
+        "militaryObjectiveStatus": "CONFIRMED_FALSE",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "RELIGIOUS-SITE-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "RELIGIOUS_SITE_PROTECTION",
+        "coalitionMode": "NATIONAL",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "LOW"
+      },
+      "civilianRisk": {
+        "civilianPresence": true,
+        "civilianObjectPresence": true,
+        "estimatedIncidentalHarm": "LOW",
+        "feasiblePrecautionsTaken": true,
+        "expectedMilitaryAdvantage": "LOW",
+        "estimatedIncidentalHarmScore": 10,
+        "expectedMilitaryAdvantageScore": 10
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedRoeActive": true,
+        "designatedActionAuthorized": false
+      }
+    }
+  },
+  {
+    "caseId": "religious-site-protection-missing-fact",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "us-religious-site-protection-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "RELIGIOUS-TEAM-01",
+        "role": "PROTECTION_LEAD",
+        "authorityLevelId": "BRIGADE"
+      },
+      "action": {
+        "kind": "STRIKE",
+        "forceLevel": "LETHAL",
+        "method": "RELIGIOUS_SITE_SECURITY",
+        "domain": "LAND"
+      },
+      "target": {
+        "id": "RELIGIOUS-SITE-01",
+        "objectType": "OTHER",
+        "protectedClass": "CIVILIAN_OBJECT",
+        "lossOfProtectionStatus": "NOT_LOST",
+        "militaryObjectiveStatus": "CONFIRMED_FALSE",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "RELIGIOUS-SITE-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "RELIGIOUS_SITE_PROTECTION",
+        "coalitionMode": "NATIONAL",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "LOW"
+      },
+      "civilianRisk": {
+        "civilianPresence": true,
+        "civilianObjectPresence": true,
+        "estimatedIncidentalHarm": "LOW",
+        "feasiblePrecautionsTaken": true,
+        "expectedMilitaryAdvantage": "LOW",
+        "estimatedIncidentalHarmScore": 10,
+        "expectedMilitaryAdvantageScore": 10
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedRoeActive": true
+      }
+    }
+  }
+]

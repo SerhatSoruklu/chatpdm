@@ -1,0 +1,27 @@
+[
+  {
+    "caseId": "signal-interference-allowed-case",
+    "decision": "ALLOWED",
+    "reasonCode": null,
+    "failedStage": null,
+    "failingRuleIds": []
+  },
+  {
+    "caseId": "signal-interference-refusal",
+    "decision": "REFUSED",
+    "reasonCode": "SCOPE_VIOLATION",
+    "failedStage": "POLICY_OVERLAY",
+    "failingRuleIds": [
+      "CR-SIG-001"
+    ]
+  },
+  {
+    "caseId": "signal-interference-missing-fact",
+    "decision": "REFUSED_INCOMPLETE",
+    "reasonCode": "MISSING_REQUIRED_FACT",
+    "failedStage": "POLICY_OVERLAY",
+    "failingRuleIds": [
+      "CR-SIG-001"
+    ]
+  }
+]

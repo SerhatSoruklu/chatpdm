@@ -7,13 +7,25 @@ const { listReferencePacks } = require('../../../modules/military-constraints/li
 const { buildReferenceBundle } = require('../../../modules/military-constraints/build-reference-pack');
 const { evaluateBundle } = require('../../../modules/military-constraints/evaluate-bundle');
 const { validateFactPacket, isPlainObject } = require('../../../modules/military-constraints/fact-schema-utils');
+const { loadPackRegistry } = require('../../../modules/military-constraints/reference-pack-utils');
 
 const MODULE_ROOT = path.resolve(__dirname, '../../../modules/military-constraints');
 const FACT_SCHEMA = require('../../../modules/military-constraints/military-constraint-fact.schema.json');
-const PACK_ID_PATTERN = /^[a-z0-9.-]+$/;
+const PACK_ID_PATTERN = /^[A-Za-z0-9._-]+$/;
 
 const router = Router();
 const PACK_INDEX = listReferencePacks({ rootDir: MODULE_ROOT });
+const PACK_REGISTRY = loadPackRegistry(MODULE_ROOT);
+
+function countRegistryEntries(predicate) {
+  if (!Array.isArray(PACK_REGISTRY)) {
+    return 0;
+  }
+
+  return PACK_REGISTRY.filter((entry) => {
+    return entry && typeof entry === 'object' && predicate(entry);
+  }).length;
+}
 
 function writeError(res, statusCode, code, message) {
   res.status(statusCode).json({
@@ -32,6 +44,11 @@ function sanitizeListedPackRecord(pack) {
     jurisdiction: pack.jurisdiction,
     authorityGraphId: pack.authorityGraphId,
     reviewedClauseSetIds: Array.isArray(pack.reviewedClauseSetIds) ? [...pack.reviewedClauseSetIds] : [],
+    kind: typeof pack.kind === 'string' ? pack.kind : null,
+    status: typeof pack.status === 'string' ? pack.status : null,
+    dependsOn: Array.isArray(pack.dependsOn) ? [...pack.dependsOn] : [],
+    registryOrder: Number.isInteger(pack.registryOrder) ? pack.registryOrder : null,
+    registryPresent: pack.registryPresent === true,
   };
 }
 
@@ -104,6 +121,11 @@ function handleRootRequest(_req, res) {
     status: 'active',
     availableOperations: ['packs', 'evaluate'],
     packCount: PACK_INDEX.length,
+    registryPackCount: Array.isArray(PACK_REGISTRY) ? PACK_REGISTRY.length : 0,
+    baselinePackCount: countRegistryEntries((entry) => entry.status === 'baseline'),
+    admittedPackCount: countRegistryEntries((entry) => entry.status === 'admitted'),
+    plannedPackCount: countRegistryEntries((entry) => entry.status === 'planned'),
+    umbrellaLabelCount: countRegistryEntries((entry) => entry.kind === 'umbrella-label'),
   });
 }
 
@@ -118,7 +140,12 @@ function handleListPacksRequest(_req, res) {
 function handlePackRequest(req, res) {
   const packId = readPackId(req.params.packId);
   if (packId === null) {
-    writeError(res, 400, 'invalid_military_constraints_pack_id', 'packId must be a non-empty lowercase pack identifier.');
+    writeError(
+      res,
+      400,
+      'invalid_military_constraints_pack_id',
+      'packId must be a non-empty pack identifier using letters, numbers, periods, underscores, or hyphens.',
+    );
     return;
   }
 
@@ -158,7 +185,7 @@ function validateEvaluateBody(body) {
 
   const packId = readPackId(body.packId);
   if (packId === null) {
-    return 'packId must be a non-empty lowercase pack identifier.';
+    return 'packId must be a non-empty pack identifier using letters, numbers, periods, underscores, or hyphens.';
   }
 
   if (!isPlainObject(body.facts)) {

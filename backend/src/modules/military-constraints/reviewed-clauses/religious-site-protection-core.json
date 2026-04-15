@@ -1,0 +1,96 @@
+[
+  {
+    "clauseId": "RSP-001",
+    "sourceId": "NEWPORT-ROE-2022",
+    "locator": "authoring-flow/religious-site-protection-gate",
+    "jurisdiction": "US",
+    "layer": "POLICY_OVERLAY",
+    "clauseType": "REQUIREMENT",
+    "rawText": "Religious-site protection requires explicit authorization when the religious-site slice is active.",
+    "normalizedText": "If context.operationPhase is RELIGIOUS_SITE_PROTECTION, target.objectType is OTHER, target.protectedClass is CIVILIAN_OBJECT, and authority.designatedActionAuthorized is not true, refuse.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Overlay gate for religious-site protection.",
+    "compilationHint": {
+      "stage": "POLICY_OVERLAY",
+      "priority": 1220,
+      "effect": {
+        "decision": "REFUSED",
+        "reasonCode": "PROHIBITED_TARGET"
+      },
+      "scope": {
+        "jurisdiction": "US",
+        "domains": [
+          "LAND",
+          "AIR",
+          "MARITIME"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "STRIKE",
+          "ENGAGE",
+          "FIRE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "PLATOON",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "context.operationPhase",
+        "target.objectType",
+        "target.protectedClass",
+        "authority.designatedActionAuthorized"
+      ],
+      "predicate": {
+        "all": [
+          {
+            "eq": [
+              {
+                "fact": "context.operationPhase"
+              },
+              {
+                "value": "RELIGIOUS_SITE_PROTECTION"
+              }
+            ]
+          },
+          {
+            "eq": [
+              {
+                "fact": "target.objectType"
+              },
+              {
+                "value": "OTHER"
+              }
+            ]
+          },
+          {
+            "eq": [
+              {
+                "fact": "target.protectedClass"
+              },
+              {
+                "value": "CIVILIAN_OBJECT"
+              }
+            ]
+          },
+          {
+            "neq": [
+              {
+                "fact": "authority.designatedActionAuthorized"
+              },
+              {
+                "value": true
+              }
+            ]
+          }
+        ]
+      },
+      "notes": "Religious-site protection refinement."
+    }
+  }
+]

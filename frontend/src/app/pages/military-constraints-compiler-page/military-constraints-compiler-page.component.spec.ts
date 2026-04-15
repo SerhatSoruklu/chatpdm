@@ -42,5 +42,12 @@ describe('MilitaryConstraintsCompilerPageComponent', () => {
       }),
     );
     expect(component['heroImageButtonLabel']).toBe(MCPP_HERO_IMAGE_BUTTON_LABEL);
+    expect(component['packOverview'].map((entry) => entry.packId)).toEqual([
+      'Baseline surface',
+      'Foundations',
+      'Domains',
+      'Overlays',
+      'Roadmap',
+    ]);
   });
 });

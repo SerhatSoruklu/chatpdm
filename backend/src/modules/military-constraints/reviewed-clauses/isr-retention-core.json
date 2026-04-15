@@ -1,0 +1,101 @@
+[
+  {
+    "clauseId": "ISR-001",
+    "sourceId": "NEWPORT-ROE-2022",
+    "locator": "authoring-flow/isr-retention-gate",
+    "jurisdiction": "US",
+    "layer": "POLICY_OVERLAY",
+    "clauseType": "REQUIREMENT",
+    "rawText": "ISR retention requires coalition visibility to remain explicit when the ISR retention slice is active.",
+    "normalizedText": "If context.operationPhase is ISR_RETENTION, context.coalitionMode is COALITION, and either authority.nationalCaveat is true or authority.designatedRoeActive is not true, refuse.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Coalition-aware retention overlay with a scope adjustment away from the planned surveillance domain.",
+    "compilationHint": {
+      "stage": "POLICY_OVERLAY",
+      "priority": 1150,
+      "effect": {
+        "decision": "REFUSED",
+        "reasonCode": "COALITION_RULE_CONFLICT"
+      },
+      "scope": {
+        "jurisdiction": "US",
+        "domains": [
+          "AIR",
+          "LAND",
+          "MARITIME",
+          "CYBER"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "SURVEILLANCE",
+          "ACCESS_CONTROL",
+          "SEARCH"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "BRIGADE",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "context.operationPhase",
+        "context.coalitionMode",
+        "authority.nationalCaveat",
+        "authority.designatedRoeActive"
+      ],
+      "predicate": {
+        "all": [
+          {
+            "eq": [
+              {
+                "fact": "context.operationPhase"
+              },
+              {
+                "value": "ISR_RETENTION"
+              }
+            ]
+          },
+          {
+            "eq": [
+              {
+                "fact": "context.coalitionMode"
+              },
+              {
+                "value": "COALITION"
+              }
+            ]
+          },
+          {
+            "any": [
+              {
+                "eq": [
+                  {
+                    "fact": "authority.nationalCaveat"
+                  },
+                  {
+                    "value": true
+                  }
+                ]
+              },
+              {
+                "neq": [
+                  {
+                    "fact": "authority.designatedRoeActive"
+                  },
+                  {
+                    "value": true
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "notes": "ISR retention scope adjusted to the admitted coalition/authority layer."
+    }
+  }
+]

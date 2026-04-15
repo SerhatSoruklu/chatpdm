@@ -1,0 +1,103 @@
+[
+  {
+    "clauseId": "CL-CHK-001",
+    "sourceId": "NEWPORT-ROE-2022",
+    "locator": "authoring-flow/checkpoint-admissibility",
+    "jurisdiction": "US",
+    "layer": "POLICY_OVERLAY",
+    "clauseType": "REQUIREMENT",
+    "rawText": "Checkpoint access-control actions remain admissible only in land missions under explicit delegated authority.",
+    "normalizedText": "If action.kind is not ACCESS_CONTROL or action.domain is not LAND or context.missionType is not ARMED_CONFLICT or authority.delegatedToUnit is not true or authority.designatedActionAuthorized is not true, refuse.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Bounded checkpoint admissibility gate for the first checkpoint domain pack.",
+    "compilationHint": {
+      "stage": "ADMISSIBILITY",
+      "priority": 1500,
+      "effect": {
+        "decision": "REFUSED",
+        "reasonCode": "SCOPE_VIOLATION"
+      },
+      "scope": {
+        "jurisdiction": "US",
+        "domains": [
+          "LAND"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "ACCESS_CONTROL"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "PLATOON",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "action.kind",
+        "action.domain",
+        "context.missionType",
+        "authority.delegatedToUnit",
+        "authority.designatedActionAuthorized"
+      ],
+      "predicate": {
+        "any": [
+          {
+            "neq": [
+              {
+                "fact": "action.kind"
+              },
+              {
+                "value": "ACCESS_CONTROL"
+              }
+            ]
+          },
+          {
+            "neq": [
+              {
+                "fact": "action.domain"
+              },
+              {
+                "value": "LAND"
+              }
+            ]
+          },
+          {
+            "neq": [
+              {
+                "fact": "context.missionType"
+              },
+              {
+                "value": "ARMED_CONFLICT"
+              }
+            ]
+          },
+          {
+            "neq": [
+              {
+                "fact": "authority.delegatedToUnit"
+              },
+              {
+                "value": true
+              }
+            ]
+          },
+          {
+            "neq": [
+              {
+                "fact": "authority.designatedActionAuthorized"
+              },
+              {
+                "value": true
+              }
+            ]
+          }
+        ]
+      },
+      "notes": "Reusable checkpoint admissibility gate."
+    }
+  }
+]

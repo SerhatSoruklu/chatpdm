@@ -1,0 +1,12 @@
+{
+  "packId": "US_COLLATERAL_DAMAGE_ASSESSMENT_V1",
+  "jurisdiction": "US",
+  "bundleId": "us-collateral-damage-assessment-bundle",
+  "bundleVersion": "0.1.0",
+  "reviewedClauseSetIds": [
+    "collateral-damage-assessment-core"
+  ],
+  "authorityGraphId": "AUTH-GRAPH-US-001",
+  "sourceRegistryVersion": "1.0.0",
+  "regressionSuiteVersion": "0.1.0"
+}

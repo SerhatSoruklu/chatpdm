@@ -1,0 +1,12 @@
+{
+  "packId": "US_PROTECTED_SITE_V1",
+  "jurisdiction": "US",
+  "bundleId": "us-protected-site-bundle",
+  "bundleVersion": "0.1.0",
+  "reviewedClauseSetIds": [
+    "protected-site-core"
+  ],
+  "authorityGraphId": "AUTH-GRAPH-US-001",
+  "sourceRegistryVersion": "1.0.0",
+  "regressionSuiteVersion": "0.1.0"
+}

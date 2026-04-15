@@ -1,0 +1,125 @@
+[
+  {
+    "clauseId": "CL-DETENTION-001",
+    "sourceId": "NEWPORT-ROE-2022",
+    "locator": "authoring-flow/detention-handling",
+    "jurisdiction": "US",
+    "layer": "POLICY_OVERLAY",
+    "clauseType": "REQUIREMENT",
+    "rawText": "Detention handling remains admissible only for detainees in custody under explicit delegated authority.",
+    "normalizedText": "If action.kind is not DETENTION or action.domain is not LAND or context.missionType is not ARMED_CONFLICT or person.status is not DETAINEE or person.detentionStatus is not IN_CUSTODY or authority.delegatedToUnit is not true or authority.designatedActionAuthorized is not true, refuse.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Bounded detention handling admissibility gate for the first detention domain pack.",
+    "compilationHint": {
+      "stage": "ADMISSIBILITY",
+      "priority": 1500,
+      "effect": {
+        "decision": "REFUSED",
+        "reasonCode": "SCOPE_VIOLATION"
+      },
+      "scope": {
+        "jurisdiction": "US",
+        "domains": [
+          "LAND"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "DETENTION"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "PLATOON",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "action.kind",
+        "action.domain",
+        "context.missionType",
+        "person.status",
+        "person.detentionStatus",
+        "authority.delegatedToUnit",
+        "authority.designatedActionAuthorized"
+      ],
+      "predicate": {
+        "any": [
+          {
+            "neq": [
+              {
+                "fact": "action.kind"
+              },
+              {
+                "value": "DETENTION"
+              }
+            ]
+          },
+          {
+            "neq": [
+              {
+                "fact": "action.domain"
+              },
+              {
+                "value": "LAND"
+              }
+            ]
+          },
+          {
+            "neq": [
+              {
+                "fact": "context.missionType"
+              },
+              {
+                "value": "ARMED_CONFLICT"
+              }
+            ]
+          },
+          {
+            "neq": [
+              {
+                "fact": "person.status"
+              },
+              {
+                "value": "DETAINEE"
+              }
+            ]
+          },
+          {
+            "neq": [
+              {
+                "fact": "person.detentionStatus"
+              },
+              {
+                "value": "IN_CUSTODY"
+              }
+            ]
+          },
+          {
+            "neq": [
+              {
+                "fact": "authority.delegatedToUnit"
+              },
+              {
+                "value": true
+              }
+            ]
+          },
+          {
+            "neq": [
+              {
+                "fact": "authority.designatedActionAuthorized"
+              },
+              {
+                "value": true
+              }
+            ]
+          }
+        ]
+      },
+      "notes": "Reusable detention handling admissibility gate."
+    }
+  }
+]

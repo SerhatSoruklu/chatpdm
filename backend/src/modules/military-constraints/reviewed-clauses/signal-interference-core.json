@@ -1,0 +1,97 @@
+[
+  {
+    "clauseId": "SIG-001",
+    "sourceId": "NEWPORT-ROE-2022",
+    "locator": "authoring-flow/signal-interference-gate",
+    "jurisdiction": "US",
+    "layer": "POLICY_OVERLAY",
+    "clauseType": "REQUIREMENT",
+    "rawText": "Signal-interference operations require active ROE when the signal-interference slice is active.",
+    "normalizedText": "If context.operationPhase is SIGNAL_INTERFERENCE, context.zone is SIGNAL-INTERFERENCE-ZONE, action.kind is SURVEILLANCE, and authority.designatedRoeActive is not true, refuse.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Overlay gate for signal-interference handling.",
+    "compilationHint": {
+      "stage": "POLICY_OVERLAY",
+      "priority": 1160,
+      "effect": {
+        "decision": "REFUSED",
+        "reasonCode": "SCOPE_VIOLATION"
+      },
+      "scope": {
+        "jurisdiction": "US",
+        "domains": [
+          "CYBER",
+          "AIR",
+          "LAND",
+          "MARITIME"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "SURVEILLANCE",
+          "ACCESS_CONTROL",
+          "SEARCH"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "PLATOON",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "context.operationPhase",
+        "context.zone",
+        "action.kind",
+        "authority.designatedRoeActive"
+      ],
+      "predicate": {
+        "all": [
+          {
+            "eq": [
+              {
+                "fact": "context.operationPhase"
+              },
+              {
+                "value": "SIGNAL_INTERFERENCE"
+              }
+            ]
+          },
+          {
+            "eq": [
+              {
+                "fact": "context.zone"
+              },
+              {
+                "value": "SIGNAL-INTERFERENCE-ZONE"
+              }
+            ]
+          },
+          {
+            "eq": [
+              {
+                "fact": "action.kind"
+              },
+              {
+                "value": "SURVEILLANCE"
+              }
+            ]
+          },
+          {
+            "neq": [
+              {
+                "fact": "authority.designatedRoeActive"
+              },
+              {
+                "value": true
+              }
+            ]
+          }
+        ]
+      },
+      "notes": "Signal-interference refinement using existing admitted foundations."
+    }
+  }
+]

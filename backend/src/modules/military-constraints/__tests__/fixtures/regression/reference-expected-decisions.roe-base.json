@@ -1,0 +1,30 @@
+[
+  {
+    "caseId": "roe-allowed-case",
+    "bundleVariant": "reference",
+    "decision": "ALLOWED",
+    "reasonCode": null,
+    "failedStage": null,
+    "failingRuleIds": []
+  },
+  {
+    "caseId": "roe-authority-refusal",
+    "bundleVariant": "reference",
+    "decision": "REFUSED",
+    "reasonCode": "AUTHORITY_INVALID",
+    "failedStage": "ADMISSIBILITY",
+    "failingRuleIds": [
+      "CR-CLAUSE-ROE-0001"
+    ]
+  },
+  {
+    "caseId": "roe-missing-fact",
+    "bundleVariant": "reference",
+    "decision": "REFUSED_INCOMPLETE",
+    "reasonCode": "MISSING_REQUIRED_FACT",
+    "failedStage": "ADMISSIBILITY",
+    "failingRuleIds": [
+      "CR-CLAUSE-ROE-0001"
+    ]
+  }
+]

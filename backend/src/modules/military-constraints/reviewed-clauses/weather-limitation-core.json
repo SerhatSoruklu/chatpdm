@@ -1,0 +1,97 @@
+[
+  {
+    "clauseId": "WTH-001",
+    "sourceId": "NEWPORT-ROE-2022",
+    "locator": "authoring-flow/weather-limitation-gate",
+    "jurisdiction": "US",
+    "layer": "POLICY_OVERLAY",
+    "clauseType": "REQUIREMENT",
+    "rawText": "Weather-limited operations require feasible precautions when the weather-limitation slice is active.",
+    "normalizedText": "If context.operationPhase is WEATHER_LIMITATION, context.zone is WEATHER-LIMITED-ZONE, action.domain is AIR, and civilianRisk.feasiblePrecautionsTaken is not true, refuse.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Overlay gate for environmental limitation handling.",
+    "compilationHint": {
+      "stage": "POLICY_OVERLAY",
+      "priority": 1170,
+      "effect": {
+        "decision": "REFUSED",
+        "reasonCode": "SCOPE_VIOLATION"
+      },
+      "scope": {
+        "jurisdiction": "US",
+        "domains": [
+          "AIR",
+          "LAND",
+          "MARITIME"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "STRIKE",
+          "ENGAGE",
+          "FIRE",
+          "SURVEILLANCE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "PLATOON",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "context.operationPhase",
+        "context.zone",
+        "action.domain",
+        "civilianRisk.feasiblePrecautionsTaken"
+      ],
+      "predicate": {
+        "all": [
+          {
+            "eq": [
+              {
+                "fact": "context.operationPhase"
+              },
+              {
+                "value": "WEATHER_LIMITATION"
+              }
+            ]
+          },
+          {
+            "eq": [
+              {
+                "fact": "context.zone"
+              },
+              {
+                "value": "WEATHER-LIMITED-ZONE"
+              }
+            ]
+          },
+          {
+            "eq": [
+              {
+                "fact": "action.domain"
+              },
+              {
+                "value": "AIR"
+              }
+            ]
+          },
+          {
+            "neq": [
+              {
+                "fact": "civilianRisk.feasiblePrecautionsTaken"
+              },
+              {
+                "value": true
+              }
+            ]
+          }
+        ]
+      },
+      "notes": "Environmental-limitation refinement using existing fact axes."
+    }
+  }
+]

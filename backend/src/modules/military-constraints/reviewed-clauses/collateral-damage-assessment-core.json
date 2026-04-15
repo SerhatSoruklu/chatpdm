@@ -1,0 +1,102 @@
+[
+  {
+    "clauseId": "CL-CDA-001",
+    "sourceId": "ROE-DOCTRINE-2020",
+    "locator": "doctrine-revision/collateral-damage-assessment-gate",
+    "jurisdiction": "US",
+    "layer": "POLICY_OVERLAY",
+    "clauseType": "REQUIREMENT",
+    "rawText": "Collateral damage assessment remains admissible only when the assessment slice is active and civilian harm is proportionate to military advantage.",
+    "normalizedText": "If context.operationPhase is COLLATERAL_ASSESSMENT, target.protectedClass is one of CIVILIAN, CIVILIAN_OBJECT, or MEDICAL, civilianRisk.estimatedIncidentalHarmScore is less than or equal to civilianRisk.expectedMilitaryAdvantageScore, and civilianRisk.feasiblePrecautionsTaken is true, continue; otherwise refuse.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Civilian-harm refinement overlay for the admitted overlay wave.",
+    "compilationHint": {
+      "stage": "POLICY_OVERLAY",
+      "priority": 1300,
+      "effect": {
+        "decision": "REFUSED",
+        "reasonCode": "EXCESSIVE_INCIDENTAL_HARM_RISK"
+      },
+      "scope": {
+        "jurisdiction": "US",
+        "domains": [
+          "LAND",
+          "AIR",
+          "MARITIME",
+          "CYBER",
+          "SPACE",
+          "MULTI_DOMAIN"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "STRIKE",
+          "ENGAGE",
+          "FIRE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "PLATOON",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "target.protectedClass"
+      ],
+      "predicate": {
+        "not": {
+          "all": [
+            {
+              "eq": [
+                {
+                  "fact": "context.operationPhase"
+                },
+                {
+                  "value": "COLLATERAL_ASSESSMENT"
+                }
+              ]
+            },
+            {
+              "in": [
+                {
+                  "fact": "target.protectedClass"
+                },
+                {
+                  "value": [
+                    "CIVILIAN",
+                    "CIVILIAN_OBJECT",
+                    "MEDICAL"
+                  ]
+                }
+              ]
+            },
+            {
+              "lte": [
+                {
+                  "fact": "civilianRisk.estimatedIncidentalHarmScore"
+                },
+                {
+                  "fact": "civilianRisk.expectedMilitaryAdvantageScore"
+                }
+              ]
+            },
+            {
+              "eq": [
+                {
+                  "fact": "civilianRisk.feasiblePrecautionsTaken"
+                },
+                {
+                  "value": true
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "notes": "Civilian-harm refinement overlay."
+    }
+  }
+]

@@ -1,0 +1,96 @@
+[
+  {
+    "clauseId": "ADS-001",
+    "sourceId": "NEWPORT-ROE-2022",
+    "locator": "authoring-flow/aid-delivery-security-gate",
+    "jurisdiction": "US",
+    "layer": "POLICY_OVERLAY",
+    "clauseType": "REQUIREMENT",
+    "rawText": "Aid-delivery security requires designated ROE to remain active when the aid-delivery security slice is active.",
+    "normalizedText": "If context.operationPhase is AID_DELIVERY_SECURITY, context.zone is AID-DELIVERY-ZONE, action.kind is ACCESS_CONTROL, and authority.designatedRoeActive is not true, refuse.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Overlay gate for aid-delivery security.",
+    "compilationHint": {
+      "stage": "POLICY_OVERLAY",
+      "priority": 1200,
+      "effect": {
+        "decision": "REFUSED",
+        "reasonCode": "AUTHORITY_INVALID"
+      },
+      "scope": {
+        "jurisdiction": "US",
+        "domains": [
+          "LAND",
+          "AIR",
+          "MARITIME"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "ACCESS_CONTROL",
+          "SEARCH",
+          "SURVEILLANCE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "PLATOON",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "context.operationPhase",
+        "context.zone",
+        "action.kind",
+        "authority.designatedRoeActive"
+      ],
+      "predicate": {
+        "all": [
+          {
+            "eq": [
+              {
+                "fact": "context.operationPhase"
+              },
+              {
+                "value": "AID_DELIVERY_SECURITY"
+              }
+            ]
+          },
+          {
+            "eq": [
+              {
+                "fact": "context.zone"
+              },
+              {
+                "value": "AID-DELIVERY-ZONE"
+              }
+            ]
+          },
+          {
+            "eq": [
+              {
+                "fact": "action.kind"
+              },
+              {
+                "value": "ACCESS_CONTROL"
+              }
+            ]
+          },
+          {
+            "neq": [
+              {
+                "fact": "authority.designatedRoeActive"
+              },
+              {
+                "value": true
+              }
+            ]
+          }
+        ]
+      },
+      "notes": "Aid-delivery security refinement."
+    }
+  }
+]

@@ -1,0 +1,398 @@
+[
+  {
+    "packId": "US_CORE_V1",
+    "manifestPackId": "mil-us-core-reference",
+    "kind": "foundation",
+    "status": "baseline",
+    "dependsOn": [],
+    "notes": "Implemented today as mil-us-core-reference."
+  },
+  {
+    "packId": "US_PROTECTED_PERSON_STATE_V1",
+    "manifestPackId": "mil-us-protected-person-state-core-v0.1.0",
+    "kind": "foundation",
+    "status": "baseline",
+    "dependsOn": [],
+    "notes": "Implemented today as mil-us-protected-person-state-core-v0.1.0."
+  },
+  {
+    "packId": "US_MARITIME_VBSS_V1",
+    "manifestPackId": "mil-us-maritime-vbss-core-v0.1.0",
+    "kind": "domain",
+    "status": "baseline",
+    "dependsOn": [],
+    "notes": "Implemented today as mil-us-maritime-vbss-core-v0.1.0."
+  },
+  {
+    "packId": "US_MEDICAL_PROTECTION_V1",
+    "manifestPackId": "mil-us-medical-protection-core-v0.1.0",
+    "kind": "overlay",
+    "status": "baseline",
+    "dependsOn": [],
+    "notes": "Implemented today as mil-us-medical-protection-core-v0.1.0."
+  },
+  {
+    "packId": "US_CIVILIAN_SCHOOL_PROTECTION_V1",
+    "manifestPackId": "mil-us-civilian-school-protection-core-v0.1.0",
+    "kind": "overlay",
+    "status": "baseline",
+    "dependsOn": [],
+    "notes": "Implemented today as mil-us-civilian-school-protection-core-v0.1.0."
+  },
+  {
+    "packId": "US_RULES_OF_ENGAGEMENT_BASE_V1",
+    "kind": "foundation",
+    "status": "admitted",
+    "dependsOn": [
+      "US_CORE_V1"
+    ],
+    "notes": "Admitted foundation wave; shared ROE baseline for later domain and overlay packs."
+  },
+  {
+    "packId": "US_LOAC_COMPLIANCE_V1",
+    "kind": "foundation",
+    "status": "admitted",
+    "dependsOn": [
+      "US_RULES_OF_ENGAGEMENT_BASE_V1"
+    ],
+    "notes": "Admitted foundation wave; shared legal-floor layer."
+  },
+  {
+    "packId": "US_COMMAND_AUTHORITY_V1",
+    "kind": "foundation",
+    "status": "admitted",
+    "dependsOn": [
+      "US_CORE_V1",
+      "US_PROTECTED_PERSON_STATE_V1"
+    ],
+    "notes": "Admitted foundation wave; core authority model."
+  },
+  {
+    "packId": "US_DELEGATION_CHAIN_V1",
+    "kind": "foundation",
+    "status": "admitted",
+    "dependsOn": [
+      "US_COMMAND_AUTHORITY_V1"
+    ],
+    "notes": "Admitted foundation wave; reusable delegation semantics."
+  },
+  {
+    "packId": "US_PROTECTED_SITE_V1",
+    "kind": "foundation",
+    "status": "admitted",
+    "dependsOn": [
+      "US_LOAC_COMPLIANCE_V1",
+      "US_PROTECTED_PERSON_STATE_V1"
+    ],
+    "notes": "Admitted foundation wave; shared protected-location baseline."
+  },
+  {
+    "packId": "US_COALITION_INTEROP_V1",
+    "kind": "foundation",
+    "status": "admitted",
+    "dependsOn": [
+      "US_RULES_OF_ENGAGEMENT_BASE_V1"
+    ],
+    "notes": "Admitted foundation wave; coalition compatibility baseline."
+  },
+  {
+    "packId": "US_AIRSPACE_CONTROL_V1",
+    "kind": "domain",
+    "status": "admitted",
+    "dependsOn": [
+      "US_RULES_OF_ENGAGEMENT_BASE_V1",
+      "US_LOAC_COMPLIANCE_V1",
+      "US_COMMAND_AUTHORITY_V1",
+      "US_DELEGATION_CHAIN_V1",
+      "US_PROTECTED_SITE_V1"
+    ],
+    "notes": "Pack 6. First executable air-domain pack."
+  },
+  {
+    "packId": "US_GROUND_MANEUVER_V1",
+    "kind": "domain",
+    "status": "admitted",
+    "dependsOn": [
+      "US_LOAC_COMPLIANCE_V1",
+      "US_COMMAND_AUTHORITY_V1",
+      "US_DELEGATION_CHAIN_V1"
+    ],
+    "notes": "Bounded ground-operations domain."
+  },
+  {
+    "packId": "US_CHECKPOINT_ADMISSIBILITY_V1",
+    "kind": "domain",
+    "status": "admitted",
+    "dependsOn": [
+      "US_LOAC_COMPLIANCE_V1",
+      "US_COMMAND_AUTHORITY_V1"
+    ],
+    "notes": "Bounded checkpoint domain."
+  },
+  {
+    "packId": "US_SEARCH_AND_SEIZURE_V1",
+    "kind": "domain",
+    "status": "admitted",
+    "dependsOn": [
+      "US_LOAC_COMPLIANCE_V1",
+      "US_COMMAND_AUTHORITY_V1"
+    ],
+    "notes": "Bounded search/seizure domain."
+  },
+  {
+    "packId": "US_DETENTION_HANDLING_V1",
+    "kind": "domain",
+    "status": "admitted",
+    "dependsOn": [
+      "US_LOAC_COMPLIANCE_V1",
+      "US_PROTECTED_PERSON_STATE_V1"
+    ],
+    "notes": "Bounded detention/custody domain."
+  },
+  {
+    "packId": "US_SURVEILLANCE_ADMISSIBILITY_V1",
+    "kind": "domain",
+    "status": "planned",
+    "dependsOn": [
+      "US_LOAC_COMPLIANCE_V1",
+      "US_COMMAND_AUTHORITY_V1"
+    ],
+    "notes": "Bounded surveillance domain."
+  },
+  {
+    "packId": "US_DRONE_OPERATION_V1",
+    "kind": "domain",
+    "status": "planned",
+    "dependsOn": [
+      "US_AIRSPACE_CONTROL_V1",
+      "US_SURVEILLANCE_ADMISSIBILITY_V1"
+    ],
+    "notes": "Platform-specific air/surveillance domain."
+  },
+  {
+    "packId": "US_HUMANITARIAN_OPERATION_V1",
+    "kind": "domain",
+    "status": "planned",
+    "dependsOn": [
+      "US_LOAC_COMPLIANCE_V1",
+      "US_PROTECTED_SITE_V1"
+    ],
+    "notes": "Humanitarian mission domain."
+  },
+  {
+    "packId": "US_RESCUE_MISSION_V1",
+    "kind": "domain",
+    "status": "planned",
+    "dependsOn": [
+      "US_HUMANITARIAN_OPERATION_V1",
+      "US_COMMAND_AUTHORITY_V1"
+    ],
+    "notes": "Rescue operation domain."
+  },
+  {
+    "packId": "US_HOSTAGE_RESPONSE_V1",
+    "kind": "domain",
+    "status": "planned",
+    "dependsOn": [
+      "US_DETENTION_HANDLING_V1",
+      "US_COMMAND_AUTHORITY_V1"
+    ],
+    "notes": "Hostage-response domain."
+  },
+  {
+    "packId": "US_RAPID_RESPONSE_V1",
+    "kind": "domain",
+    "status": "planned",
+    "dependsOn": [
+      "US_GROUND_MANEUVER_V1",
+      "US_AIRSPACE_CONTROL_V1",
+      "US_MARITIME_VBSS_V1"
+    ],
+    "notes": "Broad rapid-response domain."
+  },
+  {
+    "packId": "US_ELECTRONIC_WARFARE_V1",
+    "kind": "domain",
+    "status": "planned",
+    "dependsOn": [
+      "US_LOAC_COMPLIANCE_V1",
+      "US_COMMAND_AUTHORITY_V1"
+    ],
+    "notes": "EW domain."
+  },
+  {
+    "packId": "US_CYBER_OPERATIONS_V1",
+    "kind": "domain",
+    "status": "planned",
+    "dependsOn": [
+      "US_LOAC_COMPLIANCE_V1",
+      "US_COMMAND_AUTHORITY_V1"
+    ],
+    "notes": "Cyber domain."
+  },
+  {
+    "packId": "US_NO_FLY_ZONE_V1",
+    "kind": "overlay",
+    "status": "admitted",
+    "dependsOn": [
+      "US_AIRSPACE_CONTROL_V1"
+    ],
+    "notes": "Airspace restriction overlay."
+  },
+  {
+    "packId": "US_TARGET_APPROVAL_V1",
+    "kind": "overlay",
+    "status": "admitted",
+    "dependsOn": [
+      "US_AIRSPACE_CONTROL_V1",
+      "US_LOAC_COMPLIANCE_V1"
+    ],
+    "notes": "Operational approval gate."
+  },
+  {
+    "packId": "US_COLLATERAL_DAMAGE_ASSESSMENT_V1",
+    "kind": "overlay",
+    "status": "admitted",
+    "dependsOn": [
+      "US_LOAC_COMPLIANCE_V1",
+      "US_PROTECTED_SITE_V1"
+    ],
+    "notes": "Civilian-harm refinement."
+  },
+  {
+    "packId": "US_HOSPITAL_PROTECTION_V1",
+    "kind": "overlay",
+    "status": "admitted",
+    "dependsOn": [
+      "US_PROTECTED_SITE_V1",
+      "US_MEDICAL_PROTECTION_V1"
+    ],
+    "notes": "Hospital-specific overlay."
+  },
+  {
+    "packId": "US_SCHOOL_ZONE_RESTRICTION_V1",
+    "kind": "overlay",
+    "status": "admitted",
+    "dependsOn": [
+      "US_PROTECTED_SITE_V1",
+      "US_CIVILIAN_SCHOOL_PROTECTION_V1"
+    ],
+    "notes": "School-zone restriction overlay."
+  },
+  {
+    "packId": "US_RELIGIOUS_SITE_PROTECTION_V1",
+    "kind": "overlay",
+    "status": "admitted",
+    "dependsOn": [
+      "US_PROTECTED_SITE_V1"
+    ],
+    "notes": "Religious-site overlay."
+  },
+  {
+    "packId": "US_CULTURAL_PROPERTY_PROTECTION_V1",
+    "kind": "overlay",
+    "status": "admitted",
+    "dependsOn": [
+      "US_PROTECTED_SITE_V1"
+    ],
+    "notes": "Cultural-property overlay."
+  },
+  {
+    "packId": "US_AID_DELIVERY_SECURITY_V1",
+    "kind": "overlay",
+    "status": "admitted",
+    "dependsOn": [
+      "US_LOAC_COMPLIANCE_V1",
+      "US_PROTECTED_SITE_V1"
+    ],
+    "notes": "Aid-delivery security overlay; scope-adjusted to the admitted legal/protection layer."
+  },
+  {
+    "packId": "US_EVACUATION_ROUTE_V1",
+    "kind": "overlay",
+    "status": "admitted",
+    "dependsOn": [
+      "US_LOAC_COMPLIANCE_V1",
+      "US_PROTECTED_SITE_V1"
+    ],
+    "notes": "Evacuation-route overlay; scope-adjusted to the admitted legal/protection layer."
+  },
+  {
+    "packId": "US_NIGHT_OPERATION_V1",
+    "kind": "overlay",
+    "status": "admitted",
+    "dependsOn": [
+      "US_LOAC_COMPLIANCE_V1"
+    ],
+    "notes": "Temporal-condition overlay."
+  },
+  {
+    "packId": "US_WEATHER_LIMITATION_V1",
+    "kind": "overlay",
+    "status": "admitted",
+    "dependsOn": [
+      "US_AIRSPACE_CONTROL_V1",
+      "US_GROUND_MANEUVER_V1",
+      "US_MARITIME_VBSS_V1"
+    ],
+    "notes": "Environmental limitation overlay."
+  },
+  {
+    "packId": "US_SIGNAL_INTERFERENCE_V1",
+    "kind": "overlay",
+    "status": "admitted",
+    "dependsOn": [
+      "US_LOAC_COMPLIANCE_V1",
+      "US_COMMAND_AUTHORITY_V1"
+    ],
+    "notes": "Technical-effects overlay; scope-adjusted to admitted authority/legal primitives."
+  },
+  {
+    "packId": "US_ISR_RETENTION_V1",
+    "kind": "overlay",
+    "status": "admitted",
+    "dependsOn": [
+      "US_COALITION_INTEROP_V1",
+      "US_COMMAND_AUTHORITY_V1"
+    ],
+    "notes": "ISR retention/governance overlay; scope-adjusted to the admitted coalition/authority layer."
+  },
+  {
+    "packId": "US_WEAPON_STATUS_V1",
+    "kind": "overlay",
+    "status": "admitted",
+    "dependsOn": [
+      "US_LOAC_COMPLIANCE_V1",
+      "US_COMMAND_AUTHORITY_V1"
+    ],
+    "notes": "Equipment/weapon-state overlay."
+  },
+  {
+    "packId": "US_ALLIED_ROE_MERGE_V1",
+    "kind": "overlay",
+    "status": "admitted",
+    "dependsOn": [
+      "US_COALITION_INTEROP_V1"
+    ],
+    "notes": "Coalition merge overlay."
+  },
+  {
+    "packId": "US_NO_STRIKE_LIST_V1",
+    "kind": "overlay",
+    "status": "planned",
+    "dependsOn": [
+      "US_LOAC_COMPLIANCE_V1",
+      "US_PROTECTED_SITE_V1"
+    ],
+    "notes": "Restrictive targeting overlay."
+  },
+  {
+    "packId": "US_AIR_V1",
+    "kind": "umbrella-label",
+    "status": "planned",
+    "dependsOn": [
+      "US_AIRSPACE_CONTROL_V1"
+    ],
+    "notes": "Family label only; never executable."
+  }
+]

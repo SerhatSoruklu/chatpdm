@@ -25,13 +25,18 @@ Example response:
   "resource": "military-constraints",
   "status": "active",
   "availableOperations": ["packs", "evaluate"],
-  "packCount": 5
+  "packCount": 31,
+  "registryPackCount": 41,
+  "baselinePackCount": 5,
+  "admittedPackCount": 26,
+  "plannedPackCount": 10,
+  "umbrellaLabelCount": 1
 }
 ```
 
 ### `GET /api/v1/military-constraints/packs`
 
-Returns the locked v1 pack catalog.
+Returns the current manifest-backed admitted pack catalog.
 
 Example response:
 
@@ -50,25 +55,59 @@ Example response:
         "legal-floor-civilian-school-core",
         "authority-civilian-school-core",
         "policy-overlay-civilian-school-core"
-      ]
+      ],
+      "kind": "overlay",
+      "status": "baseline",
+      "dependsOn": [],
+      "registryOrder": 4,
+      "registryPresent": true
     }
   ]
 }
 ```
 
 The order is deterministic and currently follows the pack catalog order used by the backend.
+The current catalog includes the frozen baseline packs plus the admitted foundation, domain, and overlay waves.
+The root surface also reports registry-backed counts for baseline, admitted, planned, and umbrella-label entries.
+Each listed pack exposes registry metadata fields for `kind`, `status`, `dependsOn`, `registryOrder`, and `registryPresent`.
 
 ### `GET /api/v1/military-constraints/packs/:packId`
 
 Returns one pack’s validated metadata.
 
-`packId` must match a known locked-v1 pack identifier, for example:
+`packId` must match a known admitted pack identifier, for example:
 
 - `mil-us-core-reference`
 - `mil-us-maritime-vbss-core-v0.1.0`
 - `mil-us-medical-protection-core-v0.1.0`
 - `mil-us-civilian-school-protection-core-v0.1.0`
 - `mil-us-protected-person-state-core-v0.1.0`
+- `US_RULES_OF_ENGAGEMENT_BASE_V1`
+- `US_LOAC_COMPLIANCE_V1`
+- `US_COMMAND_AUTHORITY_V1`
+- `US_DELEGATION_CHAIN_V1`
+- `US_PROTECTED_SITE_V1`
+- `US_COALITION_INTEROP_V1`
+- `US_AIRSPACE_CONTROL_V1`
+- `US_GROUND_MANEUVER_V1`
+- `US_CHECKPOINT_ADMISSIBILITY_V1`
+- `US_SEARCH_AND_SEIZURE_V1`
+- `US_DETENTION_HANDLING_V1`
+- `US_NO_FLY_ZONE_V1`
+- `US_TARGET_APPROVAL_V1`
+- `US_COLLATERAL_DAMAGE_ASSESSMENT_V1`
+- `US_HOSPITAL_PROTECTION_V1`
+- `US_SCHOOL_ZONE_RESTRICTION_V1`
+- `US_RELIGIOUS_SITE_PROTECTION_V1`
+- `US_CULTURAL_PROPERTY_PROTECTION_V1`
+- `US_AID_DELIVERY_SECURITY_V1`
+- `US_EVACUATION_ROUTE_V1`
+- `US_NIGHT_OPERATION_V1`
+- `US_WEATHER_LIMITATION_V1`
+- `US_SIGNAL_INTERFERENCE_V1`
+- `US_ISR_RETENTION_V1`
+- `US_WEAPON_STATUS_V1`
+- `US_ALLIED_ROE_MERGE_V1`
 
 If the pack ID is malformed or unknown, the route fails closed.
 
@@ -89,8 +128,13 @@ Example response:
       "authority-medical-core",
       "policy-overlay-medical-core"
     ],
+    "kind": "overlay",
+    "status": "baseline",
+    "dependsOn": [],
+    "registryOrder": 3,
+    "registryPresent": true,
     "sourceRegistryVersion": "1.0.0",
-    "regressionSuiteVersion": "1.0.0"
+    "regressionSuiteVersion": "0.1.0"
   }
 }
 ```

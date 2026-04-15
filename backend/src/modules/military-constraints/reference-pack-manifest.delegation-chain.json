@@ -1,0 +1,12 @@
+{
+  "packId": "US_DELEGATION_CHAIN_V1",
+  "jurisdiction": "US",
+  "bundleId": "us-delegation-chain-bundle",
+  "bundleVersion": "0.1.0",
+  "reviewedClauseSetIds": [
+    "delegation-chain-core"
+  ],
+  "authorityGraphId": "AUTH-GRAPH-US-001",
+  "sourceRegistryVersion": "1.0.0",
+  "regressionSuiteVersion": "0.1.0"
+}

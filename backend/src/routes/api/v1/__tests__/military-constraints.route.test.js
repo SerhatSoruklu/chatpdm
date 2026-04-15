@@ -10,6 +10,7 @@ const { buildReferenceBundle } = require('../../../../modules/military-constrain
 
 const MODULE_DIR = path.resolve(__dirname, '../../../../modules/military-constraints');
 const PACK_MANIFEST_PATH = path.join(MODULE_DIR, 'reference-pack-manifest.medical-protection.json');
+const AIRSPACE_PACK_MANIFEST_PATH = path.join(MODULE_DIR, 'reference-pack-manifest.airspace-control.json');
 
 function startServer() {
   return new Promise((resolve) => {
@@ -90,6 +91,64 @@ function buildAllowedFacts(bundle) {
   };
 }
 
+function buildAllowedAirspaceFacts(bundle) {
+  return {
+    bundleId: bundle.bundleId,
+    bundleVersion: bundle.bundleVersion,
+    bundleHash: bundle.bundleHash,
+    actor: {
+      id: 'AIRSPACE-TEAM-01',
+      role: 'BRIGADE_COMMANDER',
+      authorityLevelId: 'BRIGADE',
+    },
+    action: {
+      kind: 'SURVEILLANCE',
+      forceLevel: 'NON_LETHAL',
+      method: 'AIRBORNE_SURVEILLANCE',
+      domain: 'AIR',
+    },
+    target: {
+      id: 'AIRSPACE-TARGET-01',
+      protectedClass: 'MILITARY',
+      militaryObjectiveStatus: 'CONFIRMED_TRUE',
+      lossOfProtectionStatus: 'NOT_LOST',
+      objectType: 'OTHER',
+      horsDeCombatStatus: false,
+    },
+    context: {
+      zone: 'AIRSPACE-CTRL-ZONE',
+      missionType: 'ARMED_CONFLICT',
+      operationPhase: 'PLANNING',
+      operationalSlice: 'PROTECTED_PERSON_STATE',
+      coalitionMode: 'NATIONAL',
+      timeWindowStart: '2026-04-13T18:00:00.000Z',
+      timeWindowEnd: '2026-04-13T19:00:00.000Z',
+    },
+    threat: {
+      hostileAct: false,
+      hostileIntent: false,
+      imminence: 'NONE',
+      necessity: 'LOW',
+    },
+    civilianRisk: {
+      civilianPresence: false,
+      civilianObjectPresence: false,
+      estimatedIncidentalHarm: 'LOW',
+      feasiblePrecautionsTaken: true,
+      expectedMilitaryAdvantage: 'MEDIUM',
+      estimatedIncidentalHarmScore: 5,
+      expectedMilitaryAdvantageScore: 50,
+    },
+    authority: {
+      reservedToHigherCommand: false,
+      nationalCaveat: false,
+      delegatedToUnit: true,
+      designatedRoeActive: true,
+      designatedActionAuthorized: true,
+    },
+  };
+}
+
 test('military constraints public surface exposes bounded discovery and pack metadata', async () => {
   const { server, baseUrl } = await startServer();
 
@@ -97,27 +156,69 @@ test('military constraints public surface exposes bounded discovery and pack met
     const root = await fetchJson(`${baseUrl}/api/v1/military-constraints`);
     const packs = await fetchJson(`${baseUrl}/api/v1/military-constraints/packs`);
     const pack = await fetchJson(`${baseUrl}/api/v1/military-constraints/packs/mil-us-medical-protection-core-v0.1.0`);
+    const admittedPack = await fetchJson(`${baseUrl}/api/v1/military-constraints/packs/US_AIRSPACE_CONTROL_V1`);
 
     assert.equal(root.status, 200);
-    assert.deepEqual(Object.keys(root.body), ['resource', 'status', 'availableOperations', 'packCount']);
+    assert.deepEqual(Object.keys(root.body), [
+      'resource',
+      'status',
+      'availableOperations',
+      'packCount',
+      'registryPackCount',
+      'baselinePackCount',
+      'admittedPackCount',
+      'plannedPackCount',
+      'umbrellaLabelCount',
+    ]);
     assert.equal(root.body.resource, 'military-constraints');
     assert.equal(root.body.status, 'active');
     assert.deepEqual(root.body.availableOperations, ['packs', 'evaluate']);
-    assert.equal(root.body.packCount, 5);
+    assert.equal(root.body.packCount, 31);
+    assert.equal(root.body.registryPackCount, 41);
+    assert.equal(root.body.baselinePackCount, 5);
+    assert.equal(root.body.admittedPackCount, 26);
+    assert.equal(root.body.plannedPackCount, 10);
+    assert.equal(root.body.umbrellaLabelCount, 1);
 
     assert.equal(packs.status, 200);
     assert.deepEqual(Object.keys(packs.body), ['resource', 'status', 'packs']);
     assert.equal(packs.body.resource, 'military-constraints');
     assert.equal(packs.body.status, 'active');
-    assert.equal(packs.body.packs.length, 5);
+    assert.equal(packs.body.packs.length, 31);
     assert.deepEqual(
       packs.body.packs.map((entry) => entry.packId),
       [
-        'mil-us-civilian-school-protection-core-v0.1.0',
         'mil-us-core-reference',
+        'mil-us-protected-person-state-core-v0.1.0',
         'mil-us-maritime-vbss-core-v0.1.0',
         'mil-us-medical-protection-core-v0.1.0',
-        'mil-us-protected-person-state-core-v0.1.0',
+        'mil-us-civilian-school-protection-core-v0.1.0',
+        'US_RULES_OF_ENGAGEMENT_BASE_V1',
+        'US_LOAC_COMPLIANCE_V1',
+        'US_COMMAND_AUTHORITY_V1',
+        'US_DELEGATION_CHAIN_V1',
+        'US_PROTECTED_SITE_V1',
+        'US_COALITION_INTEROP_V1',
+        'US_AIRSPACE_CONTROL_V1',
+        'US_GROUND_MANEUVER_V1',
+        'US_CHECKPOINT_ADMISSIBILITY_V1',
+        'US_SEARCH_AND_SEIZURE_V1',
+        'US_DETENTION_HANDLING_V1',
+        'US_NO_FLY_ZONE_V1',
+        'US_TARGET_APPROVAL_V1',
+        'US_COLLATERAL_DAMAGE_ASSESSMENT_V1',
+        'US_HOSPITAL_PROTECTION_V1',
+        'US_SCHOOL_ZONE_RESTRICTION_V1',
+        'US_RELIGIOUS_SITE_PROTECTION_V1',
+        'US_CULTURAL_PROPERTY_PROTECTION_V1',
+        'US_AID_DELIVERY_SECURITY_V1',
+        'US_EVACUATION_ROUTE_V1',
+        'US_NIGHT_OPERATION_V1',
+        'US_WEATHER_LIMITATION_V1',
+        'US_SIGNAL_INTERFERENCE_V1',
+        'US_ISR_RETENTION_V1',
+        'US_WEAPON_STATUS_V1',
+        'US_ALLIED_ROE_MERGE_V1',
       ],
     );
 
@@ -125,18 +226,59 @@ test('military constraints public surface exposes bounded discovery and pack met
     assert.deepEqual(Object.keys(pack.body), ['resource', 'status', 'pack']);
     assert.equal(pack.body.resource, 'military-constraints');
     assert.equal(pack.body.status, 'active');
-    assert.deepEqual(Object.keys(pack.body.pack), [
-      'packId',
-      'bundleId',
-      'bundleVersion',
-      'jurisdiction',
-      'authorityGraphId',
-      'reviewedClauseSetIds',
-      'sourceRegistryVersion',
-      'regressionSuiteVersion',
-    ]);
+    assert.equal(pack.body.pack.kind, 'overlay');
+    assert.equal(pack.body.pack.status, 'baseline');
+    assert.deepEqual(pack.body.pack.dependsOn, []);
+    assert.equal(pack.body.pack.registryOrder, 3);
+    assert.equal(pack.body.pack.registryPresent, true);
+    assert.equal(pack.body.pack.sourceRegistryVersion, '1.0.0');
+    assert.equal(pack.body.pack.regressionSuiteVersion, '0.1.0');
     assert.equal(pack.body.pack.packId, 'mil-us-medical-protection-core-v0.1.0');
     assert.equal(pack.body.pack.bundleId, 'mil-us-medical-protection-core-bundle');
+
+    assert.equal(admittedPack.status, 200);
+    assert.equal(admittedPack.body.pack.packId, 'US_AIRSPACE_CONTROL_V1');
+    assert.equal(admittedPack.body.pack.kind, 'domain');
+    assert.equal(admittedPack.body.pack.status, 'admitted');
+    assert.deepEqual(admittedPack.body.pack.dependsOn, [
+      'US_RULES_OF_ENGAGEMENT_BASE_V1',
+      'US_LOAC_COMPLIANCE_V1',
+      'US_COMMAND_AUTHORITY_V1',
+      'US_DELEGATION_CHAIN_V1',
+      'US_PROTECTED_SITE_V1',
+    ]);
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
+  }
+});
+
+test('military constraints public surface evaluates admitted uppercase pack ids', async () => {
+  const { server, baseUrl } = await startServer();
+
+  try {
+    const built = buildReferenceBundle({
+      rootDir: MODULE_DIR,
+      manifestPath: AIRSPACE_PACK_MANIFEST_PATH,
+    });
+
+    assert.equal(built.valid, true, built.errors.join('\n'));
+
+    const evaluation = await fetchJson(`${baseUrl}/api/v1/military-constraints/evaluate`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        packId: 'US_AIRSPACE_CONTROL_V1',
+        facts: buildAllowedAirspaceFacts(built.bundle),
+      }),
+    });
+
+    assert.equal(evaluation.status, 200);
+    assert.equal(evaluation.body.decision, 'ALLOWED');
+    assert.equal(evaluation.body.reasonCode, null);
+    assert.equal(evaluation.body.failedStage, null);
+    assert.deepEqual(evaluation.body.failingRuleIds, []);
   } finally {
     await new Promise((resolve) => server.close(resolve));
   }
@@ -192,7 +334,7 @@ test('military constraints public surface refuses malformed pack ids and incompl
 
     assert.equal(invalidPack.status, 400);
     assert.equal(invalidPack.body.error.code, 'invalid_military_constraints_pack_id');
-    assert.match(invalidPack.body.error.message, /lowercase pack identifier/i);
+    assert.match(invalidPack.body.error.message, /non-empty pack identifier/i);
 
     assert.equal(unknownPack.status, 404);
     assert.equal(unknownPack.body.error.code, 'military_constraints_pack_not_found');

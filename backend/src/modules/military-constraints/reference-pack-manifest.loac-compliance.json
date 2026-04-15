@@ -1,0 +1,12 @@
+{
+  "packId": "US_LOAC_COMPLIANCE_V1",
+  "jurisdiction": "US",
+  "bundleId": "us-loac-compliance-bundle",
+  "bundleVersion": "0.1.0",
+  "reviewedClauseSetIds": [
+    "loac-compliance-core"
+  ],
+  "authorityGraphId": "AUTH-GRAPH-US-001",
+  "sourceRegistryVersion": "1.0.0",
+  "regressionSuiteVersion": "0.1.0"
+}

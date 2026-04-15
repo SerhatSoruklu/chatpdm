@@ -1,0 +1,12 @@
+{
+  "packId": "US_RELIGIOUS_SITE_PROTECTION_V1",
+  "jurisdiction": "US",
+  "bundleId": "us-religious-site-protection-bundle",
+  "bundleVersion": "0.1.0",
+  "reviewedClauseSetIds": [
+    "religious-site-protection-core"
+  ],
+  "authorityGraphId": "AUTH-GRAPH-US-001",
+  "sourceRegistryVersion": "1.0.0",
+  "regressionSuiteVersion": "0.1.0"
+}

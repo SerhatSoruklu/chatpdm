@@ -1,0 +1,27 @@
+[
+  {
+    "caseId": "isr-retention-allowed-case",
+    "decision": "ALLOWED",
+    "reasonCode": null,
+    "failedStage": null,
+    "failingRuleIds": []
+  },
+  {
+    "caseId": "isr-retention-refusal",
+    "decision": "REFUSED",
+    "reasonCode": "COALITION_RULE_CONFLICT",
+    "failedStage": "POLICY_OVERLAY",
+    "failingRuleIds": [
+      "CR-ISR-001"
+    ]
+  },
+  {
+    "caseId": "isr-retention-missing-fact",
+    "decision": "REFUSED_INCOMPLETE",
+    "reasonCode": "MISSING_REQUIRED_FACT",
+    "failedStage": "POLICY_OVERLAY",
+    "failingRuleIds": [
+      "CR-ISR-001"
+    ]
+  }
+]

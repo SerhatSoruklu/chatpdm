@@ -1,0 +1,175 @@
+[
+  {
+    "caseId": "no-fly-zone-allowed-case",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "us-no-fly-zone-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "AIRSPACE-TEAM-02",
+        "role": "AIRSPACE_OFFICER",
+        "authorityLevelId": "BRIGADE"
+      },
+      "action": {
+        "kind": "SURVEILLANCE",
+        "forceLevel": "NON_LETHAL",
+        "method": "AIRSPACE_RESTRICTION_CHECK",
+        "domain": "AIR"
+      },
+      "target": {
+        "id": "AIRSPACE-OBJECT-01",
+        "protectedClass": "MILITARY",
+        "militaryObjectiveStatus": "CONFIRMED_TRUE",
+        "lossOfProtectionStatus": "NOT_LOST",
+        "objectType": "OTHER",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "AIRSPACE-CTRL-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "NO_FLY_ZONE",
+        "coalitionMode": "NATIONAL",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "LOW"
+      },
+      "civilianRisk": {
+        "civilianPresence": false,
+        "civilianObjectPresence": false,
+        "estimatedIncidentalHarm": "LOW",
+        "feasiblePrecautionsTaken": true,
+        "expectedMilitaryAdvantage": "MEDIUM",
+        "estimatedIncidentalHarmScore": 5,
+        "expectedMilitaryAdvantageScore": 70
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedRoeActive": true,
+        "designatedActionAuthorized": true
+      }
+    }
+  },
+  {
+    "caseId": "no-fly-zone-refusal",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "us-no-fly-zone-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "AIRSPACE-TEAM-02",
+        "role": "AIRSPACE_OFFICER",
+        "authorityLevelId": "BRIGADE"
+      },
+      "action": {
+        "kind": "SURVEILLANCE",
+        "forceLevel": "NON_LETHAL",
+        "method": "AIRSPACE_RESTRICTION_CHECK",
+        "domain": "AIR"
+      },
+      "target": {
+        "id": "AIRSPACE-OBJECT-01",
+        "protectedClass": "MILITARY",
+        "militaryObjectiveStatus": "CONFIRMED_TRUE",
+        "lossOfProtectionStatus": "NOT_LOST",
+        "objectType": "OTHER",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "US-NO-FLY-ZONE-ALPHA",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "NO_FLY_ZONE",
+        "coalitionMode": "NATIONAL",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "LOW"
+      },
+      "civilianRisk": {
+        "civilianPresence": false,
+        "civilianObjectPresence": false,
+        "estimatedIncidentalHarm": "LOW",
+        "feasiblePrecautionsTaken": true,
+        "expectedMilitaryAdvantage": "MEDIUM",
+        "estimatedIncidentalHarmScore": 5,
+        "expectedMilitaryAdvantageScore": 70
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedRoeActive": true,
+        "designatedActionAuthorized": true
+      }
+    }
+  },
+  {
+    "caseId": "no-fly-zone-missing-fact",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "us-no-fly-zone-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "AIRSPACE-TEAM-02",
+        "role": "AIRSPACE_OFFICER",
+        "authorityLevelId": "BRIGADE"
+      },
+      "action": {
+        "kind": "SURVEILLANCE",
+        "forceLevel": "NON_LETHAL",
+        "method": "AIRSPACE_RESTRICTION_CHECK",
+        "domain": "AIR"
+      },
+      "target": {
+        "id": "AIRSPACE-OBJECT-01",
+        "protectedClass": "MILITARY",
+        "militaryObjectiveStatus": "CONFIRMED_TRUE",
+        "lossOfProtectionStatus": "NOT_LOST",
+        "objectType": "OTHER",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "AIRSPACE-CTRL-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "NO_FLY_ZONE",
+        "coalitionMode": "NATIONAL",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "LOW"
+      },
+      "civilianRisk": {
+        "civilianPresence": false,
+        "civilianObjectPresence": false,
+        "estimatedIncidentalHarm": "LOW",
+        "feasiblePrecautionsTaken": true,
+        "expectedMilitaryAdvantage": "MEDIUM",
+        "estimatedIncidentalHarmScore": 5,
+        "expectedMilitaryAdvantageScore": 70
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedActionAuthorized": true
+      }
+    }
+  }
+]

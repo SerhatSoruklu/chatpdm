@@ -1,0 +1,175 @@
+[
+  {
+    "caseId": "isr-retention-allowed-case",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "us-isr-retention-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "ISR-TEAM-01",
+        "role": "PROTECTION_LEAD",
+        "authorityLevelId": "BRIGADE"
+      },
+      "action": {
+        "kind": "SURVEILLANCE",
+        "forceLevel": "NON_LETHAL",
+        "method": "ISR_RETENTION",
+        "domain": "AIR"
+      },
+      "target": {
+        "id": "ISR-01",
+        "objectType": "OTHER",
+        "protectedClass": "MILITARY",
+        "lossOfProtectionStatus": "NOT_LOST",
+        "militaryObjectiveStatus": "CONFIRMED_TRUE",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "ISR-RETENTION-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "ISR_RETENTION",
+        "coalitionMode": "COALITION",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "LOW"
+      },
+      "civilianRisk": {
+        "civilianPresence": false,
+        "civilianObjectPresence": false,
+        "estimatedIncidentalHarm": "LOW",
+        "feasiblePrecautionsTaken": true,
+        "expectedMilitaryAdvantage": "MEDIUM",
+        "estimatedIncidentalHarmScore": 10,
+        "expectedMilitaryAdvantageScore": 60
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedRoeActive": true,
+        "designatedActionAuthorized": true
+      }
+    }
+  },
+  {
+    "caseId": "isr-retention-refusal",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "us-isr-retention-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "ISR-TEAM-01",
+        "role": "PROTECTION_LEAD",
+        "authorityLevelId": "BRIGADE"
+      },
+      "action": {
+        "kind": "SURVEILLANCE",
+        "forceLevel": "NON_LETHAL",
+        "method": "ISR_RETENTION",
+        "domain": "AIR"
+      },
+      "target": {
+        "id": "ISR-01",
+        "objectType": "OTHER",
+        "protectedClass": "MILITARY",
+        "lossOfProtectionStatus": "NOT_LOST",
+        "militaryObjectiveStatus": "CONFIRMED_TRUE",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "ISR-RETENTION-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "ISR_RETENTION",
+        "coalitionMode": "COALITION",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "LOW"
+      },
+      "civilianRisk": {
+        "civilianPresence": false,
+        "civilianObjectPresence": false,
+        "estimatedIncidentalHarm": "LOW",
+        "feasiblePrecautionsTaken": true,
+        "expectedMilitaryAdvantage": "MEDIUM",
+        "estimatedIncidentalHarmScore": 10,
+        "expectedMilitaryAdvantageScore": 60
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": true,
+        "delegatedToUnit": true,
+        "designatedRoeActive": true,
+        "designatedActionAuthorized": true
+      }
+    }
+  },
+  {
+    "caseId": "isr-retention-missing-fact",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "us-isr-retention-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "ISR-TEAM-01",
+        "role": "PROTECTION_LEAD",
+        "authorityLevelId": "BRIGADE"
+      },
+      "action": {
+        "kind": "SURVEILLANCE",
+        "forceLevel": "NON_LETHAL",
+        "method": "ISR_RETENTION",
+        "domain": "AIR"
+      },
+      "target": {
+        "id": "ISR-01",
+        "objectType": "OTHER",
+        "protectedClass": "MILITARY",
+        "lossOfProtectionStatus": "NOT_LOST",
+        "militaryObjectiveStatus": "CONFIRMED_TRUE",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "ISR-RETENTION-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "ISR_RETENTION",
+        "coalitionMode": "COALITION",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "LOW"
+      },
+      "civilianRisk": {
+        "civilianPresence": false,
+        "civilianObjectPresence": false,
+        "estimatedIncidentalHarm": "LOW",
+        "feasiblePrecautionsTaken": true,
+        "expectedMilitaryAdvantage": "MEDIUM",
+        "estimatedIncidentalHarmScore": 10,
+        "expectedMilitaryAdvantageScore": 60
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedActionAuthorized": true
+      }
+    }
+  }
+]

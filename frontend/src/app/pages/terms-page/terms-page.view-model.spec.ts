@@ -59,7 +59,7 @@ describe('buildTermsPageViewModel', () => {
       sectionLabel: 'Military Constraints Compiler API',
       title: 'Military Constraints Compiler API',
       summary:
-        'Military Constraints Compiler is exposed as a deterministic admissibility surface under validated packs. It accepts structured facts only, fails closed, and returns ALLOWED, REFUSED, or REFUSED_INCOMPLETE. The current backend exposes discovery, pack catalog, pack detail, and evaluation routes only; no /schema or /examples routes are implemented.',
+        'Military Constraints Compiler is exposed as a deterministic admissibility surface under validated packs. It accepts structured facts only, fails closed, and returns ALLOWED, REFUSED, or REFUSED_INCOMPLETE. The current backend exposes discovery, pack catalog, pack detail, and evaluation routes only; pack metadata now includes admitted/planned/umbrella registry state. No /schema or /examples routes are implemented.',
     });
     expect(viewModel.sectionOrder[5]).toMatchObject({
       id: 'zee-api',
@@ -241,7 +241,7 @@ describe('buildTermsPageViewModel', () => {
     ]);
     expect(viewModel.militaryConstraintsTitle).toBe('Military Constraints Compiler API');
     expect(viewModel.militaryConstraintsIntro).toBe(
-      'Military Constraints Compiler is exposed as a deterministic admissibility surface under validated packs. It accepts structured facts only, fails closed, and returns ALLOWED, REFUSED, or REFUSED_INCOMPLETE. The current backend exposes discovery, pack catalog, pack detail, and evaluation routes only; no /schema or /examples routes are implemented.',
+      'Military Constraints Compiler is exposed as a deterministic admissibility surface under validated packs. It accepts structured facts only, fails closed, and returns ALLOWED, REFUSED, or REFUSED_INCOMPLETE. The current backend exposes discovery, pack catalog, pack detail, and evaluation routes only; pack metadata now includes admitted/planned/umbrella registry state. No /schema or /examples routes are implemented.',
     );
     expect(viewModel.militaryConstraintsHighlights).toEqual([
       {

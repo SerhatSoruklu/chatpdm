@@ -1,0 +1,27 @@
+[
+  {
+    "caseId": "cultural-property-protection-allowed-case",
+    "decision": "ALLOWED",
+    "reasonCode": null,
+    "failedStage": null,
+    "failingRuleIds": []
+  },
+  {
+    "caseId": "cultural-property-protection-refusal",
+    "decision": "REFUSED",
+    "reasonCode": "PROHIBITED_TARGET",
+    "failedStage": "POLICY_OVERLAY",
+    "failingRuleIds": [
+      "CR-CPP-001"
+    ]
+  },
+  {
+    "caseId": "cultural-property-protection-missing-fact",
+    "decision": "REFUSED_INCOMPLETE",
+    "reasonCode": "MISSING_REQUIRED_FACT",
+    "failedStage": "POLICY_OVERLAY",
+    "failingRuleIds": [
+      "CR-CPP-001"
+    ]
+  }
+]

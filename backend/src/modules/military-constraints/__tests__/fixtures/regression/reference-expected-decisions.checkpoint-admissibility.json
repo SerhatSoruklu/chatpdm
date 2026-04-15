@@ -1,0 +1,30 @@
+[
+  {
+    "caseId": "checkpoint-admissibility-allowed-case",
+    "bundleVariant": "reference",
+    "decision": "ALLOWED",
+    "reasonCode": null,
+    "failedStage": null,
+    "failingRuleIds": []
+  },
+  {
+    "caseId": "checkpoint-admissibility-refusal",
+    "bundleVariant": "reference",
+    "decision": "REFUSED",
+    "reasonCode": "SCOPE_VIOLATION",
+    "failedStage": "ADMISSIBILITY",
+    "failingRuleIds": [
+      "CR-CL-CHK-001"
+    ]
+  },
+  {
+    "caseId": "checkpoint-admissibility-missing-fact",
+    "bundleVariant": "reference",
+    "decision": "REFUSED_INCOMPLETE",
+    "reasonCode": "MISSING_REQUIRED_FACT",
+    "failedStage": "ADMISSIBILITY",
+    "failingRuleIds": [
+      "CR-CL-CHK-001"
+    ]
+  }
+]
