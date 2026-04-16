@@ -1,0 +1,28 @@
+[
+  {
+    "caseId": "uk-national-base-allowed-case",
+    "bundleVariant": "reference",
+    "decision": "ALLOWED",
+    "reasonCode": null,
+    "failedStage": null,
+    "failingRuleIds": []
+  },
+  {
+    "caseId": "uk-national-base-refusal",
+    "bundleVariant": "reference",
+    "decision": "REFUSED",
+    "reasonCode": "NATIONAL_CAVEAT_BLOCK",
+    "failedStage": "ADMISSIBILITY",
+    "failingRuleIds": [
+      "CR-UK-NAT-001"
+    ]
+  },
+  {
+    "caseId": "uk-national-base-missing-fact",
+    "bundleVariant": "reference",
+    "decision": "REFUSED_INCOMPLETE",
+    "reasonCode": "FACT_PACKET_INVALID",
+    "failedStage": "ADMISSIBILITY",
+    "failingRuleIds": []
+  }
+]

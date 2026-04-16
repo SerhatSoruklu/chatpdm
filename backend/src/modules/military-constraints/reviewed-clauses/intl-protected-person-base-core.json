@@ -1,0 +1,320 @@
+[
+  {
+    "clauseId": "INTL-PER-ADM-001",
+    "sourceId": "INTL-PROTECTED-PERSON-BASE-2024",
+    "locator": "shared-baseline/protected-person/direct-participation",
+    "jurisdiction": "INTL",
+    "layer": "LEGAL_FLOOR",
+    "clauseType": "REQUIREMENT",
+    "rawText": "Protected-person review requires direct-participation status before continuation.",
+    "normalizedText": "If person.status is CIVILIAN, NON_COMBATANT, MEDICAL_PERSONNEL, or RELIGIOUS_PERSONNEL and person.directParticipationStatus is missing, refuse incompletely.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Shared international admissibility blocker for unresolved direct-participation status.",
+    "compilationHint": {
+      "stage": "ADMISSIBILITY",
+      "priority": 1800,
+      "effect": {
+        "decision": "REFUSED_INCOMPLETE",
+        "reasonCode": "MISSING_REQUIRED_FACT"
+      },
+      "scope": {
+        "jurisdiction": "INTL",
+        "domains": [
+          "LAND",
+          "AIR",
+          "MARITIME"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "STRIKE",
+          "ENGAGE",
+          "FIRE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "UNIT",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "person.status"
+      ],
+      "predicate": {
+        "all": [
+          {
+            "in": [
+              {
+                "fact": "person.status"
+              },
+              {
+                "value": [
+                  "CIVILIAN",
+                  "NON_COMBATANT",
+                  "MEDICAL_PERSONNEL",
+                  "RELIGIOUS_PERSONNEL"
+                ]
+              }
+            ]
+          },
+          {
+            "not_exists": [
+              {
+                "fact": "person.directParticipationStatus"
+              }
+            ]
+          }
+        ]
+      },
+      "notes": "Shared international protected-person admissibility gate."
+    },
+    "provenance": {
+      "derivationType": "INTERPRETED",
+      "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+      "parentClauseIds": []
+    }
+  },
+  {
+    "clauseId": "INTL-PER-LF-001",
+    "sourceId": "INTL-PROTECTED-PERSON-BASE-2024",
+    "locator": "shared-baseline/protected-person/civilian-default-protection",
+    "jurisdiction": "INTL",
+    "layer": "LEGAL_FLOOR",
+    "clauseType": "REQUIREMENT",
+    "rawText": "Civilians and non-combatants remain protected unless direct participation is confirmed.",
+    "normalizedText": "If person.status is CIVILIAN or NON_COMBATANT and person.directParticipationStatus is not CONFIRMED_TRUE, refuse.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Shared international civilian and non-combatant default protection.",
+    "compilationHint": {
+      "stage": "LEGAL_FLOOR",
+      "priority": 1700,
+      "effect": {
+        "decision": "REFUSED",
+        "reasonCode": "PROHIBITED_TARGET"
+      },
+      "scope": {
+        "jurisdiction": "INTL",
+        "domains": [
+          "LAND",
+          "AIR",
+          "MARITIME"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "STRIKE",
+          "ENGAGE",
+          "FIRE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "UNIT",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "person.status",
+        "person.directParticipationStatus"
+      ],
+      "predicate": {
+        "all": [
+          {
+            "in": [
+              {
+                "fact": "person.status"
+              },
+              {
+                "value": [
+                  "CIVILIAN",
+                  "NON_COMBATANT"
+                ]
+              }
+            ]
+          },
+          {
+            "neq": [
+              {
+                "fact": "person.directParticipationStatus"
+              },
+              {
+                "value": "CONFIRMED_TRUE"
+              }
+            ]
+          }
+        ]
+      },
+      "notes": "Shared international civilian/non-combatant floor."
+    },
+    "provenance": {
+      "derivationType": "INTERPRETED",
+      "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+      "parentClauseIds": []
+    }
+  },
+  {
+    "clauseId": "INTL-PER-LF-002",
+    "sourceId": "INTL-PROTECTED-PERSON-BASE-2024",
+    "locator": "shared-baseline/protected-person/medical-religious-protection",
+    "jurisdiction": "INTL",
+    "layer": "LEGAL_FLOOR",
+    "clauseType": "REQUIREMENT",
+    "rawText": "Medical and religious personnel remain protected unless direct participation is confirmed.",
+    "normalizedText": "If person.status is MEDICAL_PERSONNEL or RELIGIOUS_PERSONNEL and person.directParticipationStatus is not CONFIRMED_TRUE, refuse.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Shared international medical and religious personnel protection.",
+    "compilationHint": {
+      "stage": "LEGAL_FLOOR",
+      "priority": 1600,
+      "effect": {
+        "decision": "REFUSED",
+        "reasonCode": "PROHIBITED_TARGET"
+      },
+      "scope": {
+        "jurisdiction": "INTL",
+        "domains": [
+          "LAND",
+          "AIR",
+          "MARITIME"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "STRIKE",
+          "ENGAGE",
+          "FIRE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "UNIT",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "person.status",
+        "person.directParticipationStatus"
+      ],
+      "predicate": {
+        "all": [
+          {
+            "in": [
+              {
+                "fact": "person.status"
+              },
+              {
+                "value": [
+                  "MEDICAL_PERSONNEL",
+                  "RELIGIOUS_PERSONNEL"
+                ]
+              }
+            ]
+          },
+          {
+            "neq": [
+              {
+                "fact": "person.directParticipationStatus"
+              },
+              {
+                "value": "CONFIRMED_TRUE"
+              }
+            ]
+          }
+        ]
+      },
+      "notes": "Shared international medical and religious personnel floor."
+    },
+    "provenance": {
+      "derivationType": "INTERPRETED",
+      "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+      "parentClauseIds": []
+    }
+  },
+  {
+    "clauseId": "INTL-PER-LF-003",
+    "sourceId": "INTL-PROTECTED-PERSON-BASE-2024",
+    "locator": "shared-baseline/protected-person/hors-de-combat-custody",
+    "jurisdiction": "INTL",
+    "layer": "LEGAL_FLOOR",
+    "clauseType": "REQUIREMENT",
+    "rawText": "Persons hors de combat or in custody remain protected.",
+    "normalizedText": "If person.horsDeCombatStatus is true or person.detentionStatus is DETAINED or IN_CUSTODY, refuse.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Shared international hors de combat and custody floor.",
+    "compilationHint": {
+      "stage": "LEGAL_FLOOR",
+      "priority": 1500,
+      "effect": {
+        "decision": "REFUSED",
+        "reasonCode": "HORS_DE_COMBAT_PROTECTED"
+      },
+      "scope": {
+        "jurisdiction": "INTL",
+        "domains": [
+          "LAND",
+          "AIR",
+          "MARITIME"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "STRIKE",
+          "ENGAGE",
+          "FIRE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "UNIT",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "person.horsDeCombatStatus",
+        "person.detentionStatus"
+      ],
+      "predicate": {
+        "any": [
+          {
+            "eq": [
+              {
+                "fact": "person.horsDeCombatStatus"
+              },
+              {
+                "value": true
+              }
+            ]
+          },
+          {
+            "in": [
+              {
+                "fact": "person.detentionStatus"
+              },
+              {
+                "value": [
+                  "DETAINED",
+                  "IN_CUSTODY"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "notes": "Shared international hors de combat and custody floor."
+    },
+    "provenance": {
+      "derivationType": "INTERPRETED",
+      "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+      "parentClauseIds": []
+    }
+  }
+]

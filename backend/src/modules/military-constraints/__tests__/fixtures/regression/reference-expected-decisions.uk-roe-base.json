@@ -1,0 +1,30 @@
+[
+  {
+    "caseId": "uk-roe-base-allowed-case",
+    "bundleVariant": "reference",
+    "decision": "ALLOWED",
+    "reasonCode": null,
+    "failedStage": null,
+    "failingRuleIds": []
+  },
+  {
+    "caseId": "uk-roe-base-refusal",
+    "bundleVariant": "reference",
+    "decision": "REFUSED",
+    "reasonCode": "AUTHORITY_INVALID",
+    "failedStage": "ADMISSIBILITY",
+    "failingRuleIds": [
+      "CR-UK-ROE-001"
+    ]
+  },
+  {
+    "caseId": "uk-roe-base-missing-fact",
+    "bundleVariant": "reference",
+    "decision": "REFUSED_INCOMPLETE",
+    "reasonCode": "MISSING_REQUIRED_FACT",
+    "failedStage": "ADMISSIBILITY",
+    "failingRuleIds": [
+      "CR-UK-ROE-001"
+    ]
+  }
+]

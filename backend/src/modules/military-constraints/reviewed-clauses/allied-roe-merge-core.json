@@ -98,6 +98,11 @@
         ]
       },
       "notes": "Allied ROE merge refinement on top of coalition interoperability."
+    },
+    "provenance": {
+      "derivationType": "INTERPRETED",
+      "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+      "parentClauseIds": []
     }
   }
 ]

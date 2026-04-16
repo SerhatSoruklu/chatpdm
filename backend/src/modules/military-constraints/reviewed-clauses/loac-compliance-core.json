@@ -11,7 +11,12 @@
     "machineCandidate": true,
     "ambiguityStatus": "CLEAR",
     "reviewStatus": "COMPILATION_READY",
-    "reviewNotes": "Reusable LOAC floor prohibition kept in one compliance pack."
+    "reviewNotes": "Reusable LOAC floor prohibition kept in one compliance pack.",
+    "provenance": {
+      "derivationType": "DIRECT",
+      "transformationNotes": "Source text preserved with bounded normalization.",
+      "parentClauseIds": []
+    }
   },
   {
     "clauseId": "CLAUSE-LOAC-0002",
@@ -96,6 +101,11 @@
         ]
       },
       "notes": "Reusable LOAC admissibility gate."
+    },
+    "provenance": {
+      "derivationType": "DIRECT",
+      "transformationNotes": "Source text preserved with bounded normalization.",
+      "parentClauseIds": []
     }
   }
 ]

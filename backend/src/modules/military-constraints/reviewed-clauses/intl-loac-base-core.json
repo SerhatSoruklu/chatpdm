@@ -1,0 +1,86 @@
+[
+  {
+    "clauseId": "INTL-LOAC-0001",
+    "sourceId": "INTL-LOAC-BASE-2024",
+    "locator": "shared-baseline/loac/direct-attacks-civilians",
+    "jurisdiction": "INTL",
+    "layer": "LEGAL_FLOOR",
+    "clauseType": "PROHIBITION",
+    "rawText": "Direct attacks against civilians are prohibited.",
+    "normalizedText": "Direct attacks against civilians are prohibited.",
+    "machineCandidate": true,
+    "ambiguityStatus": "CLEAR",
+    "reviewStatus": "COMPILATION_READY",
+    "reviewNotes": "Shared international civilian-protection floor.",
+    "provenance": {
+      "derivationType": "DIRECT",
+      "transformationNotes": "Source text preserved with bounded normalization.",
+      "parentClauseIds": []
+    }
+  },
+  {
+    "clauseId": "INTL-LOAC-0002",
+    "sourceId": "INTL-LOAC-BASE-2024",
+    "locator": "shared-baseline/loac/positive-identification",
+    "jurisdiction": "INTL",
+    "layer": "LEGAL_FLOOR",
+    "clauseType": "REQUIREMENT",
+    "rawText": "Positive identification of the target is required before attack.",
+    "normalizedText": "Positive identification of the target is required before attack.",
+    "machineCandidate": true,
+    "ambiguityStatus": "CLEAR",
+    "reviewStatus": "COMPILATION_READY",
+    "reviewNotes": "Shared international admissibility gate for attack-like actions.",
+    "compilationHint": {
+      "stage": "ADMISSIBILITY",
+      "priority": 1200,
+      "effect": {
+        "decision": "ALLOWED",
+        "reasonCode": "MISSING_REQUIRED_FACT"
+      },
+      "scope": {
+        "jurisdiction": "INTL",
+        "domains": [
+          "LAND",
+          "AIR",
+          "MARITIME",
+          "CYBER",
+          "SPACE",
+          "MULTI_DOMAIN"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "STRIKE",
+          "ENGAGE",
+          "FIRE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "UNIT",
+        "requiresExplicitDelegation": false,
+        "delegationEdgeIds": []
+      },
+      "requiredFacts": [
+        "target.positiveIdentificationStatus"
+      ],
+      "predicate": {
+        "eq": [
+          {
+            "fact": "action.kind"
+          },
+          {
+            "value": "STRIKE"
+          }
+        ]
+      },
+      "notes": "Shared international admissibility gate."
+    },
+    "provenance": {
+      "derivationType": "DIRECT",
+      "transformationNotes": "Source text preserved with bounded normalization.",
+      "parentClauseIds": []
+    }
+  }
+]

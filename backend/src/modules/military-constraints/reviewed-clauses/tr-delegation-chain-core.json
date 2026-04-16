@@ -1,0 +1,89 @@
+[
+  {
+    "clauseId": "TR-DEL-001",
+    "sourceId": "TR-MOD-DELEGATION-2024",
+    "locator": "delegation-baseline/explicit-delegation",
+    "jurisdiction": "TR",
+    "layer": "POLICY_OVERLAY",
+    "clauseType": "REQUIREMENT",
+    "rawText": "Turkey delegation requires explicit delegation to the unit and explicit action authorization.",
+    "normalizedText": "If authority.delegatedToUnit is not true or authority.designatedActionAuthorized is not true, refuse.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "APPROVED",
+    "reviewNotes": "Turkey delegation-chain gate above the shared INTL layer.",
+    "compilationHint": {
+      "stage": "ADMISSIBILITY",
+      "priority": 1300,
+      "effect": {
+        "decision": "REFUSED",
+        "reasonCode": "AUTHORITY_UNRESOLVED"
+      },
+      "scope": {
+        "jurisdiction": "TR",
+        "domains": [
+          "LAND",
+          "AIR",
+          "MARITIME",
+          "CYBER",
+          "SPACE",
+          "MULTI_DOMAIN"
+        ],
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "actionKinds": [
+          "STRIKE",
+          "ENGAGE",
+          "FIRE",
+          "SELF_DEFENSE_RESPONSE",
+          "ACCESS_CONTROL",
+          "SEARCH",
+          "DETENTION",
+          "SURVEILLANCE"
+        ]
+      },
+      "authority": {
+        "minimumLevelId": "BRIGADE",
+        "requiresExplicitDelegation": true,
+        "delegationEdgeIds": [
+          "DEL-TR-NATIONAL-BRIGADE-001"
+        ]
+      },
+      "requiredFacts": [
+        "authority.delegatedToUnit",
+        "authority.designatedActionAuthorized"
+      ],
+      "predicate": {
+        "any": [
+          {
+            "neq": [
+              {
+                "fact": "authority.delegatedToUnit"
+              },
+              {
+                "value": true
+              }
+            ]
+          },
+          {
+            "neq": [
+              {
+                "fact": "authority.designatedActionAuthorized"
+              },
+              {
+                "value": true
+              }
+            ]
+          }
+        ]
+      },
+      "notes": "Turkey delegation-chain gate."
+    },
+    "provenance": {
+      "derivationType": "INTERPRETED",
+      "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+      "parentClauseIds": []
+    }
+  }
+]

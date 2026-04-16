@@ -109,18 +109,18 @@ Inventory groups reviewed:
 - Recommended action:
   - Replace the locked-v1 wording with current admitted-surface wording.
 
-#### 2. The pack spec alignment note still talks about future Pack 6 work
+#### 2. The pack spec alignment note still talks about future admitted-pack work
 
 - Category: `API / Frontend / Surfaced Truth`
 - Files:
   - `docs/military-constraints/PACK_SPEC_V1_ALIGNMENT.md`
 - Exact issue:
-  - The follow-up section still says `If future Pack 6 work introduces new manifest fields...`.
+  - The follow-up section still says `If future admitted-pack work introduces new manifest fields...`.
   - Pack 6 already exists in the current admitted surface.
 - Why it matters:
   - This is stale documentation in a changed artifact that is meant to track current alignment truth.
 - Recommended action:
-  - Update the wording so it refers to future admitted-pack work rather than future Pack 6 work.
+  - Update the wording so it refers to future admitted-pack work rather than a specific pack wave.
 
 #### 3. Overlay boundary coverage is still thin and largely triplet-based
 
@@ -188,7 +188,7 @@ Reason:
   - `backend/src/routes/api/v1/__tests__/military-constraints.route.test.js`
 - The changed public API doc no longer describes the pack catalog as locked-v1 only:
   - `docs/architecture/military-constraints-compiler-api.md`
-- The pack spec alignment note no longer talks about future Pack 6 work:
+- The pack spec alignment note now refers to future admitted-pack work:
   - `docs/military-constraints/PACK_SPEC_V1_ALIGNMENT.md`
 
 ### Remaining

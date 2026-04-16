@@ -1,0 +1,12 @@
+{
+  "packId": "NL_AIRSPACE_CONTROL_V1",
+  "jurisdiction": "NL",
+  "bundleId": "nl-airspace-control-bundle",
+  "bundleVersion": "0.1.0",
+  "reviewedClauseSetIds": [
+    "nl-airspace-control-core"
+  ],
+  "authorityGraphId": "AUTH-GRAPH-NL-001",
+  "sourceRegistryVersion": "1.0.0",
+  "regressionSuiteVersion": "0.1.0"
+}

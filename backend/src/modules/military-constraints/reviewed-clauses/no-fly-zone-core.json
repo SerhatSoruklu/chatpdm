@@ -85,6 +85,11 @@
         ]
       },
       "notes": "Airspace restriction overlay."
+    },
+    "provenance": {
+      "derivationType": "INTERPRETED",
+      "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+      "parentClauseIds": []
     }
   }
 ]

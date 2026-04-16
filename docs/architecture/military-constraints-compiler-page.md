@@ -6,7 +6,7 @@ The public page at `/military-constraints-compiler` is a static inspection surfa
 
 - A bounded, public explanation page.
 - A read-only summary of the compiler surface.
-- A place to show the decision contract, the locked pack surface, and a static example payload.
+- A place to show the decision contract, the surfaced pack truth map, and a static example payload.
 - A page that uses a hero image and editorial copy, not a live decision console.
 
 ## What It Is Not
@@ -23,7 +23,7 @@ The public page at `/military-constraints-compiler` is a static inspection surfa
 - What it is
 - What it is not
 - Decision contract
-- Pack overview for Packs 1 through 5
+- Surface truth map for shared INTL, national, coalition, overlay, planned, and umbrella categories
 - Static example JSON
 
 ## Current Behavior
@@ -43,3 +43,4 @@ The page describes the subsystem as a protocol-grade admissibility engine:
 - traceable
 - bounded to validated packs
 It does not present the subsystem as a strategy engine, recommendation engine, or targeting surface.
+It distinguishes admitted packs from planned packs, umbrella labels, and the shared/national/coalition/overlay families that compose the admitted surface.

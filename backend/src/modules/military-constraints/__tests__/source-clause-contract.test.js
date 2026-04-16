@@ -7,6 +7,7 @@ const path = require('node:path');
 
 const Ajv2020 = require('ajv/dist/2020').default;
 const addFormats = require('ajv-formats');
+const { validateReviewedClauseCorpus } = require('../validate-reviewed-clause-corpus');
 
 const BASE_DIR = path.resolve(__dirname);
 const MODULE_DIR = path.resolve(BASE_DIR, '..');
@@ -46,16 +47,84 @@ test('military source registry fixture validates', () => {
   assertValid(ajv, 'https://chatpdm.local/schemas/military-source-registry.schema.json', registry[5]);
 });
 
+test('military source registry entry with missing locator is rejected', () => {
+  const ajv = buildAjv();
+  const registry = readFixture('military-source-registry.json');
+  const mutated = JSON.parse(JSON.stringify(registry[0]));
+  delete mutated.locator;
+
+  const validate = ajv.getSchema('https://chatpdm.local/schemas/military-source-registry.schema.json');
+  assert.ok(validate, 'Missing registry schema');
+  const valid = validate(mutated);
+  assert.equal(valid, false);
+});
+
 test('valid clause artifact example validates', () => {
   const ajv = buildAjv();
   const clause = readFixture('source-clause.example.json');
   assertValid(ajv, 'https://chatpdm.local/schemas/source-clause.schema.json', clause);
 });
 
+test('clause artifact with missing provenance is rejected', () => {
+  const ajv = buildAjv();
+  const clause = readFixture('source-clause.example.json');
+  delete clause.provenance;
+
+  const validate = ajv.getSchema('https://chatpdm.local/schemas/source-clause.schema.json');
+  assert.ok(validate, 'Missing clause schema');
+  const valid = validate(clause);
+  assert.equal(valid, false);
+});
+
 test('clause artifact with missing sourceId is rejected', () => {
   const ajv = buildAjv();
   const clause = readFixture('source-clause.example.json');
   delete clause.sourceId;
+
+  const validate = ajv.getSchema('https://chatpdm.local/schemas/source-clause.schema.json');
+  assert.ok(validate, 'Missing clause schema');
+  const valid = validate(clause);
+  assert.equal(valid, false);
+});
+
+test('clause artifact with explicit delegation but no delegation edge is rejected', () => {
+  const ajv = buildAjv();
+  const sourceRegistry = readFixture('military-source-registry.json');
+  const clause = readModuleJson('reviewed-clauses/uk-delegation-chain-core.json')[0];
+  const mutated = JSON.parse(JSON.stringify(clause));
+  mutated.compilationHint.authority.delegationEdgeIds = [];
+
+  const validate = ajv.getSchema('https://chatpdm.local/schemas/source-clause.schema.json');
+  assert.ok(validate, 'Missing clause schema');
+  const valid = validate(mutated);
+  assert.equal(valid, false);
+
+  const validation = validateReviewedClauseCorpus({
+    clauses: [mutated],
+    sourceRegistry,
+  });
+
+  assert.equal(validation.valid, false);
+  assert.equal(validation.reasonCode, 'AUTHORITY_UNRESOLVED');
+  assert.match(validation.errors.join('\n'), /explicit delegation/i);
+});
+
+test('illustrative clause provenance cannot be marked executable', () => {
+  const ajv = buildAjv();
+  const clause = readFixture('source-clause.example.json');
+  clause.provenance.derivationType = 'ILLUSTRATIVE';
+
+  const validate = ajv.getSchema('https://chatpdm.local/schemas/source-clause.schema.json');
+  assert.ok(validate, 'Missing clause schema');
+  const valid = validate(clause);
+  assert.equal(valid, false);
+});
+
+test('composed clause provenance requires parent linkage', () => {
+  const ajv = buildAjv();
+  const clause = readFixture('source-clause.example.json');
+  clause.provenance.derivationType = 'COMPOSED';
+  clause.provenance.parentClauseIds = [];
 
   const validate = ajv.getSchema('https://chatpdm.local/schemas/source-clause.schema.json');
   assert.ok(validate, 'Missing clause schema');

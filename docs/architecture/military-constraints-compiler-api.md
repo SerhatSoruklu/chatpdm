@@ -10,7 +10,7 @@ The runtime decision contract is closed:
 - `REFUSED`
 - `REFUSED_INCOMPLETE`
 
-The API returns the runtime decision exactly as produced by the underlying military-constraints evaluator. It does not reinterpret refusal into advice or explanation.
+The API returns the bounded public projection of the underlying military-constraints evaluator. It does not expose internal trace fields on the public route, and it does not reinterpret refusal into advice or explanation.
 
 ## Endpoints
 
@@ -25,10 +25,10 @@ Example response:
   "resource": "military-constraints",
   "status": "active",
   "availableOperations": ["packs", "evaluate"],
-  "packCount": 31,
-  "registryPackCount": 41,
+  "packCount": 63,
+  "registryPackCount": 73,
   "baselinePackCount": 5,
-  "admittedPackCount": 26,
+  "admittedPackCount": 58,
   "plannedPackCount": 10,
   "umbrellaLabelCount": 1
 }
@@ -46,20 +46,20 @@ Example response:
   "status": "active",
   "packs": [
     {
-      "packId": "mil-us-civilian-school-protection-core-v0.1.0",
-      "bundleId": "mil-us-civilian-school-protection-core-bundle",
+      "packId": "INTL_LOAC_BASE_V1",
+      "bundleId": "intl-loac-base-bundle",
       "bundleVersion": "0.1.0",
-      "jurisdiction": "US",
-      "authorityGraphId": "AUTH-GRAPH-US-001",
+      "jurisdiction": "INTL",
+      "authorityGraphId": "AUTH-GRAPH-INTL-001",
       "reviewedClauseSetIds": [
-        "legal-floor-civilian-school-core",
-        "authority-civilian-school-core",
-        "policy-overlay-civilian-school-core"
+        "intl-loac-base-core"
       ],
-      "kind": "overlay",
-      "status": "baseline",
-      "dependsOn": [],
-      "registryOrder": 4,
+      "kind": "foundation",
+      "status": "admitted",
+      "dependsOn": [
+        "INTL_LOAC_BASE_V1"
+      ],
+      "registryOrder": 0,
       "registryPresent": true
     }
   ]
@@ -67,9 +67,11 @@ Example response:
 ```
 
 The order is deterministic and currently follows the pack catalog order used by the backend.
-The current catalog includes the frozen baseline packs plus the admitted foundation, domain, and overlay waves.
+The current catalog includes the frozen baseline packs, the admitted INTL shared baseline, the admitted UK, CA, AU, NL, and TR national foundation waves, the admitted coalition layer, and the admitted foundation, domain, and overlay waves.
 The root surface also reports registry-backed counts for baseline, admitted, planned, and umbrella-label entries.
 Each listed pack exposes registry metadata fields for `kind`, `status`, `dependsOn`, `registryOrder`, and `registryPresent`.
+Overlay packs also expose `overlayFamily`, `overlayBoundary`, and `overlayScope` so the public surface can distinguish protection, targeting, retention, operational-condition, and coalition-merge overlays.
+The surfaced registry now makes INTL ancestry explicit for the protected-person, protected-site, UK/CA/AU/NL/TR national baselines, coalition baseline, and related US protection layers.
 
 ### `GET /api/v1/military-constraints/packs/:packId`
 
@@ -77,16 +79,48 @@ Returns one pack’s validated metadata.
 
 `packId` must match a known admitted pack identifier, for example:
 
+- `INTL_LOAC_BASE_V1`
+- `INTL_PROTECTED_PERSON_BASE_V1`
+- `INTL_PROTECTED_SITE_BASE_V1`
+- `UK_NATIONAL_BASE_V1`
+- `UK_ROE_BASE_V1`
+- `UK_COMMAND_AUTHORITY_V1`
+- `UK_DELEGATION_CHAIN_V1`
+- `UK_AIRSPACE_CONTROL_V1`
+- `UK_GROUND_MANEUVER_V1`
+- `CA_NATIONAL_BASE_V1`
+- `CA_ROE_BASE_V1`
+- `CA_COMMAND_AUTHORITY_V1`
+- `CA_DELEGATION_CHAIN_V1`
+- `CA_AIRSPACE_CONTROL_V1`
+- `AU_NATIONAL_BASE_V1`
+- `AU_ROE_BASE_V1`
+- `AU_COMMAND_AUTHORITY_V1`
+- `AU_DELEGATION_CHAIN_V1`
+- `AU_AIRSPACE_CONTROL_V1`
+- `NL_NATIONAL_BASE_V1`
+- `NL_ROE_BASE_V1`
+- `NL_COMMAND_AUTHORITY_V1`
+- `NL_DELEGATION_CHAIN_V1`
+- `NL_AIRSPACE_CONTROL_V1`
+- `TR_NATIONAL_BASE_V1`
+- `TR_ROE_BASE_V1`
+- `TR_COMMAND_AUTHORITY_V1`
+- `TR_DELEGATION_CHAIN_V1`
+- `TR_AIRSPACE_CONTROL_V1`
 - `mil-us-core-reference`
+- `mil-us-protected-person-state-core-v0.1.0`
 - `mil-us-maritime-vbss-core-v0.1.0`
 - `mil-us-medical-protection-core-v0.1.0`
 - `mil-us-civilian-school-protection-core-v0.1.0`
-- `mil-us-protected-person-state-core-v0.1.0`
 - `US_RULES_OF_ENGAGEMENT_BASE_V1`
 - `US_LOAC_COMPLIANCE_V1`
 - `US_COMMAND_AUTHORITY_V1`
 - `US_DELEGATION_CHAIN_V1`
 - `US_PROTECTED_SITE_V1`
+- `NATO_INTEROP_BASE_V1`
+- `ALLIED_AUTHORITY_MERGE_V1`
+- `NATO_ROE_COMPAT_V1`
 - `US_COALITION_INTEROP_V1`
 - `US_AIRSPACE_CONTROL_V1`
 - `US_GROUND_MANEUVER_V1`
@@ -130,8 +164,14 @@ Example response:
     ],
     "kind": "overlay",
     "status": "baseline",
-    "dependsOn": [],
-    "registryOrder": 3,
+    "dependsOn": [
+      "INTL_PROTECTED_SITE_BASE_V1",
+      "US_PROTECTED_PERSON_STATE_V1"
+    ],
+    "overlayFamily": "protection",
+    "overlayBoundary": "person_site_bridge",
+    "overlayScope": "jurisdictional",
+    "registryOrder": 10,
     "registryPresent": true,
     "sourceRegistryVersion": "1.0.0",
     "regressionSuiteVersion": "0.1.0"
@@ -235,6 +275,7 @@ Example response:
 
 - The API does not expose reviewed clauses.
 - The API does not expose compiler notes.
+- The public API does not expose source refs, provenance metadata, authority trace, or rule trace.
 - The API does not accept prose input.
 - The API does not widen kernel semantics.
 - The API does not couple to ZeroGlare or Risk Mapping Governance.

@@ -1,0 +1,178 @@
+[
+  {
+    "caseId": "nl-command-authority-allowed-case",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "nl-command-authority-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "FOUNDATION-WAVE-01",
+        "role": "BRIGADE_COMMANDER",
+        "authorityLevelId": "BRIGADE"
+      },
+      "action": {
+        "kind": "STRIKE",
+        "forceLevel": "DEADLY",
+        "method": "AIRSTRIKE",
+        "domain": "LAND"
+      },
+      "target": {
+        "id": "FOUNDATION-TARGET-01",
+        "protectedClass": "MILITARY",
+        "militaryObjectiveStatus": "CONFIRMED_TRUE",
+        "lossOfProtectionStatus": "NOT_LOST",
+        "objectType": "OTHER",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "FOUNDATION-OPS-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "PLANNING",
+        "operationalSlice": "PROTECTED_PERSON_STATE",
+        "coalitionMode": "NATIONAL",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "LOW"
+      },
+      "civilianRisk": {
+        "civilianPresence": false,
+        "civilianObjectPresence": false,
+        "estimatedIncidentalHarm": "LOW",
+        "feasiblePrecautionsTaken": true,
+        "expectedMilitaryAdvantage": "MEDIUM",
+        "estimatedIncidentalHarmScore": 10,
+        "expectedMilitaryAdvantageScore": 60
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedRoeActive": true,
+        "designatedActionAuthorized": true
+      }
+    }
+  },
+  {
+    "caseId": "nl-command-authority-refusal",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "nl-command-authority-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "FOUNDATION-WAVE-01",
+        "role": "BRIGADE_COMMANDER",
+        "authorityLevelId": "BRIGADE"
+      },
+      "action": {
+        "kind": "STRIKE",
+        "forceLevel": "DEADLY",
+        "method": "AIRSTRIKE",
+        "domain": "LAND"
+      },
+      "target": {
+        "id": "FOUNDATION-TARGET-01",
+        "protectedClass": "MILITARY",
+        "militaryObjectiveStatus": "CONFIRMED_TRUE",
+        "lossOfProtectionStatus": "NOT_LOST",
+        "objectType": "OTHER",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "FOUNDATION-OPS-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "PLANNING",
+        "operationalSlice": "PROTECTED_PERSON_STATE",
+        "coalitionMode": "NATIONAL",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "LOW"
+      },
+      "civilianRisk": {
+        "civilianPresence": false,
+        "civilianObjectPresence": false,
+        "estimatedIncidentalHarm": "LOW",
+        "feasiblePrecautionsTaken": true,
+        "expectedMilitaryAdvantage": "MEDIUM",
+        "estimatedIncidentalHarmScore": 10,
+        "expectedMilitaryAdvantageScore": 60
+      },
+      "authority": {
+        "reservedToHigherCommand": true,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedRoeActive": true,
+        "designatedActionAuthorized": true
+      }
+    }
+  },
+  {
+    "caseId": "nl-command-authority-missing-fact",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "nl-command-authority-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "FOUNDATION-WAVE-01",
+        "role": "BRIGADE_COMMANDER"
+      },
+      "action": {
+        "kind": "STRIKE",
+        "forceLevel": "DEADLY",
+        "method": "AIRSTRIKE",
+        "domain": "LAND"
+      },
+      "target": {
+        "id": "FOUNDATION-TARGET-01",
+        "protectedClass": "MILITARY",
+        "militaryObjectiveStatus": "CONFIRMED_TRUE",
+        "lossOfProtectionStatus": "NOT_LOST",
+        "objectType": "OTHER",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "FOUNDATION-OPS-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "PLANNING",
+        "operationalSlice": "PROTECTED_PERSON_STATE",
+        "coalitionMode": "NATIONAL",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "LOW"
+      },
+      "civilianRisk": {
+        "civilianPresence": false,
+        "civilianObjectPresence": false,
+        "estimatedIncidentalHarm": "LOW",
+        "feasiblePrecautionsTaken": true,
+        "expectedMilitaryAdvantage": "MEDIUM",
+        "estimatedIncidentalHarmScore": 10,
+        "expectedMilitaryAdvantageScore": 60
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedRoeActive": true,
+        "designatedActionAuthorized": true
+      }
+    }
+  }
+]

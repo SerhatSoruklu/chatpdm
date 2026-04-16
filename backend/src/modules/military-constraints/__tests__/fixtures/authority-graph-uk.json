@@ -1,0 +1,74 @@
+{
+  "authorityGraphId": "AUTH-GRAPH-UK-001",
+  "version": 1,
+  "status": "ACTIVE",
+  "levels": [
+    {
+      "levelId": "UK_NATIONAL_COMMAND",
+      "rank": 700
+    },
+    {
+      "levelId": "THEATER_COMMAND",
+      "rank": 600
+    },
+    {
+      "levelId": "JOINT_TASK_FORCE",
+      "rank": 500
+    },
+    {
+      "levelId": "BRIGADE",
+      "rank": 400
+    },
+    {
+      "levelId": "BATTALION",
+      "rank": 300
+    },
+    {
+      "levelId": "COMPANY",
+      "rank": 200
+    },
+    {
+      "levelId": "PLATOON",
+      "rank": 100
+    },
+    {
+      "levelId": "INDIVIDUAL",
+      "rank": 50
+    }
+  ],
+  "delegationEdges": [
+    {
+      "edgeId": "DEL-UK-NATIONAL-BRIGADE-001",
+      "fromLevelId": "UK_NATIONAL_COMMAND",
+      "toLevelId": "BRIGADE",
+      "actionKinds": [
+        "STRIKE",
+        "ENGAGE",
+        "FIRE",
+        "SELF_DEFENSE_RESPONSE",
+        "ACCESS_CONTROL",
+        "SEARCH",
+        "DETENTION",
+        "SURVEILLANCE"
+      ],
+      "forceLevels": [
+        "NON_LETHAL",
+        "LETHAL",
+        "DEADLY"
+      ],
+      "scope": {
+        "missionTypes": [
+          "ARMED_CONFLICT"
+        ],
+        "domains": [
+          "LAND",
+          "AIR",
+          "MARITIME",
+          "CYBER",
+          "SPACE",
+          "MULTI_DOMAIN"
+        ]
+      }
+    }
+  ]
+}

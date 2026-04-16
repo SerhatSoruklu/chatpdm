@@ -1,0 +1,12 @@
+{
+  "packId": "CA_AIRSPACE_CONTROL_V1",
+  "jurisdiction": "CA",
+  "bundleId": "ca-airspace-control-bundle",
+  "bundleVersion": "0.1.0",
+  "reviewedClauseSetIds": [
+    "ca-airspace-control-core"
+  ],
+  "authorityGraphId": "AUTH-GRAPH-CA-001",
+  "sourceRegistryVersion": "1.0.0",
+  "regressionSuiteVersion": "0.1.0"
+}

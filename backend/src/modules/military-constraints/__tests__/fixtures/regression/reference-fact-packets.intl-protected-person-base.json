@@ -1,0 +1,311 @@
+[
+  {
+    "caseId": "intl-protected-person-allowed-case",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "intl-protected-person-base-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "INTL-PP-TEAM-01",
+        "role": "PROTECTION_LEAD",
+        "authorityLevelId": "BATTALION"
+      },
+      "person": {
+        "status": "CIVILIAN",
+        "directParticipationStatus": "CONFIRMED_TRUE",
+        "horsDeCombatStatus": false,
+        "detentionStatus": "RELEASED",
+        "medicalRoleStatus": "NONE"
+      },
+      "action": {
+        "kind": "ENGAGE",
+        "forceLevel": "NON_LETHAL",
+        "method": "ACCESS_CONTROL",
+        "domain": "LAND"
+      },
+      "target": {
+        "id": "PERSON-INTL-01",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "CIVILIAN-SAFE-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "PROTECTION",
+        "operationalSlice": "PROTECTED_PERSON_STATE",
+        "coalitionMode": "NATIONAL",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "UNRESOLVED"
+      },
+      "civilianRisk": {
+        "civilianPresence": true,
+        "civilianObjectPresence": false,
+        "estimatedIncidentalHarm": "HIGH",
+        "feasiblePrecautionsTaken": false,
+        "expectedMilitaryAdvantage": "LOW",
+        "estimatedIncidentalHarmScore": 80,
+        "expectedMilitaryAdvantageScore": 20
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedRoeActive": true,
+        "designatedActionAuthorized": true
+      }
+    }
+  },
+  {
+    "caseId": "intl-protected-person-civilian-refusal",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "intl-protected-person-base-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "INTL-PP-TEAM-01",
+        "role": "PROTECTION_LEAD",
+        "authorityLevelId": "BATTALION"
+      },
+      "person": {
+        "status": "CIVILIAN",
+        "directParticipationStatus": "CONFIRMED_FALSE",
+        "horsDeCombatStatus": false,
+        "detentionStatus": "RELEASED",
+        "medicalRoleStatus": "NONE"
+      },
+      "action": {
+        "kind": "ENGAGE",
+        "forceLevel": "NON_LETHAL",
+        "method": "ACCESS_CONTROL",
+        "domain": "LAND"
+      },
+      "target": {
+        "id": "PERSON-INTL-02",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "CIVILIAN-SAFE-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "PROTECTION",
+        "operationalSlice": "PROTECTED_PERSON_STATE",
+        "coalitionMode": "NATIONAL",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "UNRESOLVED"
+      },
+      "civilianRisk": {
+        "civilianPresence": true,
+        "civilianObjectPresence": false,
+        "estimatedIncidentalHarm": "HIGH",
+        "feasiblePrecautionsTaken": false,
+        "expectedMilitaryAdvantage": "LOW",
+        "estimatedIncidentalHarmScore": 80,
+        "expectedMilitaryAdvantageScore": 20
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedRoeActive": true,
+        "designatedActionAuthorized": true
+      }
+    }
+  },
+  {
+    "caseId": "intl-protected-person-medical-refusal",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "intl-protected-person-base-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "INTL-PP-TEAM-01",
+        "role": "PROTECTION_LEAD",
+        "authorityLevelId": "BATTALION"
+      },
+      "person": {
+        "status": "MEDICAL_PERSONNEL",
+        "directParticipationStatus": "CONFIRMED_FALSE",
+        "horsDeCombatStatus": false,
+        "detentionStatus": "RELEASED",
+        "medicalRoleStatus": "MEDICAL"
+      },
+      "action": {
+        "kind": "ENGAGE",
+        "forceLevel": "NON_LETHAL",
+        "method": "ACCESS_CONTROL",
+        "domain": "LAND"
+      },
+      "target": {
+        "id": "PERSON-INTL-03",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "CIVILIAN-SAFE-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "PROTECTION",
+        "operationalSlice": "PROTECTED_PERSON_STATE",
+        "coalitionMode": "NATIONAL",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "UNRESOLVED"
+      },
+      "civilianRisk": {
+        "civilianPresence": true,
+        "civilianObjectPresence": false,
+        "estimatedIncidentalHarm": "HIGH",
+        "feasiblePrecautionsTaken": false,
+        "expectedMilitaryAdvantage": "LOW",
+        "estimatedIncidentalHarmScore": 80,
+        "expectedMilitaryAdvantageScore": 20
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedRoeActive": true,
+        "designatedActionAuthorized": true
+      }
+    }
+  },
+  {
+    "caseId": "intl-protected-person-hors-de-combat-refusal",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "intl-protected-person-base-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "INTL-PP-TEAM-01",
+        "role": "PROTECTION_LEAD",
+        "authorityLevelId": "BATTALION"
+      },
+      "person": {
+        "status": "DETAINEE",
+        "directParticipationStatus": "CONFIRMED_TRUE",
+        "horsDeCombatStatus": true,
+        "detentionStatus": "DETAINED",
+        "medicalRoleStatus": "NONE"
+      },
+      "action": {
+        "kind": "ENGAGE",
+        "forceLevel": "NON_LETHAL",
+        "method": "ACCESS_CONTROL",
+        "domain": "LAND"
+      },
+      "target": {
+        "id": "PERSON-INTL-04",
+        "horsDeCombatStatus": true
+      },
+      "context": {
+        "zone": "CIVILIAN-SAFE-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "PROTECTION",
+        "operationalSlice": "PROTECTED_PERSON_STATE",
+        "coalitionMode": "NATIONAL",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "UNRESOLVED"
+      },
+      "civilianRisk": {
+        "civilianPresence": true,
+        "civilianObjectPresence": false,
+        "estimatedIncidentalHarm": "HIGH",
+        "feasiblePrecautionsTaken": false,
+        "expectedMilitaryAdvantage": "LOW",
+        "estimatedIncidentalHarmScore": 80,
+        "expectedMilitaryAdvantageScore": 20
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedRoeActive": true,
+        "designatedActionAuthorized": true
+      }
+    }
+  },
+  {
+    "caseId": "intl-protected-person-missing-fact",
+    "bundleVariant": "reference",
+    "facts": {
+      "bundleId": "intl-protected-person-base-bundle",
+      "bundleVersion": "0.1.0",
+      "bundleHash": "sha256:TO-BE-COMPUTED",
+      "actor": {
+        "id": "INTL-PP-TEAM-01",
+        "role": "PROTECTION_LEAD",
+        "authorityLevelId": "BATTALION"
+      },
+      "person": {
+        "status": "CIVILIAN",
+        "horsDeCombatStatus": false,
+        "detentionStatus": "RELEASED",
+        "medicalRoleStatus": "NONE"
+      },
+      "action": {
+        "kind": "ENGAGE",
+        "forceLevel": "NON_LETHAL",
+        "method": "ACCESS_CONTROL",
+        "domain": "LAND"
+      },
+      "target": {
+        "id": "PERSON-INTL-05",
+        "horsDeCombatStatus": false
+      },
+      "context": {
+        "zone": "CIVILIAN-SAFE-ZONE",
+        "missionType": "ARMED_CONFLICT",
+        "operationPhase": "PROTECTION",
+        "operationalSlice": "PROTECTED_PERSON_STATE",
+        "coalitionMode": "NATIONAL",
+        "timeWindowStart": "2026-04-13T18:00:00.000Z",
+        "timeWindowEnd": "2026-04-13T19:00:00.000Z"
+      },
+      "threat": {
+        "hostileAct": false,
+        "hostileIntent": false,
+        "imminence": "NONE",
+        "necessity": "UNRESOLVED"
+      },
+      "civilianRisk": {
+        "civilianPresence": true,
+        "civilianObjectPresence": false,
+        "estimatedIncidentalHarm": "HIGH",
+        "feasiblePrecautionsTaken": false,
+        "expectedMilitaryAdvantage": "LOW",
+        "estimatedIncidentalHarmScore": 80,
+        "expectedMilitaryAdvantageScore": 20
+      },
+      "authority": {
+        "reservedToHigherCommand": false,
+        "nationalCaveat": false,
+        "delegatedToUnit": true,
+        "designatedRoeActive": true,
+        "designatedActionAuthorized": true
+      }
+    }
+  }
+]

@@ -1,0 +1,12 @@
+{
+  "packId": "UK_COMMAND_AUTHORITY_V1",
+  "jurisdiction": "UK",
+  "bundleId": "uk-command-authority-bundle",
+  "bundleVersion": "0.1.0",
+  "reviewedClauseSetIds": [
+    "uk-command-authority-core"
+  ],
+  "authorityGraphId": "AUTH-GRAPH-UK-001",
+  "sourceRegistryVersion": "1.0.0",
+  "regressionSuiteVersion": "0.1.0"
+}

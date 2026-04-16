@@ -2,6 +2,7 @@
 
 const { evaluatePredicate } = require('./evaluate-predicate');
 const { isPlainObject, resolveFactPath } = require('./fact-schema-utils');
+const { sortSourceRefs } = require('./reference-pack-utils');
 
 function sortUnique(values) {
   return [...new Set(values)].sort((left, right) => left.localeCompare(right));
@@ -91,6 +92,7 @@ function evaluateRule(input) {
   const ruleId = rule && typeof rule.ruleId === 'string' ? rule.ruleId : null;
   const stage = rule && typeof rule.stage === 'string' ? rule.stage : null;
   const priority = rule && Number.isInteger(rule.priority) ? rule.priority : null;
+  const sourceRefs = sortSourceRefs(rule && rule.sourceRefs);
 
   if (!isPlainObject(rule) || !isPlainObject(facts) || !isPlainObject(bundle)) {
     return {
@@ -101,6 +103,7 @@ function evaluateRule(input) {
       matched: false,
       missingFactIds: [],
       usedFacts: [],
+      sourceRefs,
       effect: null,
       reasonCode: null,
     };
@@ -115,6 +118,7 @@ function evaluateRule(input) {
       matched: false,
       missingFactIds: [],
       usedFacts: [],
+      sourceRefs,
       effect: null,
       reasonCode: null,
     };
@@ -130,6 +134,7 @@ function evaluateRule(input) {
       matched: false,
       missingFactIds,
       usedFacts: [],
+      sourceRefs,
       effect: cloneJson(rule.effect),
       reasonCode: 'MISSING_REQUIRED_FACT',
     };
@@ -154,6 +159,7 @@ function evaluateRule(input) {
       matched: false,
       missingFactIds: allMissing,
       usedFacts,
+      sourceRefs,
       effect: cloneJson(rule.effect),
       reasonCode: 'MISSING_REQUIRED_FACT',
     };
@@ -168,6 +174,7 @@ function evaluateRule(input) {
       matched: false,
       missingFactIds: [],
       usedFacts,
+      sourceRefs,
       effect: null,
       reasonCode: null,
     };
@@ -181,6 +188,7 @@ function evaluateRule(input) {
     matched: true,
     missingFactIds: [],
     usedFacts,
+    sourceRefs,
     effect: cloneJson(rule.effect),
     reasonCode: rule.effect && typeof rule.effect.reasonCode === 'string' ? rule.effect.reasonCode : null,
   };

@@ -69,6 +69,11 @@
         ]
       },
       "notes": "Pack 4 civilian-school protected-class blocker."
+    },
+    "provenance": {
+      "derivationType": "INTERPRETED",
+      "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+      "parentClauseIds": []
     }
   },
   {
@@ -155,6 +160,11 @@
         ]
       },
       "notes": "Pack 4 missing military-objective blocker."
+    },
+    "provenance": {
+      "derivationType": "INTERPRETED",
+      "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+      "parentClauseIds": []
     }
   },
   {
@@ -245,6 +255,11 @@
         ]
       },
       "notes": "Pack 4 default civilian-school refusal rule."
+    },
+    "provenance": {
+      "derivationType": "INTERPRETED",
+      "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+      "parentClauseIds": []
     }
   },
   {
@@ -335,6 +350,11 @@
         ]
       },
       "notes": "Pack 4 explicit continuation gate."
+    },
+    "provenance": {
+      "derivationType": "INTERPRETED",
+      "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+      "parentClauseIds": []
     }
   }
 ]

@@ -13,6 +13,68 @@ function sortStrings(values) {
   return [...values].sort((left, right) => String(left).localeCompare(String(right)));
 }
 
+function isNonEmptyString(value) {
+  return typeof value === 'string' && value.trim().length > 0;
+}
+
+function sortSourceRefs(sourceRefs) {
+  if (!Array.isArray(sourceRefs)) {
+    return [];
+  }
+
+  return sourceRefs
+    .filter((entry) => isPlainObject(entry))
+    .map((entry) => ({
+      sourceId: isNonEmptyString(entry.sourceId) ? entry.sourceId : '',
+      locator: isNonEmptyString(entry.locator) ? entry.locator : '',
+    }))
+    .filter((entry) => isNonEmptyString(entry.sourceId) && isNonEmptyString(entry.locator))
+    .sort((left, right) => {
+      if (left.sourceId !== right.sourceId) {
+        return left.sourceId.localeCompare(right.sourceId);
+      }
+
+      return left.locator.localeCompare(right.locator);
+    });
+}
+
+const REVIEWED_CLAUSE_DERIVATION_TYPES = new Set([
+  'DIRECT',
+  'INTERPRETED',
+  'COMPOSED',
+  'ILLUSTRATIVE',
+]);
+
+function isLocatorBoundToSource(sourceLocator, locator) {
+  if (!isNonEmptyString(sourceLocator) || !isNonEmptyString(locator)) {
+    return false;
+  }
+
+  return locator === sourceLocator || locator.startsWith(`${sourceLocator}/`);
+}
+
+function isReviewedClauseProvenance(provenance) {
+  return isPlainObject(provenance)
+    && isNonEmptyString(provenance.derivationType)
+    && REVIEWED_CLAUSE_DERIVATION_TYPES.has(provenance.derivationType)
+    && isNonEmptyString(provenance.transformationNotes)
+    && Array.isArray(provenance.parentClauseIds)
+    && provenance.parentClauseIds.every(isNonEmptyString)
+    && new Set(provenance.parentClauseIds).size === provenance.parentClauseIds.length;
+}
+
+function normalizeReviewedClauseProvenance(provenance) {
+  if (!isReviewedClauseProvenance(provenance)) {
+    return null;
+  }
+
+  return {
+    derivationType: provenance.derivationType,
+    transformationNotes: provenance.transformationNotes,
+    parentClauseIds: sortStrings(provenance.parentClauseIds),
+  };
+}
+
 function listFiles(directoryPath) {
   if (!fs.existsSync(directoryPath)) {
     return [];
@@ -52,6 +114,42 @@ function getReviewedClauseSetPath(moduleRoot, clauseSetId) {
 
 function getRegressionFixturePath(moduleRoot, fileName) {
   return path.join(moduleRoot, '__tests__', 'fixtures', 'regression', fileName);
+}
+
+function getAuthorityGraphPath(moduleRoot, manifest) {
+  const authorityGraphId = isPlainObject(manifest) && typeof manifest.authorityGraphId === 'string'
+    ? manifest.authorityGraphId
+    : null;
+
+  if (authorityGraphId === 'AUTH-GRAPH-INTL-001' || (isPlainObject(manifest) && manifest.jurisdiction === 'INTL')) {
+    return path.join(moduleRoot, '__tests__', 'fixtures', 'authority-graph-intl.json');
+  }
+
+  if (authorityGraphId === 'AUTH-GRAPH-UK-001' || (isPlainObject(manifest) && manifest.jurisdiction === 'UK')) {
+    return path.join(moduleRoot, '__tests__', 'fixtures', 'authority-graph-uk.json');
+  }
+
+  if (authorityGraphId === 'AUTH-GRAPH-CA-001' || (isPlainObject(manifest) && manifest.jurisdiction === 'CA')) {
+    return path.join(moduleRoot, '__tests__', 'fixtures', 'authority-graph-ca.json');
+  }
+
+  if (authorityGraphId === 'AUTH-GRAPH-AU-001' || (isPlainObject(manifest) && manifest.jurisdiction === 'AU')) {
+    return path.join(moduleRoot, '__tests__', 'fixtures', 'authority-graph-au.json');
+  }
+
+  if (authorityGraphId === 'AUTH-GRAPH-NL-001' || (isPlainObject(manifest) && manifest.jurisdiction === 'NL')) {
+    return path.join(moduleRoot, '__tests__', 'fixtures', 'authority-graph-nl.json');
+  }
+
+  if (authorityGraphId === 'AUTH-GRAPH-TR-001' || (isPlainObject(manifest) && manifest.jurisdiction === 'TR')) {
+    return path.join(moduleRoot, '__tests__', 'fixtures', 'authority-graph-tr.json');
+  }
+
+  if (authorityGraphId === 'AUTH-GRAPH-NATO-001' || (isPlainObject(manifest) && manifest.jurisdiction === 'NATO')) {
+    return path.join(moduleRoot, '__tests__', 'fixtures', 'authority-graph-nato.json');
+  }
+
+  return path.join(moduleRoot, '__tests__', 'fixtures', 'authority-graph.json');
 }
 
 function loadPackRegistry(moduleRoot) {
@@ -237,6 +335,7 @@ module.exports = {
   buildPackRegistryIndex,
   getPackRegistryPath,
   getManifestPaths,
+  getAuthorityGraphPath,
   getRegressionFixturePath,
   getReviewedClausePaths,
   getReviewedClauseSetPath,
@@ -247,4 +346,9 @@ module.exports = {
   resolveModuleRoot,
   validatePackRegistry,
   sortStrings,
+  sortSourceRefs,
+  isLocatorBoundToSource,
+  isNonEmptyString,
+  isReviewedClauseProvenance,
+  normalizeReviewedClauseProvenance,
 };

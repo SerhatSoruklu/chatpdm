@@ -1,0 +1,12 @@
+{
+  "packId": "UK_NATIONAL_BASE_V1",
+  "jurisdiction": "UK",
+  "bundleId": "uk-national-base-bundle",
+  "bundleVersion": "0.1.0",
+  "reviewedClauseSetIds": [
+    "uk-national-base-core"
+  ],
+  "authorityGraphId": "AUTH-GRAPH-UK-001",
+  "sourceRegistryVersion": "1.0.0",
+  "regressionSuiteVersion": "0.1.0"
+}

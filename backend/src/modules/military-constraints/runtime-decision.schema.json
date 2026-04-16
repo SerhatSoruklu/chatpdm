@@ -12,6 +12,7 @@
     "missingFactIds",
     "authorityTrace",
     "ruleTrace",
+    "bundleId",
     "bundleVersion",
     "bundleHash"
   ],
@@ -90,6 +91,17 @@
         "minLength": 1
       }
     },
+    "bundleId": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "minLength": 1
+        }
+      ]
+    },
     "authorityTrace": {
       "type": "object",
       "additionalProperties": false,
@@ -161,7 +173,8 @@
           "outcome",
           "matched",
           "missingFactIds",
-          "usedFacts"
+          "usedFacts",
+          "sourceRefs"
         ],
         "properties": {
           "ruleId": {
@@ -226,6 +239,28 @@
             "items": {
               "type": "string",
               "minLength": 1
+            }
+          },
+          "sourceRefs": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "sourceId",
+                "locator"
+              ],
+              "properties": {
+                "sourceId": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "locator": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
             }
           }
         }

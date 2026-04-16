@@ -10,6 +10,10 @@ const {
   computeBundleHash,
   validateContractPack,
 } = require('./military-constraint-validator');
+const {
+  isLocatorBoundToSource,
+  isNonEmptyString,
+} = require('./reference-pack-utils');
 
 const SOURCE_ROLE_PRIORITY = {
   LEGAL_FLOOR: 0,
@@ -109,6 +113,10 @@ function sortRuleForBundle(rule) {
     });
   }
 
+  if (isPlainObject(clone.provenance) && Array.isArray(clone.provenance.parentClauseIds)) {
+    clone.provenance.parentClauseIds = sortStrings(clone.provenance.parentClauseIds);
+  }
+
   return clone;
 }
 
@@ -165,6 +173,14 @@ function buildSourceRegistrySnapshot(sourceRegistry, usedSourceIds, bundleJurisd
       return;
     }
 
+    if (!isNonEmptyString(entry.sourceVersion) || !isNonEmptyString(entry.trustTier) || !isNonEmptyString(entry.locator)) {
+      selected.push({
+        error: `sourceId "${sourceId}" must retain sourceVersion, trustTier, and locator.`,
+        sourceId,
+      });
+      return;
+    }
+
     selected.push({
       sourceId: entry.sourceId,
       role: entry.role,
@@ -189,28 +205,48 @@ function buildSourceRegistrySnapshot(sourceRegistry, usedSourceIds, bundleJurisd
   });
 }
 
-function ruleSourceIds(rule) {
+function ruleSourceRefs(rule) {
   if (!isPlainObject(rule) || !Array.isArray(rule.sourceRefs)) {
     return [];
   }
 
-  return rule.sourceRefs
-    .map((entry) => (isPlainObject(entry) && typeof entry.sourceId === 'string' ? entry.sourceId : null))
+  return rule.sourceRefs.filter((entry) => isPlainObject(entry));
+}
+
+function ruleSourceIds(rule) {
+  return ruleSourceRefs(rule)
+    .map((entry) => (typeof entry.sourceId === 'string' ? entry.sourceId : null))
     .filter((value) => typeof value === 'string');
 }
 
 function validateSourcePriorityAndStage(rule, sourceIndex, bundleJurisdiction, result) {
-  const sourceIds = ruleSourceIds(rule);
+  const sourceRefs = ruleSourceRefs(rule);
 
-  if (sourceIds.length === 0) {
+  if (sourceRefs.length === 0) {
     fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `rule ${rule.ruleId} must retain sourceRefs.`);
     return;
   }
 
-  sourceIds.forEach((sourceId) => {
+  sourceRefs.forEach((sourceRef) => {
+    if (!isNonEmptyString(sourceRef.sourceId) || !isNonEmptyString(sourceRef.locator)) {
+      fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `rule ${rule.ruleId} must retain sourceRefs with sourceId and locator.`);
+      return;
+    }
+
+    const sourceId = sourceRef.sourceId;
     const entry = sourceIndex.get(sourceId);
     if (!isPlainObject(entry)) {
       fail(result, MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, `rule ${rule.ruleId} references unknown sourceId "${sourceId}".`);
+      return;
+    }
+
+    if (!isNonEmptyString(entry.locator)) {
+      fail(result, MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, `sourceId "${sourceId}" is missing a locator.`);
+      return;
+    }
+
+    if (!isLocatorBoundToSource(entry.locator, sourceRef.locator)) {
+      fail(result, MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, `rule ${rule.ruleId} sourceRef locator "${sourceRef.locator}" is not bound to source locator anchor "${entry.locator}".`);
       return;
     }
 

@@ -1,0 +1,28 @@
+[
+  {
+    "caseId": "nato-interop-base-allowed-case",
+    "bundleVariant": "reference",
+    "decision": "ALLOWED",
+    "reasonCode": null,
+    "failedStage": null,
+    "failingRuleIds": []
+  },
+  {
+    "caseId": "nato-interop-base-refusal",
+    "bundleVariant": "reference",
+    "decision": "REFUSED",
+    "reasonCode": "COALITION_RULE_CONFLICT",
+    "failedStage": "POLICY_OVERLAY",
+    "failingRuleIds": [
+      "CR-NATO-COAL-001"
+    ]
+  },
+  {
+    "caseId": "nato-interop-base-missing-fact",
+    "bundleVariant": "reference",
+    "decision": "REFUSED_INCOMPLETE",
+    "reasonCode": "FACT_PACKET_INVALID",
+    "failedStage": "ADMISSIBILITY",
+    "failingRuleIds": []
+  }
+]

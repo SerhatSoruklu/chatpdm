@@ -1,0 +1,12 @@
+{
+  "packId": "AU_ROE_BASE_V1",
+  "jurisdiction": "AU",
+  "bundleId": "au-roe-base-bundle",
+  "bundleVersion": "0.1.0",
+  "reviewedClauseSetIds": [
+    "au-roe-base-core"
+  ],
+  "authorityGraphId": "AUTH-GRAPH-AU-001",
+  "sourceRegistryVersion": "1.0.0",
+  "regressionSuiteVersion": "0.1.0"
+}

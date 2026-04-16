@@ -1,0 +1,21 @@
+[
+  {
+    "clauseId": "INTL-SITE-0001",
+    "sourceId": "INTL-PROTECTED-SITE-BASE-2024",
+    "locator": "shared-baseline/protected-site",
+    "jurisdiction": "INTL",
+    "layer": "LEGAL_FLOOR",
+    "clauseType": "PROHIBITION",
+    "rawText": "Protected sites remain protected unless loss of protection is confirmed.",
+    "normalizedText": "If target.objectType is a protected site type and target.lossOfProtectionStatus is not CONFIRMED_TRUE, refuse.",
+    "machineCandidate": true,
+    "ambiguityStatus": "RESOLVED",
+    "reviewStatus": "COMPILATION_READY",
+    "reviewNotes": "Shared international protected-site baseline.",
+    "provenance": {
+      "derivationType": "INTERPRETED",
+      "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+      "parentClauseIds": []
+    }
+  }
+]

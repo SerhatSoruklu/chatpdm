@@ -10,6 +10,7 @@ const { isPlainObject } = require('./fact-schema-utils');
 const { validateReviewedClauseCorpus } = require('./validate-reviewed-clause-corpus');
 const {
   getReviewedClauseSetPath,
+  getAuthorityGraphPath,
   readJsonFile,
   resolveModuleRoot,
 } = require('./reference-pack-utils');
@@ -122,7 +123,7 @@ function validateReferencePack(input) {
     return finish(result);
   }
 
-  const authorityGraphPath = path.join(rootDir, '__tests__', 'fixtures', 'authority-graph.json');
+  const authorityGraphPath = getAuthorityGraphPath(rootDir, manifest);
   if (!fs.existsSync(authorityGraphPath)) {
     fail(result, MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, `authority graph is missing at "${authorityGraphPath}".`);
     return finish(result);

@@ -15,7 +15,8 @@
     "authority",
     "requiredFacts",
     "predicate",
-    "sourceRefs"
+    "sourceRefs",
+    "provenance"
   ],
   "properties": {
     "ruleId": {
@@ -203,6 +204,134 @@
     },
     "notes": {
       "type": "string"
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "derivationType",
+        "transformationNotes",
+        "parentClauseIds"
+      ],
+      "properties": {
+        "derivationType": {
+          "type": "string",
+          "enum": [
+            "DIRECT",
+            "INTERPRETED",
+            "COMPOSED"
+          ]
+        },
+        "transformationNotes": {
+          "type": "string",
+          "minLength": 1
+        },
+        "parentClauseIds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
     }
   }
+  ,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "provenance": {
+            "type": "object",
+            "properties": {
+              "derivationType": {
+                "const": "COMPOSED"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "provenance": {
+            "type": "object",
+            "properties": {
+              "parentClauseIds": {
+                "type": "array",
+                "minItems": 1
+              }
+            }
+          }
+        }
+      }
+    }
+    ,
+    {
+      "if": {
+        "properties": {
+          "provenance": {
+            "type": "object",
+            "properties": {
+              "derivationType": {
+                "enum": [
+                  "DIRECT",
+                  "INTERPRETED"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "provenance": {
+            "type": "object",
+            "properties": {
+              "parentClauseIds": {
+                "type": "array",
+                "maxItems": 0
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "authority"
+        ],
+        "properties": {
+          "authority": {
+            "type": "object",
+            "required": [
+              "requiresExplicitDelegation"
+            ],
+            "properties": {
+              "requiresExplicitDelegation": {
+                "const": true
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "authority": {
+            "type": "object",
+            "required": [
+              "delegationEdgeIds"
+            ],
+            "properties": {
+              "delegationEdgeIds": {
+                "type": "array",
+                "minItems": 1
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
 }

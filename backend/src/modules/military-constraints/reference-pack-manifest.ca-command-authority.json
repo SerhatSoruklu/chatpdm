@@ -1,0 +1,12 @@
+{
+  "packId": "CA_COMMAND_AUTHORITY_V1",
+  "jurisdiction": "CA",
+  "bundleId": "ca-command-authority-bundle",
+  "bundleVersion": "0.1.0",
+  "reviewedClauseSetIds": [
+    "ca-command-authority-core"
+  ],
+  "authorityGraphId": "AUTH-GRAPH-CA-001",
+  "sourceRegistryVersion": "1.0.0",
+  "regressionSuiteVersion": "0.1.0"
+}

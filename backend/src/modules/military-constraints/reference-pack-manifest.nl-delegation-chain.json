@@ -1,0 +1,12 @@
+{
+  "packId": "NL_DELEGATION_CHAIN_V1",
+  "jurisdiction": "NL",
+  "bundleId": "nl-delegation-chain-bundle",
+  "bundleVersion": "0.1.0",
+  "reviewedClauseSetIds": [
+    "nl-delegation-chain-core"
+  ],
+  "authorityGraphId": "AUTH-GRAPH-NL-001",
+  "sourceRegistryVersion": "1.0.0",
+  "regressionSuiteVersion": "0.1.0"
+}

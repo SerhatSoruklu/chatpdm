@@ -42,6 +42,13 @@ function alignFacts(bundle, facts) {
   facts.bundleHash = bundle.bundleHash;
 }
 
+function alignSourceRegistrySnapshot(bundle, sourceIds) {
+  const allowed = new Set(sourceIds);
+  bundle.sourceRegistrySnapshot = Array.isArray(bundle.sourceRegistrySnapshot)
+    ? bundle.sourceRegistrySnapshot.filter((entry) => allowed.has(entry.sourceId))
+    : [];
+}
+
 function getRule(bundle, ruleId) {
   const rule = bundle.rules.find((entry) => entry.ruleId === ruleId);
   assert.ok(rule, `Missing rule: ${ruleId}`);
@@ -74,6 +81,7 @@ test('missing required fact returns REFUSED_INCOMPLETE', () => {
     ],
   };
   bundle.rules = [syntheticRule];
+  alignSourceRegistrySnapshot(bundle, [syntheticRule.sourceRefs[0].sourceId]);
   bundle.bundleHash = computeBundleHash(bundle);
   const facts = readJson('valid-fact-packet.json');
   alignFacts(bundle, facts);
@@ -89,6 +97,13 @@ test('missing required fact returns REFUSED_INCOMPLETE', () => {
   assert.equal(result.failedStage, 'ADMISSIBILITY');
   assert.deepEqual(result.failingRuleIds, ['MIL-ADM-MISSING-0001']);
   assert.ok(result.missingFactIds.includes('context.nonexistentRequiredFact'));
+  assert.equal(result.bundleId, bundle.bundleId);
+  assert.deepEqual(result.ruleTrace[0].sourceRefs, [
+    {
+      sourceId: syntheticRule.sourceRefs[0].sourceId,
+      locator: syntheticRule.sourceRefs[0].locator,
+    },
+  ]);
   assertRuntimeDecisionValid(result);
 });
 
@@ -129,6 +144,25 @@ test('authority invalid returns REFUSED during bundle admission', () => {
   assertRuntimeDecisionValid(result);
 });
 
+test('missing explicit delegation path returns REFUSED during bundle admission', () => {
+  const bundle = cloneJson(readJson('valid-contract-pack.json'));
+  bundle.rules.find((rule) => rule.ruleId === 'MIL-PO-AUTH-0001').authority.delegationEdgeIds = [];
+  bundle.bundleHash = computeBundleHash(bundle);
+  const facts = readJson('valid-fact-packet.json');
+  alignFacts(bundle, facts);
+
+  const result = evaluateBundle({
+    bundle,
+    facts,
+    factSchema: readSchema('military-constraint-fact.schema.json'),
+  });
+
+  assert.equal(result.decision, 'REFUSED');
+  assert.equal(result.reasonCode, 'AUTHORITY_UNRESOLVED');
+  assert.equal(result.failedStage, 'BUNDLE_INTEGRITY');
+  assertRuntimeDecisionValid(result);
+});
+
 test('fully allowed facts return ALLOWED', () => {
   const bundle = readJson('valid-contract-pack.json');
   const facts = readJson('valid-fact-packet.json');
@@ -146,6 +180,8 @@ test('fully allowed facts return ALLOWED', () => {
   assert.equal(result.decision, 'ALLOWED');
   assert.equal(result.reasonCode, null);
   assert.equal(result.failedStage, null);
+  assert.equal(result.bundleId, bundle.bundleId);
+  assert.ok(result.ruleTrace.every((entry) => Array.isArray(entry.sourceRefs) && entry.sourceRefs.length > 0));
   assertRuntimeDecisionValid(result);
 });
 
@@ -232,6 +268,43 @@ test('rule evaluator preserves NOT_APPLICABLE and NO_MATCH', () => {
   assert.equal(noMatch.outcome, 'NO_MATCH');
 });
 
+test('rule evaluator returns source refs in canonical order', () => {
+  const bundle = readJson('valid-contract-pack.json');
+  const factSchema = readSchema('military-constraint-fact.schema.json');
+  const rule = cloneJson(getRule(bundle, 'MIL-ADM-0001'));
+  rule.sourceRefs = [
+    {
+      sourceId: 'ROE-DOCTRINE-2020',
+      locator: 'doctrine-revision/zeta',
+    },
+    {
+      sourceId: 'NEWPORT-ROE-2022',
+      locator: 'authoring-flow/alpha',
+    },
+  ];
+
+  const facts = readJson('valid-fact-packet.json');
+  alignFacts(bundle, facts);
+
+  const outcome = evaluateRule({
+    rule,
+    facts,
+    bundle,
+    factSchema,
+  });
+
+  assert.deepEqual(outcome.sourceRefs, [
+    {
+      sourceId: 'NEWPORT-ROE-2022',
+      locator: 'authoring-flow/alpha',
+    },
+    {
+      sourceId: 'ROE-DOCTRINE-2020',
+      locator: 'doctrine-revision/zeta',
+    },
+  ]);
+});
+
 test('unknown enum values are refused before they can produce ALLOWED', () => {
   const bundle = readJson('valid-contract-pack.json');
   const facts = readJson('valid-fact-packet.json');
@@ -280,6 +353,7 @@ test('null and undefined are handled differently at runtime', () => {
     ],
   };
   missingBundle.rules = [missingRule];
+  alignSourceRegistrySnapshot(missingBundle, [missingRule.sourceRefs[0].sourceId]);
   missingBundle.bundleHash = computeBundleHash(missingBundle);
 
   const undefinedFacts = readJson('valid-fact-packet.json');
@@ -332,79 +406,73 @@ test('array and scalar mismatches are refused', () => {
 
 test('deeply nested predicates evaluate deterministically', () => {
   const bundle = readJson('valid-contract-pack.json');
-  const syntheticRule = {
-    ruleId: 'MIL-NESTED-0001',
-    version: 1,
-    stage: 'POLICY_OVERLAY',
-    priority: 50,
-    status: 'ACTIVE',
-    effect: {
-      decision: 'REFUSED',
-      reasonCode: 'AUTHORITY_INVALID',
-    },
-    scope: {
-      jurisdiction: 'US',
-      domains: ['AIR'],
-      missionTypes: ['ARMED_CONFLICT'],
-      actionKinds: ['STRIKE'],
-    },
-    authority: {
-      minimumLevelId: 'BRIGADE',
-      requiresExplicitDelegation: false,
-      delegationEdgeIds: [],
-    },
-    requiredFacts: ['action.kind', 'target.protectedClass'],
-    predicate: {
-      all: [
-        {
-          any: [
-            {
-              eq: [
+  const syntheticRule = cloneJson(getRule(bundle, 'MIL-PO-AUTH-0001'));
+  syntheticRule.ruleId = 'MIL-NESTED-0001';
+  syntheticRule.version = 1;
+  syntheticRule.stage = 'POLICY_OVERLAY';
+  syntheticRule.priority = 50;
+  syntheticRule.status = 'ACTIVE';
+  syntheticRule.effect = {
+    decision: 'REFUSED',
+    reasonCode: 'AUTHORITY_INVALID',
+  };
+  syntheticRule.scope = {
+    jurisdiction: 'US',
+    domains: ['AIR'],
+    missionTypes: ['ARMED_CONFLICT'],
+    actionKinds: ['STRIKE'],
+  };
+  syntheticRule.authority = {
+    minimumLevelId: 'BRIGADE',
+    requiresExplicitDelegation: false,
+    delegationEdgeIds: [],
+  };
+  syntheticRule.requiredFacts = ['action.kind', 'target.protectedClass'];
+  syntheticRule.predicate = {
+    all: [
+      {
+        any: [
+          {
+            eq: [
+              { fact: 'action.kind' },
+              { value: 'STRIKE' },
+            ],
+          },
+          {
+            not: {
+              neq: [
                 { fact: 'action.kind' },
                 { value: 'STRIKE' },
               ],
             },
+          },
+        ],
+      },
+      {
+        not: {
+          any: [
+            {
+              neq: [
+                { fact: 'target.protectedClass' },
+                { value: 'CIVILIAN' },
+              ],
+            },
             {
               not: {
-                neq: [
-                  { fact: 'action.kind' },
-                  { value: 'STRIKE' },
+                eq: [
+                  { fact: 'context.missionType' },
+                  { value: 'ARMED_CONFLICT' },
                 ],
               },
             },
           ],
         },
-        {
-          not: {
-            any: [
-              {
-                neq: [
-                  { fact: 'target.protectedClass' },
-                  { value: 'CIVILIAN' },
-                ],
-              },
-              {
-                not: {
-                  eq: [
-                    { fact: 'context.missionType' },
-                    { value: 'ARMED_CONFLICT' },
-                  ],
-                },
-              },
-            ],
-          },
-        },
-      ],
-    },
-    sourceRefs: [
-      {
-        sourceId: 'NEWPORT-ROE-2022',
-        locator: 'nested-predicate-test',
       },
     ],
   };
   const nestedBundle = cloneJson(bundle);
   nestedBundle.rules = [syntheticRule];
+  alignSourceRegistrySnapshot(nestedBundle, [syntheticRule.sourceRefs[0].sourceId]);
   nestedBundle.bundleHash = computeBundleHash(nestedBundle);
 
   const facts = readJson('valid-fact-packet.json');

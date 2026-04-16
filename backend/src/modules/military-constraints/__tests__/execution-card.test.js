@@ -101,6 +101,7 @@ test('execution cards are deterministic projections of Pack 5 runtime output', (
     assert.equal(projected.bundleVersion, bundle.bundleVersion);
     assert.equal(projected.bundleHash, bundle.bundleHash);
     assert.equal(projected.jurisdiction, bundle.jurisdiction);
+    assert.equal(runtimeDecision.bundleId, bundle.bundleId);
     assert.equal(projected.decision, runtimeDecision.decision);
     assert.equal(projected.reasonCode, runtimeDecision.reasonCode);
     assert.equal(projected.failedStage, runtimeDecision.failedStage);

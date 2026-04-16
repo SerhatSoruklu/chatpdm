@@ -92,6 +92,11 @@
         ]
       },
       "notes": "Environmental-limitation refinement using existing fact axes."
+    },
+    "provenance": {
+      "derivationType": "INTERPRETED",
+      "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+      "parentClauseIds": []
     }
   }
 ]

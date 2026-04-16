@@ -42,12 +42,19 @@ describe('MilitaryConstraintsCompilerPageComponent', () => {
       }),
     );
     expect(component['heroImageButtonLabel']).toBe(MCPP_HERO_IMAGE_BUTTON_LABEL);
-    expect(component['packOverview'].map((entry) => entry.packId)).toEqual([
-      'Baseline surface',
-      'Foundations',
-      'Domains',
-      'Overlays',
-      'Roadmap',
+    expect(component['surfaceTruthCards'].map((entry) => entry.label)).toEqual([
+      'Shared INTL baseline',
+      'National families',
+      'Coalition packs',
+      'Overlay families',
+      'Planned roadmap',
+      'Umbrella labels',
     ]);
+    expect(component['surfaceTruthCards'][0]).toMatchObject({
+      title: 'International baseline packs',
+    });
+    expect(component['surfaceTruthCards'][5]).toMatchObject({
+      copy: 'US_AIR_V1 is an umbrella label only and is not an admitted executable pack.',
+    });
   });
 });

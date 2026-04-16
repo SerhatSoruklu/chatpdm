@@ -16,7 +16,8 @@
     "machineCandidate",
     "ambiguityStatus",
     "reviewStatus",
-    "reviewNotes"
+    "reviewNotes",
+    "provenance"
   ],
   "properties": {
     "clauseId": {
@@ -88,6 +89,38 @@
     },
     "reviewNotes": {
       "type": "string"
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "derivationType",
+        "transformationNotes",
+        "parentClauseIds"
+      ],
+      "properties": {
+        "derivationType": {
+          "type": "string",
+          "enum": [
+            "DIRECT",
+            "INTERPRETED",
+            "COMPOSED",
+            "ILLUSTRATIVE"
+          ]
+        },
+        "transformationNotes": {
+          "type": "string",
+          "minLength": 1
+        },
+        "parentClauseIds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
     },
     "compilationHint": {
       "type": "object",
@@ -224,6 +257,14 @@
       },
       "then": {
         "properties": {
+          "provenance": {
+            "type": "object",
+            "properties": {
+              "derivationType": {
+                "const": "ILLUSTRATIVE"
+              }
+            }
+          },
           "machineCandidate": {
             "const": false
           }
@@ -267,6 +308,18 @@
       },
       "then": {
         "properties": {
+          "provenance": {
+            "type": "object",
+            "properties": {
+              "derivationType": {
+                "enum": [
+                  "DIRECT",
+                  "INTERPRETED",
+                  "COMPOSED"
+                ]
+              }
+            }
+          },
           "ambiguityStatus": {
             "enum": [
               "CLEAR",
@@ -285,6 +338,113 @@
     {
       "if": {
         "properties": {
+          "provenance": {
+            "type": "object",
+            "properties": {
+              "derivationType": {
+                "const": "COMPOSED"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "provenance": {
+            "type": "object",
+            "properties": {
+              "parentClauseIds": {
+                "type": "array",
+                "minItems": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "provenance": {
+            "type": "object",
+            "properties": {
+              "derivationType": {
+                "enum": [
+                  "DIRECT",
+                  "INTERPRETED",
+                  "ILLUSTRATIVE"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "provenance": {
+            "type": "object",
+            "properties": {
+              "parentClauseIds": {
+                "type": "array",
+                "maxItems": 0
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "compilationHint"
+        ],
+        "properties": {
+          "compilationHint": {
+            "type": "object",
+            "required": [
+              "authority"
+            ],
+            "properties": {
+              "authority": {
+                "type": "object",
+                "required": [
+                  "requiresExplicitDelegation"
+                ],
+                "properties": {
+                  "requiresExplicitDelegation": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "compilationHint": {
+            "type": "object",
+            "properties": {
+              "authority": {
+                "type": "object",
+                "required": [
+                  "delegationEdgeIds"
+                ],
+                "properties": {
+                  "delegationEdgeIds": {
+                    "type": "array",
+                    "minItems": 1
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
           "reviewStatus": {
             "const": "COMPILATION_READY"
           }
@@ -292,19 +452,19 @@
       },
       "then": {
         "properties": {
-            "machineCandidate": {
-              "const": true
-            },
-            "ambiguityStatus": {
-              "enum": [
-                "CLEAR",
-                "RESOLVED"
-              ]
-            },
-            "layer": {
-              "enum": [
-                "LEGAL_FLOOR",
-                "POLICY_OVERLAY"
+          "machineCandidate": {
+            "const": true
+          },
+          "ambiguityStatus": {
+            "enum": [
+              "CLEAR",
+              "RESOLVED"
+            ]
+          },
+          "layer": {
+            "enum": [
+              "LEGAL_FLOOR",
+              "POLICY_OVERLAY"
             ]
           }
         }

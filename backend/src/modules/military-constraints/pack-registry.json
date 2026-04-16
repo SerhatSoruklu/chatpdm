@@ -1,5 +1,66 @@
 [
   {
+    "packId": "INTL_LOAC_BASE_V1",
+    "kind": "foundation",
+    "status": "admitted",
+    "dependsOn": [],
+    "notes": "Shared international legal-floor baseline."
+  },
+  {
+    "packId": "INTL_PROTECTED_PERSON_BASE_V1",
+    "kind": "foundation",
+    "status": "admitted",
+    "dependsOn": [
+      "INTL_LOAC_BASE_V1"
+    ],
+    "notes": "Shared international protected-person baseline."
+  },
+  {
+    "packId": "INTL_PROTECTED_SITE_BASE_V1",
+    "kind": "foundation",
+    "status": "admitted",
+    "dependsOn": [
+      "INTL_LOAC_BASE_V1"
+    ],
+    "notes": "Shared international protected-site baseline."
+  },
+  {
+    "packId": "UK_NATIONAL_BASE_V1",
+    "kind": "foundation",
+    "status": "admitted",
+    "dependsOn": [
+      "INTL_LOAC_BASE_V1"
+    ],
+    "notes": "UK national baseline above the shared international layer."
+  },
+  {
+    "packId": "UK_ROE_BASE_V1",
+    "kind": "foundation",
+    "status": "admitted",
+    "dependsOn": [
+      "UK_NATIONAL_BASE_V1"
+    ],
+    "notes": "UK national ROE baseline."
+  },
+  {
+    "packId": "UK_COMMAND_AUTHORITY_V1",
+    "kind": "foundation",
+    "status": "admitted",
+    "dependsOn": [
+      "UK_ROE_BASE_V1"
+    ],
+    "notes": "UK command-authority baseline."
+  },
+  {
+    "packId": "UK_DELEGATION_CHAIN_V1",
+    "kind": "foundation",
+    "status": "admitted",
+    "dependsOn": [
+      "UK_COMMAND_AUTHORITY_V1"
+    ],
+    "notes": "UK delegation-chain baseline."
+  },
+  {
     "packId": "US_CORE_V1",
     "manifestPackId": "mil-us-core-reference",
     "kind": "foundation",
@@ -12,7 +73,9 @@
     "manifestPackId": "mil-us-protected-person-state-core-v0.1.0",
     "kind": "foundation",
     "status": "baseline",
-    "dependsOn": [],
+    "dependsOn": [
+      "INTL_PROTECTED_PERSON_BASE_V1"
+    ],
     "notes": "Implemented today as mil-us-protected-person-state-core-v0.1.0."
   },
   {
@@ -28,16 +91,28 @@
     "manifestPackId": "mil-us-medical-protection-core-v0.1.0",
     "kind": "overlay",
     "status": "baseline",
-    "dependsOn": [],
-    "notes": "Implemented today as mil-us-medical-protection-core-v0.1.0."
+    "dependsOn": [
+      "INTL_PROTECTED_SITE_BASE_V1",
+      "US_PROTECTED_PERSON_STATE_V1"
+    ],
+    "notes": "Implemented today as mil-us-medical-protection-core-v0.1.0.",
+    "overlayFamily": "protection",
+    "overlayBoundary": "person_site_bridge",
+    "overlayScope": "jurisdictional"
   },
   {
     "packId": "US_CIVILIAN_SCHOOL_PROTECTION_V1",
     "manifestPackId": "mil-us-civilian-school-protection-core-v0.1.0",
     "kind": "overlay",
     "status": "baseline",
-    "dependsOn": [],
-    "notes": "Implemented today as mil-us-civilian-school-protection-core-v0.1.0."
+    "dependsOn": [
+      "INTL_PROTECTED_SITE_BASE_V1",
+      "US_PROTECTED_PERSON_STATE_V1"
+    ],
+    "notes": "Implemented today as mil-us-civilian-school-protection-core-v0.1.0.",
+    "overlayFamily": "protection",
+    "overlayBoundary": "site",
+    "overlayScope": "jurisdictional"
   },
   {
     "packId": "US_RULES_OF_ENGAGEMENT_BASE_V1",
@@ -53,7 +128,8 @@
     "kind": "foundation",
     "status": "admitted",
     "dependsOn": [
-      "US_RULES_OF_ENGAGEMENT_BASE_V1"
+      "US_RULES_OF_ENGAGEMENT_BASE_V1",
+      "INTL_LOAC_BASE_V1"
     ],
     "notes": "Admitted foundation wave; shared legal-floor layer."
   },
@@ -82,18 +158,52 @@
     "status": "admitted",
     "dependsOn": [
       "US_LOAC_COMPLIANCE_V1",
-      "US_PROTECTED_PERSON_STATE_V1"
+      "US_PROTECTED_PERSON_STATE_V1",
+      "INTL_PROTECTED_SITE_BASE_V1"
     ],
     "notes": "Admitted foundation wave; shared protected-location baseline."
+  },
+  {
+    "packId": "NATO_INTEROP_BASE_V1",
+    "kind": "foundation",
+    "status": "admitted",
+    "dependsOn": [
+      "INTL_LOAC_BASE_V1"
+    ],
+    "notes": "Coalition interoperability foundation baseline."
+  },
+  {
+    "packId": "ALLIED_AUTHORITY_MERGE_V1",
+    "kind": "overlay",
+    "status": "admitted",
+    "dependsOn": [
+      "NATO_INTEROP_BASE_V1"
+    ],
+    "notes": "Coalition authority-merge refinement.",
+    "overlayFamily": "coalition_merge",
+    "overlayBoundary": "coalition",
+    "overlayScope": "coalition"
+  },
+  {
+    "packId": "NATO_ROE_COMPAT_V1",
+    "kind": "overlay",
+    "status": "admitted",
+    "dependsOn": [
+      "NATO_INTEROP_BASE_V1"
+    ],
+    "notes": "Coalition ROE-compatibility refinement.",
+    "overlayFamily": "coalition_merge",
+    "overlayBoundary": "coalition",
+    "overlayScope": "coalition"
   },
   {
     "packId": "US_COALITION_INTEROP_V1",
     "kind": "foundation",
     "status": "admitted",
     "dependsOn": [
-      "US_RULES_OF_ENGAGEMENT_BASE_V1"
+      "NATO_INTEROP_BASE_V1"
     ],
-    "notes": "Admitted foundation wave; coalition compatibility baseline."
+    "notes": "Admitted national adapter; coalition compatibility baseline layered over NATO."
   },
   {
     "packId": "US_AIRSPACE_CONTROL_V1",
@@ -237,7 +347,10 @@
     "dependsOn": [
       "US_AIRSPACE_CONTROL_V1"
     ],
-    "notes": "Airspace restriction overlay."
+    "notes": "Airspace restriction overlay.",
+    "overlayFamily": "targeting_refinement",
+    "overlayBoundary": "airspace",
+    "overlayScope": "jurisdictional"
   },
   {
     "packId": "US_TARGET_APPROVAL_V1",
@@ -247,7 +360,10 @@
       "US_AIRSPACE_CONTROL_V1",
       "US_LOAC_COMPLIANCE_V1"
     ],
-    "notes": "Operational approval gate."
+    "notes": "Operational approval gate.",
+    "overlayFamily": "targeting_refinement",
+    "overlayBoundary": "authority",
+    "overlayScope": "jurisdictional"
   },
   {
     "packId": "US_COLLATERAL_DAMAGE_ASSESSMENT_V1",
@@ -257,7 +373,10 @@
       "US_LOAC_COMPLIANCE_V1",
       "US_PROTECTED_SITE_V1"
     ],
-    "notes": "Civilian-harm refinement."
+    "notes": "Civilian-harm refinement.",
+    "overlayFamily": "targeting_refinement",
+    "overlayBoundary": "civilian_harm",
+    "overlayScope": "jurisdictional"
   },
   {
     "packId": "US_HOSPITAL_PROTECTION_V1",
@@ -267,7 +386,10 @@
       "US_PROTECTED_SITE_V1",
       "US_MEDICAL_PROTECTION_V1"
     ],
-    "notes": "Hospital-specific overlay."
+    "notes": "Hospital-specific overlay.",
+    "overlayFamily": "protection",
+    "overlayBoundary": "site",
+    "overlayScope": "jurisdictional"
   },
   {
     "packId": "US_SCHOOL_ZONE_RESTRICTION_V1",
@@ -277,7 +399,10 @@
       "US_PROTECTED_SITE_V1",
       "US_CIVILIAN_SCHOOL_PROTECTION_V1"
     ],
-    "notes": "School-zone restriction overlay."
+    "notes": "School-zone restriction overlay.",
+    "overlayFamily": "protection",
+    "overlayBoundary": "site",
+    "overlayScope": "jurisdictional"
   },
   {
     "packId": "US_RELIGIOUS_SITE_PROTECTION_V1",
@@ -286,7 +411,10 @@
     "dependsOn": [
       "US_PROTECTED_SITE_V1"
     ],
-    "notes": "Religious-site overlay."
+    "notes": "Religious-site overlay.",
+    "overlayFamily": "protection",
+    "overlayBoundary": "site",
+    "overlayScope": "jurisdictional"
   },
   {
     "packId": "US_CULTURAL_PROPERTY_PROTECTION_V1",
@@ -295,7 +423,10 @@
     "dependsOn": [
       "US_PROTECTED_SITE_V1"
     ],
-    "notes": "Cultural-property overlay."
+    "notes": "Cultural-property overlay.",
+    "overlayFamily": "protection",
+    "overlayBoundary": "site",
+    "overlayScope": "jurisdictional"
   },
   {
     "packId": "US_AID_DELIVERY_SECURITY_V1",
@@ -305,7 +436,10 @@
       "US_LOAC_COMPLIANCE_V1",
       "US_PROTECTED_SITE_V1"
     ],
-    "notes": "Aid-delivery security overlay; scope-adjusted to the admitted legal/protection layer."
+    "notes": "Aid-delivery security overlay; scope-adjusted to the admitted legal/protection layer.",
+    "overlayFamily": "operational_condition",
+    "overlayBoundary": "mission_route",
+    "overlayScope": "jurisdictional"
   },
   {
     "packId": "US_EVACUATION_ROUTE_V1",
@@ -315,7 +449,10 @@
       "US_LOAC_COMPLIANCE_V1",
       "US_PROTECTED_SITE_V1"
     ],
-    "notes": "Evacuation-route overlay; scope-adjusted to the admitted legal/protection layer."
+    "notes": "Evacuation-route overlay; scope-adjusted to the admitted legal/protection layer.",
+    "overlayFamily": "operational_condition",
+    "overlayBoundary": "mission_route",
+    "overlayScope": "jurisdictional"
   },
   {
     "packId": "US_NIGHT_OPERATION_V1",
@@ -324,7 +461,10 @@
     "dependsOn": [
       "US_LOAC_COMPLIANCE_V1"
     ],
-    "notes": "Temporal-condition overlay."
+    "notes": "Temporal-condition overlay.",
+    "overlayFamily": "operational_condition",
+    "overlayBoundary": "environment",
+    "overlayScope": "jurisdictional"
   },
   {
     "packId": "US_WEATHER_LIMITATION_V1",
@@ -335,7 +475,10 @@
       "US_GROUND_MANEUVER_V1",
       "US_MARITIME_VBSS_V1"
     ],
-    "notes": "Environmental limitation overlay."
+    "notes": "Environmental limitation overlay.",
+    "overlayFamily": "operational_condition",
+    "overlayBoundary": "environment",
+    "overlayScope": "jurisdictional"
   },
   {
     "packId": "US_SIGNAL_INTERFERENCE_V1",
@@ -345,7 +488,10 @@
       "US_LOAC_COMPLIANCE_V1",
       "US_COMMAND_AUTHORITY_V1"
     ],
-    "notes": "Technical-effects overlay; scope-adjusted to admitted authority/legal primitives."
+    "notes": "Technical-effects overlay; scope-adjusted to admitted authority/legal primitives.",
+    "overlayFamily": "operational_condition",
+    "overlayBoundary": "environment",
+    "overlayScope": "jurisdictional"
   },
   {
     "packId": "US_ISR_RETENTION_V1",
@@ -355,7 +501,10 @@
       "US_COALITION_INTEROP_V1",
       "US_COMMAND_AUTHORITY_V1"
     ],
-    "notes": "ISR retention/governance overlay; scope-adjusted to the admitted coalition/authority layer."
+    "notes": "ISR retention/governance overlay; scope-adjusted to the admitted coalition/authority layer.",
+    "overlayFamily": "retention",
+    "overlayBoundary": "surveillance_retention",
+    "overlayScope": "jurisdictional"
   },
   {
     "packId": "US_WEAPON_STATUS_V1",
@@ -365,7 +514,10 @@
       "US_LOAC_COMPLIANCE_V1",
       "US_COMMAND_AUTHORITY_V1"
     ],
-    "notes": "Equipment/weapon-state overlay."
+    "notes": "Equipment/weapon-state overlay.",
+    "overlayFamily": "operational_condition",
+    "overlayBoundary": "equipment_state",
+    "overlayScope": "jurisdictional"
   },
   {
     "packId": "US_ALLIED_ROE_MERGE_V1",
@@ -374,7 +526,220 @@
     "dependsOn": [
       "US_COALITION_INTEROP_V1"
     ],
-    "notes": "Coalition merge overlay."
+    "notes": "Coalition merge overlay.",
+    "overlayFamily": "coalition_merge",
+    "overlayBoundary": "coalition",
+    "overlayScope": "jurisdictional"
+  },
+  {
+    "packId": "UK_AIRSPACE_CONTROL_V1",
+    "kind": "domain",
+    "status": "admitted",
+    "dependsOn": [
+      "UK_ROE_BASE_V1",
+      "UK_COMMAND_AUTHORITY_V1",
+      "UK_DELEGATION_CHAIN_V1"
+    ],
+    "notes": "First executable UK air-domain pack."
+  },
+  {
+    "packId": "UK_GROUND_MANEUVER_V1",
+    "kind": "domain",
+    "status": "admitted",
+    "dependsOn": [
+      "UK_ROE_BASE_V1",
+      "UK_COMMAND_AUTHORITY_V1",
+      "UK_DELEGATION_CHAIN_V1"
+    ],
+    "notes": "First executable UK ground-domain pack."
+  },
+  {
+    "packId": "CA_NATIONAL_BASE_V1",
+    "kind": "foundation",
+    "status": "admitted",
+    "dependsOn": [
+      "INTL_LOAC_BASE_V1"
+    ],
+    "notes": "Canada national baseline above the shared international layer."
+  },
+  {
+    "packId": "CA_ROE_BASE_V1",
+    "kind": "foundation",
+    "status": "admitted",
+    "dependsOn": [
+      "CA_NATIONAL_BASE_V1"
+    ],
+    "notes": "Canada national ROE baseline."
+  },
+  {
+    "packId": "CA_COMMAND_AUTHORITY_V1",
+    "kind": "foundation",
+    "status": "admitted",
+    "dependsOn": [
+      "CA_ROE_BASE_V1"
+    ],
+    "notes": "Canada command-authority baseline."
+  },
+  {
+    "packId": "CA_DELEGATION_CHAIN_V1",
+    "kind": "foundation",
+    "status": "admitted",
+    "dependsOn": [
+      "CA_COMMAND_AUTHORITY_V1"
+    ],
+    "notes": "Canada delegation-chain baseline."
+  },
+  {
+    "packId": "CA_AIRSPACE_CONTROL_V1",
+    "kind": "domain",
+    "status": "admitted",
+    "dependsOn": [
+      "CA_ROE_BASE_V1",
+      "CA_COMMAND_AUTHORITY_V1",
+      "CA_DELEGATION_CHAIN_V1"
+    ],
+    "notes": "First executable Canada air-domain pack."
+  },
+  {
+    "packId": "AU_NATIONAL_BASE_V1",
+    "kind": "foundation",
+    "status": "admitted",
+    "dependsOn": [
+      "INTL_LOAC_BASE_V1"
+    ],
+    "notes": "Australia national baseline above the shared international layer."
+  },
+  {
+    "packId": "AU_ROE_BASE_V1",
+    "kind": "foundation",
+    "status": "admitted",
+    "dependsOn": [
+      "AU_NATIONAL_BASE_V1"
+    ],
+    "notes": "Australia national ROE baseline."
+  },
+  {
+    "packId": "AU_COMMAND_AUTHORITY_V1",
+    "kind": "foundation",
+    "status": "admitted",
+    "dependsOn": [
+      "AU_ROE_BASE_V1"
+    ],
+    "notes": "Australia command-authority baseline."
+  },
+  {
+    "packId": "AU_DELEGATION_CHAIN_V1",
+    "kind": "foundation",
+    "status": "admitted",
+    "dependsOn": [
+      "AU_COMMAND_AUTHORITY_V1"
+    ],
+    "notes": "Australia delegation-chain baseline."
+  },
+  {
+    "packId": "AU_AIRSPACE_CONTROL_V1",
+    "kind": "domain",
+    "status": "admitted",
+    "dependsOn": [
+      "AU_ROE_BASE_V1",
+      "AU_COMMAND_AUTHORITY_V1",
+      "AU_DELEGATION_CHAIN_V1"
+    ],
+    "notes": "First executable Australia air-domain pack."
+  },
+  {
+    "packId": "NL_NATIONAL_BASE_V1",
+    "kind": "foundation",
+    "status": "admitted",
+    "dependsOn": [
+      "INTL_LOAC_BASE_V1"
+    ],
+    "notes": "Netherlands national baseline above the shared international layer."
+  },
+  {
+    "packId": "NL_ROE_BASE_V1",
+    "kind": "foundation",
+    "status": "admitted",
+    "dependsOn": [
+      "NL_NATIONAL_BASE_V1"
+    ],
+    "notes": "Netherlands national ROE baseline."
+  },
+  {
+    "packId": "NL_COMMAND_AUTHORITY_V1",
+    "kind": "foundation",
+    "status": "admitted",
+    "dependsOn": [
+      "NL_ROE_BASE_V1"
+    ],
+    "notes": "Netherlands command-authority baseline."
+  },
+  {
+    "packId": "NL_DELEGATION_CHAIN_V1",
+    "kind": "foundation",
+    "status": "admitted",
+    "dependsOn": [
+      "NL_COMMAND_AUTHORITY_V1"
+    ],
+    "notes": "Netherlands delegation-chain baseline."
+  },
+  {
+    "packId": "NL_AIRSPACE_CONTROL_V1",
+    "kind": "domain",
+    "status": "admitted",
+    "dependsOn": [
+      "NL_ROE_BASE_V1",
+      "NL_COMMAND_AUTHORITY_V1",
+      "NL_DELEGATION_CHAIN_V1"
+    ],
+    "notes": "First executable Netherlands air-domain pack."
+  },
+  {
+    "packId": "TR_NATIONAL_BASE_V1",
+    "kind": "foundation",
+    "status": "admitted",
+    "dependsOn": [
+      "INTL_LOAC_BASE_V1"
+    ],
+    "notes": "Turkey national baseline above the shared international layer."
+  },
+  {
+    "packId": "TR_ROE_BASE_V1",
+    "kind": "foundation",
+    "status": "admitted",
+    "dependsOn": [
+      "TR_NATIONAL_BASE_V1"
+    ],
+    "notes": "Turkey national ROE baseline."
+  },
+  {
+    "packId": "TR_COMMAND_AUTHORITY_V1",
+    "kind": "foundation",
+    "status": "admitted",
+    "dependsOn": [
+      "TR_ROE_BASE_V1"
+    ],
+    "notes": "Turkey command-authority baseline."
+  },
+  {
+    "packId": "TR_DELEGATION_CHAIN_V1",
+    "kind": "foundation",
+    "status": "admitted",
+    "dependsOn": [
+      "TR_COMMAND_AUTHORITY_V1"
+    ],
+    "notes": "Turkey delegation-chain baseline."
+  },
+  {
+    "packId": "TR_AIRSPACE_CONTROL_V1",
+    "kind": "domain",
+    "status": "admitted",
+    "dependsOn": [
+      "TR_ROE_BASE_V1",
+      "TR_COMMAND_AUTHORITY_V1",
+      "TR_DELEGATION_CHAIN_V1"
+    ],
+    "notes": "First executable Turkey air-domain pack."
   },
   {
     "packId": "US_NO_STRIKE_LIST_V1",

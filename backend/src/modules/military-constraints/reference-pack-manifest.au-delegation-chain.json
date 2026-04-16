@@ -1,0 +1,12 @@
+{
+  "packId": "AU_DELEGATION_CHAIN_V1",
+  "jurisdiction": "AU",
+  "bundleId": "au-delegation-chain-bundle",
+  "bundleVersion": "0.1.0",
+  "reviewedClauseSetIds": [
+    "au-delegation-chain-core"
+  ],
+  "authorityGraphId": "AUTH-GRAPH-AU-001",
+  "sourceRegistryVersion": "1.0.0",
+  "regressionSuiteVersion": "0.1.0"
+}

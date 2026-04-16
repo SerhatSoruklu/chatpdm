@@ -12,6 +12,7 @@ const { validateReviewedClauseCorpus } = require('./validate-reviewed-clause-cor
 const { validateReferencePack } = require('./validate-reference-pack');
 const {
   getReviewedClauseSetPath,
+  getAuthorityGraphPath,
   readJsonFile,
   resolveModuleRoot,
   sortStrings,
@@ -58,12 +59,28 @@ function loadReviewedClauses(rootDir, reviewedClauseSetIds) {
 }
 
 function buildBundleDraft(manifest) {
+  const authorityOwner = manifest.jurisdiction === 'INTL'
+    ? 'INTERNATIONAL_COMMAND'
+    : manifest.jurisdiction === 'UK'
+      ? 'UK_NATIONAL_COMMAND'
+      : manifest.jurisdiction === 'CA'
+        ? 'CA_NATIONAL_COMMAND'
+        : manifest.jurisdiction === 'AU'
+          ? 'AU_NATIONAL_COMMAND'
+          : manifest.jurisdiction === 'NL'
+            ? 'NL_NATIONAL_COMMAND'
+          : manifest.jurisdiction === 'TR'
+            ? 'TR_NATIONAL_COMMAND'
+          : manifest.jurisdiction === 'NATO'
+        ? 'NATO_COMMAND'
+      : 'NATIONAL_COMMAND';
+
   return {
     bundleId: manifest.bundleId,
     bundleVersion: manifest.bundleVersion,
     status: 'ACTIVE',
     jurisdiction: manifest.jurisdiction,
-    authorityOwner: 'NATIONAL_COMMAND',
+    authorityOwner,
     precedencePolicy: {
       stageOrder: [
         'ADMISSIBILITY',
@@ -141,7 +158,7 @@ function buildReferenceBundle(input) {
 
   const manifest = validation.manifest;
   const sourceRegistryPath = path.join(rootDir, 'fixtures', 'military-source-registry.json');
-  const authorityGraphPath = path.join(rootDir, '__tests__', 'fixtures', 'authority-graph.json');
+  const authorityGraphPath = getAuthorityGraphPath(rootDir, manifest);
   const factSchemaPath = path.join(__dirname, 'military-constraint-fact.schema.json');
   const sourceRegistry = readJsonFile(sourceRegistryPath);
   const authorityGraph = readJsonFile(authorityGraphPath);

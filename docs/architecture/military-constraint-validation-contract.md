@@ -30,9 +30,12 @@ Every rule must contain:
 - `requiredFacts`
 - `predicate`
 - `sourceRefs`
+- `provenance`
 
 The rule shape is closed.
 `additionalProperties` must be `false` everywhere appropriate.
+
+`provenance` is audit-only and must not influence runtime evaluation order, predicate truth, or stage semantics.
 
 ## Required-fact contract
 
@@ -106,7 +109,7 @@ Each rule must declare:
 
 Rules must not rely on implicit superiority or unstated delegation.
 
-If a rule requires delegation and no explicit delegation path exists in the admitted authority graph, evaluation must refuse.
+If a rule requires delegation and no explicit delegation path exists in the admitted authority graph, evaluation must refuse. The delegation edge list must be non-empty when delegation is required.
 
 ## Stage contract
 

@@ -77,6 +77,11 @@
         ]
       },
       "notes": "Foundation delegation-chain gate."
+    },
+    "provenance": {
+      "derivationType": "INTERPRETED",
+      "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+      "parentClauseIds": []
     }
   }
 ]

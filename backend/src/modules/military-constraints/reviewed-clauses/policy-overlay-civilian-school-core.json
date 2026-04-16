@@ -91,6 +91,11 @@
         }
       },
       "notes": "Pack 4 scope restriction for the civilian-school slice."
+    },
+    "provenance": {
+      "derivationType": "INTERPRETED",
+      "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+      "parentClauseIds": []
     }
   },
   {
@@ -152,6 +157,11 @@
         ]
       },
       "notes": "Pack 4 action-kind restriction."
+    },
+    "provenance": {
+      "derivationType": "INTERPRETED",
+      "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+      "parentClauseIds": []
     }
   }
 ]

@@ -1,0 +1,12 @@
+{
+  "packId": "NATO_INTEROP_BASE_V1",
+  "jurisdiction": "NATO",
+  "bundleId": "nato-interop-base-bundle",
+  "bundleVersion": "0.1.0",
+  "reviewedClauseSetIds": [
+    "nato-interop-base-core"
+  ],
+  "authorityGraphId": "AUTH-GRAPH-NATO-001",
+  "sourceRegistryVersion": "1.0.0",
+  "regressionSuiteVersion": "0.1.0"
+}

@@ -1,7 +1,8 @@
 # Reference Pack Coverage Map
 
-This map records the current frozen military-constraints packs, their bounded slices, and the regression coverage that protects them.
-It represents the locked v1 pack surface: Packs 1 through 5 are frozen, and Pack 6+ is post-v1 expansion only.
+This map records the original frozen military-constraints packs, their bounded slices, and the regression coverage that protected the first v1 surface.
+It is historical context for the current multi-jurisdiction admitted surface.
+At the time of the original lock, Packs 1 through 5 were frozen and Pack 6+ was post-v1 expansion only.
 
 | Pack | Jurisdiction | Operational slice | Authority graph | Clause counts by type | Regression coverage | Known exclusions |
 | --- | --- | --- | --- | --- | --- | --- |

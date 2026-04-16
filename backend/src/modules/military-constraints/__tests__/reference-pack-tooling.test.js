@@ -49,6 +49,18 @@ function copyPackArtifacts(targetRoot) {
     path.join(MODULE_DIR, '__tests__', 'fixtures', 'authority-graph.json'),
     path.join(targetRoot, '__tests__', 'fixtures', 'authority-graph.json'),
   );
+  fs.copyFileSync(
+    path.join(MODULE_DIR, '__tests__', 'fixtures', 'authority-graph-intl.json'),
+    path.join(targetRoot, '__tests__', 'fixtures', 'authority-graph-intl.json'),
+  );
+  fs.copyFileSync(
+    path.join(MODULE_DIR, '__tests__', 'fixtures', 'authority-graph-uk.json'),
+    path.join(targetRoot, '__tests__', 'fixtures', 'authority-graph-uk.json'),
+  );
+  fs.copyFileSync(
+    path.join(MODULE_DIR, '__tests__', 'fixtures', 'authority-graph-nato.json'),
+    path.join(targetRoot, '__tests__', 'fixtures', 'authority-graph-nato.json'),
+  );
   fs.cpSync(
     path.join(MODULE_DIR, '__tests__', 'fixtures', 'regression'),
     path.join(targetRoot, '__tests__', 'fixtures', 'regression'),
@@ -105,6 +117,13 @@ test('pack list ordering follows the registry when present', () => {
     const packs = listReferencePacks({ rootDir: root });
 
     assert.deepEqual(packs.map((entry) => entry.packId), [
+      'INTL_LOAC_BASE_V1',
+      'INTL_PROTECTED_PERSON_BASE_V1',
+      'INTL_PROTECTED_SITE_BASE_V1',
+      'UK_NATIONAL_BASE_V1',
+      'UK_ROE_BASE_V1',
+      'UK_COMMAND_AUTHORITY_V1',
+      'UK_DELEGATION_CHAIN_V1',
       'mil-us-core-reference',
       'mil-us-protected-person-state-core-v0.1.0',
       'mil-us-maritime-vbss-core-v0.1.0',
@@ -115,6 +134,9 @@ test('pack list ordering follows the registry when present', () => {
       'US_COMMAND_AUTHORITY_V1',
       'US_DELEGATION_CHAIN_V1',
       'US_PROTECTED_SITE_V1',
+      'NATO_INTEROP_BASE_V1',
+      'ALLIED_AUTHORITY_MERGE_V1',
+      'NATO_ROE_COMPAT_V1',
       'US_COALITION_INTEROP_V1',
       'US_AIRSPACE_CONTROL_V1',
       'US_GROUND_MANEUVER_V1',
@@ -136,142 +158,169 @@ test('pack list ordering follows the registry when present', () => {
       'US_ISR_RETENTION_V1',
       'US_WEAPON_STATUS_V1',
       'US_ALLIED_ROE_MERGE_V1',
+      'UK_AIRSPACE_CONTROL_V1',
+      'UK_GROUND_MANEUVER_V1',
+      'CA_NATIONAL_BASE_V1',
+      'CA_ROE_BASE_V1',
+      'CA_COMMAND_AUTHORITY_V1',
+      'CA_DELEGATION_CHAIN_V1',
+      'CA_AIRSPACE_CONTROL_V1',
+      'AU_NATIONAL_BASE_V1',
+      'AU_ROE_BASE_V1',
+      'AU_COMMAND_AUTHORITY_V1',
+      'AU_DELEGATION_CHAIN_V1',
+      'AU_AIRSPACE_CONTROL_V1',
+      'NL_NATIONAL_BASE_V1',
+      'NL_ROE_BASE_V1',
+      'NL_COMMAND_AUTHORITY_V1',
+      'NL_DELEGATION_CHAIN_V1',
+      'NL_AIRSPACE_CONTROL_V1',
+      'TR_NATIONAL_BASE_V1',
+      'TR_ROE_BASE_V1',
+      'TR_COMMAND_AUTHORITY_V1',
+      'TR_DELEGATION_CHAIN_V1',
+      'TR_AIRSPACE_CONTROL_V1',
     ]);
-    assert.equal(packs.length, 31);
+    assert.equal(packs.length, 63);
 
-    assert.equal(packs[0].kind, 'foundation');
-    assert.equal(packs[0].status, 'baseline');
-    assert.deepEqual(packs[0].dependsOn, []);
-    assert.equal(packs[0].registryPresent, true);
-    assert.equal(Number.isInteger(packs[0].registryOrder), true);
-    assert.equal(packs[5].kind, 'foundation');
-    assert.equal(packs[5].status, 'admitted');
-    assert.deepEqual(packs[5].dependsOn, ['US_CORE_V1']);
-    assert.equal(packs[6].kind, 'foundation');
-    assert.equal(packs[6].status, 'admitted');
-    assert.deepEqual(packs[6].dependsOn, ['US_RULES_OF_ENGAGEMENT_BASE_V1']);
-    assert.equal(packs[7].kind, 'foundation');
-    assert.equal(packs[7].status, 'admitted');
-    assert.deepEqual(packs[7].dependsOn, ['US_CORE_V1', 'US_PROTECTED_PERSON_STATE_V1']);
-    assert.equal(packs[8].kind, 'foundation');
-    assert.equal(packs[8].status, 'admitted');
-    assert.deepEqual(packs[8].dependsOn, ['US_COMMAND_AUTHORITY_V1']);
-    assert.equal(packs[9].kind, 'foundation');
-    assert.equal(packs[9].status, 'admitted');
-    assert.deepEqual(packs[9].dependsOn, ['US_LOAC_COMPLIANCE_V1', 'US_PROTECTED_PERSON_STATE_V1']);
-    assert.equal(packs[10].kind, 'foundation');
-    assert.equal(packs[10].status, 'admitted');
-    assert.deepEqual(packs[10].dependsOn, ['US_RULES_OF_ENGAGEMENT_BASE_V1']);
-    assert.equal(packs[11].kind, 'domain');
-    assert.equal(packs[11].status, 'admitted');
-    assert.deepEqual(packs[11].dependsOn, [
-      'US_RULES_OF_ENGAGEMENT_BASE_V1',
-      'US_LOAC_COMPLIANCE_V1',
-      'US_COMMAND_AUTHORITY_V1',
-      'US_DELEGATION_CHAIN_V1',
+    const byId = new Map(packs.map((entry) => [entry.packId, entry]));
+    const expect = (packId, kind, status, dependsOn, overlayFamily = null, overlayBoundary = null, overlayScope = null) => {
+      const entry = byId.get(packId);
+      assert.ok(entry, `Missing pack entry for ${packId}`);
+      assert.equal(entry.kind, kind, `${packId} kind`);
+      assert.equal(entry.status, status, `${packId} status`);
+      assert.deepEqual(entry.dependsOn, dependsOn, `${packId} dependsOn`);
+      assert.equal(entry.overlayFamily, overlayFamily, `${packId} overlayFamily`);
+      assert.equal(entry.overlayBoundary, overlayBoundary, `${packId} overlayBoundary`);
+      assert.equal(entry.overlayScope, overlayScope, `${packId} overlayScope`);
+      assert.equal(entry.registryPresent, true, `${packId} registryPresent`);
+      assert.equal(Number.isInteger(entry.registryOrder), true, `${packId} registryOrder`);
+    };
+
+    expect('INTL_LOAC_BASE_V1', 'foundation', 'admitted', []);
+    expect('INTL_PROTECTED_PERSON_BASE_V1', 'foundation', 'admitted', ['INTL_LOAC_BASE_V1']);
+    expect('INTL_PROTECTED_SITE_BASE_V1', 'foundation', 'admitted', ['INTL_LOAC_BASE_V1']);
+    expect('UK_NATIONAL_BASE_V1', 'foundation', 'admitted', ['INTL_LOAC_BASE_V1']);
+    expect('UK_ROE_BASE_V1', 'foundation', 'admitted', ['UK_NATIONAL_BASE_V1']);
+    expect('UK_COMMAND_AUTHORITY_V1', 'foundation', 'admitted', ['UK_ROE_BASE_V1']);
+    expect('UK_DELEGATION_CHAIN_V1', 'foundation', 'admitted', ['UK_COMMAND_AUTHORITY_V1']);
+    expect('mil-us-core-reference', 'foundation', 'baseline', []);
+    expect('mil-us-protected-person-state-core-v0.1.0', 'foundation', 'baseline', ['INTL_PROTECTED_PERSON_BASE_V1']);
+    expect('mil-us-maritime-vbss-core-v0.1.0', 'domain', 'baseline', []);
+    expect(
+      'mil-us-medical-protection-core-v0.1.0',
+      'overlay',
+      'baseline',
+      ['INTL_PROTECTED_SITE_BASE_V1', 'US_PROTECTED_PERSON_STATE_V1'],
+      'protection',
+      'person_site_bridge',
+      'jurisdictional',
+    );
+    expect(
+      'mil-us-civilian-school-protection-core-v0.1.0',
+      'overlay',
+      'baseline',
+      ['INTL_PROTECTED_SITE_BASE_V1', 'US_PROTECTED_PERSON_STATE_V1'],
+      'protection',
+      'site',
+      'jurisdictional',
+    );
+    expect('US_RULES_OF_ENGAGEMENT_BASE_V1', 'foundation', 'admitted', ['US_CORE_V1']);
+    expect('US_LOAC_COMPLIANCE_V1', 'foundation', 'admitted', ['US_RULES_OF_ENGAGEMENT_BASE_V1', 'INTL_LOAC_BASE_V1']);
+    expect('US_COMMAND_AUTHORITY_V1', 'foundation', 'admitted', ['US_CORE_V1', 'US_PROTECTED_PERSON_STATE_V1']);
+    expect('US_DELEGATION_CHAIN_V1', 'foundation', 'admitted', ['US_COMMAND_AUTHORITY_V1']);
+    expect(
       'US_PROTECTED_SITE_V1',
-    ]);
-    assert.equal(packs[12].kind, 'domain');
-    assert.equal(packs[12].status, 'admitted');
-    assert.deepEqual(packs[12].dependsOn, [
-      'US_LOAC_COMPLIANCE_V1',
-      'US_COMMAND_AUTHORITY_V1',
-      'US_DELEGATION_CHAIN_V1',
-    ]);
-    assert.equal(packs[13].kind, 'domain');
-    assert.equal(packs[13].status, 'admitted');
-    assert.deepEqual(packs[13].dependsOn, [
-      'US_LOAC_COMPLIANCE_V1',
-      'US_COMMAND_AUTHORITY_V1',
-    ]);
-    assert.equal(packs[14].kind, 'domain');
-    assert.equal(packs[14].status, 'admitted');
-    assert.deepEqual(packs[14].dependsOn, [
-      'US_LOAC_COMPLIANCE_V1',
-      'US_COMMAND_AUTHORITY_V1',
-    ]);
-    assert.equal(packs[15].kind, 'domain');
-    assert.equal(packs[15].status, 'admitted');
-    assert.deepEqual(packs[15].dependsOn, [
-      'US_LOAC_COMPLIANCE_V1',
-      'US_PROTECTED_PERSON_STATE_V1',
-    ]);
-    assert.equal(packs[16].kind, 'overlay');
-    assert.equal(packs[16].status, 'admitted');
-    assert.deepEqual(packs[16].dependsOn, ['US_AIRSPACE_CONTROL_V1']);
-    assert.equal(packs[17].kind, 'overlay');
-    assert.equal(packs[17].status, 'admitted');
-    assert.deepEqual(packs[17].dependsOn, [
+      'foundation',
+      'admitted',
+      ['US_LOAC_COMPLIANCE_V1', 'US_PROTECTED_PERSON_STATE_V1', 'INTL_PROTECTED_SITE_BASE_V1'],
+    );
+    expect('NATO_INTEROP_BASE_V1', 'foundation', 'admitted', ['INTL_LOAC_BASE_V1']);
+    expect('ALLIED_AUTHORITY_MERGE_V1', 'overlay', 'admitted', ['NATO_INTEROP_BASE_V1'], 'coalition_merge', 'coalition', 'coalition');
+    expect('NATO_ROE_COMPAT_V1', 'overlay', 'admitted', ['NATO_INTEROP_BASE_V1'], 'coalition_merge', 'coalition', 'coalition');
+    expect('US_COALITION_INTEROP_V1', 'foundation', 'admitted', ['NATO_INTEROP_BASE_V1']);
+    expect(
       'US_AIRSPACE_CONTROL_V1',
-      'US_LOAC_COMPLIANCE_V1',
-    ]);
-    assert.equal(packs[18].kind, 'overlay');
-    assert.equal(packs[18].status, 'admitted');
-    assert.deepEqual(packs[18].dependsOn, [
-      'US_LOAC_COMPLIANCE_V1',
-      'US_PROTECTED_SITE_V1',
-    ]);
-    assert.equal(packs[19].kind, 'overlay');
-    assert.equal(packs[19].status, 'admitted');
-    assert.deepEqual(packs[19].dependsOn, [
-      'US_PROTECTED_SITE_V1',
-      'US_MEDICAL_PROTECTION_V1',
-    ]);
-    assert.equal(packs[20].kind, 'overlay');
-    assert.equal(packs[20].status, 'admitted');
-    assert.deepEqual(packs[20].dependsOn, [
-      'US_PROTECTED_SITE_V1',
-      'US_CIVILIAN_SCHOOL_PROTECTION_V1',
-    ]);
-    assert.equal(packs[21].kind, 'overlay');
-    assert.equal(packs[21].status, 'admitted');
-    assert.deepEqual(packs[21].dependsOn, ['US_PROTECTED_SITE_V1']);
-    assert.equal(packs[22].kind, 'overlay');
-    assert.equal(packs[22].status, 'admitted');
-    assert.deepEqual(packs[22].dependsOn, ['US_PROTECTED_SITE_V1']);
-    assert.equal(packs[23].kind, 'overlay');
-    assert.equal(packs[23].status, 'admitted');
-    assert.deepEqual(packs[23].dependsOn, [
-      'US_LOAC_COMPLIANCE_V1',
-      'US_PROTECTED_SITE_V1',
-    ]);
-    assert.equal(packs[24].kind, 'overlay');
-    assert.equal(packs[24].status, 'admitted');
-    assert.deepEqual(packs[24].dependsOn, [
-      'US_LOAC_COMPLIANCE_V1',
-      'US_PROTECTED_SITE_V1',
-    ]);
-    assert.equal(packs[25].kind, 'overlay');
-    assert.equal(packs[25].status, 'admitted');
-    assert.deepEqual(packs[25].dependsOn, ['US_LOAC_COMPLIANCE_V1']);
-    assert.equal(packs[26].kind, 'overlay');
-    assert.equal(packs[26].status, 'admitted');
-    assert.deepEqual(packs[26].dependsOn, [
-      'US_AIRSPACE_CONTROL_V1',
+      'domain',
+      'admitted',
+      [
+        'US_RULES_OF_ENGAGEMENT_BASE_V1',
+        'US_LOAC_COMPLIANCE_V1',
+        'US_COMMAND_AUTHORITY_V1',
+        'US_DELEGATION_CHAIN_V1',
+        'US_PROTECTED_SITE_V1',
+      ],
+    );
+    expect(
       'US_GROUND_MANEUVER_V1',
-      'US_MARITIME_VBSS_V1',
+      'domain',
+      'admitted',
+      ['US_LOAC_COMPLIANCE_V1', 'US_COMMAND_AUTHORITY_V1', 'US_DELEGATION_CHAIN_V1'],
+    );
+    expect('US_CHECKPOINT_ADMISSIBILITY_V1', 'domain', 'admitted', ['US_LOAC_COMPLIANCE_V1', 'US_COMMAND_AUTHORITY_V1']);
+    expect('US_SEARCH_AND_SEIZURE_V1', 'domain', 'admitted', ['US_LOAC_COMPLIANCE_V1', 'US_COMMAND_AUTHORITY_V1']);
+    expect('US_DETENTION_HANDLING_V1', 'domain', 'admitted', ['US_LOAC_COMPLIANCE_V1', 'US_PROTECTED_PERSON_STATE_V1']);
+    expect('US_NO_FLY_ZONE_V1', 'overlay', 'admitted', ['US_AIRSPACE_CONTROL_V1'], 'targeting_refinement', 'airspace', 'jurisdictional');
+    expect('US_TARGET_APPROVAL_V1', 'overlay', 'admitted', ['US_AIRSPACE_CONTROL_V1', 'US_LOAC_COMPLIANCE_V1'], 'targeting_refinement', 'authority', 'jurisdictional');
+    expect('US_COLLATERAL_DAMAGE_ASSESSMENT_V1', 'overlay', 'admitted', ['US_LOAC_COMPLIANCE_V1', 'US_PROTECTED_SITE_V1'], 'targeting_refinement', 'civilian_harm', 'jurisdictional');
+    expect('US_HOSPITAL_PROTECTION_V1', 'overlay', 'admitted', ['US_PROTECTED_SITE_V1', 'US_MEDICAL_PROTECTION_V1'], 'protection', 'site', 'jurisdictional');
+    expect('US_SCHOOL_ZONE_RESTRICTION_V1', 'overlay', 'admitted', ['US_PROTECTED_SITE_V1', 'US_CIVILIAN_SCHOOL_PROTECTION_V1'], 'protection', 'site', 'jurisdictional');
+    expect('US_RELIGIOUS_SITE_PROTECTION_V1', 'overlay', 'admitted', ['US_PROTECTED_SITE_V1'], 'protection', 'site', 'jurisdictional');
+    expect('US_CULTURAL_PROPERTY_PROTECTION_V1', 'overlay', 'admitted', ['US_PROTECTED_SITE_V1'], 'protection', 'site', 'jurisdictional');
+    expect('US_AID_DELIVERY_SECURITY_V1', 'overlay', 'admitted', ['US_LOAC_COMPLIANCE_V1', 'US_PROTECTED_SITE_V1'], 'operational_condition', 'mission_route', 'jurisdictional');
+    expect('US_EVACUATION_ROUTE_V1', 'overlay', 'admitted', ['US_LOAC_COMPLIANCE_V1', 'US_PROTECTED_SITE_V1'], 'operational_condition', 'mission_route', 'jurisdictional');
+    expect('US_NIGHT_OPERATION_V1', 'overlay', 'admitted', ['US_LOAC_COMPLIANCE_V1'], 'operational_condition', 'environment', 'jurisdictional');
+    expect('US_WEATHER_LIMITATION_V1', 'overlay', 'admitted', ['US_AIRSPACE_CONTROL_V1', 'US_GROUND_MANEUVER_V1', 'US_MARITIME_VBSS_V1'], 'operational_condition', 'environment', 'jurisdictional');
+    expect('US_SIGNAL_INTERFERENCE_V1', 'overlay', 'admitted', ['US_LOAC_COMPLIANCE_V1', 'US_COMMAND_AUTHORITY_V1'], 'operational_condition', 'environment', 'jurisdictional');
+    expect('US_ISR_RETENTION_V1', 'overlay', 'admitted', ['US_COALITION_INTEROP_V1', 'US_COMMAND_AUTHORITY_V1'], 'retention', 'surveillance_retention', 'jurisdictional');
+    expect('US_WEAPON_STATUS_V1', 'overlay', 'admitted', ['US_LOAC_COMPLIANCE_V1', 'US_COMMAND_AUTHORITY_V1'], 'operational_condition', 'equipment_state', 'jurisdictional');
+    expect('US_ALLIED_ROE_MERGE_V1', 'overlay', 'admitted', ['US_COALITION_INTEROP_V1'], 'coalition_merge', 'coalition', 'jurisdictional');
+    expect('UK_AIRSPACE_CONTROL_V1', 'domain', 'admitted', [
+      'UK_ROE_BASE_V1',
+      'UK_COMMAND_AUTHORITY_V1',
+      'UK_DELEGATION_CHAIN_V1',
     ]);
-    assert.equal(packs[27].kind, 'overlay');
-    assert.equal(packs[27].status, 'admitted');
-    assert.deepEqual(packs[27].dependsOn, [
-      'US_LOAC_COMPLIANCE_V1',
-      'US_COMMAND_AUTHORITY_V1',
+    expect('UK_GROUND_MANEUVER_V1', 'domain', 'admitted', [
+      'UK_ROE_BASE_V1',
+      'UK_COMMAND_AUTHORITY_V1',
+      'UK_DELEGATION_CHAIN_V1',
     ]);
-    assert.equal(packs[28].kind, 'overlay');
-    assert.equal(packs[28].status, 'admitted');
-    assert.deepEqual(packs[28].dependsOn, [
-      'US_COALITION_INTEROP_V1',
-      'US_COMMAND_AUTHORITY_V1',
+    expect('CA_NATIONAL_BASE_V1', 'foundation', 'admitted', ['INTL_LOAC_BASE_V1']);
+    expect('CA_ROE_BASE_V1', 'foundation', 'admitted', ['CA_NATIONAL_BASE_V1']);
+    expect('CA_COMMAND_AUTHORITY_V1', 'foundation', 'admitted', ['CA_ROE_BASE_V1']);
+    expect('CA_DELEGATION_CHAIN_V1', 'foundation', 'admitted', ['CA_COMMAND_AUTHORITY_V1']);
+    expect('CA_AIRSPACE_CONTROL_V1', 'domain', 'admitted', [
+      'CA_ROE_BASE_V1',
+      'CA_COMMAND_AUTHORITY_V1',
+      'CA_DELEGATION_CHAIN_V1',
     ]);
-    assert.equal(packs[29].kind, 'overlay');
-    assert.equal(packs[29].status, 'admitted');
-    assert.deepEqual(packs[29].dependsOn, [
-      'US_LOAC_COMPLIANCE_V1',
-      'US_COMMAND_AUTHORITY_V1',
+    expect('AU_NATIONAL_BASE_V1', 'foundation', 'admitted', ['INTL_LOAC_BASE_V1']);
+    expect('AU_ROE_BASE_V1', 'foundation', 'admitted', ['AU_NATIONAL_BASE_V1']);
+    expect('AU_COMMAND_AUTHORITY_V1', 'foundation', 'admitted', ['AU_ROE_BASE_V1']);
+    expect('AU_DELEGATION_CHAIN_V1', 'foundation', 'admitted', ['AU_COMMAND_AUTHORITY_V1']);
+    expect('AU_AIRSPACE_CONTROL_V1', 'domain', 'admitted', [
+      'AU_ROE_BASE_V1',
+      'AU_COMMAND_AUTHORITY_V1',
+      'AU_DELEGATION_CHAIN_V1',
     ]);
-    assert.equal(packs[30].kind, 'overlay');
-    assert.equal(packs[30].status, 'admitted');
-    assert.deepEqual(packs[30].dependsOn, ['US_COALITION_INTEROP_V1']);
+    expect('NL_NATIONAL_BASE_V1', 'foundation', 'admitted', ['INTL_LOAC_BASE_V1']);
+    expect('NL_ROE_BASE_V1', 'foundation', 'admitted', ['NL_NATIONAL_BASE_V1']);
+    expect('NL_COMMAND_AUTHORITY_V1', 'foundation', 'admitted', ['NL_ROE_BASE_V1']);
+    expect('NL_DELEGATION_CHAIN_V1', 'foundation', 'admitted', ['NL_COMMAND_AUTHORITY_V1']);
+    expect('NL_AIRSPACE_CONTROL_V1', 'domain', 'admitted', [
+      'NL_ROE_BASE_V1',
+      'NL_COMMAND_AUTHORITY_V1',
+      'NL_DELEGATION_CHAIN_V1',
+    ]);
+    expect('TR_NATIONAL_BASE_V1', 'foundation', 'admitted', ['INTL_LOAC_BASE_V1']);
+    expect('TR_ROE_BASE_V1', 'foundation', 'admitted', ['TR_NATIONAL_BASE_V1']);
+    expect('TR_COMMAND_AUTHORITY_V1', 'foundation', 'admitted', ['TR_ROE_BASE_V1']);
+    expect('TR_DELEGATION_CHAIN_V1', 'foundation', 'admitted', ['TR_COMMAND_AUTHORITY_V1']);
+    expect('TR_AIRSPACE_CONTROL_V1', 'domain', 'admitted', [
+      'TR_ROE_BASE_V1',
+      'TR_COMMAND_AUTHORITY_V1',
+      'TR_DELEGATION_CHAIN_V1',
+    ]);
   } finally {
     cleanupRoot(root);
   }

@@ -1,0 +1,12 @@
+{
+  "packId": "CA_ROE_BASE_V1",
+  "jurisdiction": "CA",
+  "bundleId": "ca-roe-base-bundle",
+  "bundleVersion": "0.1.0",
+  "reviewedClauseSetIds": [
+    "ca-roe-base-core"
+  ],
+  "authorityGraphId": "AUTH-GRAPH-CA-001",
+  "sourceRegistryVersion": "1.0.0",
+  "regressionSuiteVersion": "0.1.0"
+}

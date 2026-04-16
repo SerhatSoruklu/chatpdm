@@ -1,6 +1,7 @@
 # Military Constraints Boundary Audit
 
-This audit checks the public Military Constraints surface after the v1 pack lock and Phase 6 projection work.
+This audit checks the public Military Constraints surface after the original v1 pack lock and Phase 6 projection work.
+It is historical context for the current multi-jurisdiction admitted surface.
 
 ## Audit Checklist
 
@@ -22,7 +23,7 @@ This audit checks the public Military Constraints surface after the v1 pack lock
 
 ## Pack Stability
 
-Packs 1 through 5 remain unchanged in the locked v1 surface.
+At the time of the original lock, Packs 1 through 5 remained unchanged in the locked v1 surface.
 
 Validation performed:
 

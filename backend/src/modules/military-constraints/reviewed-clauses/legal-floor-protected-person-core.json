@@ -70,6 +70,11 @@
         ]
       },
       "notes": "Pack 5 direct-participation blocker."
+    },
+    "provenance": {
+      "derivationType": "INTERPRETED",
+      "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+      "parentClauseIds": []
     }
   },
   {
@@ -145,6 +150,11 @@
         ]
       },
       "notes": "Pack 5 civilian/non-combatant default protection."
+    },
+    "provenance": {
+      "derivationType": "INTERPRETED",
+      "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+      "parentClauseIds": []
     }
   },
   {
@@ -220,6 +230,11 @@
         ]
       },
       "notes": "Pack 5 medical and religious personnel protection."
+    },
+    "provenance": {
+      "derivationType": "INTERPRETED",
+      "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+      "parentClauseIds": []
     }
   },
   {
@@ -295,6 +310,11 @@
         ]
       },
       "notes": "Pack 5 hors de combat and detention protection."
+    },
+    "provenance": {
+      "derivationType": "INTERPRETED",
+      "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+      "parentClauseIds": []
     }
   }
 ]
