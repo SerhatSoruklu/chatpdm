@@ -13,16 +13,17 @@ It validates Phase 4 output before exposure and fails closed when structure is i
 ## Allowed Final States
 
 - `valid`
+- `partial`
+- `degraded`
 - `refused`
-- `classified`
 
 ## Deterministic Mapping
 
 - `LIVE_RESOLUTION` -> `valid`
-- `VISIBLE_INSPECTION` -> `valid`
+- `VISIBLE_INSPECTION` -> `partial`
 - `STRUCTURAL_REJECTION` -> `refused`
 - `NO_MATCH` -> `refused`
-- `VOCAB_CLASSIFICATION` -> `classified`
+- `VOCAB_CLASSIFICATION` -> `degraded`
 
 ## Output Shape
 

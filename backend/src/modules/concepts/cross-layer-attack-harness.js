@@ -40,7 +40,7 @@ function detectLeakage(result, expectedFinalState) {
   }
 
   if (
-    result.final_output.state === 'classified'
+    result.resolution_output.type === 'VOCAB_CLASSIFICATION'
     && result.vocabulary_recognition.recognized !== true
   ) {
     return true;
