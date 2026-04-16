@@ -300,20 +300,60 @@ function validatePackRegistry(packRegistry) {
   });
 }
 
+function makeSourceRegistryIndexResult() {
+  return {
+    valid: true,
+    reasonCode: null,
+    errors: [],
+    sourceIndex: new Map(),
+  };
+}
+
+function failSourceRegistryIndex(result, reasonCode, message) {
+  result.valid = false;
+  if (result.reasonCode === null) {
+    result.reasonCode = reasonCode;
+  }
+  result.errors.push(message);
+}
+
+function finishSourceRegistryIndex(result) {
+  return Object.freeze({
+    valid: result.valid,
+    reasonCode: result.reasonCode,
+    errors: Object.freeze([...result.errors]),
+    sourceIndex: result.valid ? result.sourceIndex : new Map(),
+  });
+}
+
 function buildSourceRegistryIndex(sourceRegistry) {
-  const index = new Map();
+  const result = makeSourceRegistryIndexResult();
 
   if (!Array.isArray(sourceRegistry)) {
-    return index;
+    return finishSourceRegistryIndex(result);
   }
 
+  const seenSourceIds = new Set();
+
   sourceRegistry.forEach((entry) => {
-    if (isPlainObject(entry) && typeof entry.sourceId === 'string' && entry.sourceId.length > 0) {
-      index.set(entry.sourceId, entry);
+    if (!isPlainObject(entry) || typeof entry.sourceId !== 'string' || entry.sourceId.length === 0) {
+      return;
     }
+
+    if (seenSourceIds.has(entry.sourceId)) {
+      failSourceRegistryIndex(
+        result,
+        'POLICY_BUNDLE_INVALID',
+        `duplicate sourceId "${entry.sourceId}" in source registry.`,
+      );
+      return;
+    }
+
+    seenSourceIds.add(entry.sourceId);
+    result.sourceIndex.set(entry.sourceId, entry);
   });
 
-  return index;
+  return finishSourceRegistryIndex(result);
 }
 
 function loadManifest(moduleRoot, manifestFile) {

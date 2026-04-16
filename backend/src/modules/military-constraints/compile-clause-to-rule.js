@@ -9,6 +9,7 @@ const {
 const {
   isLocatorBoundToSource,
   isNonEmptyString,
+  buildSourceRegistryIndex,
   isReviewedClauseProvenance,
   normalizeReviewedClauseProvenance,
 } = require('./reference-pack-utils');
@@ -166,22 +167,6 @@ function finish(result) {
     errors: Object.freeze([...result.errors]),
     compiledRule: result.compiledRule ? Object.freeze(result.compiledRule) : null,
   });
-}
-
-function buildSourceRegistryIndex(sourceRegistry) {
-  const registry = new Map();
-
-  if (!Array.isArray(sourceRegistry)) {
-    return registry;
-  }
-
-  sourceRegistry.forEach((entry) => {
-    if (isPlainObject(entry) && typeof entry.sourceId === 'string' && entry.sourceId.length > 0) {
-      registry.set(entry.sourceId, entry);
-    }
-  });
-
-  return registry;
 }
 
 function isCompilableClause(clause) {
@@ -430,7 +415,20 @@ function compileClauseToRule(input) {
     return finish(result);
   }
 
-  const sourceIndex = buildSourceRegistryIndex(sourceRegistry);
+  const sourceRegistryIndex = buildSourceRegistryIndex(sourceRegistry);
+  if (!sourceRegistryIndex.valid) {
+    fail(
+      result,
+      sourceRegistryIndex.reasonCode || MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID,
+      sourceRegistryIndex.errors[0] || 'source registry validation failed.',
+    );
+    sourceRegistryIndex.errors.slice(1).forEach((message) => {
+      result.errors.push(message);
+    });
+    return finish(result);
+  }
+
+  const sourceIndex = sourceRegistryIndex.sourceIndex;
   const sourceEntry = sourceIndex.get(clause.sourceId);
 
   if (!isPlainObject(sourceEntry)) {

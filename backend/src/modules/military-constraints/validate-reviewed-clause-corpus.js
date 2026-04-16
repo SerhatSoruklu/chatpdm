@@ -8,6 +8,7 @@ const {
   isLocatorBoundToSource,
   isNonEmptyString,
   isReviewedClauseProvenance,
+  buildSourceRegistryIndex,
 } = require('./reference-pack-utils');
 
 const COMPILABLE_CLAUSE_TYPES = new Set([
@@ -43,22 +44,6 @@ function finish(result) {
     reasonCode: result.reasonCode,
     errors: Object.freeze([...result.errors]),
   });
-}
-
-function buildSourceIndex(sourceRegistry) {
-  const index = new Map();
-
-  if (!Array.isArray(sourceRegistry)) {
-    return index;
-  }
-
-  sourceRegistry.forEach((entry) => {
-    if (isPlainObject(entry) && typeof entry.sourceId === 'string' && entry.sourceId.length > 0) {
-      index.set(entry.sourceId, entry);
-    }
-  });
-
-  return index;
 }
 
 function validateClauseProvenance(clause, result) {
@@ -99,6 +84,72 @@ function validateClauseProvenance(clause, result) {
   }
 }
 
+function validateComposedProvenanceChains(clauseIndex, result) {
+  const visiting = new Set();
+  const visited = new Set();
+
+  function visit(clauseId, ancestry) {
+    if (!result.valid || visited.has(clauseId)) {
+      return;
+    }
+
+    if (visiting.has(clauseId)) {
+      const cycleStartIndex = ancestry.indexOf(clauseId);
+      const cyclePath = cycleStartIndex >= 0
+        ? [...ancestry.slice(cycleStartIndex), clauseId]
+        : [...ancestry, clauseId];
+      fail(
+        result,
+        MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID,
+        `composed provenance chain contains a cycle: ${cyclePath.join(' -> ')}.`,
+      );
+      return;
+    }
+
+    const clause = clauseIndex.get(clauseId);
+    if (!isPlainObject(clause) || !isReviewedClauseProvenance(clause.provenance) || clause.provenance.derivationType !== 'COMPOSED') {
+      visited.add(clauseId);
+      return;
+    }
+
+    visiting.add(clauseId);
+
+    for (const parentClauseId of clause.provenance.parentClauseIds) {
+      if (!clauseIndex.has(parentClauseId)) {
+        fail(
+          result,
+          MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID,
+          `composed clause ${clause.clauseId} references unknown parentClauseId "${parentClauseId}".`,
+        );
+        break;
+      }
+
+      if (parentClauseId === clauseId) {
+        fail(
+          result,
+          MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID,
+          `composed clause ${clause.clauseId} cannot reference itself as a parentClauseId.`,
+        );
+        break;
+      }
+
+      visit(parentClauseId, [...ancestry, clauseId]);
+      if (!result.valid) {
+        break;
+      }
+    }
+
+    visiting.delete(clauseId);
+    visited.add(clauseId);
+  }
+
+  clauseIndex.forEach((clause, clauseId) => {
+    if (result.valid && isPlainObject(clause) && isReviewedClauseProvenance(clause.provenance) && clause.provenance.derivationType === 'COMPOSED') {
+      visit(clauseId, []);
+    }
+  });
+}
+
 function validateReviewedClauseCorpus(input) {
   const result = makeResult();
   const clauses = isPlainObject(input) && Array.isArray(input.clauses)
@@ -106,13 +157,28 @@ function validateReviewedClauseCorpus(input) {
     : Array.isArray(input.corpus)
       ? input.corpus
       : [];
-  const sourceIndex = buildSourceIndex(isPlainObject(input) ? input.sourceRegistry : null);
+  const sourceRegistryIndex = buildSourceRegistryIndex(isPlainObject(input) ? input.sourceRegistry : null);
   const seenClauseIds = new Set();
+  const clauseIndex = new Map();
 
   if (clauses.length === 0) {
     fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, 'clauses must be a non-empty array.');
     return finish(result);
   }
+
+  if (!sourceRegistryIndex.valid) {
+    fail(
+      result,
+      sourceRegistryIndex.reasonCode || MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID,
+      sourceRegistryIndex.errors[0] || 'source registry validation failed.',
+    );
+    sourceRegistryIndex.errors.slice(1).forEach((message) => {
+      result.errors.push(message);
+    });
+    return finish(result);
+  }
+
+  const sourceIndex = sourceRegistryIndex.sourceIndex;
 
   clauses.forEach((clause) => {
     if (!isPlainObject(clause)) {
@@ -129,6 +195,7 @@ function validateReviewedClauseCorpus(input) {
       fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_CONFLICT, `duplicate clauseId "${clause.clauseId}" detected.`);
     } else {
       seenClauseIds.add(clause.clauseId);
+      clauseIndex.set(clause.clauseId, clause);
     }
 
     const sourceEntry = sourceIndex.get(clause.sourceId);
@@ -189,6 +256,12 @@ function validateReviewedClauseCorpus(input) {
       }
     }
   });
+
+  if (!result.valid) {
+    return finish(result);
+  }
+
+  validateComposedProvenanceChains(clauseIndex, result);
 
   return finish(result);
 }
