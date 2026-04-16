@@ -2,6 +2,7 @@
 
 const {
   MILITARY_CONSTRAINT_REASON_CODES,
+  isMilitaryConstraintReasonCode,
 } = require('./military-constraint-reason-codes');
 const {
   isLocatorBoundToSource,
@@ -372,6 +373,22 @@ function validateRuleProvenance(rule, result) {
   }
 }
 
+function validateRuleEffect(rule, result) {
+  if (!isPlainObject(rule.effect)) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, `rule ${rule.ruleId} must retain an effect object.`);
+    return;
+  }
+
+  if (typeof rule.effect.decision !== 'string' || !VALID_RULE_EFFECT_DECISIONS.has(rule.effect.decision)) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, `rule ${rule.ruleId} must retain a valid effect.decision.`);
+    return;
+  }
+
+  if (typeof rule.effect.reasonCode !== 'string' || !isMilitaryConstraintReasonCode(rule.effect.reasonCode)) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, `rule ${rule.ruleId} must retain a valid effect.reasonCode.`);
+  }
+}
+
 function validateSourceRegistrySnapshot(bundle, rules, result) {
   if (!Array.isArray(bundle.sourceRegistrySnapshot) || bundle.sourceRegistrySnapshot.length === 0) {
     fail(result, MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, 'bundle.sourceRegistrySnapshot must be a non-empty array.');
@@ -490,6 +507,7 @@ function validateBundleIntegrity({ bundle, rules, authorityGraph }) {
   bundleRules.forEach((rule) => {
     if (isPlainObject(rule)) {
       validateRuleProvenance(rule, result);
+      validateRuleEffect(rule, result);
     }
   });
 

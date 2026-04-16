@@ -125,6 +125,54 @@ test('legal-floor prohibition returns REFUSED', () => {
   assertRuntimeDecisionValid(result);
 });
 
+test('reversed stage order is refused during bundle integrity', () => {
+  const bundle = cloneJson(readJson('valid-contract-pack.json'));
+  bundle.precedencePolicy.stageOrder = [
+    'POLICY_OVERLAY',
+    'LEGAL_FLOOR',
+    'ADMISSIBILITY',
+  ];
+  bundle.bundleHash = computeBundleHash(bundle);
+  const facts = readJson('valid-fact-packet.json');
+  alignFacts(bundle, facts);
+
+  const result = evaluateBundle({
+    bundle,
+    facts,
+    factSchema: readSchema('military-constraint-fact.schema.json'),
+  });
+
+  assert.equal(result.decision, 'REFUSED');
+  assert.equal(result.reasonCode, 'POLICY_BUNDLE_INVALID');
+  assert.equal(result.failedStage, 'BUNDLE_INTEGRITY');
+  assert.notEqual(result.failedStage, 'POLICY_OVERLAY');
+  assertRuntimeDecisionValid(result);
+});
+
+test('matched malformed effects fail closed before ALLOWED can be returned', () => {
+  const bundle = cloneJson(readJson('valid-contract-pack.json'));
+  bundle.rules[0].effect = {
+    reasonCode: bundle.rules[0].effect.reasonCode,
+  };
+  bundle.bundleHash = computeBundleHash(bundle);
+  const facts = readJson('valid-fact-packet.json');
+  alignFacts(bundle, facts);
+
+  const result = evaluateBundle({
+    bundle,
+    facts,
+    factSchema: readSchema('military-constraint-fact.schema.json'),
+  });
+
+  assert.equal(result.decision, 'REFUSED');
+  assert.equal(result.reasonCode, 'POLICY_BUNDLE_INVALID');
+  assert.equal(result.failedStage, 'BUNDLE_INTEGRITY');
+  assert.deepEqual(result.failingRuleIds, []);
+  assert.deepEqual(result.ruleTrace, []);
+  assert.notEqual(result.decision, 'ALLOWED');
+  assertRuntimeDecisionValid(result);
+});
+
 test('authority invalid returns REFUSED during bundle admission', () => {
   const bundle = cloneJson(readJson('valid-contract-pack.json'));
   bundle.rules.find((rule) => rule.ruleId === 'MIL-PO-AUTH-0001').authority.delegationEdgeIds = ['NONEXISTENT-EDGE-999'];

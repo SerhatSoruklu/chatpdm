@@ -13,6 +13,12 @@ const {
   validateFactPacket,
 } = require('./fact-schema-utils');
 
+const VALID_RULE_EFFECT_DECISIONS = new Set([
+  'ALLOWED',
+  'REFUSED',
+  'REFUSED_INCOMPLETE',
+]);
+
 function sortByEvaluationOrder(rules, stageOrder) {
   const stageIndex = new Map(stageOrder.map((stage, index) => [stage, index]));
 
@@ -230,8 +236,20 @@ function evaluateBundle(input) {
     }
 
     if (outcome.outcome === 'MATCHED_EFFECT') {
-      if (!outcome.effect || typeof outcome.effect.decision !== 'string') {
-        continue;
+      if (!isPlainObject(outcome.effect)
+        || typeof outcome.effect.decision !== 'string'
+        || !VALID_RULE_EFFECT_DECISIONS.has(outcome.effect.decision)
+        || typeof outcome.effect.reasonCode !== 'string') {
+        failingRuleIds.push(outcome.ruleId);
+        return {
+          ...baseOutput,
+          decision: 'REFUSED',
+          reasonCode: MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID,
+          failedStage: 'BUNDLE_INTEGRITY',
+          failingRuleIds: sortUnique(failingRuleIds.filter(Boolean)),
+          missingFactIds: sortUnique(missingFactIds),
+          ruleTrace,
+        };
       }
 
       if (outcome.effect.decision === 'ALLOWED') {

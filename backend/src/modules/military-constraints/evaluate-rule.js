@@ -12,6 +12,12 @@ function cloneJson(value) {
   return JSON.parse(JSON.stringify(value));
 }
 
+function cloneRuleEffect(rule) {
+  return isPlainObject(rule) && isPlainObject(rule.effect)
+    ? cloneJson(rule.effect)
+    : null;
+}
+
 function getScopeFieldValues(scope, key) {
   if (!isPlainObject(scope) || !Array.isArray(scope[key])) {
     return [];
@@ -135,7 +141,7 @@ function evaluateRule(input) {
       missingFactIds,
       usedFacts: [],
       sourceRefs,
-      effect: cloneJson(rule.effect),
+      effect: cloneRuleEffect(rule),
       reasonCode: 'MISSING_REQUIRED_FACT',
     };
   }
@@ -160,7 +166,7 @@ function evaluateRule(input) {
       missingFactIds: allMissing,
       usedFacts,
       sourceRefs,
-      effect: cloneJson(rule.effect),
+      effect: cloneRuleEffect(rule),
       reasonCode: 'MISSING_REQUIRED_FACT',
     };
   }
@@ -189,7 +195,7 @@ function evaluateRule(input) {
     missingFactIds: [],
     usedFacts,
     sourceRefs,
-    effect: cloneJson(rule.effect),
+    effect: cloneRuleEffect(rule),
     reasonCode: rule.effect && typeof rule.effect.reasonCode === 'string' ? rule.effect.reasonCode : null,
   };
 }
