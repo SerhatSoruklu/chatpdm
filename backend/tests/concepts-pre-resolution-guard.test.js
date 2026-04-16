@@ -34,6 +34,9 @@ test('valid ordinary concepts still resolve through the normal path', () => {
   assert.equal(pipelineResult.resolution_output.type, 'LIVE_RESOLUTION');
   assert.equal(pipelineResult.resolution_output.payload.type, 'concept_match');
   assert.equal(pipelineResult.resolution_output.payload.answer.itemType, 'core_concept');
+  assert.equal(pipelineResult.runtime_telemetry.pre_resolution_guard.refused, false);
+  assert.equal(pipelineResult.runtime_telemetry.final_state, 'valid');
+  assert.equal(pipelineResult.runtime_telemetry.resolution_type, 'LIVE_RESOLUTION');
 });
 
 test('unresolved domain inputs refuse before resolution', () => {
@@ -47,6 +50,10 @@ test('unresolved domain inputs refuse before resolution', () => {
   assert.equal(pipelineResult.final_output.state, 'refused');
   assert.equal(pipelineResult.resolution_output.type, 'NO_MATCH');
   assert.equal(pipelineResult.resolution_output.payload.reason, 'unresolved_domain');
+  assert.equal(pipelineResult.runtime_telemetry.pre_resolution_guard.refused, true);
+  assert.equal(pipelineResult.runtime_telemetry.pre_resolution_guard.reason, 'unresolved_domain');
+  assert.equal(pipelineResult.runtime_telemetry.final_state, 'refused');
+  assert.equal(pipelineResult.runtime_telemetry.resolution_type, 'NO_MATCH');
 });
 
 test('unsupported semantic bridge inputs refuse before resolution', () => {

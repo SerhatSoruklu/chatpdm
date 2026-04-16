@@ -82,8 +82,15 @@ test('runFullPipeline stays deterministic for empty input', () => {
   assert.equal(result.resolution_output.type, 'NO_MATCH');
   assert.equal(result.final_output.state, 'refused');
   assert.equal(result.zeroglare_diagnostics.status, 'clear');
+  assert.equal(result.runtime_telemetry.final_state, 'refused');
+  assert.equal(result.runtime_telemetry.resolution_type, 'NO_MATCH');
+  assert.equal(result.runtime_telemetry.zeroglare.status, 'clear');
   assert.equal(
     Object.prototype.propertyIsEnumerable.call(result, 'zeroglare_diagnostics'),
+    false,
+  );
+  assert.equal(
+    Object.prototype.propertyIsEnumerable.call(result, 'runtime_telemetry'),
     false,
   );
 });
@@ -93,11 +100,22 @@ test('runFullPipeline exposes Zeroglare diagnostics without changing the enumera
 
   assert.equal(result.zeroglare_diagnostics.status, 'clear');
   assert.equal(result.zeroglare_diagnostics.summary.primary_signal, null);
+  assert.equal(result.runtime_telemetry.final_state, 'valid');
+  assert.equal(result.runtime_telemetry.resolution_type, 'LIVE_RESOLUTION');
+  assert.equal(result.runtime_telemetry.pre_resolution_guard.refused, false);
+  assert.equal(result.runtime_telemetry.pre_resolution_guard.reason, null);
+  assert.deepEqual(result.runtime_telemetry.phase_path, [0, 1, 2, 3, 4, 5]);
+  assert.equal(result.runtime_telemetry.zeroglare.status, 'clear');
   assert.equal(
     Object.prototype.propertyIsEnumerable.call(result, 'zeroglare_diagnostics'),
     false,
   );
+  assert.equal(
+    Object.prototype.propertyIsEnumerable.call(result, 'runtime_telemetry'),
+    false,
+  );
   assert.equal(Object.keys(result).includes('zeroglare_diagnostics'), false);
+  assert.equal(Object.keys(result).includes('runtime_telemetry'), false);
 });
 
 test('runFullPipeline rejects ZEE-shaped artifacts at the runtime boundary', () => {
