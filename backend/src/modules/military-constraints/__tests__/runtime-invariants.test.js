@@ -41,6 +41,13 @@ function alignFacts(bundle, facts) {
   facts.bundleHash = bundle.bundleHash;
 }
 
+function alignSourceRegistrySnapshot(bundle, sourceIds) {
+  const allowed = new Set(sourceIds);
+  bundle.sourceRegistrySnapshot = Array.isArray(bundle.sourceRegistrySnapshot)
+    ? bundle.sourceRegistrySnapshot.filter((entry) => allowed.has(entry.sourceId))
+    : [];
+}
+
 function assertRuntimeDecisionValid(result) {
   const ajv = buildAjv();
   const validate = ajv.getSchema('https://chatpdm.local/schemas/runtime-decision.schema.json');
@@ -67,6 +74,7 @@ test('missing required fact can never produce ALLOWED', () => {
     ],
   };
   bundle.rules = [syntheticRule];
+  alignSourceRegistrySnapshot(bundle, [syntheticRule.sourceRefs[0].sourceId]);
   bundle.bundleHash = computeBundleHash(bundle);
   const facts = readJson('valid-fact-packet.json');
   alignFacts(bundle, facts);
@@ -142,6 +150,7 @@ test('same bundle plus same facts always yields identical output', () => {
 
   const first = evaluateBundle(input);
   const firstString = JSON.stringify(first);
+  assert.equal(first.bundleId, bundle.bundleId);
 
   for (let index = 0; index < 100; index += 1) {
     const current = evaluateBundle(cloneJson(input));
@@ -216,14 +225,20 @@ test('runtime never evaluates predicates when required facts are missing', () =>
         { value: 'STRIKE' },
       ],
     },
+    provenance: {
+      derivationType: 'INTERPRETED',
+      transformationNotes: 'Synthetic invariant rule preserves the source-bound short-circuit path.',
+      parentClauseIds: [],
+    },
     sourceRefs: [
       {
         sourceId: 'DOD-LOW-2023',
-        locator: 'invariant-test',
+        locator: 'chapter-5/invariant-test',
       },
     ],
   };
   bundle.rules = [syntheticRule];
+  alignSourceRegistrySnapshot(bundle, [syntheticRule.sourceRefs[0].sourceId]);
   bundle.bundleHash = computeBundleHash(bundle);
 
   const facts = readJson('valid-fact-packet.json');
@@ -240,5 +255,12 @@ test('runtime never evaluates predicates when required facts are missing', () =>
   assert.equal(result.reasonCode, 'MISSING_REQUIRED_FACT');
   assert.deepEqual(result.failingRuleIds, ['MIL-ADM-STOP-0001']);
   assert.deepEqual(result.ruleTrace[0].usedFacts, []);
+  assert.equal(result.bundleId, bundle.bundleId);
+  assert.deepEqual(result.ruleTrace[0].sourceRefs, [
+    {
+      sourceId: 'DOD-LOW-2023',
+      locator: 'chapter-5/invariant-test',
+    },
+  ]);
   assertRuntimeDecisionValid(result);
 });

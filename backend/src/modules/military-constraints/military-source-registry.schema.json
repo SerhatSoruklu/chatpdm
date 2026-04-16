@@ -13,7 +13,10 @@
     "authorityTier",
     "admissibility",
     "extractionQuality",
-    "exampleOnly"
+    "exampleOnly",
+    "sourceVersion",
+    "trustTier",
+    "locator"
   ],
   "properties": {
     "sourceId": {

@@ -116,12 +116,12 @@ Every source registry entry MUST define:
 - `admissibility`
 - `extractionQuality`
 - `exampleOnly`
-
-The following fields are permitted when present:
-
 - `sourceVersion`
 - `trustTier`
 - `locator`
+
+The following fields are permitted when present:
+
 - `normativeOverride`
 - `notes`
 
@@ -149,8 +149,17 @@ Source admission rules:
 
 - Every source referenced by a rule MUST exist in the source registry.
 - Every source used in a compiled bundle MUST match the bundle jurisdiction.
+- Every executable source entry MUST carry an explicit locator anchor, and executable clause/rule locators MUST remain bound to that anchor.
 - A source with role `EXAMPLE_ONLY` MUST NOT enter the compilable corpus unless `normativeOverride` is explicitly true.
 - A source reference that resolves only by inference or fuzzy matching MUST fail admission.
+
+Reviewed clause rules:
+
+- Every reviewed clause artifact MUST carry explicit provenance metadata.
+- `provenance.derivationType` MUST be one of `DIRECT`, `INTERPRETED`, `COMPOSED`, or `ILLUSTRATIVE`.
+- `DIRECT` and `INTERPRETED` clauses MUST keep `parentClauseIds` empty.
+- `COMPOSED` clauses MUST define at least one `parentClauseId`.
+- `EXAMPLE_ONLY` clauses MUST remain `ILLUSTRATIVE` and non-executable under the current contracts.
 
 FAIL IF:
 
@@ -163,10 +172,14 @@ FAIL IF:
 - a source has no `admissibility`
 - a source has no `extractionQuality`
 - a source has no `exampleOnly`
+- a source has no `sourceVersion`
+- a source has no `trustTier`
+- a source has no `locator`
 - two sources share the same `sourceId`
 - a rule references an unknown source
 - a referenced source jurisdiction does not match the bundle jurisdiction
 - an example-only source enters the compilable corpus without explicit normative override
+- a reviewed clause artifact has missing or contradictory provenance metadata
 
 ## 8. Fact Schema Contract
 
@@ -228,6 +241,7 @@ Every rule MUST define:
 - `requiredFacts`
 - `predicate`
 - `sourceRefs`
+- `provenance`
 
 Rule requirements:
 
@@ -240,12 +254,16 @@ Rule requirements:
 - `effect.reasonCode` MUST resolve to the closed military-constraint reason-code enum.
 - `scope` MUST remain within the declared jurisdiction and domain context.
 - `scope.domains` MUST use only the declared domain enum values supported by the runtime.
-- `sourceRefs` MUST resolve to declared entries in `sources`.
+- `sourceRefs` MUST resolve to declared entries in the source registry.
 - `predicate` MUST be deterministic and machine-evaluable.
 - `predicate` MUST conform to a finite, schema-validated predicate grammar supported by the runtime.
 - `authority` MUST be present when the rule depends on authority or delegation semantics.
+- `provenance` MUST preserve the reviewed-clause derivation record and MUST remain audit-only.
+- Compiled rules MUST use `DIRECT`, `INTERPRETED`, or `COMPOSED` provenance only.
+- `COMPOSED` compiled rules MUST carry parent clause linkage and other compiled rules MUST keep `parentClauseIds` empty.
+- `provenance` MUST NOT influence runtime evaluation order, predicate truth, or stage semantics.
 - `authority.minimumLevelId` MUST reference a declared authority level when authority semantics are used.
-- `authority.delegationEdgeIds` MUST reference declared delegation edges when delegation is required.
+- `authority.delegationEdgeIds` MUST reference declared delegation edges when delegation is required, and the array MUST be non-empty in that case.
 - `priority` MUST participate only in deterministic ordering where the runtime already uses ordering.
 
 The supported predicate grammar MUST remain finite and schema-validated.
@@ -280,6 +298,7 @@ FAIL IF:
 - `priority` is missing or negative
 - `status` is invalid
 - `sourceRefs` is missing or unresolved
+- `provenance` is missing, contradictory, or illustrative in a compiled rule
 - `predicate` contains undeclared operators
 - `predicate` contains runtime-evaluated expressions
 - `predicate` contains non-schema-defined structures
@@ -287,6 +306,7 @@ FAIL IF:
 - `scope` crosses outside the declared pack scope
 - `authority` is required but absent
 - `authority.minimumLevelId` is unresolved
+- `authority.delegationEdgeIds` are empty when delegation is required
 - `authority.delegationEdgeIds` reference unknown delegation edges
 
 Same-stage conflicting active rules MUST cause validation failure.

@@ -141,11 +141,16 @@ function getExpectedDecision(expectedSnapshots, caseId) {
   return expected;
 }
 
-function assertDecisionMatchesSnapshot(actual, expected) {
+function assertDecisionMatchesSnapshot(actual, expected, bundle) {
   assert.equal(actual.decision, expected.decision, `decision mismatch for ${expected.caseId}`);
   assert.equal(actual.reasonCode, expected.reasonCode, `reasonCode mismatch for ${expected.caseId}`);
   assert.equal(actual.failedStage, expected.failedStage, `failedStage mismatch for ${expected.caseId}`);
   assert.deepEqual(actual.failingRuleIds, expected.failingRuleIds, `failingRuleIds mismatch for ${expected.caseId}`);
+  assert.equal(actual.bundleId, bundle.bundleId, `bundleId mismatch for ${expected.caseId}`);
+  assert.ok(
+    actual.ruleTrace.every((entry) => Array.isArray(entry.sourceRefs) && entry.sourceRefs.every((ref) => typeof ref.sourceId === 'string' && typeof ref.locator === 'string')),
+    `source refs mismatch for ${expected.caseId}`,
+  );
 }
 
 function assertRuntimeDecisionValid(result) {
@@ -231,7 +236,7 @@ test('reference bundle regression snapshots stay stable', () => {
       factSchema,
     });
 
-    assertDecisionMatchesSnapshot(result, expected);
+    assertDecisionMatchesSnapshot(result, expected, bundle);
     assertRuntimeDecisionValid(result);
   });
 });

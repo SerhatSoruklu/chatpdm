@@ -11,6 +11,11 @@
     "machineCandidate": true,
     "ambiguityStatus": "RESOLVED",
     "reviewStatus": "COMPILATION_READY",
-    "reviewNotes": "Shared international protected-site baseline."
+    "reviewNotes": "Shared international protected-site baseline.",
+    "provenance": {
+      "derivationType": "INTERPRETED",
+      "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+      "parentClauseIds": []
+    }
   }
 ]

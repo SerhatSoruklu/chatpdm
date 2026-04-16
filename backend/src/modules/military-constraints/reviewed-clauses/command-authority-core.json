@@ -77,6 +77,11 @@
         ]
       },
       "notes": "Foundation command authority gate for reserved higher command."
+    },
+    "provenance": {
+      "derivationType": "INTERPRETED",
+      "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+      "parentClauseIds": []
     }
   },
   {
@@ -157,6 +162,11 @@
         ]
       },
       "notes": "Foundation command authority gate for national caveats."
+    },
+    "provenance": {
+      "derivationType": "INTERPRETED",
+      "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+      "parentClauseIds": []
     }
   }
 ]

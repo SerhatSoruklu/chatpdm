@@ -98,6 +98,11 @@
         ]
       },
       "notes": "Pack 4 authority refusal after confirmed school-object continuation."
+    },
+    "provenance": {
+      "derivationType": "INTERPRETED",
+      "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+      "parentClauseIds": []
     }
   },
   {
@@ -112,6 +117,11 @@
     "machineCandidate": false,
     "ambiguityStatus": "RESOLVED",
     "reviewStatus": "APPROVED",
-    "reviewNotes": "Review-only continuation note for confirmed school-object authorization; non-executable by design."
+    "reviewNotes": "Review-only continuation note for confirmed school-object authorization; non-executable by design.",
+    "provenance": {
+      "derivationType": "INTERPRETED",
+      "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+      "parentClauseIds": []
+    }
   }
 ]

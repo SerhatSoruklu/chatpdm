@@ -6,6 +6,12 @@ const {
 const {
   MILITARY_CONSTRAINT_REASON_CODES,
 } = require('./military-constraint-reason-codes');
+const {
+  isLocatorBoundToSource,
+  isNonEmptyString,
+  isReviewedClauseProvenance,
+  normalizeReviewedClauseProvenance,
+} = require('./reference-pack-utils');
 
 const COMPILER_VERSION = '1.0.0';
 
@@ -93,6 +99,47 @@ function cloneJson(value) {
 
 function sortStrings(values) {
   return [...new Set(values)].sort((left, right) => left.localeCompare(right));
+}
+
+function validateClauseProvenance(clause, result) {
+  if (!isReviewedClauseProvenance(clause.provenance)) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `clause ${clause.clauseId} must include explicit provenance metadata.`);
+    return null;
+  }
+
+  const provenance = clause.provenance;
+
+  if (clause.layer === 'EXAMPLE_ONLY' && provenance.derivationType !== 'ILLUSTRATIVE') {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `example-only clause ${clause.clauseId} must be marked ILLUSTRATIVE.`);
+    return null;
+  }
+
+  if (provenance.derivationType === 'DIRECT' && clause.rawText !== clause.normalizedText) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `direct provenance for clause ${clause.clauseId} must preserve source text exactly.`);
+    return null;
+  }
+
+  if (provenance.derivationType === 'INTERPRETED' && clause.rawText === clause.normalizedText) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `interpreted provenance for clause ${clause.clauseId} requires a normalized transformation.`);
+    return null;
+  }
+
+  if (provenance.derivationType === 'COMPOSED') {
+    if (!Array.isArray(provenance.parentClauseIds) || provenance.parentClauseIds.length === 0) {
+      fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `composed clause ${clause.clauseId} requires parentClauseIds.`);
+      return null;
+    }
+  } else if (Array.isArray(provenance.parentClauseIds) && provenance.parentClauseIds.length > 0) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `clause ${clause.clauseId} may only declare parentClauseIds when provenance is COMPOSED.`);
+    return null;
+  }
+
+  if (provenance.derivationType === 'ILLUSTRATIVE') {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `illustrative clause ${clause.clauseId} cannot compile into executable output.`);
+    return null;
+  }
+
+  return normalizeReviewedClauseProvenance(provenance);
 }
 
 function makeResult() {
@@ -206,7 +253,7 @@ function buildNotes(clause, sourceEntry, compilerVersion) {
   ].join('; ');
 }
 
-function buildLegalFloorRule(clause, sourceEntry, compilerVersion) {
+function buildLegalFloorRule(clause, sourceEntry, compilerVersion, provenance) {
   const minimumLevelId = clause.jurisdiction === 'INTL'
     ? 'UNIT'
     : LEGAL_FLOOR_PROHIBITION_TEMPLATE.authority.minimumLevelId;
@@ -236,13 +283,14 @@ function buildLegalFloorRule(clause, sourceEntry, compilerVersion) {
         locator: clause.locator,
       },
     ],
+    provenance,
     notes: buildNotes(clause, sourceEntry, compilerVersion),
   };
 
   return sortRuleForBundle(rule);
 }
 
-function buildPolicyOverlayRule(clause, sourceEntry, compilerVersion) {
+function buildPolicyOverlayRule(clause, sourceEntry, compilerVersion, provenance) {
   const rule = {
     ruleId: `CR-${clause.clauseId}`,
     version: 1,
@@ -265,13 +313,14 @@ function buildPolicyOverlayRule(clause, sourceEntry, compilerVersion) {
         locator: clause.locator,
       },
     ],
+    provenance,
     notes: buildNotes(clause, sourceEntry, compilerVersion),
   };
 
   return sortRuleForBundle(rule);
 }
 
-function buildRequirementRule(clause, sourceEntry, compilerVersion, result) {
+function buildRequirementRule(clause, sourceEntry, compilerVersion, provenance, result) {
   const hint = isPlainObject(clause.compilationHint) ? clause.compilationHint : null;
 
   if (!isPlainObject(hint)) {
@@ -319,6 +368,16 @@ function buildRequirementRule(clause, sourceEntry, compilerVersion, result) {
     return null;
   }
 
+  const requiresExplicitDelegation = Boolean(hint.authority && hint.authority.requiresExplicitDelegation);
+  const delegationEdgeIds = Array.isArray(hint.authority && hint.authority.delegationEdgeIds)
+    ? [...hint.authority.delegationEdgeIds]
+    : [];
+
+  if (requiresExplicitDelegation && delegationEdgeIds.length === 0) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.AUTHORITY_UNRESOLVED, `requirement clause ${clause.clauseId} requires an explicit delegation path.`);
+    return null;
+  }
+
   const rule = {
     ruleId: `CR-${clause.clauseId}`,
     version: 1,
@@ -334,10 +393,8 @@ function buildRequirementRule(clause, sourceEntry, compilerVersion, result) {
     },
     authority: {
       minimumLevelId: hint.authority && typeof hint.authority.minimumLevelId === 'string' ? hint.authority.minimumLevelId : 'PLATOON',
-      requiresExplicitDelegation: Boolean(hint.authority && hint.authority.requiresExplicitDelegation),
-      delegationEdgeIds: Array.isArray(hint.authority && hint.authority.delegationEdgeIds)
-        ? [...hint.authority.delegationEdgeIds]
-        : [],
+      requiresExplicitDelegation,
+      delegationEdgeIds,
     },
     requiredFacts: [...hint.requiredFacts],
     predicate: cloneJson(hint.predicate),
@@ -347,6 +404,7 @@ function buildRequirementRule(clause, sourceEntry, compilerVersion, result) {
         locator: clause.locator,
       },
     ],
+    provenance,
     notes: buildNotes(clause, sourceEntry, compilerVersion),
   };
 
@@ -385,6 +443,21 @@ function compileClauseToRule(input) {
     return finish(result);
   }
 
+  if (!isNonEmptyString(sourceEntry.locator)) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, `sourceId "${sourceEntry.sourceId}" is missing a locator.`);
+    return finish(result);
+  }
+
+  if (!isLocatorBoundToSource(sourceEntry.locator, clause.locator)) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, `clause ${clause.clauseId} locator "${clause.locator}" is not bound to source locator anchor "${sourceEntry.locator}".`);
+    return finish(result);
+  }
+
+  const provenance = validateClauseProvenance(clause, result);
+  if (!result.valid) {
+    return finish(result);
+  }
+
   if (clause.machineCandidate !== true) {
     fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `clause ${clause.clauseId} is not marked machineCandidate.`);
   }
@@ -417,7 +490,7 @@ function compileClauseToRule(input) {
   if (clause.layer === 'LEGAL_FLOOR') {
     if (clause.clauseType !== 'PROHIBITION') {
       if (clause.clauseType === 'REQUIREMENT') {
-        result.compiledRule = buildRequirementRule(clause, sourceEntry, compilerVersion, result);
+        result.compiledRule = buildRequirementRule(clause, sourceEntry, compilerVersion, provenance, result);
         return finish(result);
       }
 
@@ -425,13 +498,13 @@ function compileClauseToRule(input) {
       return finish(result);
     }
 
-    result.compiledRule = buildLegalFloorRule(clause, sourceEntry, compilerVersion);
+    result.compiledRule = buildLegalFloorRule(clause, sourceEntry, compilerVersion, provenance);
     return finish(result);
   }
 
   if (clause.layer === 'POLICY_OVERLAY') {
     if (clause.clauseType === 'REQUIREMENT') {
-      result.compiledRule = buildRequirementRule(clause, sourceEntry, compilerVersion, result);
+      result.compiledRule = buildRequirementRule(clause, sourceEntry, compilerVersion, provenance, result);
       return finish(result);
     }
 
@@ -440,7 +513,7 @@ function compileClauseToRule(input) {
       return finish(result);
     }
 
-    result.compiledRule = buildPolicyOverlayRule(clause, sourceEntry, compilerVersion);
+    result.compiledRule = buildPolicyOverlayRule(clause, sourceEntry, compilerVersion, provenance);
     return finish(result);
   }
 

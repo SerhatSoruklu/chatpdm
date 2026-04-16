@@ -56,7 +56,7 @@
     "exampleOnly": false,
     "sourceVersion": "2024",
     "trustTier": "ROE_STRUCTURE",
-    "locator": "roe-baseline/activation-and-authorization",
+    "locator": "roe-baseline",
     "notes": "UK ROE baseline extract from the shared MOD guide."
   },
   {
@@ -86,7 +86,7 @@
     "exampleOnly": false,
     "sourceVersion": "2024",
     "trustTier": "ROE_STRUCTURE",
-    "locator": "delegation-baseline/explicit-delegation",
+    "locator": "delegation-baseline",
     "notes": "UK delegation-chain extract from the shared MOD guide."
   },
   {
@@ -116,7 +116,7 @@
     "exampleOnly": false,
     "sourceVersion": "2024",
     "trustTier": "ROE_STRUCTURE",
-    "locator": "roe-baseline/activation-and-authorization",
+    "locator": "roe-baseline",
     "notes": "Canada ROE baseline extract above the shared INTL layer."
   },
   {
@@ -176,7 +176,7 @@
     "exampleOnly": false,
     "sourceVersion": "2024",
     "trustTier": "ROE_STRUCTURE",
-    "locator": "roe-baseline/activation-and-authorization",
+    "locator": "roe-baseline",
     "notes": "Australia ROE baseline extract above the shared INTL layer."
   },
   {
@@ -236,7 +236,7 @@
     "exampleOnly": false,
     "sourceVersion": "2024",
     "trustTier": "ROE_STRUCTURE",
-    "locator": "roe-baseline/activation-and-authorization",
+    "locator": "roe-baseline",
     "notes": "Netherlands ROE baseline extract above the shared INTL layer."
   },
   {
@@ -296,7 +296,7 @@
     "exampleOnly": false,
     "sourceVersion": "2024",
     "trustTier": "ROE_STRUCTURE",
-    "locator": "roe-baseline/activation-and-authorization",
+    "locator": "roe-baseline",
     "notes": "Turkey ROE baseline extract above the shared INTL layer."
   },
   {

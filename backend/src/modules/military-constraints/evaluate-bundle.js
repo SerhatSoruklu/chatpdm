@@ -90,6 +90,7 @@ function collectMissingBundleIdentity(bundle, facts) {
  *   missingFactIds: string[],
  *   authorityTrace: object,
  *   ruleTrace: Array<object>,
+ *   bundleId: string|null,
  *   bundleVersion: string|null,
  *   bundleHash: string|null
  * }}
@@ -98,6 +99,7 @@ function evaluateBundle(input) {
   const bundle = isPlainObject(input) ? input.bundle : null;
   const facts = isPlainObject(input) ? input.facts : null;
   const factSchema = isPlainObject(input) ? input.factSchema : null;
+  const bundleId = bundle && typeof bundle.bundleId === 'string' ? bundle.bundleId : null;
 
   const emptyOutput = {
     decision: 'REFUSED',
@@ -110,6 +112,7 @@ function evaluateBundle(input) {
       validation: null,
     },
     ruleTrace: [],
+    bundleId,
     bundleVersion: bundle && typeof bundle.bundleVersion === 'string' ? bundle.bundleVersion : null,
     bundleHash: bundle && typeof bundle.bundleHash === 'string' ? bundle.bundleHash : null,
   };
@@ -144,6 +147,7 @@ function evaluateBundle(input) {
       authorityGraphId: bundle.authorityGraphId,
     },
     ruleTrace: [],
+    bundleId,
     bundleVersion: typeof bundle.bundleVersion === 'string' ? bundle.bundleVersion : null,
     bundleHash: typeof bundle.bundleHash === 'string' ? bundle.bundleHash : null,
   };
@@ -204,6 +208,7 @@ function evaluateBundle(input) {
       matched: outcome.matched,
       missingFactIds: outcome.missingFactIds,
       usedFacts: outcome.usedFacts,
+      sourceRefs: outcome.sourceRefs,
     });
 
     if (outcome.outcome === 'NOT_APPLICABLE' || outcome.outcome === 'NO_MATCH') {

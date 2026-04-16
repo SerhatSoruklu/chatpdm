@@ -40,5 +40,10 @@
       "sourceId": "DOD-LOW-2023",
       "locator": "admissibility"
     }
-  ]
+  ],
+  "provenance": {
+    "derivationType": "INTERPRETED",
+    "transformationNotes": "Compiled rule artifact preserved for auditability.",
+    "parentClauseIds": []
+  }
 }

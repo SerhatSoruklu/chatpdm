@@ -96,6 +96,11 @@
         ]
       },
       "notes": "ISR retention scope adjusted to the admitted coalition/authority layer."
+    },
+    "provenance": {
+      "derivationType": "INTERPRETED",
+      "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+      "parentClauseIds": []
     }
   }
 ]

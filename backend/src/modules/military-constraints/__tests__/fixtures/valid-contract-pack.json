@@ -1,7 +1,7 @@
 {
   "bundleId": "mil-us-example-valid",
   "bundleVersion": "1.0.0",
-  "bundleHash": "sha256:5851d1a28f47e54dbfcf9e5395ef15044c3ae10df1e7e57387acb1259d60b86a",
+  "bundleHash": "sha256:fd4070069882af1ba6a0f061b4f32b6cab00dbe53be111fc60d9555be79ffa47",
   "status": "ACTIVE",
   "jurisdiction": "US",
   "authorityOwner": "NATIONAL_COMMAND",
@@ -93,13 +93,6 @@
       "sourceVersion": "2022",
       "trustTier": "ROE_STRUCTURE",
       "locator": "authoring-flow"
-    },
-    {
-      "sourceId": "UNODC-GMCP-ROE",
-      "role": "EXAMPLE_ONLY",
-      "sourceVersion": "2024",
-      "trustTier": "EXAMPLE_ONLY",
-      "locator": "vbss-and-gangway-access-control"
     }
   ],
   "rules": [
@@ -146,9 +139,14 @@
       "sourceRefs": [
         {
           "sourceId": "DOD-LOW-2023",
-          "locator": "admissibility"
+          "locator": "chapter-5/5.3.2"
         }
-      ]
+      ],
+      "provenance": {
+        "derivationType": "INTERPRETED",
+        "transformationNotes": "Compiled rule artifact preserved for auditability.",
+        "parentClauseIds": []
+      }
     },
     {
       "ruleId": "MIL-LF-TGT-0001",
@@ -214,7 +212,12 @@
           "sourceId": "DOD-LOW-2023",
           "locator": "chapter-5"
         }
-      ]
+      ],
+      "provenance": {
+        "derivationType": "INTERPRETED",
+        "transformationNotes": "Compiled rule artifact preserved for auditability.",
+        "parentClauseIds": []
+      }
     },
     {
       "ruleId": "MIL-PO-AUTH-0001",
@@ -262,9 +265,14 @@
       "sourceRefs": [
         {
           "sourceId": "NEWPORT-ROE-2022",
-          "locator": "authority-structure"
+          "locator": "authoring-flow/authority-structure"
         }
-      ]
+      ],
+      "provenance": {
+        "derivationType": "INTERPRETED",
+        "transformationNotes": "Compiled rule artifact preserved for auditability.",
+        "parentClauseIds": []
+      }
     }
   ],
   "compiledAt": "2026-04-13T18:00:00Z"

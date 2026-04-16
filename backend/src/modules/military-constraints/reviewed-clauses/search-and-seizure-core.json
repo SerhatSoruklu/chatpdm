@@ -104,6 +104,11 @@
         ]
       },
       "notes": "Reusable search and seizure admissibility gate."
+    },
+    "provenance": {
+      "derivationType": "INTERPRETED",
+      "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+      "parentClauseIds": []
     }
   }
 ]

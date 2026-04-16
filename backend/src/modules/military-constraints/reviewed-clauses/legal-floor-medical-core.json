@@ -69,6 +69,11 @@
         ]
       },
       "notes": "Pack 3 protected-medical classification blocker."
+    },
+    "provenance": {
+      "derivationType": "INTERPRETED",
+      "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+      "parentClauseIds": []
     }
   },
   {
@@ -137,6 +142,11 @@
         ]
       },
       "notes": "Pack 3 missing-loss-of-protection blocker."
+    },
+    "provenance": {
+      "derivationType": "INTERPRETED",
+      "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+      "parentClauseIds": []
     }
   },
   {
@@ -209,6 +219,11 @@
         ]
       },
       "notes": "Pack 3 explicit-loss continuation gate."
+    },
+    "provenance": {
+      "derivationType": "INTERPRETED",
+      "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+      "parentClauseIds": []
     }
   },
   {
@@ -281,6 +296,11 @@
         ]
       },
       "notes": "Pack 3 default medical protection refusal."
+    },
+    "provenance": {
+      "derivationType": "INTERPRETED",
+      "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+      "parentClauseIds": []
     }
   }
 ]

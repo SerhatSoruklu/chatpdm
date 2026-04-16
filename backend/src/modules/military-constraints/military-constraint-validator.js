@@ -3,6 +3,11 @@
 const {
   MILITARY_CONSTRAINT_REASON_CODES,
 } = require('./military-constraint-reason-codes');
+const {
+  isLocatorBoundToSource,
+  isNonEmptyString,
+  isReviewedClauseProvenance,
+} = require('./reference-pack-utils');
 
 function isPlainObject(value) {
   return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
@@ -333,6 +338,100 @@ function getRuleSemanticSignature(rule) {
   }));
 }
 
+function ruleSourceRefs(rule) {
+  if (!isPlainObject(rule) || !Array.isArray(rule.sourceRefs)) {
+    return [];
+  }
+
+  return rule.sourceRefs.filter((entry) => isPlainObject(entry));
+}
+
+function validateRuleProvenance(rule, result) {
+  if (!isReviewedClauseProvenance(rule.provenance)) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `rule ${rule.ruleId} must retain provenance metadata.`);
+    return;
+  }
+
+  const provenance = rule.provenance;
+
+  if (provenance.derivationType === 'ILLUSTRATIVE') {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `rule ${rule.ruleId} cannot retain illustrative provenance.`);
+    return;
+  }
+
+  if (provenance.derivationType === 'COMPOSED') {
+    if (!Array.isArray(provenance.parentClauseIds) || provenance.parentClauseIds.length === 0) {
+      fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `rule ${rule.ruleId} requires parentClauseIds when provenance is COMPOSED.`);
+      return;
+    }
+    return;
+  }
+
+  if (Array.isArray(provenance.parentClauseIds) && provenance.parentClauseIds.length > 0) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `rule ${rule.ruleId} may only declare parentClauseIds when provenance is COMPOSED.`);
+  }
+}
+
+function validateSourceRegistrySnapshot(bundle, rules, result) {
+  if (!Array.isArray(bundle.sourceRegistrySnapshot) || bundle.sourceRegistrySnapshot.length === 0) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, 'bundle.sourceRegistrySnapshot must be a non-empty array.');
+    return;
+  }
+
+  const snapshotIndex = new Map();
+  bundle.sourceRegistrySnapshot.forEach((entry) => {
+    if (!isPlainObject(entry)) {
+      fail(result, MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, 'bundle.sourceRegistrySnapshot must contain plain objects.');
+      return;
+    }
+
+    if (!isNonEmptyString(entry.sourceId) || !isNonEmptyString(entry.role) || !isNonEmptyString(entry.sourceVersion) || !isNonEmptyString(entry.trustTier) || !isNonEmptyString(entry.locator)) {
+      fail(result, MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, 'bundle.sourceRegistrySnapshot entries must retain sourceId, role, sourceVersion, trustTier, and locator.');
+      return;
+    }
+
+    if (snapshotIndex.has(entry.sourceId)) {
+      fail(result, MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, `bundle.sourceRegistrySnapshot contains duplicate sourceId "${entry.sourceId}".`);
+      return;
+    }
+
+    snapshotIndex.set(entry.sourceId, entry);
+  });
+
+  if (!result.valid) {
+    return;
+  }
+
+  const usedSourceIds = sortStrings([
+    ...new Set(rules.flatMap((rule) => ruleSourceRefs(rule).map((entry) => entry.sourceId))),
+  ].filter((sourceId) => isNonEmptyString(sourceId)));
+  const snapshotSourceIds = sortStrings([...snapshotIndex.keys()]);
+
+  if (usedSourceIds.length !== snapshotSourceIds.length || usedSourceIds.some((sourceId, index) => sourceId !== snapshotSourceIds[index])) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, 'bundle.sourceRegistrySnapshot must match the sourceRefs used by bundle.rules exactly.');
+    return;
+  }
+
+  rules.forEach((rule) => {
+    ruleSourceRefs(rule).forEach((sourceRef) => {
+      if (!isNonEmptyString(sourceRef.sourceId) || !isNonEmptyString(sourceRef.locator)) {
+        fail(result, MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, `rule ${rule.ruleId} sourceRefs must retain sourceId and locator.`);
+        return;
+      }
+
+      const snapshotEntry = snapshotIndex.get(sourceRef.sourceId);
+      if (!isPlainObject(snapshotEntry)) {
+        fail(result, MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, `bundle.sourceRegistrySnapshot is missing sourceId "${sourceRef.sourceId}".`);
+        return;
+      }
+
+      if (!isLocatorBoundToSource(snapshotEntry.locator, sourceRef.locator)) {
+        fail(result, MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, `rule ${rule.ruleId} sourceRef locator "${sourceRef.locator}" is not bound to source locator anchor "${snapshotEntry.locator}".`);
+      }
+    });
+  });
+}
+
 function validateBundleIntegrity({ bundle, rules, authorityGraph }) {
   const result = makeResult();
 
@@ -388,6 +487,16 @@ function validateBundleIntegrity({ bundle, rules, authorityGraph }) {
     fail(result, MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, 'bundle.rules must match the supplied rules array exactly.');
   }
 
+  bundleRules.forEach((rule) => {
+    if (isPlainObject(rule)) {
+      validateRuleProvenance(rule, result);
+    }
+  });
+
+  if (!result.valid) {
+    return finish(result);
+  }
+
   if (authorityGraph && Array.isArray(authorityGraph.levels)) {
     const graphLevelIds = new Set(
       authorityGraph.levels
@@ -400,6 +509,8 @@ function validateBundleIntegrity({ bundle, rules, authorityGraph }) {
       fail(result, MILITARY_CONSTRAINT_REASON_CODES.AUTHORITY_UNRESOLVED, 'bundle.authorityOwner must resolve inside authorityGraph.levels.');
     }
   }
+
+  validateSourceRegistrySnapshot(bundle, incomingRules, result);
 
   return finish(result);
 }
@@ -447,6 +558,10 @@ function validateAuthorityReferences(input) {
 
     if (typeof rule.authority.minimumLevelId === 'string' && rule.authority.minimumLevelId.length > 0 && !levelIds.has(rule.authority.minimumLevelId)) {
       fail(result, MILITARY_CONSTRAINT_REASON_CODES.AUTHORITY_UNRESOLVED, `rule ${rule.ruleId} references unknown authority.minimumLevelId "${rule.authority.minimumLevelId}".`);
+    }
+
+    if (rule.authority.requiresExplicitDelegation === true && (!Array.isArray(rule.authority.delegationEdgeIds) || rule.authority.delegationEdgeIds.length === 0)) {
+      fail(result, MILITARY_CONSTRAINT_REASON_CODES.AUTHORITY_UNRESOLVED, `rule ${rule.ruleId} requires an explicit delegation path.`);
     }
 
     if (Array.isArray(rule.authority.delegationEdgeIds)) {

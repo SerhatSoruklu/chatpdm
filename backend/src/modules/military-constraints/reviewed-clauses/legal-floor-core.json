@@ -11,7 +11,12 @@
     "machineCandidate": true,
     "ambiguityStatus": "CLEAR",
     "reviewStatus": "COMPILATION_READY",
-    "reviewNotes": "Reviewed legal-floor prohibition with bounded machine mapping."
+    "reviewNotes": "Reviewed legal-floor prohibition with bounded machine mapping.",
+    "provenance": {
+      "derivationType": "DIRECT",
+      "transformationNotes": "Source text preserved with bounded normalization.",
+      "parentClauseIds": []
+    }
   },
   {
     "clauseId": "CLAUSE-LF-0002",
@@ -25,7 +30,12 @@
     "machineCandidate": false,
     "ambiguityStatus": "CLEAR",
     "reviewStatus": "APPROVED",
-    "reviewNotes": "Review-only floor clause retained for corpus credibility."
+    "reviewNotes": "Review-only floor clause retained for corpus credibility.",
+    "provenance": {
+      "derivationType": "DIRECT",
+      "transformationNotes": "Source text preserved with bounded normalization.",
+      "parentClauseIds": []
+    }
   },
   {
     "clauseId": "CLAUSE-LF-0003",
@@ -39,7 +49,12 @@
     "machineCandidate": false,
     "ambiguityStatus": "CLEAR",
     "reviewStatus": "APPROVED",
-    "reviewNotes": "Review-only floor clause kept out of the compilation set."
+    "reviewNotes": "Review-only floor clause kept out of the compilation set.",
+    "provenance": {
+      "derivationType": "DIRECT",
+      "transformationNotes": "Source text preserved with bounded normalization.",
+      "parentClauseIds": []
+    }
   },
   {
     "clauseId": "CLAUSE-LF-0004",
@@ -92,6 +107,11 @@
         ]
       },
       "notes": "Reviewed admissibility gate for positive identification."
+    },
+    "provenance": {
+      "derivationType": "DIRECT",
+      "transformationNotes": "Source text preserved with bounded normalization.",
+      "parentClauseIds": []
     }
   },
   {
@@ -106,7 +126,12 @@
     "machineCandidate": false,
     "ambiguityStatus": "CLEAR",
     "reviewStatus": "APPROVED",
-    "reviewNotes": "Review-only floor paraphrase retained as source-backed context."
+    "reviewNotes": "Review-only floor paraphrase retained as source-backed context.",
+    "provenance": {
+      "derivationType": "DIRECT",
+      "transformationNotes": "Source text preserved with bounded normalization.",
+      "parentClauseIds": []
+    }
   },
   {
     "clauseId": "CLAUSE-LF-0006",
@@ -120,7 +145,12 @@
     "machineCandidate": false,
     "ambiguityStatus": "CLEAR",
     "reviewStatus": "APPROVED",
-    "reviewNotes": "Review-only caution clause not compiled yet."
+    "reviewNotes": "Review-only caution clause not compiled yet.",
+    "provenance": {
+      "derivationType": "DIRECT",
+      "transformationNotes": "Source text preserved with bounded normalization.",
+      "parentClauseIds": []
+    }
   },
   {
     "clauseId": "CLAUSE-LF-0007",
@@ -134,6 +164,11 @@
     "machineCandidate": false,
     "ambiguityStatus": "CLEAR",
     "reviewStatus": "APPROVED",
-    "reviewNotes": "Review-only legal-floor clause preserved for corpus coverage."
+    "reviewNotes": "Review-only legal-floor clause preserved for corpus coverage.",
+    "provenance": {
+      "derivationType": "DIRECT",
+      "transformationNotes": "Source text preserved with bounded normalization.",
+      "parentClauseIds": []
+    }
   }
 ]

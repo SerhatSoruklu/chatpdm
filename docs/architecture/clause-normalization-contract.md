@@ -22,6 +22,7 @@ The clause artifact must retain:
 - ambiguity state
 - review state
 - review notes
+- explicit provenance metadata
 
 ## Allowed normalization
 
@@ -46,6 +47,13 @@ Normalization may not:
 - change `sourceId` or `locator`
 - promote example material into normative material by default
 - mark example-only material normative unless an explicit override is reviewed and recorded
+
+Provenance contract:
+
+- `provenance.derivationType` MUST be explicit on reviewed clause artifacts.
+- `DIRECT` and `INTERPRETED` reviewed clauses MUST keep `parentClauseIds` empty.
+- `COMPOSED` reviewed clauses MUST declare `parentClauseIds`.
+- `ILLUSTRATIVE` reviewed clauses remain quarantined and non-executable under the current contracts.
 
 ## Classification rules
 

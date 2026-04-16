@@ -112,7 +112,8 @@
           "sourceId",
           "role",
           "sourceVersion",
-          "trustTier"
+          "trustTier",
+          "locator"
         ],
         "properties": {
           "sourceId": {

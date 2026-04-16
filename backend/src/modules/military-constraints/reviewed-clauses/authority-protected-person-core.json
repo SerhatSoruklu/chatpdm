@@ -85,6 +85,11 @@
         ]
       },
       "notes": "Pack 5 authority refusal after direct-participation confirmation."
+    },
+    "provenance": {
+      "derivationType": "INTERPRETED",
+      "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+      "parentClauseIds": []
     }
   },
   {
@@ -99,6 +104,11 @@
     "machineCandidate": false,
     "ambiguityStatus": "RESOLVED",
     "reviewStatus": "APPROVED",
-    "reviewNotes": "Review-only continuation note for confirmed direct-participation authorization; non-executable by design."
+    "reviewNotes": "Review-only continuation note for confirmed direct-participation authorization; non-executable by design.",
+    "provenance": {
+      "derivationType": "INTERPRETED",
+      "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+      "parentClauseIds": []
+    }
   }
 ]

@@ -10,7 +10,7 @@ The runtime decision contract is closed:
 - `REFUSED`
 - `REFUSED_INCOMPLETE`
 
-The API returns the runtime decision exactly as produced by the underlying military-constraints evaluator. It does not reinterpret refusal into advice or explanation.
+The API returns the bounded public projection of the underlying military-constraints evaluator. It does not expose internal trace fields on the public route, and it does not reinterpret refusal into advice or explanation.
 
 ## Endpoints
 
@@ -275,6 +275,7 @@ Example response:
 
 - The API does not expose reviewed clauses.
 - The API does not expose compiler notes.
+- The public API does not expose source refs, provenance metadata, authority trace, or rule trace.
 - The API does not accept prose input.
 - The API does not widen kernel semantics.
 - The API does not couple to ZeroGlare or Risk Mapping Governance.

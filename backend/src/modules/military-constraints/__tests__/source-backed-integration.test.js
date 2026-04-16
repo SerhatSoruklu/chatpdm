@@ -141,6 +141,14 @@ function assertRuntimeDecisionValid(result) {
   assertValid(ajv, 'https://chatpdm.local/schemas/runtime-decision.schema.json', result);
 }
 
+function assertRuntimeDecisionTrace(result, bundle, caseLabel) {
+  assert.equal(result.bundleId, bundle.bundleId, `${caseLabel} bundleId`);
+  assert.ok(
+    result.ruleTrace.every((entry) => Array.isArray(entry.sourceRefs) && entry.sourceRefs.every((ref) => typeof ref.sourceId === 'string' && typeof ref.locator === 'string')),
+    `${caseLabel} source refs`,
+  );
+}
+
 test('reviewed clause corpus passes schema and corpus validation', () => {
   const ajv = buildAjv();
   const sourceRegistry = readModuleJson('fixtures/military-source-registry.json');
@@ -209,6 +217,38 @@ test('corpus validator rejects missing locators', () => {
   assert.match(validation.errors.join('\n'), /missing a locator/i);
 });
 
+test('corpus validator rejects missing provenance metadata', () => {
+  const sourceRegistry = readModuleJson('fixtures/military-source-registry.json');
+  const clauses = flattenReviewedCorpus();
+  const mutated = cloneJson(getClause(clauses, 'CLAUSE-LF-0001'));
+  delete mutated.provenance;
+
+  const validation = validateReviewedClauseCorpus({
+    clauses: [...clauses.filter((clause) => clause.clauseId !== 'CLAUSE-LF-0001'), mutated],
+    sourceRegistry,
+  });
+
+  assert.equal(validation.valid, false);
+  assert.equal(validation.reasonCode, 'RULE_SHAPE_INVALID');
+  assert.match(validation.errors.join('\n'), /must include explicit provenance metadata/i);
+});
+
+test('corpus validator rejects stale locator references', () => {
+  const sourceRegistry = readModuleJson('fixtures/military-source-registry.json');
+  const clauses = flattenReviewedCorpus();
+  const mutated = cloneJson(getClause(clauses, 'CLAUSE-LF-0001'));
+  mutated.locator = 'chapter-6/5.3.2';
+
+  const validation = validateReviewedClauseCorpus({
+    clauses: [...clauses.filter((clause) => clause.clauseId !== 'CLAUSE-LF-0001'), mutated],
+    sourceRegistry,
+  });
+
+  assert.equal(validation.valid, false);
+  assert.equal(validation.reasonCode, 'POLICY_BUNDLE_INVALID');
+  assert.match(validation.errors.join('\n'), /not bound to source locator anchor/i);
+});
+
 test('corpus validator rejects example-only promotion without override', () => {
   const sourceRegistry = readModuleJson('fixtures/military-source-registry.json');
   const clauses = flattenReviewedCorpus();
@@ -218,6 +258,7 @@ test('corpus validator rejects example-only promotion without override', () => {
   promotedExample.clauseType = 'AUTHORITY_GATE';
   promotedExample.machineCandidate = true;
   promotedExample.reviewStatus = 'COMPILATION_READY';
+  promotedExample.provenance.derivationType = 'ILLUSTRATIVE';
 
   const validation = validateReviewedClauseCorpus({
     clauses: [...clauses, promotedExample],
@@ -225,8 +266,8 @@ test('corpus validator rejects example-only promotion without override', () => {
   });
 
   assert.equal(validation.valid, false);
-  assert.equal(validation.reasonCode, 'ILLEGAL_OVERLAY');
-  assert.match(validation.errors.join('\n'), /example-only source/i);
+  assert.equal(validation.reasonCode, 'RULE_SHAPE_INVALID');
+  assert.match(validation.errors.join('\n'), /illustrative clause|example-only source/i);
 });
 
 test('source-backed reviewed clauses compile into an admitted bundle and evaluate deterministically', () => {
@@ -257,6 +298,7 @@ test('source-backed reviewed clauses compile into an admitted bundle and evaluat
   assert.equal(legalFloorDecision.decision, 'REFUSED');
   assert.equal(legalFloorDecision.failedStage, 'LEGAL_FLOOR');
   assert.equal(legalFloorDecision.reasonCode, 'PROHIBITED_TARGET');
+  assertRuntimeDecisionTrace(legalFloorDecision, legalFloorBundle, 'legal-floor decision');
   assertRuntimeDecisionValid(legalFloorDecision);
 
   const authorityFacts = readJson('valid-fact-packet.json');
@@ -274,6 +316,7 @@ test('source-backed reviewed clauses compile into an admitted bundle and evaluat
   assert.equal(authorityDecision.decision, 'REFUSED');
   assert.equal(authorityDecision.failedStage, 'POLICY_OVERLAY');
   assert.equal(authorityDecision.reasonCode, 'AUTHORITY_INVALID');
+  assertRuntimeDecisionTrace(authorityDecision, legalFloorBundle, 'authority decision');
   assertRuntimeDecisionValid(authorityDecision);
 
   const allowedFacts = readJson('valid-fact-packet.json');
@@ -291,6 +334,7 @@ test('source-backed reviewed clauses compile into an admitted bundle and evaluat
   assert.equal(allowedDecision.decision, 'ALLOWED');
   assert.equal(allowedDecision.reasonCode, null);
   assert.equal(allowedDecision.failedStage, null);
+  assertRuntimeDecisionTrace(allowedDecision, legalFloorBundle, 'allowed decision');
   assertRuntimeDecisionValid(allowedDecision);
 
   const missingFactBundle = buildBundle({
@@ -318,5 +362,34 @@ test('source-backed reviewed clauses compile into an admitted bundle and evaluat
   assert.equal(incompleteDecision.failedStage, 'ADMISSIBILITY');
   assert.equal(incompleteDecision.reasonCode, 'MISSING_REQUIRED_FACT');
   assert.match(incompleteDecision.missingFactIds.join(','), /target\.positiveIdentificationStatus/);
+  assertRuntimeDecisionTrace(incompleteDecision, missingFactBundle, 'incomplete decision');
   assertRuntimeDecisionValid(incompleteDecision);
+});
+
+test('bundle assembly rejects source registry locator mismatches', () => {
+  const sourceRegistry = readModuleJson('fixtures/military-source-registry.json');
+  const clauses = flattenReviewedCorpus();
+  const legalFloorRefusalRule = compileReviewReadyClause(clauses, sourceRegistry, 'CLAUSE-LF-0001');
+  const authorityGateRule = compileReviewReadyClause(clauses, sourceRegistry, 'CLAUSE-AUTH-0001');
+  const factSchema = readModuleJson('military-constraint-fact.schema.json');
+  const authorityGraph = readJson('authority-graph.json');
+  const mutatedSourceRegistry = getSourceRegistrySubset(sourceRegistry, ['DOD-LOW-2023', 'NEWPORT-ROE-2022']);
+  const sourceEntry = mutatedSourceRegistry.find((entry) => entry.sourceId === 'DOD-LOW-2023');
+  assert.ok(sourceEntry, 'Missing DOD-LOW-2023 source registry entry');
+  sourceEntry.locator = 'chapter-6';
+
+  const assembly = assembleBundle({
+    bundleDraft: buildBundleDraft('mil-us-core-reference-locator-mismatch'),
+    compiledRules: [
+      legalFloorRefusalRule,
+      authorityGateRule,
+    ],
+    authorityGraph,
+    sourceRegistry: mutatedSourceRegistry,
+    factSchema,
+  });
+
+  assert.equal(assembly.valid, false);
+  assert.equal(assembly.reasonCode, 'POLICY_BUNDLE_INVALID');
+  assert.match(assembly.errors.join('\n'), /not bound to source locator anchor/i);
 });

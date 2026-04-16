@@ -11,7 +11,12 @@
     "machineCandidate": true,
     "ambiguityStatus": "CLEAR",
     "reviewStatus": "COMPILATION_READY",
-    "reviewNotes": "Shared international civilian-protection floor."
+    "reviewNotes": "Shared international civilian-protection floor.",
+    "provenance": {
+      "derivationType": "DIRECT",
+      "transformationNotes": "Source text preserved with bounded normalization.",
+      "parentClauseIds": []
+    }
   },
   {
     "clauseId": "INTL-LOAC-0002",
@@ -71,6 +76,11 @@
         ]
       },
       "notes": "Shared international admissibility gate."
+    },
+    "provenance": {
+      "derivationType": "DIRECT",
+      "transformationNotes": "Source text preserved with bounded normalization.",
+      "parentClauseIds": []
     }
   }
 ]

@@ -80,6 +80,11 @@
         ]
       },
       "notes": "Reviewed scope gate for the maritime VBSS slice."
+    },
+    "provenance": {
+      "derivationType": "INTERPRETED",
+      "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+      "parentClauseIds": []
     }
   },
   {
@@ -147,6 +152,11 @@
         ]
       },
       "notes": "Reviewed purpose gate for the maritime VBSS slice."
+    },
+    "provenance": {
+      "derivationType": "INTERPRETED",
+      "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+      "parentClauseIds": []
     }
   },
   {
@@ -233,6 +243,11 @@
         ]
       },
       "notes": "Reviewed non-deadly mission action gate."
+    },
+    "provenance": {
+      "derivationType": "INTERPRETED",
+      "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+      "parentClauseIds": []
     }
   },
   {
@@ -345,6 +360,11 @@
         ]
       },
       "notes": "Reviewed deadly self-defense gate."
+    },
+    "provenance": {
+      "derivationType": "INTERPRETED",
+      "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+      "parentClauseIds": []
     }
   }
 ]

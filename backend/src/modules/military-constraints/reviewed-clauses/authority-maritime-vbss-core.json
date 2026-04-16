@@ -11,6 +11,11 @@
     "machineCandidate": true,
     "ambiguityStatus": "RESOLVED",
     "reviewStatus": "APPROVED",
-    "reviewNotes": "Reviewed overlay authority gate for the maritime VBSS slice."
+    "reviewNotes": "Reviewed overlay authority gate for the maritime VBSS slice.",
+    "provenance": {
+      "derivationType": "INTERPRETED",
+      "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+      "parentClauseIds": []
+    }
   }
 ]

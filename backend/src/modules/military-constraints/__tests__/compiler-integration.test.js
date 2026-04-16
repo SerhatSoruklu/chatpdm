@@ -24,6 +24,10 @@ function readModuleFixture(relativePath) {
   return JSON.parse(fs.readFileSync(path.join(MODULE_DIR, 'fixtures', relativePath), 'utf8'));
 }
 
+function readReviewedClause(relativePath) {
+  return JSON.parse(fs.readFileSync(path.join(MODULE_DIR, 'reviewed-clauses', relativePath), 'utf8'));
+}
+
 function readSchema(relativePath) {
   return JSON.parse(fs.readFileSync(path.join(MODULE_DIR, relativePath), 'utf8'));
 }
@@ -73,6 +77,11 @@ function buildReviewedAuthorityClause() {
     ambiguityStatus: 'CLEAR',
     reviewStatus: 'COMPILATION_READY',
     reviewNotes: 'Reviewed policy overlay authority gate with bounded provenance.',
+    provenance: {
+      derivationType: 'INTERPRETED',
+      transformationNotes: 'Reviewed normalization expresses the source passage in executable clause form.',
+      parentClauseIds: [],
+    },
   };
 }
 
@@ -146,6 +155,7 @@ test('reviewed legal-floor and authority clauses compile into an admitted bundle
   assert.equal(legalResult.valid, true, legalResult.errors.join('\n'));
   assert.ok(legalResult.compiledRule, 'Expected legal-floor compiled rule');
   assertRuleValid(legalResult.compiledRule);
+  assert.deepEqual(legalResult.compiledRule.provenance, legalClause.provenance);
   assert.match(legalResult.compiledRule.notes, /compiledFromClauseId=CLAUSE-LEGAL-FLOOR-0001/);
 
   const authorityResult = compileClauseToRule({
@@ -155,6 +165,7 @@ test('reviewed legal-floor and authority clauses compile into an admitted bundle
   assert.equal(authorityResult.valid, true, authorityResult.errors.join('\n'));
   assert.ok(authorityResult.compiledRule, 'Expected authority compiled rule');
   assertRuleValid(authorityResult.compiledRule);
+  assert.deepEqual(authorityResult.compiledRule.provenance, authorityClause.provenance);
   assert.match(authorityResult.compiledRule.notes, /compiledFromClauseId=CLAUSE-POLICY-0001/);
 
   const assembly = assembleBundle({
@@ -172,6 +183,52 @@ test('reviewed legal-floor and authority clauses compile into an admitted bundle
   assert.ok(assembly.bundle, 'Expected admitted bundle');
   assertValid(ajv, 'https://chatpdm.local/schemas/military-constraint-bundle.schema.json', assembly.bundle);
   assert.equal(assembly.bundle.bundleHash, computeBundleHash(assembly.bundle));
+});
+
+test('missing provenance metadata is refused during compilation', () => {
+  const sourceRegistry = readModuleFixture('military-source-registry.json');
+  const clause = buildReviewedLegalClause();
+  delete clause.provenance;
+
+  const result = compileClauseToRule({
+    clause,
+    sourceRegistry,
+  });
+
+  assert.equal(result.valid, false);
+  assert.equal(result.reasonCode, 'RULE_SHAPE_INVALID');
+  assert.match(result.errors.join('\n'), /must include explicit provenance metadata/i);
+});
+
+test('direct provenance cannot contradict normalized clause text', () => {
+  const sourceRegistry = readModuleFixture('military-source-registry.json');
+  const clause = buildReviewedAuthorityClause();
+  clause.provenance.derivationType = 'DIRECT';
+
+  const result = compileClauseToRule({
+    clause,
+    sourceRegistry,
+  });
+
+  assert.equal(result.valid, false);
+  assert.equal(result.reasonCode, 'RULE_SHAPE_INVALID');
+  assert.match(result.errors.join('\n'), /direct provenance .* preserve source text exactly/i);
+});
+
+test('composed provenance requires parent linkage', () => {
+  const sourceRegistry = readModuleFixture('military-source-registry.json');
+  const clause = buildReviewedAuthorityClause();
+  clause.provenance.derivationType = 'COMPOSED';
+  clause.provenance.parentClauseIds = [];
+
+  const result = compileClauseToRule({
+    clause,
+    sourceRegistry,
+  });
+
+  assert.equal(result.valid, false);
+  assert.equal(result.reasonCode, 'RULE_SHAPE_INVALID');
+  assert.match(result.errors.join('\n'), /composed clause .* requires parentClauseIds/i);
 });
 
 test('ambiguous clause compilation is refused', () => {
@@ -207,6 +264,39 @@ test('example-only source without override compilation is refused', () => {
   assert.equal(result.valid, false);
   assert.equal(result.reasonCode, 'RULE_SHAPE_INVALID');
   assert.match(result.errors.join('\n'), /example-only|jurisdiction|normative override/i);
+});
+
+test('explicit delegation requires delegation edges during compilation', () => {
+  const sourceRegistry = readModuleFixture('military-source-registry.json');
+  const clause = cloneJson(readReviewedClause('uk-delegation-chain-core.json')[0]);
+  clause.compilationHint.authority.delegationEdgeIds = [];
+
+  const result = compileClauseToRule({
+    clause,
+    sourceRegistry,
+  });
+
+  assert.equal(result.valid, false);
+  assert.equal(result.reasonCode, 'AUTHORITY_UNRESOLVED');
+  assert.match(result.errors.join('\n'), /explicit delegation/i);
+});
+
+test('stale source locator bindings are refused during compilation', () => {
+  const sourceRegistry = readModuleFixture('military-source-registry.json');
+  const clause = buildReviewedLegalClause();
+  const mutatedSourceRegistry = cloneJson(sourceRegistry);
+  const sourceEntry = mutatedSourceRegistry.find((candidate) => candidate.sourceId === 'DOD-LOW-2023');
+  assert.ok(sourceEntry, 'Missing DOD-LOW-2023 source entry');
+  sourceEntry.locator = 'chapter-6';
+
+  const result = compileClauseToRule({
+    clause,
+    sourceRegistry: mutatedSourceRegistry,
+  });
+
+  assert.equal(result.valid, false);
+  assert.equal(result.reasonCode, 'POLICY_BUNDLE_INVALID');
+  assert.match(result.errors.join('\n'), /locator .* not bound to source locator anchor/i);
 });
 
 test('conflicting compiled rules are refused at bundle assembly', () => {

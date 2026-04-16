@@ -80,6 +80,11 @@
         ]
       },
       "notes": "Pack 3 authority refusal after confirmed loss of protection."
+    },
+    "provenance": {
+      "derivationType": "INTERPRETED",
+      "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+      "parentClauseIds": []
     }
   },
   {
@@ -94,6 +99,11 @@
     "machineCandidate": false,
     "ambiguityStatus": "RESOLVED",
     "reviewStatus": "APPROVED",
-    "reviewNotes": "Review-only continuation note for confirmed loss-of-protection authorization; non-executable by design."
+    "reviewNotes": "Review-only continuation note for confirmed loss-of-protection authorization; non-executable by design.",
+    "provenance": {
+      "derivationType": "INTERPRETED",
+      "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+      "parentClauseIds": []
+    }
   }
 ]

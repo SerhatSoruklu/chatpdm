@@ -4,6 +4,11 @@ const {
   MILITARY_CONSTRAINT_REASON_CODES,
 } = require('./military-constraint-reason-codes');
 const { isPlainObject } = require('./fact-schema-utils');
+const {
+  isLocatorBoundToSource,
+  isNonEmptyString,
+  isReviewedClauseProvenance,
+} = require('./reference-pack-utils');
 
 const COMPILABLE_CLAUSE_TYPES = new Set([
   'PROHIBITION',
@@ -56,8 +61,42 @@ function buildSourceIndex(sourceRegistry) {
   return index;
 }
 
-function isNonEmptyString(value) {
-  return typeof value === 'string' && value.trim().length > 0;
+function validateClauseProvenance(clause, result) {
+  if (!isReviewedClauseProvenance(clause.provenance)) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `clause ${clause.clauseId} must include explicit provenance metadata.`);
+    return;
+  }
+
+  const provenance = clause.provenance;
+
+  if (clause.layer === 'EXAMPLE_ONLY' && provenance.derivationType !== 'ILLUSTRATIVE') {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `example-only clause ${clause.clauseId} must be marked ILLUSTRATIVE.`);
+    return;
+  }
+
+  if (provenance.derivationType === 'DIRECT' && clause.rawText !== clause.normalizedText) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `direct provenance for clause ${clause.clauseId} must preserve source text exactly.`);
+    return;
+  }
+
+  if (provenance.derivationType === 'INTERPRETED' && clause.rawText === clause.normalizedText) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `interpreted provenance for clause ${clause.clauseId} requires a normalized transformation.`);
+    return;
+  }
+
+  if (provenance.derivationType === 'COMPOSED') {
+    if (!Array.isArray(provenance.parentClauseIds) || provenance.parentClauseIds.length === 0) {
+      fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `composed clause ${clause.clauseId} requires parentClauseIds.`);
+      return;
+    }
+  } else if (Array.isArray(provenance.parentClauseIds) && provenance.parentClauseIds.length > 0) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `clause ${clause.clauseId} may only declare parentClauseIds when provenance is COMPOSED.`);
+    return;
+  }
+
+  if (provenance.derivationType === 'ILLUSTRATIVE' && clause.machineCandidate === true) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `illustrative clause ${clause.clauseId} cannot be marked machineCandidate.`);
+  }
 }
 
 function validateReviewedClauseCorpus(input) {
@@ -102,8 +141,27 @@ function validateReviewedClauseCorpus(input) {
       fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `clause ${clause.clauseId} is missing a locator.`);
     }
 
+    if (!isNonEmptyString(sourceEntry.locator)) {
+      fail(result, MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, `sourceId "${sourceEntry.sourceId}" is missing a locator.`);
+      return;
+    }
+
+    if (!isLocatorBoundToSource(sourceEntry.locator, clause.locator)) {
+      fail(result, MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, `clause ${clause.clauseId} locator "${clause.locator}" is not bound to source locator anchor "${sourceEntry.locator}".`);
+    }
+
     if (!isNonEmptyString(clause.normalizedText)) {
       fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `clause ${clause.clauseId} must have non-empty normalizedText.`);
+    }
+
+    validateClauseProvenance(clause, result);
+
+    const hintAuthority = isPlainObject(clause.compilationHint) && isPlainObject(clause.compilationHint.authority)
+      ? clause.compilationHint.authority
+      : null;
+
+    if (hintAuthority && hintAuthority.requiresExplicitDelegation === true && (!Array.isArray(hintAuthority.delegationEdgeIds) || hintAuthority.delegationEdgeIds.length === 0)) {
+      fail(result, MILITARY_CONSTRAINT_REASON_CODES.AUTHORITY_UNRESOLVED, `clause ${clause.clauseId} requires an explicit delegation path.`);
     }
 
     if (sourceEntry.exampleOnly === true && clause.layer !== 'EXAMPLE_ONLY' && sourceEntry.normativeOverride !== true) {

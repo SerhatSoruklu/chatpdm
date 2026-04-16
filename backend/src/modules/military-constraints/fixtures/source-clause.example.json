@@ -11,5 +11,10 @@
   "ambiguityStatus": "CLEAR",
   "reviewStatus": "APPROVED",
   "reviewNotes": "Preserved provenance; clause is normative and bounded.",
-  "notes": "Example reviewed clause artifact."
+  "notes": "Example reviewed clause artifact.",
+  "provenance": {
+    "derivationType": "INTERPRETED",
+    "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+    "parentClauseIds": []
+  }
 }

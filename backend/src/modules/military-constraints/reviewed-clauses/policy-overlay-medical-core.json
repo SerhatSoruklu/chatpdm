@@ -71,6 +71,11 @@
         }
       },
       "notes": "Pack 3 scope restriction for the medical protection slice."
+    },
+    "provenance": {
+      "derivationType": "INTERPRETED",
+      "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+      "parentClauseIds": []
     }
   },
   {
@@ -132,6 +137,11 @@
         ]
       },
       "notes": "Pack 3 action-kind restriction."
+    },
+    "provenance": {
+      "derivationType": "INTERPRETED",
+      "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+      "parentClauseIds": []
     }
   }
 ]

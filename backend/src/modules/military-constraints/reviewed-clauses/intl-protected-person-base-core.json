@@ -70,6 +70,11 @@
         ]
       },
       "notes": "Shared international protected-person admissibility gate."
+    },
+    "provenance": {
+      "derivationType": "INTERPRETED",
+      "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+      "parentClauseIds": []
     }
   },
   {
@@ -145,6 +150,11 @@
         ]
       },
       "notes": "Shared international civilian/non-combatant floor."
+    },
+    "provenance": {
+      "derivationType": "INTERPRETED",
+      "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+      "parentClauseIds": []
     }
   },
   {
@@ -220,6 +230,11 @@
         ]
       },
       "notes": "Shared international medical and religious personnel floor."
+    },
+    "provenance": {
+      "derivationType": "INTERPRETED",
+      "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+      "parentClauseIds": []
     }
   },
   {
@@ -295,6 +310,11 @@
         ]
       },
       "notes": "Shared international hors de combat and custody floor."
+    },
+    "provenance": {
+      "derivationType": "INTERPRETED",
+      "transformationNotes": "Reviewed normalization expresses the source passage in executable clause form.",
+      "parentClauseIds": []
     }
   }
 ]

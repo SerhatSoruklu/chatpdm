@@ -82,12 +82,23 @@ function projectExecutionCard(input) {
 
   const packId = packMetadata.packId;
   const bundleId = bundle.bundleId;
+  const runtimeBundleId = runtimeDecision.bundleId;
   const bundleVersion = bundle.bundleVersion;
   const bundleHash = bundle.bundleHash;
   const jurisdiction = bundle.jurisdiction;
 
   if (!isNonEmptyString(packId) || !isNonEmptyString(bundleId) || !isNonEmptyString(bundleVersion) || !isNonEmptyString(bundleHash) || !isNonEmptyString(jurisdiction)) {
     fail(result, MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, 'packId, bundleId, bundleVersion, bundleHash, and jurisdiction are required.');
+    return finish(result);
+  }
+
+  if (!isNonEmptyString(runtimeBundleId)) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, 'runtimeDecision.bundleId is required.');
+    return finish(result);
+  }
+
+  if (runtimeBundleId !== bundleId) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, 'runtimeDecision.bundleId must match bundle.bundleId.');
     return finish(result);
   }
 
@@ -143,7 +154,7 @@ function projectExecutionCard(input) {
 
   const cardSeed = {
     packId,
-    bundleId,
+    bundleId: runtimeBundleId,
     bundleVersion,
     bundleHash,
     jurisdiction,

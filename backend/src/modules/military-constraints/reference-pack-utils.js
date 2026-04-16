@@ -13,6 +13,68 @@ function sortStrings(values) {
   return [...values].sort((left, right) => String(left).localeCompare(String(right)));
 }
 
+function isNonEmptyString(value) {
+  return typeof value === 'string' && value.trim().length > 0;
+}
+
+function sortSourceRefs(sourceRefs) {
+  if (!Array.isArray(sourceRefs)) {
+    return [];
+  }
+
+  return sourceRefs
+    .filter((entry) => isPlainObject(entry))
+    .map((entry) => ({
+      sourceId: isNonEmptyString(entry.sourceId) ? entry.sourceId : '',
+      locator: isNonEmptyString(entry.locator) ? entry.locator : '',
+    }))
+    .filter((entry) => isNonEmptyString(entry.sourceId) && isNonEmptyString(entry.locator))
+    .sort((left, right) => {
+      if (left.sourceId !== right.sourceId) {
+        return left.sourceId.localeCompare(right.sourceId);
+      }
+
+      return left.locator.localeCompare(right.locator);
+    });
+}
+
+const REVIEWED_CLAUSE_DERIVATION_TYPES = new Set([
+  'DIRECT',
+  'INTERPRETED',
+  'COMPOSED',
+  'ILLUSTRATIVE',
+]);
+
+function isLocatorBoundToSource(sourceLocator, locator) {
+  if (!isNonEmptyString(sourceLocator) || !isNonEmptyString(locator)) {
+    return false;
+  }
+
+  return locator === sourceLocator || locator.startsWith(`${sourceLocator}/`);
+}
+
+function isReviewedClauseProvenance(provenance) {
+  return isPlainObject(provenance)
+    && isNonEmptyString(provenance.derivationType)
+    && REVIEWED_CLAUSE_DERIVATION_TYPES.has(provenance.derivationType)
+    && isNonEmptyString(provenance.transformationNotes)
+    && Array.isArray(provenance.parentClauseIds)
+    && provenance.parentClauseIds.every(isNonEmptyString)
+    && new Set(provenance.parentClauseIds).size === provenance.parentClauseIds.length;
+}
+
+function normalizeReviewedClauseProvenance(provenance) {
+  if (!isReviewedClauseProvenance(provenance)) {
+    return null;
+  }
+
+  return {
+    derivationType: provenance.derivationType,
+    transformationNotes: provenance.transformationNotes,
+    parentClauseIds: sortStrings(provenance.parentClauseIds),
+  };
+}
+
 function listFiles(directoryPath) {
   if (!fs.existsSync(directoryPath)) {
     return [];
@@ -284,4 +346,9 @@ module.exports = {
   resolveModuleRoot,
   validatePackRegistry,
   sortStrings,
+  sortSourceRefs,
+  isLocatorBoundToSource,
+  isNonEmptyString,
+  isReviewedClauseProvenance,
+  normalizeReviewedClauseProvenance,
 };

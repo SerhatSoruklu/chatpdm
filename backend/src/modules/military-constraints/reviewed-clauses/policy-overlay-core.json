@@ -11,7 +11,12 @@
     "machineCandidate": false,
     "ambiguityStatus": "CLEAR",
     "reviewStatus": "APPROVED",
-    "reviewNotes": "Review-only overlay constraint retained as a guardrail."
+    "reviewNotes": "Review-only overlay constraint retained as a guardrail.",
+    "provenance": {
+      "derivationType": "DIRECT",
+      "transformationNotes": "Source text preserved with bounded normalization.",
+      "parentClauseIds": []
+    }
   },
   {
     "clauseId": "CLAUSE-PO-0002",
@@ -25,7 +30,12 @@
     "machineCandidate": false,
     "ambiguityStatus": "CLEAR",
     "reviewStatus": "APPROVED",
-    "reviewNotes": "Review-only overlay gate retained outside the compilation set."
+    "reviewNotes": "Review-only overlay gate retained outside the compilation set.",
+    "provenance": {
+      "derivationType": "DIRECT",
+      "transformationNotes": "Source text preserved with bounded normalization.",
+      "parentClauseIds": []
+    }
   },
   {
     "clauseId": "CLAUSE-PO-0003",
@@ -39,7 +49,12 @@
     "machineCandidate": false,
     "ambiguityStatus": "CLEAR",
     "reviewStatus": "APPROVED",
-    "reviewNotes": "Review-only coalition caveat."
+    "reviewNotes": "Review-only coalition caveat.",
+    "provenance": {
+      "derivationType": "DIRECT",
+      "transformationNotes": "Source text preserved with bounded normalization.",
+      "parentClauseIds": []
+    }
   },
   {
     "clauseId": "CLAUSE-PO-0004",
@@ -53,7 +68,12 @@
     "machineCandidate": false,
     "ambiguityStatus": "CLEAR",
     "reviewStatus": "APPROVED",
-    "reviewNotes": "Review-only requirement clause for overlay discipline."
+    "reviewNotes": "Review-only requirement clause for overlay discipline.",
+    "provenance": {
+      "derivationType": "DIRECT",
+      "transformationNotes": "Source text preserved with bounded normalization.",
+      "parentClauseIds": []
+    }
   },
   {
     "clauseId": "CLAUSE-PO-0005",
@@ -67,7 +87,12 @@
     "machineCandidate": false,
     "ambiguityStatus": "CLEAR",
     "reviewStatus": "APPROVED",
-    "reviewNotes": "Review-only caveat retained for corpus coverage."
+    "reviewNotes": "Review-only caveat retained for corpus coverage.",
+    "provenance": {
+      "derivationType": "DIRECT",
+      "transformationNotes": "Source text preserved with bounded normalization.",
+      "parentClauseIds": []
+    }
   },
   {
     "clauseId": "CLAUSE-PO-0006",
@@ -81,7 +106,12 @@
     "machineCandidate": false,
     "ambiguityStatus": "CLEAR",
     "reviewStatus": "APPROVED",
-    "reviewNotes": "Review-only definitional clause."
+    "reviewNotes": "Review-only definitional clause.",
+    "provenance": {
+      "derivationType": "DIRECT",
+      "transformationNotes": "Source text preserved with bounded normalization.",
+      "parentClauseIds": []
+    }
   },
   {
     "clauseId": "CLAUSE-PO-0007",
@@ -95,6 +125,11 @@
     "machineCandidate": false,
     "ambiguityStatus": "CLEAR",
     "reviewStatus": "REVIEWED",
-    "reviewNotes": "Quarantined example-only clause; not promotable without explicit override."
+    "reviewNotes": "Quarantined example-only clause; not promotable without explicit override.",
+    "provenance": {
+      "derivationType": "ILLUSTRATIVE",
+      "transformationNotes": "Quarantined example-only material; non-executable by design.",
+      "parentClauseIds": []
+    }
   }
 ]

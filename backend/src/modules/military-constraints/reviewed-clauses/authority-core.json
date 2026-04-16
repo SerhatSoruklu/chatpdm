@@ -11,7 +11,12 @@
     "machineCandidate": true,
     "ambiguityStatus": "CLEAR",
     "reviewStatus": "COMPILATION_READY",
-    "reviewNotes": "Compilation-ready authority gate with bounded overlay scope."
+    "reviewNotes": "Compilation-ready authority gate with bounded overlay scope.",
+    "provenance": {
+      "derivationType": "DIRECT",
+      "transformationNotes": "Source text preserved with bounded normalization.",
+      "parentClauseIds": []
+    }
   },
   {
     "clauseId": "CLAUSE-AUTH-0002",
@@ -25,7 +30,12 @@
     "machineCandidate": false,
     "ambiguityStatus": "CLEAR",
     "reviewStatus": "APPROVED",
-    "reviewNotes": "Review-only delegation rule retained outside the compilation bridge."
+    "reviewNotes": "Review-only delegation rule retained outside the compilation bridge.",
+    "provenance": {
+      "derivationType": "DIRECT",
+      "transformationNotes": "Source text preserved with bounded normalization.",
+      "parentClauseIds": []
+    }
   },
   {
     "clauseId": "CLAUSE-AUTH-0003",
@@ -39,7 +49,12 @@
     "machineCandidate": false,
     "ambiguityStatus": "CLEAR",
     "reviewStatus": "APPROVED",
-    "reviewNotes": "Review-only caveat supporting the authority model."
+    "reviewNotes": "Review-only caveat supporting the authority model.",
+    "provenance": {
+      "derivationType": "DIRECT",
+      "transformationNotes": "Source text preserved with bounded normalization.",
+      "parentClauseIds": []
+    }
   },
   {
     "clauseId": "CLAUSE-AUTH-0004",
@@ -53,7 +68,12 @@
     "machineCandidate": false,
     "ambiguityStatus": "CLEAR",
     "reviewStatus": "APPROVED",
-    "reviewNotes": "Review-only authority clause sourced from doctrine framing."
+    "reviewNotes": "Review-only authority clause sourced from doctrine framing.",
+    "provenance": {
+      "derivationType": "DIRECT",
+      "transformationNotes": "Source text preserved with bounded normalization.",
+      "parentClauseIds": []
+    }
   },
   {
     "clauseId": "CLAUSE-AUTH-0005",
@@ -67,7 +87,12 @@
     "machineCandidate": false,
     "ambiguityStatus": "CLEAR",
     "reviewStatus": "APPROVED",
-    "reviewNotes": "Review-only clause retained to show action-kind binding."
+    "reviewNotes": "Review-only clause retained to show action-kind binding.",
+    "provenance": {
+      "derivationType": "DIRECT",
+      "transformationNotes": "Source text preserved with bounded normalization.",
+      "parentClauseIds": []
+    }
   },
   {
     "clauseId": "CLAUSE-AUTH-0006",
@@ -81,7 +106,12 @@
     "machineCandidate": false,
     "ambiguityStatus": "CLEAR",
     "reviewStatus": "APPROVED",
-    "reviewNotes": "Review-only authority caution."
+    "reviewNotes": "Review-only authority caution.",
+    "provenance": {
+      "derivationType": "DIRECT",
+      "transformationNotes": "Source text preserved with bounded normalization.",
+      "parentClauseIds": []
+    }
   },
   {
     "clauseId": "CLAUSE-AUTH-0007",
@@ -95,6 +125,11 @@
     "machineCandidate": false,
     "ambiguityStatus": "CLEAR",
     "reviewStatus": "APPROVED",
-    "reviewNotes": "Review-only definitional clause kept for corpus breadth."
+    "reviewNotes": "Review-only definitional clause kept for corpus breadth.",
+    "provenance": {
+      "derivationType": "DIRECT",
+      "transformationNotes": "Source text preserved with bounded normalization.",
+      "parentClauseIds": []
+    }
   }
 ]

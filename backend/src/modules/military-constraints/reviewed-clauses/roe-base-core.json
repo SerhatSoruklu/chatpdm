@@ -74,6 +74,11 @@
         ]
       },
       "notes": "Reusable ROE admissibility gate."
+    },
+    "provenance": {
+      "derivationType": "DIRECT",
+      "transformationNotes": "Source text preserved with bounded normalization.",
+      "parentClauseIds": []
     }
   }
 ]
