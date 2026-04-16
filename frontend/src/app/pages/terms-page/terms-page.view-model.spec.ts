@@ -79,7 +79,7 @@ describe('buildTermsPageViewModel', () => {
       sectionLabel: 'Shared Intake Router API',
       title: 'Shared Intake Router API',
       summary:
-        'The shared intake router accepts one input and dispatches it deterministically to Concepts or Risk Mapping by input shape. Raw text goes to Concepts; structured RiskMapQuery objects go to Risk Mapping. Unsupported shapes are refused.',
+        'The shared intake router accepts one input and dispatches it deterministically to Concepts or Risk Mapping by input shape. Unstructured raw text goes to Concepts; explicit RiskMapQuery field blocks or structured RiskMapQuery objects go to Risk Mapping. Mixed prose/field blocks are refused.',
     });
     expect(viewModel.badges).toEqual(
       [
@@ -461,9 +461,9 @@ describe('buildTermsPageViewModel', () => {
       },
     ]);
     expect(viewModel.sharedIntakeTitle).toBe('Shared Intake Router API');
-    expect(viewModel.sharedIntakeIntro).toBe(
-      'The shared intake router accepts one input and dispatches it deterministically to Concepts or Risk Mapping by input shape. Raw text goes to Concepts; structured RiskMapQuery objects go to Risk Mapping. Unsupported shapes are refused.',
-    );
+  expect(viewModel.sharedIntakeIntro).toBe(
+    'The shared intake router accepts one input and dispatches it deterministically to Concepts or Risk Mapping by input shape. Unstructured raw text goes to Concepts; explicit RiskMapQuery field blocks or structured RiskMapQuery objects go to Risk Mapping. Mixed prose/field blocks are refused.',
+  );
     expect(viewModel.sharedIntakeEndpointRows).toEqual([
       {
         claimId: 'intake-api-0',
@@ -482,18 +482,18 @@ describe('buildTermsPageViewModel', () => {
         evidence: 'backend/src/routes/api/v1/intake.route.js:21-65',
       },
     ]);
-    expect(viewModel.sharedIntakeFieldRows).toEqual([
-      {
-        claimId: 'intake-field-1',
-        field: 'input',
-        rule: 'required request field',
-        condition:
-          'must be a non-empty string for Concepts dispatch or a structured RiskMapQuery object for Risk Mapping dispatch',
-        evidence:
-          'backend/src/routes/api/v1/intake.route.js:21-65 | backend/src/modules/intake/shared-intake-router.js:15-58',
-      },
-    ]);
-    expect(viewModel.sharedIntakeBoundaryRows).toEqual([
+  expect(viewModel.sharedIntakeFieldRows).toEqual([
+    {
+      claimId: 'intake-field-1',
+      field: 'input',
+      rule: 'required request field',
+      condition:
+        'must be a non-empty string for Concepts dispatch or an explicit RiskMapQuery field block or structured RiskMapQuery object for Risk Mapping dispatch',
+      evidence:
+        'backend/src/routes/api/v1/intake.route.js:21-65 | backend/src/modules/intake/shared-intake-router.js:54-210',
+    },
+  ]);
+  expect(viewModel.sharedIntakeBoundaryRows).toEqual([
       {
         claimId: 'intake-boundary-1',
         boundary: 'missing input payload',
@@ -503,19 +503,27 @@ describe('buildTermsPageViewModel', () => {
       },
       {
         claimId: 'intake-boundary-2',
-        boundary: 'empty text input',
-        condition: 'input is an empty string',
-        effect: 'rejected with invalid_intake_input',
-        evidence: 'backend/src/modules/intake/shared-intake-router.js:15-27',
-      },
-      {
-        claimId: 'intake-boundary-3',
-        boundary: 'invalid structured input',
-        condition: 'input is an object that does not satisfy the RiskMapQuery contract',
-        effect: 'rejected with invalid_intake_input',
-        evidence: 'backend/src/modules/intake/shared-intake-router.js:29-46',
-      },
-    ]);
+      boundary: 'empty text input',
+      condition: 'input is an empty string',
+      effect: 'rejected with invalid_intake_input',
+      evidence: 'backend/src/modules/intake/shared-intake-router.js:164-189',
+    },
+    {
+      claimId: 'intake-boundary-3',
+      boundary: 'invalid structured input',
+      condition: 'input is an object that does not satisfy the RiskMapQuery contract',
+      effect: 'rejected with invalid_intake_input',
+      evidence: 'backend/src/modules/intake/shared-intake-router.js:192-203',
+    },
+    {
+      claimId: 'intake-boundary-4',
+      boundary: 'mixed structured text',
+      condition:
+        'input mixes free prose with explicit RiskMapQuery field assignments or omits required fields from an explicit field block',
+      effect: 'rejected with invalid_intake_input',
+      evidence: 'backend/src/modules/intake/shared-intake-router.js:54-161',
+    },
+  ]);
     expect(viewModel.zeeApiTrustRoute).toBe('/zeroglare-evidence-engine');
     expect(viewModel.summaryLine).toBe(
       'Runtime section shows 8 public endpoints, 22 field rules, 1 platform rule, 1 runtime boundary, and 8 refusal boundaries.',

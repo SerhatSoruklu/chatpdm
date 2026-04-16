@@ -133,7 +133,7 @@ export const TERMS_PAGE_SECTION_GROUPS = [
         sectionLabel: 'Shared Intake Router API',
         title: 'Shared Intake Router API',
         summary:
-          'The shared intake router accepts one input and dispatches it deterministically to Concepts or Risk Mapping by input shape. Raw text goes to Concepts; structured RiskMapQuery objects go to Risk Mapping. Unsupported shapes are refused.',
+          'The shared intake router accepts one input and dispatches it deterministically to Concepts or Risk Mapping by input shape. Unstructured raw text goes to Concepts; explicit RiskMapQuery field blocks or structured RiskMapQuery objects go to Risk Mapping. Mixed prose/field blocks are refused.',
       },
     ],
   },
@@ -639,9 +639,9 @@ export function buildTermsPageViewModel(surface: PolicySurfaceDefinition): Terms
       claimId: 'intake-field-1',
       field: 'input',
       rule: 'required request field',
-      condition: 'must be a non-empty string for Concepts dispatch or a structured RiskMapQuery object for Risk Mapping dispatch',
+      condition: 'must be a non-empty string for Concepts dispatch or an explicit RiskMapQuery field block or structured RiskMapQuery object for Risk Mapping dispatch',
       evidence:
-        'backend/src/routes/api/v1/intake.route.js:21-65 | backend/src/modules/intake/shared-intake-router.js:15-58',
+        'backend/src/routes/api/v1/intake.route.js:21-65 | backend/src/modules/intake/shared-intake-router.js:54-210',
     },
   ] satisfies readonly TermsPageFieldRow[];
 
@@ -658,14 +658,21 @@ export function buildTermsPageViewModel(surface: PolicySurfaceDefinition): Terms
       boundary: 'empty text input',
       condition: 'input is an empty string',
       effect: 'rejected with invalid_intake_input',
-      evidence: 'backend/src/modules/intake/shared-intake-router.js:15-27',
+      evidence: 'backend/src/modules/intake/shared-intake-router.js:164-189',
     },
     {
       claimId: 'intake-boundary-3',
       boundary: 'invalid structured input',
       condition: 'input is an object that does not satisfy the RiskMapQuery contract',
       effect: 'rejected with invalid_intake_input',
-      evidence: 'backend/src/modules/intake/shared-intake-router.js:29-46',
+      evidence: 'backend/src/modules/intake/shared-intake-router.js:192-203',
+    },
+    {
+      claimId: 'intake-boundary-4',
+      boundary: 'mixed structured text',
+      condition: 'input mixes free prose with explicit RiskMapQuery field assignments or omits required fields from an explicit field block',
+      effect: 'rejected with invalid_intake_input',
+      evidence: 'backend/src/modules/intake/shared-intake-router.js:54-161',
     },
   ] satisfies readonly TermsPageBoundaryRow[];
 
@@ -754,7 +761,7 @@ export function buildTermsPageViewModel(surface: PolicySurfaceDefinition): Terms
     sharedIntakeTitle: sharedIntakeSection.title,
     sharedIntakeIntro:
       sharedIntakeSection.summary ??
-      'The shared intake router accepts one input and dispatches it deterministically to Concepts or Risk Mapping by input shape. Raw text goes to Concepts; structured RiskMapQuery objects go to Risk Mapping. Unsupported shapes are refused.',
+      'The shared intake router accepts one input and dispatches it deterministically to Concepts or Risk Mapping by input shape. Unstructured raw text goes to Concepts; explicit RiskMapQuery field blocks or structured RiskMapQuery objects go to Risk Mapping. Mixed prose/field blocks are refused.',
     sharedIntakeEndpointRows,
     sharedIntakeFieldRows,
     sharedIntakeBoundaryRows,

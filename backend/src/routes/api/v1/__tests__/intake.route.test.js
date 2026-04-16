@@ -17,6 +17,15 @@ const STRUCTURED_RISK_MAP_QUERY = Object.freeze({
   evidenceSetVersion: 'v1',
 });
 
+const STRUCTURED_RISK_MAP_TEXT = [
+  'entity: Apple',
+  'timeHorizon: 5 years',
+  'scenarioType: decline_risk',
+  'domain: organization_risk',
+  'scope: regulatory, supply_chain',
+  'evidenceSetVersion: v1',
+].join('\n');
+
 function startServer() {
   return new Promise((resolve, reject) => {
     const server = http.createServer(app);
@@ -65,7 +74,7 @@ test('intake route advertises a shared dispatch surface', async () => {
   }
 });
 
-test('intake route dispatches raw text to concepts and structured queries to risk mapping', async () => {
+test('intake route dispatches raw text to concepts, explicit structured text to risk mapping, and refuses mixed shapes', async () => {
   const { server, baseUrl } = await startServer();
 
   try {
@@ -87,6 +96,24 @@ test('intake route dispatches raw text to concepts and structured queries to ris
     assert.equal(conceptDispatch.body.inputType, 'raw_text');
     assert.deepEqual(conceptDispatch.body.output, resolveConceptQuery('authority'));
 
+    const structuredTextDispatch = await fetchJson(`${baseUrl}/api/v1/intake`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        accept: 'application/json',
+      },
+      body: JSON.stringify({
+        input: STRUCTURED_RISK_MAP_TEXT,
+      }),
+    });
+
+    assert.equal(structuredTextDispatch.status, 200);
+    assert.equal(structuredTextDispatch.body.resource, 'intake');
+    assert.equal(structuredTextDispatch.body.status, 'active');
+    assert.equal(structuredTextDispatch.body.selectedSurface, 'risk-mapping');
+    assert.equal(structuredTextDispatch.body.inputType, 'structured_text');
+    assert.deepEqual(structuredTextDispatch.body.output, resolveRiskMapQuery(STRUCTURED_RISK_MAP_QUERY));
+
     const riskMapDispatch = await fetchJson(`${baseUrl}/api/v1/intake`, {
       method: 'POST',
       headers: {
@@ -104,6 +131,25 @@ test('intake route dispatches raw text to concepts and structured queries to ris
     assert.equal(riskMapDispatch.body.selectedSurface, 'risk-mapping');
     assert.equal(riskMapDispatch.body.inputType, 'structured_query');
     assert.deepEqual(riskMapDispatch.body.output, resolveRiskMapQuery(STRUCTURED_RISK_MAP_QUERY));
+
+    const mixedDispatch = await fetchJson(`${baseUrl}/api/v1/intake`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        accept: 'application/json',
+      },
+      body: JSON.stringify({
+        input: `authority\n${STRUCTURED_RISK_MAP_TEXT}`,
+      }),
+    });
+
+    assert.equal(mixedDispatch.status, 400);
+    assert.deepEqual(mixedDispatch.body, {
+      error: {
+        code: 'invalid_intake_input',
+        message: 'Structured RiskMapQuery text must use only explicit key/value field assignments.',
+      },
+    });
 
     const invalidDispatch = await fetchJson(`${baseUrl}/api/v1/intake`, {
       method: 'POST',
