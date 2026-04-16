@@ -13,6 +13,7 @@ export type TermsPageSectionGroupId =
   | 'overview'
   | 'concepts'
   | 'feedback'
+  | 'shared-intake-router'
   | 'risk-mapping-governance'
   | 'military-constraints'
   | 'zee-api'
@@ -46,7 +47,7 @@ export const TERMS_PAGE_SECTION_GROUPS = [
         sectionLabel: 'Overview',
         title: 'Current public API reference.',
         summary:
-          'This page models the public API as a scoped runtime section plus separate Risk Mapping Governance, Military Constraints Compiler, and ZEE surfaces. The hero counts are scoped to the runtime section only.',
+          'This page models the public API as a scoped runtime section plus separate Shared Intake Router, Risk Mapping Governance, Military Constraints Compiler, and ZEE surfaces. The hero counts are scoped to the runtime section only.',
       },
     ],
   },
@@ -118,6 +119,21 @@ export const TERMS_PAGE_SECTION_GROUPS = [
         title: 'ZeroGlare Evidence Engine API',
         summary:
           'ZeroGlare Evidence Engine is exposed through a read-only ZEE scaffold and a separate zeroglare analysis route. The ZEE scaffold exposes discovery, contract, explain, and audit metadata only; the zeroglare analysis route accepts structured text input through q or input and returns bounded diagnostics.',
+      },
+    ],
+  },
+  {
+    id: 'shared-intake-router',
+    label: 'Shared Intake Router',
+    sections: [
+      {
+        id: 'shared-intake-router',
+        groupId: 'shared-intake-router',
+        groupLabel: 'Shared Intake Router',
+        sectionLabel: 'Shared Intake Router API',
+        title: 'Shared Intake Router API',
+        summary:
+          'The shared intake router accepts one input and dispatches it deterministically to Concepts or Risk Mapping by input shape. Raw text goes to Concepts; structured RiskMapQuery objects go to Risk Mapping. Unsupported shapes are refused.',
       },
     ],
   },
@@ -227,6 +243,11 @@ export interface TermsPageViewModel {
   zeroglareFieldRows: readonly TermsPageFieldRow[];
   zeroglareBoundaryRows: readonly TermsPageBoundaryRow[];
   zeeApiTrustRoute: string;
+  sharedIntakeTitle: string;
+  sharedIntakeIntro: string;
+  sharedIntakeEndpointRows: readonly TermsPageEndpointRow[];
+  sharedIntakeFieldRows: readonly TermsPageFieldRow[];
+  sharedIntakeBoundaryRows: readonly TermsPageBoundaryRow[];
   inspectRoute: string;
 }
 
@@ -245,6 +266,7 @@ export function buildTermsPageViewModel(surface: PolicySurfaceDefinition): Terms
   const riskMappingSection = requireSection(sectionOrder, 'risk-mapping-governance');
   const militaryConstraintsSection = requireSection(sectionOrder, 'military-constraints');
   const zeeSection = requireSection(sectionOrder, 'zee-api');
+  const sharedIntakeSection = requireSection(sectionOrder, 'shared-intake-router');
   const { endpointContracts, fieldContracts, platformRules, runtimeBoundaries, refusalBoundaries } =
     surface.termsTruth;
   const riskMappingEndpointRows = [
@@ -593,10 +615,66 @@ export function buildTermsPageViewModel(surface: PolicySurfaceDefinition): Terms
     },
   ] satisfies readonly TermsPageBoundaryRow[];
 
+  const sharedIntakeEndpointRows = [
+    {
+      claimId: 'intake-api-0',
+      operation: 'surface summary',
+      method: 'GET',
+      path: '/api/v1/intake',
+      input: 'none',
+      evidence: 'backend/src/routes/api/v1/intake.route.js:69-75',
+    },
+    {
+      claimId: 'intake-api-1',
+      operation: 'dispatch surface',
+      method: 'POST',
+      path: '/api/v1/intake',
+      input: 'body: input',
+      evidence: 'backend/src/routes/api/v1/intake.route.js:21-65',
+    },
+  ] satisfies readonly TermsPageEndpointRow[];
+
+  const sharedIntakeFieldRows = [
+    {
+      claimId: 'intake-field-1',
+      field: 'input',
+      rule: 'required request field',
+      condition: 'must be a non-empty string for Concepts dispatch or a structured RiskMapQuery object for Risk Mapping dispatch',
+      evidence:
+        'backend/src/routes/api/v1/intake.route.js:21-65 | backend/src/modules/intake/shared-intake-router.js:15-58',
+    },
+  ] satisfies readonly TermsPageFieldRow[];
+
+  const sharedIntakeBoundaryRows = [
+    {
+      claimId: 'intake-boundary-1',
+      boundary: 'missing input payload',
+      condition: 'request body omits the input field or supplies a body shape other than a single-field wrapper',
+      effect: 'rejected with invalid_intake_input',
+      evidence: 'backend/src/routes/api/v1/intake.route.js:21-45',
+    },
+    {
+      claimId: 'intake-boundary-2',
+      boundary: 'empty text input',
+      condition: 'input is an empty string',
+      effect: 'rejected with invalid_intake_input',
+      evidence: 'backend/src/modules/intake/shared-intake-router.js:15-27',
+    },
+    {
+      claimId: 'intake-boundary-3',
+      boundary: 'invalid structured input',
+      condition: 'input is an object that does not satisfy the RiskMapQuery contract',
+      effect: 'rejected with invalid_intake_input',
+      evidence: 'backend/src/modules/intake/shared-intake-router.js:29-46',
+    },
+  ] satisfies readonly TermsPageBoundaryRow[];
+
   return {
     eyebrow: 'API Reference',
     title: overviewSection.title,
-    intro: overviewSection.summary ?? '',
+    intro:
+      overviewSection.summary ??
+      'This page models the public API as a scoped runtime section plus separate Shared Intake Router, Risk Mapping Governance, Military Constraints Compiler, and ZEE surfaces. The hero counts are scoped to the runtime section only.',
     summaryLine: `Runtime section shows ${formatCount(endpointContracts.length, 'public endpoint')}, ${formatCount(fieldContracts.length, 'field rule')}, ${formatCount(platformRules.length, 'platform rule')}, ${formatCount(runtimeBoundaries.length, 'runtime boundary')}, and ${formatCount(refusalBoundaries.length, 'refusal boundary')}.`,
     badges: [
       {
@@ -673,6 +751,13 @@ export function buildTermsPageViewModel(surface: PolicySurfaceDefinition): Terms
     zeroglareFieldRows,
     zeroglareBoundaryRows,
     zeeApiTrustRoute: ZEE_ROUTE_PATH,
+    sharedIntakeTitle: sharedIntakeSection.title,
+    sharedIntakeIntro:
+      sharedIntakeSection.summary ??
+      'The shared intake router accepts one input and dispatches it deterministically to Concepts or Risk Mapping by input shape. Raw text goes to Concepts; structured RiskMapQuery objects go to Risk Mapping. Unsupported shapes are refused.',
+    sharedIntakeEndpointRows,
+    sharedIntakeFieldRows,
+    sharedIntakeBoundaryRows,
     inspectRoute: surface.route,
   };
 }
