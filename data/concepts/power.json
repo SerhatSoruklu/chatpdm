@@ -9,6 +9,10 @@
   "updatedAt": "2026-04-01T00:00:00Z",
   "domain": "relational-structures",
   "canonical": {
+    "lifecycle": {
+      "status": "active",
+      "version": 1
+    },
     "invariant": "Power is effective capacity to produce outcomes in relation to a governance structure.",
     "excludes": [
       "recognized standing to direct",

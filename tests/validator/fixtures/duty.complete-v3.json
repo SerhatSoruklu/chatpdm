@@ -9,6 +9,10 @@
   "updatedAt": "2026-03-30T00:00:00Z",
   "domain": "governance-structures",
   "canonical": {
+    "lifecycle": {
+      "status": "active",
+      "version": 1
+    },
     "invariant": "Duty is required conduct owed by an actor under a rule, role, or obligation.",
     "excludes": [
       "answerability for attributable outcomes",

@@ -9,6 +9,10 @@
   "updatedAt": "2026-03-30T00:00:00Z",
   "domain": "relational-structures",
   "canonical": {
+    "lifecycle": {
+      "status": "active",
+      "version": 1
+    },
     "invariant": "Legitimacy is accepted or justified validity of rule or standing within a governance order.",
     "excludes": [
       "recognized standing to direct",

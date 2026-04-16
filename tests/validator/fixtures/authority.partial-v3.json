@@ -9,6 +9,10 @@
   "updatedAt": "2026-03-30T00:00:00Z",
   "domain": "relational-structures",
   "canonical": {
+    "lifecycle": {
+      "status": "active",
+      "version": 1
+    },
     "invariant": "Authority is recognized standing to direct, decide, or govern within a governance order.",
     "excludes": [
       "effective capacity to produce outcomes",

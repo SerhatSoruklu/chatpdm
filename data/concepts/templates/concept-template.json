@@ -9,6 +9,10 @@
   "updatedAt": "",
   "domain": "",
   "canonical": {
+    "lifecycle": {
+      "status": "",
+      "version": 1
+    },
     "invariant": "",
     "excludes": [],
     "adjacent": {}
