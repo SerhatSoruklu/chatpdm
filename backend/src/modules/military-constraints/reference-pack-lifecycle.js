@@ -91,7 +91,7 @@ function loadValidatedPackRegistry(rootDir) {
       reasonCode: validation.reasonCode,
       errors: [...validation.errors],
       packRegistry,
-      packRegistryIndex: buildPackRegistryIndex(packRegistry),
+      packRegistryIndex: new Map(),
     };
   }
 

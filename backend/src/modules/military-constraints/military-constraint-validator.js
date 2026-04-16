@@ -10,6 +10,18 @@ const {
   isReviewedClauseProvenance,
 } = require('./reference-pack-utils');
 
+const CANONICAL_STAGE_ORDER = Object.freeze([
+  'ADMISSIBILITY',
+  'LEGAL_FLOOR',
+  'POLICY_OVERLAY',
+]);
+
+const VALID_RULE_EFFECT_DECISIONS = new Set([
+  'ALLOWED',
+  'REFUSED',
+  'REFUSED_INCOMPLETE',
+]);
+
 function isPlainObject(value) {
   return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
 }
@@ -31,6 +43,12 @@ function makeResult() {
     reasonCode: null,
     errors: [],
   };
+}
+
+function isCanonicalStageOrder(stageOrder) {
+  return Array.isArray(stageOrder)
+    && stageOrder.length === CANONICAL_STAGE_ORDER.length
+    && stageOrder.every((stage, index) => stage === CANONICAL_STAGE_ORDER[index]);
 }
 
 function fail(result, reasonCode, message) {
@@ -795,6 +813,11 @@ function validateSameStageConflicts(input) {
     return finish(result);
   }
 
+  if (!isPlainObject(bundle.precedencePolicy) || !isCanonicalStageOrder(bundle.precedencePolicy.stageOrder)) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, 'bundle.precedencePolicy.stageOrder must be exactly ADMISSIBILITY -> LEGAL_FLOOR -> POLICY_OVERLAY.');
+    return finish(result);
+  }
+
   const activeRules = rules.filter((rule) => isPlainObject(rule) && rule.status === 'ACTIVE');
   const seenRuleIds = new Set();
   const seenSemanticSignatures = new Map();
@@ -915,6 +938,7 @@ function validateMissingFactSemantics(input) {
 }
 
 module.exports = {
+  CANONICAL_STAGE_ORDER,
   canonicalBundlePayload,
   computeBundleHash,
   validateAuthorityReferences,

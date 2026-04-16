@@ -4,6 +4,7 @@ const {
   MILITARY_CONSTRAINT_REASON_CODES,
 } = require('./military-constraint-reason-codes');
 const {
+  CANONICAL_STAGE_ORDER,
   validateAuthorityReferences,
   validateContractPack,
 } = require('./military-constraint-validator');
@@ -192,7 +193,7 @@ function evaluateBundle(input) {
   const activeRules = Array.isArray(bundle.rules)
     ? bundle.rules.filter((rule) => isPlainObject(rule) && rule.status === 'ACTIVE')
     : [];
-  const orderedRules = sortByEvaluationOrder(activeRules, Array.isArray(bundle.precedencePolicy && bundle.precedencePolicy.stageOrder) ? bundle.precedencePolicy.stageOrder : []);
+  const orderedRules = sortByEvaluationOrder(activeRules, CANONICAL_STAGE_ORDER);
   const ruleTrace = [];
   const failingRuleIds = [];
   const missingFactIds = [];

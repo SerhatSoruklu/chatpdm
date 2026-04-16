@@ -1,5 +1,6 @@
 'use strict';
 
+const fs = require('node:fs');
 const path = require('node:path');
 
 const {
@@ -16,6 +17,7 @@ const {
   readJsonFile,
   resolveModuleRoot,
   sortStrings,
+  isNonEmptyString,
 } = require('./reference-pack-utils');
 
 function makeResult() {
@@ -159,6 +161,10 @@ function buildReferenceBundle(input) {
   const manifest = validation.manifest;
   const sourceRegistryPath = path.join(rootDir, 'fixtures', 'military-source-registry.json');
   const authorityGraphPath = getAuthorityGraphPath(rootDir, manifest);
+  if (!isNonEmptyString(authorityGraphPath) || !fs.existsSync(authorityGraphPath)) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, `authority graph could not be resolved for manifest authorityGraphId "${manifest.authorityGraphId}".`);
+    return finish(result);
+  }
   const factSchemaPath = path.join(__dirname, 'military-constraint-fact.schema.json');
   const sourceRegistry = readJsonFile(sourceRegistryPath);
   const authorityGraph = readJsonFile(authorityGraphPath);

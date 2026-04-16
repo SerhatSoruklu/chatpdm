@@ -7,7 +7,7 @@ const { listReferencePacks } = require('../../../modules/military-constraints/li
 const { buildReferenceBundle } = require('../../../modules/military-constraints/build-reference-pack');
 const { evaluateBundle } = require('../../../modules/military-constraints/evaluate-bundle');
 const { validateFactPacket, isPlainObject } = require('../../../modules/military-constraints/fact-schema-utils');
-const { loadPackRegistry } = require('../../../modules/military-constraints/reference-pack-utils');
+const { loadPackRegistry, validatePackRegistry } = require('../../../modules/military-constraints/reference-pack-utils');
 
 const MODULE_ROOT = path.resolve(__dirname, '../../../modules/military-constraints');
 const FACT_SCHEMA = require('../../../modules/military-constraints/military-constraint-fact.schema.json');
@@ -16,9 +16,10 @@ const PACK_ID_PATTERN = /^[A-Za-z0-9._-]+$/;
 const router = Router();
 const PACK_INDEX = listReferencePacks({ rootDir: MODULE_ROOT });
 const PACK_REGISTRY = loadPackRegistry(MODULE_ROOT);
+const PACK_REGISTRY_VALIDATION = validatePackRegistry(PACK_REGISTRY);
 
 function countRegistryEntries(predicate) {
-  if (!Array.isArray(PACK_REGISTRY)) {
+  if (!Array.isArray(PACK_REGISTRY) || !PACK_REGISTRY_VALIDATION.valid) {
     return 0;
   }
 

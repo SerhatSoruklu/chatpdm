@@ -46,27 +46,6 @@ function assertValid(ajv, schemaId, value) {
   assert.equal(valid, true, JSON.stringify(validate.errors, null, 2));
 }
 
-function evaluateCase(pack, bundle, ajv, buildFacts, caseSpec) {
-  const facts = buildFacts(bundle);
-  caseSpec.mutate(facts);
-
-  const decision = evaluateBundle({
-    bundle,
-    facts,
-    factSchema: readModuleJson('military-constraint-fact.schema.json'),
-  });
-
-  assert.equal(decision.decision, caseSpec.expected.decision, `${pack.packId} ${caseSpec.caseId} decision`);
-  assert.equal(decision.reasonCode, caseSpec.expected.reasonCode, `${pack.packId} ${caseSpec.caseId} reasonCode`);
-  assert.equal(decision.failedStage, caseSpec.expected.failedStage, `${pack.packId} ${caseSpec.caseId} failedStage`);
-  if (Array.isArray(caseSpec.expected.failingRuleIds) && caseSpec.expected.failingRuleIds.length > 0) {
-    assert.ok(decision.failingRuleIds.includes(caseSpec.expected.failingRuleIds[0]), `${pack.packId} ${caseSpec.caseId} ruleId`);
-  } else {
-    assert.deepEqual(decision.failingRuleIds, caseSpec.expected.failingRuleIds, `${pack.packId} ${caseSpec.caseId} ruleIds`);
-  }
-  assertValid(ajv, 'https://chatpdm.local/schemas/runtime-decision.schema.json', decision);
-}
-
 PACKS.forEach((pack) => {
   test(`${pack.packId} reviewed clauses compile into a reference bundle and evaluate deterministically`, () => {
     const ajv = buildAjv();

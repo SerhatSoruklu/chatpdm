@@ -27,7 +27,6 @@ function createNationalPack({
   sourceId,
   jurisdiction,
   allowedReasonCode,
-  allowedFailedStage,
   refusalReasonCode,
   refusalFailedStage,
   incompleteReasonCode,

@@ -5,6 +5,17 @@ const path = require('node:path');
 
 const { isPlainObject } = require('./fact-schema-utils');
 
+const AUTHORITY_GRAPH_FIXTURE_BY_ID = {
+  'AUTH-GRAPH-US-001': 'authority-graph.json',
+  'AUTH-GRAPH-INTL-001': 'authority-graph-intl.json',
+  'AUTH-GRAPH-UK-001': 'authority-graph-uk.json',
+  'AUTH-GRAPH-CA-001': 'authority-graph-ca.json',
+  'AUTH-GRAPH-AU-001': 'authority-graph-au.json',
+  'AUTH-GRAPH-NL-001': 'authority-graph-nl.json',
+  'AUTH-GRAPH-TR-001': 'authority-graph-tr.json',
+  'AUTH-GRAPH-NATO-001': 'authority-graph-nato.json',
+};
+
 function readJsonFile(filePath) {
   return JSON.parse(fs.readFileSync(filePath, 'utf8'));
 }
@@ -121,35 +132,16 @@ function getAuthorityGraphPath(moduleRoot, manifest) {
     ? manifest.authorityGraphId
     : null;
 
-  if (authorityGraphId === 'AUTH-GRAPH-INTL-001' || (isPlainObject(manifest) && manifest.jurisdiction === 'INTL')) {
-    return path.join(moduleRoot, '__tests__', 'fixtures', 'authority-graph-intl.json');
+  if (typeof authorityGraphId === 'string' && authorityGraphId.length > 0) {
+    const fixtureName = AUTHORITY_GRAPH_FIXTURE_BY_ID[authorityGraphId];
+    if (typeof fixtureName === 'string' && fixtureName.length > 0) {
+      return path.join(moduleRoot, '__tests__', 'fixtures', fixtureName);
+    }
+
+    return null;
   }
 
-  if (authorityGraphId === 'AUTH-GRAPH-UK-001' || (isPlainObject(manifest) && manifest.jurisdiction === 'UK')) {
-    return path.join(moduleRoot, '__tests__', 'fixtures', 'authority-graph-uk.json');
-  }
-
-  if (authorityGraphId === 'AUTH-GRAPH-CA-001' || (isPlainObject(manifest) && manifest.jurisdiction === 'CA')) {
-    return path.join(moduleRoot, '__tests__', 'fixtures', 'authority-graph-ca.json');
-  }
-
-  if (authorityGraphId === 'AUTH-GRAPH-AU-001' || (isPlainObject(manifest) && manifest.jurisdiction === 'AU')) {
-    return path.join(moduleRoot, '__tests__', 'fixtures', 'authority-graph-au.json');
-  }
-
-  if (authorityGraphId === 'AUTH-GRAPH-NL-001' || (isPlainObject(manifest) && manifest.jurisdiction === 'NL')) {
-    return path.join(moduleRoot, '__tests__', 'fixtures', 'authority-graph-nl.json');
-  }
-
-  if (authorityGraphId === 'AUTH-GRAPH-TR-001' || (isPlainObject(manifest) && manifest.jurisdiction === 'TR')) {
-    return path.join(moduleRoot, '__tests__', 'fixtures', 'authority-graph-tr.json');
-  }
-
-  if (authorityGraphId === 'AUTH-GRAPH-NATO-001' || (isPlainObject(manifest) && manifest.jurisdiction === 'NATO')) {
-    return path.join(moduleRoot, '__tests__', 'fixtures', 'authority-graph-nato.json');
-  }
-
-  return path.join(moduleRoot, '__tests__', 'fixtures', 'authority-graph.json');
+  return null;
 }
 
 function loadPackRegistry(moduleRoot) {

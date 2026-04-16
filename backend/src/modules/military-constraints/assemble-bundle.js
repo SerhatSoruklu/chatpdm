@@ -8,6 +8,7 @@ const {
 } = require('./military-constraint-reason-codes');
 const {
   computeBundleHash,
+  CANONICAL_STAGE_ORDER,
   validateContractPack,
 } = require('./military-constraint-validator');
 const {
@@ -392,7 +393,7 @@ function assembleBundle(input) {
 
   const canonicalRules = sortByBundleOrder(
     compiledRules.map(sortRuleForBundle),
-    Array.isArray(bundleDraft.precedencePolicy.stageOrder) ? bundleDraft.precedencePolicy.stageOrder : [],
+    CANONICAL_STAGE_ORDER,
   );
   const canonicalAuthorityGraph = sortAuthorityGraph(authorityGraph);
 
