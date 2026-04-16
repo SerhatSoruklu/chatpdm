@@ -505,10 +505,14 @@ function validateReadingRegisterModeValidation(value, label) {
 
 function validateReadingRegisterValidation(value, label = 'validation') {
   assertAllowedKeys(value, label, ['availableModes', 'modes']);
-  assertStringArray(value.availableModes, `${label}.availableModes`);
+  assertStringArray(value.availableModes, `${label}.availableModes`, 1);
   value.availableModes.forEach((modeName, index) => {
     assertOneOf(modeName, `${label}.availableModes[${index}]`, new Set(['standard', 'simplified', 'formal']));
   });
+
+  if (!value.availableModes.includes('standard')) {
+    throw new Error(`${label}.availableModes must include "standard".`);
+  }
 
   assertAllowedKeys(value.modes, `${label}.modes`, ['standard', 'simplified', 'formal']);
   validateReadingRegisterModeValidation(value.modes.standard, `${label}.modes.standard`);
@@ -524,9 +528,34 @@ function validateReadingRegistersObject(value, label = 'registers') {
 
   validateReadingRegisterCanonicalBinding(value.canonicalBinding, `${label}.canonicalBinding`);
   validateReadingRegisterValidation(value.validation, `${label}.validation`);
+
+  if (!hasOwn(value, 'standard')) {
+    throw new Error(`${label}.standard must be present.`);
+  }
+
   validateReadingRegisterFields(value.standard, `${label}.standard`);
-  validateReadingRegisterFields(value.simplified, `${label}.simplified`);
-  validateReadingRegisterFields(value.formal, `${label}.formal`);
+
+  const availableModes = new Set(value.validation.availableModes);
+
+  if (availableModes.has('simplified')) {
+    if (!hasOwn(value, 'simplified')) {
+      throw new Error(`${label}.simplified must be present when simplified is available.`);
+    }
+
+    validateReadingRegisterFields(value.simplified, `${label}.simplified`);
+  } else if (hasOwn(value, 'simplified')) {
+    throw new Error(`${label}.simplified must be omitted when simplified is unavailable.`);
+  }
+
+  if (availableModes.has('formal')) {
+    if (!hasOwn(value, 'formal')) {
+      throw new Error(`${label}.formal must be present when formal is available.`);
+    }
+
+    validateReadingRegisterFields(value.formal, `${label}.formal`);
+  } else if (hasOwn(value, 'formal')) {
+    throw new Error(`${label}.formal must be omitted when formal is unavailable.`);
+  }
 }
 
 function validateGovernanceStateTraceObject(value, label = 'trace') {

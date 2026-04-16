@@ -1030,12 +1030,17 @@ export class LandingPageComponent {
       return this.canonicalReadingFields(response);
     }
 
-    const activeMode = registers[this.activeReadingMode(response)];
+    const activeMode = this.activeReadingMode(response);
+    const activeRegister = activeMode === 'simplified'
+      ? registers.simplified
+      : activeMode === 'formal'
+        ? registers.formal
+        : registers.standard;
 
     return {
-      shortDefinition: activeMode.shortDefinition,
-      coreMeaning: activeMode.coreMeaning,
-      fullDefinition: activeMode.fullDefinition,
+      shortDefinition: activeRegister?.shortDefinition ?? registers.standard.shortDefinition,
+      coreMeaning: activeRegister?.coreMeaning ?? registers.standard.coreMeaning,
+      fullDefinition: activeRegister?.fullDefinition ?? registers.standard.fullDefinition,
     };
   }
 
@@ -1235,9 +1240,18 @@ export class LandingPageComponent {
       !registers.canonicalBinding
       || !registers.validation
       || !registers.standard
-      || !registers.simplified
-      || !registers.formal
+      || !Array.isArray(registers.validation.availableModes)
     ) {
+      return null;
+    }
+
+    const exposedModes = new Set(registers.validation.availableModes);
+
+    if (exposedModes.has('simplified') && !registers.simplified) {
+      return null;
+    }
+
+    if (exposedModes.has('formal') && !registers.formal) {
       return null;
     }
 

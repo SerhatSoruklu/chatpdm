@@ -17,13 +17,33 @@ function buildRegisterFieldPayload(registerRecord) {
   return payload;
 }
 
-function buildReadingRegistersForConcept(concept) {
+function assertModePayloadExists(concept, modeName) {
+  const registerRecord = concept.registers[modeName];
+
+  if (!registerRecord) {
+    throw new Error(`Concept "${concept.conceptId}" is missing authored registers.${modeName}.`);
+  }
+
+  return registerRecord;
+}
+
+function buildExposedRegisterPayloads(concept, validation) {
   const registers = {};
-  const validation = validateRegisterDivergenceForConcept(concept);
+  const exposedModeSet = new Set(validation.availableModes);
 
   AUTHORED_REGISTER_MODES.forEach((modeName) => {
-    registers[modeName] = buildRegisterFieldPayload(concept.registers[modeName]);
+    if (!exposedModeSet.has(modeName)) {
+      return;
+    }
+
+    registers[modeName] = buildRegisterFieldPayload(assertModePayloadExists(concept, modeName));
   });
+
+  return registers;
+}
+
+function buildReadingRegistersForConcept(concept) {
+  const validation = validateRegisterDivergenceForConcept(concept);
 
   return {
     readOnly: true,
@@ -33,10 +53,11 @@ function buildReadingRegistersForConcept(concept) {
       canonicalHash: computeCanonicalConceptHash(concept),
     },
     validation,
-    ...registers,
+    ...buildExposedRegisterPayloads(concept, validation),
   };
 }
 
 module.exports = {
+  buildExposedRegisterPayloads,
   buildReadingRegistersForConcept,
 };

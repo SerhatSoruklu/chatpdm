@@ -248,9 +248,9 @@ The `answer` object is the canonical payload boundary. Only fields inside `answe
 - `readOnly`
 - `canonicalBinding`
 - `validation`
-- `standard`
-- `simplified`
-- `formal`
+- `standard` (always present)
+- `simplified` when exposed by `availableModes`
+- `formal` when exposed by `availableModes`
 
 `answer.registers.canonicalBinding` object fields:
 
@@ -258,7 +258,7 @@ The `answer` object is the canonical payload boundary. Only fields inside `answe
 - `conceptVersion`
 - `canonicalHash`
 
-Each register object contains:
+Each exposed register object contains:
 
 - `shortDefinition`
 - `coreMeaning`
@@ -274,11 +274,11 @@ Each validation mode object contains:
 - `status`
 - `reasons`
 
-`answer.registers.standard` must preserve the same prose as the top-level canonical fields.
+`answer.registers.standard` must always be present and must preserve the same prose as the top-level canonical fields.
 
-`answer.registers.simplified` and `answer.registers.formal` are separately authored renderings of the same concept meaning. They must not be produced through runtime rewriting or prefix-derived overlays.
+`answer.registers.simplified` and `answer.registers.formal` are separately authored renderings of the same concept meaning. They are present only when their mode name appears in `answer.registers.validation.availableModes`. They must not be produced through runtime rewriting or prefix-derived overlays.
 
-Only registers listed in `answer.registers.validation.availableModes` may be exposed in the UI. If validation collapses to `standard` only, the public surface must render `standard` only.
+Only registers listed in `answer.registers.validation.availableModes` may be exposed in the UI or serialized on the runtime surface. If validation collapses to `standard` only, the public surface must render `standard` only and omit the other register fields.
 
 `answer.contexts` object fields:
 
