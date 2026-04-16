@@ -2,12 +2,25 @@
 
 const {
   MILITARY_CONSTRAINT_REASON_CODES,
+  isMilitaryConstraintReasonCode,
 } = require('./military-constraint-reason-codes');
 const {
   isLocatorBoundToSource,
   isNonEmptyString,
   isReviewedClauseProvenance,
 } = require('./reference-pack-utils');
+
+const CANONICAL_STAGE_ORDER = Object.freeze([
+  'ADMISSIBILITY',
+  'LEGAL_FLOOR',
+  'POLICY_OVERLAY',
+]);
+
+const VALID_RULE_EFFECT_DECISIONS = new Set([
+  'ALLOWED',
+  'REFUSED',
+  'REFUSED_INCOMPLETE',
+]);
 
 function isPlainObject(value) {
   return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
@@ -30,6 +43,12 @@ function makeResult() {
     reasonCode: null,
     errors: [],
   };
+}
+
+function isCanonicalStageOrder(stageOrder) {
+  return Array.isArray(stageOrder)
+    && stageOrder.length === CANONICAL_STAGE_ORDER.length
+    && stageOrder.every((stage, index) => stage === CANONICAL_STAGE_ORDER[index]);
 }
 
 function fail(result, reasonCode, message) {
@@ -372,6 +391,22 @@ function validateRuleProvenance(rule, result) {
   }
 }
 
+function validateRuleEffect(rule, result) {
+  if (!isPlainObject(rule.effect)) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, `rule ${rule.ruleId} must retain an effect object.`);
+    return;
+  }
+
+  if (typeof rule.effect.decision !== 'string' || !VALID_RULE_EFFECT_DECISIONS.has(rule.effect.decision)) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, `rule ${rule.ruleId} must retain a valid effect.decision.`);
+    return;
+  }
+
+  if (typeof rule.effect.reasonCode !== 'string' || !isMilitaryConstraintReasonCode(rule.effect.reasonCode)) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, `rule ${rule.ruleId} must retain a valid effect.reasonCode.`);
+  }
+}
+
 function validateSourceRegistrySnapshot(bundle, rules, result) {
   if (!Array.isArray(bundle.sourceRegistrySnapshot) || bundle.sourceRegistrySnapshot.length === 0) {
     fail(result, MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, 'bundle.sourceRegistrySnapshot must be a non-empty array.');
@@ -490,6 +525,7 @@ function validateBundleIntegrity({ bundle, rules, authorityGraph }) {
   bundleRules.forEach((rule) => {
     if (isPlainObject(rule)) {
       validateRuleProvenance(rule, result);
+      validateRuleEffect(rule, result);
     }
   });
 
@@ -777,6 +813,11 @@ function validateSameStageConflicts(input) {
     return finish(result);
   }
 
+  if (!isPlainObject(bundle.precedencePolicy) || !isCanonicalStageOrder(bundle.precedencePolicy.stageOrder)) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, 'bundle.precedencePolicy.stageOrder must be exactly ADMISSIBILITY -> LEGAL_FLOOR -> POLICY_OVERLAY.');
+    return finish(result);
+  }
+
   const activeRules = rules.filter((rule) => isPlainObject(rule) && rule.status === 'ACTIVE');
   const seenRuleIds = new Set();
   const seenSemanticSignatures = new Map();
@@ -897,6 +938,7 @@ function validateMissingFactSemantics(input) {
 }
 
 module.exports = {
+  CANONICAL_STAGE_ORDER,
   canonicalBundlePayload,
   computeBundleHash,
   validateAuthorityReferences,

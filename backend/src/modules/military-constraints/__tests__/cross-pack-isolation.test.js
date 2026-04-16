@@ -30,32 +30,6 @@ function copyModuleRoot(targetRoot) {
   fs.cpSync(MODULE_DIR, targetRoot, { recursive: true });
 }
 
-function readJson(filePath) {
-  return JSON.parse(fs.readFileSync(filePath, 'utf8'));
-}
-
-function removeNonPack1Manifests(targetRoot) {
-  const manifestPath = path.join(targetRoot, 'reference-pack-manifest.maritime-vbss.json');
-  if (fs.existsSync(manifestPath)) {
-    fs.rmSync(manifestPath, { force: true });
-  }
-
-  const medicalManifestPath = path.join(targetRoot, 'reference-pack-manifest.medical-protection.json');
-  if (fs.existsSync(medicalManifestPath)) {
-    fs.rmSync(medicalManifestPath, { force: true });
-  }
-
-  const civilianSchoolManifestPath = path.join(targetRoot, 'reference-pack-manifest.civilian-school-protection.json');
-  if (fs.existsSync(civilianSchoolManifestPath)) {
-    fs.rmSync(civilianSchoolManifestPath, { force: true });
-  }
-
-  const protectedPersonManifestPath = path.join(targetRoot, 'reference-pack-manifest.protected-person.json');
-  if (fs.existsSync(protectedPersonManifestPath)) {
-    fs.rmSync(protectedPersonManifestPath, { force: true });
-  }
-}
-
 function makeArtifactRoot() {
   return makeTempRoot();
 }

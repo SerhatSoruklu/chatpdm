@@ -5,6 +5,17 @@ const path = require('node:path');
 
 const { isPlainObject } = require('./fact-schema-utils');
 
+const AUTHORITY_GRAPH_FIXTURE_BY_ID = {
+  'AUTH-GRAPH-US-001': 'authority-graph.json',
+  'AUTH-GRAPH-INTL-001': 'authority-graph-intl.json',
+  'AUTH-GRAPH-UK-001': 'authority-graph-uk.json',
+  'AUTH-GRAPH-CA-001': 'authority-graph-ca.json',
+  'AUTH-GRAPH-AU-001': 'authority-graph-au.json',
+  'AUTH-GRAPH-NL-001': 'authority-graph-nl.json',
+  'AUTH-GRAPH-TR-001': 'authority-graph-tr.json',
+  'AUTH-GRAPH-NATO-001': 'authority-graph-nato.json',
+};
+
 function readJsonFile(filePath) {
   return JSON.parse(fs.readFileSync(filePath, 'utf8'));
 }
@@ -121,35 +132,16 @@ function getAuthorityGraphPath(moduleRoot, manifest) {
     ? manifest.authorityGraphId
     : null;
 
-  if (authorityGraphId === 'AUTH-GRAPH-INTL-001' || (isPlainObject(manifest) && manifest.jurisdiction === 'INTL')) {
-    return path.join(moduleRoot, '__tests__', 'fixtures', 'authority-graph-intl.json');
+  if (typeof authorityGraphId === 'string' && authorityGraphId.length > 0) {
+    const fixtureName = AUTHORITY_GRAPH_FIXTURE_BY_ID[authorityGraphId];
+    if (typeof fixtureName === 'string' && fixtureName.length > 0) {
+      return path.join(moduleRoot, '__tests__', 'fixtures', fixtureName);
+    }
+
+    return null;
   }
 
-  if (authorityGraphId === 'AUTH-GRAPH-UK-001' || (isPlainObject(manifest) && manifest.jurisdiction === 'UK')) {
-    return path.join(moduleRoot, '__tests__', 'fixtures', 'authority-graph-uk.json');
-  }
-
-  if (authorityGraphId === 'AUTH-GRAPH-CA-001' || (isPlainObject(manifest) && manifest.jurisdiction === 'CA')) {
-    return path.join(moduleRoot, '__tests__', 'fixtures', 'authority-graph-ca.json');
-  }
-
-  if (authorityGraphId === 'AUTH-GRAPH-AU-001' || (isPlainObject(manifest) && manifest.jurisdiction === 'AU')) {
-    return path.join(moduleRoot, '__tests__', 'fixtures', 'authority-graph-au.json');
-  }
-
-  if (authorityGraphId === 'AUTH-GRAPH-NL-001' || (isPlainObject(manifest) && manifest.jurisdiction === 'NL')) {
-    return path.join(moduleRoot, '__tests__', 'fixtures', 'authority-graph-nl.json');
-  }
-
-  if (authorityGraphId === 'AUTH-GRAPH-TR-001' || (isPlainObject(manifest) && manifest.jurisdiction === 'TR')) {
-    return path.join(moduleRoot, '__tests__', 'fixtures', 'authority-graph-tr.json');
-  }
-
-  if (authorityGraphId === 'AUTH-GRAPH-NATO-001' || (isPlainObject(manifest) && manifest.jurisdiction === 'NATO')) {
-    return path.join(moduleRoot, '__tests__', 'fixtures', 'authority-graph-nato.json');
-  }
-
-  return path.join(moduleRoot, '__tests__', 'fixtures', 'authority-graph.json');
+  return null;
 }
 
 function loadPackRegistry(moduleRoot) {
@@ -300,20 +292,60 @@ function validatePackRegistry(packRegistry) {
   });
 }
 
+function makeSourceRegistryIndexResult() {
+  return {
+    valid: true,
+    reasonCode: null,
+    errors: [],
+    sourceIndex: new Map(),
+  };
+}
+
+function failSourceRegistryIndex(result, reasonCode, message) {
+  result.valid = false;
+  if (result.reasonCode === null) {
+    result.reasonCode = reasonCode;
+  }
+  result.errors.push(message);
+}
+
+function finishSourceRegistryIndex(result) {
+  return Object.freeze({
+    valid: result.valid,
+    reasonCode: result.reasonCode,
+    errors: Object.freeze([...result.errors]),
+    sourceIndex: result.valid ? result.sourceIndex : new Map(),
+  });
+}
+
 function buildSourceRegistryIndex(sourceRegistry) {
-  const index = new Map();
+  const result = makeSourceRegistryIndexResult();
 
   if (!Array.isArray(sourceRegistry)) {
-    return index;
+    return finishSourceRegistryIndex(result);
   }
 
+  const seenSourceIds = new Set();
+
   sourceRegistry.forEach((entry) => {
-    if (isPlainObject(entry) && typeof entry.sourceId === 'string' && entry.sourceId.length > 0) {
-      index.set(entry.sourceId, entry);
+    if (!isPlainObject(entry) || typeof entry.sourceId !== 'string' || entry.sourceId.length === 0) {
+      return;
     }
+
+    if (seenSourceIds.has(entry.sourceId)) {
+      failSourceRegistryIndex(
+        result,
+        'POLICY_BUNDLE_INVALID',
+        `duplicate sourceId "${entry.sourceId}" in source registry.`,
+      );
+      return;
+    }
+
+    seenSourceIds.add(entry.sourceId);
+    result.sourceIndex.set(entry.sourceId, entry);
   });
 
-  return index;
+  return finishSourceRegistryIndex(result);
 }
 
 function loadManifest(moduleRoot, manifestFile) {

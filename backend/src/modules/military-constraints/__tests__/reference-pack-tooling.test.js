@@ -10,6 +10,7 @@ const { listReferencePacks } = require('../list-reference-packs');
 const { validateReferencePack } = require('../validate-reference-pack');
 const { buildReferencePack } = require('../build-reference-pack');
 const { runReferencePackRegression } = require('../run-reference-pack-regression');
+const { validatePackRegistry } = require('../reference-pack-utils');
 
 const BASE_DIR = path.resolve(__dirname);
 const MODULE_DIR = path.resolve(BASE_DIR, '..');
@@ -84,6 +85,14 @@ function makePackRoot() {
 
 function cleanupRoot(root) {
   removeIfExists(root);
+}
+
+function duplicateRegistryEntry(registry, matcher, mutate) {
+  const entry = registry.find(matcher);
+  assert.ok(entry, 'Expected registry entry to duplicate.');
+  const duplicated = cloneJson(entry);
+  mutate(duplicated);
+  registry.push(duplicated);
 }
 
 test('pack list ordering is stable', () => {
@@ -366,6 +375,59 @@ test('registry-planned packs are not releasable', () => {
   }
 });
 
+test('duplicate registry packId fails validation and discovery fails closed', () => {
+  const root = makeTempRoot();
+  try {
+    copyPackArtifactsWithRegistry(root);
+
+    const registryPath = path.join(root, 'pack-registry.json');
+    const registry = readJson(registryPath);
+    duplicateRegistryEntry(registry, (entry) => entry.packId === 'US_CORE_V1', (entry) => {
+      entry.kind = 'overlay';
+      entry.status = 'planned';
+      entry.notes = 'duplicate packId should not be discoverable';
+    });
+    fs.writeFileSync(registryPath, `${JSON.stringify(registry, null, 2)}\n`);
+
+    const validation = validatePackRegistry(registry);
+    assert.equal(validation.valid, false);
+    assert.equal(validation.reasonCode, 'POLICY_BUNDLE_INVALID');
+    assert.match(validation.errors.join('\n'), /duplicate registry packId/i);
+
+    const packs = listReferencePacks({ rootDir: root });
+    assert.deepEqual(packs, []);
+  } finally {
+    cleanupRoot(root);
+  }
+});
+
+test('duplicate manifestPackId fails validation and discovery fails closed', () => {
+  const root = makeTempRoot();
+  try {
+    copyPackArtifactsWithRegistry(root);
+
+    const registryPath = path.join(root, 'pack-registry.json');
+    const registry = readJson(registryPath);
+    duplicateRegistryEntry(registry, (entry) => entry.packId === 'US_CORE_V1', (entry) => {
+      entry.packId = 'US_CORE_V1_DUPLICATE';
+      entry.kind = 'overlay';
+      entry.status = 'planned';
+      entry.notes = 'duplicate manifestPackId should not be discoverable';
+    });
+    fs.writeFileSync(registryPath, `${JSON.stringify(registry, null, 2)}\n`);
+
+    const validation = validatePackRegistry(registry);
+    assert.equal(validation.valid, false);
+    assert.equal(validation.reasonCode, 'POLICY_BUNDLE_INVALID');
+    assert.match(validation.errors.join('\n'), /duplicate registry manifestPackId/i);
+
+    const packs = listReferencePacks({ rootDir: root });
+    assert.deepEqual(packs, []);
+  } finally {
+    cleanupRoot(root);
+  }
+});
+
 test('missing manifest fails validation', () => {
   const root = makePackRoot();
   try {
@@ -413,6 +475,27 @@ test('missing authority graph fails validation', () => {
     assert.equal(validation.valid, false);
     assert.equal(validation.reasonCode, 'POLICY_BUNDLE_INVALID');
     assert.match(validation.errors.join('\n'), /authority graph/i);
+  } finally {
+    cleanupRoot(root);
+  }
+});
+
+test('explicit authorityGraphId does not fall back to a jurisdiction graph', () => {
+  const root = makePackRoot();
+  try {
+    const manifestPath = path.join(root, 'reference-pack-manifest.json');
+    const manifest = readJson(manifestPath);
+    manifest.authorityGraphId = 'AUTH-GRAPH-DOES-NOT-EXIST';
+    fs.writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
+
+    const validation = validateReferencePack({
+      rootDir: root,
+      manifestPath,
+    });
+
+    assert.equal(validation.valid, false);
+    assert.equal(validation.reasonCode, 'POLICY_BUNDLE_INVALID');
+    assert.match(validation.errors.join('\n'), /authority graph could not be resolved/i);
   } finally {
     cleanupRoot(root);
   }

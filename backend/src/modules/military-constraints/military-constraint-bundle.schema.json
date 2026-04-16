@@ -62,14 +62,18 @@
           "type": "array",
           "minItems": 3,
           "maxItems": 3,
-          "items": {
-            "type": "string",
-            "enum": [
-              "ADMISSIBILITY",
-              "LEGAL_FLOOR",
-              "POLICY_OVERLAY"
-            ]
-          }
+          "prefixItems": [
+            {
+              "const": "ADMISSIBILITY"
+            },
+            {
+              "const": "LEGAL_FLOOR"
+            },
+            {
+              "const": "POLICY_OVERLAY"
+            }
+          ],
+          "items": false
         },
         "defaultDecision": {
           "type": "string",

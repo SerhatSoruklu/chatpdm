@@ -32,7 +32,7 @@
     "military-constraints:heartbeat": "node ./scripts/run-all-military-constraint-checks.js",
     "military-constraints:release-all": "node ./backend/src/modules/military-constraints/release-all-reference-packs.js",
     "military-constraints:release-pack": "node ./backend/src/modules/military-constraints/release-reference-pack.js",
-    "lint:md": "markdownlint-cli2 \"*.md\" \"backend/**/*.md\" \"data/**/*.md\" \"deploy/**/*.md\" \"docs/**/*.md\" \"frontend/**/*.md\" \"tests/**/*.md\" \"!node_modules/**\" \"!backend/node_modules/**\" \"!frontend/node_modules/**\" \"!frontend/dist/**\""
+    "lint:md": "markdownlint-cli2 \"*.md\" \"backend/**/*.md\" \"data/**/*.md\" \"deploy/**/*.md\" \"docs/**/*.md\" \"frontend/**/*.md\" \"security/**/*.md\" \"tests/**/*.md\" \"!node_modules/**\" \"!backend/node_modules/**\" \"!frontend/node_modules/**\" \"!frontend/dist/**\""
   },
   "devDependencies": {
     "ajv": "^8.18.0",

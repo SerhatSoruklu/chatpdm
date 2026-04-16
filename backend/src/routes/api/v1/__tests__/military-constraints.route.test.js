@@ -11,7 +11,6 @@ const { buildReferenceBundle } = require('../../../../modules/military-constrain
 const MODULE_DIR = path.resolve(__dirname, '../../../../modules/military-constraints');
 const PACK_MANIFEST_PATH = path.join(MODULE_DIR, 'reference-pack-manifest.medical-protection.json');
 const AIRSPACE_PACK_MANIFEST_PATH = path.join(MODULE_DIR, 'reference-pack-manifest.airspace-control.json');
-const UK_AIRSPACE_PACK_MANIFEST_PATH = path.join(MODULE_DIR, 'reference-pack-manifest.uk-airspace-control.json');
 const CA_AIRSPACE_PACK_MANIFEST_PATH = path.join(MODULE_DIR, 'reference-pack-manifest.ca-airspace-control.json');
 const AU_AIRSPACE_PACK_MANIFEST_PATH = path.join(MODULE_DIR, 'reference-pack-manifest.au-airspace-control.json');
 const CA_NATIONAL_PACK_MANIFEST_PATH = path.join(MODULE_DIR, 'reference-pack-manifest.ca-national-base.json');
@@ -43,9 +42,9 @@ async function fetchJson(url, options) {
 }
 
 function buildAllowedFacts(bundle) {
-    return {
-      bundleId: bundle.bundleId,
-      bundleVersion: bundle.bundleVersion,
+  return {
+    bundleId: bundle.bundleId,
+    bundleVersion: bundle.bundleVersion,
     bundleHash: bundle.bundleHash,
     actor: {
       id: 'MED-TEAM-01',
@@ -89,64 +88,6 @@ function buildAllowedFacts(bundle) {
       expectedMilitaryAdvantage: 'LOW',
       estimatedIncidentalHarmScore: 85,
       expectedMilitaryAdvantageScore: 15,
-    },
-    authority: {
-      reservedToHigherCommand: false,
-      nationalCaveat: false,
-      delegatedToUnit: true,
-      designatedRoeActive: true,
-      designatedActionAuthorized: true,
-      },
-    };
-}
-
-function buildAllowedUkAirspaceFacts(bundle) {
-  return {
-    bundleId: bundle.bundleId,
-    bundleVersion: bundle.bundleVersion,
-    bundleHash: bundle.bundleHash,
-    actor: {
-      id: 'UK-AIRSPACE-TEAM-01',
-      role: 'BRIGADE_COMMANDER',
-      authorityLevelId: 'BRIGADE',
-    },
-    action: {
-      kind: 'SURVEILLANCE',
-      forceLevel: 'NON_LETHAL',
-      method: 'AIRBORNE_SURVEILLANCE',
-      domain: 'AIR',
-    },
-    target: {
-      id: 'UK-AIRSPACE-TARGET-01',
-      protectedClass: 'MILITARY',
-      militaryObjectiveStatus: 'CONFIRMED_TRUE',
-      lossOfProtectionStatus: 'NOT_LOST',
-      objectType: 'OTHER',
-      horsDeCombatStatus: false,
-    },
-    context: {
-      zone: 'UK-AIRSPACE-ZONE',
-      missionType: 'ARMED_CONFLICT',
-      operationPhase: 'PLANNING',
-      operationalSlice: 'PROTECTED_PERSON_STATE',
-      coalitionMode: 'NATIONAL',
-      timeWindowStart: '2026-04-13T18:00:00.000Z',
-      timeWindowEnd: '2026-04-13T19:00:00.000Z',
-    },
-    threat: {
-      hostileAct: false,
-      hostileIntent: false,
-      imminence: 'NONE',
-      necessity: 'LOW',
-    },
-    civilianRisk: {
-      civilianPresence: false,
-      civilianObjectPresence: false,
-      estimatedIncidentalHarm: 'LOW',
-      feasiblePrecautionsTaken: true,
-      expectedMilitaryAdvantage: 'MEDIUM',
-      estimatedIncidentalHarmScore: 5,
-      expectedMilitaryAdvantageScore: 50,
     },
     authority: {
       reservedToHigherCommand: false,

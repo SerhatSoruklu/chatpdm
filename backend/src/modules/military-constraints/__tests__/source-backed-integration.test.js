@@ -76,6 +76,12 @@ function getSourceRegistrySubset(sourceRegistry, sourceIds) {
   });
 }
 
+function buildDuplicateSourceRegistry(sourceRegistry) {
+  const duplicateRegistry = cloneJson(sourceRegistry);
+  duplicateRegistry.push(cloneJson(duplicateRegistry[0]));
+  return duplicateRegistry;
+}
+
 function buildBundleDraft(bundleId) {
   return {
     bundleId,
@@ -268,6 +274,107 @@ test('corpus validator rejects example-only promotion without override', () => {
   assert.equal(validation.valid, false);
   assert.equal(validation.reasonCode, 'RULE_SHAPE_INVALID');
   assert.match(validation.errors.join('\n'), /illustrative clause|example-only source/i);
+});
+
+test('duplicate source ids fail closed across corpus validation, compilation, and assembly', () => {
+  const sourceRegistry = readModuleJson('fixtures/military-source-registry.json');
+  const duplicateSourceRegistry = buildDuplicateSourceRegistry(sourceRegistry);
+  const clauses = flattenReviewedCorpus();
+  const authorityGraph = readJson('authority-graph.json');
+  const factSchema = readModuleJson('military-constraint-fact.schema.json');
+
+  const corpusValidation = validateReviewedClauseCorpus({
+    clauses,
+    sourceRegistry: duplicateSourceRegistry,
+  });
+
+  assert.equal(corpusValidation.valid, false);
+  assert.equal(corpusValidation.reasonCode, 'POLICY_BUNDLE_INVALID');
+  assert.match(corpusValidation.errors.join('\n'), /duplicate sourceId/i);
+
+  const compiled = compileClauseToRule({
+    clause: getClause(clauses, 'CLAUSE-LF-0001'),
+    sourceRegistry: duplicateSourceRegistry,
+  });
+
+  assert.equal(compiled.valid, false);
+  assert.equal(compiled.reasonCode, 'POLICY_BUNDLE_INVALID');
+  assert.match(compiled.errors.join('\n'), /duplicate sourceId/i);
+
+  const legalFloorRule = compileClauseToRule({
+    clause: getClause(clauses, 'CLAUSE-LF-0001'),
+    sourceRegistry,
+  });
+  assert.equal(legalFloorRule.valid, true, legalFloorRule.errors.join('\n'));
+
+  const authorityRule = compileClauseToRule({
+    clause: getClause(clauses, 'CLAUSE-AUTH-0001'),
+    sourceRegistry,
+  });
+  assert.equal(authorityRule.valid, true, authorityRule.errors.join('\n'));
+
+  const assembly = assembleBundle({
+    bundleDraft: buildBundleDraft('mil-us-core-reference-duplicate-source-id'),
+    compiledRules: [
+      legalFloorRule.compiledRule,
+      authorityRule.compiledRule,
+    ],
+    authorityGraph,
+    sourceRegistry: duplicateSourceRegistry,
+    factSchema,
+  });
+
+  assert.equal(assembly.valid, false);
+  assert.equal(assembly.reasonCode, 'POLICY_BUNDLE_INVALID');
+  assert.match(assembly.errors.join('\n'), /duplicate sourceId/i);
+});
+
+test('composed provenance rejects dangling parent clause ids', () => {
+  const sourceRegistry = readModuleJson('fixtures/military-source-registry.json');
+  const clauses = flattenReviewedCorpus();
+  const danglingClause = cloneJson(getClause(clauses, 'CLAUSE-LF-0001'));
+
+  danglingClause.clauseId = 'CLAUSE-DANGLING-0001';
+  danglingClause.machineCandidate = false;
+  danglingClause.reviewStatus = 'REVIEWED';
+  danglingClause.provenance.derivationType = 'COMPOSED';
+  danglingClause.provenance.parentClauseIds = ['CLAUSE-MISSING-PARENT'];
+
+  const validation = validateReviewedClauseCorpus({
+    clauses: [danglingClause],
+    sourceRegistry,
+  });
+
+  assert.equal(validation.valid, false);
+  assert.equal(validation.reasonCode, 'RULE_SHAPE_INVALID');
+  assert.match(validation.errors.join('\n'), /unknown parentClauseId/i);
+});
+
+test('composed provenance rejects cyclic parent clause chains', () => {
+  const sourceRegistry = readModuleJson('fixtures/military-source-registry.json');
+  const clauseA = cloneJson(getClause(flattenReviewedCorpus(), 'CLAUSE-LF-0001'));
+  const clauseB = cloneJson(getClause(flattenReviewedCorpus(), 'CLAUSE-LF-0004'));
+
+  clauseA.clauseId = 'CLAUSE-CYCLE-0001';
+  clauseA.machineCandidate = false;
+  clauseA.reviewStatus = 'REVIEWED';
+  clauseA.provenance.derivationType = 'COMPOSED';
+  clauseA.provenance.parentClauseIds = ['CLAUSE-CYCLE-0002'];
+
+  clauseB.clauseId = 'CLAUSE-CYCLE-0002';
+  clauseB.machineCandidate = false;
+  clauseB.reviewStatus = 'REVIEWED';
+  clauseB.provenance.derivationType = 'COMPOSED';
+  clauseB.provenance.parentClauseIds = ['CLAUSE-CYCLE-0001'];
+
+  const validation = validateReviewedClauseCorpus({
+    clauses: [clauseA, clauseB],
+    sourceRegistry,
+  });
+
+  assert.equal(validation.valid, false);
+  assert.equal(validation.reasonCode, 'RULE_SHAPE_INVALID');
+  assert.match(validation.errors.join('\n'), /cycle/i);
 });
 
 test('source-backed reviewed clauses compile into an admitted bundle and evaluate deterministically', () => {

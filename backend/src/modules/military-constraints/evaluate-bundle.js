@@ -4,6 +4,7 @@ const {
   MILITARY_CONSTRAINT_REASON_CODES,
 } = require('./military-constraint-reason-codes');
 const {
+  CANONICAL_STAGE_ORDER,
   validateAuthorityReferences,
   validateContractPack,
 } = require('./military-constraint-validator');
@@ -12,6 +13,12 @@ const {
   isPlainObject,
   validateFactPacket,
 } = require('./fact-schema-utils');
+
+const VALID_RULE_EFFECT_DECISIONS = new Set([
+  'ALLOWED',
+  'REFUSED',
+  'REFUSED_INCOMPLETE',
+]);
 
 function sortByEvaluationOrder(rules, stageOrder) {
   const stageIndex = new Map(stageOrder.map((stage, index) => [stage, index]));
@@ -186,7 +193,7 @@ function evaluateBundle(input) {
   const activeRules = Array.isArray(bundle.rules)
     ? bundle.rules.filter((rule) => isPlainObject(rule) && rule.status === 'ACTIVE')
     : [];
-  const orderedRules = sortByEvaluationOrder(activeRules, Array.isArray(bundle.precedencePolicy && bundle.precedencePolicy.stageOrder) ? bundle.precedencePolicy.stageOrder : []);
+  const orderedRules = sortByEvaluationOrder(activeRules, CANONICAL_STAGE_ORDER);
   const ruleTrace = [];
   const failingRuleIds = [];
   const missingFactIds = [];
@@ -230,8 +237,20 @@ function evaluateBundle(input) {
     }
 
     if (outcome.outcome === 'MATCHED_EFFECT') {
-      if (!outcome.effect || typeof outcome.effect.decision !== 'string') {
-        continue;
+      if (!isPlainObject(outcome.effect)
+        || typeof outcome.effect.decision !== 'string'
+        || !VALID_RULE_EFFECT_DECISIONS.has(outcome.effect.decision)
+        || typeof outcome.effect.reasonCode !== 'string') {
+        failingRuleIds.push(outcome.ruleId);
+        return {
+          ...baseOutput,
+          decision: 'REFUSED',
+          reasonCode: MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID,
+          failedStage: 'BUNDLE_INTEGRITY',
+          failingRuleIds: sortUnique(failingRuleIds.filter(Boolean)),
+          missingFactIds: sortUnique(missingFactIds),
+          ruleTrace,
+        };
       }
 
       if (outcome.effect.decision === 'ALLOWED') {

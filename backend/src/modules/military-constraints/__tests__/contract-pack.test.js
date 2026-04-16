@@ -138,6 +138,55 @@ test('bundle conflict policy is explicit and refusal-first', () => {
   ]);
 });
 
+test('bundle precedence stage order must remain canonical', () => {
+  const ajv = buildAjv();
+  const bundle = cloneJson(readJson('valid-contract-pack.json'));
+  bundle.precedencePolicy.stageOrder = [
+    'POLICY_OVERLAY',
+    'LEGAL_FLOOR',
+    'ADMISSIBILITY',
+  ];
+  bundle.bundleHash = computeBundleHash(bundle);
+
+  const validate = ajv.getSchema('https://chatpdm.local/schemas/military-constraint-bundle.schema.json');
+  assert.ok(validate, 'Missing bundle schema');
+  assert.equal(validate(bundle), false);
+
+  const validation = validateContractPack({
+    bundle,
+    rules: bundle.rules,
+    authorityGraph: bundle.authorityGraph,
+    factSchema: readSchema('military-constraint-fact.schema.json'),
+  });
+
+  assertValidationFailure(
+    validation,
+    MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID,
+    /stageOrder must be exactly ADMISSIBILITY -> LEGAL_FLOOR -> POLICY_OVERLAY/,
+  );
+});
+
+test('malformed matched effects are rejected at bundle validation', () => {
+  const bundle = cloneJson(readJson('valid-contract-pack.json'));
+  bundle.rules[0].effect = {
+    reasonCode: bundle.rules[0].effect.reasonCode,
+  };
+  bundle.bundleHash = computeBundleHash(bundle);
+
+  const validation = validateContractPack({
+    bundle,
+    rules: bundle.rules,
+    authorityGraph: bundle.authorityGraph,
+    factSchema: readSchema('military-constraint-fact.schema.json'),
+  });
+
+  assertValidationFailure(
+    validation,
+    MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID,
+    /effect\.decision/,
+  );
+});
+
 test('canonical hash remains stable for the valid bundle payload', () => {
   const bundle = readJson('valid-contract-pack.json');
   const hash = computeBundleHash(bundle);

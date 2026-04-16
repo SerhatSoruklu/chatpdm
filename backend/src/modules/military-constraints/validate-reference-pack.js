@@ -13,6 +13,7 @@ const {
   getAuthorityGraphPath,
   readJsonFile,
   resolveModuleRoot,
+  isNonEmptyString,
 } = require('./reference-pack-utils');
 
 function makeResult() {
@@ -124,8 +125,8 @@ function validateReferencePack(input) {
   }
 
   const authorityGraphPath = getAuthorityGraphPath(rootDir, manifest);
-  if (!fs.existsSync(authorityGraphPath)) {
-    fail(result, MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, `authority graph is missing at "${authorityGraphPath}".`);
+  if (!isNonEmptyString(authorityGraphPath) || !fs.existsSync(authorityGraphPath)) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, `authority graph could not be resolved for manifest authorityGraphId "${manifest.authorityGraphId}".`);
     return finish(result);
   }
 

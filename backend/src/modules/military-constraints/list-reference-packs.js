@@ -6,6 +6,7 @@ const {
   loadPackRegistry,
   readJsonFile,
   resolveModuleRoot,
+  validatePackRegistry,
 } = require('./reference-pack-utils');
 const { isPlainObject } = require('./fact-schema-utils');
 
@@ -19,8 +20,15 @@ function listReferencePacks(input) {
   }
 
   const packRegistry = loadPackRegistry(rootDir);
-  const packRegistryIndex = buildPackRegistryIndex(packRegistry);
   const registryPresent = Array.isArray(packRegistry);
+  const packRegistryIndex = registryPresent ? buildPackRegistryIndex(packRegistry) : new Map();
+
+  if (registryPresent) {
+    const registryValidation = validatePackRegistry(packRegistry);
+    if (!registryValidation.valid) {
+      return [];
+    }
+  }
 
   return getManifestPaths(rootDir)
     .map((manifestPath) => {

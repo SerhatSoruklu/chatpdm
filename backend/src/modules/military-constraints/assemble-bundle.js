@@ -8,9 +8,11 @@ const {
 } = require('./military-constraint-reason-codes');
 const {
   computeBundleHash,
+  CANONICAL_STAGE_ORDER,
   validateContractPack,
 } = require('./military-constraint-validator');
 const {
+  buildSourceRegistryIndex,
   isLocatorBoundToSource,
   isNonEmptyString,
 } = require('./reference-pack-utils');
@@ -144,15 +146,7 @@ function sortAuthorityGraph(authorityGraph) {
   return clone;
 }
 
-function buildSourceRegistrySnapshot(sourceRegistry, usedSourceIds, bundleJurisdiction) {
-  const sourceIndex = new Map();
-
-  sourceRegistry.forEach((entry) => {
-    if (isPlainObject(entry) && typeof entry.sourceId === 'string' && entry.sourceId.length > 0) {
-      sourceIndex.set(entry.sourceId, entry);
-    }
-  });
-
+function buildSourceRegistrySnapshot(sourceIndex, usedSourceIds, bundleJurisdiction) {
   const selected = [];
 
   usedSourceIds.forEach((sourceId) => {
@@ -357,12 +351,20 @@ function assembleBundle(input) {
     return finish(result);
   }
 
-  const sourceIndex = new Map();
-  sourceRegistry.forEach((entry) => {
-    if (isPlainObject(entry) && typeof entry.sourceId === 'string' && entry.sourceId.length > 0) {
-      sourceIndex.set(entry.sourceId, entry);
-    }
-  });
+  const sourceRegistryIndex = buildSourceRegistryIndex(sourceRegistry);
+  if (!sourceRegistryIndex.valid) {
+    fail(
+      result,
+      sourceRegistryIndex.reasonCode || MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID,
+      sourceRegistryIndex.errors[0] || 'source registry validation failed.',
+    );
+    sourceRegistryIndex.errors.slice(1).forEach((message) => {
+      result.errors.push(message);
+    });
+    return finish(result);
+  }
+
+  const sourceIndex = sourceRegistryIndex.sourceIndex;
 
   compiledRules.forEach((rule) => {
     if (!isPlainObject(rule)) {
@@ -382,7 +384,7 @@ function assembleBundle(input) {
     ruleSourceIds(rule).forEach((sourceId) => usedSourceIds.push(sourceId));
   });
 
-  const sourceRegistrySnapshot = buildSourceRegistrySnapshot(sourceRegistry, sortStrings(usedSourceIds), bundleDraft.jurisdiction);
+  const sourceRegistrySnapshot = buildSourceRegistrySnapshot(sourceIndex, sortStrings(usedSourceIds), bundleDraft.jurisdiction);
   const registryErrors = sourceRegistrySnapshot.filter((entry) => typeof entry.error === 'string');
   if (registryErrors.length > 0) {
     fail(result, MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, registryErrors[0].error);
@@ -391,7 +393,7 @@ function assembleBundle(input) {
 
   const canonicalRules = sortByBundleOrder(
     compiledRules.map(sortRuleForBundle),
-    Array.isArray(bundleDraft.precedencePolicy.stageOrder) ? bundleDraft.precedencePolicy.stageOrder : [],
+    CANONICAL_STAGE_ORDER,
   );
   const canonicalAuthorityGraph = sortAuthorityGraph(authorityGraph);
 
