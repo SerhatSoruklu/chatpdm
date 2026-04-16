@@ -9,6 +9,10 @@
   "updatedAt": "2026-04-01T00:00:00Z",
   "domain": "core-abstractions",
   "canonical": {
+    "lifecycle": {
+      "status": "active",
+      "version": 1
+    },
     "invariant": "Responsibility is answerable connection between an actor and attributable actions, roles, or outcomes.",
     "excludes": [
       "required conduct by itself",

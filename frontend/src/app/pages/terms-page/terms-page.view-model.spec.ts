@@ -4,12 +4,12 @@ import { POLICY_SURFACE_DATA } from '../../policies/policy-surface.data';
 import { buildTermsPageViewModel } from './terms-page.view-model';
 
 describe('buildTermsPageViewModel', () => {
-  it('adds a separate Risk Mapping Governance contract section without changing the core terms surface', () => {
+  it('adds a separate Shared Intake Router contract section without changing the core terms surface', () => {
     const viewModel = buildTermsPageViewModel(POLICY_SURFACE_DATA.terms);
 
     expect(viewModel.title).toBe('Current public API reference.');
     expect(viewModel.intro).toBe(
-      'This page models the public API as a scoped runtime section plus separate Risk Mapping Governance, Military Constraints Compiler, and ZEE surfaces. The hero counts are scoped to the runtime section only.',
+      'This page models the public API as a scoped runtime section plus separate Shared Intake Router, Risk Mapping Governance, Military Constraints Compiler, and ZEE surfaces. The hero counts are scoped to the runtime section only.',
     );
     expect(viewModel.sectionGroups.map((group) => group.label)).toEqual([
       'Overview',
@@ -18,10 +18,11 @@ describe('buildTermsPageViewModel', () => {
       'Risk Mapping Governance',
       'Military Constraints Compiler',
       'ZeroGlare Evidence Engine',
+      'Shared Intake Router',
       'Support / Notes',
     ]);
     expect(viewModel.sectionGroups.map((group) => group.sections.length)).toEqual([
-      1, 1, 1, 1, 1, 1, 3,
+      1, 1, 1, 1, 1, 1, 1, 3,
     ]);
     expect(viewModel.sectionOrder.map((section) => section.id)).toEqual([
       'overview',
@@ -30,6 +31,7 @@ describe('buildTermsPageViewModel', () => {
       'risk-mapping-governance',
       'military-constraints',
       'zee-api',
+      'shared-intake-router',
       'platform-rules',
       'runtime-boundaries',
       'refusal-boundaries',
@@ -41,7 +43,7 @@ describe('buildTermsPageViewModel', () => {
       sectionLabel: 'Overview',
       title: 'Current public API reference.',
       summary:
-        'This page models the public API as a scoped runtime section plus separate Risk Mapping Governance, Military Constraints Compiler, and ZEE surfaces. The hero counts are scoped to the runtime section only.',
+        'This page models the public API as a scoped runtime section plus separate Shared Intake Router, Risk Mapping Governance, Military Constraints Compiler, and ZEE surfaces. The hero counts are scoped to the runtime section only.',
     });
     expect(viewModel.sectionOrder[3]).toMatchObject({
       id: 'risk-mapping-governance',
@@ -69,6 +71,15 @@ describe('buildTermsPageViewModel', () => {
       title: 'ZeroGlare Evidence Engine API',
       summary:
         'ZeroGlare Evidence Engine is exposed through a read-only ZEE scaffold and a separate zeroglare analysis route. The ZEE scaffold exposes discovery, contract, explain, and audit metadata only; the zeroglare analysis route accepts structured text input through q or input and returns bounded diagnostics.',
+    });
+    expect(viewModel.sectionOrder[6]).toMatchObject({
+      id: 'shared-intake-router',
+      groupId: 'shared-intake-router',
+      groupLabel: 'Shared Intake Router',
+      sectionLabel: 'Shared Intake Router API',
+      title: 'Shared Intake Router API',
+      summary:
+        'The shared intake router accepts one input and dispatches it deterministically to Concepts or Risk Mapping by input shape. Unstructured raw text goes to Concepts; explicit RiskMapQuery field blocks or structured RiskMapQuery objects go to Risk Mapping. Mixed prose/field blocks are refused.',
     });
     expect(viewModel.badges).toEqual(
       [
@@ -449,6 +460,70 @@ describe('buildTermsPageViewModel', () => {
         evidence: 'backend/src/routes/api/v1/zeroglare.route.js:35-40',
       },
     ]);
+    expect(viewModel.sharedIntakeTitle).toBe('Shared Intake Router API');
+  expect(viewModel.sharedIntakeIntro).toBe(
+    'The shared intake router accepts one input and dispatches it deterministically to Concepts or Risk Mapping by input shape. Unstructured raw text goes to Concepts; explicit RiskMapQuery field blocks or structured RiskMapQuery objects go to Risk Mapping. Mixed prose/field blocks are refused.',
+  );
+    expect(viewModel.sharedIntakeEndpointRows).toEqual([
+      {
+        claimId: 'intake-api-0',
+        operation: 'surface summary',
+        method: 'GET',
+        path: '/api/v1/intake',
+        input: 'none',
+        evidence: 'backend/src/routes/api/v1/intake.route.js:69-75',
+      },
+      {
+        claimId: 'intake-api-1',
+        operation: 'dispatch surface',
+        method: 'POST',
+        path: '/api/v1/intake',
+        input: 'body: input',
+        evidence: 'backend/src/routes/api/v1/intake.route.js:21-65',
+      },
+    ]);
+  expect(viewModel.sharedIntakeFieldRows).toEqual([
+    {
+      claimId: 'intake-field-1',
+      field: 'input',
+      rule: 'required request field',
+      condition:
+        'must be a non-empty string for Concepts dispatch or an explicit RiskMapQuery field block or structured RiskMapQuery object for Risk Mapping dispatch',
+      evidence:
+        'backend/src/routes/api/v1/intake.route.js:21-65 | backend/src/modules/intake/shared-intake-router.js:54-210',
+    },
+  ]);
+  expect(viewModel.sharedIntakeBoundaryRows).toEqual([
+      {
+        claimId: 'intake-boundary-1',
+        boundary: 'missing input payload',
+        condition: 'request body omits the input field or supplies a body shape other than a single-field wrapper',
+        effect: 'rejected with invalid_intake_input',
+        evidence: 'backend/src/routes/api/v1/intake.route.js:21-45',
+      },
+      {
+        claimId: 'intake-boundary-2',
+      boundary: 'empty text input',
+      condition: 'input is an empty string',
+      effect: 'rejected with invalid_intake_input',
+      evidence: 'backend/src/modules/intake/shared-intake-router.js:164-189',
+    },
+    {
+      claimId: 'intake-boundary-3',
+      boundary: 'invalid structured input',
+      condition: 'input is an object that does not satisfy the RiskMapQuery contract',
+      effect: 'rejected with invalid_intake_input',
+      evidence: 'backend/src/modules/intake/shared-intake-router.js:192-203',
+    },
+    {
+      claimId: 'intake-boundary-4',
+      boundary: 'mixed structured text',
+      condition:
+        'input mixes free prose with explicit RiskMapQuery field assignments or omits required fields from an explicit field block',
+      effect: 'rejected with invalid_intake_input',
+      evidence: 'backend/src/modules/intake/shared-intake-router.js:54-161',
+    },
+  ]);
     expect(viewModel.zeeApiTrustRoute).toBe('/zeroglare-evidence-engine');
     expect(viewModel.summaryLine).toBe(
       'Runtime section shows 8 public endpoints, 22 field rules, 1 platform rule, 1 runtime boundary, and 8 refusal boundaries.',

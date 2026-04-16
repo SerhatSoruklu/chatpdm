@@ -552,6 +552,87 @@
                       </a>
                     </div>
                   }
+                  @case ('shared-intake-router') {
+                    <div class="pdm-terms-page__subsection">
+                      <h3 class="pdm-terms-page__subsection-title">Shared intake endpoints</h3>
+                      <div class="pdm-terms-page__table-wrap">
+                        <table class="pdm-terms-page__table pdm-terms-page__table--endpoint">
+                          <thead>
+                            <tr>
+                              <th>Operation</th>
+                              <th>Method</th>
+                              <th>Path</th>
+                              <th>Input</th>
+                              <th>Evidence</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @for (row of viewModel().sharedIntakeEndpointRows; track row.claimId) {
+                              <tr>
+                                <td>{{ row.operation }}</td>
+                                <td class="pdm-terms-page__mono-cell pdm-mono">{{ row.method }}</td>
+                                <td class="pdm-terms-page__mono-cell pdm-mono">{{ row.path }}</td>
+                                <td>{{ row.input }}</td>
+                                <td class="pdm-terms-page__evidence pdm-mono">{{ row.evidence }}</td>
+                              </tr>
+                            }
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+                    <div class="pdm-terms-page__subsection">
+                      <h3 class="pdm-terms-page__subsection-title">Shared intake request field</h3>
+                      <div class="pdm-terms-page__table-wrap">
+                        <table class="pdm-terms-page__table pdm-terms-page__table--field">
+                          <thead>
+                            <tr>
+                              <th>Field</th>
+                              <th>Rule</th>
+                              <th>Condition</th>
+                              <th>Evidence</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @for (row of viewModel().sharedIntakeFieldRows; track row.claimId) {
+                              <tr>
+                                <td class="pdm-terms-page__mono-cell pdm-mono">{{ row.field }}</td>
+                                <td>{{ row.rule }}</td>
+                                <td>{{ row.condition }}</td>
+                                <td class="pdm-terms-page__evidence pdm-mono">{{ row.evidence }}</td>
+                              </tr>
+                            }
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+                    <div class="pdm-terms-page__subsection">
+                      <h3 class="pdm-terms-page__subsection-title">Shared intake refusal boundaries</h3>
+                      <div class="pdm-terms-page__table-wrap">
+                        <table class="pdm-terms-page__table pdm-terms-page__table--boundary">
+                          <thead>
+                            <tr>
+                              <th>Boundary</th>
+                              <th>Condition</th>
+                              <th>Effect</th>
+                              <th>Evidence</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @for (row of viewModel().sharedIntakeBoundaryRows; track row.claimId) {
+                              <tr>
+                                <td>{{ row.boundary }}</td>
+                                <td>{{ row.condition }}</td>
+                                <td>{{ row.effect }}</td>
+                                <td class="pdm-terms-page__evidence pdm-mono">{{ row.evidence }}</td>
+                              </tr>
+                            }
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  }
                 }
               </section>
             }

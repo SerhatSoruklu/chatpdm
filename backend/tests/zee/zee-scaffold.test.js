@@ -91,6 +91,7 @@ test('api/v1 advertises zee as an isolated scaffold resource', async () => {
     assert.equal(body.namespace, 'api/v1');
     assert.equal(body.stage, 'scaffold');
     assert.equal(body.availableResources.includes('zee'), true);
+    assert.equal(body.availableResources.includes('intake'), true);
   } finally {
     await new Promise((resolve) => server.close(resolve));
   }

@@ -25,6 +25,11 @@
 - `relatedConceptId`:
   `boundary`:
 
+### `canonical.lifecycle`
+
+- `status`:
+- `version`:
+
 ## Canonical Fields
 
 ### `shortDefinition`
@@ -109,7 +114,9 @@
 ## Authoring Notes
 
 - `canonical.*` defines the concept-level meaning anchor for all authored registers.
+- `canonical.lifecycle` records the registry status/version for that anchor and must be explicit in published packets.
 - `concept`, `version`, `state`, `previousVersion`, `createdAt`, and `updatedAt` define the packet lifecycle surface.
+- `canonical.lifecycle.version` should match the packet `version` once a packet is published.
 - New packets should begin as `draft`; published packets should be copied into `data/concept-versions/<concept>/v<version>.json` before later versions are authored.
 - `canonical.invariant` should state what the concept is without using register-specific scaffolding.
 - `canonical.excludes` should list what the concept must not collapse into.

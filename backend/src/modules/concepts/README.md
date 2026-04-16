@@ -25,6 +25,12 @@ Current shared V3 foundation:
   - reads `artifacts/register-validation-report.json`
   - exposes runtime-safe governance state flags without recomputing validator law
   - drives runtime `governanceState` payloads for concept-match answers
+- `concept-loader.js`
+  - validates published concept packets, including canonical lifecycle/status/version metadata
+  - keeps canonical lifecycle metadata out of the canonical hash input so audit hashes stay stable
+- `pipeline-runner.js`
+  - composes the deterministic LLGS pipeline result
+  - attaches non-enumerable `runtime_telemetry` and `zeroglare_diagnostics` inspection surfaces without widening the enumerable response contract
 
 Duty rollout hardening is locked by:
 

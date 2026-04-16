@@ -77,6 +77,9 @@ This category applies when the explicit canonical anchor block changes in the co
 - `canonical.excludes`
 - `canonical.adjacent`
 
+Canonical lifecycle metadata is not part of this category.
+Changes to `canonical.lifecycle.status` or `canonical.lifecycle.version` are structural changes unless they also alter one of the meaning-boundary fields above.
+
 Risk level:
 
 - `high`
@@ -88,11 +91,12 @@ Review meaning:
 
 ### `structural-change`
 
-This category applies when non-register, non-canonical fields in the concept packet change.
+This category applies when non-register fields or lifecycle metadata in the concept packet change.
 
 Typical examples:
 
 - lifecycle metadata such as `version`, `state`, or timestamps
+- canonical lifecycle metadata such as `canonical.lifecycle.status` or `canonical.lifecycle.version`
 - concept metadata such as `scope`, `contexts`, `sources`, `relatedConcepts`, or `comparison`
 - packet shape changes that are not canonical-anchor changes
 

@@ -26,6 +26,9 @@ Published concept packets must carry:
   - `previousVersion`
   - `createdAt`
   - `updatedAt`
+- canonical registry lifecycle metadata:
+  - `canonical.lifecycle.status`
+  - `canonical.lifecycle.version`
 - static `canonical` anchor data
 - top-level canonical prose fields
 - authored `registers.standard`
@@ -105,11 +108,16 @@ Legitimacy rollout regression fixtures live at:
 - `../../tests/validator/fixtures/legitimacy.partial-v3.json`
 - `../../tests/validator/fixtures/legitimacy.legacy-text-only.json`
 
-The `canonical` block defines the invariant meaning anchor for all three registers:
+The `canonical` block defines the invariant meaning anchor for all three registers and carries explicit registry lifecycle metadata:
 
+- `canonical.lifecycle.status`
+- `canonical.lifecycle.version`
 - `canonical.invariant`
 - `canonical.excludes`
 - `canonical.adjacent`
+
+`canonical.lifecycle` records the packet's registry standing.
+Published packets should use an explicit status such as `active`, `deprecated`, or `disputed`, and the lifecycle version should match the packet version.
 
 `boundaryProofs` is the explicit separation layer for structurally adjacent concepts.
 It is not auto-generated, and it is validated as authored packet content.

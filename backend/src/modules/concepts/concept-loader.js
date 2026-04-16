@@ -32,6 +32,19 @@ const RESOLUTION_STATUS_VALUES = Object.freeze([
   'UNRESOLVED',
   'UNFALSIFIABLE',
 ]);
+const CANONICAL_LIFECYCLE_STATUSES = Object.freeze([
+  'active',
+  'deprecated',
+  'disputed',
+]);
+const CANONICAL_LIFECYCLE_FIELDS = Object.freeze([
+  'status',
+  'version',
+]);
+
+function isPlainObject(value) {
+  return value !== null && typeof value === 'object' && !Array.isArray(value);
+}
 
 const PRIMARY_SOURCE_BY_CONCEPT = Object.freeze({
   authority: 'weber',
@@ -163,6 +176,50 @@ function validateResolutionStatusShape(concept, conceptId) {
   if (typeof concept.resolutionStatus !== 'string' || !RESOLUTION_STATUS_VALUES.includes(concept.resolutionStatus)) {
     throw new Error(
       `Concept "${conceptId}" has unsupported resolutionStatus "${concept.resolutionStatus}".`,
+    );
+  }
+}
+
+function validateCanonicalLifecycleShape(concept, conceptId) {
+  if (!isPlainObject(concept.canonical)) {
+    throw new Error(`Concept "${conceptId}" must include a canonical anchor object.`);
+  }
+
+  if (!Object.hasOwn(concept.canonical, 'lifecycle')) {
+    throw new Error(`Concept "${conceptId}" must include canonical.lifecycle.`);
+  }
+
+  if (!isPlainObject(concept.canonical.lifecycle)) {
+    throw new Error(`Concept "${conceptId}" has invalid canonical.lifecycle; expected an object.`);
+  }
+
+  const unexpectedFields = Object.keys(concept.canonical.lifecycle).filter(
+    (fieldName) => !CANONICAL_LIFECYCLE_FIELDS.includes(fieldName),
+  );
+
+  if (unexpectedFields.length > 0) {
+    throw new Error(
+      `Concept "${conceptId}" has unsupported canonical.lifecycle field(s): ${unexpectedFields.join(', ')}.`,
+    );
+  }
+
+  assertNonEmptyString(concept.canonical.lifecycle.status, 'canonical.lifecycle.status', conceptId);
+
+  if (!CANONICAL_LIFECYCLE_STATUSES.includes(concept.canonical.lifecycle.status)) {
+    throw new Error(
+      `Concept "${conceptId}" has unsupported canonical.lifecycle.status "${concept.canonical.lifecycle.status}".`,
+    );
+  }
+
+  if (!Number.isInteger(concept.canonical.lifecycle.version) || concept.canonical.lifecycle.version < 1) {
+    throw new Error(
+      `Concept "${conceptId}" has invalid canonical.lifecycle.version; expected a positive integer.`,
+    );
+  }
+
+  if (concept.canonical.lifecycle.version !== concept.version) {
+    throw new Error(
+      `Concept "${conceptId}" canonical.lifecycle.version must match version.`,
     );
   }
 }
@@ -379,6 +436,7 @@ function validateConceptShape(concept, expectedConceptId) {
     throw new Error(`Concept "${expectedConceptId}" must include an integer version.`);
   }
 
+  validateCanonicalLifecycleShape(concept, expectedConceptId);
   assertArray(concept.contexts, 'contexts', expectedConceptId);
   assertArray(concept.sources, 'sources', expectedConceptId);
   assertArray(concept.relatedConcepts, 'relatedConcepts', expectedConceptId);
@@ -436,6 +494,7 @@ function getConceptById(conceptId) {
 module.exports = {
   AUTHORED_REGISTER_FIELDS,
   AUTHORED_REGISTER_MODES,
+  CANONICAL_LIFECYCLE_STATUSES,
   computeCanonicalConceptHash,
   getConceptById,
   loadConceptSet,

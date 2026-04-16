@@ -7,6 +7,7 @@ const {
   buildConceptDetail,
 } = require('../src/modules/concepts/concept-detail-service');
 const {
+  CANONICAL_LIFECYCLE_STATUSES,
   computeCanonicalConceptHash,
   getConceptById,
   validateConceptShape,
@@ -18,6 +19,9 @@ test('resolution status remains optional for existing concepts', () => {
   assert.ok(concept, 'Expected authority concept to load.');
   assert.equal(Object.hasOwn(concept, 'resolutionStatus'), false);
   assert.equal(concept.resolutionStatus, undefined);
+  assert.equal(Object.hasOwn(concept.canonical, 'lifecycle'), true);
+  assert.equal(concept.canonical.lifecycle.status, 'active');
+  assert.equal(concept.canonical.lifecycle.version, concept.version);
 
   const detail = buildConceptDetail('authority');
 
@@ -30,8 +34,19 @@ test('resolution status remains optional for existing concepts', () => {
     ...concept,
     resolutionStatus: 'UNFALSIFIABLE',
   });
+  const hashWithLifecycle = computeCanonicalConceptHash({
+    ...concept,
+    canonical: {
+      ...concept.canonical,
+      lifecycle: {
+        status: 'deprecated',
+        version: concept.version,
+      },
+    },
+  });
 
   assert.equal(hashWithStatus, baselineHash);
+  assert.equal(hashWithLifecycle, baselineHash);
 });
 
 test('resolution status accepts only the explicit four values', () => {
@@ -56,6 +71,51 @@ test('resolution status accepts only the explicit four values', () => {
       resolutionStatus: 'PENDING',
     }, 'authority'),
     /unsupported resolutionStatus/i,
+  );
+});
+
+test('canonical lifecycle status is explicit and bounded', () => {
+  const concept = getConceptById('authority');
+
+  CANONICAL_LIFECYCLE_STATUSES.forEach((status) => {
+    assert.doesNotThrow(() => validateConceptShape({
+      ...concept,
+      canonical: {
+        ...concept.canonical,
+        lifecycle: {
+          status,
+          version: concept.version,
+        },
+      },
+    }, 'authority'));
+  });
+
+  assert.throws(
+    () => validateConceptShape({
+      ...concept,
+      canonical: {
+        ...concept.canonical,
+        lifecycle: {
+          status: 'retired',
+          version: concept.version,
+        },
+      },
+    }, 'authority'),
+    /unsupported canonical\.lifecycle\.status/i,
+  );
+
+  assert.throws(
+    () => validateConceptShape({
+      ...concept,
+      canonical: {
+        ...concept.canonical,
+        lifecycle: {
+          status: 'active',
+          version: concept.version + 1,
+        },
+      },
+    }, 'authority'),
+    /canonical\.lifecycle\.version must match version/i,
   );
 });
 

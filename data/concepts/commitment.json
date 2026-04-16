@@ -9,6 +9,10 @@
   "updatedAt": "2026-04-01T00:00:00Z",
   "domain": "interaction-primitives",
   "canonical": {
+    "lifecycle": {
+      "status": "active",
+      "version": 1
+    },
     "invariant": "Commitment is the state in which settled terms or conditions are taken up for continuation within an interaction frame.",
     "excludes": [
       "law or duty",

@@ -97,8 +97,8 @@ export interface ReadingRegisters {
   canonicalBinding: ReadingRegisterCanonicalBinding;
   validation: ReadingRegisterValidation;
   standard: ReadingRegisterFields;
-  simplified: ReadingRegisterFields;
-  formal: ReadingRegisterFields;
+  simplified?: ReadingRegisterFields;
+  formal?: ReadingRegisterFields;
 }
 
 export type ResolutionStatus =

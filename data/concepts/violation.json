@@ -9,6 +9,10 @@
   "updatedAt": "2026-04-01T00:00:00Z",
   "domain": "governance-structures",
   "canonical": {
+    "lifecycle": {
+      "status": "active",
+      "version": 1
+    },
     "invariant": "Violation is the state in which required conduct or required conditions under a duty are not satisfied at the point of assessment.",
     "excludes": [
       "answerability for the unmet state",

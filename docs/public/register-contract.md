@@ -250,7 +250,7 @@ Phase A and B are complete only if:
 - every concept packet carries an authored `registers` object
 - `registers.standard.*` matches the top-level canonical prose fields
 - prefix-derived register generation is removed from the runtime path
-- the runtime response exposes authored register fields directly
+- the runtime response exposes only the authored register fields that are listed in `validation.availableModes`
 - source anchors, contexts, and integrity references remain unchanged
 - no layout, styling, or UI structure changes are required to consume the new register data
 

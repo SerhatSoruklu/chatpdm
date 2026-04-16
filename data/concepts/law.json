@@ -9,6 +9,10 @@
   "updatedAt": "2026-04-01T00:00:00Z",
   "domain": "governance-structures",
   "canonical": {
+    "lifecycle": {
+      "status": "active",
+      "version": 1
+    },
     "invariant": "Law is a binding normative source that establishes rules and conditions within a governance order.",
     "excludes": [
       "required conduct owed by an actor under a rule",
