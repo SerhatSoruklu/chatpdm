@@ -272,6 +272,40 @@
   line-height: 1.7;
 }
 
+@media (min-width: 600px) {
+  .pdm-mcc {
+    padding: 36px 28px 72px;
+  }
+
+  .pdm-mcc__hero,
+  .pdm-mcc__section {
+    border-radius: 32px;
+  }
+}
+
+@media (min-width: 840px) {
+  .pdm-mcc {
+    padding: 44px 32px 88px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .pdm-mcc {
+    padding: 52px 40px 96px;
+  }
+
+  .pdm-mcc__hero,
+  .pdm-mcc__section {
+    padding: 28px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .pdm-mcc {
+    padding: 60px 48px 104px;
+  }
+}
+
 @media (min-width: 720px) {
   .pdm-mcc__hero-grid {
     grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);

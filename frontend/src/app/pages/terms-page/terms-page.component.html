@@ -1,7 +1,7 @@
 <div class="pdm-terms-page" data-route-surface="api-docs">
   <main class="pdm-terms-page__main pdm-shell" aria-labelledby="pdm-terms-title">
     <div class="pdm-shell__frame pdm-terms-page__frame">
-      <nav class="pdm-terms-page__jump-nav" aria-label="API sections">
+      <nav class="pdm-terms-page__jump-nav pdm-site-surface" aria-label="API sections">
         <p class="pdm-terms-page__jump-label pdm-mono">Jump to</p>
         <div class="pdm-terms-page__jump-list">
           @for (section of viewModel().sectionOrder; track section.id) {
@@ -19,7 +19,7 @@
       </nav>
 
       <div class="pdm-terms-page__docs-layout">
-        <nav class="pdm-terms-page__nav" aria-label="API sections">
+        <nav class="pdm-terms-page__nav pdm-site-surface" aria-label="API sections">
           @for (group of viewModel().sectionGroups; track group.id) {
             <section class="pdm-terms-page__nav-group">
               <p class="pdm-terms-page__nav-group-title">{{ group.label }}</p>
@@ -47,7 +47,7 @@
             @if (section.id === 'overview') {
               <header
                 #apiSection
-                class="pdm-terms-page__hero"
+                class="pdm-terms-page__hero pdm-site-surface"
                 [class.pdm-terms-page__hero--active]="section.id === activeSectionId()"
                 [attr.id]="section.id"
                 aria-labelledby="pdm-terms-title"
@@ -77,7 +77,7 @@
             } @else {
               <section
                 #apiSection
-                class="pdm-terms-page__section"
+                class="pdm-terms-page__section pdm-site-surface"
                 [class.pdm-terms-page__section--active]="section.id === activeSectionId()"
                 [class.pdm-terms-page__section--support]="section.groupId === 'support-notes'"
                 [attr.id]="section.id"
