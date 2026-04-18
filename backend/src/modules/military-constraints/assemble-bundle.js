@@ -15,7 +15,11 @@ const {
   buildSourceRegistryIndex,
   isLocatorBoundToSource,
   isNonEmptyString,
+  BUNDLE_CONTRACT_VERSION,
+  validateBundleContractVersion,
+  sortRuleForBundle,
 } = require('./reference-pack-utils');
+const { createPreparedBundle } = require('./prepared-bundle-contract');
 
 const SOURCE_ROLE_PRIORITY = {
   LEGAL_FLOOR: 0,
@@ -39,6 +43,7 @@ function makeResult() {
     reasonCode: null,
     errors: [],
     bundle: null,
+    preparedBundle: null,
   };
 }
 
@@ -56,6 +61,7 @@ function finish(result) {
     reasonCode: result.reasonCode,
     errors: Object.freeze([...result.errors]),
     bundle: result.bundle ? Object.freeze(result.bundle) : null,
+    preparedBundle: result.preparedBundle ? Object.freeze(result.preparedBundle) : null,
   });
 }
 
@@ -76,50 +82,6 @@ function sortByBundleOrder(rules, stageOrder) {
 
     return String(left.ruleId).localeCompare(String(right.ruleId));
   });
-}
-
-function sortRuleForBundle(rule) {
-  const clone = cloneJson(rule);
-
-  if (isPlainObject(clone.scope)) {
-    if (Array.isArray(clone.scope.actionKinds)) {
-      clone.scope.actionKinds = sortStrings(clone.scope.actionKinds);
-    }
-    if (Array.isArray(clone.scope.domains)) {
-      clone.scope.domains = sortStrings(clone.scope.domains);
-    }
-    if (Array.isArray(clone.scope.missionTypes)) {
-      clone.scope.missionTypes = sortStrings(clone.scope.missionTypes);
-    }
-  }
-
-  if (isPlainObject(clone.authority) && Array.isArray(clone.authority.delegationEdgeIds)) {
-    clone.authority.delegationEdgeIds = sortStrings(clone.authority.delegationEdgeIds);
-  }
-
-  if (Array.isArray(clone.requiredFacts)) {
-    clone.requiredFacts = sortStrings(clone.requiredFacts);
-  }
-
-  if (Array.isArray(clone.sourceRefs)) {
-    clone.sourceRefs = [...clone.sourceRefs].sort((left, right) => {
-      const leftSource = typeof left.sourceId === 'string' ? left.sourceId : '';
-      const rightSource = typeof right.sourceId === 'string' ? right.sourceId : '';
-      if (leftSource !== rightSource) {
-        return leftSource.localeCompare(rightSource);
-      }
-
-      const leftLocator = typeof left.locator === 'string' ? left.locator : '';
-      const rightLocator = typeof right.locator === 'string' ? right.locator : '';
-      return leftLocator.localeCompare(rightLocator);
-    });
-  }
-
-  if (isPlainObject(clone.provenance) && Array.isArray(clone.provenance.parentClauseIds)) {
-    clone.provenance.parentClauseIds = sortStrings(clone.provenance.parentClauseIds);
-  }
-
-  return clone;
 }
 
 function sortAuthorityGraph(authorityGraph) {
@@ -351,6 +313,16 @@ function assembleBundle(input) {
     return finish(result);
   }
 
+  const contractVersionValidation = validateBundleContractVersion(bundleDraft);
+  if (!contractVersionValidation.valid) {
+    fail(
+      result,
+      contractVersionValidation.reasonCode || MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID,
+      contractVersionValidation.errors[0] || 'bundleDraft contract version validation failed.',
+    );
+    return finish(result);
+  }
+
   const sourceRegistryIndex = buildSourceRegistryIndex(sourceRegistry);
   if (!sourceRegistryIndex.valid) {
     fail(
@@ -400,6 +372,7 @@ function assembleBundle(input) {
   const bundle = {
     bundleId: bundleDraft.bundleId,
     bundleVersion: bundleDraft.bundleVersion,
+    contractVersion: contractVersionValidation.contractVersion || BUNDLE_CONTRACT_VERSION,
     status: bundleDraft.status,
     jurisdiction: bundleDraft.jurisdiction,
     authorityOwner: bundleDraft.authorityOwner,
@@ -436,7 +409,14 @@ function assembleBundle(input) {
     return finish(result);
   }
 
+  const preparedBundle = createPreparedBundle(bundle);
+  if (!preparedBundle) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, 'bundle preparation failed.');
+    return finish(result);
+  }
+
   result.bundle = bundle;
+  result.preparedBundle = preparedBundle;
   return finish(result);
 }
 

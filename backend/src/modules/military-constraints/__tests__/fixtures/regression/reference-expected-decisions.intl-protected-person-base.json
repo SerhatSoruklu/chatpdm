@@ -5,7 +5,8 @@
     "decision": "ALLOWED",
     "reasonCode": null,
     "failedStage": null,
-    "failingRuleIds": []
+    "failingRuleIds": [],
+    "missingFactIds": []
   },
   {
     "caseId": "intl-protected-person-civilian-refusal",
@@ -15,7 +16,8 @@
     "failedStage": "LEGAL_FLOOR",
     "failingRuleIds": [
       "CR-INTL-PER-LF-001"
-    ]
+    ],
+    "missingFactIds": []
   },
   {
     "caseId": "intl-protected-person-medical-refusal",
@@ -25,7 +27,8 @@
     "failedStage": "LEGAL_FLOOR",
     "failingRuleIds": [
       "CR-INTL-PER-LF-002"
-    ]
+    ],
+    "missingFactIds": []
   },
   {
     "caseId": "intl-protected-person-hors-de-combat-refusal",
@@ -35,7 +38,8 @@
     "failedStage": "LEGAL_FLOOR",
     "failingRuleIds": [
       "CR-INTL-PER-LF-003"
-    ]
+    ],
+    "missingFactIds": []
   },
   {
     "caseId": "intl-protected-person-missing-fact",
@@ -45,6 +49,7 @@
     "failedStage": "ADMISSIBILITY",
     "failingRuleIds": [
       "CR-INTL-PER-ADM-001"
-    ]
+    ],
+    "missingFactIds": []
   }
 ]

@@ -5,7 +5,8 @@
     "decision": "ALLOWED",
     "reasonCode": null,
     "failedStage": null,
-    "failingRuleIds": []
+    "failingRuleIds": [],
+    "missingFactIds": []
   },
   {
     "caseId": "detention-handling-refusal",
@@ -15,7 +16,8 @@
     "failedStage": "ADMISSIBILITY",
     "failingRuleIds": [
       "CR-CL-DETENTION-001"
-    ]
+    ],
+    "missingFactIds": []
   },
   {
     "caseId": "detention-handling-missing-fact",
@@ -25,6 +27,9 @@
     "failedStage": "ADMISSIBILITY",
     "failingRuleIds": [
       "CR-CL-DETENTION-001"
+    ],
+    "missingFactIds": [
+      "person.detentionStatus"
     ]
   }
 ]

@@ -4,7 +4,8 @@
     "decision": "ALLOWED",
     "reasonCode": null,
     "failedStage": null,
-    "failingRuleIds": []
+    "failingRuleIds": [],
+    "missingFactIds": []
   },
   {
     "caseId": "weather-limitation-refusal",
@@ -13,13 +14,15 @@
     "failedStage": "POLICY_OVERLAY",
     "failingRuleIds": [
       "CR-WTH-001"
-    ]
+    ],
+    "missingFactIds": []
   },
   {
     "caseId": "weather-limitation-missing-fact",
     "decision": "REFUSED_INCOMPLETE",
     "reasonCode": "FACT_PACKET_INVALID",
     "failedStage": "ADMISSIBILITY",
-    "failingRuleIds": []
+    "failingRuleIds": [],
+    "missingFactIds": []
   }
 ]

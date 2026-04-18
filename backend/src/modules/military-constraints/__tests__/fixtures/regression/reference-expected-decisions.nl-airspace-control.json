@@ -5,7 +5,8 @@
     "decision": "ALLOWED",
     "reasonCode": null,
     "failedStage": null,
-    "failingRuleIds": []
+    "failingRuleIds": [],
+    "missingFactIds": []
   },
   {
     "caseId": "nl-airspace-control-refusal",
@@ -15,7 +16,8 @@
     "failedStage": "ADMISSIBILITY",
     "failingRuleIds": [
       "CR-NL-AIR-001"
-    ]
+    ],
+    "missingFactIds": []
   },
   {
     "caseId": "nl-airspace-control-missing-fact",
@@ -25,6 +27,9 @@
     "failedStage": "ADMISSIBILITY",
     "failingRuleIds": [
       "CR-NL-AIR-001"
+    ],
+    "missingFactIds": [
+      "authority.designatedRoeActive"
     ]
   }
 ]

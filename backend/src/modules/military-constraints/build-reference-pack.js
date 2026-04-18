@@ -11,13 +11,17 @@ const { assembleBundle } = require('./assemble-bundle');
 const { compileClauseToRule } = require('./compile-clause-to-rule');
 const { validateReviewedClauseCorpus } = require('./validate-reviewed-clause-corpus');
 const { validateReferencePack } = require('./validate-reference-pack');
+const { COMPILER_VERSION } = require('./compile-clause-to-rule');
 const {
   getReviewedClauseSetPath,
   getAuthorityGraphPath,
   readJsonFile,
+  loadPackRegistry,
   resolveModuleRoot,
   sortStrings,
   isNonEmptyString,
+  BUNDLE_CONTRACT_VERSION,
+  computeJsonDigest,
 } = require('./reference-pack-utils');
 
 function makeResult() {
@@ -80,6 +84,8 @@ function buildBundleDraft(manifest) {
   return {
     bundleId: manifest.bundleId,
     bundleVersion: manifest.bundleVersion,
+    // Explicit compatibility gate; not part of the pack's semantic release version.
+    contractVersion: BUNDLE_CONTRACT_VERSION,
     status: 'ACTIVE',
     jurisdiction: manifest.jurisdiction,
     authorityOwner,
@@ -169,6 +175,7 @@ function buildReferenceBundle(input) {
   const sourceRegistry = readJsonFile(sourceRegistryPath);
   const authorityGraph = readJsonFile(authorityGraphPath);
   const factSchema = readJsonFile(factSchemaPath);
+  const packRegistry = loadPackRegistry(rootDir);
   const reviewedClauses = loadReviewedClauses(rootDir, manifest.reviewedClauseSetIds);
 
   const corpusValidation = validateReviewedClauseCorpus({
@@ -219,6 +226,8 @@ function buildReferenceBundle(input) {
     jurisdiction: manifest.jurisdiction,
     bundleId: bundleResult.bundle.bundleId,
     bundleVersion: bundleResult.bundle.bundleVersion,
+    compilerVersion: COMPILER_VERSION,
+    contractVersion: bundleResult.bundle.contractVersion,
     bundleHash: bundleResult.bundle.bundleHash,
     reviewedClauseSetIds: [...manifest.reviewedClauseSetIds],
     authorityGraphId: manifest.authorityGraphId,
@@ -226,6 +235,13 @@ function buildReferenceBundle(input) {
     regressionSuiteVersion: manifest.regressionSuiteVersion,
     ruleCount: Array.isArray(bundleResult.bundle.rules) ? bundleResult.bundle.rules.length : 0,
     compiledClauseIds: compiled.compiledClauseIds,
+    provenance: {
+      manifestDigest: computeJsonDigest(manifest),
+      sourceRegistryDigest: computeJsonDigest(sourceRegistry),
+      authorityGraphDigest: computeJsonDigest(authorityGraph),
+      factSchemaDigest: computeJsonDigest(factSchema),
+      packRegistryDigest: packRegistry === null ? null : computeJsonDigest(packRegistry),
+    },
   };
 
   return finish(result);

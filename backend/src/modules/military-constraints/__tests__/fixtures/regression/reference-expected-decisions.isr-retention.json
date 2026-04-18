@@ -4,7 +4,8 @@
     "decision": "ALLOWED",
     "reasonCode": null,
     "failedStage": null,
-    "failingRuleIds": []
+    "failingRuleIds": [],
+    "missingFactIds": []
   },
   {
     "caseId": "isr-retention-refusal",
@@ -13,7 +14,8 @@
     "failedStage": "POLICY_OVERLAY",
     "failingRuleIds": [
       "CR-ISR-001"
-    ]
+    ],
+    "missingFactIds": []
   },
   {
     "caseId": "isr-retention-missing-fact",
@@ -22,6 +24,9 @@
     "failedStage": "POLICY_OVERLAY",
     "failingRuleIds": [
       "CR-ISR-001"
+    ],
+    "missingFactIds": [
+      "authority.designatedRoeActive"
     ]
   }
 ]

@@ -5,7 +5,8 @@
     "decision": "ALLOWED",
     "reasonCode": null,
     "failedStage": null,
-    "failingRuleIds": []
+    "failingRuleIds": [],
+    "missingFactIds": []
   },
   {
     "caseId": "au-roe-base-refusal",
@@ -15,7 +16,8 @@
     "failedStage": "ADMISSIBILITY",
     "failingRuleIds": [
       "CR-AU-ROE-001"
-    ]
+    ],
+    "missingFactIds": []
   },
   {
     "caseId": "au-roe-base-missing-fact",
@@ -25,6 +27,9 @@
     "failedStage": "ADMISSIBILITY",
     "failingRuleIds": [
       "CR-AU-ROE-001"
+    ],
+    "missingFactIds": [
+      "authority.designatedRoeActive"
     ]
   }
 ]

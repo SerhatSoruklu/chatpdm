@@ -5,9 +5,11 @@ const {
 } = require('./military-constraint-reason-codes');
 const {
   CANONICAL_STAGE_ORDER,
+  validateBundleContractVersion,
   validateAuthorityReferences,
   validateContractPack,
 } = require('./military-constraint-validator');
+const { resolvePreparedBundleContract } = require('./prepared-bundle-contract');
 const { evaluateRule } = require('./evaluate-rule');
 const {
   isPlainObject,
@@ -88,7 +90,7 @@ function collectMissingBundleIdentity(bundle, facts) {
 /**
  * Evaluate a validated bundle against structured facts.
  *
- * @param {{ bundle: object, facts: object, factSchema: object }} input
+ * @param {{ bundle?: object, preparedBundle?: object, facts: object, factSchema: object }} input
  * @returns {{
  *   decision: string,
  *   reasonCode: string|null,
@@ -103,7 +105,8 @@ function collectMissingBundleIdentity(bundle, facts) {
  * }}
  */
 function evaluateBundle(input) {
-  const bundle = isPlainObject(input) ? input.bundle : null;
+  const preparedBundle = resolvePreparedBundleContract(input);
+  const bundle = preparedBundle ? preparedBundle.bundle : (isPlainObject(input) ? input.bundle : null);
   const facts = isPlainObject(input) ? input.facts : null;
   const factSchema = isPlainObject(input) ? input.factSchema : null;
   const bundleId = bundle && typeof bundle.bundleId === 'string' ? bundle.bundleId : null;
@@ -128,19 +131,6 @@ function evaluateBundle(input) {
     return emptyOutput;
   }
 
-  const contractValidation = validateContractPack({
-    bundle,
-    rules: bundle.rules,
-    authorityGraph: bundle.authorityGraph,
-    factSchema,
-  });
-
-  const authorityValidation = validateAuthorityReferences({
-    bundle,
-    rules: bundle.rules,
-    authorityGraph: bundle.authorityGraph,
-  });
-
   const baseOutput = {
     decision: 'REFUSED',
     reasonCode: null,
@@ -148,10 +138,8 @@ function evaluateBundle(input) {
     failingRuleIds: [],
     missingFactIds: [],
     authorityTrace: {
-      valid: authorityValidation.valid,
-      reasonCode: authorityValidation.reasonCode,
-      errors: authorityValidation.errors,
-      authorityGraphId: bundle.authorityGraphId,
+      valid: false,
+      validation: null,
     },
     ruleTrace: [],
     bundleId,
@@ -159,9 +147,43 @@ function evaluateBundle(input) {
     bundleHash: typeof bundle.bundleHash === 'string' ? bundle.bundleHash : null,
   };
 
-  if (!contractValidation.valid) {
+  const authorityValidation = validateAuthorityReferences({
+    bundle,
+    rules: bundle.rules,
+    authorityGraph: bundle.authorityGraph,
+  });
+
+  const outputBase = {
+    ...baseOutput,
+    authorityTrace: {
+      valid: authorityValidation.valid,
+      reasonCode: authorityValidation.reasonCode,
+      errors: authorityValidation.errors,
+      authorityGraphId: bundle.authorityGraphId,
+    },
+  };
+
+  const contractVersionValidation = validateBundleContractVersion(bundle);
+  if (!contractVersionValidation.valid) {
     return {
-      ...baseOutput,
+      ...outputBase,
+      reasonCode: contractVersionValidation.reasonCode || MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID,
+      failedStage: 'BUNDLE_INTEGRITY',
+    };
+  }
+
+  const contractValidation = preparedBundle
+    ? null
+    : validateContractPack({
+      bundle,
+      rules: bundle.rules,
+      authorityGraph: bundle.authorityGraph,
+      factSchema,
+    });
+
+  if (contractValidation && !contractValidation.valid) {
+    return {
+      ...outputBase,
       reasonCode: contractValidation.reasonCode || MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID,
       failedStage: 'BUNDLE_INTEGRITY',
     };
@@ -170,7 +192,7 @@ function evaluateBundle(input) {
   const factValidation = validateFactPacket(facts, factSchema);
   if (!factValidation.valid) {
     return {
-      ...baseOutput,
+      ...outputBase,
       decision: 'REFUSED_INCOMPLETE',
       reasonCode: factValidation.reasonCode || MILITARY_CONSTRAINT_REASON_CODES.FACT_PACKET_INVALID,
       failedStage: 'ADMISSIBILITY',
@@ -181,7 +203,7 @@ function evaluateBundle(input) {
 
   if (!bundleIdentityMatches(bundle, facts)) {
     return {
-      ...baseOutput,
+      ...outputBase,
       reasonCode: collectMissingBundleIdentity(bundle, facts).includes('bundleHash')
         ? MILITARY_CONSTRAINT_REASON_CODES.BUNDLE_HASH_MISMATCH
         : MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID,
@@ -226,7 +248,7 @@ function evaluateBundle(input) {
       failingRuleIds.push(outcome.ruleId);
       missingFactIds.push(...outcome.missingFactIds);
       return {
-        ...baseOutput,
+        ...outputBase,
         decision: 'REFUSED_INCOMPLETE',
         reasonCode: outcome.reasonCode || MILITARY_CONSTRAINT_REASON_CODES.MISSING_REQUIRED_FACT,
         failedStage: outcome.stage,
@@ -243,7 +265,7 @@ function evaluateBundle(input) {
         || typeof outcome.effect.reasonCode !== 'string') {
         failingRuleIds.push(outcome.ruleId);
         return {
-          ...baseOutput,
+          ...outputBase,
           decision: 'REFUSED',
           reasonCode: MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID,
           failedStage: 'BUNDLE_INTEGRITY',
@@ -260,7 +282,7 @@ function evaluateBundle(input) {
       if (outcome.effect.decision === 'REFUSED_INCOMPLETE') {
         failingRuleIds.push(outcome.ruleId);
         return {
-          ...baseOutput,
+          ...outputBase,
           decision: 'REFUSED_INCOMPLETE',
           reasonCode: outcome.effect.reasonCode || MILITARY_CONSTRAINT_REASON_CODES.MISSING_REQUIRED_FACT,
           failedStage: outcome.stage,
@@ -272,7 +294,7 @@ function evaluateBundle(input) {
 
       failingRuleIds.push(outcome.ruleId);
       return {
-        ...baseOutput,
+        ...outputBase,
         decision: 'REFUSED',
         reasonCode: outcome.effect.reasonCode || MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID,
         failedStage: outcome.stage,
@@ -284,7 +306,7 @@ function evaluateBundle(input) {
   }
 
   return {
-    ...baseOutput,
+    ...outputBase,
     decision: 'ALLOWED',
     reasonCode: null,
     failedStage: null,

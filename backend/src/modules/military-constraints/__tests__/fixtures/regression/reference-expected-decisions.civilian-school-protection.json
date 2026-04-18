@@ -7,7 +7,8 @@
     "failedStage": "LEGAL_FLOOR",
     "failingRuleIds": [
       "CR-CL-CIV-LF-001"
-    ]
+    ],
+    "missingFactIds": []
   },
   {
     "caseId": "school-missing-protected-class",
@@ -17,7 +18,8 @@
     "failedStage": "ADMISSIBILITY",
     "failingRuleIds": [
       "CR-CL-CIV-ADM-001"
-    ]
+    ],
+    "missingFactIds": []
   },
   {
     "caseId": "school-unauthorized-confirmed-objective",
@@ -27,7 +29,8 @@
     "failedStage": "POLICY_OVERLAY",
     "failingRuleIds": [
       "CR-CL-CIV-AUTH-001"
-    ]
+    ],
+    "missingFactIds": []
   },
   {
     "caseId": "school-authorized-confirmed-objective",
@@ -35,6 +38,7 @@
     "decision": "ALLOWED",
     "reasonCode": null,
     "failedStage": null,
-    "failingRuleIds": []
+    "failingRuleIds": [],
+    "missingFactIds": []
   }
 ]

@@ -115,6 +115,7 @@ test('pack release order does not change bundle outputs', () => {
     assert.equal(pack3A.summary.release.bundleHash, pack3B.summary.release.bundleHash);
     assert.equal(pack4A.summary.release.bundleHash, pack4B.summary.release.bundleHash);
     assert.equal(pack5A.summary.release.bundleHash, pack5B.summary.release.bundleHash);
+    assert.deepEqual(pack1A.summary.release.provenance, pack1B.summary.release.provenance);
   } finally {
     cleanupRoot(rootA);
     cleanupRoot(rootB);

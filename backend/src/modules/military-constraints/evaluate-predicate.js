@@ -8,6 +8,12 @@ const {
   isScalarKind,
   resolveFactPath,
 } = require('./fact-schema-utils');
+const {
+  checkPredicateBranchWidth,
+  checkPredicateNodeBudget,
+  createPredicateBudgetState,
+  isPredicateBudgetExceededError,
+} = require('./predicate-budgets');
 
 function makeResult() {
   return {
@@ -142,7 +148,7 @@ function compareOrdered(left, right, operatorName) {
   return null;
 }
 
-function evaluateNode(node, facts, factSchema) {
+function evaluateNode(node, facts, registry, budgetState, depth) {
   const result = {
     state: 'UNKNOWN',
     usedFacts: [],
@@ -162,10 +168,21 @@ function evaluateNode(node, facts, factSchema) {
 
   const operatorName = operatorNames[0];
   const operatorValue = node[operatorName];
+  const budgetError = checkPredicateNodeBudget(budgetState, depth, operatorName);
+  if (budgetError) {
+    result.errors.push(budgetError);
+    return result;
+  }
 
   if (operatorName === 'all' || operatorName === 'any') {
     if (!Array.isArray(operatorValue) || operatorValue.length === 0) {
       result.errors.push(makeError('PREDICATE_INVALID', `${operatorName} requires a non-empty array.`));
+      return result;
+    }
+
+    const branchBudgetError = checkPredicateBranchWidth(operatorName, operatorValue.length);
+    if (branchBudgetError) {
+      result.errors.push(branchBudgetError);
       return result;
     }
 
@@ -176,8 +193,16 @@ function evaluateNode(node, facts, factSchema) {
       let sawUnknown = false;
 
       for (let index = 0; index < operatorValue.length; index += 1) {
-        const child = evaluateNode(operatorValue[index], facts, factSchema);
+        const child = evaluateNode(operatorValue[index], facts, registry, budgetState, depth + 1);
         usedFacts.push(...child.usedFacts);
+        const childBudgetError = child.errors.find(isPredicateBudgetExceededError);
+        if (childBudgetError) {
+          return {
+            state: 'UNKNOWN',
+            usedFacts: sortUnique(usedFacts),
+            errors: [childBudgetError],
+          };
+        }
 
         if (child.state === 'FALSE') {
           return {
@@ -203,8 +228,16 @@ function evaluateNode(node, facts, factSchema) {
     let sawUnknown = false;
 
     for (let index = 0; index < operatorValue.length; index += 1) {
-      const child = evaluateNode(operatorValue[index], facts, factSchema);
+      const child = evaluateNode(operatorValue[index], facts, registry, budgetState, depth + 1);
       usedFacts.push(...child.usedFacts);
+      const childBudgetError = child.errors.find(isPredicateBudgetExceededError);
+      if (childBudgetError) {
+        return {
+          state: 'UNKNOWN',
+          usedFacts: sortUnique(usedFacts),
+          errors: [childBudgetError],
+        };
+      }
 
       if (child.state === 'TRUE') {
         return {
@@ -228,7 +261,15 @@ function evaluateNode(node, facts, factSchema) {
   }
 
   if (operatorName === 'not') {
-    const child = evaluateNode(operatorValue, facts, factSchema);
+    const child = evaluateNode(operatorValue, facts, registry, budgetState, depth + 1);
+    const budgetError = child.errors.find(isPredicateBudgetExceededError);
+    if (budgetError) {
+      return {
+        state: 'UNKNOWN',
+        usedFacts: sortUnique(child.usedFacts),
+        errors: [budgetError],
+      };
+    }
     if (child.state === 'UNKNOWN') {
       return {
         state: 'UNKNOWN',
@@ -261,7 +302,7 @@ function evaluateNode(node, facts, factSchema) {
       };
     }
 
-    const operand = resolveOperand(operatorValue[0], facts, factSchema);
+    const operand = resolveOperand(operatorValue[0], facts, registry);
     if (operand.status === 'invalid') {
       return {
         state: 'UNKNOWN',
@@ -304,7 +345,6 @@ function evaluateNode(node, facts, factSchema) {
   const leftRaw = operatorValue[0];
   const rightRaw = operatorValue[1];
 
-  const registry = buildFactTypeRegistry(factSchema);
   const leftRegistryKind = isFactOperand(leftRaw)
     ? (getRegistryEntry(registry, leftRaw.fact) || {}).kind || null
     : null;
@@ -430,10 +470,12 @@ function evaluatePredicate(input) {
   const predicate = isPlainObject(input) ? input.predicate : null;
   const facts = isPlainObject(input) ? input.facts : null;
   const factSchema = isPlainObject(input) ? input.factSchema : null;
+  const registry = buildFactTypeRegistry(factSchema);
+  const budgetState = createPredicateBudgetState();
 
   const output = makeResult();
 
-  const evaluation = evaluateNode(predicate, facts, factSchema);
+  const evaluation = evaluateNode(predicate, facts, registry, budgetState, 0);
   output.ok = evaluation.state === 'TRUE' && evaluation.errors.length === 0;
   output.usedFacts = sortUnique(evaluation.usedFacts);
   output.errors = evaluation.errors;

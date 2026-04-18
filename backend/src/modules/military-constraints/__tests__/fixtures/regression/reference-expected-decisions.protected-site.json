@@ -5,7 +5,8 @@
     "decision": "ALLOWED",
     "reasonCode": null,
     "failedStage": null,
-    "failingRuleIds": []
+    "failingRuleIds": [],
+    "missingFactIds": []
   },
   {
     "caseId": "protected-site-refusal",
@@ -15,7 +16,8 @@
     "failedStage": "LEGAL_FLOOR",
     "failingRuleIds": [
       "CR-SITE-LF-001"
-    ]
+    ],
+    "missingFactIds": []
   },
   {
     "caseId": "protected-site-missing-fact",
@@ -25,6 +27,9 @@
     "failedStage": "LEGAL_FLOOR",
     "failingRuleIds": [
       "CR-SITE-LF-001"
+    ],
+    "missingFactIds": [
+      "target.lossOfProtectionStatus"
     ]
   }
 ]

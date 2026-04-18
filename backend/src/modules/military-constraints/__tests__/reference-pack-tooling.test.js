@@ -10,7 +10,12 @@ const { listReferencePacks } = require('../list-reference-packs');
 const { validateReferencePack } = require('../validate-reference-pack');
 const { buildReferencePack } = require('../build-reference-pack');
 const { runReferencePackRegression } = require('../run-reference-pack-regression');
-const { validatePackRegistry } = require('../reference-pack-utils');
+const { COMPILER_VERSION } = require('../compile-clause-to-rule');
+const {
+  BUNDLE_CONTRACT_VERSION,
+  computeJsonDigest,
+  validatePackRegistry,
+} = require('../reference-pack-utils');
 
 const BASE_DIR = path.resolve(__dirname);
 const MODULE_DIR = path.resolve(BASE_DIR, '..');
@@ -517,6 +522,30 @@ test('build output is stable for the same inputs', () => {
     assert.equal(second.valid, true, second.errors.join('\n'));
     assert.deepEqual(first, second);
     assert.equal(first.metadata.bundleHash, second.metadata.bundleHash);
+    assert.equal(first.metadata.compilerVersion, COMPILER_VERSION);
+    assert.equal(first.metadata.contractVersion, BUNDLE_CONTRACT_VERSION);
+    assert.deepEqual(first.metadata.provenance, second.metadata.provenance);
+    assert.match(first.metadata.provenance.manifestDigest, /^sha256:/);
+    assert.match(first.metadata.provenance.sourceRegistryDigest, /^sha256:/);
+    assert.match(first.metadata.provenance.authorityGraphDigest, /^sha256:/);
+    assert.match(first.metadata.provenance.factSchemaDigest, /^sha256:/);
+    assert.equal(first.metadata.provenance.packRegistryDigest, null);
+    assert.equal(
+      first.metadata.provenance.manifestDigest,
+      computeJsonDigest(readJson(path.join(root, 'reference-pack-manifest.json'))),
+    );
+    assert.equal(
+      first.metadata.provenance.sourceRegistryDigest,
+      computeJsonDigest(readJson(path.join(root, 'fixtures', 'military-source-registry.json'))),
+    );
+    assert.equal(
+      first.metadata.provenance.authorityGraphDigest,
+      computeJsonDigest(readJson(path.join(root, '__tests__', 'fixtures', 'authority-graph.json'))),
+    );
+    assert.equal(
+      first.metadata.provenance.factSchemaDigest,
+      computeJsonDigest(readJson(path.join(MODULE_DIR, 'military-constraint-fact.schema.json'))),
+    );
   } finally {
     cleanupRoot(root);
   }
@@ -525,6 +554,10 @@ test('build output is stable for the same inputs', () => {
 test('regression runner passes for the frozen reference pack', () => {
   const root = makePackRoot();
   try {
+    const manifest = readJson(path.join(root, 'reference-pack-manifest.json'));
+    assert.deepEqual(manifest.regressionClauseIds, ['CLAUSE-AUTH-0001', 'CLAUSE-LF-0001']);
+    assert.deepEqual(manifest.admissibilityRegressionClauseIds, ['CLAUSE-AUTH-0001', 'CLAUSE-LF-0001', 'CLAUSE-LF-0004']);
+
     const regression = runReferencePackRegression({
       rootDir: root,
       manifestPath: path.join(root, 'reference-pack-manifest.json'),
@@ -535,6 +568,46 @@ test('regression runner passes for the frozen reference pack', () => {
     assert.equal(regression.summary.totalCases, 4);
     assert.equal(regression.summary.passedCases, 4);
     assert.equal(regression.summary.failedCases, 0);
+  } finally {
+    cleanupRoot(root);
+  }
+});
+
+test('release artifact records provenance metadata on disk and in summary', () => {
+  const root = makeTempRoot();
+  try {
+    copyPackArtifactsWithRegistry(root);
+
+    const { releaseReferencePack } = require('../reference-pack-lifecycle');
+    const release = releaseReferencePack({
+      rootDir: root,
+      manifestPath: path.join(root, 'reference-pack-manifest.json'),
+    });
+
+    assert.equal(release.valid, true, release.errors.join('\n'));
+    assert.ok(release.summary, 'Expected release summary.');
+    assert.ok(release.summary.release, 'Expected release metadata.');
+    assert.equal(release.summary.release.compilerVersion, COMPILER_VERSION);
+    assert.equal(release.summary.release.contractVersion, BUNDLE_CONTRACT_VERSION);
+    assert.deepEqual(release.summary.build.provenance, release.summary.release.provenance);
+    assert.match(release.summary.release.provenance.manifestDigest, /^sha256:/);
+    assert.match(release.summary.release.provenance.sourceRegistryDigest, /^sha256:/);
+    assert.match(release.summary.release.provenance.authorityGraphDigest, /^sha256:/);
+    assert.match(release.summary.release.provenance.factSchemaDigest, /^sha256:/);
+    assert.match(release.summary.release.provenance.packRegistryDigest, /^sha256:/);
+    assert.equal(
+      release.summary.release.provenance.packRegistryDigest,
+      computeJsonDigest(readJson(path.join(root, 'pack-registry.json'))),
+    );
+
+    const releasePath = path.join(
+      release.summary.release.artifactDirectory,
+      'release.json',
+    );
+    const releaseFile = readJson(releasePath);
+    assert.equal(releaseFile.compilerVersion, COMPILER_VERSION);
+    assert.equal(releaseFile.contractVersion, BUNDLE_CONTRACT_VERSION);
+    assert.deepEqual(releaseFile.provenance, release.summary.release.provenance);
   } finally {
     cleanupRoot(root);
   }

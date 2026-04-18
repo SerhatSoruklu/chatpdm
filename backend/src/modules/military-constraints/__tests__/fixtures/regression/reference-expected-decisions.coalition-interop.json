@@ -5,7 +5,8 @@
     "decision": "ALLOWED",
     "reasonCode": null,
     "failedStage": null,
-    "failingRuleIds": []
+    "failingRuleIds": [],
+    "missingFactIds": []
   },
   {
     "caseId": "coalition-interop-refusal",
@@ -15,7 +16,8 @@
     "failedStage": "POLICY_OVERLAY",
     "failingRuleIds": [
       "CR-COAL-001"
-    ]
+    ],
+    "missingFactIds": []
   },
   {
     "caseId": "coalition-interop-missing-fact",
@@ -25,6 +27,9 @@
     "failedStage": "POLICY_OVERLAY",
     "failingRuleIds": [
       "CR-COAL-001"
+    ],
+    "missingFactIds": [
+      "authority.designatedRoeActive"
     ]
   }
 ]
