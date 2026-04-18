@@ -42,6 +42,7 @@ describe('MilitaryConstraintsCompilerPageComponent', () => {
       }),
     );
     expect(component['heroImageButtonLabel']).toBe(MCPP_HERO_IMAGE_BUTTON_LABEL);
+    expect(component['heroImageCaption']).toBe(MCPP_HERO_IMAGE_CAPTION);
     expect(component['surfaceTruthCards'].map((entry) => entry.label)).toEqual([
       'Shared INTL baseline',
       'National families',
@@ -50,6 +51,15 @@ describe('MilitaryConstraintsCompilerPageComponent', () => {
       'Planned roadmap',
       'Umbrella labels',
     ]);
+    expect(component['whyThisLayerCards'].map((entry) => entry.label)).toEqual([
+      'Upstream surfaces',
+      'Why they are not enough',
+      'This compiler',
+    ]);
+    expect(component['whyThisLayerNote']).toBe('Recommendation is optional. Admissibility is mandatory.');
+    expect(component['executionBoundarySentence']).toBe(
+      'This system sits at the execution boundary. No action proceeds without passing this check.',
+    );
     expect(component['surfaceTruthCards'][0]).toMatchObject({
       title: 'International baseline packs',
     });
