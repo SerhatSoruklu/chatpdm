@@ -75,14 +75,24 @@ export class MilitaryConstraintsCompilerPageComponent {
     },
   ] as const;
 
-  protected readonly whatItIsNotItems: readonly string[] = [
-    'Not a tactical decision console',
-    'Not a military advice system',
-    'Not a natural-language interpreter',
-    'Not a strategy engine',
-    'Not a targeting recommender',
-    'Not a freeform scenario analyzer',
+  protected readonly whyThisLayerCards: readonly ContractCard[] = [
+    {
+      label: 'Upstream surfaces',
+      copy: 'Planning, analysis, recommendation, and human-proposal surfaces can help shape an option. They do not hold final execution authority.',
+    },
+    {
+      label: 'Why they are not enough',
+      copy: 'Heuristic, interpretive, incomplete, or freeform systems may be useful upstream, but final admissibility cannot depend on guesswork or latent inference.',
+    },
+    {
+      label: 'This compiler',
+      copy: 'The compiler is the deterministic execution gate. It stays bounded, refusal-first, and traceable while deciding whether execution may proceed.',
+    },
   ] as const;
+
+  protected readonly whyThisLayerNote = 'Recommendation is optional. Admissibility is mandatory.';
+  protected readonly executionBoundarySentence =
+    'This system sits at the execution boundary. No action proceeds without passing this check.';
 
   protected readonly decisionStates: readonly ContractCard[] = [
     {

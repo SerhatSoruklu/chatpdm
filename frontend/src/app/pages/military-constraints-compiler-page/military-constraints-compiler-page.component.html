@@ -10,7 +10,8 @@
           </p>
           <p class="pdm-mcc__support">
             The compiler checks structured facts against frozen packs and returns one of three
-            outcomes:
+            outcomes. Upstream surfaces may shape a proposal. Final admissibility cannot be
+            delegated and is decided here.
           </p>
           <div class="pdm-mcc__status-pills" aria-label="Decision outcomes">
             <span class="pdm-mcc__status-pill pdm-mcc__status-pill--allowed">ALLOWED</span>
@@ -52,10 +53,13 @@
     <section class="pdm-mcc__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-mcc-what-is-title">
       <div class="pdm-mcc__section-head">
         <p class="pdm-mcc__section-label">What it is</p>
-        <h2 class="pdm-mcc__section-title" id="pdm-mcc-what-is-title">A protocol-grade rules engine.</h2>
+        <h2 class="pdm-mcc__section-title" id="pdm-mcc-what-is-title">
+          A protocol-grade enforcement boundary.
+        </h2>
         <p class="pdm-mcc__section-copy">
-          It evaluates a proposed action against a validated pack. It does not invent meaning,
-          infer missing facts, or make tactical recommendations.
+          It evaluates a proposed action against a validated pack and decides whether execution
+          is admissible. It does not invent meaning, infer missing facts, or defer final
+          admissibility to upstream analysis.
         </p>
       </div>
 
@@ -69,17 +73,33 @@
       </div>
     </section>
 
-    <section class="pdm-mcc__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-mcc-not-title">
+    <section class="pdm-mcc__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-mcc-boundary-title">
       <div class="pdm-mcc__section-head">
-        <p class="pdm-mcc__section-label">What it is not</p>
-        <h2 class="pdm-mcc__section-title" id="pdm-mcc-not-title">Not an advice or targeting surface.</h2>
+        <p class="pdm-mcc__section-label">Why this layer exists</p>
+        <h2 class="pdm-mcc__section-title" id="pdm-mcc-boundary-title">
+          Admissibility cannot be inferred at execution time.
+        </h2>
+        <p class="pdm-mcc__section-copy">
+          Upstream planning, analysis, recommendation, and human-proposal surfaces can produce
+          candidate actions. They cannot establish final admissibility under constraint.
+        </p>
+        <p class="pdm-mcc__section-copy">
+          Upstream systems may produce plausible proposals that still fail constraint. This
+          compiler does not allow plausibility to substitute for admissibility.
+        </p>
       </div>
 
-      <ul class="pdm-mcc__bullets">
-        @for (item of whatItIsNotItems; track item) {
-          <li>{{ item }}</li>
+      <div class="pdm-mcc__card-grid pdm-mcc__card-grid--three">
+        @for (item of whyThisLayerCards; track item.label) {
+          <article class="pdm-mcc__card">
+            <h3 class="pdm-mcc__card-title">{{ item.label }}</h3>
+            <p class="pdm-mcc__card-copy">{{ item.copy }}</p>
+          </article>
         }
-      </ul>
+      </div>
+
+      <p class="pdm-mcc__section-copy">{{ whyThisLayerNote }}</p>
+      <p class="pdm-mcc__section-copy">{{ executionBoundarySentence }}</p>
     </section>
 
     <section class="pdm-mcc__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-mcc-decision-title">
