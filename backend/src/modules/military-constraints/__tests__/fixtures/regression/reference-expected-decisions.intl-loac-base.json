@@ -5,7 +5,8 @@
     "decision": "ALLOWED",
     "reasonCode": null,
     "failedStage": null,
-    "failingRuleIds": []
+    "failingRuleIds": [],
+    "missingFactIds": []
   },
   {
     "caseId": "intl-loac-refusal",
@@ -15,7 +16,8 @@
     "failedStage": "LEGAL_FLOOR",
     "failingRuleIds": [
       "CR-INTL-LOAC-0001"
-    ]
+    ],
+    "missingFactIds": []
   },
   {
     "caseId": "intl-loac-missing-fact",
@@ -25,6 +27,9 @@
     "failedStage": "LEGAL_FLOOR",
     "failingRuleIds": [
       "CR-INTL-LOAC-0001"
+    ],
+    "missingFactIds": [
+      "target.protectedClass"
     ]
   }
 ]

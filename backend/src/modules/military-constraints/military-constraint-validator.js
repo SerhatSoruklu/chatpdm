@@ -1,10 +1,21 @@
 'use strict';
 
+const crypto = require('node:crypto');
+
 const {
   MILITARY_CONSTRAINT_REASON_CODES,
   isMilitaryConstraintReasonCode,
 } = require('./military-constraint-reason-codes');
 const {
+  checkPredicateBranchWidth,
+  checkPredicateNodeBudget,
+  createPredicateBudgetState,
+} = require('./predicate-budgets');
+const {
+  isIso8601TimestampString,
+} = require('./fact-schema-utils');
+const {
+  validateBundleContractVersion,
   isLocatorBoundToSource,
   isNonEmptyString,
   isReviewedClauseProvenance,
@@ -91,11 +102,11 @@ function canonicalBundlePayload(bundle) {
   const clone = cloneJson(bundle);
   delete clone.bundleHash;
   delete clone.compiledAt;
+  delete clone.contractVersion;
   return sortObjectKeys(clone);
 }
 
 function computeBundleHash(bundle) {
-  const crypto = require('node:crypto');
   const canonicalJson = canonicalJSONStringify(canonicalBundlePayload(bundle));
   return `sha256:${crypto.createHash('sha256').update(canonicalJson, 'utf8').digest('hex')}`;
 }
@@ -213,7 +224,7 @@ function getOperandKind(operand, factCatalog) {
       return { kind: 'number', value };
     }
     if (typeof value === 'string') {
-      return Number.isNaN(Date.parse(value))
+      return !isIso8601TimestampString(value)
         ? { kind: 'string', value }
         : { kind: 'timestamp', value };
     }
@@ -506,6 +517,15 @@ function validateBundleIntegrity({ bundle, rules, authorityGraph }) {
     fail(result, MILITARY_CONSTRAINT_REASON_CODES.BUNDLE_HASH_MISMATCH, 'bundleHash does not match canonical bundle hash.');
   }
 
+  const contractVersionValidation = validateBundleContractVersion(bundle);
+  if (!contractVersionValidation.valid) {
+    fail(
+      result,
+      contractVersionValidation.reasonCode || MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID,
+      contractVersionValidation.errors[0] || 'bundle contract version validation failed.',
+    );
+  }
+
   if (typeof bundle.bundleVersion !== 'string' || bundle.bundleVersion.length === 0) {
     fail(result, MILITARY_CONSTRAINT_REASON_CODES.BUNDLE_VERSION_IMMUTABLE_VIOLATION, 'bundleVersion must be a stable semantic version string.');
   }
@@ -695,7 +715,11 @@ function validateEqualityOperands(rule, operatorName, leftOperand, rightOperand,
   }
 }
 
-function walkPredicate(rule, predicate, factCatalog, result) {
+function walkPredicate(rule, predicate, factCatalog, result, budgetState, depth) {
+  if (!result.valid) {
+    return;
+  }
+
   if (!isPlainObject(predicate)) {
     fail(result, MILITARY_CONSTRAINT_REASON_CODES.PREDICATE_INVALID, `rule ${rule.ruleId} predicate must be a plain object.`);
     return;
@@ -709,18 +733,35 @@ function walkPredicate(rule, predicate, factCatalog, result) {
 
   const operatorName = operators[0];
   const operatorValue = predicate[operatorName];
+  const budgetError = checkPredicateNodeBudget(budgetState, depth, operatorName);
+  if (budgetError) {
+    fail(result, budgetError.code, `rule ${rule.ruleId} ${budgetError.message}`);
+    return;
+  }
 
   if (operatorName === 'all' || operatorName === 'any') {
     if (!Array.isArray(operatorValue) || operatorValue.length === 0) {
       fail(result, MILITARY_CONSTRAINT_REASON_CODES.PREDICATE_INVALID, `rule ${rule.ruleId} ${operatorName} requires a non-empty array.`);
       return;
     }
-    operatorValue.forEach((entry) => walkPredicate(rule, entry, factCatalog, result));
+
+    const branchBudgetError = checkPredicateBranchWidth(operatorName, operatorValue.length);
+    if (branchBudgetError) {
+      fail(result, branchBudgetError.code, `rule ${rule.ruleId} ${branchBudgetError.message}`);
+      return;
+    }
+
+    for (let index = 0; index < operatorValue.length; index += 1) {
+      walkPredicate(rule, operatorValue[index], factCatalog, result, budgetState, depth + 1);
+      if (!result.valid) {
+        return;
+      }
+    }
     return;
   }
 
   if (operatorName === 'not') {
-    walkPredicate(rule, operatorValue, factCatalog, result);
+    walkPredicate(rule, operatorValue, factCatalog, result, budgetState, depth + 1);
     return;
   }
 
@@ -781,13 +822,17 @@ function validatePredicateOperandTypes(input) {
 
   const factCatalog = buildFactCatalog(factSchema);
 
-  rules.forEach((rule) => {
+  for (const rule of rules) {
+    if (!result.valid) {
+      break;
+    }
+
     if (!isPlainObject(rule) || !isPlainObject(rule.predicate)) {
       fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, 'each rule must contain a predicate object.');
-      return;
+      break;
     }
-    walkPredicate(rule, rule.predicate, factCatalog, result);
-  });
+    walkPredicate(rule, rule.predicate, factCatalog, result, createPredicateBudgetState(), 0);
+  }
 
   return finish(result);
 }
@@ -897,42 +942,83 @@ function validateMissingFactSemantics(input) {
   const result = makeResult();
   const rules = isPlainObject(input) && Array.isArray(input.rules) ? input.rules : [];
 
-  function walk(rule, node) {
+  function walk(rule, node, budgetState, depth) {
+    if (!result.valid) {
+      return;
+    }
+
     if (!isPlainObject(node)) {
+      return;
+    }
+
+    const operators = Object.keys(node);
+    if (operators.length !== 1) {
+      return;
+    }
+
+    const operatorName = operators[0];
+    const budgetError = checkPredicateNodeBudget(budgetState, depth, operatorName);
+    if (budgetError) {
+      fail(result, budgetError.code, `rule ${rule.ruleId} ${budgetError.message}`);
       return;
     }
 
     if (Array.isArray(node.exists) || Array.isArray(node.not_exists)) {
       const values = node.exists || node.not_exists;
-      values.forEach((entry) => {
+      for (const entry of values) {
         if (!isPlainObject(entry) || typeof entry.fact !== 'string') {
-          return;
+          continue;
         }
         if (Array.isArray(rule.requiredFacts) && rule.requiredFacts.includes(entry.fact)) {
           fail(result, MILITARY_CONSTRAINT_REASON_CODES.MISSING_REQUIRED_FACT, `rule ${rule.ruleId} has impossible requiredFacts overlap for "${entry.fact}".`);
+          return;
         }
-      });
+      }
       return;
     }
 
     if (Array.isArray(node.all)) {
-      node.all.forEach((entry) => walk(rule, entry));
+      const branchBudgetError = checkPredicateBranchWidth('all', node.all.length);
+      if (branchBudgetError) {
+        fail(result, branchBudgetError.code, `rule ${rule.ruleId} ${branchBudgetError.message}`);
+        return;
+      }
+      for (const entry of node.all) {
+        walk(rule, entry, budgetState, depth + 1);
+        if (!result.valid) {
+          return;
+        }
+      }
     }
 
     if (Array.isArray(node.any)) {
-      node.any.forEach((entry) => walk(rule, entry));
+      const branchBudgetError = checkPredicateBranchWidth('any', node.any.length);
+      if (branchBudgetError) {
+        fail(result, branchBudgetError.code, `rule ${rule.ruleId} ${branchBudgetError.message}`);
+        return;
+      }
+      for (const entry of node.any) {
+        walk(rule, entry, budgetState, depth + 1);
+        if (!result.valid) {
+          return;
+        }
+      }
     }
 
     if (Object.prototype.hasOwnProperty.call(node, 'not')) {
-      walk(rule, node.not);
+      walk(rule, node.not, budgetState, depth + 1);
     }
   }
 
-  rules.forEach((rule) => {
-    if (isPlainObject(rule) && isPlainObject(rule.predicate)) {
-      walk(rule, rule.predicate);
+  for (const rule of rules) {
+    if (!result.valid) {
+      break;
     }
-  });
+
+    if (isPlainObject(rule) && isPlainObject(rule.predicate)) {
+      walk(rule, rule.predicate, createPredicateBudgetState(), 0);
+    }
+  }
 
   return finish(result);
 }
@@ -941,6 +1027,7 @@ module.exports = {
   CANONICAL_STAGE_ORDER,
   canonicalBundlePayload,
   computeBundleHash,
+  validateBundleContractVersion,
   validateAuthorityReferences,
   validateBundleIntegrity,
   validateContractPack,

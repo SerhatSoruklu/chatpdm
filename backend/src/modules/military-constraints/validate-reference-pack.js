@@ -42,6 +42,17 @@ function finish(result) {
   });
 }
 
+function validateOptionalClauseIdList(result, manifest, fieldName) {
+  if (!Object.prototype.hasOwnProperty.call(manifest, fieldName)) {
+    return;
+  }
+
+  const value = manifest[fieldName];
+  if (!Array.isArray(value) || value.length === 0 || !value.every(isNonEmptyString) || new Set(value).size !== value.length) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, `manifest.${fieldName} must be a non-empty array of unique non-empty strings when present.`);
+  }
+}
+
 function readManifest(manifestPath) {
   if (typeof manifestPath !== 'string' || manifestPath.length === 0 || !fs.existsSync(manifestPath)) {
     return null;
@@ -113,6 +124,9 @@ function validateReferencePack(input) {
   if (typeof manifest.regressionSuiteVersion !== 'string' || manifest.regressionSuiteVersion.length === 0) {
     fail(result, MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, 'manifest.regressionSuiteVersion is required.');
   }
+
+  validateOptionalClauseIdList(result, manifest, 'regressionClauseIds');
+  validateOptionalClauseIdList(result, manifest, 'admissibilityRegressionClauseIds');
 
   if (!result.valid) {
     return finish(result);

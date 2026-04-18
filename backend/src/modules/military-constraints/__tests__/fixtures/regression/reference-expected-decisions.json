@@ -7,7 +7,8 @@
     "failedStage": "LEGAL_FLOOR",
     "failingRuleIds": [
       "CR-CLAUSE-LF-0001"
-    ]
+    ],
+    "missingFactIds": []
   },
   {
     "caseId": "authority-refusal",
@@ -17,7 +18,8 @@
     "failedStage": "POLICY_OVERLAY",
     "failingRuleIds": [
       "CR-CLAUSE-AUTH-0001"
-    ]
+    ],
+    "missingFactIds": []
   },
   {
     "caseId": "missing-fact-refusal",
@@ -27,6 +29,9 @@
     "failedStage": "ADMISSIBILITY",
     "failingRuleIds": [
       "CR-CLAUSE-LF-0004"
+    ],
+    "missingFactIds": [
+      "target.positiveIdentificationStatus"
     ]
   },
   {
@@ -35,6 +40,7 @@
     "decision": "ALLOWED",
     "reasonCode": null,
     "failedStage": null,
-    "failingRuleIds": []
+    "failingRuleIds": [],
+    "missingFactIds": []
   }
 ]

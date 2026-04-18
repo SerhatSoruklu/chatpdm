@@ -5,7 +5,8 @@
     "decision": "ALLOWED",
     "reasonCode": null,
     "failedStage": null,
-    "failingRuleIds": []
+    "failingRuleIds": [],
+    "missingFactIds": []
   },
   {
     "caseId": "search-and-seizure-refusal",
@@ -15,7 +16,8 @@
     "failedStage": "ADMISSIBILITY",
     "failingRuleIds": [
       "CR-CL-SEARCH-SEIZURE-001"
-    ]
+    ],
+    "missingFactIds": []
   },
   {
     "caseId": "search-and-seizure-missing-fact",
@@ -25,6 +27,9 @@
     "failedStage": "ADMISSIBILITY",
     "failingRuleIds": [
       "CR-CL-SEARCH-SEIZURE-001"
+    ],
+    "missingFactIds": [
+      "authority.designatedActionAuthorized"
     ]
   }
 ]

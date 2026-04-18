@@ -5,7 +5,8 @@
     "decision": "ALLOWED",
     "reasonCode": null,
     "failedStage": null,
-    "failingRuleIds": []
+    "failingRuleIds": [],
+    "missingFactIds": []
   },
   {
     "caseId": "au-national-base-refusal",
@@ -15,7 +16,8 @@
     "failedStage": "ADMISSIBILITY",
     "failingRuleIds": [
       "CR-AU-NAT-001"
-    ]
+    ],
+    "missingFactIds": []
   },
   {
     "caseId": "au-national-base-missing-fact",
@@ -23,6 +25,7 @@
     "decision": "REFUSED_INCOMPLETE",
     "reasonCode": "FACT_PACKET_INVALID",
     "failedStage": "ADMISSIBILITY",
-    "failingRuleIds": []
+    "failingRuleIds": [],
+    "missingFactIds": []
   }
 ]

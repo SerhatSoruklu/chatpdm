@@ -7,7 +7,8 @@
     "failedStage": "LEGAL_FLOOR",
     "failingRuleIds": [
       "CR-CL-MED-LF-001"
-    ]
+    ],
+    "missingFactIds": []
   },
   {
     "caseId": "medical-missing-loss-of-protection",
@@ -17,7 +18,8 @@
     "failedStage": "ADMISSIBILITY",
     "failingRuleIds": [
       "CR-CL-MED-ADM-002"
-    ]
+    ],
+    "missingFactIds": []
   },
   {
     "caseId": "medical-unauthorized-confirmed-loss",
@@ -27,7 +29,8 @@
     "failedStage": "POLICY_OVERLAY",
     "failingRuleIds": [
       "CR-CL-MED-AUTH-001"
-    ]
+    ],
+    "missingFactIds": []
   },
   {
     "caseId": "medical-authorized-confirmed-loss",
@@ -35,6 +38,7 @@
     "decision": "ALLOWED",
     "reasonCode": null,
     "failedStage": null,
-    "failingRuleIds": []
+    "failingRuleIds": [],
+    "missingFactIds": []
   }
 ]

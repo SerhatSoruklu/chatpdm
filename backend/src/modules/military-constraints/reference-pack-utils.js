@@ -1,9 +1,17 @@
 'use strict';
 
+const crypto = require('node:crypto');
 const fs = require('node:fs');
 const path = require('node:path');
 
 const { isPlainObject } = require('./fact-schema-utils');
+const {
+  MILITARY_CONSTRAINT_REASON_CODES,
+} = require('./military-constraint-reason-codes');
+
+// Bundle contract version governs compiler/runtime compatibility.
+// bundleVersion remains the pack's semantic release version.
+const BUNDLE_CONTRACT_VERSION = '1.0.0';
 
 const AUTHORITY_GRAPH_FIXTURE_BY_ID = {
   'AUTH-GRAPH-US-001': 'authority-graph.json',
@@ -20,8 +28,41 @@ function readJsonFile(filePath) {
   return JSON.parse(fs.readFileSync(filePath, 'utf8'));
 }
 
+function cloneJson(value) {
+  return JSON.parse(JSON.stringify(value));
+}
+
+function sortObjectKeys(value) {
+  if (Array.isArray(value)) {
+    return value.map(sortObjectKeys);
+  }
+
+  if (!isPlainObject(value)) {
+    return value;
+  }
+
+  const ordered = {};
+  Object.keys(value).sort().forEach((key) => {
+    ordered[key] = sortObjectKeys(value[key]);
+  });
+  return ordered;
+}
+
+function canonicalJSONStringify(value) {
+  return JSON.stringify(sortObjectKeys(value));
+}
+
+function computeJsonDigest(value) {
+  const canonicalJson = canonicalJSONStringify(value);
+  return `sha256:${crypto.createHash('sha256').update(canonicalJson, 'utf8').digest('hex')}`;
+}
+
 function sortStrings(values) {
   return [...values].sort((left, right) => String(left).localeCompare(String(right)));
+}
+
+function sortUniqueStrings(values) {
+  return [...new Set(values)].sort((left, right) => String(left).localeCompare(String(right)));
 }
 
 function isNonEmptyString(value) {
@@ -47,6 +88,106 @@ function sortSourceRefs(sourceRefs) {
 
       return left.locator.localeCompare(right.locator);
     });
+}
+
+function makeBundleContractVersionResult() {
+  return {
+    valid: true,
+    reasonCode: null,
+    errors: [],
+    contractVersion: BUNDLE_CONTRACT_VERSION,
+  };
+}
+
+function failBundleContractVersion(result, reasonCode, message) {
+  result.valid = false;
+  if (result.reasonCode === null) {
+    result.reasonCode = reasonCode;
+  }
+  result.errors.push(message);
+}
+
+function finishBundleContractVersion(result) {
+  return Object.freeze({
+    valid: result.valid,
+    reasonCode: result.reasonCode,
+    errors: Object.freeze([...result.errors]),
+    contractVersion: result.contractVersion,
+  });
+}
+
+// Legacy bundles without contractVersion are treated as current.
+// Explicit mismatches fail closed with BUNDLE_CONTRACT_VERSION_MISMATCH.
+function validateBundleContractVersion(bundle) {
+  const result = makeBundleContractVersionResult();
+
+  if (!isPlainObject(bundle)) {
+    failBundleContractVersion(result, MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, 'bundle must be a plain object.');
+    return finishBundleContractVersion(result);
+  }
+
+  if (!Object.prototype.hasOwnProperty.call(bundle, 'contractVersion') || bundle.contractVersion === undefined || bundle.contractVersion === null) {
+    return finishBundleContractVersion(result);
+  }
+
+  if (typeof bundle.contractVersion !== 'string' || bundle.contractVersion.length === 0) {
+    failBundleContractVersion(result, MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, 'bundle.contractVersion must be a non-empty string when present.');
+    return finishBundleContractVersion(result);
+  }
+
+  if (bundle.contractVersion !== BUNDLE_CONTRACT_VERSION) {
+    failBundleContractVersion(
+      result,
+      MILITARY_CONSTRAINT_REASON_CODES.BUNDLE_CONTRACT_VERSION_MISMATCH,
+      `bundle.contractVersion "${bundle.contractVersion}" is incompatible with supported contract version "${BUNDLE_CONTRACT_VERSION}".`,
+    );
+  }
+
+  return finishBundleContractVersion(result);
+}
+
+function sortRuleForBundle(rule) {
+  const clone = cloneJson(rule);
+
+  if (isPlainObject(clone.scope)) {
+    if (Array.isArray(clone.scope.actionKinds)) {
+      clone.scope.actionKinds = sortUniqueStrings(clone.scope.actionKinds);
+    }
+    if (Array.isArray(clone.scope.domains)) {
+      clone.scope.domains = sortUniqueStrings(clone.scope.domains);
+    }
+    if (Array.isArray(clone.scope.missionTypes)) {
+      clone.scope.missionTypes = sortUniqueStrings(clone.scope.missionTypes);
+    }
+  }
+
+  if (isPlainObject(clone.authority) && Array.isArray(clone.authority.delegationEdgeIds)) {
+    clone.authority.delegationEdgeIds = sortUniqueStrings(clone.authority.delegationEdgeIds);
+  }
+
+  if (Array.isArray(clone.requiredFacts)) {
+    clone.requiredFacts = sortUniqueStrings(clone.requiredFacts);
+  }
+
+  if (Array.isArray(clone.sourceRefs)) {
+    clone.sourceRefs = [...clone.sourceRefs].sort((left, right) => {
+      const leftSource = typeof left.sourceId === 'string' ? left.sourceId : '';
+      const rightSource = typeof right.sourceId === 'string' ? right.sourceId : '';
+      if (leftSource !== rightSource) {
+        return leftSource.localeCompare(rightSource);
+      }
+
+      const leftLocator = typeof left.locator === 'string' ? left.locator : '';
+      const rightLocator = typeof right.locator === 'string' ? right.locator : '';
+      return leftLocator.localeCompare(rightLocator);
+    });
+  }
+
+  if (isPlainObject(clone.provenance) && Array.isArray(clone.provenance.parentClauseIds)) {
+    clone.provenance.parentClauseIds = sortUniqueStrings(clone.provenance.parentClauseIds);
+  }
+
+  return clone;
 }
 
 const REVIEWED_CLAUSE_DERIVATION_TYPES = new Set([
@@ -329,6 +470,11 @@ function buildSourceRegistryIndex(sourceRegistry) {
 
   sourceRegistry.forEach((entry) => {
     if (!isPlainObject(entry) || typeof entry.sourceId !== 'string' || entry.sourceId.length === 0) {
+      failSourceRegistryIndex(
+        result,
+        'POLICY_BUNDLE_INVALID',
+        'source registry contains a malformed entry.',
+      );
       return;
     }
 
@@ -363,6 +509,7 @@ function loadManifest(moduleRoot, manifestFile) {
 }
 
 module.exports = {
+  BUNDLE_CONTRACT_VERSION,
   buildSourceRegistryIndex,
   buildPackRegistryIndex,
   getPackRegistryPath,
@@ -376,7 +523,10 @@ module.exports = {
   loadManifest,
   readJsonFile,
   resolveModuleRoot,
+  validateBundleContractVersion,
   validatePackRegistry,
+  computeJsonDigest,
+  sortRuleForBundle,
   sortStrings,
   sortSourceRefs,
   isLocatorBoundToSource,

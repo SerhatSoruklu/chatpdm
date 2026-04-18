@@ -168,6 +168,32 @@ function writeJsonFile(filePath, value) {
   fs.writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`);
 }
 
+function isNonEmptyStringArray(values) {
+  return Array.isArray(values) && values.length > 0 && values.every((value) => typeof value === 'string' && value.length > 0);
+}
+
+function readRegressionClauseIds(manifest, fieldName) {
+  if (!isPlainObject(manifest) || !Object.prototype.hasOwnProperty.call(manifest, fieldName)) {
+    return null;
+  }
+
+  const clauseIds = manifest[fieldName];
+  if (!isNonEmptyStringArray(clauseIds)) {
+    return null;
+  }
+
+  return [...new Set(clauseIds)].sort((left, right) => left.localeCompare(right));
+}
+
+function readManifestClauseIds(manifestPath, fieldName) {
+  try {
+    const manifest = readJsonFile(manifestPath);
+    return readRegressionClauseIds(manifest, fieldName);
+  } catch {
+    return null;
+  }
+}
+
 function getManifestSuffix(manifestPath) {
   const fileName = path.basename(manifestPath);
   if (fileName === 'reference-pack-manifest.json') {
@@ -183,36 +209,22 @@ function getManifestSuffix(manifestPath) {
 }
 
 function buildPackRegressionBundle(rootDir, manifestPath) {
-  const suffix = getManifestSuffix(manifestPath);
-
-  if (suffix === '') {
-    return buildReferenceBundle({
-      rootDir,
-      manifestPath,
-      clauseIds: ['CLAUSE-AUTH-0001', 'CLAUSE-LF-0001'],
-    });
-  }
+  const clauseIds = readManifestClauseIds(manifestPath, 'regressionClauseIds');
 
   return buildReferenceBundle({
     rootDir,
     manifestPath,
+    clauseIds,
   });
 }
 
 function buildPackAdmissibilityBundle(rootDir, manifestPath) {
-  const suffix = getManifestSuffix(manifestPath);
-
-  if (suffix === '') {
-    return buildReferenceBundle({
-      rootDir,
-      manifestPath,
-      clauseIds: ['CLAUSE-AUTH-0001', 'CLAUSE-LF-0001', 'CLAUSE-LF-0004'],
-    });
-  }
+  const clauseIds = readManifestClauseIds(manifestPath, 'admissibilityRegressionClauseIds');
 
   return buildReferenceBundle({
     rootDir,
     manifestPath,
+    clauseIds,
   });
 }
 
@@ -255,6 +267,43 @@ function runPackRegressionSuite(rootDir, manifestPath) {
   let passedCases = 0;
   let failedCases = 0;
 
+  function getTraceShapeErrors(actual) {
+    const shapeErrors = [];
+
+    if (!isPlainObject(actual.authorityTrace)) {
+      shapeErrors.push('authorityTrace must be a plain object.');
+    } else {
+      if (typeof actual.authorityTrace.valid !== 'boolean') {
+        shapeErrors.push('authorityTrace.valid must be a boolean.');
+      }
+      if (!(actual.authorityTrace.reasonCode === null || typeof actual.authorityTrace.reasonCode === 'string')) {
+        shapeErrors.push('authorityTrace.reasonCode must be null or a string.');
+      }
+      if (!Array.isArray(actual.authorityTrace.errors)) {
+        shapeErrors.push('authorityTrace.errors must be an array.');
+      }
+      if (!(actual.authorityTrace.authorityGraphId === null || typeof actual.authorityTrace.authorityGraphId === 'string')) {
+        shapeErrors.push('authorityTrace.authorityGraphId must be null or a string.');
+      }
+    }
+
+    if (!Array.isArray(actual.ruleTrace)) {
+      shapeErrors.push('ruleTrace must be an array.');
+    } else if (!actual.ruleTrace.every((entry) => isPlainObject(entry)
+      && typeof entry.ruleId === 'string'
+      && typeof entry.stage === 'string'
+      && Number.isInteger(entry.priority)
+      && typeof entry.outcome === 'string'
+      && typeof entry.matched === 'boolean'
+      && Array.isArray(entry.missingFactIds)
+      && Array.isArray(entry.usedFacts)
+      && Array.isArray(entry.sourceRefs))) {
+      shapeErrors.push('ruleTrace entries must retain ruleId, stage, priority, outcome, matched, missingFactIds, usedFacts, and sourceRefs.');
+    }
+
+    return shapeErrors;
+  }
+
   for (let index = 0; index < fixtures.factPackets.length; index += 1) {
     const packet = fixtures.factPackets[index];
     const expected = expectedIndex.get(packet.caseId);
@@ -280,14 +329,21 @@ function runPackRegressionSuite(rootDir, manifestPath) {
 
     const actualRules = Array.isArray(actual.failingRuleIds) ? actual.failingRuleIds : [];
     const expectedRules = Array.isArray(expected.failingRuleIds) ? expected.failingRuleIds : [];
+    const actualMissingFactIds = Array.isArray(actual.missingFactIds) ? actual.missingFactIds : [];
+    const expectedMissingFactIds = Array.isArray(expected.missingFactIds) ? expected.missingFactIds : [];
+    const traceShapeErrors = getTraceShapeErrors(actual);
     const mismatch = actual.decision !== expected.decision
       ? `case ${packet.caseId} decision mismatch: expected ${expected.decision}, got ${actual.decision}.`
       : actual.reasonCode !== expected.reasonCode
         ? `case ${packet.caseId} reasonCode mismatch: expected ${expected.reasonCode}, got ${actual.reasonCode}.`
-        : actual.failedStage !== expected.failedStage
-          ? `case ${packet.caseId} failedStage mismatch: expected ${expected.failedStage}, got ${actual.failedStage}.`
-          : actualRules.length !== expectedRules.length || actualRules.some((ruleId, ruleIndex) => ruleId !== expectedRules[ruleIndex])
-            ? `case ${packet.caseId} failingRuleIds mismatch.`
+      : actual.failedStage !== expected.failedStage
+        ? `case ${packet.caseId} failedStage mismatch: expected ${expected.failedStage}, got ${actual.failedStage}.`
+      : actualRules.length !== expectedRules.length || actualRules.some((ruleId, ruleIndex) => ruleId !== expectedRules[ruleIndex])
+        ? `case ${packet.caseId} failingRuleIds mismatch.`
+      : actualMissingFactIds.length !== expectedMissingFactIds.length || actualMissingFactIds.some((factId, factIndex) => factId !== expectedMissingFactIds[factIndex])
+        ? `case ${packet.caseId} missingFactIds mismatch.`
+      : traceShapeErrors.length > 0
+        ? `case ${packet.caseId} trace shape mismatch: ${traceShapeErrors.join(' ')}`
             : null;
 
     if (mismatch) {
@@ -511,18 +567,24 @@ function releaseReferencePack(input) {
 
   const artifactRoot = getReleaseArtifactRoot(rootDir, isPlainObject(input) ? input.artifactRoot : null);
   const artifactDirectory = getPackArtifactDirectory(artifactRoot, build.metadata.packId, build.metadata.bundleVersion);
+  const tempArtifactDirectory = `${artifactDirectory}.tmp-${process.pid}-${Date.now()}`;
   const manifestSnapshot = readJsonFile(manifestPath);
   const bundlePath = path.join(artifactDirectory, 'bundle.json');
   const manifestSnapshotPath = path.join(artifactDirectory, 'manifest.json');
   const regressionPath = path.join(artifactDirectory, 'regression-summary.json');
   const releasePath = path.join(artifactDirectory, 'release.json');
+  const tempBundlePath = path.join(tempArtifactDirectory, 'bundle.json');
+  const tempManifestSnapshotPath = path.join(tempArtifactDirectory, 'manifest.json');
+  const tempRegressionPath = path.join(tempArtifactDirectory, 'regression-summary.json');
+  const tempReleasePath = path.join(tempArtifactDirectory, 'release.json');
 
   try {
-    fs.mkdirSync(artifactDirectory, { recursive: true });
-    writeJsonFile(bundlePath, build.bundle);
-    writeJsonFile(manifestSnapshotPath, manifestSnapshot);
-    writeJsonFile(regressionPath, regression.summary);
+    fs.mkdirSync(tempArtifactDirectory, { recursive: true });
+    writeJsonFile(tempBundlePath, build.bundle);
+    writeJsonFile(tempManifestSnapshotPath, manifestSnapshot);
+    writeJsonFile(tempRegressionPath, regression.summary);
   } catch (error) {
+    fs.rmSync(tempArtifactDirectory, { recursive: true, force: true });
     fail(result, MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, error instanceof Error ? error.message : 'failed to write release artifacts.');
     result.summary = {
       build,
@@ -536,12 +598,15 @@ function releaseReferencePack(input) {
     packId: build.metadata.packId,
     bundleId: build.metadata.bundleId,
     bundleVersion: build.metadata.bundleVersion,
+    compilerVersion: build.metadata.compilerVersion,
+    contractVersion: build.metadata.contractVersion,
     bundleHash: build.metadata.bundleHash,
     jurisdiction: build.metadata.jurisdiction,
     authorityGraphId: build.metadata.authorityGraphId,
     reviewedClauseSetIds: [...build.metadata.reviewedClauseSetIds],
     sourceRegistryVersion: build.metadata.sourceRegistryVersion,
     regressionSuiteVersion: build.metadata.regressionSuiteVersion,
+    provenance: cloneJson(build.metadata.provenance),
     artifactDirectory,
     artifactFiles: {
       bundle: bundlePath,
@@ -552,7 +617,22 @@ function releaseReferencePack(input) {
     regressionSummary: cloneJson(regression.summary),
   };
 
-  writeJsonFile(releasePath, releaseMetadata);
+  try {
+    writeJsonFile(tempReleasePath, releaseMetadata);
+    if (fs.existsSync(artifactDirectory)) {
+      fs.rmSync(artifactDirectory, { recursive: true, force: true });
+    }
+    fs.renameSync(tempArtifactDirectory, artifactDirectory);
+  } catch (error) {
+    fs.rmSync(tempArtifactDirectory, { recursive: true, force: true });
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.POLICY_BUNDLE_INVALID, error instanceof Error ? error.message : 'failed to write release artifacts.');
+    result.summary = {
+      build,
+      regression,
+      artifactDirectory,
+    };
+    return finish(result);
+  }
 
   result.summary = {
     release: releaseMetadata,

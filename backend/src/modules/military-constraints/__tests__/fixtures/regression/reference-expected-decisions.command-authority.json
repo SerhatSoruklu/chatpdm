@@ -5,7 +5,8 @@
     "decision": "ALLOWED",
     "reasonCode": null,
     "failedStage": null,
-    "failingRuleIds": []
+    "failingRuleIds": [],
+    "missingFactIds": []
   },
   {
     "caseId": "command-authority-refusal",
@@ -15,7 +16,8 @@
     "failedStage": "ADMISSIBILITY",
     "failingRuleIds": [
       "CR-CMD-AUTH-001"
-    ]
+    ],
+    "missingFactIds": []
   },
   {
     "caseId": "command-authority-missing-fact",
@@ -25,6 +27,9 @@
     "failedStage": "ADMISSIBILITY",
     "failingRuleIds": [
       "CR-CMD-AUTH-001"
+    ],
+    "missingFactIds": [
+      "authority.designatedRoeActive"
     ]
   }
 ]

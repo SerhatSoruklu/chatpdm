@@ -4,7 +4,8 @@
     "decision": "ALLOWED",
     "reasonCode": null,
     "failedStage": null,
-    "failingRuleIds": []
+    "failingRuleIds": [],
+    "missingFactIds": []
   },
   {
     "caseId": "aid-delivery-security-refusal",
@@ -13,7 +14,8 @@
     "failedStage": "POLICY_OVERLAY",
     "failingRuleIds": [
       "CR-ADS-001"
-    ]
+    ],
+    "missingFactIds": []
   },
   {
     "caseId": "aid-delivery-security-missing-fact",
@@ -22,6 +24,9 @@
     "failedStage": "POLICY_OVERLAY",
     "failingRuleIds": [
       "CR-ADS-001"
+    ],
+    "missingFactIds": [
+      "authority.designatedRoeActive"
     ]
   }
 ]

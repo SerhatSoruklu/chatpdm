@@ -12,9 +12,23 @@ const {
   buildSourceRegistryIndex,
   isReviewedClauseProvenance,
   normalizeReviewedClauseProvenance,
+  sortRuleForBundle,
 } = require('./reference-pack-utils');
 
 const COMPILER_VERSION = '1.0.0';
+
+const CANONICAL_TEMPLATE_BRANCH_MARK = Symbol('chatpdm.militaryConstraints.canonicalTemplateBranch');
+
+const CANONICAL_TEMPLATE_BRANCHES = Object.freeze({
+  LEGAL_FLOOR: Object.freeze({
+    clauseType: 'PROHIBITION',
+    branchId: 'LEGAL_FLOOR_PROHIBITION',
+  }),
+  POLICY_OVERLAY: Object.freeze({
+    clauseType: 'AUTHORITY_GATE',
+    branchId: 'POLICY_OVERLAY_AUTHORITY_GATE',
+  }),
+});
 
 const SOURCE_ROLE_BY_LAYER = {
   LEGAL_FLOOR: new Set(['LEGAL_FLOOR']),
@@ -98,8 +112,29 @@ function cloneJson(value) {
   return JSON.parse(JSON.stringify(value));
 }
 
-function sortStrings(values) {
-  return [...new Set(values)].sort((left, right) => left.localeCompare(right));
+function markCanonicalTemplateBranch(rule, branchId) {
+  if (!isPlainObject(rule) || typeof branchId !== 'string' || branchId.length === 0) {
+    return rule;
+  }
+
+  Object.defineProperty(rule, CANONICAL_TEMPLATE_BRANCH_MARK, {
+    configurable: false,
+    enumerable: false,
+    value: branchId,
+    writable: false,
+  });
+
+  return rule;
+}
+
+function getCanonicalTemplateBranch(rule) {
+  if (!isPlainObject(rule)) {
+    return null;
+  }
+
+  return typeof rule[CANONICAL_TEMPLATE_BRANCH_MARK] === 'string'
+    ? rule[CANONICAL_TEMPLATE_BRANCH_MARK]
+    : null;
 }
 
 function validateClauseProvenance(clause, result) {
@@ -189,45 +224,6 @@ function isCompilableClause(clause) {
     && typeof clause.reviewNotes === 'string';
 }
 
-function sortRuleForBundle(rule) {
-  const clone = cloneJson(rule);
-
-  if (isPlainObject(clone.scope)) {
-    if (Array.isArray(clone.scope.actionKinds)) {
-      clone.scope.actionKinds = sortStrings(clone.scope.actionKinds);
-    }
-    if (Array.isArray(clone.scope.domains)) {
-      clone.scope.domains = sortStrings(clone.scope.domains);
-    }
-    if (Array.isArray(clone.scope.missionTypes)) {
-      clone.scope.missionTypes = sortStrings(clone.scope.missionTypes);
-    }
-  }
-
-  if (isPlainObject(clone.authority) && Array.isArray(clone.authority.delegationEdgeIds)) {
-    clone.authority.delegationEdgeIds = sortStrings(clone.authority.delegationEdgeIds);
-  }
-
-  if (Array.isArray(clone.requiredFacts)) {
-    clone.requiredFacts = sortStrings(clone.requiredFacts);
-  }
-
-  if (Array.isArray(clone.sourceRefs)) {
-    clone.sourceRefs = [...clone.sourceRefs].sort((left, right) => {
-      const leftSource = typeof left.sourceId === 'string' ? left.sourceId : '';
-      const rightSource = typeof right.sourceId === 'string' ? right.sourceId : '';
-      if (leftSource !== rightSource) {
-        return leftSource.localeCompare(rightSource);
-      }
-
-      const leftLocator = typeof left.locator === 'string' ? left.locator : '';
-      const rightLocator = typeof right.locator === 'string' ? right.locator : '';
-      return leftLocator.localeCompare(rightLocator);
-    });
-  }
-
-  return clone;
-}
 
 function buildNotes(clause, sourceEntry, compilerVersion) {
   return [
@@ -239,6 +235,9 @@ function buildNotes(clause, sourceEntry, compilerVersion) {
 }
 
 function buildLegalFloorRule(clause, sourceEntry, compilerVersion, provenance) {
+  // Canonical template branch: this clause family compiles to a fixed
+  // executable rule shape. Clause text is retained for audit, not used as
+  // free-form semantic input for the predicate shape.
   const minimumLevelId = clause.jurisdiction === 'INTL'
     ? 'UNIT'
     : LEGAL_FLOOR_PROHIBITION_TEMPLATE.authority.minimumLevelId;
@@ -272,10 +271,13 @@ function buildLegalFloorRule(clause, sourceEntry, compilerVersion, provenance) {
     notes: buildNotes(clause, sourceEntry, compilerVersion),
   };
 
-  return sortRuleForBundle(rule);
+  return markCanonicalTemplateBranch(sortRuleForBundle(rule), CANONICAL_TEMPLATE_BRANCHES.LEGAL_FLOOR.branchId);
 }
 
 function buildPolicyOverlayRule(clause, sourceEntry, compilerVersion, provenance) {
+  // Canonical template branch: this clause family compiles to a fixed
+  // executable rule shape. Clause text is retained for audit, not used as
+  // free-form semantic input for the predicate shape.
   const rule = {
     ruleId: `CR-${clause.clauseId}`,
     version: 1,
@@ -302,7 +304,31 @@ function buildPolicyOverlayRule(clause, sourceEntry, compilerVersion, provenance
     notes: buildNotes(clause, sourceEntry, compilerVersion),
   };
 
-  return sortRuleForBundle(rule);
+  return markCanonicalTemplateBranch(sortRuleForBundle(rule), CANONICAL_TEMPLATE_BRANCHES.POLICY_OVERLAY.branchId);
+}
+
+function compileCanonicalTemplateBranch(clause, sourceEntry, compilerVersion, provenance, result) {
+  const contract = CANONICAL_TEMPLATE_BRANCHES[clause.layer];
+  if (!isPlainObject(contract)) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `unsupported canonical template branch for layer "${clause.layer}".`);
+    return null;
+  }
+
+  if (clause.clauseType !== contract.clauseType) {
+    fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `${clause.layer.toLowerCase().replace('_', '-')} canonical template branch only compiles ${contract.clauseType} clauses in this bridge.`);
+    return null;
+  }
+
+  if (clause.layer === 'LEGAL_FLOOR') {
+    return buildLegalFloorRule(clause, sourceEntry, compilerVersion, provenance);
+  }
+
+  if (clause.layer === 'POLICY_OVERLAY') {
+    return buildPolicyOverlayRule(clause, sourceEntry, compilerVersion, provenance);
+  }
+
+  fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `unsupported canonical template branch for layer "${clause.layer}".`);
+  return null;
 }
 
 function buildRequirementRule(clause, sourceEntry, compilerVersion, provenance, result) {
@@ -486,17 +512,17 @@ function compileClauseToRule(input) {
   }
 
   if (clause.layer === 'LEGAL_FLOOR') {
-    if (clause.clauseType !== 'PROHIBITION') {
-      if (clause.clauseType === 'REQUIREMENT') {
-        result.compiledRule = buildRequirementRule(clause, sourceEntry, compilerVersion, provenance, result);
-        return finish(result);
-      }
+    if (clause.clauseType === 'REQUIREMENT') {
+      result.compiledRule = buildRequirementRule(clause, sourceEntry, compilerVersion, provenance, result);
+      return finish(result);
+    }
 
+    if (clause.clauseType !== 'PROHIBITION') {
       fail(result, MILITARY_CONSTRAINT_REASON_CODES.RULE_SHAPE_INVALID, `legal-floor clauses only compile from PROHIBITION or REQUIREMENT clauses in this bridge.`);
       return finish(result);
     }
 
-    result.compiledRule = buildLegalFloorRule(clause, sourceEntry, compilerVersion, provenance);
+    result.compiledRule = compileCanonicalTemplateBranch(clause, sourceEntry, compilerVersion, provenance, result);
     return finish(result);
   }
 
@@ -511,7 +537,7 @@ function compileClauseToRule(input) {
       return finish(result);
     }
 
-    result.compiledRule = buildPolicyOverlayRule(clause, sourceEntry, compilerVersion, provenance);
+    result.compiledRule = compileCanonicalTemplateBranch(clause, sourceEntry, compilerVersion, provenance, result);
     return finish(result);
   }
 
@@ -522,4 +548,5 @@ function compileClauseToRule(input) {
 module.exports = {
   COMPILER_VERSION,
   compileClauseToRule,
+  getCanonicalTemplateBranch,
 };

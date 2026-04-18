@@ -1,7 +1,13 @@
 'use strict';
 
 const { evaluatePredicate } = require('./evaluate-predicate');
+const {
+  MILITARY_CONSTRAINT_REASON_CODES,
+} = require('./military-constraint-reason-codes');
 const { isPlainObject, resolveFactPath } = require('./fact-schema-utils');
+const {
+  isPredicateBudgetExceededError,
+} = require('./predicate-budgets');
 const { sortSourceRefs } = require('./reference-pack-utils');
 
 function sortUnique(values) {
@@ -83,6 +89,12 @@ function collectPredicateMissingFacts(predicateErrors) {
   return sortUnique(missing);
 }
 
+function collectPredicateBudgetFailures(predicateErrors) {
+  return Array.isArray(predicateErrors)
+    ? predicateErrors.filter(isPredicateBudgetExceededError)
+    : [];
+}
+
 /**
  * Evaluate a single rule against structured facts.
  *
@@ -153,10 +165,27 @@ function evaluateRule(input) {
   });
 
   const usedFacts = sortUnique(predicateResult.usedFacts || []);
-  const predicateMissing = collectPredicateMissingFacts(predicateResult.errors || []);
+  const predicateErrors = predicateResult.errors || [];
+  const predicateBudgetFailures = collectPredicateBudgetFailures(predicateErrors);
+  if (predicateBudgetFailures.length > 0) {
+    return {
+      outcome: 'REFUSED_INCOMPLETE',
+      ruleId,
+      stage,
+      priority,
+      matched: false,
+      missingFactIds: [],
+      usedFacts,
+      sourceRefs,
+      effect: cloneRuleEffect(rule),
+      reasonCode: MILITARY_CONSTRAINT_REASON_CODES.PREDICATE_BUDGET_EXCEEDED,
+    };
+  }
+
+  const predicateMissing = collectPredicateMissingFacts(predicateErrors);
   const allMissing = sortUnique([...missingFactIds, ...predicateMissing]);
 
-  if ((predicateResult.errors || []).length > 0) {
+  if (predicateErrors.length > 0) {
     return {
       outcome: 'REFUSED_INCOMPLETE',
       ruleId,

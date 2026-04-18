@@ -4,9 +4,9 @@ const path = require('node:path');
 const { Router } = require('express');
 
 const { listReferencePacks } = require('../../../modules/military-constraints/list-reference-packs');
-const { buildReferenceBundle } = require('../../../modules/military-constraints/build-reference-pack');
 const { evaluateBundle } = require('../../../modules/military-constraints/evaluate-bundle');
 const { validateFactPacket, isPlainObject } = require('../../../modules/military-constraints/fact-schema-utils');
+const { createPreparedBundleCache } = require('../../../modules/military-constraints/prepared-bundle-cache');
 const { loadPackRegistry, validatePackRegistry } = require('../../../modules/military-constraints/reference-pack-utils');
 
 const MODULE_ROOT = path.resolve(__dirname, '../../../modules/military-constraints');
@@ -17,6 +17,10 @@ const router = Router();
 const PACK_INDEX = listReferencePacks({ rootDir: MODULE_ROOT });
 const PACK_REGISTRY = loadPackRegistry(MODULE_ROOT);
 const PACK_REGISTRY_VALIDATION = validatePackRegistry(PACK_REGISTRY);
+const PACK_BUNDLE_CACHE = createPreparedBundleCache({
+  rootDir: MODULE_ROOT,
+  packIndex: PACK_INDEX,
+});
 
 function countRegistryEntries(predicate) {
   if (!Array.isArray(PACK_REGISTRY) || !PACK_REGISTRY_VALIDATION.valid) {
@@ -86,15 +90,13 @@ function buildPackDetail(packRecord) {
     return null;
   }
 
-  const built = buildReferenceBundle({
-    rootDir: MODULE_ROOT,
-    manifestPath: packRecord.manifestPath,
-  });
-
-  if (!built.valid || !built.metadata) {
+  const cacheRecord = PACK_BUNDLE_CACHE.get(packRecord.packId);
+  if (!cacheRecord || !cacheRecord.valid || !cacheRecord.metadata) {
     return {
       valid: false,
-      error: built.errors[0] || 'The military constraints pack could not be built.',
+      error: cacheRecord && Array.isArray(cacheRecord.errors) && cacheRecord.errors.length > 0
+        ? cacheRecord.errors[0]
+        : 'The military constraints pack could not be loaded from the prepared cache.',
     };
   }
 
@@ -102,7 +104,7 @@ function buildPackDetail(packRecord) {
     valid: true,
     pack: sanitizeDetailPackRecord({
       ...packRecord,
-      ...built.metadata,
+      ...cacheRecord.metadata,
     }),
   };
 }
@@ -117,6 +119,26 @@ function buildEvaluateResponse(decision) {
     bundleVersion: decision.bundleVersion,
     bundleHash: decision.bundleHash,
   };
+}
+
+function stampBundleIdentity(facts, bundle) {
+  const stampedFacts = {
+    ...facts,
+  };
+
+  if (!Object.prototype.hasOwnProperty.call(stampedFacts, 'bundleId')) {
+    stampedFacts.bundleId = bundle.bundleId;
+  }
+
+  if (!Object.prototype.hasOwnProperty.call(stampedFacts, 'bundleVersion')) {
+    stampedFacts.bundleVersion = bundle.bundleVersion;
+  }
+
+  if (!Object.prototype.hasOwnProperty.call(stampedFacts, 'bundleHash')) {
+    stampedFacts.bundleHash = bundle.bundleHash;
+  }
+
+  return stampedFacts;
 }
 
 function handleRootRequest(_req, res) {
@@ -161,7 +183,7 @@ function handlePackRequest(req, res) {
 
   const builtPack = buildPackDetail(packRecord);
   if (!builtPack) {
-    writeError(res, 500, 'military_constraints_pack_failed', 'The military constraints pack could not be built.');
+    writeError(res, 500, 'military_constraints_pack_failed', 'The military constraints pack could not be loaded from the prepared cache.');
     return;
   }
 
@@ -213,25 +235,23 @@ function handleEvaluateRequest(req, res) {
     return;
   }
 
-  const bundleResult = buildReferenceBundle({
-    rootDir: MODULE_ROOT,
-    manifestPath: packRecord.manifestPath,
-  });
-
-  if (!bundleResult.valid || !bundleResult.bundle) {
-    writeError(res, 500, 'military_constraints_bundle_failed', 'The military constraints bundle could not be built.');
+  const bundleRecord = PACK_BUNDLE_CACHE.get(packId);
+  if (!bundleRecord || !bundleRecord.valid || !bundleRecord.bundle || !bundleRecord.preparedBundle) {
+    writeError(res, 500, 'military_constraints_bundle_failed', 'The military constraints bundle could not be loaded from the prepared cache.');
     return;
   }
 
-  const factValidation = validateFactPacket(req.body.facts, FACT_SCHEMA);
-  if (!factValidation.valid) {
-    writeError(res, 400, 'invalid_military_constraints_facts', factValidation.errors[0] || 'facts do not match the military constraints fact schema.');
+  const evaluationFacts = stampBundleIdentity(req.body.facts, bundleRecord.bundle);
+  const stampedFactValidation = validateFactPacket(evaluationFacts, FACT_SCHEMA);
+  if (!stampedFactValidation.valid) {
+    writeError(res, 400, 'invalid_military_constraints_facts', stampedFactValidation.errors[0] || 'facts do not match the military constraints fact schema.');
     return;
   }
 
   const decision = evaluateBundle({
-    bundle: bundleResult.bundle,
-    facts: req.body.facts,
+    preparedBundle: bundleRecord.preparedBundle,
+    bundle: bundleRecord.bundle,
+    facts: evaluationFacts,
     factSchema: FACT_SCHEMA,
   });
 

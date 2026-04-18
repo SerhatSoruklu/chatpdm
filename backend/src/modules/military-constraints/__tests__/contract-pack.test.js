@@ -13,6 +13,7 @@ const {
   MILITARY_CONSTRAINT_REASON_CODES,
   isMilitaryConstraintReasonCode,
 } = require('../military-constraint-reason-codes');
+const { PREDICATE_BUDGETS } = require('../predicate-budgets');
 const {
   computeBundleHash,
   validateAuthorityReferences,
@@ -21,6 +22,10 @@ const {
   validatePredicateOperandTypes,
   validateSameStageConflicts,
 } = require('../military-constraint-validator');
+const {
+  BUNDLE_CONTRACT_VERSION,
+  validateBundleContractVersion,
+} = require('../reference-pack-utils');
 
 const BASE_DIR = path.resolve(__dirname);
 const MODULE_DIR = path.resolve(BASE_DIR, '..');
@@ -65,6 +70,31 @@ function assertValidationFailure(result, reasonCode, pattern) {
   assert.equal(result.valid, false, 'expected validation to fail');
   assert.equal(result.reasonCode, reasonCode);
   assert.match(result.errors.join('\n'), pattern);
+}
+
+function buildLeafPredicate() {
+  return {
+    eq: [
+      { fact: 'action.kind' },
+      { value: 'STRIKE' },
+    ],
+  };
+}
+
+function buildWideAllPredicate(width) {
+  return {
+    all: Array.from({ length: width }, () => buildLeafPredicate()),
+  };
+}
+
+function buildDeepNotPredicate(depth) {
+  let predicate = buildLeafPredicate();
+  for (let index = 0; index < depth; index += 1) {
+    predicate = {
+      not: predicate,
+    };
+  }
+  return predicate;
 }
 
 test('reason code enum is closed and stable', () => {
@@ -166,6 +196,78 @@ test('bundle precedence stage order must remain canonical', () => {
   );
 });
 
+test('bundle contract version mismatch is rejected explicitly', () => {
+  const bundle = cloneJson(readJson('valid-contract-pack.json'));
+  bundle.contractVersion = '9.9.9';
+  bundle.bundleHash = computeBundleHash(bundle);
+
+  const validation = validateContractPack({
+    bundle,
+    rules: bundle.rules,
+    authorityGraph: bundle.authorityGraph,
+    factSchema: readSchema('military-constraint-fact.schema.json'),
+  });
+
+  assertValidationFailure(
+    validation,
+    MILITARY_CONSTRAINT_REASON_CODES.BUNDLE_CONTRACT_VERSION_MISMATCH,
+    /incompatible with supported contract version/,
+  );
+});
+
+test('legacy bundles without contractVersion remain compatible', () => {
+  const bundle = cloneJson(readJson('valid-contract-pack.json'));
+  delete bundle.contractVersion;
+  bundle.bundleHash = computeBundleHash(bundle);
+
+  const contractVersionValidation = validateBundleContractVersion(bundle);
+  assert.equal(contractVersionValidation.valid, true, contractVersionValidation.errors.join('\n'));
+  assert.equal(contractVersionValidation.contractVersion, BUNDLE_CONTRACT_VERSION);
+
+  const validation = validateContractPack({
+    bundle,
+    rules: bundle.rules,
+    authorityGraph: bundle.authorityGraph,
+    factSchema: readSchema('military-constraint-fact.schema.json'),
+  });
+
+  assert.equal(validation.valid, true, validation.errors.join('\n'));
+});
+
+test('wide predicate trees are rejected by validator operand checks', () => {
+  const bundle = cloneJson(readJson('valid-contract-pack.json'));
+  const rule = cloneJson(getRule(bundle, 'MIL-ADM-0001'));
+  rule.predicate = buildWideAllPredicate(PREDICATE_BUDGETS.maxBranchWidth + 1);
+
+  const validation = validatePredicateOperandTypes({
+    rules: [rule],
+    factSchema: readSchema('military-constraint-fact.schema.json'),
+  });
+
+  assertValidationFailure(
+    validation,
+    MILITARY_CONSTRAINT_REASON_CODES.PREDICATE_BUDGET_EXCEEDED,
+    /branch width exceeds/i,
+  );
+});
+
+test('deep predicate trees are rejected by validator operand checks', () => {
+  const bundle = cloneJson(readJson('valid-contract-pack.json'));
+  const rule = cloneJson(getRule(bundle, 'MIL-ADM-0001'));
+  rule.predicate = buildDeepNotPredicate(PREDICATE_BUDGETS.maxDepth + 1);
+
+  const validation = validatePredicateOperandTypes({
+    rules: [rule],
+    factSchema: readSchema('military-constraint-fact.schema.json'),
+  });
+
+  assertValidationFailure(
+    validation,
+    MILITARY_CONSTRAINT_REASON_CODES.PREDICATE_BUDGET_EXCEEDED,
+    /recursion depth exceeds/i,
+  );
+});
+
 test('malformed matched effects are rejected at bundle validation', () => {
   const bundle = cloneJson(readJson('valid-contract-pack.json'));
   bundle.rules[0].effect = {
@@ -252,6 +354,42 @@ test('numeric comparison against enum/string fact is rejected by predicate valid
     validation,
     MILITARY_CONSTRAINT_REASON_CODES.PREDICATE_OPERAND_TYPE_INVALID,
     /numeric or timestamp-compatible operands/,
+  );
+});
+
+test('wide predicate trees are budgeted by operand validation', () => {
+  const factSchema = readSchema('military-constraint-fact.schema.json');
+  const rule = readJson('legal-floor-prohibition.rule.json');
+  rule.ruleId = 'MIL-LF-TGT-0001-WIDE-BUDGET';
+  rule.requiredFacts = [];
+  rule.predicate = buildWideAllPredicate(65);
+
+  const validation = validatePredicateOperandTypes({
+    rules: [rule],
+    factSchema,
+  });
+
+  assertValidationFailure(
+    validation,
+    MILITARY_CONSTRAINT_REASON_CODES.PREDICATE_BUDGET_EXCEEDED,
+    /predicate branch width exceeds the maximum/,
+  );
+});
+
+test('deep predicate trees are budgeted by missing-fact semantics validation', () => {
+  const rule = readJson('legal-floor-prohibition.rule.json');
+  rule.ruleId = 'MIL-LF-TGT-0001-DEEP-BUDGET';
+  rule.requiredFacts = [];
+  rule.predicate = buildDeepNotPredicate(65);
+
+  const validation = validateMissingFactSemantics({
+    rules: [rule],
+  });
+
+  assertValidationFailure(
+    validation,
+    MILITARY_CONSTRAINT_REASON_CODES.PREDICATE_BUDGET_EXCEEDED,
+    /predicate recursion depth exceeds the maximum/,
   );
 });
 

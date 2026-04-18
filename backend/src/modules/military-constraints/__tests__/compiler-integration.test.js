@@ -8,7 +8,7 @@ const path = require('node:path');
 const Ajv2020 = require('ajv/dist/2020').default;
 const addFormats = require('ajv-formats');
 
-const { compileClauseToRule } = require('../compile-clause-to-rule');
+const { compileClauseToRule, getCanonicalTemplateBranch } = require('../compile-clause-to-rule');
 const { assembleBundle } = require('../assemble-bundle');
 const { evaluateBundle } = require('../evaluate-bundle');
 const { computeBundleHash } = require('../military-constraint-validator');
@@ -85,10 +85,25 @@ function buildReviewedAuthorityClause() {
   };
 }
 
+function buildCanonicalTemplateVariant(baseClause, rawText, normalizedText) {
+  const clause = cloneJson(baseClause);
+  clause.provenance.derivationType = 'INTERPRETED';
+  clause.rawText = rawText;
+  clause.normalizedText = normalizedText;
+  return clause;
+}
+
 function buildReviewedLegalClause() {
   const clause = cloneJson(readModuleFixture('source-clause.example.json'));
   clause.reviewStatus = 'COMPILATION_READY';
   return clause;
+}
+
+function buildReviewedLegalRequirementClause() {
+  const clauses = readReviewedClause('legal-floor-core.json');
+  const clause = clauses.find((entry) => entry.clauseId === 'CLAUSE-LF-0004');
+  assert.ok(clause, 'Missing reviewed legal-floor requirement clause.');
+  return cloneJson(clause);
 }
 
 function buildRegistrySubset(sourceRegistry, sourceIds) {
@@ -181,8 +196,87 @@ test('reviewed legal-floor and authority clauses compile into an admitted bundle
 
   assert.equal(assembly.valid, true, assembly.errors.join('\n'));
   assert.ok(assembly.bundle, 'Expected admitted bundle');
+  assert.ok(assembly.preparedBundle, 'Expected explicit prepared-bundle wrapper.');
+  assert.equal(assembly.preparedBundle.kind, 'prepared-bundle');
+  assert.equal(assembly.preparedBundle.bundle, assembly.bundle);
+  assert.equal(assembly.preparedBundle.bundleId, assembly.bundle.bundleId);
+  assert.equal(assembly.preparedBundle.bundleVersion, assembly.bundle.bundleVersion);
+  assert.equal(assembly.preparedBundle.bundleHash, assembly.bundle.bundleHash);
   assertValid(ajv, 'https://chatpdm.local/schemas/military-constraint-bundle.schema.json', assembly.bundle);
   assert.equal(assembly.bundle.bundleHash, computeBundleHash(assembly.bundle));
+});
+
+test('canonical template branches ignore clause text and expose an explicit branch marker', () => {
+  const sourceRegistry = readModuleFixture('military-source-registry.json');
+  const legalClauseA = buildCanonicalTemplateVariant(
+    buildReviewedLegalClause(),
+    'Direct attacks against civilians are prohibited under alternate wording.',
+    'Civilian attacks remain prohibited under alternate wording.',
+  );
+  const legalClauseB = buildCanonicalTemplateVariant(
+    buildReviewedLegalClause(),
+    'Civilian targeting remains prohibited in another wording.',
+    'Civilian targeting remains prohibited in another wording.',
+  );
+  legalClauseB.normalizedText = 'Civilian targeting remains prohibited in another wording, clarified.';
+  const authorityClauseA = buildCanonicalTemplateVariant(
+    buildReviewedAuthorityClause(),
+    'Air strikes require brigade-level authority under alternate wording.',
+    'Air strikes require brigade-level authority under alternate wording.',
+  );
+  authorityClauseA.normalizedText = 'Air strikes require brigade-level authority under alternate wording, clarified.';
+  const authorityClauseB = buildCanonicalTemplateVariant(
+    buildReviewedAuthorityClause(),
+    'Air strikes require brigade-level authority under different wording.',
+    'Air strikes require brigade-level authority under different wording.',
+  );
+  authorityClauseB.normalizedText = 'Air strikes require brigade-level authority under different wording, clarified.';
+
+  const legalResultA = compileClauseToRule({
+    clause: legalClauseA,
+    sourceRegistry,
+  });
+  const legalResultB = compileClauseToRule({
+    clause: legalClauseB,
+    sourceRegistry,
+  });
+  const authorityResultA = compileClauseToRule({
+    clause: authorityClauseA,
+    sourceRegistry,
+  });
+  const authorityResultB = compileClauseToRule({
+    clause: authorityClauseB,
+    sourceRegistry,
+  });
+
+  assert.equal(legalResultA.valid, true, legalResultA.errors.join('\n'));
+  assert.equal(legalResultB.valid, true, legalResultB.errors.join('\n'));
+  assert.equal(authorityResultA.valid, true, authorityResultA.errors.join('\n'));
+  assert.equal(authorityResultB.valid, true, authorityResultB.errors.join('\n'));
+
+  assert.equal(getCanonicalTemplateBranch(legalResultA.compiledRule), 'LEGAL_FLOOR_PROHIBITION');
+  assert.equal(getCanonicalTemplateBranch(legalResultB.compiledRule), 'LEGAL_FLOOR_PROHIBITION');
+  assert.equal(getCanonicalTemplateBranch(authorityResultA.compiledRule), 'POLICY_OVERLAY_AUTHORITY_GATE');
+  assert.equal(getCanonicalTemplateBranch(authorityResultB.compiledRule), 'POLICY_OVERLAY_AUTHORITY_GATE');
+
+  assert.deepEqual(legalResultA.compiledRule, legalResultB.compiledRule);
+  assert.deepEqual(authorityResultA.compiledRule, authorityResultB.compiledRule);
+});
+
+test('requirement compilation remains data-driven and does not inherit canonical markers', () => {
+  const sourceRegistry = readModuleFixture('military-source-registry.json');
+  const requirementClause = buildReviewedLegalRequirementClause();
+
+  const result = compileClauseToRule({
+    clause: requirementClause,
+    sourceRegistry,
+  });
+
+  assert.equal(result.valid, true, result.errors.join('\n'));
+  assert.ok(result.compiledRule, 'Expected a compiled requirement rule.');
+  assert.equal(result.compiledRule.stage, 'ADMISSIBILITY');
+  assert.equal(getCanonicalTemplateBranch(result.compiledRule), null);
+  assert.match(result.compiledRule.notes, /compiledFromClauseId=CLAUSE-LF-0004/);
 });
 
 test('missing provenance metadata is refused during compilation', () => {

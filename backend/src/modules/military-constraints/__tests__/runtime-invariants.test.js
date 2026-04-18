@@ -12,6 +12,15 @@ const {
   computeBundleHash,
 } = require('../military-constraint-validator');
 const { evaluateBundle } = require('../evaluate-bundle');
+const {
+  createPreparedBundle,
+  isPreparedBundleContract,
+  resolvePreparedBundleContract,
+} = require('../prepared-bundle-contract');
+const { evaluatePredicate } = require('../evaluate-predicate');
+const {
+  PREDICATE_BUDGETS,
+} = require('../predicate-budgets');
 
 const BASE_DIR = path.resolve(__dirname);
 const MODULE_DIR = path.resolve(BASE_DIR, '..');
@@ -60,6 +69,44 @@ function normalizeOutput(result) {
   const clone = cloneJson(result);
   delete clone.bundleHash;
   return clone;
+}
+
+function buildLeafPredicate() {
+  return {
+    eq: [
+      { fact: 'action.kind' },
+      { value: 'STRIKE' },
+    ],
+  };
+}
+
+function buildDeepNotPredicate(depth) {
+  let predicate = buildLeafPredicate();
+  for (let index = 0; index < depth; index += 1) {
+    predicate = {
+      not: predicate,
+    };
+  }
+  return predicate;
+}
+
+function buildBalancedAllPredicate(levels) {
+  if (levels === 0) {
+    return buildLeafPredicate();
+  }
+
+  return {
+    all: [
+      buildBalancedAllPredicate(levels - 1),
+      buildBalancedAllPredicate(levels - 1),
+    ],
+  };
+}
+
+function buildWideAnyPredicate(width) {
+  return {
+    any: Array.from({ length: width }, () => buildLeafPredicate()),
+  };
 }
 
 test('missing required fact can never produce ALLOWED', () => {
@@ -159,6 +206,307 @@ test('same bundle plus same facts always yields identical output', () => {
   }
 
   assertRuntimeDecisionValid(first);
+});
+
+test('prepared bundle contract is explicit and preserves evaluation output', () => {
+  const rawBundle = cloneJson(readJson('valid-contract-pack.json'));
+  const preparedBundleSource = cloneJson(rawBundle);
+  const rawFacts = readJson('valid-fact-packet.json');
+  const preparedFacts = cloneJson(rawFacts);
+
+  alignFacts(rawBundle, rawFacts);
+  alignFacts(preparedBundleSource, preparedFacts);
+
+  const preparedBundle = createPreparedBundle(preparedBundleSource);
+  assert.ok(preparedBundle, 'Expected a prepared-bundle wrapper.');
+  assert.equal(isPreparedBundleContract(preparedBundle), true);
+  assert.equal(preparedBundle.kind, 'prepared-bundle');
+  assert.equal(preparedBundle.bundle, preparedBundleSource);
+  assert.equal(preparedBundle.bundleId, preparedBundleSource.bundleId);
+  assert.equal(preparedBundle.bundleVersion, preparedBundleSource.bundleVersion);
+  assert.equal(preparedBundle.bundleHash, preparedBundleSource.bundleHash);
+  assert.equal(resolvePreparedBundleContract({ preparedBundle, bundle: rawBundle }), preparedBundle);
+  assert.equal(resolvePreparedBundleContract({ bundle: cloneJson(rawBundle) }), null);
+
+  const rawResult = evaluateBundle({
+    bundle: rawBundle,
+    facts: rawFacts,
+    factSchema: readSchema('military-constraint-fact.schema.json'),
+  });
+  const preparedResult = evaluateBundle({
+    preparedBundle,
+    facts: preparedFacts,
+    factSchema: readSchema('military-constraint-fact.schema.json'),
+  });
+
+  assert.deepEqual(preparedResult, rawResult);
+  assertRuntimeDecisionValid(preparedResult);
+});
+
+test('predicate operator families remain deterministic on valid facts', () => {
+  const facts = readJson('valid-fact-packet.json');
+  const factSchema = readSchema('military-constraint-fact.schema.json');
+
+  const cases = [
+    {
+      label: 'eq',
+      predicate: {
+        eq: [
+          { fact: 'action.kind' },
+          { value: 'STRIKE' },
+        ],
+      },
+      ok: true,
+      usedFacts: ['action.kind'],
+    },
+    {
+      label: 'neq',
+      predicate: {
+        neq: [
+          { fact: 'action.kind' },
+          { value: 'ESCORT' },
+        ],
+      },
+      ok: true,
+      usedFacts: ['action.kind'],
+    },
+    {
+      label: 'gt',
+      predicate: {
+        gt: [
+          { fact: 'civilianRisk.estimatedIncidentalHarmScore' },
+          { fact: 'civilianRisk.expectedMilitaryAdvantageScore' },
+        ],
+      },
+      ok: true,
+      usedFacts: [
+        'civilianRisk.estimatedIncidentalHarmScore',
+        'civilianRisk.expectedMilitaryAdvantageScore',
+      ],
+    },
+    {
+      label: 'lt',
+      predicate: {
+        lt: [
+          { fact: 'context.timeWindowStart' },
+          { fact: 'context.timeWindowEnd' },
+        ],
+      },
+      ok: true,
+      usedFacts: ['context.timeWindowEnd', 'context.timeWindowStart'],
+    },
+    {
+      label: 'exists',
+      predicate: {
+        exists: [
+          { fact: 'context.zone' },
+        ],
+      },
+      ok: true,
+      usedFacts: ['context.zone'],
+    },
+    {
+      label: 'not_exists',
+      predicate: {
+        not_exists: [
+          { fact: 'person.status' },
+        ],
+      },
+      ok: true,
+      usedFacts: ['person.status'],
+    },
+    {
+      label: 'in',
+      predicate: {
+        in: [
+          { fact: 'action.kind' },
+          { value: ['ESCORT', 'STRIKE'] },
+        ],
+      },
+      ok: true,
+      usedFacts: ['action.kind'],
+    },
+    {
+      label: 'not_in',
+      predicate: {
+        not_in: [
+          { fact: 'action.kind' },
+          { value: ['ESCORT', 'RECON'] },
+        ],
+      },
+      ok: true,
+      usedFacts: ['action.kind'],
+    },
+    {
+      label: 'all',
+      predicate: {
+        all: [
+          {
+            exists: [
+              { fact: 'context.zone' },
+            ],
+          },
+          {
+            eq: [
+              { fact: 'action.kind' },
+              { value: 'STRIKE' },
+            ],
+          },
+        ],
+      },
+      ok: true,
+      usedFacts: ['action.kind', 'context.zone'],
+    },
+    {
+      label: 'any',
+      predicate: {
+        any: [
+          {
+            eq: [
+              { fact: 'action.kind' },
+              { value: 'ESCORT' },
+            ],
+          },
+          {
+            eq: [
+              { fact: 'action.kind' },
+              { value: 'STRIKE' },
+            ],
+          },
+        ],
+      },
+      ok: true,
+      usedFacts: ['action.kind'],
+    },
+    {
+      label: 'not',
+      predicate: {
+        not: {
+          eq: [
+            { fact: 'action.kind' },
+            { value: 'STRIKE' },
+          ],
+        },
+      },
+      ok: false,
+      usedFacts: ['action.kind'],
+    },
+  ];
+
+  cases.forEach((testCase) => {
+    const result = evaluatePredicate({
+      predicate: testCase.predicate,
+      facts,
+      factSchema,
+    });
+
+    assert.equal(result.ok, testCase.ok, `${testCase.label} ok`);
+    assert.deepEqual(result.usedFacts, testCase.usedFacts, `${testCase.label} usedFacts`);
+    assert.deepEqual(result.errors, [], `${testCase.label} errors`);
+  });
+});
+
+test('bundle contract version mismatch fails deterministically on raw and prepared paths', () => {
+  const bundle = cloneJson(readJson('valid-contract-pack.json'));
+  bundle.contractVersion = '9.9.9';
+  bundle.bundleHash = computeBundleHash(bundle);
+  const facts = readJson('valid-fact-packet.json');
+  alignFacts(bundle, facts);
+
+  const rawResult = evaluateBundle({
+    bundle,
+    facts,
+    factSchema: readSchema('military-constraint-fact.schema.json'),
+  });
+  const preparedResult = evaluateBundle({
+    preparedBundle: createPreparedBundle(cloneJson(bundle)),
+    facts: cloneJson(facts),
+    factSchema: readSchema('military-constraint-fact.schema.json'),
+  });
+
+  assert.equal(rawResult.decision, 'REFUSED');
+  assert.equal(rawResult.reasonCode, 'BUNDLE_CONTRACT_VERSION_MISMATCH');
+  assert.equal(rawResult.failedStage, 'BUNDLE_INTEGRITY');
+  assert.deepEqual(preparedResult, rawResult);
+  assertRuntimeDecisionValid(rawResult);
+});
+
+test('predicate recursion depth is budgeted on the prepared runtime path', () => {
+  const bundle = cloneJson(readJson('valid-contract-pack.json'));
+  const rule = cloneJson(bundle.rules.find((entry) => entry.ruleId === 'MIL-ADM-0001'));
+  assert.ok(rule, 'Missing baseline admissibility rule.');
+  rule.requiredFacts = [];
+  rule.predicate = buildDeepNotPredicate(PREDICATE_BUDGETS.maxDepth + 1);
+  bundle.rules = [rule];
+  alignSourceRegistrySnapshot(bundle, [rule.sourceRefs[0].sourceId]);
+  bundle.bundleHash = computeBundleHash(bundle);
+  const facts = readJson('valid-fact-packet.json');
+  facts.action.kind = 'STRIKE';
+  alignFacts(bundle, facts);
+
+  const result = evaluateBundle({
+    preparedBundle: createPreparedBundle(bundle),
+    facts,
+    factSchema: readSchema('military-constraint-fact.schema.json'),
+  });
+
+  assert.equal(result.decision, 'REFUSED_INCOMPLETE');
+  assert.equal(result.reasonCode, 'PREDICATE_BUDGET_EXCEEDED');
+  assert.equal(result.failedStage, rule.stage);
+  assert.deepEqual(result.missingFactIds, []);
+  assertRuntimeDecisionValid(result);
+});
+
+test('predicate branch width is budgeted on the prepared runtime path', () => {
+  const bundle = cloneJson(readJson('valid-contract-pack.json'));
+  const rule = cloneJson(bundle.rules.find((entry) => entry.ruleId === 'MIL-ADM-0001'));
+  assert.ok(rule, 'Missing baseline admissibility rule.');
+  rule.requiredFacts = [];
+  rule.predicate = buildWideAnyPredicate(PREDICATE_BUDGETS.maxBranchWidth + 1);
+  bundle.rules = [rule];
+  alignSourceRegistrySnapshot(bundle, [rule.sourceRefs[0].sourceId]);
+  bundle.bundleHash = computeBundleHash(bundle);
+  const facts = readJson('valid-fact-packet.json');
+  facts.action.kind = 'STRIKE';
+  alignFacts(bundle, facts);
+
+  const result = evaluateBundle({
+    preparedBundle: createPreparedBundle(bundle),
+    facts,
+    factSchema: readSchema('military-constraint-fact.schema.json'),
+  });
+
+  assert.equal(result.decision, 'REFUSED_INCOMPLETE');
+  assert.equal(result.reasonCode, 'PREDICATE_BUDGET_EXCEEDED');
+  assert.equal(result.failedStage, rule.stage);
+  assert.deepEqual(result.missingFactIds, []);
+  assertRuntimeDecisionValid(result);
+});
+
+test('predicate node count is budgeted on the prepared runtime path', () => {
+  const bundle = cloneJson(readJson('valid-contract-pack.json'));
+  const rule = cloneJson(bundle.rules.find((entry) => entry.ruleId === 'MIL-ADM-0001'));
+  assert.ok(rule, 'Missing baseline admissibility rule.');
+  rule.requiredFacts = [];
+  rule.predicate = buildBalancedAllPredicate(8);
+  bundle.rules = [rule];
+  alignSourceRegistrySnapshot(bundle, [rule.sourceRefs[0].sourceId]);
+  bundle.bundleHash = computeBundleHash(bundle);
+  const facts = readJson('valid-fact-packet.json');
+  facts.action.kind = 'STRIKE';
+  alignFacts(bundle, facts);
+
+  const result = evaluateBundle({
+    preparedBundle: createPreparedBundle(bundle),
+    facts,
+    factSchema: readSchema('military-constraint-fact.schema.json'),
+  });
+
+  assert.equal(result.decision, 'REFUSED_INCOMPLETE');
+  assert.equal(result.reasonCode, 'PREDICATE_BUDGET_EXCEEDED');
+  assert.equal(result.failedStage, rule.stage);
+  assert.deepEqual(result.missingFactIds, []);
+  assertRuntimeDecisionValid(result);
 });
 
 test('reordered rules do not change the semantic final result', () => {

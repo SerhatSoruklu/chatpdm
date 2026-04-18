@@ -115,6 +115,15 @@ function buildFactTypeRegistry(factSchema) {
   return registry;
 }
 
+function isIso8601TimestampString(value) {
+  if (typeof value !== 'string') {
+    return false;
+  }
+
+  const iso8601Pattern = /^\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?(?:Z|[+-]\d{2}:\d{2})?)?$/;
+  return iso8601Pattern.test(value) && !Number.isNaN(Date.parse(value));
+}
+
 /**
  * Resolve a dot-path inside a structured facts object.
  *
@@ -172,7 +181,7 @@ function classifyRuntimeValue(value, expectedKind) {
 
   if (typeof value === 'string') {
     if (expectedKind === 'timestamp') {
-      return Number.isNaN(Date.parse(value))
+      return !isIso8601TimestampString(value)
         ? { kind: 'unknown', value }
         : { kind: 'timestamp', value };
     }
@@ -181,7 +190,7 @@ function classifyRuntimeValue(value, expectedKind) {
       return { kind: expectedKind, value };
     }
 
-    return Number.isNaN(Date.parse(value))
+    return !isIso8601TimestampString(value)
       ? { kind: 'string', value }
       : { kind: 'timestamp', value };
   }
@@ -258,6 +267,7 @@ module.exports = {
   buildFactTypeRegistry,
   classifyRuntimeValue,
   deepEqualStrict,
+  isIso8601TimestampString,
   isNumericKind,
   isPlainObject,
   isScalarKind,

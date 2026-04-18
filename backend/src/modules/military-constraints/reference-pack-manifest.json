@@ -8,6 +8,15 @@
     "authority-core",
     "policy-overlay-core"
   ],
+  "regressionClauseIds": [
+    "CLAUSE-AUTH-0001",
+    "CLAUSE-LF-0001"
+  ],
+  "admissibilityRegressionClauseIds": [
+    "CLAUSE-AUTH-0001",
+    "CLAUSE-LF-0001",
+    "CLAUSE-LF-0004"
+  ],
   "authorityGraphId": "AUTH-GRAPH-US-001",
   "sourceRegistryVersion": "1.0.0",
   "regressionSuiteVersion": "1.0.0"

@@ -4,7 +4,8 @@
     "decision": "ALLOWED",
     "reasonCode": null,
     "failedStage": null,
-    "failingRuleIds": []
+    "failingRuleIds": [],
+    "missingFactIds": []
   },
   {
     "caseId": "school-zone-restriction-refusal",
@@ -13,7 +14,8 @@
     "failedStage": "POLICY_OVERLAY",
     "failingRuleIds": [
       "CR-SZR-001"
-    ]
+    ],
+    "missingFactIds": []
   },
   {
     "caseId": "school-zone-restriction-missing-fact",
@@ -22,6 +24,9 @@
     "failedStage": "POLICY_OVERLAY",
     "failingRuleIds": [
       "CR-SZR-001"
+    ],
+    "missingFactIds": [
+      "authority.designatedActionAuthorized"
     ]
   }
 ]

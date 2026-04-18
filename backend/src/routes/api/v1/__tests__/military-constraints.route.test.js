@@ -7,6 +7,7 @@ const assert = require('node:assert/strict');
 
 const app = require('../../../../app');
 const { buildReferenceBundle } = require('../../../../modules/military-constraints/build-reference-pack');
+const { createPreparedBundleCache } = require('../../../../modules/military-constraints/prepared-bundle-cache');
 
 const MODULE_DIR = path.resolve(__dirname, '../../../../modules/military-constraints');
 const PACK_MANIFEST_PATH = path.join(MODULE_DIR, 'reference-pack-manifest.medical-protection.json');
@@ -97,6 +98,14 @@ function buildAllowedFacts(bundle) {
       designatedActionAuthorized: true,
     },
   };
+}
+
+function buildAllowedFactsWithoutIdentity(bundle) {
+  const facts = buildAllowedFacts(bundle);
+  delete facts.bundleId;
+  delete facts.bundleVersion;
+  delete facts.bundleHash;
+  return facts;
 }
 
 function buildAllowedAirspaceFacts(bundle) {
@@ -789,6 +798,88 @@ test('military constraints evaluate endpoint returns the bounded runtime project
     assert.match(response.body.bundleHash, /^sha256:/);
     assert.equal(Object.prototype.hasOwnProperty.call(response.body, 'authorityTrace'), false);
     assert.equal(Object.prototype.hasOwnProperty.call(response.body, 'ruleTrace'), false);
+
+    const repeatResponse = await fetchJson(`${baseUrl}/api/v1/military-constraints/evaluate`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        packId: 'mil-us-medical-protection-core-v0.1.0',
+        facts: buildAllowedFacts(bundleResult.bundle),
+      }),
+    });
+
+    assert.equal(repeatResponse.status, 200);
+    assert.deepEqual(repeatResponse.body, response.body);
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
+  }
+});
+
+test('military constraints prepared bundle cache loads an explicit prepared bundle once', () => {
+  const cache = createPreparedBundleCache({
+    rootDir: MODULE_DIR,
+    packIndex: [{
+      packId: 'mil-us-medical-protection-core-v0.1.0',
+      manifestPath: PACK_MANIFEST_PATH,
+    }],
+  });
+
+  const record = cache.get('mil-us-medical-protection-core-v0.1.0');
+  assert.ok(record, 'Expected cache record.');
+  assert.equal(record.valid, true);
+  assert.equal(record.preparedBundle.kind, 'prepared-bundle');
+  assert.equal(record.bundle.bundleId, record.preparedBundle.bundleId);
+  assert.equal(record.bundle.bundleHash, record.preparedBundle.bundleHash);
+});
+
+test('military constraints prepared bundle cache fails closed for malformed pack entries', () => {
+  const cache = createPreparedBundleCache({
+    rootDir: MODULE_DIR,
+    packIndex: [{
+      packId: 'BROKEN_PACK_V1',
+    }],
+  });
+
+  const record = cache.get('BROKEN_PACK_V1');
+  assert.ok(record, 'Expected cache record.');
+  assert.equal(record.valid, false);
+  assert.equal(record.preparedBundle, null);
+  assert.equal(record.bundle, null);
+});
+
+test('military constraints evaluate endpoint server-stamps missing bundle identity fields', async () => {
+  const { server, baseUrl } = await startServer();
+
+  try {
+    const bundleResult = buildReferenceBundle({
+      rootDir: MODULE_DIR,
+      manifestPath: PACK_MANIFEST_PATH,
+    });
+
+    assert.equal(bundleResult.valid, true, bundleResult.errors.join('\n'));
+    assert.ok(bundleResult.bundle, 'Expected Pack 3 bundle for server-stamped identity test.');
+
+    const response = await fetchJson(`${baseUrl}/api/v1/military-constraints/evaluate`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        packId: 'mil-us-medical-protection-core-v0.1.0',
+        facts: buildAllowedFactsWithoutIdentity(bundleResult.bundle),
+      }),
+    });
+
+    assert.equal(response.status, 200);
+    assert.equal(response.body.decision, 'ALLOWED');
+    assert.equal(response.body.reasonCode, null);
+    assert.equal(response.body.failedStage, null);
+    assert.deepEqual(response.body.failingRuleIds, []);
+    assert.deepEqual(response.body.missingFactIds, []);
+    assert.equal(response.body.bundleVersion, '0.1.0');
+    assert.match(response.body.bundleHash, /^sha256:/);
   } finally {
     await new Promise((resolve) => server.close(resolve));
   }
