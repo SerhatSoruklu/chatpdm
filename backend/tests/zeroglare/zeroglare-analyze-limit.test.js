@@ -4,6 +4,10 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 
 const app = require('../../src/app');
+const {
+  ZEROGLARE_API_ERROR_CODES,
+  ZEROGLARE_API_ERROR_MESSAGES,
+} = require('../../src/modules/concepts/zeroglare-api-contract');
 
 test('zeroglare analyze rejects inputs above the logical cap with 413', async (t) => {
   const server = app.listen(0);
@@ -24,6 +28,10 @@ test('zeroglare analyze rejects inputs above the logical cap with 413', async (t
   assert.equal(response.status, 413);
 
   const body = await response.json();
-  assert.equal(body.error, 'INPUT_TOO_LARGE');
-  assert.equal(body.message, 'Input exceeds maximum allowed length (1,000,000 characters).');
+  assert.deepEqual(body, {
+    error: {
+      code: ZEROGLARE_API_ERROR_CODES.inputTooLarge,
+      message: ZEROGLARE_API_ERROR_MESSAGES.inputTooLarge,
+    },
+  });
 });

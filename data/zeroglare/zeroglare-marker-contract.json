@@ -1,0 +1,134 @@
+{
+  "resource": "zeroglare",
+  "taxonomyVersion": "v1",
+  "markers": [
+    {
+      "code": "rhetorical_noise",
+      "label": "Rhetorical noise",
+      "description": "Input contains rhetorical pressure or expressive framing that can distort clean parsing.",
+      "severity": "low",
+      "displayOrder": 1,
+      "public": true
+    },
+    {
+      "code": "ambiguity_surface",
+      "label": "Ambiguity surface",
+      "description": "Input exposes multiple possible meanings or unclear term boundaries.",
+      "severity": "moderate",
+      "displayOrder": 2,
+      "public": true
+    },
+    {
+      "code": "unsupported_semantic_bridge",
+      "label": "Unsupported semantic bridge",
+      "description": "Input tries to connect meanings that are not supported by defined concept structure.",
+      "severity": "moderate",
+      "displayOrder": 3,
+      "public": true
+    },
+    {
+      "code": "scope_pressure",
+      "label": "Scope pressure",
+      "description": "Input pushes beyond the valid scope or boundary of the current system.",
+      "severity": "moderate",
+      "displayOrder": 4,
+      "public": true
+    },
+    {
+      "code": "scope_instability_pressure",
+      "label": "Scope instability pressure",
+      "description": "Input widens, reclassifies, or shifts scope without a stable boundary.",
+      "severity": "moderate",
+      "displayOrder": 5,
+      "public": true
+    },
+    {
+      "code": "circular_dependency_pressure",
+      "label": "Circular dependency pressure",
+      "description": "Input treats two claims as mutually defining or circular.",
+      "severity": "moderate",
+      "displayOrder": 6,
+      "public": true
+    },
+    {
+      "code": "recursive_frame_pressure",
+      "label": "Recursive frame pressure",
+      "description": "Input repeats, reenters, or calls the same frame again.",
+      "severity": "moderate",
+      "displayOrder": 7,
+      "public": true
+    },
+    {
+      "code": "conditional_frame_fragility",
+      "label": "Conditional frame fragility",
+      "description": "Input only holds under a narrow set of conditions.",
+      "severity": "moderate",
+      "displayOrder": 8,
+      "public": true
+    },
+    {
+      "code": "contradiction_pressure",
+      "label": "Contradiction pressure",
+      "description": "Input combines mutually incompatible claims.",
+      "severity": "moderate",
+      "displayOrder": 9,
+      "public": true
+    },
+    {
+      "code": "universal_scope_pressure",
+      "label": "Universal scope pressure",
+      "description": "Input extends a claim across all systems, all times, or all domains.",
+      "severity": "moderate",
+      "displayOrder": 10,
+      "public": true
+    },
+    {
+      "code": "exception_leak_pressure",
+      "label": "Exception leak pressure",
+      "description": "Input leaks exception logic beyond the declared boundary.",
+      "severity": "moderate",
+      "displayOrder": 11,
+      "public": true
+    },
+    {
+      "code": "role_forcing_pressure",
+      "label": "Role forcing pressure",
+      "description": "Input forces an authority, control, responsibility, or decision role.",
+      "severity": "moderate",
+      "displayOrder": 12,
+      "public": true
+    },
+    {
+      "code": "self_negation_pressure",
+      "label": "Self negation pressure",
+      "description": "Input negates its own claim or refuses its own assertion.",
+      "severity": "moderate",
+      "displayOrder": 13,
+      "public": true
+    },
+    {
+      "code": "causal_bridge_pressure",
+      "label": "Causal bridge pressure",
+      "description": "Input jumps from cause to obligation or truth without support.",
+      "severity": "moderate",
+      "displayOrder": 14,
+      "public": true
+    },
+    {
+      "code": "reference_collapse_pressure",
+      "label": "Reference collapse pressure",
+      "description": "Input collapses the external reference frame into self-reference.",
+      "severity": "moderate",
+      "displayOrder": 15,
+      "public": true
+    },
+    {
+      "code": "context_drift_pressure",
+      "label": "Context drift pressure",
+      "description": "Input changes meaning when the context shifts.",
+      "severity": "moderate",
+      "displayOrder": 16,
+      "public": true
+    }
+  ]
+}

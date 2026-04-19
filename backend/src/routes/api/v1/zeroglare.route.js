@@ -5,9 +5,14 @@ const {
   ZEROGLOARE_PIPELINE_STAGES,
   buildZeroglareAnalysis,
 } = require('../../../modules/concepts/zeroglare-diagnostics');
+const {
+  ZEROGLARE_API_ERROR_CODES,
+  ZEROGLARE_API_ERROR_MESSAGES,
+  ZEROGLARE_API_INPUT_LIMIT,
+  buildZeroGlareErrorResponse,
+} = require('../../../modules/concepts/zeroglare-api-contract');
 
 const router = Router();
-const MAX_ANALYSIS_INPUT_LENGTH = 1_000_000;
 
 function readAnalysisInput(req) {
   if (typeof req.query.q === 'string') {
@@ -23,20 +28,22 @@ function readAnalysisInput(req) {
 
 function handleAnalyzeRequest(rawQuery, res, invalidInputMessage) {
   if (typeof rawQuery !== 'string' || rawQuery.trim() === '') {
-    res.status(400).json({
-      error: {
-        code: 'invalid_zeroglare_input',
-        message: invalidInputMessage,
-      },
-    });
+    res.status(400).json(
+      buildZeroGlareErrorResponse(
+        ZEROGLARE_API_ERROR_CODES.invalidInput,
+        invalidInputMessage,
+      ),
+    );
     return;
   }
 
-  if (rawQuery.length > MAX_ANALYSIS_INPUT_LENGTH) {
-    res.status(413).json({
-      error: 'INPUT_TOO_LARGE',
-      message: 'Input exceeds maximum allowed length (1,000,000 characters).',
-    });
+  if (rawQuery.length > ZEROGLARE_API_INPUT_LIMIT) {
+    res.status(413).json(
+      buildZeroGlareErrorResponse(
+        ZEROGLARE_API_ERROR_CODES.inputTooLarge,
+        ZEROGLARE_API_ERROR_MESSAGES.inputTooLarge,
+      ),
+    );
     return;
   }
 
@@ -44,12 +51,12 @@ function handleAnalyzeRequest(rawQuery, res, invalidInputMessage) {
     res.json(buildZeroglareAnalysis(rawQuery));
   } catch (error) {
     process.stderr.write(`[chatpdm-backend] zeroglare analysis failed: ${error.stack || error.message}\n`);
-    res.status(500).json({
-      error: {
-        code: 'zeroglare_analysis_failed',
-        message: 'The Zeroglare diagnostics endpoint could not produce a valid response.',
-      },
-    });
+    res.status(500).json(
+      buildZeroGlareErrorResponse(
+        ZEROGLARE_API_ERROR_CODES.analysisFailed,
+        ZEROGLARE_API_ERROR_MESSAGES.analysisFailed,
+      ),
+    );
   }
 }
 
@@ -66,7 +73,7 @@ router.get('/analyze', (req, res) => {
   handleAnalyzeRequest(
     req.query.q,
     res,
-    'Query parameter q must be a non-empty string.',
+    ZEROGLARE_API_ERROR_MESSAGES.invalidQuery,
   );
 });
 
@@ -74,7 +81,7 @@ router.post('/analyze', (req, res) => {
   handleAnalyzeRequest(
     readAnalysisInput(req),
     res,
-    'Request body field "input" must be a non-empty string.',
+    ZEROGLARE_API_ERROR_MESSAGES.invalidBody,
   );
 });
 

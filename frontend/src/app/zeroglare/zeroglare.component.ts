@@ -10,38 +10,12 @@ import {
 } from '@angular/core';
 
 import { resolveApiOrigin } from '../core/api/api-origin';
+import {
+  ZEROGLARE_PUBLIC_MARKER_CODES,
+  getZeroGlareMarkerDetails,
+} from './zeroglare-marker-contract';
 
-const ZEROGLOARE_MARKER_COPY = {
-  rhetorical_noise: {
-    title: 'Rhetorical noise',
-    description:
-      'Input contains rhetorical pressure or expressive framing that can distort clean parsing.',
-  },
-  ambiguity_surface: {
-    title: 'Ambiguity surface',
-    description:
-      'Input exposes multiple possible meanings or unclear term boundaries.',
-  },
-  unsupported_semantic_bridge: {
-    title: 'Unsupported semantic bridge',
-    description:
-      'Input tries to connect meanings that are not supported by defined concept structure.',
-  },
-  scope_pressure: {
-    title: 'Scope pressure',
-    description:
-      'Input pushes beyond the valid scope or boundary of the current system.',
-  },
-} as const;
-
-type ZeroglareMarkerId = keyof typeof ZEROGLOARE_MARKER_COPY;
-
-const ZEROGLOARE_MARKER_ORDER = [
-  'rhetorical_noise',
-  'ambiguity_surface',
-  'unsupported_semantic_bridge',
-  'scope_pressure',
-] as const satisfies readonly ZeroglareMarkerId[];
+type ZeroglareMarkerId = string;
 
 interface ZeroglareAnalyzeSignal {
   code?: string;
@@ -260,11 +234,11 @@ export class ZeroglareComponent implements OnInit, OnDestroy {
   }
 
   protected getMarkerTitle(marker: string): string {
-    return ZEROGLOARE_MARKER_COPY[marker as ZeroglareMarkerId]?.title ?? marker;
+    return getZeroGlareMarkerDetails(marker)?.label ?? marker;
   }
 
   protected getMarkerDescription(marker: string): string {
-    return ZEROGLOARE_MARKER_COPY[marker as ZeroglareMarkerId]?.description
+    return getZeroGlareMarkerDetails(marker)?.description
       ?? 'Diagnostic pressure detected by Zeroglare.';
   }
 
@@ -300,7 +274,7 @@ export class ZeroglareComponent implements OnInit, OnDestroy {
 
   private extractMarkers(response: ZeroglareAnalyzeResponse): ZeroglareMarkerId[] {
     if (Array.isArray(response.markers) && response.markers.length > 0) {
-      return ZEROGLOARE_MARKER_ORDER.filter((marker) => response.markers?.includes(marker));
+      return ZEROGLARE_PUBLIC_MARKER_CODES.filter((marker) => response.markers?.includes(marker));
     }
 
     const activeSignals =
@@ -309,10 +283,10 @@ export class ZeroglareComponent implements OnInit, OnDestroy {
         : response.diagnostics?.signals?.filter((signal) => signal.detected).map((signal) => signal.code ?? '') ?? [];
 
     const activeSignalSet = new Set(
-      activeSignals.filter((marker): marker is ZeroglareMarkerId => marker in ZEROGLOARE_MARKER_COPY),
+      activeSignals.filter((marker) => ZEROGLARE_PUBLIC_MARKER_CODES.includes(marker)),
     );
 
-    return ZEROGLOARE_MARKER_ORDER.filter((marker) => activeSignalSet.has(marker));
+    return ZEROGLARE_PUBLIC_MARKER_CODES.filter((marker) => activeSignalSet.has(marker));
   }
 
   private resolveSummary(
