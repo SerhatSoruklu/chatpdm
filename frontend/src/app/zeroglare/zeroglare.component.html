@@ -2,17 +2,13 @@
   <main class="pdm-zeroglare__main pdm-shell" aria-labelledby="pdm-zeroglare-title">
     <div class="pdm-shell__frame pdm-zeroglare__frame">
       <header class="pdm-zeroglare__hero">
-        <p class="pdm-zeroglare__eyebrow">Internal layer</p>
+        <p class="pdm-zeroglare__eyebrow">{{ copy.eyebrow }}</p>
         <h1 class="pdm-zeroglare__title" id="pdm-zeroglare-title">Zeroglare</h1>
-        <p class="pdm-zeroglare__subtitle">Zero noise. Pure signal.</p>
+        <p class="pdm-zeroglare__subtitle">{{ copy.subtitle }}</p>
         <p class="pdm-zeroglare__definition">
-          Zeroglare detects lexical and framing pressure signals before meaning construction. It
-          reduces rhetorical noise, isolates semantic signal, and prevents ambiguity from
-          spreading into deterministic resolution.
+          {{ copy.definition }}
         </p>
-        <p class="pdm-zeroglare__note">
-          Zeroglare ensures the system responds to meaning, not presentation.
-        </p>
+        <p class="pdm-zeroglare__note">{{ copy.invariantNote }}</p>
       </header>
 
       <section
@@ -20,9 +16,9 @@
         aria-labelledby="pdm-zeroglare-core-title"
       >
         <div class="pdm-zeroglare__section-head">
-          <p class="pdm-zeroglare__section-label">Core transformation</p>
+          <p class="pdm-zeroglare__section-label">{{ copy.coreSectionLabel }}</p>
           <h2 class="pdm-zeroglare__section-title" id="pdm-zeroglare-core-title">
-            From input to clean signal.
+            {{ copy.coreSectionTitle }}
           </h2>
         </div>
 
@@ -31,7 +27,7 @@
             <img
               class="pdm-zeroglare__image"
               src="/assets/zeroglare/zeroglare_layer_1.png"
-              alt="Zeroglare layer one showing input transformed into clean signal through the signal-discipline layer"
+              [attr.alt]="copy.coreImageAlt"
               width="1536"
               height="1024"
               loading="eager"
@@ -41,7 +37,7 @@
           </div>
 
           <figcaption class="pdm-zeroglare__caption">
-            Input enters the system. Zeroglare removes distortion and exposes clean signal.
+            {{ copy.coreCaption }}
           </figcaption>
         </figure>
       </section>
@@ -51,13 +47,12 @@
         aria-labelledby="pdm-zeroglare-demo-title"
       >
         <div class="pdm-zeroglare__section-head pdm-zeroglare__section-head--demo">
-          <p class="pdm-zeroglare__section-label">Live diagnostic demo</p>
+          <p class="pdm-zeroglare__section-label">{{ copy.demoSectionLabel }}</p>
           <h2 class="pdm-zeroglare__section-title pdm-zeroglare__section-title--demo" id="pdm-zeroglare-demo-title">
-            Try Zeroglare
+            {{ copy.demoSectionTitle }}
           </h2>
           <p class="pdm-zeroglare__copy pdm-zeroglare__copy--demo">
-            Zeroglare inspects the input for distortion pressure before meaning is constructed.
-            It does not resolve, answer, or decide.
+            {{ copy.demoCopy }}
           </p>
         </div>
 
@@ -77,7 +72,7 @@
               autocorrect="off"
               wrap="off"
               [attr.maxlength]="MAX_INPUT_CHARS"
-              placeholder="Enter a phrase or query to inspect signal pressure"
+              [attr.placeholder]="copy.inputPlaceholder"
               [attr.aria-invalid]="isInputOverLimit ? 'true' : null"
               aria-describedby="pdm-zeroglare-input-count pdm-zeroglare-input-error"
               (input)="handleInput($event)"
@@ -112,7 +107,7 @@
 
           <section class="pdm-zeroglare__demo-card pdm-zeroglare__demo-results" aria-live="polite">
             <p class="pdm-zeroglare__invariant-note">
-              These markers are diagnostic only. They do not change ChatPDM resolution state.
+              {{ copy.invariantNote }}
             </p>
 
             @if (isAnalyzing) {
@@ -132,7 +127,7 @@
                     <span class="pdm-zeroglare__loading-particle pdm-zeroglare__loading-particle--four"></span>
                   </div>
                 </div>
-                <p class="pdm-zeroglare__loading-copy">Analyzing input pressure...</p>
+                <p class="pdm-zeroglare__loading-copy">{{ copy.loadingCopy }}</p>
               </div>
             } @else if (errorMessage) {
               <div class="pdm-zeroglare__error-state" role="alert">
@@ -143,7 +138,7 @@
               <div class="pdm-zeroglare__result-shell">
                 <div class="pdm-zeroglare__status-panel">
                   <div class="pdm-zeroglare__status-copy">
-                    <p class="pdm-zeroglare__micro-label">Overall Zeroglare status</p>
+                    <p class="pdm-zeroglare__micro-label">{{ copy.statusMicroLabel }}</p>
                     <h3 class="pdm-zeroglare__status-title">
                       {{ getStatusLabel(analysisResult.status) }}
                     </h3>
@@ -212,13 +207,13 @@
                   </div>
                 } @else {
                   <div class="pdm-zeroglare__empty-state">
-                    No diagnostic pressure markers were detected for this input.
+                    {{ copy.noMarkersState }}
                   </div>
                 }
               </div>
             } @else {
               <div class="pdm-zeroglare__empty-state">
-                Enter a phrase or query to inspect signal pressure.
+                {{ copy.emptyState }}
               </div>
             }
           </section>
@@ -230,12 +225,12 @@
         aria-labelledby="pdm-zeroglare-analogy-title"
       >
         <div class="pdm-zeroglare__section-head">
-          <p class="pdm-zeroglare__section-label">Analogy</p>
+          <p class="pdm-zeroglare__section-label">{{ copy.analogySectionLabel }}</p>
           <h2 class="pdm-zeroglare__section-title" id="pdm-zeroglare-analogy-title">
-            A distortion filter for meaning.
+            {{ copy.analogyTitle }}
           </h2>
           <p class="pdm-zeroglare__copy">
-            Zeroglare acts as a distortion filter. What goes in is cleaned, not guessed.
+            {{ copy.analogyCopy }}
           </p>
         </div>
 
@@ -244,7 +239,7 @@
             <img
               class="pdm-zeroglare__image"
               src="/assets/zeroglare/zeroglare-analogy.png"
-              alt="Zeroglare analogy image explaining how signal is cleaned before deterministic resolution"
+              [attr.alt]="copy.analogyImageAlt"
               width="1703"
               height="1130"
               loading="lazy"

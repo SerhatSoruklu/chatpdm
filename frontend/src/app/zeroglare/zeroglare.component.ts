@@ -10,38 +10,11 @@ import {
 } from '@angular/core';
 
 import { resolveApiOrigin } from '../core/api/api-origin';
+import {
+  getZeroGlareMarkerDetails,
+} from './zeroglare-marker-contract';
 
-const ZEROGLOARE_MARKER_COPY = {
-  rhetorical_noise: {
-    title: 'Rhetorical noise',
-    description:
-      'Input contains rhetorical pressure or expressive framing that can distort clean parsing.',
-  },
-  ambiguity_surface: {
-    title: 'Ambiguity surface',
-    description:
-      'Input exposes multiple possible meanings or unclear term boundaries.',
-  },
-  unsupported_semantic_bridge: {
-    title: 'Unsupported semantic bridge',
-    description:
-      'Input tries to connect meanings that are not supported by defined concept structure.',
-  },
-  scope_pressure: {
-    title: 'Scope pressure',
-    description:
-      'Input pushes beyond the valid scope or boundary of the current system.',
-  },
-} as const;
-
-type ZeroglareMarkerId = keyof typeof ZEROGLOARE_MARKER_COPY;
-
-const ZEROGLOARE_MARKER_ORDER = [
-  'rhetorical_noise',
-  'ambiguity_surface',
-  'unsupported_semantic_bridge',
-  'scope_pressure',
-] as const satisfies readonly ZeroglareMarkerId[];
+type ZeroglareMarkerId = string;
 
 interface ZeroglareAnalyzeSignal {
   code?: string;
@@ -98,6 +71,104 @@ const FRONTEND_LIMIT_MESSAGE = 'Character limit reached. Maximum 100,000 charact
 const BACKEND_LIMIT_MESSAGE = 'Input exceeds maximum allowed size.';
 const GENERIC_ERROR_MESSAGE = 'Zeroglare diagnostics are unavailable. Check that the backend is running on port 4301.';
 
+export const ZEROGLARE_PAGE_COPY = Object.freeze({
+  eyebrow: 'Internal diagnostics',
+  subtitle: 'Diagnostic pressure only.',
+  definition:
+    'Zeroglare detects lexical and framing pressure markers before meaning construction. It reports diagnostics only and does not resolve, decide, or change ChatPDM runtime outcome.',
+  coreSectionLabel: 'Diagnostic model',
+  coreSectionTitle: 'From input to diagnostic signal.',
+  coreImageAlt:
+    'Zeroglare layer one showing input and diagnostic markers in the signal-discipline layer',
+  coreCaption: 'Input enters the system. Zeroglare reports diagnostic pressure markers.',
+  demoSectionLabel: 'Live diagnostic demo',
+  demoSectionTitle: 'Inspect Zeroglare',
+  demoCopy:
+    'Zeroglare inspects the input for diagnostic pressure before meaning is constructed. It reports markers only and does not resolve, answer, decide, or alter ChatPDM runtime outcome.',
+  inputPlaceholder: 'Enter a phrase or query to inspect diagnostic pressure',
+  invariantNote: 'These markers are diagnostic only. They do not change ChatPDM resolution state.',
+  loadingCopy: 'Analyzing diagnostic pressure...',
+  statusMicroLabel: 'Diagnostic status',
+  statusCopy: Object.freeze({
+    clear: 'No diagnostic pressure markers were detected.',
+    pressure: 'Diagnostic pressure is present, but the fail boundary was not crossed.',
+    fail: 'Diagnostic pressure crossed the fail boundary.',
+  }),
+  emptyState: 'Enter a phrase or query to inspect diagnostic pressure.',
+  noMarkersState: 'No diagnostic pressure markers were detected for this input.',
+  analogySectionLabel: 'Analogy',
+  analogyTitle: 'A diagnostic filter for meaning.',
+  analogyCopy:
+    'Zeroglare reports diagnostic pressure signals. It does not clean, infer, or decide.',
+  analogyImageAlt:
+    'Zeroglare analogy image showing diagnostic pressure before bounded output',
+  markerFallbackTitle: 'Unknown diagnostic marker',
+  markerFallbackDescription: 'Diagnostic marker detected by Zeroglare.',
+});
+
+export function getZeroGlareStatusCopy(status: ZeroglareDiagnosticStatus): string {
+  return ZEROGLARE_PAGE_COPY.statusCopy[status];
+}
+
+export function getZeroGlareStatusLabel(status: ZeroglareDiagnosticStatus): string {
+  switch (status) {
+    case 'clear':
+      return 'Clear';
+    case 'pressure':
+      return 'Pressure';
+    case 'fail':
+      return 'Fail';
+    default:
+      return 'Clear';
+  }
+}
+
+export function normalizeZeroGlareMarkerCodes(
+  markers: readonly unknown[] | null | undefined,
+): ZeroglareMarkerId[] {
+  if (!Array.isArray(markers)) {
+    return [];
+  }
+
+  const normalizedMarkers: ZeroglareMarkerId[] = [];
+  const seenMarkers = new Set<string>();
+
+  for (const marker of markers) {
+    if (typeof marker !== 'string' || marker.trim() === '' || seenMarkers.has(marker)) {
+      continue;
+    }
+
+    seenMarkers.add(marker);
+    normalizedMarkers.push(marker);
+  }
+
+  return normalizedMarkers;
+}
+
+export function resolveZeroGlareMarkers(response: ZeroglareAnalyzeResponse): ZeroglareMarkerId[] {
+  const directMarkers = normalizeZeroGlareMarkerCodes(response.markers);
+
+  if (directMarkers.length > 0) {
+    return directMarkers;
+  }
+
+  const activeSignals =
+    response.diagnostics?.summary?.active_signals?.length
+      ? response.diagnostics.summary.active_signals
+      : response.diagnostics?.signals?.filter((signal) => signal.detected).map((signal) => signal.code ?? '') ?? [];
+
+  return normalizeZeroGlareMarkerCodes(activeSignals);
+}
+
+export function resolveZeroGlareMarkerTitle(marker: string): string {
+  return getZeroGlareMarkerDetails(marker)?.label ?? marker;
+}
+
+export function resolveZeroGlareMarkerDescription(marker: string): string {
+  return getZeroGlareMarkerDetails(marker)?.description
+    ?? ZEROGLARE_PAGE_COPY.markerFallbackDescription;
+}
+
 @Component({
   selector: 'app-zeroglare-page',
   standalone: true,
@@ -115,6 +186,7 @@ export class ZeroglareComponent implements OnInit, OnDestroy {
   private pressureChartRenderToken = 0;
   private abortController: AbortController | null = null;
 
+  protected readonly copy = ZEROGLARE_PAGE_COPY;
   protected readonly MAX_INPUT_CHARS = MAX_INPUT_CHARS;
   protected readonly MAX_RENDER_CHARS = MAX_RENDER_CHARS;
   protected hasInput = false;
@@ -206,9 +278,7 @@ export class ZeroglareComponent implements OnInit, OnDestroy {
       } | null;
 
       if (!response.ok) {
-        const backendErrorCode = typeof body?.error === 'string'
-          ? body.error
-          : body?.error?.code;
+        const backendErrorCode = body?.error?.code;
 
         this.errorMessage = response.status === 413 || backendErrorCode === 'INPUT_TOO_LARGE'
           ? BACKEND_LIMIT_MESSAGE
@@ -260,38 +330,19 @@ export class ZeroglareComponent implements OnInit, OnDestroy {
   }
 
   protected getMarkerTitle(marker: string): string {
-    return ZEROGLOARE_MARKER_COPY[marker as ZeroglareMarkerId]?.title ?? marker;
+    return resolveZeroGlareMarkerTitle(marker);
   }
 
   protected getMarkerDescription(marker: string): string {
-    return ZEROGLOARE_MARKER_COPY[marker as ZeroglareMarkerId]?.description
-      ?? 'Diagnostic pressure detected by Zeroglare.';
+    return resolveZeroGlareMarkerDescription(marker);
   }
 
   protected getStatusLabel(status: ZeroglareDiagnosticStatus): string {
-    switch (status) {
-      case 'clear':
-        return 'Clear';
-      case 'pressure':
-        return 'Pressure';
-      case 'fail':
-        return 'Fail';
-      default:
-        return 'Clear';
-    }
+    return getZeroGlareStatusLabel(status);
   }
 
   protected getStatusCopy(status: ZeroglareDiagnosticStatus): string {
-    switch (status) {
-      case 'clear':
-        return 'No diagnostic pressure markers were detected.';
-      case 'pressure':
-        return 'Signal pressure is present, but not at fail intensity.';
-      case 'fail':
-        return 'Signal pressure crossed the fail boundary.';
-      default:
-        return 'No diagnostic pressure markers were detected.';
-    }
+    return getZeroGlareStatusCopy(status);
   }
 
   protected trackByMarker(_index: number, marker: string): string {
@@ -299,20 +350,7 @@ export class ZeroglareComponent implements OnInit, OnDestroy {
   }
 
   private extractMarkers(response: ZeroglareAnalyzeResponse): ZeroglareMarkerId[] {
-    if (Array.isArray(response.markers) && response.markers.length > 0) {
-      return ZEROGLOARE_MARKER_ORDER.filter((marker) => response.markers?.includes(marker));
-    }
-
-    const activeSignals =
-      response.diagnostics?.summary?.active_signals?.length
-        ? response.diagnostics.summary.active_signals
-        : response.diagnostics?.signals?.filter((signal) => signal.detected).map((signal) => signal.code ?? '') ?? [];
-
-    const activeSignalSet = new Set(
-      activeSignals.filter((marker): marker is ZeroglareMarkerId => marker in ZEROGLOARE_MARKER_COPY),
-    );
-
-    return ZEROGLOARE_MARKER_ORDER.filter((marker) => activeSignalSet.has(marker));
+    return resolveZeroGlareMarkers(response);
   }
 
   private resolveSummary(

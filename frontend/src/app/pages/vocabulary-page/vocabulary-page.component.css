@@ -503,7 +503,25 @@
   gap: 10px;
 }
 
+@media (min-width: 600px) {
+  .pdm-vocabulary-page__main {
+    padding: 36px 28px 72px;
+  }
+
+  .pdm-vocabulary-page__hero,
+  .pdm-vocabulary-page__warning,
+  .pdm-vocabulary-page__stats,
+  .pdm-vocabulary-page__buckets,
+  .pdm-vocabulary-page__list-shell {
+    border-radius: 32px;
+  }
+}
+
 @media (min-width: 840px) {
+  .pdm-vocabulary-page__main {
+    padding: 44px 32px 88px;
+  }
+
   .pdm-vocabulary-page__stats-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -538,6 +556,26 @@
 
   .pdm-vocabulary-page__page-size-options {
     justify-content: flex-end;
+  }
+}
+
+@media (min-width: 1200px) {
+  .pdm-vocabulary-page__main {
+    padding: 52px 40px 96px;
+  }
+
+  .pdm-vocabulary-page__hero,
+  .pdm-vocabulary-page__warning,
+  .pdm-vocabulary-page__stats,
+  .pdm-vocabulary-page__buckets,
+  .pdm-vocabulary-page__list-shell {
+    padding: 28px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .pdm-vocabulary-page__main {
+    padding: 60px 48px 104px;
   }
 }
 
