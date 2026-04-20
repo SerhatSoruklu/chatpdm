@@ -2,38 +2,38 @@
   <main class="pdm-rmg__main pdm-shell" aria-labelledby="pdm-rmg-title">
     <div class="pdm-shell__frame pdm-rmg__frame">
       <header class="pdm-rmg__hero pdm-site-surface pdm-site-panel">
-        <p class="pdm-rmg__eyebrow">Transparency / trust / architecture</p>
+        <p class="pdm-rmg__eyebrow">Boundary / contract / governed proof</p>
         <h1 class="pdm-rmg__title" id="pdm-rmg-title">{{ pageTitle }}</h1>
         <p class="pdm-rmg__subtitle">
-          A deterministic system for admitting, constraining, and mapping supported risk scenarios
-          under explicit evidence and domain rules.
+          A deterministic boundary for admitting, narrowing, or refusing scenario queries under
+          authored evidence, registries, and explicit domain rules.
         </p>
         <p class="pdm-rmg__support-line">
-          RMG does not predict outcomes. It maps supported structural paths, explicit gaps, and
-          bounded support confidence.
+          RMG does not predict outcomes. It emits supported structural paths, explicit unsupported
+          bridges, and bounded support confidence.
         </p>
 
         <div class="pdm-rmg__actions" aria-label="Page actions">
-          <a class="pdm-rmg__action-link" [routerLink]="pageRoute" fragment="audit-surface">View audit surface</a>
-          <a class="pdm-rmg__action-link" [routerLink]="pageRoute" fragment="how-it-works">Explore how it works</a>
+          <a class="pdm-rmg__action-link" [routerLink]="pageRoute" fragment="audit-surface">View governed proof</a>
+          <a class="pdm-rmg__action-link" [routerLink]="pageRoute" fragment="how-it-works">Review execution gate</a>
         </div>
 
         <div class="pdm-rmg__hero-grid">
           <article class="pdm-rmg__hero-card">
-            <p class="pdm-rmg__hero-card-label pdm-mono">Current posture</p>
+            <p class="pdm-rmg__hero-card-label pdm-mono">Execution posture</p>
             <h2 class="pdm-rmg__hero-card-title">Deterministic, bounded, evidence-backed, inspectable.</h2>
             <p class="pdm-rmg__hero-card-copy">
               The system stays inside authored registries, explicit compatibility rules, replayable
-              governance, and compact output.
+              governance, and a frozen resolve contract.
             </p>
           </article>
 
           <article class="pdm-rmg__hero-card">
-            <p class="pdm-rmg__hero-card-label pdm-mono">Confidence meaning</p>
+            <p class="pdm-rmg__hero-card-label pdm-mono">Bounded support confidence</p>
             <h2 class="pdm-rmg__hero-card-title">Bounded support confidence, not prediction.</h2>
             <p class="pdm-rmg__hero-card-copy">
-              Confidence class values describe how strong the authored support is within current
-              constraints. They do not describe likelihood.
+              Confidence class values describe authored support strength under current constraints.
+              They do not describe likelihood.
             </p>
           </article>
         </div>
@@ -41,15 +41,15 @@
 
       <section class="pdm-rmg__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-rmg-what-is-title">
         <div class="pdm-rmg__section-head">
-          <p class="pdm-rmg__section-label">What it is / what it is not</p>
+          <p class="pdm-rmg__section-label">Boundary claims</p>
           <h2 class="pdm-rmg__section-title" id="pdm-rmg-what-is-title">
-            A trust layer for bounded risk mapping.
+            What RMG admits / what RMG refuses
           </h2>
         </div>
 
         <div class="pdm-rmg__two-up">
           <article class="pdm-rmg__card">
-            <h3 class="pdm-rmg__card-title">What RMG is</h3>
+            <h3 class="pdm-rmg__card-title">What RMG admits</h3>
             <ul class="pdm-rmg__list">
               @for (item of whatItIsCards; track item.title) {
                 <li>
@@ -61,7 +61,7 @@
           </article>
 
           <article class="pdm-rmg__card">
-            <h3 class="pdm-rmg__card-title">What RMG is not</h3>
+            <h3 class="pdm-rmg__card-title">What RMG refuses</h3>
             <ul class="pdm-rmg__list">
               @for (item of whatItIsNotCards; track item.title) {
                 <li>
@@ -76,14 +76,14 @@
 
       <section class="pdm-rmg__section pdm-site-surface pdm-site-panel" id="how-it-works" aria-labelledby="pdm-rmg-how-title">
         <div class="pdm-rmg__section-head">
-          <p class="pdm-rmg__section-label">How it works</p>
+          <p class="pdm-rmg__section-label">Execution gate</p>
           <h2 class="pdm-rmg__section-title" id="pdm-rmg-how-title">
-            How Risk Mapping Governance works
+            How RMG executes
           </h2>
           <p class="pdm-rmg__section-copy">
-            RMG turns a question into a bounded, evidence-backed structural risk map through
-            explicit admissibility, authored registries, direct supported paths, explicit gaps, and
-            audit-ready output.
+            RMG classifies the query, checks admissibility, and emits only supported structural
+            paths, explicit unsupported bridges, and audit-ready output under authored registries
+            and evidence.
           </p>
         </div>
 
@@ -129,9 +129,9 @@
 
       <section class="pdm-rmg__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-rmg-guarantees-title">
         <div class="pdm-rmg__section-head">
-          <p class="pdm-rmg__section-label">Four core guarantees</p>
+          <p class="pdm-rmg__section-label">Core boundaries</p>
           <h2 class="pdm-rmg__section-title" id="pdm-rmg-guarantees-title">
-            The guarantees behind deterministic risk mapping
+            Deterministic execution boundaries
           </h2>
         </div>
 
@@ -147,19 +147,23 @@
 
       <section class="pdm-rmg__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-rmg-example-title">
         <div class="pdm-rmg__section-head">
-          <p class="pdm-rmg__section-label">Example query</p>
+          <p class="pdm-rmg__section-label">Structured example</p>
           <h2 class="pdm-rmg__section-title" id="pdm-rmg-example-title">
-            Example: company downside risk, narrowed safely
+            Structured query, structural output
           </h2>
           <p class="pdm-rmg__section-copy">
-            Example query: “Apple downside risk in 5 years”
+            A query only resolves when it can be anchored to authored evidence and explicit
+            boundaries.
           </p>
         </div>
 
         <div class="pdm-rmg__example-shell">
           <div class="pdm-rmg__example-input">
-            <p class="pdm-rmg__micro-label pdm-mono">Input</p>
-            <p class="pdm-rmg__example-query">“Apple downside risk in 5 years”</p>
+            <p class="pdm-rmg__micro-label pdm-mono">Structured query contract</p>
+            <p class="pdm-rmg__example-query">
+              entity=apple, timeHorizon=5 years, scenarioType=decline_risk, domain=organization_risk,
+              scope=[regulatory, supply_chain], evidenceSetVersion=v1
+            </p>
           </div>
 
           <div class="pdm-rmg__example-output">
@@ -170,9 +174,8 @@
               }
             </ul>
             <p class="pdm-rmg__example-note">
-              For example, a query about Apple can be narrowed into supported structural areas such
-              as regulatory exposure or supply chain exposure instead of being treated as a
-              prediction.
+              The query is narrowed into supported structural areas such as regulatory exposure or
+              supply chain exposure. Unsupported scope is refused rather than inferred.
             </p>
           </div>
         </div>
@@ -180,17 +183,28 @@
 
       <section class="pdm-rmg__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-rmg-output-title">
         <div class="pdm-rmg__section-head">
-          <p class="pdm-rmg__section-label">Output surface</p>
+          <p class="pdm-rmg__section-label">Resolve contract</p>
           <h2 class="pdm-rmg__section-title" id="pdm-rmg-output-title">
-            Compact, deterministic output with explicit unsupported bridges
+            Locked resolve contract
           </h2>
           <p class="pdm-rmg__section-copy">
-            The final resolve contract stays compact and string-based. Bounded support confidence
-            is a class, not a probability.
+            The excerpt below is the frozen backend output for a structured query. It is a
+            contract, not an example answer.
           </p>
         </div>
 
-        <div class="pdm-rmg__json-shell" aria-label="Example resolve output">
+        <div class="pdm-rmg__example-shell">
+          <div class="pdm-rmg__example-input">
+            <p class="pdm-rmg__micro-label pdm-mono">Structured query contract</p>
+            <p class="pdm-rmg__example-query">
+              entity=apple, timeHorizon=5 years, scenarioType=decline_risk, domain=organization_risk,
+              scope=[regulatory, supply_chain], evidenceSetVersion=v1
+            </p>
+          </div>
+        </div>
+
+        <div class="pdm-rmg__json-shell" aria-label="Frozen resolve output excerpt">
+          <div class="pdm-rmg__json-line"><span class="pdm-rmg__micro-label pdm-mono">Frozen resolve output</span></div>
           <div class="pdm-rmg__json-line"><span class="pdm-rmg__json-punctuation">&#123;</span></div>
           <div class="pdm-rmg__json-line">
             <span class="pdm-rmg__json-indent"></span>
@@ -201,6 +215,26 @@
             <span class="pdm-rmg__json-indent"></span>
             <span class="pdm-rmg__json-key">"reasonCode"</span><span class="pdm-rmg__json-punctuation">:</span>
             <span class="pdm-rmg__json-string">"ADMISSIBLE_QUERY"</span><span class="pdm-rmg__json-punctuation">,</span>
+          </div>
+          <div class="pdm-rmg__json-line">
+            <span class="pdm-rmg__json-indent"></span>
+            <span class="pdm-rmg__json-key">"reason"</span><span class="pdm-rmg__json-punctuation">:</span>
+            <span class="pdm-rmg__json-string">"The query is admissible under authored evidence support."</span><span class="pdm-rmg__json-punctuation">,</span>
+          </div>
+          <div class="pdm-rmg__json-line">
+            <span class="pdm-rmg__json-indent"></span>
+            <span class="pdm-rmg__json-key">"domain"</span><span class="pdm-rmg__json-punctuation">:</span>
+            <span class="pdm-rmg__json-string">"organization_risk"</span><span class="pdm-rmg__json-punctuation">,</span>
+          </div>
+          <div class="pdm-rmg__json-line">
+            <span class="pdm-rmg__json-indent"></span>
+            <span class="pdm-rmg__json-key">"scenarioType"</span><span class="pdm-rmg__json-punctuation">:</span>
+            <span class="pdm-rmg__json-string">"decline_risk"</span><span class="pdm-rmg__json-punctuation">,</span>
+          </div>
+          <div class="pdm-rmg__json-line">
+            <span class="pdm-rmg__json-indent"></span>
+            <span class="pdm-rmg__json-key">"entity"</span><span class="pdm-rmg__json-punctuation">:</span>
+            <span class="pdm-rmg__json-string">"apple"</span><span class="pdm-rmg__json-punctuation">,</span>
           </div>
           <div class="pdm-rmg__json-line">
             <span class="pdm-rmg__json-indent"></span>
@@ -322,6 +356,100 @@
             <span class="pdm-rmg__json-key">"boundedConfidenceClass"</span><span class="pdm-rmg__json-punctuation">:</span>
             <span class="pdm-rmg__json-string pdm-rmg__json-string--accent">"MEDIUM_BOUNDED_SUPPORT"</span>
           </div>
+          <div class="pdm-rmg__json-line">
+            <span class="pdm-rmg__json-indent"></span>
+            <span class="pdm-rmg__json-key">"diagnostics"</span><span class="pdm-rmg__json-punctuation">:</span>
+            <span class="pdm-rmg__json-punctuation">&#123;</span>
+          </div>
+          <div class="pdm-rmg__json-line">
+            <span class="pdm-rmg__json-indent pdm-rmg__json-indent--deep"></span>
+            <span class="pdm-rmg__json-key">"hasBroadCollapseLanguage"</span><span class="pdm-rmg__json-punctuation">:</span>
+            <span class="pdm-rmg__json-string">false</span><span class="pdm-rmg__json-punctuation">,</span>
+          </div>
+          <div class="pdm-rmg__json-line">
+            <span class="pdm-rmg__json-indent pdm-rmg__json-indent--deep"></span>
+            <span class="pdm-rmg__json-key">"hasUnsupportedFraming"</span><span class="pdm-rmg__json-punctuation">:</span>
+            <span class="pdm-rmg__json-string">false</span><span class="pdm-rmg__json-punctuation">,</span>
+          </div>
+          <div class="pdm-rmg__json-line">
+            <span class="pdm-rmg__json-indent pdm-rmg__json-indent--deep"></span>
+            <span class="pdm-rmg__json-key">"admittedScopes"</span><span class="pdm-rmg__json-punctuation">:</span>
+            <span class="pdm-rmg__json-punctuation">[</span>
+          </div>
+          <div class="pdm-rmg__json-line">
+            <span class="pdm-rmg__json-indent pdm-rmg__json-indent--deep pdm-rmg__json-indent--deep"></span>
+            <span class="pdm-rmg__json-string">"regulatory"</span><span class="pdm-rmg__json-punctuation">,</span>
+          </div>
+          <div class="pdm-rmg__json-line">
+            <span class="pdm-rmg__json-indent pdm-rmg__json-indent--deep pdm-rmg__json-indent--deep"></span>
+            <span class="pdm-rmg__json-string">"supply_chain"</span>
+          </div>
+          <div class="pdm-rmg__json-line">
+            <span class="pdm-rmg__json-indent pdm-rmg__json-indent--deep"></span>
+            <span class="pdm-rmg__json-punctuation">]</span><span class="pdm-rmg__json-punctuation">,</span>
+          </div>
+          <div class="pdm-rmg__json-line">
+            <span class="pdm-rmg__json-indent pdm-rmg__json-indent--deep"></span>
+            <span class="pdm-rmg__json-key">"narrowedFromScopes"</span><span class="pdm-rmg__json-punctuation">:</span>
+            <span class="pdm-rmg__json-punctuation">[</span><span class="pdm-rmg__json-punctuation">]</span><span class="pdm-rmg__json-punctuation">,</span>
+          </div>
+          <div class="pdm-rmg__json-line">
+            <span class="pdm-rmg__json-indent pdm-rmg__json-indent--deep"></span>
+            <span class="pdm-rmg__json-key">"refusedScopes"</span><span class="pdm-rmg__json-punctuation">:</span>
+            <span class="pdm-rmg__json-punctuation">[</span><span class="pdm-rmg__json-punctuation">]</span><span class="pdm-rmg__json-punctuation">,</span>
+          </div>
+          <div class="pdm-rmg__json-line">
+            <span class="pdm-rmg__json-indent pdm-rmg__json-indent--deep"></span>
+            <span class="pdm-rmg__json-key">"supportedNodeIds"</span><span class="pdm-rmg__json-punctuation">:</span>
+            <span class="pdm-rmg__json-punctuation">[</span>
+          </div>
+          <div class="pdm-rmg__json-line">
+            <span class="pdm-rmg__json-indent pdm-rmg__json-indent--deep pdm-rmg__json-indent--deep"></span>
+            <span class="pdm-rmg__json-string">"app_store_regulatory_exposure"</span><span class="pdm-rmg__json-punctuation">,</span>
+          </div>
+          <div class="pdm-rmg__json-line">
+            <span class="pdm-rmg__json-indent pdm-rmg__json-indent--deep pdm-rmg__json-indent--deep"></span>
+            <span class="pdm-rmg__json-string">"china_supply_chain_exposure"</span>
+          </div>
+          <div class="pdm-rmg__json-line">
+            <span class="pdm-rmg__json-indent pdm-rmg__json-indent--deep"></span>
+            <span class="pdm-rmg__json-punctuation">]</span><span class="pdm-rmg__json-punctuation">,</span>
+          </div>
+          <div class="pdm-rmg__json-line">
+            <span class="pdm-rmg__json-indent pdm-rmg__json-indent--deep"></span>
+            <span class="pdm-rmg__json-key">"unsupportedNodeIds"</span><span class="pdm-rmg__json-punctuation">:</span>
+            <span class="pdm-rmg__json-punctuation">[</span><span class="pdm-rmg__json-punctuation">]</span><span class="pdm-rmg__json-punctuation">,</span>
+          </div>
+          <div class="pdm-rmg__json-line">
+            <span class="pdm-rmg__json-indent pdm-rmg__json-indent--deep"></span>
+            <span class="pdm-rmg__json-key">"supportedThreatIds"</span><span class="pdm-rmg__json-punctuation">:</span>
+            <span class="pdm-rmg__json-punctuation">[</span>
+          </div>
+          <div class="pdm-rmg__json-line">
+            <span class="pdm-rmg__json-indent pdm-rmg__json-indent--deep pdm-rmg__json-indent--deep"></span>
+            <span class="pdm-rmg__json-string">"platform_control_weakening"</span><span class="pdm-rmg__json-punctuation">,</span>
+          </div>
+          <div class="pdm-rmg__json-line">
+            <span class="pdm-rmg__json-indent pdm-rmg__json-indent--deep pdm-rmg__json-indent--deep"></span>
+            <span class="pdm-rmg__json-string">"regulatory_pressure"</span><span class="pdm-rmg__json-punctuation">,</span>
+          </div>
+          <div class="pdm-rmg__json-line">
+            <span class="pdm-rmg__json-indent pdm-rmg__json-indent--deep pdm-rmg__json-indent--deep"></span>
+            <span class="pdm-rmg__json-string">"supply_chain_disruption"</span>
+          </div>
+          <div class="pdm-rmg__json-line">
+            <span class="pdm-rmg__json-indent pdm-rmg__json-indent--deep"></span>
+            <span class="pdm-rmg__json-punctuation">]</span><span class="pdm-rmg__json-punctuation">,</span>
+          </div>
+          <div class="pdm-rmg__json-line">
+            <span class="pdm-rmg__json-indent pdm-rmg__json-indent--deep"></span>
+            <span class="pdm-rmg__json-key">"unsupportedThreatIds"</span><span class="pdm-rmg__json-punctuation">:</span>
+            <span class="pdm-rmg__json-punctuation">[</span><span class="pdm-rmg__json-punctuation">]</span>
+          </div>
+          <div class="pdm-rmg__json-line">
+            <span class="pdm-rmg__json-indent"></span>
+            <span class="pdm-rmg__json-punctuation">&#125;</span>
+          </div>
           <div class="pdm-rmg__json-line"><span class="pdm-rmg__json-punctuation">&#125;</span></div>
         </div>
       </section>
@@ -332,13 +460,13 @@
         aria-labelledby="pdm-rmg-audit-title"
       >
         <div class="pdm-rmg__section-head">
-          <p class="pdm-rmg__section-label">Audit / inspectability</p>
+          <p class="pdm-rmg__section-label">Governed proof</p>
           <h2 class="pdm-rmg__section-title" id="pdm-rmg-audit-title">
-            Why this system is auditable
+            Governed proof surface
           </h2>
           <p class="pdm-rmg__section-copy">
-            Explanation surface, audit report, replay snapshot, registry hash, and governed
-            releases keep the system inspectable and replayable.
+            Explanation, audit, governance, diff, and registry reads expose the current boundary as
+            governed proof.
           </p>
         </div>
 
@@ -367,11 +495,11 @@
       <section class="pdm-rmg__closing pdm-site-surface pdm-site-panel" aria-labelledby="pdm-rmg-closing-title">
         <p class="pdm-rmg__section-label">Final framing</p>
         <h2 class="pdm-rmg__closing-line" id="pdm-rmg-closing-title">
-          RMG does not claim to know what will happen.
+          RMG refuses unsupported claims and only emits structurally supported outputs under
+          authored evidence and explicit constraints.
         </h2>
         <p class="pdm-rmg__closing-copy">
-          It enforces what can be structurally supported under authored evidence and explicit
-          constraints.
+          Unsupported paths stay blocked; supported paths stay auditable.
         </p>
       </section>
     </div>
