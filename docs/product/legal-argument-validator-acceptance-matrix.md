@@ -461,9 +461,9 @@ Reason:
 
 ## Section 6: Replay and Trace Integrity
 
-Current runtime proof in this wave covers retained-artifact/hash safety and deterministic forward-path behavior.
+Current runtime proof in this wave covers retained-artifact/hash safety, deterministic forward-path behavior, and replay re-execution for the covered retained-state cases.
 
-The cases below remain the long-term replay and trace integrity target, but not every replay case is yet runtime-proven by the current test suite.
+The cases below remain the replay and trace integrity target, but only the scenarios that are explicitly exercised by the current test suite should be treated as runtime-proven.
 
 ### Case 6.1
 

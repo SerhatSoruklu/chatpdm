@@ -11,11 +11,11 @@ function main(): void {
   assert.equal(viewModel.title, 'Current public API reference.');
   assert.equal(
     viewModel.intro,
-    'This page models the public API as a scoped runtime section plus separate Shared Intake Router, Risk Mapping Governance, Military Constraints Compiler, and ZEE surfaces. The hero counts are scoped to the runtime section only.',
+    'This page models the public API as a scoped runtime section plus separate Shared Intake Router, Risk Mapping Governance, Military Constraints Compiler, Legal Validator, and ZEE surfaces. The hero counts are scoped to the runtime section only.',
   );
   assert.equal(
     viewModel.summaryLine,
-    'Runtime section shows 8 public endpoints, 22 field rules, 1 platform rule, 1 runtime boundary, and 8 refusal boundaries.',
+    'Runtime section shows 8 public endpoints, 22 field rules, 1 platform rule, 1 runtime boundary, and 8 refusal boundaries. Legal Validator adds 5 endpoints, 26 request fields, and 6 refusal boundaries.',
   );
   assert.deepEqual(
     viewModel.sectionGroups.map((group) => group.label),
@@ -26,12 +26,13 @@ function main(): void {
       'Risk Mapping Governance',
       'Military Constraints Compiler',
       'ZeroGlare Evidence Engine',
+      'Legal Validator',
       'Shared Intake Router',
       'Support / Notes',
     ],
   );
   assert.deepEqual(viewModel.sectionGroups.map((group) => group.sections.length), [
-    1, 1, 1, 1, 1, 1, 1, 3,
+    1, 1, 1, 1, 1, 1, 1, 1, 3,
   ]);
   assert.deepEqual(viewModel.sectionOrder.map((section) => section.id), [
     'overview',
@@ -40,6 +41,7 @@ function main(): void {
     'risk-mapping-governance',
     'military-constraints',
     'zee-api',
+    'legal-validator-api',
     'shared-intake-router',
     'platform-rules',
     'runtime-boundaries',
@@ -48,7 +50,7 @@ function main(): void {
   assert.equal(viewModel.sectionOrder[0].title, 'Current public API reference.');
   assert.equal(
     viewModel.sectionOrder[0].summary,
-    'This page models the public API as a scoped runtime section plus separate Shared Intake Router, Risk Mapping Governance, Military Constraints Compiler, and ZEE surfaces. The hero counts are scoped to the runtime section only.',
+    'This page models the public API as a scoped runtime section plus separate Shared Intake Router, Risk Mapping Governance, Military Constraints Compiler, Legal Validator, and ZEE surfaces. The hero counts are scoped to the runtime section only.',
   );
   assert.equal(viewModel.sectionOrder[3].title, 'Risk Mapping Governance API');
   assert.equal(
@@ -65,9 +67,14 @@ function main(): void {
     viewModel.sectionOrder[5].summary,
     'ZeroGlare Evidence Engine is exposed through a read-only ZEE scaffold and a separate zeroglare analysis route. The ZEE scaffold exposes discovery, contract, explain, and audit metadata only; the zeroglare analysis route accepts structured text input through q or input and returns bounded diagnostics.',
   );
-  assert.equal(viewModel.sectionOrder[6].title, 'Shared Intake Router API');
+  assert.equal(viewModel.sectionOrder[6].title, 'Legal Validator API');
   assert.equal(
     viewModel.sectionOrder[6].summary,
+    'Legal Validator is exposed separately as a bounded runtime surface. The backend exposes intake, orchestrate, replay, runs, and governance routes under a strict refusal-first contract.',
+  );
+  assert.equal(viewModel.sectionOrder[7].title, 'Shared Intake Router API');
+  assert.equal(
+    viewModel.sectionOrder[7].summary,
     'The shared intake router accepts one input and dispatches it deterministically to Concepts or Risk Mapping by input shape. Unstructured raw text goes to Concepts; explicit RiskMapQuery field blocks or structured RiskMapQuery objects go to Risk Mapping. Mixed prose/field blocks are refused.',
   );
   assert.deepEqual(
@@ -334,6 +341,17 @@ function main(): void {
     viewModel.zeeApiIntro,
     'ZeroGlare Evidence Engine is exposed through a read-only ZEE scaffold and a separate zeroglare analysis route. The ZEE scaffold exposes discovery, contract, explain, and audit metadata only; the zeroglare analysis route accepts structured text input through q or input and returns bounded diagnostics.',
   );
+  assert.equal(viewModel.legalValidatorTitle, 'Legal Validator API');
+  assert.equal(
+    viewModel.legalValidatorIntro,
+    'Legal Validator is exposed separately as a bounded runtime surface. The backend exposes intake, orchestrate, replay, runs, and governance routes under a strict refusal-first contract.',
+  );
+  assert.equal(
+    viewModel.legalValidatorCountsLine,
+    'Legal Validator adds 5 endpoints, 26 request fields, and 6 refusal boundaries.',
+  );
+  assert.equal(viewModel.legalValidatorTrustRoute, '/legal-validator');
+  assert.equal(viewModel.legalValidatorInspectRoute, '/inspect/legal-validator');
   assert.deepEqual(
     viewModel.zeeApiEndpointRows,
     [
@@ -440,6 +458,10 @@ function main(): void {
     ],
   );
   assert.equal(viewModel.zeeApiTrustRoute, '/zeroglare-evidence-engine');
+  assert.equal(
+    viewModel.sectionOrder[9].summary,
+    'The Legal Validator is a deterministic validation system for structured argument analysis. It does not provide legal advice, interpretation, or recommendations.',
+  );
   assert.equal(viewModel.sharedIntakeTitle, 'Shared Intake Router API');
   assert.equal(
     viewModel.sharedIntakeIntro,

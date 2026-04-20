@@ -48,8 +48,12 @@ export class RiskMappingGovernancePageComponent {
   protected readonly diagramCaptionDetail = RMG_DIAGRAM_CAPTION_DETAIL;
   protected readonly apiOrigin: string;
   protected readonly pageRoute = RMG_ROUTE_PATH;
+  protected readonly rootEndpoint: string;
+  protected readonly resolveEndpoint: string;
   protected readonly explainEndpoint: string;
   protected readonly auditEndpoint: string;
+  protected readonly governanceEndpoint: string;
+  protected readonly diffEndpoint: string;
   protected readonly nodesEndpoint: string;
   protected readonly threatsEndpoint: string;
   protected readonly compatibilityEndpoint: string;
@@ -62,59 +66,75 @@ export class RiskMappingGovernancePageComponent {
     @Inject(DOCUMENT) private readonly document: Document | null | undefined,
   ) {
     this.apiOrigin = resolveApiOrigin(document);
+    this.rootEndpoint = `${this.apiOrigin}/api/v1/risk-mapping`;
+    this.resolveEndpoint = `${this.apiOrigin}/api/v1/risk-mapping/resolve`;
     this.explainEndpoint = `${this.apiOrigin}/api/v1/risk-mapping/explain`;
     this.auditEndpoint = `${this.apiOrigin}/api/v1/risk-mapping/audit`;
+    this.governanceEndpoint = `${this.apiOrigin}/api/v1/risk-mapping/governance`;
+    this.diffEndpoint = `${this.apiOrigin}/api/v1/risk-mapping/diff`;
     this.nodesEndpoint = `${this.apiOrigin}/api/v1/risk-mapping/registries/nodes`;
     this.threatsEndpoint = `${this.apiOrigin}/api/v1/risk-mapping/registries/threats`;
     this.compatibilityEndpoint = `${this.apiOrigin}/api/v1/risk-mapping/registries/compatibility`;
     this.falsifiersEndpoint = `${this.apiOrigin}/api/v1/risk-mapping/registries/falsifiers`;
     this.auditSurfaceCards = [
       {
+        title: 'Operation index',
+        copy: 'Shows the live RMG operation set and confirms the public surface is active.',
+        href: this.rootEndpoint,
+        label: '/api/v1/risk-mapping',
+      },
+      {
+        title: 'Resolve contract',
+        copy: 'Frozen structural output for admitted, narrowed, or refused queries.',
+        href: this.resolveEndpoint,
+        label: '/api/v1/risk-mapping/resolve',
+      },
+      {
         title: 'Explanation surface',
-        copy: 'A bounded structural explanation that mirrors the resolve decision without adding narrative drift.',
+        copy: 'Bounded explanation that mirrors resolve without narrative drift.',
         href: this.explainEndpoint,
         label: '/api/v1/risk-mapping/explain',
       },
       {
         title: 'Audit report',
-        copy: 'A provenance-backed audit surface that bundles input, output, explanation, and invariants.',
+        copy: 'Input, output, explanation, confidence, provenance, and invariants in one bounded record.',
         href: this.auditEndpoint,
         label: '/api/v1/risk-mapping/audit',
       },
       {
-        title: 'Registry views',
-        copy: 'Deterministic registry read models for nodes, threats, compatibility, and falsifiers.',
-        href: this.nodesEndpoint,
-        label: '/api/v1/risk-mapping/registries/*',
+        title: 'Governance report',
+        copy: 'Release admission, registry hash, validation, replay, and compatibility checks.',
+        href: this.governanceEndpoint,
+        label: '/api/v1/risk-mapping/governance',
       },
       {
-        title: 'Governed releases',
-        copy: 'Versioned releases, diffs, freeze validation, and replay checks keep change control explicit.',
-        href: this.auditEndpoint,
-        label: 'Governance + replay surfaces',
+        title: 'Diff report',
+        copy: 'Release-to-release change record for governed updates.',
+        href: this.diffEndpoint,
+        label: '/api/v1/risk-mapping/diff',
       },
     ] as const;
     this.apiSurfaceLinks = [
       {
-        title: 'Nodes',
+        title: 'Nodes registry',
         copy: 'Inspection-ready node registry.',
         href: this.nodesEndpoint,
         label: '/api/v1/risk-mapping/registries/nodes',
       },
       {
-        title: 'Threats',
+        title: 'Threats registry',
         copy: 'Inspection-ready threat registry.',
         href: this.threatsEndpoint,
         label: '/api/v1/risk-mapping/registries/threats',
       },
       {
-        title: 'Compatibility',
+        title: 'Compatibility registry',
         copy: 'Inspection-ready compatibility registry.',
         href: this.compatibilityEndpoint,
         label: '/api/v1/risk-mapping/registries/compatibility',
       },
       {
-        title: 'Falsifiers',
+        title: 'Falsifiers registry',
         copy: 'Inspection-ready falsifier registry.',
         href: this.falsifiersEndpoint,
         label: '/api/v1/risk-mapping/registries/falsifiers',
@@ -125,7 +145,7 @@ export class RiskMappingGovernancePageComponent {
   protected readonly whatItIsCards: readonly GuaranteeCard[] = [
     {
       title: 'Deterministic',
-      copy: 'Same input and same authored artifacts produce the same result.',
+      copy: 'Same authored input and the same authored artifacts produce the same structural output.',
     },
     {
       title: 'Bounded',
@@ -137,7 +157,7 @@ export class RiskMappingGovernancePageComponent {
     },
     {
       title: 'Inspectable',
-      copy: 'Every admitted, narrowed, or refused result can be traced through explanation and audit surfaces.',
+      copy: 'Every admitted, narrowed, or refused result can be traced through explanation, audit, and governed proof surfaces.',
     },
     {
       title: 'Governed',
@@ -172,7 +192,7 @@ export class RiskMappingGovernancePageComponent {
     {
       step: '01',
       title: 'Input and normalization',
-      copy: 'A query is normalized into a bounded shape before it can enter resolution.',
+      copy: 'A query is normalized into a bounded shape before resolution begins.',
     },
     {
       step: '02',
@@ -192,7 +212,7 @@ export class RiskMappingGovernancePageComponent {
     {
       step: '05',
       title: 'Output, explanation, and audit',
-      copy: 'The final resolve output stays compact while explanation and audit surfaces stay inspectable.',
+      copy: 'The resolve output stays compact while explanation and audit surfaces stay inspectable.',
     },
   ] as const;
 
@@ -210,16 +230,16 @@ export class RiskMappingGovernancePageComponent {
       copy: 'Paths are direct, bounded, and explicit rather than inferred from open-ended context.',
     },
     {
-      title: 'Auditable risk analysis',
+      title: 'Governed proof',
       copy: 'Every result can be replayed, inspected, and traced through governed artifacts.',
     },
   ] as const;
 
   protected readonly exampleBullets = [
-    'Broad framing is checked at the boundary.',
-    'Supported structural paths are mapped only where evidence exists.',
-    'Unsupported bridges remain explicit.',
-    'Bounded support confidence does not mean prediction.',
+    'Broad framing is classified and narrowed at the boundary.',
+    'Only direct supported structural paths are emitted.',
+    'Unsupported bridges remain explicit and block unsupported expansion.',
+    'Bounded support confidence is a support class, not a likelihood.',
   ] as const;
 
   openDiagramDialog(): void {

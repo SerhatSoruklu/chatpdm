@@ -22,6 +22,8 @@ const manifestPolicies = [
     name: 'backend',
     filePath: path.join(repoRoot, 'backend', 'package.json'),
     dependencies: [
+      'ajv',
+      'ajv-formats',
       'dotenv',
       'express',
       'helmet',
@@ -35,15 +37,21 @@ const manifestPolicies = [
       'nodemon',
       'typescript-eslint',
     ],
+    allowedOverrides: {
+      'follow-redirects': '1.16.0',
+    },
   },
   {
     name: 'frontend',
     filePath: path.join(repoRoot, 'frontend', 'package.json'),
     dependencies: [
+      '@angular/animations',
+      '@angular/cdk',
       '@angular/common',
       '@angular/compiler',
       '@angular/core',
       '@angular/forms',
+      '@angular/material',
       '@angular/platform-browser',
       '@angular/platform-server',
       '@angular/router',
@@ -54,14 +62,23 @@ const manifestPolicies = [
       'tslib',
     ],
     devDependencies: [
+      '@eslint/js',
+      'eslint',
+      'globals',
       '@angular/build',
       '@angular/cli',
       '@angular/compiler-cli',
       '@types/express',
       '@types/node',
       'typescript',
+      'typescript-eslint',
       'vitest',
     ],
+    allowedOverrides: {
+      '@hono/node-server': '1.19.14',
+      hono: '4.12.14',
+      vite: '7.3.2',
+    },
   },
 ];
 
@@ -123,8 +140,27 @@ function verifyManifest(policy) {
     throw new Error(`${policy.name} manifest must not declare peerDependencies.`);
   }
 
-  if (manifest.overrides && Object.keys(manifest.overrides).length > 0) {
-    throw new Error(`${policy.name} manifest must not declare overrides.`);
+  const actualOverrides = manifest.overrides || {};
+  const allowedOverrideEntries = Object.entries(policy.allowedOverrides || {});
+  const actualOverrideNames = Object.keys(actualOverrides);
+
+  const unexpectedOverrides = actualOverrideNames.filter((name) => !Object.prototype.hasOwnProperty.call(policy.allowedOverrides || {}, name));
+  const missingOverrides = allowedOverrideEntries
+    .filter(([name, expectedValue]) => actualOverrides[name] !== expectedValue)
+    .map(([name]) => name);
+
+  if (unexpectedOverrides.length > 0 || missingOverrides.length > 0) {
+    const issues = [];
+
+    if (missingOverrides.length > 0) {
+      issues.push(`missing overrides: ${missingOverrides.join(', ')}`);
+    }
+
+    if (unexpectedOverrides.length > 0) {
+      issues.push(`unexpected overrides: ${unexpectedOverrides.join(', ')}`);
+    }
+
+    throw new Error(`${policy.name} manifest override policy drift detected: ${issues.join('; ')}.`);
   }
 }
 

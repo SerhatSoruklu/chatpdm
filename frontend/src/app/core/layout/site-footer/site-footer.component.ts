@@ -80,6 +80,7 @@ export class SiteFooterComponent implements AfterViewInit, OnInit, OnDestroy {
       links: [
         { label: 'Query runtime', route: '/runtime', fragment: 'runtime-query' },
         { label: 'Live concepts', route: '/live-concepts' },
+        { label: 'Analyst Workbench', route: '/inspect/legal-validator', featured: true },
         { label: 'Controlled comparisons', route: '/controlled-comparisons' },
         { label: 'Refusal behavior', route: '/runtime', fragment: 'runtime-refusal' },
         { label: 'Resolution contract', route: '/resolution-contract' },

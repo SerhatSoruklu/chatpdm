@@ -1,0 +1,719 @@
+<div class="pdm-lv-workbench">
+  <main class="pdm-lv-workbench__main pdm-shell" aria-labelledby="pdm-lv-workbench-title">
+    <div class="pdm-shell__frame pdm-lv-workbench__frame">
+      <section class="pdm-lv-workbench__hero pdm-site-surface pdm-site-panel">
+        <div class="pdm-lv-workbench__hero-copy">
+          <p class="pdm-lv-workbench__eyebrow pdm-mono">Legal validator</p>
+          <h1 class="pdm-lv-workbench__title" id="pdm-lv-workbench-title">{{ pageTitle }}</h1>
+          <p class="pdm-lv-workbench__subtitle">
+            Inspection-first surface for the deterministic legal validation system. The workbench calls the live
+            backend contracts, shows persisted runtime truth, and keeps refusal states explicit.
+          </p>
+        </div>
+
+        <div class="pdm-lv-workbench__hero-meta">
+          <a class="pdm-lv-workbench__breadcrumb" routerLink="/inspect">Inspect index</a>
+          <a class="pdm-lv-workbench__breadcrumb" routerLink="/legal-validator">Legal Validator docs</a>
+          <p class="pdm-lv-workbench__api-origin">
+            Backend origin: <span class="pdm-mono">{{ apiOrigin }}</span>
+          </p>
+          <p class="pdm-lv-workbench__contract-note">
+            The page does not invent source truth. It only displays what the backend returns.
+          </p>
+        </div>
+      </section>
+
+      <section class="pdm-lv-workbench__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-lv-workbench-contracts-title">
+        <div class="pdm-lv-workbench__section-head">
+          <p class="pdm-lv-workbench__section-label pdm-mono">Contracts</p>
+          <h2 class="pdm-lv-workbench__section-title" id="pdm-lv-workbench-contracts-title">
+            Live route contracts.
+          </h2>
+        </div>
+
+        @if (contractsState().status === 'loading') {
+          <div class="pdm-lv-workbench__state-banner" aria-live="polite">
+            Loading live validator contracts.
+          </div>
+        } @else if (contractsState().status === 'error') {
+          <div class="pdm-lv-workbench__state-banner pdm-lv-workbench__state-banner--error" role="alert">
+            {{ contractsState().errorMessage }}
+          </div>
+        } @else if (contractsState().data; as contracts) {
+          <div class="pdm-lv-workbench__contract-grid">
+            @for (card of contractCards(); track card.endpoint) {
+              <article class="pdm-lv-workbench__contract-card">
+                <p class="pdm-lv-workbench__card-label pdm-mono">{{ card.title }}</p>
+                <p class="pdm-lv-workbench__card-endpoint pdm-mono">{{ card.endpoint }}</p>
+                <p class="pdm-lv-workbench__card-copy">{{ card.detail }}</p>
+
+                <dl class="pdm-lv-workbench__metric-grid">
+                  <div class="pdm-lv-workbench__metric">
+                    <dt class="pdm-lv-workbench__metric-label pdm-mono">Contract</dt>
+                    <dd class="pdm-lv-workbench__metric-value">{{ card.contractVersion }}</dd>
+                  </div>
+                  <div class="pdm-lv-workbench__metric">
+                    <dt class="pdm-lv-workbench__metric-label pdm-mono">Status</dt>
+                    <dd class="pdm-lv-workbench__metric-value">{{ card.status }}</dd>
+                  </div>
+                  <div class="pdm-lv-workbench__metric">
+                    <dt class="pdm-lv-workbench__metric-label pdm-mono">Outcomes</dt>
+                    <dd class="pdm-lv-workbench__metric-value">{{ card.allowedOutcomes.join(', ') }}</dd>
+                  </div>
+                </dl>
+
+                <p class="pdm-lv-workbench__card-small-copy">
+                  <span class="pdm-mono">{{ card.title === 'Orchestrate' ? 'Phase order' : 'Operations' }}</span>
+                  {{ card.allowedOperations.join(', ') }}
+                </p>
+              </article>
+            }
+          </div>
+        }
+      </section>
+
+      <section class="pdm-lv-workbench__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-lv-workbench-controls-title">
+        <div class="pdm-lv-workbench__section-head">
+          <p class="pdm-lv-workbench__section-label pdm-mono">Execution controls</p>
+          <h2 class="pdm-lv-workbench__section-title" id="pdm-lv-workbench-controls-title">
+            Inspect, then run intake and orchestrate.
+          </h2>
+          <p class="pdm-lv-workbench__section-copy">
+            Intake and orchestration require live source-document and doctrine identifiers. The workbench will surface
+            refusal responses if the backend rejects the request.
+          </p>
+        </div>
+
+        <div class="pdm-lv-workbench__control-grid">
+          <article class="pdm-lv-workbench__control-card pdm-lv-workbench__control-card--inspection">
+            <p class="pdm-lv-workbench__card-label pdm-mono">Inspection</p>
+            <p class="pdm-lv-workbench__control-note">
+              Use a persisted <span class="pdm-mono">validation-run-*</span> id. The page disables actions until the id matches the runtime shape.
+            </p>
+            <label class="pdm-lv-workbench__field">
+              <span class="pdm-lv-workbench__field-label">Validation run id</span>
+              <input
+                class="pdm-lv-workbench__input"
+                type="text"
+                name="validationRunId"
+                [(ngModel)]="draft.validationRunId"
+                autocomplete="off"
+                spellcheck="false"
+                placeholder="validation-run-..."
+              />
+            </label>
+            <div class="pdm-lv-workbench__button-row pdm-lv-workbench__button-row--inspection">
+              <button class="pdm-site-button" type="button" (click)="loadInspection()" [disabled]="!canLoadInspection()">
+                Load inspection
+              </button>
+              <button class="pdm-site-button pdm-site-button--secondary" type="button" (click)="loadReport()" [disabled]="!canLoadReport()">
+                Load report
+              </button>
+              <button class="pdm-site-button pdm-site-button--secondary" type="button" (click)="loadExport()" [disabled]="!canLoadExport()">
+                Load export
+              </button>
+              <button class="pdm-site-button pdm-site-button--secondary" type="button" (click)="runReplay()" [disabled]="!canRunReplay()">
+                Replay run
+              </button>
+            </div>
+          </article>
+
+          <article class="pdm-lv-workbench__control-card">
+            <p class="pdm-lv-workbench__card-label pdm-mono">Intake</p>
+            <p class="pdm-lv-workbench__control-note">
+              Matter and source-document ids must reference existing persisted validator records.
+            </p>
+            <label class="pdm-lv-workbench__field">
+              <span class="pdm-lv-workbench__field-label">Matter id</span>
+              <input class="pdm-lv-workbench__input" type="text" name="matterId" [(ngModel)]="draft.matterId" autocomplete="off" spellcheck="false" />
+            </label>
+            <label class="pdm-lv-workbench__field">
+              <span class="pdm-lv-workbench__field-label">Matter title</span>
+              <input class="pdm-lv-workbench__input" type="text" name="matterTitle" [(ngModel)]="draft.matterTitle" autocomplete="off" spellcheck="false" />
+            </label>
+            <div class="pdm-lv-workbench__inline-grid">
+              <label class="pdm-lv-workbench__field">
+                <span class="pdm-lv-workbench__field-label">Jurisdiction</span>
+                <input class="pdm-lv-workbench__input" type="text" name="matterJurisdiction" [(ngModel)]="draft.matterJurisdiction" autocomplete="off" spellcheck="false" />
+              </label>
+              <label class="pdm-lv-workbench__field">
+                <span class="pdm-lv-workbench__field-label">Practice area</span>
+                <input class="pdm-lv-workbench__input" type="text" name="matterPracticeArea" [(ngModel)]="draft.matterPracticeArea" autocomplete="off" spellcheck="false" />
+              </label>
+            </div>
+            <div class="pdm-lv-workbench__inline-grid">
+              <label class="pdm-lv-workbench__field">
+                <span class="pdm-lv-workbench__field-label">Matter status</span>
+                <input class="pdm-lv-workbench__input" type="text" name="matterStatus" [(ngModel)]="draft.matterStatus" autocomplete="off" spellcheck="false" />
+              </label>
+              <label class="pdm-lv-workbench__field">
+                <span class="pdm-lv-workbench__field-label">Created by</span>
+                <input class="pdm-lv-workbench__input" type="text" name="matterCreatedBy" [(ngModel)]="draft.matterCreatedBy" autocomplete="off" spellcheck="false" />
+              </label>
+            </div>
+            <label class="pdm-lv-workbench__field">
+              <span class="pdm-lv-workbench__field-label">Source document id</span>
+              <input
+                class="pdm-lv-workbench__input"
+                type="text"
+                name="sourceDocumentId"
+                [(ngModel)]="draft.sourceDocumentId"
+                autocomplete="off"
+                spellcheck="false"
+                placeholder="source-document-123"
+              />
+            </label>
+            <button class="pdm-site-button" type="button" (click)="runIntake()" [disabled]="!canRunIntake()">
+              Run intake
+            </button>
+          </article>
+
+          <article class="pdm-lv-workbench__control-card">
+            <p class="pdm-lv-workbench__card-label pdm-mono">Authority and doctrine</p>
+            <p class="pdm-lv-workbench__control-note">
+              Artifact, authority, mapping, and override ids should come from real runtime outputs.
+            </p>
+            <label class="pdm-lv-workbench__field">
+              <span class="pdm-lv-workbench__field-label">Doctrine artifact id</span>
+              <input class="pdm-lv-workbench__input" type="text" name="doctrineArtifactId" [(ngModel)]="draft.doctrineArtifactId" autocomplete="off" spellcheck="false" />
+            </label>
+            <label class="pdm-lv-workbench__field">
+              <span class="pdm-lv-workbench__field-label">Authority id</span>
+              <input class="pdm-lv-workbench__input" type="text" name="authorityId" [(ngModel)]="draft.authorityId" autocomplete="off" spellcheck="false" />
+            </label>
+            <label class="pdm-lv-workbench__field">
+              <span class="pdm-lv-workbench__field-label">Citation</span>
+              <input class="pdm-lv-workbench__input" type="text" name="authorityCitation" [(ngModel)]="draft.authorityCitation" autocomplete="off" spellcheck="false" />
+            </label>
+            <div class="pdm-lv-workbench__inline-grid">
+              <label class="pdm-lv-workbench__field">
+                <span class="pdm-lv-workbench__field-label">Evaluation date</span>
+                <input class="pdm-lv-workbench__input" type="text" name="authorityEvaluationDate" [(ngModel)]="draft.authorityEvaluationDate" autocomplete="off" spellcheck="false" placeholder="2020-06-01T00:00:00Z" />
+              </label>
+              <label class="pdm-lv-workbench__field">
+                <span class="pdm-lv-workbench__field-label">Required interpretation regime</span>
+                <input class="pdm-lv-workbench__input" type="text" name="authorityRequiredInterpretationRegimeId" [(ngModel)]="draft.authorityRequiredInterpretationRegimeId" autocomplete="off" spellcheck="false" />
+              </label>
+            </div>
+            <div class="pdm-lv-workbench__inline-grid">
+              <label class="pdm-lv-workbench__field">
+                <span class="pdm-lv-workbench__field-label">Expected jurisdiction</span>
+                <input class="pdm-lv-workbench__input" type="text" name="authorityExpectedJurisdiction" [(ngModel)]="draft.authorityExpectedJurisdiction" autocomplete="off" spellcheck="false" />
+              </label>
+              <label class="pdm-lv-workbench__field">
+                <span class="pdm-lv-workbench__field-label">Expected source class</span>
+                <input class="pdm-lv-workbench__input" type="text" name="authorityExpectedSourceClass" [(ngModel)]="draft.authorityExpectedSourceClass" autocomplete="off" spellcheck="false" />
+              </label>
+            </div>
+            <label class="pdm-lv-workbench__field">
+              <span class="pdm-lv-workbench__field-label">Expected institution</span>
+              <input class="pdm-lv-workbench__input" type="text" name="authorityExpectedInstitution" [(ngModel)]="draft.authorityExpectedInstitution" autocomplete="off" spellcheck="false" />
+            </label>
+          </article>
+
+          <article class="pdm-lv-workbench__control-card">
+            <p class="pdm-lv-workbench__card-label pdm-mono">Mapping and validation</p>
+            <div class="pdm-lv-workbench__inline-grid">
+              <label class="pdm-lv-workbench__field">
+                <span class="pdm-lv-workbench__field-label">Resolver status</span>
+                <select class="pdm-lv-workbench__select" name="resolverStatus" [(ngModel)]="draft.resolverStatus">
+                  <option value="success">success</option>
+                  <option value="ambiguous">ambiguous</option>
+                  <option value="rule_not_defined">rule_not_defined</option>
+                  <option value="raw_precedent">raw_precedent</option>
+                </select>
+              </label>
+              <label class="pdm-lv-workbench__field">
+                <span class="pdm-lv-workbench__field-label">Mapping type</span>
+                <select class="pdm-lv-workbench__select" name="resolverMappingType" [(ngModel)]="draft.resolverMappingType">
+                  <option value="concept">concept</option>
+                  <option value="authority">authority</option>
+                  <option value="combined">combined</option>
+                </select>
+              </label>
+            </div>
+            <div class="pdm-lv-workbench__inline-grid">
+              <label class="pdm-lv-workbench__field">
+                <span class="pdm-lv-workbench__field-label">Match basis</span>
+                <select class="pdm-lv-workbench__select" name="resolverMatchBasis" [(ngModel)]="draft.resolverMatchBasis">
+                  <option value="exact_structural_rule">exact_structural_rule</option>
+                  <option value="exact_synonym">exact_synonym</option>
+                  <option value="manual_override">manual_override</option>
+                </select>
+              </label>
+              <label class="pdm-lv-workbench__field">
+                <span class="pdm-lv-workbench__field-label">Resolver rule id</span>
+                <input class="pdm-lv-workbench__input" type="text" name="resolverRuleId" [(ngModel)]="draft.resolverRuleId" autocomplete="off" spellcheck="false" />
+              </label>
+            </div>
+            <div class="pdm-lv-workbench__inline-grid">
+              <label class="pdm-lv-workbench__field">
+                <span class="pdm-lv-workbench__field-label">Mapping id</span>
+                <input class="pdm-lv-workbench__input" type="text" name="resolverMappingId" [(ngModel)]="draft.resolverMappingId" autocomplete="off" spellcheck="false" />
+              </label>
+              <label class="pdm-lv-workbench__field">
+                <span class="pdm-lv-workbench__field-label">Concept id</span>
+                <input class="pdm-lv-workbench__input" type="text" name="resolverConceptId" [(ngModel)]="draft.resolverConceptId" autocomplete="off" spellcheck="false" />
+              </label>
+            </div>
+            <div class="pdm-lv-workbench__inline-grid">
+              <label class="pdm-lv-workbench__field">
+                <span class="pdm-lv-workbench__field-label">Authority id</span>
+                <input class="pdm-lv-workbench__input" type="text" name="resolverAuthorityId" [(ngModel)]="draft.resolverAuthorityId" autocomplete="off" spellcheck="false" />
+              </label>
+              <label class="pdm-lv-workbench__field">
+                <span class="pdm-lv-workbench__field-label">Override id</span>
+                <input class="pdm-lv-workbench__input" type="text" name="resolverOverrideId" [(ngModel)]="draft.resolverOverrideId" autocomplete="off" spellcheck="false" />
+              </label>
+            </div>
+            <div class="pdm-lv-workbench__inline-grid">
+              <label class="pdm-lv-workbench__field">
+                <span class="pdm-lv-workbench__field-label">Synonym term</span>
+                <input class="pdm-lv-workbench__input" type="text" name="resolverSynonymTerm" [(ngModel)]="draft.resolverSynonymTerm" autocomplete="off" spellcheck="false" />
+              </label>
+              <label class="pdm-lv-workbench__field">
+                <span class="pdm-lv-workbench__field-label">Manual override reason</span>
+                <input class="pdm-lv-workbench__input" type="text" name="resolverManualOverrideReason" [(ngModel)]="draft.resolverManualOverrideReason" autocomplete="off" spellcheck="false" />
+              </label>
+            </div>
+            <label class="pdm-lv-workbench__field">
+              <span class="pdm-lv-workbench__field-label">Resolver refusal reason</span>
+              <textarea class="pdm-lv-workbench__textarea pdm-lv-workbench__textarea--medium" rows="2" name="resolverReason" [(ngModel)]="draft.resolverReason"></textarea>
+            </label>
+            <div class="pdm-lv-workbench__inline-grid">
+              <label class="pdm-lv-workbench__field">
+                <span class="pdm-lv-workbench__field-label">Validation status</span>
+                <select class="pdm-lv-workbench__select" name="validationStatus" [(ngModel)]="draft.validationStatus">
+                  <option value="valid">valid</option>
+                  <option value="source_override">source_override</option>
+                  <option value="factual_linkage_missing">factual_linkage_missing</option>
+                  <option value="insufficient_doctrine">insufficient_doctrine</option>
+                  <option value="authority_scope_violation">authority_scope_violation</option>
+                </select>
+              </label>
+              <label class="pdm-lv-workbench__field">
+                <span class="pdm-lv-workbench__field-label">Validation rule ids</span>
+                <textarea class="pdm-lv-workbench__textarea pdm-lv-workbench__textarea--compact" rows="2" name="validationRuleIdsText" [(ngModel)]="draft.validationRuleIdsText"></textarea>
+              </label>
+            </div>
+            <label class="pdm-lv-workbench__field">
+              <span class="pdm-lv-workbench__field-label">Validation refusal reason</span>
+              <textarea class="pdm-lv-workbench__textarea pdm-lv-workbench__textarea--medium" rows="2" name="validationReason" [(ngModel)]="draft.validationReason"></textarea>
+            </label>
+          </article>
+
+          <article class="pdm-lv-workbench__control-card pdm-lv-workbench__control-card--wide">
+            <p class="pdm-lv-workbench__card-label pdm-mono">Trace input</p>
+            <label class="pdm-lv-workbench__field">
+              <span class="pdm-lv-workbench__field-label">Resolver version</span>
+              <input class="pdm-lv-workbench__input" type="text" name="traceResolverVersion" [(ngModel)]="draft.traceResolverVersion" autocomplete="off" spellcheck="false" />
+            </label>
+            <label class="pdm-lv-workbench__field">
+              <span class="pdm-lv-workbench__field-label">Input hash</span>
+              <input class="pdm-lv-workbench__input" type="text" name="traceInputHash" [(ngModel)]="draft.traceInputHash" autocomplete="off" spellcheck="false" placeholder="64 hex characters" />
+            </label>
+            <label class="pdm-lv-workbench__field">
+              <span class="pdm-lv-workbench__field-label">Source anchors</span>
+              <textarea class="pdm-lv-workbench__textarea pdm-lv-workbench__textarea--large" rows="2" name="traceSourceAnchorsText" [(ngModel)]="draft.traceSourceAnchorsText"></textarea>
+            </label>
+            <label class="pdm-lv-workbench__checkbox">
+              <input type="checkbox" name="traceInterpretationUsed" [(ngModel)]="draft.traceInterpretationUsed" />
+              <span>Interpretation used</span>
+            </label>
+            <label class="pdm-lv-workbench__field">
+              <span class="pdm-lv-workbench__field-label">Interpretation regime id</span>
+              <input class="pdm-lv-workbench__input" type="text" name="traceInterpretationRegimeId" [(ngModel)]="draft.traceInterpretationRegimeId" autocomplete="off" spellcheck="false" />
+            </label>
+            <label class="pdm-lv-workbench__checkbox">
+              <input type="checkbox" name="traceManualOverrideUsed" [(ngModel)]="draft.traceManualOverrideUsed" />
+              <span>Manual override used</span>
+            </label>
+            <label class="pdm-lv-workbench__field">
+              <span class="pdm-lv-workbench__field-label">Override ids</span>
+              <textarea class="pdm-lv-workbench__textarea pdm-lv-workbench__textarea--medium" rows="2" name="traceOverrideIdsText" [(ngModel)]="draft.traceOverrideIdsText"></textarea>
+            </label>
+          </article>
+        </div>
+
+        <div class="pdm-lv-workbench__button-row pdm-lv-workbench__button-row--primary">
+          <button class="pdm-site-button" type="button" (click)="runIntake()" [disabled]="!canRunIntake()">
+            Run intake
+          </button>
+          <button class="pdm-site-button" type="button" (click)="runOrchestrate()" [disabled]="!canRunOrchestrate()">
+            Run orchestrate
+          </button>
+        </div>
+      </section>
+
+      <section class="pdm-lv-workbench__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-lv-workbench-runtime-title">
+        <div class="pdm-lv-workbench__section-head">
+          <p class="pdm-lv-workbench__section-label pdm-mono">Runtime truth</p>
+          <h2 class="pdm-lv-workbench__section-title" id="pdm-lv-workbench-runtime-title">
+            Intake, orchestrate, inspect, and replay state.
+          </h2>
+        </div>
+
+        <div class="pdm-lv-workbench__status-grid">
+          <article class="pdm-lv-workbench__status-card">
+            <p class="pdm-lv-workbench__card-label pdm-mono">Intake</p>
+            @if (intakeState().status === 'idle') {
+              <p class="pdm-lv-workbench__card-copy">No intake request has been submitted yet.</p>
+            } @else if (intakeState().status === 'loading') {
+              <p class="pdm-lv-workbench__card-copy">Submitting intake request.</p>
+            } @else if (intakeState().status === 'error') {
+              <p class="pdm-lv-workbench__card-copy pdm-lv-workbench__card-copy--error">{{ intakeState().errorMessage }}</p>
+            } @else if (intakeState().data; as intake) {
+              <p class="pdm-lv-workbench__card-copy">Matter mode: {{ intake.matterMode }}</p>
+              <p class="pdm-lv-workbench__card-copy">Linked source documents: {{ intake.sourceDocumentCount }}</p>
+            }
+          </article>
+
+          <article class="pdm-lv-workbench__status-card">
+            <p class="pdm-lv-workbench__card-label pdm-mono">Orchestrate</p>
+            @if (orchestrateState().status === 'idle') {
+              <p class="pdm-lv-workbench__card-copy">No orchestrator response yet.</p>
+            } @else if (orchestrateState().status === 'loading') {
+              <p class="pdm-lv-workbench__card-copy">Running the validator engine.</p>
+            } @else if (orchestrateState().status === 'error') {
+              <p class="pdm-lv-workbench__card-copy pdm-lv-workbench__card-copy--error">{{ orchestrateState().errorMessage }}</p>
+            } @else if (orchestrateState().data; as orchestrate) {
+              <p class="pdm-lv-workbench__card-copy">Final result: {{ orchestrate.final.result }}</p>
+              <p class="pdm-lv-workbench__card-copy">Failure codes: {{ orchestrate.final.failureCodes.join(', ') || 'None' }}</p>
+              <p class="pdm-lv-workbench__card-copy">Stopped phase: {{ orchestrate.final.stoppedPhase }}</p>
+            }
+          </article>
+
+          <article class="pdm-lv-workbench__status-card">
+            <p class="pdm-lv-workbench__card-label pdm-mono">Inspection</p>
+            @if (inspectionState().status === 'idle') {
+              <p class="pdm-lv-workbench__card-copy">Load an existing validation run to inspect persisted runtime truth.</p>
+            } @else if (inspectionState().status === 'loading') {
+              <p class="pdm-lv-workbench__card-copy">Loading persisted validation run detail.</p>
+            } @else if (inspectionState().status === 'error') {
+              <p class="pdm-lv-workbench__card-copy pdm-lv-workbench__card-copy--error">{{ inspectionState().errorMessage }}</p>
+            } @else if (inspectionState().data; as inspection) {
+              <p class="pdm-lv-workbench__card-copy">Inspection ready: {{ inspection.inspectionReady ? 'yes' : 'no' }}</p>
+              <p class="pdm-lv-workbench__card-copy">Segments: {{ inspection.counts.sourceSegments }}</p>
+              <p class="pdm-lv-workbench__card-copy">Argument units: {{ inspection.counts.argumentUnits }}</p>
+            }
+          </article>
+
+          <article class="pdm-lv-workbench__status-card">
+            <p class="pdm-lv-workbench__card-label pdm-mono">Replay</p>
+            @if (replayState().status === 'idle') {
+              <p class="pdm-lv-workbench__card-copy">No replay has been executed yet.</p>
+            } @else if (replayState().status === 'loading') {
+              <p class="pdm-lv-workbench__card-copy">Replaying the preserved run.</p>
+            } @else if (replayState().status === 'error') {
+              <p class="pdm-lv-workbench__card-copy pdm-lv-workbench__card-copy--error">{{ replayState().errorMessage }}</p>
+            } @else if (replayState().data; as replay) {
+              <p class="pdm-lv-workbench__card-copy">Replay comparison: {{ replayComparisonLabel(replayState()) }}</p>
+              <p class="pdm-lv-workbench__card-copy">Replay result: {{ replay.final.result }}</p>
+            }
+          </article>
+        </div>
+
+        @if (orchestrateState().data; as orchestrate) {
+          <div class="pdm-lv-workbench__section-head pdm-lv-workbench__section-head--compact">
+            <p class="pdm-lv-workbench__section-label pdm-mono">Phase timeline</p>
+            <h3 class="pdm-lv-workbench__section-subtitle">Orchestrator phase outputs.</h3>
+          </div>
+
+          <div class="pdm-lv-workbench__phase-grid">
+            @for (phase of orchestrate.phases; track phase.phase) {
+              <article class="pdm-lv-workbench__phase-card">
+                <div class="pdm-lv-workbench__phase-head">
+                  <p class="pdm-lv-workbench__phase-label pdm-mono">{{ phase.phase }}</p>
+                  <p class="pdm-lv-workbench__phase-title">{{ phase.label }}</p>
+                </div>
+
+                <dl class="pdm-lv-workbench__metric-grid">
+                  <div class="pdm-lv-workbench__metric">
+                    <dt class="pdm-lv-workbench__metric-label pdm-mono">Status</dt>
+                    <dd class="pdm-lv-workbench__metric-value">{{ phase.status }}</dd>
+                  </div>
+                  <div class="pdm-lv-workbench__metric">
+                    <dt class="pdm-lv-workbench__metric-label pdm-mono">Service</dt>
+                    <dd class="pdm-lv-workbench__metric-value">{{ phase.service || 'n/a' }}</dd>
+                  </div>
+                  <div class="pdm-lv-workbench__metric">
+                    <dt class="pdm-lv-workbench__metric-label pdm-mono">Result</dt>
+                    <dd class="pdm-lv-workbench__metric-value">{{ phase.result || 'n/a' }}</dd>
+                  </div>
+                  <div class="pdm-lv-workbench__metric">
+                    <dt class="pdm-lv-workbench__metric-label pdm-mono">Failure</dt>
+                    <dd class="pdm-lv-workbench__metric-value">{{ phase.failureCode || 'none' }}</dd>
+                  </div>
+                </dl>
+
+                <p class="pdm-lv-workbench__card-copy">{{ phase.reason || 'No refusal reason recorded.' }}</p>
+
+                @if (phase.output) {
+                  <pre class="pdm-lv-workbench__json">{{ phaseOutputJson(phase) }}</pre>
+                }
+              </article>
+            }
+          </div>
+        }
+
+        <div class="pdm-lv-workbench__section-head pdm-lv-workbench__section-head--compact">
+          <p class="pdm-lv-workbench__section-label pdm-mono">Report and export</p>
+          <h3 class="pdm-lv-workbench__section-subtitle">Structural report output tied to persisted validation runs.</h3>
+        </div>
+
+        <div class="pdm-lv-workbench__status-grid">
+          <article class="pdm-lv-workbench__status-card">
+            <p class="pdm-lv-workbench__card-label pdm-mono">Report</p>
+            @if (reportState().status === 'idle') {
+              <p class="pdm-lv-workbench__card-copy">No report has been loaded yet.</p>
+            } @else if (reportState().status === 'loading') {
+              <p class="pdm-lv-workbench__card-copy">Loading structured report output.</p>
+            } @else if (reportState().status === 'error') {
+              <p class="pdm-lv-workbench__card-copy pdm-lv-workbench__card-copy--error">{{ reportState().errorMessage }}</p>
+            } @else if (reportState().data; as report) {
+              <p class="pdm-lv-workbench__card-copy">Report contract: {{ report.contractVersion }}</p>
+              <p class="pdm-lv-workbench__card-copy">Inspection ready: {{ report.reportReady ? 'yes' : 'no' }}</p>
+              <p class="pdm-lv-workbench__card-copy">Integrity warnings: {{ report.integrityWarnings.length }}</p>
+              <p class="pdm-lv-workbench__card-copy">Replay comparison: {{ reportComparisonLabel(reportState()) }}</p>
+              <p class="pdm-lv-workbench__card-copy">Failure codes: {{ report.report.validationRun.failureCodes.join(', ') || 'None' }}</p>
+              <pre class="pdm-lv-workbench__json">{{ prettyJson(report.report) }}</pre>
+            }
+          </article>
+
+          <article class="pdm-lv-workbench__status-card">
+            <p class="pdm-lv-workbench__card-label pdm-mono">Export</p>
+            @if (exportState().status === 'idle') {
+              <p class="pdm-lv-workbench__card-copy">No export has been loaded yet.</p>
+            } @else if (exportState().status === 'loading') {
+              <p class="pdm-lv-workbench__card-copy">Loading structured export output.</p>
+            } @else if (exportState().status === 'error') {
+              <p class="pdm-lv-workbench__card-copy pdm-lv-workbench__card-copy--error">{{ exportState().errorMessage }}</p>
+            } @else if (exportState().data; as exportResponse) {
+              <p class="pdm-lv-workbench__card-copy">Export contract: {{ exportResponse.contractVersion }}</p>
+              <p class="pdm-lv-workbench__card-copy">Replay comparison: {{ exportComparisonLabel(exportState()) }}</p>
+              <p class="pdm-lv-workbench__card-copy">Failure codes: {{ exportResponse.report.validationRun.failureCodes.join(', ') || 'None' }}</p>
+              @if (exportHref(); as href) {
+                <a class="pdm-site-button pdm-site-button--secondary" [href]="href" rel="noreferrer">
+                  Download export JSON
+                </a>
+              }
+              <pre class="pdm-lv-workbench__json">{{ prettyJson(exportResponse.report) }}</pre>
+            }
+          </article>
+        </div>
+      </section>
+
+      @if (inspectionState().data; as inspection) {
+        <section class="pdm-lv-workbench__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-lv-workbench-inspection-title">
+          <div class="pdm-lv-workbench__section-head">
+            <p class="pdm-lv-workbench__section-label pdm-mono">Inspection detail</p>
+            <h2 class="pdm-lv-workbench__section-title" id="pdm-lv-workbench-inspection-title">
+              Persisted runtime truth for validation run {{ inspection.validationRun.validationRunId }}.
+            </h2>
+          </div>
+
+          @if (inspection.integrityWarnings.length > 0) {
+            <div class="pdm-lv-workbench__warning-shell" role="status" aria-live="polite">
+              @for (warning of inspection.integrityWarnings; track warning) {
+                <p class="pdm-lv-workbench__warning">{{ warning }}</p>
+              }
+            </div>
+          }
+
+          <div class="pdm-lv-workbench__detail-grid">
+            <article class="pdm-lv-workbench__detail-card">
+              <p class="pdm-lv-workbench__card-label pdm-mono">Validation run</p>
+              <dl class="pdm-lv-workbench__detail-list">
+                <div><dt class="pdm-mono">Result</dt><dd>{{ inspection.validationRun.result }}</dd></div>
+                <div><dt class="pdm-mono">Failure codes</dt><dd>{{ inspection.validationRun.failureCodes.join(', ') || 'None' }}</dd></div>
+                <div><dt class="pdm-mono">Resolver version</dt><dd>{{ inspection.validationRun.resolverVersion }}</dd></div>
+                <div><dt class="pdm-mono">Input hash</dt><dd>{{ inspection.validationRun.inputHash }}</dd></div>
+              </dl>
+            </article>
+
+            <article class="pdm-lv-workbench__detail-card">
+              <p class="pdm-lv-workbench__card-label pdm-mono">Matter overview</p>
+              @if (inspection.matter; as matter) {
+                <dl class="pdm-lv-workbench__detail-list">
+                  <div><dt class="pdm-mono">Matter id</dt><dd>{{ matter.matterId }}</dd></div>
+                  <div><dt class="pdm-mono">Title</dt><dd>{{ matter.title }}</dd></div>
+                  <div><dt class="pdm-mono">Jurisdiction</dt><dd>{{ matter.jurisdiction }}</dd></div>
+                  <div><dt class="pdm-mono">Practice area</dt><dd>{{ matter.practiceArea }}</dd></div>
+                  <div><dt class="pdm-mono">Status</dt><dd>{{ matter.status }}</dd></div>
+                  <div><dt class="pdm-mono">Created by</dt><dd>{{ matter.createdBy }}</dd></div>
+                  <div><dt class="pdm-mono">Source documents</dt><dd>{{ matter.sourceDocumentIds.join(', ') || 'None' }}</dd></div>
+                </dl>
+              }
+            </article>
+
+            <article class="pdm-lv-workbench__detail-card">
+              <p class="pdm-lv-workbench__card-label pdm-mono">Source document</p>
+              @if (inspection.sourceDocument; as sourceDocument) {
+                <dl class="pdm-lv-workbench__detail-list">
+                  <div><dt class="pdm-mono">Document id</dt><dd>{{ sourceDocument.documentId }}</dd></div>
+                  <div><dt class="pdm-mono">Source document id</dt><dd>{{ sourceDocument.sourceDocumentId }}</dd></div>
+                  <div><dt class="pdm-mono">Content format</dt><dd>{{ sourceDocument.contentFormat }}</dd></div>
+                  <div><dt class="pdm-mono">Content hash</dt><dd>{{ sourceDocument.contentHash }}</dd></div>
+                  <div><dt class="pdm-mono">Segmentation version</dt><dd>{{ sourceDocument.segmentationVersion }}</dd></div>
+                </dl>
+                <pre class="pdm-lv-workbench__json pdm-lv-workbench__json--source">{{ sourceDocument.content }}</pre>
+              }
+            </article>
+
+            <article class="pdm-lv-workbench__detail-card">
+              <p class="pdm-lv-workbench__card-label pdm-mono">Doctrine resolution</p>
+              @if (inspection.doctrineArtifact; as doctrine) {
+                <dl class="pdm-lv-workbench__detail-list">
+                  <div><dt class="pdm-mono">Artifact id</dt><dd>{{ doctrine.artifactId }}</dd></div>
+                  <div><dt class="pdm-mono">Package</dt><dd>{{ doctrine.packageId }}</dd></div>
+                  <div><dt class="pdm-mono">Version</dt><dd>{{ doctrine.version }}</dd></div>
+                  <div><dt class="pdm-mono">Hash</dt><dd>{{ doctrine.hash }}</dd></div>
+                </dl>
+                <pre class="pdm-lv-workbench__json">{{ prettyJson(doctrine.manifest) }}</pre>
+              }
+            </article>
+
+            <article class="pdm-lv-workbench__detail-card">
+              <p class="pdm-lv-workbench__card-label pdm-mono">Authority and citation</p>
+              @if (orchestrateState().data?.phases?.[5]?.output; as authorityPhaseOutput) {
+                <dl class="pdm-lv-workbench__detail-list">
+                  <div><dt class="pdm-mono">Authority id</dt><dd>{{ authorityPhaseOutput['authorityId'] }}</dd></div>
+                  <div><dt class="pdm-mono">Citation</dt><dd>{{ authorityPhaseOutput['citation'] }}</dd></div>
+                  <div><dt class="pdm-mono">Source class</dt><dd>{{ authorityPhaseOutput['sourceClass'] }}</dd></div>
+                  <div><dt class="pdm-mono">Jurisdiction</dt><dd>{{ authorityPhaseOutput['jurisdiction'] }}</dd></div>
+                  <div><dt class="pdm-mono">Interpretation regime</dt><dd>{{ authorityPhaseOutput['interpretationRegimeId'] }}</dd></div>
+                </dl>
+                <pre class="pdm-lv-workbench__json">{{ prettyJson(authorityPhaseOutput['citationScope']) }}</pre>
+              } @else if (inspection.authorityNode; as authorityNode) {
+                <dl class="pdm-lv-workbench__detail-list">
+                  <div><dt class="pdm-mono">Authority id</dt><dd>{{ authorityNode.authorityId }}</dd></div>
+                  <div><dt class="pdm-mono">Citation</dt><dd>{{ authorityNode.citation }}</dd></div>
+                  <div><dt class="pdm-mono">Source class</dt><dd>{{ authorityNode.sourceClass }}</dd></div>
+                  <div><dt class="pdm-mono">Jurisdiction</dt><dd>{{ authorityNode.jurisdiction }}</dd></div>
+                </dl>
+              }
+            </article>
+
+            <article class="pdm-lv-workbench__detail-card">
+              <p class="pdm-lv-workbench__card-label pdm-mono">Mapping and override state</p>
+              @if (orchestrateState().data?.phases?.[6]?.output; as mappingPhaseOutput) {
+                <dl class="pdm-lv-workbench__detail-list">
+                  <div><dt class="pdm-mono">Mapping id</dt><dd>{{ mappingPhaseOutput['mappingId'] }}</dd></div>
+                  <div><dt class="pdm-mono">Mapping type</dt><dd>{{ mappingPhaseOutput['mappingType'] }}</dd></div>
+                  <div><dt class="pdm-mono">Match basis</dt><dd>{{ mappingPhaseOutput['matchBasis'] }}</dd></div>
+                  <div><dt class="pdm-mono">Concept id</dt><dd>{{ mappingPhaseOutput['conceptId'] }}</dd></div>
+                  <div><dt class="pdm-mono">Authority id</dt><dd>{{ mappingPhaseOutput['authorityId'] }}</dd></div>
+                  <div><dt class="pdm-mono">Override id</dt><dd>{{ mappingPhaseOutput['overrideId'] || 'None' }}</dd></div>
+                </dl>
+                <pre class="pdm-lv-workbench__json">{{ prettyJson(mappingPhaseOutput['citationScope'] || inspection.mapping) }}</pre>
+              } @else if (inspection.mapping; as mapping) {
+                <dl class="pdm-lv-workbench__detail-list">
+                  <div><dt class="pdm-mono">Mapping id</dt><dd>{{ mapping.mappingId }}</dd></div>
+                  <div><dt class="pdm-mono">Mapping type</dt><dd>{{ mapping.mappingType }}</dd></div>
+                  <div><dt class="pdm-mono">Status</dt><dd>{{ mapping.status }}</dd></div>
+                  <div><dt class="pdm-mono">Match basis</dt><dd>{{ mapping.matchBasis || 'None' }}</dd></div>
+                </dl>
+              }
+              @if (inspection.overrideRecords.length > 0) {
+                <p class="pdm-lv-workbench__card-copy">Override records loaded: {{ inspection.overrideRecords.length }}</p>
+              }
+            </article>
+
+            <article class="pdm-lv-workbench__detail-card pdm-lv-workbench__detail-card--wide">
+              <p class="pdm-lv-workbench__card-label pdm-mono">Segments</p>
+              <div class="pdm-lv-workbench__table-shell">
+                <table class="pdm-lv-workbench__table">
+                  <thead>
+                    <tr>
+                      <th>Anchor</th>
+                      <th>Sequence</th>
+                      <th>Page</th>
+                      <th>Range</th>
+                      <th>Type</th>
+                      <th>Section</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (segment of inspection.sourceSegments; track segment.sourceSegmentId) {
+                      <tr>
+                        <td class="pdm-mono">{{ segment.sourceAnchor }}</td>
+                        <td class="pdm-mono">{{ segment.sequence }}</td>
+                        <td class="pdm-mono">{{ segment.pageNumber }}</td>
+                        <td class="pdm-mono">{{ segmentRange(segment) }}</td>
+                        <td>{{ segment.segmentType }}</td>
+                        <td>{{ segment.sectionLabel || 'None' }}</td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+            </div>
+          </article>
+
+            <article class="pdm-lv-workbench__detail-card pdm-lv-workbench__detail-card--wide">
+              <p class="pdm-lv-workbench__card-label pdm-mono">Argument units</p>
+              <div class="pdm-lv-workbench__table-shell">
+                <table class="pdm-lv-workbench__table">
+                  <thead>
+                    <tr>
+                      <th>Unit</th>
+                      <th>Sequence</th>
+                      <th>Type</th>
+                      <th>Review state</th>
+                      <th>Admissibility</th>
+                      <th>Source segments</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (unit of inspection.argumentUnits; track unit.argumentUnitId) {
+                      <tr>
+                        <td class="pdm-mono">{{ unit.argumentUnitId }}</td>
+                        <td class="pdm-mono">{{ unit.sequence }}</td>
+                        <td>{{ unit.unitType }}</td>
+                        <td>{{ unit.reviewState }}</td>
+                        <td>{{ unit.admissibility }}</td>
+                        <td class="pdm-mono">{{ unit.sourceSegmentIds.join(', ') || 'None' }}</td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </article>
+
+            <article class="pdm-lv-workbench__detail-card">
+              <p class="pdm-lv-workbench__card-label pdm-mono">Trace and replay readiness</p>
+              <dl class="pdm-lv-workbench__detail-list">
+                <div><dt class="pdm-mono">Source anchors</dt><dd class="pdm-mono">{{ traceListLabel(inspection.validationRun.trace, 'sourceAnchors') }}</dd></div>
+                <div><dt class="pdm-mono">Mapping rule ids</dt><dd class="pdm-mono">{{ traceListLabel(inspection.validationRun.trace, 'mappingRuleIds') }}</dd></div>
+                <div><dt class="pdm-mono">Validation rule ids</dt><dd class="pdm-mono">{{ traceListLabel(inspection.validationRun.trace, 'validationRuleIds') }}</dd></div>
+                <div><dt class="pdm-mono">Override ids</dt><dd class="pdm-mono">{{ traceListLabel(inspection.validationRun.trace, 'overrideIds') }}</dd></div>
+              </dl>
+              <pre class="pdm-lv-workbench__json">{{ prettyJson(inspection.validationRun.trace['replayContext']) }}</pre>
+            </article>
+
+            <article class="pdm-lv-workbench__detail-card">
+              <p class="pdm-lv-workbench__card-label pdm-mono">Replay result</p>
+              @if (replayState().data; as replay) {
+                <dl class="pdm-lv-workbench__detail-list">
+                  <div><dt class="pdm-mono">Original run</dt><dd>{{ replay.final.originalValidationRunId }}</dd></div>
+                  <div><dt class="pdm-mono">Replay result</dt><dd>{{ replay.final.result }}</dd></div>
+                  <div><dt class="pdm-mono">Failure codes</dt><dd>{{ replay.final.failureCode || 'None' }}</dd></div>
+                  <div><dt class="pdm-mono">Comparison</dt><dd>{{ replay.final.replayComparison?.ok ? 'matched' : 'mismatch' }}</dd></div>
+                </dl>
+                <pre class="pdm-lv-workbench__json">{{ prettyJson(replay.final.replayComparison) }}</pre>
+                <pre class="pdm-lv-workbench__json">{{ prettyJson(replay.final.replayedTraceSummary) }}</pre>
+              } @else {
+                <p class="pdm-lv-workbench__card-copy">Replay has not been executed for this run yet.</p>
+              }
+            </article>
+          </div>
+        </section>
+      } @else {
+        <section class="pdm-lv-workbench__section pdm-site-surface pdm-site-panel">
+          <div class="pdm-lv-workbench__state-banner">
+            Load a validation run id to inspect persisted runtime truth, or run orchestrate to produce one.
+          </div>
+        </section>
+      }
+    </div>
+  </main>
+</div>

@@ -20,6 +20,7 @@ This pre-validation preparation may produce:
 - `SourceDocument`
 - `SourceSegment`
 - generated `sourceAnchors`
+- deterministic `ArgumentUnit` records extracted from the segmented source document
 - `ArgumentUnit.sourceSegmentIds`
 
 It is input preparation, not part of the locked validation service order below.
@@ -209,8 +210,8 @@ Current runtime proof in this wave covers:
 - retained-artifact availability checks
 - doctrine-hash integrity checks
 - deterministic forward-path behavior from generated source anchors
-
-Full replay re-execution against preserved upstream state is a later hardening target and is not yet runtime-proven by the current suite.
+- replay re-execution against preserved upstream state for retained runs
+- explicit refusal when preserved replay state diverges or cannot be reconstructed
 
 ### Fresh validation
 
@@ -219,7 +220,10 @@ Full replay re-execution against preserved upstream state is a later hardening t
 
 ### Replay
 
+- replay re-executes from the preserved `ValidationRun`, retained doctrine artifact, stored source anchors, and replay context
 - replay must load the exact retained doctrine artifact referenced by the original run
+- replay must compare the re-executed result against the recorded run and refuse on mismatch
+- if the preserved upstream state cannot be reconstructed, replay must fail explicitly rather than guessing
 - if that artifact cannot be retrieved, `trace.service` owns the terminal failure under `DOCTRINE_ARTIFACT_UNAVAILABLE`
 
 ## Non-Resumable Rule

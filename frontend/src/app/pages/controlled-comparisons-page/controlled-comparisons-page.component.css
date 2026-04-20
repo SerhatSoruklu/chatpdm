@@ -9,7 +9,7 @@
 
 .pdm-controlled-comparisons__main {
   justify-content: center;
-  padding: 28px 18px 56px;
+  padding: 60px 18px 56px;
 }
 
 .pdm-controlled-comparisons__frame,
@@ -266,7 +266,7 @@
 
 @media (min-width: 840px) {
   .pdm-controlled-comparisons__main {
-    padding: 44px 32px 88px;
+    padding: 60px 32px 88px;
   }
 
   .pdm-controlled-comparisons__pair-head {

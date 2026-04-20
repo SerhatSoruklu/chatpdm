@@ -7,29 +7,32 @@ const { MongoMemoryServer } = require('mongodb-memory-server');
 
 const { connectMongo, disconnectMongo } = require('../../src/config/mongoose');
 const DoctrineArtifact = require('../../src/modules/legal-validator/doctrine/doctrine-artifact.model');
-const ArgumentUnit = require('../../src/modules/legal-validator/arguments/argument-unit.model');
 const AuthorityNode = require('../../src/modules/legal-validator/authority/authority-node.model');
 const SourceDocument = require('../../src/modules/legal-validator/sources/source-document.model');
 const SourceSegment = require('../../src/modules/legal-validator/sources/source-segment.model');
+const ArgumentUnit = require('../../src/modules/legal-validator/arguments/argument-unit.model');
 const Mapping = require('../../src/modules/legal-validator/mapping/mapping.model');
 const ValidationRun = require('../../src/modules/legal-validator/validation/validation-run.model');
 const doctrineLoaderService = require('../../src/modules/legal-validator/doctrine/doctrine-loader.service');
+const extractionService = require('../../src/modules/legal-validator/arguments/extraction.service');
 const admissibilityService = require('../../src/modules/legal-validator/arguments/admissibility.service');
 const authorityRegistryService = require('../../src/modules/legal-validator/authority/authority-registry.service');
 const segmentationService = require('../../src/modules/legal-validator/sources/segmentation.service');
 const resolverService = require('../../src/modules/legal-validator/mapping/resolver.service');
 const validationKernelService = require('../../src/modules/legal-validator/validation/validation-kernel.service');
 const traceService = require('../../src/modules/legal-validator/validation/trace.service');
+const { CONCEPT_SET_VERSION } = require('../../src/modules/concepts/constants');
 
 let mongoServer;
 
-async function createDoctrineArtifact() {
+async function createDoctrineArtifact(overrides = {}) {
+  const manifestOverrides = overrides.manifest || {};
   const artifact = new DoctrineArtifact({
-    artifactId: 'artifact-integration-1',
+    artifactId: overrides.artifactId || 'artifact-integration-1',
     packageId: 'uk-negligence',
-    version: '1.0.0',
-    hash: 'd'.repeat(64),
-    storageKey: 'doctrine/uk-negligence/1.0.0.json',
+    version: overrides.version || '1.0.0',
+    hash: overrides.hash || 'd'.repeat(64),
+    storageKey: overrides.storageKey || 'doctrine/uk-negligence/1.0.0.json',
     manifest: {
       packageId: 'uk-negligence',
       jurisdiction: 'UK',
@@ -45,17 +48,20 @@ async function createDoctrineArtifact() {
       authorityIds: ['authority-duty-1'],
       mappingRuleIds: ['resolver-rule-duty-of-care'],
       validationRuleIds: ['validation-rule-duty-applies'],
+      ...manifestOverrides,
     },
     governance: {
       status: 'approved',
       approvedBy: 'reviewer-1',
       approvedAt: new Date('2026-03-30T10:00:00Z'),
+      ...(overrides.governance || {}),
     },
     replay: {
       isRetained: true,
       retainedAt: new Date('2026-03-30T10:00:00Z'),
+      ...(overrides.replay || {}),
     },
-    createdBy: 'author-1',
+    createdBy: overrides.createdBy || 'author-1',
   });
 
   await artifact.save();
@@ -79,30 +85,6 @@ async function createSourceDocument() {
 
   await sourceDocument.save();
   return sourceDocument;
-}
-
-async function createArgumentUnit({ sourceSegments }) {
-  const paragraphSegments = sourceSegments.filter((segment) => segment.segmentType === 'paragraph');
-  const primarySegment = paragraphSegments[0];
-  const unit = new ArgumentUnit({
-    argumentUnitId: 'argument-unit-integration-1',
-    matterId: 'matter-integration-1',
-    documentId: 'document-integration-1',
-    sourceSegmentIds: paragraphSegments.map((segment) => segment.sourceSegmentId),
-    unitType: 'application_step',
-    text: primarySegment.text,
-    normalizedText: primarySegment.text.toLowerCase(),
-    speakerRole: 'claimant',
-    positionSide: 'claimant',
-    sequence: 1,
-    extractionMethod: 'manual',
-    reviewState: 'accepted',
-    admissibility: 'admissible',
-    unresolvedReason: null,
-  });
-
-  await unit.save();
-  return unit;
 }
 
 async function createAuthorityNode(doctrineArtifactId) {
@@ -129,8 +111,8 @@ async function createAuthorityNode(doctrineArtifactId) {
   return authorityNode;
 }
 
-async function createRecognizedAuthorityContext() {
-  const artifact = await createDoctrineArtifact();
+async function createRecognizedAuthorityContext({ artifactOverrides = {} } = {}) {
+  const artifact = await createDoctrineArtifact(artifactOverrides);
   const sourceDocument = await createSourceDocument();
   const segmentationResult = await segmentationService.segmentSourceDocument({
     sourceDocument,
@@ -139,12 +121,17 @@ async function createRecognizedAuthorityContext() {
     .sort({ sequence: 1 })
     .lean()
     .exec();
-  const unit = await createArgumentUnit({ sourceSegments });
+  const extractionResult = await extractionService.extractArgumentUnitsFromSourceDocument({
+    sourceDocument,
+    sourceSegments,
+  });
+  const unit = extractionResult.extractedArgumentUnits[0];
   const authorityNode = await createAuthorityNode(artifact.artifactId);
 
   const admissibilityResult = await admissibilityService.evaluateArgumentUnits({
     argumentUnits: [unit],
   });
+  const persistedUnit = await ArgumentUnit.findOne({ argumentUnitId: unit.argumentUnitId }).lean().exec();
 
   const doctrineLoadResult = await doctrineLoaderService.loadDoctrineArtifact({
     artifactId: artifact.artifactId,
@@ -166,8 +153,10 @@ async function createRecognizedAuthorityContext() {
     segmentationResult,
     sourceSegments,
     unit,
+    extractionResult,
     authorityNode,
     admissibilityResult,
+    persistedUnit,
     doctrineLoadResult,
     authorityLookupResult,
   };
@@ -227,7 +216,9 @@ test('legal-validator pipeline persists a replay-safe ValidationRun on the valid
     segmentationResult,
     sourceSegments,
     unit,
+    extractionResult,
     admissibilityResult,
+    persistedUnit,
     doctrineLoadResult,
     authorityLookupResult,
   } = await createRecognizedAuthorityContext();
@@ -250,10 +241,6 @@ test('legal-validator pipeline persists a replay-safe ValidationRun on the valid
   const validationKernelResult = await validationKernelService.evaluate({
     doctrineLoadResult,
     resolverResult,
-    validationDecision: {
-      status: 'valid',
-      validationRuleIds: ['validation-rule-duty-applies'],
-    },
   });
 
   const traceResult = await traceService.finalize({
@@ -272,11 +259,25 @@ test('legal-validator pipeline persists a replay-safe ValidationRun on the valid
 
   assert.equal(admissibilityResult.ok, true);
   assert.equal(doctrineLoadResult.ok, true);
+  assert.equal(doctrineLoadResult.conceptSetVersion, CONCEPT_SET_VERSION);
+  assert.deepEqual(doctrineLoadResult.coreConceptsReferenced, ['authority']);
+  assert.deepEqual(doctrineLoadResult.resolvedCoreConceptIds, ['authority']);
   assert.equal(authorityLookupResult.ok, true);
+  assert.equal(authorityLookupResult.authorityResolved, true);
+  assert.equal(authorityLookupResult.citationScope.doctrineJurisdiction, 'UK');
+  assert.equal(authorityLookupResult.citationScope.authorityJurisdiction, 'UK');
+  assert.equal(authorityLookupResult.citationScope.expectedJurisdiction, null);
+  assert.ok(persistedUnit);
+  assert.equal(persistedUnit.reviewState, 'auto_accepted');
+  assert.equal(persistedUnit.admissibility, 'admissible');
+  assert.equal(persistedUnit.unresolvedReason, null);
   assert.equal(resolverResult.ok, true);
   assert.equal(validationKernelResult.ok, true);
+  assert.equal(validationKernelResult.validationOutcome, 'valid');
+  assert.deepEqual(validationKernelResult.validationRuleIds, ['validation-rule-duty-applies']);
   assert.equal(traceResult.ok, true);
   assert.equal(segmentationResult.ok, true);
+  assert.equal(extractionResult.ok, true);
   assert.equal(sourceDocument.documentId, unit.documentId);
   assert.deepEqual(
     unit.sourceSegmentIds,
@@ -326,6 +327,7 @@ test('legal-validator pipeline persists a replay-safe ValidationRun on the valid
   assert.deepEqual(persistedRun.trace.loadedManifest.authorityIds, ['authority-duty-1']);
   assert.equal(await SourceDocument.countDocuments({}), 1);
   assert.equal(await SourceSegment.countDocuments({}), 3);
+  assert.equal(extractionResult.extractedCount, 1);
   assert.equal(await ValidationRun.countDocuments({}), 1);
 });
 
@@ -336,10 +338,18 @@ test('legal-validator pipeline persists ValidationRun on an invalid kernel resul
     segmentationResult,
     sourceSegments,
     unit,
+    extractionResult,
     admissibilityResult,
+    persistedUnit,
     doctrineLoadResult,
     authorityLookupResult,
-  } = await createRecognizedAuthorityContext();
+  } = await createRecognizedAuthorityContext({
+    artifactOverrides: {
+      manifest: {
+        validationRuleIds: ['validation-rule-duty-applies', 'validation-rule-duty-applies'],
+      },
+    },
+  });
 
   const resolverResult = await resolverService.resolve({
     doctrineLoadResult,
@@ -360,10 +370,6 @@ test('legal-validator pipeline persists ValidationRun on an invalid kernel resul
     doctrineLoadResult,
     resolverResult,
     authorityLookupResult,
-    validationDecision: {
-      status: 'source_override',
-      reason: 'The claim attempts to override the controlling source.',
-    },
   });
 
   const traceResult = await traceService.finalize({
@@ -378,8 +384,18 @@ test('legal-validator pipeline persists ValidationRun on an invalid kernel resul
 
   assert.equal(admissibilityResult.ok, true);
   assert.equal(doctrineLoadResult.ok, true);
+  assert.equal(doctrineLoadResult.conceptSetVersion, CONCEPT_SET_VERSION);
+  assert.deepEqual(doctrineLoadResult.coreConceptsReferenced, ['authority']);
+  assert.deepEqual(doctrineLoadResult.resolvedCoreConceptIds, ['authority']);
   assert.equal(authorityLookupResult.ok, true);
+  assert.equal(authorityLookupResult.authorityResolved, true);
+  assert.equal(authorityLookupResult.citationScope.doctrineJurisdiction, 'UK');
+  assert.equal(authorityLookupResult.citationScope.authorityJurisdiction, 'UK');
+  assert.ok(persistedUnit);
+  assert.equal(persistedUnit.reviewState, 'auto_accepted');
+  assert.equal(persistedUnit.admissibility, 'admissible');
   assert.equal(segmentationResult.ok, true);
+  assert.equal(extractionResult.ok, true);
   assert.equal(sourceDocument.documentId, unit.documentId);
   assert.deepEqual(
     unit.sourceSegmentIds,
@@ -393,14 +409,14 @@ test('legal-validator pipeline persists ValidationRun on an invalid kernel resul
   assert.equal(validationKernelResult.ok, false);
   assert.equal(validationKernelResult.terminal, true);
   assert.equal(validationKernelResult.result, 'invalid');
-  assert.equal(validationKernelResult.failureCode, 'SOURCE_OVERRIDE_ATTEMPT');
+  assert.equal(validationKernelResult.failureCode, 'UNAUTHORIZED_DECISION_PATH');
   assert.equal(validationKernelResult.argumentUnitId, unit.argumentUnitId);
   assert.equal(validationKernelResult.doctrineArtifactId, artifact.artifactId);
   assert.equal(validationKernelResult.mappingId, 'mapping-integration-invalid-1');
   assert.equal(traceResult.ok, true);
   assert.equal(traceResult.terminal, false);
   assert.equal(traceResult.result, 'invalid');
-  assert.deepEqual(traceResult.failureCodes, ['SOURCE_OVERRIDE_ATTEMPT']);
+  assert.deepEqual(traceResult.failureCodes, ['UNAUTHORIZED_DECISION_PATH']);
   assert.equal(traceResult.validationRunWritten, true);
 
   const persistedMapping = await Mapping.findOne({ mappingId: 'mapping-integration-invalid-1' }).lean().exec();
@@ -410,7 +426,7 @@ test('legal-validator pipeline persists ValidationRun on an invalid kernel resul
   assert.equal(persistedMapping.status, 'success');
   assert.ok(persistedRun);
   assert.equal(persistedRun.result, 'invalid');
-  assert.deepEqual(persistedRun.failureCodes, ['SOURCE_OVERRIDE_ATTEMPT']);
+  assert.deepEqual(persistedRun.failureCodes, ['UNAUTHORIZED_DECISION_PATH']);
   assert.deepEqual(persistedRun.trace.sourceAnchors, getGeneratedSourceAnchors(unit, sourceSegments));
   assert.deepEqual(persistedRun.trace.mappingRuleIds, ['resolver-rule-duty-of-care']);
   assert.deepEqual(persistedRun.trace.validationRuleIds, []);
@@ -427,7 +443,9 @@ test('legal-validator pipeline persists ValidationRun on an unresolved resolver 
     segmentationResult,
     sourceSegments,
     unit,
+    extractionResult,
     admissibilityResult,
+    persistedUnit,
     doctrineLoadResult,
     authorityLookupResult,
   } = await createRecognizedAuthorityContext();
@@ -453,8 +471,17 @@ test('legal-validator pipeline persists ValidationRun on an unresolved resolver 
 
   assert.equal(admissibilityResult.ok, true);
   assert.equal(doctrineLoadResult.ok, true);
+  assert.equal(doctrineLoadResult.conceptSetVersion, CONCEPT_SET_VERSION);
+  assert.deepEqual(doctrineLoadResult.coreConceptsReferenced, ['authority']);
+  assert.deepEqual(doctrineLoadResult.resolvedCoreConceptIds, ['authority']);
   assert.equal(authorityLookupResult.ok, true);
+  assert.equal(authorityLookupResult.authorityResolved, true);
+  assert.equal(authorityLookupResult.citationScope.doctrineJurisdiction, 'UK');
+  assert.ok(persistedUnit);
+  assert.equal(persistedUnit.reviewState, 'auto_accepted');
+  assert.equal(persistedUnit.admissibility, 'admissible');
   assert.equal(segmentationResult.ok, true);
+  assert.equal(extractionResult.ok, true);
   assert.equal(sourceDocument.documentId, unit.documentId);
   assert.deepEqual(
     unit.sourceSegmentIds,
@@ -488,4 +515,166 @@ test('legal-validator pipeline persists ValidationRun on an unresolved resolver 
   assert.equal(await SourceSegment.countDocuments({}), 3);
   assert.equal(await Mapping.countDocuments({}), 0);
   assert.equal(await ValidationRun.countDocuments({}), 1);
+});
+
+test('legal-validator pipeline replays a retained ValidationRun from preserved upstream state', async () => {
+  const {
+    sourceSegments,
+    unit,
+    extractionResult,
+    admissibilityResult,
+    persistedUnit,
+    doctrineLoadResult,
+    authorityLookupResult,
+  } = await createRecognizedAuthorityContext();
+
+  const resolverResult = await resolverService.resolve({
+    doctrineLoadResult,
+    admissibilityResult,
+    authorityLookupResult,
+    resolverDecision: {
+      status: 'success',
+      mappingId: 'mapping-integration-replay-1',
+      mappingType: 'combined',
+      matchBasis: 'exact_structural_rule',
+      conceptId: 'duty_of_care',
+      authorityId: authorityLookupResult.authorityId,
+      resolverRuleId: 'resolver-rule-duty-of-care',
+    },
+  });
+
+  const validationKernelResult = await validationKernelService.evaluate({
+    doctrineLoadResult,
+    resolverResult,
+    authorityLookupResult,
+  });
+
+  const traceResult = await traceService.finalize({
+    doctrineLoadResult,
+    resolverResult,
+    validationKernelResult,
+    authorityLookupResult,
+    extractionResult,
+    authorityInput: {
+      authorityId: authorityLookupResult.authorityId,
+      evaluationDate: '2020-06-01T00:00:00Z',
+      requiredInterpretationRegimeId: 'uk-textual-v1',
+    },
+    resolverDecision: {
+      status: 'success',
+      mappingId: 'mapping-integration-replay-1',
+      mappingType: 'combined',
+      matchBasis: 'exact_structural_rule',
+      conceptId: 'duty_of_care',
+      authorityId: authorityLookupResult.authorityId,
+      resolverRuleId: 'resolver-rule-duty-of-care',
+    },
+    traceInput: buildGeneratedTraceInput({
+      validationRunId: 'validation-run-integration-replay-1',
+      sourceAnchors: getGeneratedSourceAnchors(unit, sourceSegments),
+      interpretationUsed: true,
+      interpretationRegimeId: 'uk-textual-v1',
+    }),
+  });
+
+  const replayResult = await traceService.replayValidationRun({
+    validationRunId: 'validation-run-integration-replay-1',
+  });
+
+  assert.equal(admissibilityResult.ok, true);
+  assert.equal(doctrineLoadResult.ok, true);
+  assert.equal(authorityLookupResult.ok, true);
+  assert.ok(persistedUnit);
+  assert.equal(persistedUnit.reviewState, 'auto_accepted');
+  assert.equal(persistedUnit.admissibility, 'admissible');
+  assert.equal(traceResult.ok, true);
+  assert.equal(traceResult.validationRunWritten, true);
+  assert.equal(replayResult.ok, true);
+  assert.equal(replayResult.terminal, false);
+  assert.equal(replayResult.replayedResult, 'valid');
+  assert.deepEqual(replayResult.replayComparison.mismatches, []);
+  assert.equal(replayResult.replayComparison.ok, true);
+  assert.deepEqual(replayResult.replayedTraceSummary.sourceAnchors, getGeneratedSourceAnchors(unit, sourceSegments));
+  assert.deepEqual(replayResult.replayedTraceSummary.validationRuleIds, ['validation-rule-duty-applies']);
+  assert.equal(await Mapping.countDocuments({}), 1);
+  assert.equal(await ValidationRun.countDocuments({}), 1);
+});
+
+test('legal-validator pipeline replay refuses when preserved source content diverges from the recorded trace', async () => {
+  const {
+    sourceDocument,
+    sourceSegments,
+    unit,
+    extractionResult,
+    admissibilityResult,
+    doctrineLoadResult,
+    authorityLookupResult,
+  } = await createRecognizedAuthorityContext();
+
+  const resolverResult = await resolverService.resolve({
+    doctrineLoadResult,
+    admissibilityResult,
+    authorityLookupResult,
+    resolverDecision: {
+      status: 'success',
+      mappingId: 'mapping-integration-replay-mismatch-1',
+      mappingType: 'combined',
+      matchBasis: 'exact_structural_rule',
+      conceptId: 'duty_of_care',
+      authorityId: authorityLookupResult.authorityId,
+      resolverRuleId: 'resolver-rule-duty-of-care',
+    },
+  });
+
+  const validationKernelResult = await validationKernelService.evaluate({
+    doctrineLoadResult,
+    resolverResult,
+    authorityLookupResult,
+  });
+
+  await traceService.finalize({
+    doctrineLoadResult,
+    resolverResult,
+    validationKernelResult,
+    authorityLookupResult,
+    extractionResult,
+    authorityInput: {
+      authorityId: authorityLookupResult.authorityId,
+      evaluationDate: '2020-06-01T00:00:00Z',
+      requiredInterpretationRegimeId: 'uk-textual-v1',
+    },
+    resolverDecision: {
+      status: 'success',
+      mappingId: 'mapping-integration-replay-mismatch-1',
+      mappingType: 'combined',
+      matchBasis: 'exact_structural_rule',
+      conceptId: 'duty_of_care',
+      authorityId: authorityLookupResult.authorityId,
+      resolverRuleId: 'resolver-rule-duty-of-care',
+    },
+    traceInput: buildGeneratedTraceInput({
+      validationRunId: 'validation-run-integration-replay-mismatch-1',
+      sourceAnchors: getGeneratedSourceAnchors(unit, sourceSegments),
+      interpretationUsed: true,
+      interpretationRegimeId: 'uk-textual-v1',
+    }),
+  });
+
+  await SourceDocument.collection.updateOne(
+    { sourceDocumentId: sourceDocument.sourceDocumentId },
+    {
+      $set: {
+        content: `${sourceDocument.content}\n\nReplay tamper.`,
+      },
+    },
+  );
+
+  const replayResult = await traceService.replayValidationRun({
+    validationRunId: 'validation-run-integration-replay-mismatch-1',
+  });
+
+  assert.equal(replayResult.ok, false);
+  assert.equal(replayResult.terminal, true);
+  assert.equal(replayResult.failureCode, 'REPLAY_ARTIFACT_MISMATCH');
+  assert.equal(replayResult.result, 'invalid');
 });

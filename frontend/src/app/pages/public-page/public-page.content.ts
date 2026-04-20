@@ -583,6 +583,11 @@ const PUBLIC_PAGE_CONTENT: Record<PublicPageKey, PublicPageContent> = {
             note: 'Inspect the comparison pairs the runtime currently allows.',
           },
           {
+            label: 'Legal Validator',
+            route: '/legal-validator',
+            note: 'Read the deterministic legal validation pipeline, output contract, and replay boundaries.',
+          },
+          {
             label: 'Runtime refusal behavior',
             route: '/runtime',
             fragment: 'runtime-refusal',

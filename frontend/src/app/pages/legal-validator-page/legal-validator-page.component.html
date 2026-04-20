@@ -1,0 +1,140 @@
+<div class="pdm-lv-page">
+  <main class="pdm-lv-page__main pdm-shell" aria-labelledby="pdm-lv-page-title">
+    <div class="pdm-shell__frame pdm-lv-page__frame">
+      <header class="pdm-lv-page__hero pdm-site-surface pdm-site-panel">
+        <div class="pdm-lv-page__hero-copy">
+          <p class="pdm-lv-page__eyebrow pdm-mono">{{ pageEyebrow }}</p>
+          <h1 class="pdm-lv-page__title" id="pdm-lv-page-title">{{ pageTitle }}</h1>
+          <p class="pdm-lv-page__intro">{{ pageIntro }}</p>
+          <p class="pdm-lv-page__lead">{{ pageLead }}</p>
+        </div>
+
+        <nav class="pdm-lv-page__actions" aria-label="Legal Validator links">
+          @for (action of pageActions; track action.route) {
+            <a class="pdm-lv-page__action-link" [routerLink]="action.route">{{ action.label }}</a>
+          }
+        </nav>
+      </header>
+
+      <section class="pdm-lv-page__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-lv-page-what-is-title">
+        <div class="pdm-lv-page__section-head">
+          <p class="pdm-lv-page__section-label pdm-mono">What it is</p>
+          <h2 class="pdm-lv-page__section-title" id="pdm-lv-page-what-is-title">A deterministic execution surface.</h2>
+          <p class="pdm-lv-page__section-copy">
+            Legal Validator stays bounded on purpose. It executes a fixed pipeline, preserves replayable trace data, and refuses unsupported shapes instead of filling gaps with inference.
+          </p>
+        </div>
+
+        <div class="pdm-lv-page__card-grid">
+          @for (card of whatItIsCards; track card.title) {
+            <article class="pdm-lv-page__card">
+              <h3 class="pdm-lv-page__card-title">{{ card.title }}</h3>
+              <p class="pdm-lv-page__card-copy">{{ card.copy }}</p>
+            </article>
+          }
+        </div>
+      </section>
+
+      <section class="pdm-lv-page__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-lv-page-pipeline-title">
+        <div class="pdm-lv-page__section-head">
+          <p class="pdm-lv-page__section-label pdm-mono">Execution pipeline</p>
+          <h2 class="pdm-lv-page__section-title" id="pdm-lv-page-pipeline-title">
+            intake → segmentation → extraction → admissibility → doctrine → authority → mapping → validation → trace → replay
+          </h2>
+          <p class="pdm-lv-page__section-copy">
+            The pipeline is fixed. Each stage narrows the available state before the runtime can emit a final result or a refusal.
+          </p>
+        </div>
+
+        <ol class="pdm-lv-page__pipeline-list" aria-label="Legal Validator pipeline">
+          @for (step of pipelineSteps; track step.step) {
+            <li class="pdm-lv-page__pipeline-step">
+              <p class="pdm-lv-page__pipeline-step-label pdm-mono">{{ step.step }}</p>
+              <h3 class="pdm-lv-page__pipeline-step-title">{{ step.title }}</h3>
+              <p class="pdm-lv-page__pipeline-step-copy">{{ step.copy }}</p>
+            </li>
+          }
+        </ol>
+      </section>
+
+      <section class="pdm-lv-page__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-lv-page-output-title">
+        <div class="pdm-lv-page__section-head">
+          <p class="pdm-lv-page__section-label pdm-mono">Output contract</p>
+          <h2 class="pdm-lv-page__section-title" id="pdm-lv-page-output-title">
+            The contract is explicit, replayable, and inspectable.
+          </h2>
+          <p class="pdm-lv-page__section-copy">
+            The live output includes the full runtime shape below. Optional fields appear only when the validated input supports them.
+          </p>
+        </div>
+
+        <div class="pdm-lv-page__contract-layout">
+          <div class="pdm-lv-page__contract-shell">
+            <pre class="pdm-lv-page__contract-json">{{ outputContractSkeleton }}</pre>
+          </div>
+
+          <div class="pdm-lv-page__contract-table-shell">
+            <table class="pdm-lv-page__contract-table">
+              <thead>
+                <tr>
+                  <th>Field</th>
+                  <th>Rule</th>
+                  <th>Condition</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (field of outputContractFields; track field.field) {
+                  <tr>
+                    <td class="pdm-lv-page__mono-cell pdm-mono">{{ field.field }}</td>
+                    <td>{{ field.rule }}</td>
+                    <td>{{ field.condition }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="pdm-lv-page__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-lv-page-boundaries-title">
+        <div class="pdm-lv-page__section-head">
+          <p class="pdm-lv-page__section-label pdm-mono">Refusal boundaries</p>
+          <h2 class="pdm-lv-page__section-title" id="pdm-lv-page-boundaries-title">
+            Refusal is part of the runtime contract.
+          </h2>
+          <p class="pdm-lv-page__section-copy">
+            The surface refuses unsupported requests instead of widening the contract.
+          </p>
+        </div>
+
+        <div class="pdm-lv-page__boundary-grid">
+          @for (boundary of refusalBoundaries; track boundary.code) {
+            <article class="pdm-lv-page__boundary-card">
+              <p class="pdm-lv-page__boundary-code pdm-mono">{{ boundary.code }}</p>
+              <h3 class="pdm-lv-page__boundary-title">{{ boundary.title }}</h3>
+              <p class="pdm-lv-page__boundary-copy">{{ boundary.copy }}</p>
+            </article>
+          }
+        </div>
+      </section>
+
+      <section class="pdm-lv-page__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-lv-page-not-title">
+        <div class="pdm-lv-page__section-head">
+          <p class="pdm-lv-page__section-label pdm-mono">What it is not</p>
+          <h2 class="pdm-lv-page__section-title" id="pdm-lv-page-not-title">
+            Legal Validator stays bounded to its own execution role.
+          </h2>
+        </div>
+
+        <div class="pdm-lv-page__card-grid">
+          @for (card of whatItIsNotCards; track card.title) {
+            <article class="pdm-lv-page__card">
+              <h3 class="pdm-lv-page__card-title">{{ card.title }}</h3>
+              <p class="pdm-lv-page__card-copy">{{ card.copy }}</p>
+            </article>
+          }
+        </div>
+      </section>
+    </div>
+  </main>
+</div>

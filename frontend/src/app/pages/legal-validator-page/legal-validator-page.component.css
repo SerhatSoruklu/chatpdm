@@ -1,0 +1,295 @@
+:host {
+  display: block;
+}
+
+.pdm-lv-page {
+  min-height: 100%;
+}
+
+.pdm-lv-page__main {
+  justify-content: center;
+  padding: 28px 18px 56px;
+}
+
+.pdm-lv-page__frame {
+  display: grid;
+  gap: 18px;
+}
+
+.pdm-lv-page__hero,
+.pdm-lv-page__section,
+.pdm-lv-page__card,
+.pdm-lv-page__boundary-card {
+  position: relative;
+  border-radius: 30px;
+}
+
+.pdm-lv-page__hero {
+  overflow: hidden;
+  display: grid;
+  gap: 18px;
+}
+
+.pdm-lv-page__hero::after {
+  content: '';
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle at top left, rgba(37, 99, 235, 0.12), transparent 70%);
+  pointer-events: none;
+}
+
+.pdm-lv-page__hero-copy {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 8px;
+}
+
+.pdm-lv-page__eyebrow,
+.pdm-lv-page__section-label,
+.pdm-lv-page__pipeline-step-label,
+.pdm-lv-page__boundary-code {
+  margin: 0;
+  color: #2563eb;
+  font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pdm-lv-page__title,
+.pdm-lv-page__section-title,
+.pdm-lv-page__card-title,
+.pdm-lv-page__boundary-title,
+.pdm-lv-page__pipeline-step-title {
+  margin: 0;
+  color: #0f172a;
+  letter-spacing: -0.04em;
+}
+
+.pdm-lv-page__title {
+  font-size: clamp(2.7rem, 6vw, 4.5rem);
+  font-weight: 700;
+  line-height: 0.94;
+}
+
+.pdm-lv-page__intro,
+.pdm-lv-page__lead,
+.pdm-lv-page__section-copy,
+.pdm-lv-page__card-copy,
+.pdm-lv-page__boundary-copy,
+.pdm-lv-page__pipeline-step-copy {
+  margin: 0;
+  color: #475569;
+  line-height: 1.72;
+}
+
+.pdm-lv-page__intro {
+  max-width: 42rem;
+  font-size: clamp(1.04rem, 1.5vw, 1.18rem);
+}
+
+.pdm-lv-page__lead {
+  max-width: 46rem;
+  color: #1f2937;
+  font-size: 1rem;
+}
+
+.pdm-lv-page__actions {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.pdm-lv-page__action-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: 0.7rem 1rem;
+  border: 1px solid rgba(37, 99, 235, 0.18);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.82);
+  color: #0f172a;
+  font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+}
+
+.pdm-lv-page__action-link:hover,
+.pdm-lv-page__action-link:focus-visible {
+  border-color: rgba(37, 99, 235, 0.34);
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.pdm-lv-page__section {
+  display: grid;
+  gap: 18px;
+  padding: 20px;
+}
+
+.pdm-lv-page__section-head {
+  display: grid;
+  gap: 8px;
+}
+
+.pdm-lv-page__section-title {
+  font-size: clamp(1.5rem, 2vw, 2rem);
+  font-weight: 700;
+  line-height: 1.08;
+}
+
+.pdm-lv-page__card-grid,
+.pdm-lv-page__boundary-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.pdm-lv-page__card,
+.pdm-lv-page__boundary-card {
+  display: grid;
+  gap: 10px;
+  padding: 18px;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 255, 0.9)),
+    rgba(255, 255, 255, 0.9);
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.04),
+    0 12px 32px rgba(15, 23, 42, 0.06);
+}
+
+.pdm-lv-page__card-title,
+.pdm-lv-page__boundary-title {
+  font-size: 1.08rem;
+  font-weight: 700;
+  line-height: 1.24;
+}
+
+.pdm-lv-page__pipeline-list {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pdm-lv-page__pipeline-step {
+  display: grid;
+  gap: 6px;
+  padding: 16px;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.pdm-lv-page__pipeline-step-title {
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.pdm-lv-page__contract-layout {
+  display: grid;
+  gap: 14px;
+}
+
+.pdm-lv-page__contract-shell {
+  overflow: auto;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 18px;
+  background: rgba(15, 23, 42, 0.96);
+}
+
+.pdm-lv-page__contract-json {
+  margin: 0;
+  padding: 14px;
+  color: #e2e8f0;
+  font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  font-size: 0.75rem;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.pdm-lv-page__contract-table-shell {
+  overflow: auto;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.86);
+}
+
+.pdm-lv-page__contract-table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+}
+
+.pdm-lv-page__contract-table th,
+.pdm-lv-page__contract-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+  vertical-align: top;
+  text-align: left;
+  color: #0f172a;
+  line-height: 1.5;
+}
+
+.pdm-lv-page__contract-table th {
+  color: #475569;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pdm-lv-page__mono-cell {
+  font-size: 0.74rem;
+}
+
+@media (min-width: 840px) {
+  .pdm-lv-page__main {
+    padding: 36px 28px 72px;
+  }
+
+  .pdm-lv-page__card-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .pdm-lv-page__boundary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pdm-lv-page__contract-layout {
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+    align-items: start;
+  }
+
+  .pdm-lv-page__pipeline-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1200px) {
+  .pdm-lv-page__pipeline-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 839px) {
+  .pdm-lv-page__contract-table {
+    min-width: 560px;
+  }
+
+  .pdm-lv-page__card-grid,
+  .pdm-lv-page__boundary-grid {
+    grid-template-columns: 1fr;
+  }
+}

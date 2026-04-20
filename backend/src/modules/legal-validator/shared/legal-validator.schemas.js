@@ -23,6 +23,26 @@ function hasNonEmptyArray(value) {
   return Array.isArray(value) && value.length > 0;
 }
 
+function hasTraceReplayContext(trace) {
+  const replayContext = trace?.replayContext;
+
+  if (!replayContext || typeof replayContext !== 'object' || Array.isArray(replayContext)) {
+    return false;
+  }
+
+  return Boolean(
+    hasNonEmptyArray(replayContext.sourceSegmentIds)
+    || hasNonEmptyArray(replayContext.argumentUnitIds)
+    || isNonEmptyTrimmedString(replayContext.mappingId)
+    || isNonEmptyTrimmedString(replayContext.authorityId)
+    || isNonEmptyTrimmedString(replayContext.doctrineArtifactId)
+    || isNonEmptyTrimmedString(replayContext.doctrineHash)
+    || replayContext.authorityInput != null
+    || replayContext.resolverDecision != null
+    || replayContext.validationDecision != null
+  );
+}
+
 function validateDoctrineManifest(manifest) {
   if (!manifest || typeof manifest !== 'object') {
     return {
@@ -186,6 +206,8 @@ function validateMappingState(mapping) {
   const hasFailureCode = isNonEmptyTrimmedString(mapping.failureCode);
   const hasMatchBasis = isNonEmptyTrimmedString(mapping.matchBasis);
   const hasOverrideId = isNonEmptyTrimmedString(mapping.overrideId);
+  const hasManualOverrideReason = isNonEmptyTrimmedString(mapping.manualOverrideReason);
+  const hasSynonymTerm = isNonEmptyTrimmedString(mapping.synonymTerm);
 
   if (mapping.status === 'success' && !hasMatchBasis) {
     return {
@@ -208,10 +230,45 @@ function validateMappingState(mapping) {
     };
   }
 
+  if (hasOverrideId && mapping.matchBasis !== 'manual_override') {
+    return {
+      ok: false,
+      message: 'Only manual override mappings may carry overrideId.',
+    };
+  }
+
   if (mapping.matchBasis === 'manual_override' && !hasOverrideId) {
     return {
       ok: false,
       message: 'Manual override mappings require an explicit overrideId.',
+    };
+  }
+
+  if (mapping.matchBasis === 'manual_override' && !hasManualOverrideReason) {
+    return {
+      ok: false,
+      message: 'Manual override mappings require manualOverrideReason.',
+    };
+  }
+
+  if (hasManualOverrideReason && mapping.matchBasis !== 'manual_override') {
+    return {
+      ok: false,
+      message: 'Only manual override mappings may carry manualOverrideReason.',
+    };
+  }
+
+  if (mapping.matchBasis === 'exact_synonym' && !hasSynonymTerm) {
+    return {
+      ok: false,
+      message: 'Exact synonym mappings require synonymTerm.',
+    };
+  }
+
+  if (hasSynonymTerm && mapping.matchBasis !== 'exact_synonym') {
+    return {
+      ok: false,
+      message: 'Only exact synonym mappings may carry synonymTerm.',
     };
   }
 
@@ -231,6 +288,7 @@ function isTraceStructurallyEmpty(trace) {
     || hasNonEmptyArray(trace.overrideIds)
     || hasNonEmptyArray(trace?.loadedManifest?.conceptIds)
     || hasNonEmptyArray(trace?.loadedManifest?.authorityIds)
+    || hasTraceReplayContext(trace)
   );
 }
 
@@ -262,6 +320,13 @@ function validateValidationRunTrace(validationRun) {
     return {
       ok: false,
       message: 'ValidationRun trace.overrideIds is required when manualOverrideUsed is true.',
+    };
+  }
+
+  if (!hasTraceReplayContext(trace)) {
+    return {
+      ok: false,
+      message: 'ValidationRun trace.replayContext is required for replay-safe persistence.',
     };
   }
 

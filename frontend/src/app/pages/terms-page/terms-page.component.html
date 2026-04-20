@@ -552,6 +552,152 @@
                       </a>
                     </div>
                   }
+                  @case ('legal-validator-api') {
+                    <div class="pdm-terms-page__subsection">
+                      <p class="pdm-terms-page__section-copy">{{ viewModel().legalValidatorCountsLine }}</p>
+                    </div>
+
+                    <div class="pdm-terms-page__subsection">
+                      <h3 class="pdm-terms-page__subsection-title">Legal Validator endpoints</h3>
+                      <div class="pdm-terms-page__table-wrap">
+                        <table class="pdm-terms-page__table pdm-terms-page__table--endpoint">
+                          <thead>
+                            <tr>
+                              <th>Operation</th>
+                              <th>Method</th>
+                              <th>Path</th>
+                              <th>Input</th>
+                              <th>Evidence</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @for (row of viewModel().legalValidatorEndpointRows; track row.claimId) {
+                              <tr>
+                                <td>{{ row.operation }}</td>
+                                <td class="pdm-terms-page__mono-cell pdm-mono">{{ row.method }}</td>
+                                <td class="pdm-terms-page__mono-cell pdm-mono">{{ row.path }}</td>
+                                <td>{{ row.input }}</td>
+                                <td class="pdm-terms-page__evidence pdm-mono">{{ row.evidence }}</td>
+                              </tr>
+                            }
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+                    <div class="pdm-terms-page__subsection">
+                      <h3 class="pdm-terms-page__subsection-title">Intake request fields</h3>
+                      <div class="pdm-terms-page__table-wrap">
+                        <table class="pdm-terms-page__table pdm-terms-page__table--field">
+                          <thead>
+                            <tr>
+                              <th>Field</th>
+                              <th>Rule</th>
+                              <th>Condition</th>
+                              <th>Evidence</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @for (row of viewModel().legalValidatorIntakeFieldRows; track row.claimId) {
+                              <tr>
+                                <td class="pdm-terms-page__mono-cell pdm-mono">{{ row.field }}</td>
+                                <td>{{ row.rule }}</td>
+                                <td>{{ row.condition }}</td>
+                                <td class="pdm-terms-page__evidence pdm-mono">{{ row.evidence }}</td>
+                              </tr>
+                            }
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+                    <div class="pdm-terms-page__subsection">
+                      <h3 class="pdm-terms-page__subsection-title">Orchestrate request fields</h3>
+                      <div class="pdm-terms-page__table-wrap">
+                        <table class="pdm-terms-page__table pdm-terms-page__table--field">
+                          <thead>
+                            <tr>
+                              <th>Field</th>
+                              <th>Rule</th>
+                              <th>Condition</th>
+                              <th>Evidence</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @for (row of viewModel().legalValidatorOrchestrateFieldRows; track row.claimId) {
+                              <tr>
+                                <td class="pdm-terms-page__mono-cell pdm-mono">{{ row.field }}</td>
+                                <td>{{ row.rule }}</td>
+                                <td>{{ row.condition }}</td>
+                                <td class="pdm-terms-page__evidence pdm-mono">{{ row.evidence }}</td>
+                              </tr>
+                            }
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+                    <div class="pdm-terms-page__subsection">
+                      <h3 class="pdm-terms-page__subsection-title">Replay request fields</h3>
+                      <div class="pdm-terms-page__table-wrap">
+                        <table class="pdm-terms-page__table pdm-terms-page__table--field">
+                          <thead>
+                            <tr>
+                              <th>Field</th>
+                              <th>Rule</th>
+                              <th>Condition</th>
+                              <th>Evidence</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @for (row of viewModel().legalValidatorReplayFieldRows; track row.claimId) {
+                              <tr>
+                                <td class="pdm-terms-page__mono-cell pdm-mono">{{ row.field }}</td>
+                                <td>{{ row.rule }}</td>
+                                <td>{{ row.condition }}</td>
+                                <td class="pdm-terms-page__evidence pdm-mono">{{ row.evidence }}</td>
+                              </tr>
+                            }
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+                    <div class="pdm-terms-page__subsection">
+                      <h3 class="pdm-terms-page__subsection-title">Legal Validator refusal boundaries</h3>
+                      <div class="pdm-terms-page__table-wrap">
+                        <table class="pdm-terms-page__table pdm-terms-page__table--boundary">
+                          <thead>
+                            <tr>
+                              <th>Boundary</th>
+                              <th>Condition</th>
+                              <th>Effect</th>
+                              <th>Evidence</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @for (row of viewModel().legalValidatorBoundaryRows; track row.claimId) {
+                              <tr>
+                                <td>{{ row.boundary }}</td>
+                                <td>{{ row.condition }}</td>
+                                <td>{{ row.effect }}</td>
+                                <td class="pdm-terms-page__evidence pdm-mono">{{ row.evidence }}</td>
+                              </tr>
+                            }
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+                    <div class="pdm-terms-page__actions">
+                      <a class="pdm-terms-page__inspect-link" [routerLink]="viewModel().legalValidatorTrustRoute">
+                        Open docs page
+                      </a>
+                      <a class="pdm-terms-page__inspect-link" [routerLink]="viewModel().legalValidatorInspectRoute">
+                        Inspect run
+                      </a>
+                    </div>
+                  }
                   @case ('shared-intake-router') {
                     <div class="pdm-terms-page__subsection">
                       <h3 class="pdm-terms-page__subsection-title">Shared intake endpoints</h3>

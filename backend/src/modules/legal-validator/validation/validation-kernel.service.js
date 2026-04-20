@@ -146,6 +146,43 @@ function normalizeValidationDecision({ validationDecision = null, explicitStop =
   return decision;
 }
 
+function loadDoctrineValidationRuleIds(doctrineLoadResult, context) {
+  const validationRuleIds = doctrineLoadResult?.manifest?.validationRuleIds;
+
+  if (!Array.isArray(validationRuleIds)) {
+    return buildTerminalResult({
+      failureCode: 'INSUFFICIENT_DOCTRINE',
+      reason: `Doctrine artifact ${context.doctrineArtifactId} does not declare validationRuleIds required for runtime-owned validation.`,
+      extras: context,
+    });
+  }
+
+  const normalizedValidationRuleIds = normalizeValidationRuleIds(validationRuleIds);
+
+  if (normalizedValidationRuleIds.length === 0) {
+    return buildTerminalResult({
+      failureCode: 'INSUFFICIENT_DOCTRINE',
+      reason: `Doctrine artifact ${context.doctrineArtifactId} does not declare any runtime validationRuleIds.`,
+      extras: context,
+    });
+  }
+
+  if (normalizedValidationRuleIds.length !== validationRuleIds.length || hasDuplicateValidationRuleIds(normalizedValidationRuleIds)) {
+    return buildTerminalResult({
+      failureCode: 'UNAUTHORIZED_DECISION_PATH',
+      reason: `Doctrine artifact ${context.doctrineArtifactId} declares malformed validationRuleIds and cannot support runtime-owned validation.`,
+      extras: context,
+    });
+  }
+
+  return {
+    ok: true,
+    terminal: false,
+    service: SERVICE_NAME,
+    validationRuleIds: normalizedValidationRuleIds,
+  };
+}
+
 function normalizeTerminalDecision(decision, context) {
   const failureCode = decision.failureCode || DECISION_STATUS_TO_FAILURE_CODE[decision.status];
 
@@ -247,15 +284,7 @@ async function evaluate({
     explicitStop,
   });
 
-  if (!decision) {
-    return buildTerminalResult({
-      failureCode: 'INSUFFICIENT_DOCTRINE',
-      reason: 'Validation kernel skeleton requires an explicit validationDecision until kernel intelligence is implemented.',
-      extras: context,
-    });
-  }
-
-  if (decision.status !== 'valid') {
+  if (decision && decision.status !== 'valid') {
     return normalizeTerminalDecision(decision, context);
   }
 
@@ -265,27 +294,15 @@ async function evaluate({
     return mappingResult;
   }
 
-  const validationRuleIds = normalizeValidationRuleIds(decision.validationRuleIds);
+  const doctrineValidationRuleIdsResult = loadDoctrineValidationRuleIds(doctrineLoadResult, context);
 
-  if (validationRuleIds.length === 0) {
-    return buildTerminalResult({
-      failureCode: 'UNAUTHORIZED_DECISION_PATH',
-      reason: 'Validation kernel valid decisions require at least one validationRuleId.',
-      extras: context,
-    });
-  }
-
-  if (hasDuplicateValidationRuleIds(validationRuleIds)) {
-    return buildTerminalResult({
-      failureCode: 'UNAUTHORIZED_DECISION_PATH',
-      reason: 'Validation kernel valid decisions require unique validationRuleIds.',
-      extras: context,
-    });
+  if (doctrineValidationRuleIdsResult.terminal) {
+    return doctrineValidationRuleIdsResult;
   }
 
   return buildContinueResult({
     context,
-    validationRuleIds,
+    validationRuleIds: doctrineValidationRuleIdsResult.validationRuleIds,
   });
 }
 
