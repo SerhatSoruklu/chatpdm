@@ -40,21 +40,6 @@ export class MilitaryConstraintsCompilerPageComponent {
   protected readonly heroImageDialogTitle = MCPP_HERO_IMAGE_DIALOG_TITLE;
   protected readonly heroImageDialogCloseLabel = MCPP_HERO_IMAGE_DIALOG_CLOSE_LABEL;
   protected readonly heroImageButtonLabel = MCPP_HERO_IMAGE_BUTTON_LABEL;
-  protected readonly exampleJson = `{
-  "packId": "mil-us-medical-protection-core-v0.1.0",
-  "facts": {
-    "target": {
-      "protectedClass": "MEDICAL",
-      "lossOfProtectionStatus": "NOT_LOST"
-    },
-    "action": {
-      "kind": "STRIKE"
-    },
-    "authority": {
-      "designatedActionAuthorized": false
-    }
-  }
-}`;
 
   protected readonly whatItIsCards: readonly ContractCard[] = [
     {

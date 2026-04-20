@@ -207,10 +207,14 @@
   margin-top: 18px;
 }
 
+.pdm-vision__stage-grid,
+.pdm-vision__continuity-grid {
+  padding-inline: 6px;
+}
+
 .pdm-vision__signal-card,
 .pdm-vision__stage-card,
 .pdm-vision__continuity-card {
-  padding: 16px;
   border: 1px solid rgba(148, 163, 184, 0.14);
   border-radius: 22px;
   background:
@@ -222,12 +226,93 @@
     transform 150ms ease;
 }
 
+.pdm-vision__signal-card {
+  appearance: none;
+  display: grid;
+  width: 100%;
+  padding: 14px;
+  gap: 12px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.pdm-vision__signal-card--visual {
+  overflow: hidden;
+}
+
+.pdm-vision__signal-card--wide {
+  grid-column: 1 / -1;
+}
+
+.pdm-vision__stage-card,
+.pdm-vision__continuity-card {
+  padding: 18px 18px 20px;
+}
+
 .pdm-vision__signal-card:hover,
+.pdm-vision__signal-card:focus-visible,
 .pdm-vision__stage-card:hover,
 .pdm-vision__continuity-card:hover {
   transform: translateY(-1px);
   border-color: rgba(37, 99, 235, 0.18);
   box-shadow: 0 10px 24px rgba(148, 163, 184, 0.1);
+}
+
+.pdm-vision__signal-card:focus-visible {
+  outline: none;
+  box-shadow:
+    0 10px 24px rgba(148, 163, 184, 0.1),
+    0 0 0 4px rgba(96, 165, 250, 0.16);
+}
+
+.pdm-vision__signal-image-shell {
+  display: block;
+  overflow: hidden;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(240, 245, 255, 0.88)),
+    rgba(255, 255, 255, 0.88);
+}
+
+.pdm-vision__signal-image-shell--wide {
+  width: min(100%, 24rem);
+  justify-self: center;
+}
+
+.pdm-vision__signal-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+}
+
+.pdm-vision__signal-content {
+  display: grid;
+  gap: 4px;
+}
+
+.pdm-vision__signal-title {
+  color: #0f172a;
+  font-size: 0.98rem;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+}
+
+.pdm-vision__signal-caption {
+  color: #64748b;
+  font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  font-size: 0.67rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1.45;
+  text-transform: uppercase;
+}
+
+.pdm-vision__signal-card--visual:hover,
+.pdm-vision__signal-card--visual:focus-visible {
+  transform: translateY(-2px);
 }
 
 .pdm-vision__signal-copy {
@@ -236,7 +321,7 @@
 }
 
 .pdm-vision__stage-title {
-  margin-top: 10px;
+  margin-top: 8px;
   font-size: 1.08rem;
   font-weight: 700;
   line-height: 1.25;
@@ -262,14 +347,27 @@
   background: rgba(255, 255, 255, 0.8);
 }
 
-.pdm-vision__future-note {
-  margin-top: 16px;
+.pdm-vision__chip--education {
+  color: #166534;
+  border-color: rgba(34, 197, 94, 0.22);
+  background: rgba(240, 253, 244, 0.96);
 }
 
-.pdm-vision__signature-copy {
-  max-width: 52rem;
-  margin-top: 10px;
-  color: #334155;
+.pdm-vision__chip--healthcare {
+  color: #0f766e;
+  border-color: rgba(45, 212, 191, 0.22);
+  background: rgba(240, 253, 250, 0.96);
+}
+
+.pdm-vision__chip--technical-systems {
+  color: #1d4ed8;
+  border-color: rgba(96, 165, 250, 0.24);
+  background: rgba(239, 246, 255, 0.96);
+}
+
+.pdm-vision__future-note {
+  margin-top: 16px;
+  padding-inline: 6px;
 }
 
 .pdm-vision__signature {
@@ -294,6 +392,12 @@
 
 .pdm-vision__signature .pdm-vision__section-label {
   color: #93c5fd;
+}
+
+.pdm-vision__signature-copy {
+  max-width: 52rem;
+  margin-top: 10px;
+  color: #dbeafe;
 }
 
 .pdm-vision__signature-mark {
@@ -384,6 +488,10 @@
   line-height: 1.45;
 }
 
+.pdm-vision__signature-copy {
+  font-size: 1rem;
+}
+
 .pdm-vision__closing-line {
   max-width: 18ch;
   margin-top: 10px;
@@ -433,6 +541,14 @@
   .pdm-vision__continuity-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .pdm-vision__signal-card--wide {
+    grid-column: 1 / -1;
+  }
+
+  .pdm-vision__signal-image-shell--wide {
+    width: min(100%, 22rem);
+  }
 }
 
 @media (min-width: 1200px) {
@@ -451,10 +567,45 @@
     width: min(100%, 24rem);
   }
 
-  .pdm-vision__signal-grid,
+  .pdm-vision__stage-grid,
+  .pdm-vision__continuity-grid,
+  .pdm-vision__future-note {
+    padding-inline: 10px;
+  }
+
+  .pdm-vision__signal-grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+
   .pdm-vision__stage-grid,
   .pdm-vision__continuity-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .pdm-vision__signal-card--visual {
+    grid-column: span 4;
+  }
+
+  .pdm-vision__signal-card--wide {
+    grid-column: 1 / -1;
+  }
+
+  .pdm-vision__signal-image-shell--wide {
+    width: min(100%, 24rem);
+  }
+
+  .pdm-vision__signature-shell {
+    grid-template-columns: minmax(0, 1.1fr) minmax(16rem, 0.9fr);
+    align-items: center;
+    gap: 24px;
+  }
+
+  .pdm-vision__signature-mark {
+    justify-self: end;
+  }
+
+  .pdm-vision__signature-image-shell {
+    width: min(100%, 24rem);
   }
 }
 
@@ -462,11 +613,36 @@
   .pdm-vision__main {
     padding: 60px 48px 104px;
   }
+
+  .pdm-vision__stage-grid,
+  .pdm-vision__continuity-grid,
+  .pdm-vision__future-note {
+    padding-inline: 14px;
+  }
 }
 
-@media (max-width: 839px) {
+@media (max-width: 599px) {
+  .pdm-vision__signature {
+    padding-inline: 18px;
+  }
+
+  .pdm-vision__signature-mark {
+    width: 100%;
+    padding: 16px;
+  }
+}
+
+@media (min-width: 600px) and (max-width: 839px) {
   .pdm-vision__hero-visual {
     width: min(100%, 26rem);
+  }
+
+  .pdm-vision__signature-mark {
+    width: min(100%, 30rem);
+  }
+
+  .pdm-vision__signature-image-shell {
+    width: min(100%, 24rem);
   }
 }
 
@@ -477,5 +653,14 @@
 
   .pdm-vision__hero-visual-caption {
     font-size: 0.62rem;
+  }
+
+  .pdm-vision__signal-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pdm-vision__signal-card--visual,
+  .pdm-vision__signal-card--wide {
+    grid-column: auto;
   }
 }

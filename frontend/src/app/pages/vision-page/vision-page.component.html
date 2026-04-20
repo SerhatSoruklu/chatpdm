@@ -6,9 +6,11 @@
           <p class="pdm-vision__eyebrow">Vision</p>
           <h1 class="pdm-vision__title" id="pdm-vision-title">Infrastructure for authored concepts.</h1>
           <p class="pdm-vision__subtitle">
-            ChatPDM is being built as long-term concept infrastructure. Not to control information.
-            Not to claim universal authority. But to make concepts reliable enough for systems to
-            depend on without ambiguity.
+            We are not building another source of information. We are building long-term concept
+            infrastructure, a stable foundation for meaning itself. Not to control thought. Not to
+            claim universal authority. But to give essential concepts a clear, unchanging shape so
+            systems, institutions, and decisions can depend on them without ambiguity, drift, or
+            collapse.
           </p>
         </div>
 
@@ -40,14 +42,40 @@
       <section class="pdm-vision__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-vision-now">
         <div class="pdm-vision__section-head">
           <p class="pdm-vision__section-label">Why this matters now</p>
-          <h2 class="pdm-vision__section-title" id="pdm-vision-now">Information is unstable before systems can apply structure to it.</h2>
+          <h2 class="pdm-vision__section-title" id="pdm-vision-now">
+            Information is abundant. It is also fragile.
+          </h2>
         </div>
 
-        <div class="pdm-vision__signal-grid">
-          @for (signal of instabilitySignals; track signal) {
-            <article class="pdm-vision__signal-card">
-              <p class="pdm-vision__signal-copy">{{ signal }}</p>
-            </article>
+        <div class="pdm-vision__signal-grid pdm-vision__signal-grid--visual">
+          @for (card of whyThisMattersNowCards; track card.title) {
+            <button
+              type="button"
+              class="pdm-vision__signal-card pdm-vision__signal-card--visual"
+              [class.pdm-vision__signal-card--wide]="card.wide"
+              (click)="openWhyThisMattersNowDialog(card)"
+              [attr.aria-label]="'Open preview for ' + card.title"
+            >
+              <span
+                class="pdm-vision__signal-image-shell"
+                [class.pdm-vision__signal-image-shell--wide]="card.wide"
+              >
+                <img
+                  class="pdm-vision__signal-image"
+                  [src]="card.imagePath"
+                  [alt]="card.imageAlt"
+                  [width]="card.width"
+                  [height]="card.height"
+                  loading="eager"
+                  decoding="async"
+                />
+              </span>
+
+              <span class="pdm-vision__signal-content">
+                <span class="pdm-vision__signal-title">{{ card.title }}</span>
+                <span class="pdm-vision__signal-caption">{{ card.caption }}</span>
+              </span>
+            </button>
           }
         </div>
       </section>
@@ -55,18 +83,20 @@
       <section class="pdm-vision__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-vision-confidence">
         <div class="pdm-vision__section-head">
           <p class="pdm-vision__section-label">Confidence wording</p>
-          <h2 class="pdm-vision__section-title" id="pdm-vision-confidence">Some outputs sound trustworthy before they are trustworthy.</h2>
+          <h2 class="pdm-vision__section-title" id="pdm-vision-confidence">
+            Some outputs sound trustworthy long before they are trustworthy.
+          </h2>
         </div>
 
         <p class="pdm-vision__copy">
-          A statement can be fluent, certain, and well-structured while still lacking support, scope,
-          or boundary clarity. This is one reason confident wording can distort judgment: tone can
-          make a claim feel resolved before it has actually been validated.
+          A statement can be fluent, confident, and elegantly structured while still lacking real
+          support, clear scope, or firm boundaries. This is where judgment quietly fails: tone can
+          close the case before the case has truly been made.
         </p>
 
         <p class="pdm-vision__copy">
-          ChatPDM is not being built to sound convincing. It is being built to keep confidence
-          subordinate to structure, evidence, and admission rules.
+          ChatPDM is not designed to sound convincing. It is designed to place confidence in its
+          proper place, subordinate to structure, evidence, and uncompromising admission rules.
         </p>
 
         <div class="pdm-vision__chip-row" aria-label="Confidence wording takeaways">
@@ -79,13 +109,16 @@
       <section class="pdm-vision__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-vision-problem">
         <div class="pdm-vision__section-head">
           <p class="pdm-vision__section-label">The deeper problem</p>
-          <h2 class="pdm-vision__section-title" id="pdm-vision-problem">Misinformation is only part of it. Ambiguity is the lower-layer failure.</h2>
+          <h2 class="pdm-vision__section-title" id="pdm-vision-problem">
+            Misinformation is only the visible symptom. Ambiguity is the deeper failure.
+          </h2>
         </div>
 
         <p class="pdm-vision__copy">
-          If concepts are unstable, every system built on top of them becomes unstable: downstream systems,
-          legal analysis, public discourse, software contracts, and institutional decision systems.
-          ChatPDM exists to address that lower layer: the stability of the concepts themselves.
+          When core concepts become unstable, instability spreads upward like cracks in a
+          foundation. Downstream systems fracture. Legal analysis wavers. Public discourse erodes.
+          Software contracts lose meaning. Institutional decisions grow unreliable. ChatPDM exists
+          to reinforce the layer beneath them all, the stability of the concepts themselves.
         </p>
       </section>
 
@@ -93,12 +126,16 @@
         <section class="pdm-vision__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-vision-build">
           <div class="pdm-vision__section-head">
             <p class="pdm-vision__section-label">What ChatPDM is trying to build</p>
-            <h2 class="pdm-vision__section-title" id="pdm-vision-build">A system layer that contract-bound systems can rely on.</h2>
+            <h2 class="pdm-vision__section-title" id="pdm-vision-build">
+              A system layer that contract-bound systems can truly rely on.
+            </h2>
           </div>
 
           <p class="pdm-vision__copy">
-            This is not about knowing more. It is about making concept boundaries exact. The goal is
-            infrastructure where admitted concepts remain stable across time, use, and representation.
+            This is not about knowing more. It is about making concept boundaries exact. We are
+            building infrastructure where every admitted concept remains stable across time, use,
+            and representation, deterministic, bounded, source-backed, refusal-capable, open
+            source, and built to endure.
           </p>
 
           <div class="pdm-vision__chip-row" aria-label="Infrastructure traits">
@@ -111,12 +148,15 @@
         <section class="pdm-vision__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-vision-narrow">
           <div class="pdm-vision__section-head">
             <p class="pdm-vision__section-label">Why it starts narrow</p>
-            <h2 class="pdm-vision__section-title" id="pdm-vision-narrow">Deterministic systems cannot begin broad.</h2>
+            <h2 class="pdm-vision__section-title" id="pdm-vision-narrow">
+              Deterministic systems cannot begin broad.
+            </h2>
           </div>
 
           <p class="pdm-vision__copy">
-            Governance comes first because ambiguity already breaks rules, institutions, and public
-            decision systems there. Expansion is not earned by coverage. It is earned by validation.
+            We begin with governance concepts because that is where ambiguity already breaks rules,
+            institutions, and public decision systems. Expansion is not earned by coverage. It is
+            earned through rigorous validation.
           </p>
         </section>
       </div>
@@ -124,7 +164,9 @@
       <section class="pdm-vision__section pdm-site-surface pdm-site-panel" aria-labelledby="pdm-vision-direction">
         <div class="pdm-vision__section-head">
           <p class="pdm-vision__section-label">Long-term direction</p>
-          <h2 class="pdm-vision__section-title" id="pdm-vision-direction">Expansion follows stability, not ambition alone.</h2>
+          <h2 class="pdm-vision__section-title" id="pdm-vision-direction">
+            Expansion follows stability, never ambition alone.
+          </h2>
         </div>
 
         <div class="pdm-vision__stage-grid">
@@ -138,12 +180,17 @@
         </div>
 
         <div class="pdm-vision__future-note">
-          <p class="pdm-vision__copy">
-            Future domains may include:
-          </p>
+          <p class="pdm-vision__copy">Future domains may include:</p>
           <div class="pdm-vision__chip-row" aria-label="Future domains">
-            @for (domain of futureDomains; track domain) {
-              <span class="pdm-vision__chip pdm-site-chip pdm-vision__chip--future">{{ domain }}</span>
+            @for (domain of futureDomains; track domain.label) {
+              <span
+                class="pdm-vision__chip pdm-site-chip pdm-vision__chip--future"
+                [class.pdm-vision__chip--education]="domain.tone === 'education'"
+                [class.pdm-vision__chip--healthcare]="domain.tone === 'healthcare'"
+                [class.pdm-vision__chip--technical-systems]="domain.tone === 'technical-systems'"
+              >
+                {{ domain.label }}
+              </span>
             }
           </div>
         </div>
@@ -157,7 +204,8 @@
 
         <p class="pdm-vision__copy">
           Open source matters because continuity matters. ChatPDM is MIT licensed so it can be
-          inspected, extended, and maintained without ownership theater.
+          inspected, extended, and maintained by others, without ownership theater or single
+          points of failure.
         </p>
 
         <div class="pdm-vision__continuity-grid">
@@ -224,7 +272,8 @@
       <section class="pdm-vision__closing pdm-site-surface pdm-site-panel" aria-labelledby="pdm-vision-closing">
         <p class="pdm-vision__section-label">Closing</p>
         <h2 class="pdm-vision__closing-line" id="pdm-vision-closing">
-          Scale comes after stability.
+          Scale comes after stability.<br />
+          Never before.
         </h2>
       </section>
     </div>

@@ -87,6 +87,7 @@ chatpdm-sources_json/authority-law-and-morality.json
 .codex/
 tmp/
 artifacts/
+output/playwright/
 
 # Local legal-validator research notes
 docs/product/legal-argument-validator-hart-notes.md

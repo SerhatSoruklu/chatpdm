@@ -229,6 +229,7 @@
 
 .pdm-mcc__card,
 .pdm-mcc__pack-card {
+  min-width: 0;
   padding: 18px;
   border: 1px solid rgba(148, 163, 184, 0.16);
   border-radius: 24px;
@@ -251,6 +252,13 @@
   margin: 10px 0 0;
 }
 
+.pdm-mcc__pack-card .pdm-mcc__card-copy,
+.pdm-mcc__section-copy {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  hyphens: auto;
+}
+
 .pdm-mcc__bullets {
   margin: 0;
   padding-left: 18px;
@@ -260,16 +268,129 @@
   margin-top: 10px;
 }
 
-.pdm-mcc__json {
+.pdm-mcc__json-shell {
+  display: grid;
+  gap: 14px;
   margin: 0;
   padding: 18px;
-  overflow-x: auto;
+  overflow: hidden;
+  border: 1px solid rgba(15, 23, 42, 0.28);
   border-radius: 24px;
-  background: #0f172a;
+  background:
+    linear-gradient(180deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.94)),
+    #0f172a;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 18px 36px rgba(15, 23, 42, 0.16);
+}
+
+.pdm-mcc__json-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.pdm-mcc__json-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 2rem;
+  padding: 0.45rem 0.78rem;
+  border-radius: 999px;
+  background: rgba(30, 41, 59, 0.94);
   color: #e2e8f0;
+  font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.pdm-mcc__json-dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 999px;
+  background: #22c55e;
+  box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.55);
+  animation: pdm-mcc-json-pulse 1.45s ease-in-out infinite;
+}
+
+.pdm-mcc__json-meta-label {
+  color: #94a3b8;
+  font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1.45;
+  text-transform: uppercase;
+}
+
+.pdm-mcc__json-code {
+  overflow-x: auto;
+  color: #dbe4f0;
   font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
   font-size: 0.84rem;
   line-height: 1.7;
+}
+
+.pdm-mcc__json-line {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: baseline;
+  min-height: 1.7rem;
+  white-space: pre;
+}
+
+.pdm-mcc__json-indent {
+  display: inline-block;
+  min-width: 1rem;
+  color: transparent;
+}
+
+.pdm-mcc__json-key {
+  color: #93c5fd;
+  font-weight: 600;
+}
+
+.pdm-mcc__json-string {
+  color: #86efac;
+}
+
+.pdm-mcc__json-number {
+  color: #fbbf24;
+}
+
+.pdm-mcc__json-boolean {
+  color: #fda4af;
+  font-weight: 600;
+}
+
+.pdm-mcc__json-null {
+  color: #c4b5fd;
+  font-weight: 600;
+}
+
+.pdm-mcc__json-punctuation {
+  color: #94a3b8;
+}
+
+@keyframes pdm-mcc-json-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5);
+    opacity: 1;
+  }
+
+  70% {
+    box-shadow: 0 0 0 8px rgba(34, 197, 94, 0);
+    opacity: 0.88;
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+    opacity: 1;
+  }
 }
 
 @media (min-width: 600px) {
@@ -345,6 +466,20 @@
     right: 10px;
     padding: 0.45rem 0.72rem;
     font-size: 0.68rem;
+  }
+
+  .pdm-mcc__section-copy,
+  .pdm-mcc__card-copy {
+    font-size: 0.96rem;
+    line-height: 1.7;
+  }
+
+  .pdm-mcc__json-shell {
+    padding: 16px;
+  }
+
+  .pdm-mcc__json-code {
+    font-size: 0.79rem;
   }
 }
 

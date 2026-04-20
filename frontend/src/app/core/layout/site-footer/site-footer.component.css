@@ -343,16 +343,25 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  padding-top: 18px;
+  flex-wrap: wrap;
+  gap: 18px 24px;
+  padding: 20px 0 18px;
   border-top: 1px solid rgba(148, 163, 184, 0.12);
+  width: 100%;
+  padding-bottom: 0px;
 }
 
 .pdm-site-footer__credit {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 4px;
   margin: 0;
   color: rgba(191, 219, 254, 0.72);
   font-size: 0.88rem;
   line-height: 1.55;
+  text-align: center;
 }
 
 .pdm-site-footer__credit-link {
@@ -499,7 +508,6 @@
 
   .pdm-site-footer__inner {
     display: grid;
-    gap: 28px;
   }
 
   .pdm-site-footer__layout {
@@ -521,8 +529,13 @@
 
 @media (max-width: 839px) {
   .pdm-site-footer__bottom-strip {
-    flex-direction: column;
-    align-items: flex-start;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .pdm-site-footer__credit {
+    justify-content: center;
+    text-align: center;
   }
 }
 

@@ -5,22 +5,35 @@
       <h2 class="pdm-vision-image-dialog__title">{{ data.title }}</h2>
     </div>
 
-    <button type="button" class="pdm-vision-image-dialog__close" (click)="close()">
+    <button
+      type="button"
+      class="pdm-vision-image-dialog__close"
+      (click)="close()"
+      aria-label="Close image preview"
+    >
       {{ closeLabel }}
     </button>
   </div>
 
   <div class="pdm-vision-image-dialog__body">
-    <img
-      class="pdm-vision-image-dialog__image"
-      [src]="data.imagePath"
-      [alt]="data.imageAlt"
-      width="676"
-      height="1024"
-      loading="eager"
-      decoding="async"
-    />
-  </div>
+    <figure class="pdm-vision-image-dialog__media">
+      <div class="pdm-vision-image-dialog__image-shell">
+        <img
+          class="pdm-vision-image-dialog__image"
+          [src]="data.imagePath"
+          [alt]="data.imageAlt"
+          [width]="data.width"
+          [height]="data.height"
+          loading="eager"
+          decoding="async"
+        />
+      </div>
+    </figure>
 
-  <p class="pdm-vision-image-dialog__caption">{{ data.caption }}</p>
+    <aside class="pdm-vision-image-dialog__detail" aria-label="Image description">
+      <p class="pdm-vision-image-dialog__detail-label">What this represents</p>
+      <p class="pdm-vision-image-dialog__detail-copy">{{ descriptionText }}</p>
+      <p class="pdm-vision-image-dialog__detail-note">{{ data.caption }}</p>
+    </aside>
+  </div>
 </div>

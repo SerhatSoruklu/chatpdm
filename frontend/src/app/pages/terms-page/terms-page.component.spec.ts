@@ -5,6 +5,7 @@ import { describe, expect, it } from 'vitest';
 import {
   resolveActiveTermsPageSectionId,
   resolveActiveTermsPageSectionIdFromHash,
+  splitTermsPageApiLabel,
 } from './terms-page.component';
 
 describe('resolveActiveTermsPageSectionId', () => {
@@ -53,5 +54,21 @@ describe('resolveActiveTermsPageSectionIdFromHash', () => {
   it('returns an empty value for unknown or missing fragments', () => {
     expect(resolveActiveTermsPageSectionIdFromHash(['overview'], '#missing')).toBe('');
     expect(resolveActiveTermsPageSectionIdFromHash(['overview'], '')).toBe('');
+  });
+});
+
+describe('splitTermsPageApiLabel', () => {
+  it('splits API suffix labels into text and badge parts', () => {
+    expect(splitTermsPageApiLabel('Legal Validator API')).toEqual({
+      text: 'Legal Validator',
+      badge: 'API',
+    });
+  });
+
+  it('leaves non-API labels untouched', () => {
+    expect(splitTermsPageApiLabel('Overview')).toEqual({
+      text: 'Overview',
+      badge: null,
+    });
   });
 });
