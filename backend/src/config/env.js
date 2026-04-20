@@ -64,6 +64,14 @@ dotenv.config({
   quiet: true,
 });
 
+if (process.env.NODE_ENV !== 'production') {
+  dotenv.config({
+    path: path.resolve(__dirname, '../../', '.env.local'),
+    quiet: true,
+    override: true,
+  });
+}
+
 const nodeEnv = process.env.NODE_ENV || 'development';
 const isProduction = nodeEnv === 'production';
 const defaultFrontendUrl = isProduction ? 'https://chatpdm.com' : 'http://localhost:4200';
@@ -91,4 +99,5 @@ module.exports = {
   frontendOrigins,
   apiOrigin: normalizeUrl(process.env.API_ORIGIN || defaultApiOrigin),
   trustProxy: parseTrustProxy(process.env.TRUST_PROXY, isProduction ? 1 : false),
+  signaturePrivateKeyFile: String(process.env.CHATPDM_SIGNATURE_PRIVATE_KEY_FILE || '').trim(),
 };
