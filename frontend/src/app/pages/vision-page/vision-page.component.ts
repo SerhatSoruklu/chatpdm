@@ -57,8 +57,8 @@ export class VisionPageComponent {
 
   protected readonly whyThisMattersNowCards: readonly VisionImageCard[] = [
     {
-      title: 'Images can be fabricated',
-      caption: 'Synthetic image frame',
+      title: 'Reality can be fabricated',
+      caption: 'Faces, memories, and moments can be forged in seconds.',
       description:
         'A believable image can still be synthetic. The surface may look real while the underlying scene was generated, altered, or never existed.',
       imagePath: '/assets/vision/why-this-matters/vision-fabricated-image-87f8d2c79d.webp',
@@ -68,8 +68,8 @@ export class VisionPageComponent {
       wide: false,
     },
     {
-      title: 'Text can be manipulated',
-      caption: 'Language distortion frame',
+      title: 'Words can be twisted',
+      caption: 'Perfect fluency can hide a deliberate bend in meaning.',
       description:
         'Text can remain fluent while meaning shifts underneath it. Rewriting, emphasis, and small edits can distort interpretation without looking obviously broken.',
       imagePath: '/assets/vision/why-this-matters/vision-manipulated-text-0afce9a374.webp',
@@ -79,8 +79,8 @@ export class VisionPageComponent {
       wide: false,
     },
     {
-      title: 'Media can be misleading',
-      caption: 'Framing example',
+      title: 'Framing can deceive',
+      caption: 'A clear surface can still conceal the wrong story.',
       description:
         'Framing changes perception. A cropped or selectively presented scene can imply a story that reverses once the full context is visible.',
       imagePath: '/assets/vision/why-this-matters/vision-misleading-media-c8e89d8d7c.webp',
@@ -91,7 +91,7 @@ export class VisionPageComponent {
     },
     {
       title: 'Meaning often remains unclear even when something looks correct',
-      caption: 'Confidence without grounding',
+      caption: 'Meaning often remains incomplete, even when the picture appears almost whole.',
       description:
         'Confidence, polish, and structure can create the appearance of validity. Something can look complete and trustworthy while still lacking support, scope, or grounding.',
       imagePath: '/assets/vision/why-this-matters/vision-confidence-without-grounding-9b8d94a8ed.webp',

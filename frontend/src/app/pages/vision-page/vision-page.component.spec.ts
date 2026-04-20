@@ -6,28 +6,58 @@ import { of } from 'rxjs';
 import type { MatDialog } from '@angular/material/dialog';
 import { VisionPageComponent } from './vision-page.component';
 import { VisionPageImageDialogComponent } from './vision-page-image-dialog.component';
+import type { CanonicalSignatureService } from '../../core/signature/canonical-signature.service';
+
+type VisionImageCardLike = {
+  title: string;
+  caption: string;
+  description: string;
+  imagePath: string;
+  imageAlt: string;
+  width: number;
+  height: number;
+  wide: boolean;
+};
+
+type VisionPageComponentInternals = VisionPageComponent & {
+  signatureVerification$: unknown;
+  whyThisMattersNowCards: readonly VisionImageCardLike[];
+  openWhyThisMattersNowDialog(card: VisionImageCardLike): void;
+};
+
+type CanonicalSignatureServiceMock = Pick<
+  CanonicalSignatureService,
+  'loadCanonicalSignatureVerification'
+>;
 
 describe('VisionPageComponent', () => {
   it('requests canonical signature verification on construction', () => {
     const loadCanonicalSignatureVerification = vi.fn().mockReturnValue(of({
       status: 'verifying',
     }));
+    const canonicalSignatureService: CanonicalSignatureServiceMock = {
+      loadCanonicalSignatureVerification,
+    };
     const component = new VisionPageComponent(
       { open: vi.fn() } as unknown as MatDialog,
-      { loadCanonicalSignatureVerification } as any,
+      canonicalSignatureService,
     );
+    const componentInternals = component as VisionPageComponentInternals;
 
     expect(loadCanonicalSignatureVerification).toHaveBeenCalledTimes(1);
-    expect((component as any).signatureVerification$).toBeDefined();
+    expect(componentInternals.signatureVerification$).toBeDefined();
   });
 
   it('opens the hero image in a Material dialog with bounded data', () => {
     const open = vi.fn();
     const dialog = { open } as unknown as MatDialog;
     const loadCanonicalSignatureVerification = vi.fn().mockReturnValue(of({ status: 'verifying' }));
-    const component = new VisionPageComponent(dialog, {
+    const canonicalSignatureService: CanonicalSignatureServiceMock = {
       loadCanonicalSignatureVerification,
-    } as any);
+    };
+    const component = new VisionPageComponent(dialog, {
+      ...canonicalSignatureService,
+    });
 
     component.openHeroImageDialog();
 
@@ -59,12 +89,14 @@ describe('VisionPageComponent', () => {
     const open = vi.fn();
     const dialog = { open } as unknown as MatDialog;
     const loadCanonicalSignatureVerification = vi.fn().mockReturnValue(of({ status: 'verifying' }));
-    const component = new VisionPageComponent(dialog, {
+    const canonicalSignatureService: CanonicalSignatureServiceMock = {
       loadCanonicalSignatureVerification,
-    } as any);
-    const card = (component as any).whyThisMattersNowCards[0];
+    };
+    const component = new VisionPageComponent(dialog, canonicalSignatureService);
+    const componentInternals = component as VisionPageComponentInternals;
+    const card = componentInternals.whyThisMattersNowCards[0];
 
-    (component as any).openWhyThisMattersNowDialog(card);
+    componentInternals.openWhyThisMattersNowDialog(card);
 
     expect(open).toHaveBeenCalledTimes(1);
     expect(open).toHaveBeenCalledWith(
@@ -73,14 +105,14 @@ describe('VisionPageComponent', () => {
         width: 'calc(100vw - 24px)',
         maxWidth: '1240px',
         maxHeight: 'calc(100dvh - 24px)',
-        ariaLabel: 'Images can be fabricated',
+        ariaLabel: 'Reality can be fabricated',
         panelClass: 'pdm-vision-image-dialog-panel',
         restoreFocus: true,
         data: expect.objectContaining({
-          title: 'Images can be fabricated',
+          title: 'Reality can be fabricated',
           imagePath: '/assets/vision/why-this-matters/vision-fabricated-image-87f8d2c79d.webp',
           imageAlt: 'Symbolic vision card for fabricated imagery in ChatPDM',
-          caption: 'Synthetic image frame',
+          caption: 'Faces, memories, and moments can be forged in seconds.',
           description:
             'A believable image can still be synthetic. The surface may look real while the underlying scene was generated, altered, or never existed.',
           width: 1402,

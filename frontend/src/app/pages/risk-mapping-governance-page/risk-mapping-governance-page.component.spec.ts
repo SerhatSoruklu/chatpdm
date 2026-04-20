@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { describe, expect, it, vi } from 'vitest';
 
 import type { MatDialog } from '@angular/material/dialog';
-import { RMG_DIAGRAM_ALT, RMG_DIAGRAM_CAPTION, RMG_DIAGRAM_PATH, RMG_ROUTE_PATH } from './risk-mapping-governance-page.constants';
+import { RMG_DIAGRAM_ALT, RMG_DIAGRAM_PATH, RMG_ROUTE_PATH } from './risk-mapping-governance-page.constants';
 import { RiskMappingGovernancePageComponent } from './risk-mapping-governance-page.component';
 import { RiskMappingGovernanceImageDialogComponent } from './risk-mapping-governance-image-dialog.component';
 

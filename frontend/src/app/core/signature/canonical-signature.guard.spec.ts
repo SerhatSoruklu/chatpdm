@@ -65,7 +65,10 @@ function createTestSignedEnvelope(signatureImageHash: string, expiresAt?: string
 
 describe('canonical signature guard', () => {
   it('refuses a malformed signed envelope', async () => {
-    const verification = await verifyCanonicalSignatureEnvelope({} as any, 'http://127.0.0.1:4200/');
+    const verification = await verifyCanonicalSignatureEnvelope(
+      {} as Parameters<typeof verifyCanonicalSignatureEnvelope>[0],
+      'http://127.0.0.1:4200/',
+    );
 
     expect(verification).toEqual({
       verified: false,

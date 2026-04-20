@@ -19,6 +19,26 @@ log() {
   printf '[chatpdm deploy] %s\n' "$*"
 }
 
+resolve_signature_private_key_file() {
+  local candidate
+  local candidates=(
+    "${CHATPDM_SIGNATURE_PRIVATE_KEY_FILE:-}"
+    "$APP_ROOT/shared/signature/private.pem"
+    "$APP_ROOT/shared/canonical-signature-private.pem"
+    "$APP_ROOT/shared/signature/canonical-signature-private.pem"
+    "$APP_ROOT/shared/chatpdm-signature-private.pem"
+  )
+
+  for candidate in "${candidates[@]}"; do
+    if [[ -n "$candidate" && -f "$candidate" ]]; then
+      printf '%s\n' "$candidate"
+      return 0
+    fi
+  done
+
+  return 1
+}
+
 require_cmd() {
   command -v "$1" >/dev/null 2>&1 || {
     printf 'Missing required command: %s\n' "$1" >&2
@@ -45,6 +65,13 @@ run_pm2_with_env() {
     # shellcheck disable=SC1090
     source "$env_file"
     set +a
+
+    if [[ -z "${CHATPDM_SIGNATURE_PRIVATE_KEY_FILE:-}" ]]; then
+      if CHATPDM_SIGNATURE_PRIVATE_KEY_FILE="$(resolve_signature_private_key_file)"; then
+        export CHATPDM_SIGNATURE_PRIVATE_KEY_FILE
+      fi
+    fi
+
     pm2 "$@"
   )
 }
