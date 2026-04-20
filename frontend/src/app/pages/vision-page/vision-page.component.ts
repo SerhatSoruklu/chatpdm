@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { CanonicalSignatureService } from '../../core/signature/canonical-signature.service';
 import { VisionPageImageDialogComponent } from './vision-page-image-dialog.component';
 
 interface VisionSectionCard {
@@ -23,7 +24,15 @@ interface VisionStage {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VisionPageComponent {
-  constructor(private readonly dialog: MatDialog) {}
+  protected readonly signatureVerification$: ReturnType<
+    CanonicalSignatureService['loadCanonicalSignatureVerification']
+  >;
+  constructor(
+    private readonly dialog: MatDialog,
+    private readonly canonicalSignatureService: CanonicalSignatureService,
+  ) {
+    this.signatureVerification$ = this.canonicalSignatureService.loadCanonicalSignatureVerification();
+  }
 
   protected readonly heroImagePath = '/assets/vision/refused-vision-page.png?v=20260414-1';
   protected readonly heroImageAlt =

@@ -171,12 +171,54 @@
       </section>
 
       <section class="pdm-vision__signature pdm-site-surface pdm-site-panel" aria-labelledby="pdm-vision-signature">
-        <p class="pdm-vision__section-label">Founder signature</p>
-        <p class="pdm-vision__signature-copy" id="pdm-vision-signature">
-          My name is Serhat Soruklu. I built ChatPDM as a long-term system, not a short-term
-          product. It is meant to be inspectable, extendable, and to continue existing beyond me.
-          That is why it is open source.
-        </p>
+        <div class="pdm-vision__signature-shell">
+          <div class="pdm-vision__signature-copy-block">
+            <p class="pdm-vision__section-label" id="pdm-vision-signature">Founder signature</p>
+            <p class="pdm-vision__signature-copy">
+              My name is Serhat Soruklu. I built ChatPDM as a long-term system, not a short-term
+              product. It is meant to be inspectable, extendable, and durable enough to continue
+              existing, and improving, beyond me. That is why it is open source.
+            </p>
+          </div>
+
+          @if (signatureVerification$ | async; as signatureVerification) {
+            <div class="pdm-vision__signature-mark" aria-label="Canonical founder signature">
+              <div class="pdm-vision__signature-mark-head">
+                <p class="pdm-vision__signature-mark-label">Signed by</p>
+                <span
+                  class="pdm-vision__signature-status"
+                  [class.pdm-vision__signature-status--verified]="signatureVerification.status === 'verified'"
+                  [class.pdm-vision__signature-status--verifying]="signatureVerification.status === 'verifying'"
+                  [class.pdm-vision__signature-status--unverified]="signatureVerification.status === 'unverified'"
+                >
+                  @if (signatureVerification.status === 'verified') {
+                    Verified signature
+                  } @else if (signatureVerification.status === 'verifying') {
+                    Verifying signature
+                  } @else {
+                    Unverified signature
+                  }
+                </span>
+              </div>
+
+              @if (signatureVerification.status === 'verified') {
+                <div class="pdm-vision__signature-image-shell">
+                  <img
+                    class="pdm-vision__signature-image"
+                    [src]="signatureVerification.signedEnvelope.envelope.signatureImagePath"
+                    alt="Signature of Serhat Soruklu"
+                    width="750"
+                    height="194"
+                    loading="eager"
+                    decoding="async"
+                  />
+                </div>
+              }
+
+              <p class="pdm-vision__signature-mark-note">Founder, ChatPDM</p>
+            </div>
+          }
+        </div>
       </section>
 
       <section class="pdm-vision__closing pdm-site-surface pdm-site-panel" aria-labelledby="pdm-vision-closing">
