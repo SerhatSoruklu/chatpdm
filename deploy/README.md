@@ -30,11 +30,19 @@ Expected shared env split:
   - `HOST=127.0.0.1`
   - `PORT=4301`
   - `MONGODB_URI=...`
+  - `CHATPDM_SIGNATURE_PRIVATE_KEY_FILE=/srv/chatpdm/shared/signature/private.pem` is optional if the deploy host already stores the private key at one of the conventional shared paths below
 - `frontend.env.production`
   - `NODE_ENV=production`
   - `HOST=127.0.0.1`
   - `PORT=4101`
   - `API_BASE_URL=http://127.0.0.1:4301`
+
+Conventional signature key locations searched by deploy when the backend env file does not set `CHATPDM_SIGNATURE_PRIVATE_KEY_FILE`:
+
+- `/srv/chatpdm/shared/signature/private.pem`
+- `/srv/chatpdm/shared/canonical-signature-private.pem`
+- `/srv/chatpdm/shared/signature/canonical-signature-private.pem`
+- `/srv/chatpdm/shared/chatpdm-signature-private.pem`
 
 Deploy contract for shared env files:
 

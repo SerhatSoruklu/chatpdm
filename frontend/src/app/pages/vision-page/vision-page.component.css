@@ -492,6 +492,20 @@
   font-size: 1rem;
 }
 
+@media (max-width: 599px) {
+  .pdm-vision__signature-shell {
+    gap: 20px;
+  }
+
+  .pdm-vision__signature-mark {
+    width: 100%;
+  }
+
+  .pdm-vision__signature-image-shell {
+    width: min(100%, 28rem);
+  }
+}
+
 .pdm-vision__closing-line {
   max-width: 18ch;
   margin-top: 10px;

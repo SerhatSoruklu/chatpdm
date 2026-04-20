@@ -67,20 +67,20 @@ describe('VisionPageComponent', () => {
     (component as any).openWhyThisMattersNowDialog(card);
 
     expect(open).toHaveBeenCalledTimes(1);
-    expect(open).toHaveBeenCalledWith(
+      expect(open).toHaveBeenCalledWith(
       VisionPageImageDialogComponent,
       expect.objectContaining({
         width: 'calc(100vw - 24px)',
         maxWidth: '1240px',
         maxHeight: 'calc(100dvh - 24px)',
-        ariaLabel: 'Images can be fabricated',
+        ariaLabel: 'Reality can be fabricated',
         panelClass: 'pdm-vision-image-dialog-panel',
         restoreFocus: true,
         data: expect.objectContaining({
-          title: 'Images can be fabricated',
+          title: 'Reality can be fabricated',
           imagePath: '/assets/vision/why-this-matters/vision-fabricated-image-87f8d2c79d.webp',
           imageAlt: 'Symbolic vision card for fabricated imagery in ChatPDM',
-          caption: 'Synthetic image frame',
+          caption: 'Faces, memories, and moments can be forged in seconds.',
           description:
             'A believable image can still be synthetic. The surface may look real while the underlying scene was generated, altered, or never existed.',
           width: 1402,
