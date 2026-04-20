@@ -133,7 +133,8 @@ describe('canonical signature guard', () => {
       arrayBuffer: async () => assetBytes.buffer.slice(assetBytes.byteOffset, assetBytes.byteOffset + assetBytes.byteLength),
     }));
 
-    signedEnvelope.signature.value = `${signedEnvelope.signature.value.slice(0, -1)}A`;
+    const tamperedPrefix = signedEnvelope.signature.value.startsWith('A') ? 'B' : 'A';
+    signedEnvelope.signature.value = `${tamperedPrefix}${signedEnvelope.signature.value.slice(1)}`;
 
     try {
       const verification = await verifyCanonicalSignatureEnvelope(signedEnvelope, 'http://127.0.0.1:4200/', publicKeyPem);

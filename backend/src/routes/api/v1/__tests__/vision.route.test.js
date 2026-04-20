@@ -1,6 +1,10 @@
 'use strict';
 
 const http = require('node:http');
+const crypto = require('node:crypto');
+const fs = require('node:fs');
+const os = require('node:os');
+const path = require('node:path');
 const test = require('node:test');
 const assert = require('node:assert/strict');
 
@@ -45,7 +49,39 @@ async function fetchJson(url, options) {
   };
 }
 
+function createTemporarySignatureKeyPair() {
+  const { publicKey, privateKey } = crypto.generateKeyPairSync('rsa', {
+    modulusLength: 2048,
+  });
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'chatpdm-signature-'));
+  const privateKeyPath = path.join(tempDir, 'private.pem');
+
+  fs.writeFileSync(
+    privateKeyPath,
+    privateKey.export({
+      type: 'pkcs8',
+      format: 'pem',
+    }),
+  );
+
+  return {
+    publicKeyPem: publicKey.export({
+      type: 'spki',
+      format: 'pem',
+    }).toString(),
+    privateKeyPath,
+    cleanup() {
+      fs.rmSync(tempDir, { recursive: true, force: true });
+    },
+  };
+}
+
 test('vision signature route returns a signed canonical envelope that verifies', async () => {
+  const originalPrivateKeyFile = env.signaturePrivateKeyFile;
+  const originalPublicKeyPem = env.signaturePublicKeyPem;
+  const { publicKeyPem, privateKeyPath, cleanup } = createTemporarySignatureKeyPair();
+  env.signaturePrivateKeyFile = privateKeyPath;
+  env.signaturePublicKeyPem = publicKeyPem;
   const { server, baseUrl } = await startServer();
 
   try {
@@ -62,6 +98,9 @@ test('vision signature route returns a signed canonical envelope that verifies',
     assert.equal(body.signedEnvelope.envelope.payloadHash.startsWith('sha256:'), true);
     assert.equal(verifyCanonicalSignatureEnvelope(body.signedEnvelope), true);
   } finally {
+    env.signaturePrivateKeyFile = originalPrivateKeyFile;
+    env.signaturePublicKeyPem = originalPublicKeyPem;
+    cleanup();
     await new Promise((resolve) => server.close(resolve));
   }
 });
