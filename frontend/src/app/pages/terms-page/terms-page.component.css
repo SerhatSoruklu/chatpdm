@@ -57,6 +57,30 @@
     color 0.16s ease;
 }
 
+.pdm-terms-page__label-text {
+  min-width: 0;
+}
+
+.pdm-terms-page__api-badge {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 0.38rem;
+  min-height: 1.3rem;
+  padding: 0.16rem 0.45rem;
+  border: 1px solid rgba(37, 99, 235, 0.24);
+  border-radius: 999px;
+  background: rgba(239, 246, 255, 0.98);
+  color: #1d4ed8;
+  font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
 .pdm-terms-page__jump-link:hover {
   border-color: rgba(37, 99, 235, 0.22);
   background: rgba(255, 255, 255, 0.98);
@@ -67,6 +91,12 @@
   background: rgba(239, 246, 255, 0.98);
   color: #1d4ed8;
   font-weight: 700;
+}
+
+.pdm-terms-page__jump-link--active .pdm-terms-page__api-badge,
+.pdm-terms-page__nav-link--active .pdm-terms-page__api-badge {
+  border-color: rgba(37, 99, 235, 0.34);
+  background: rgba(219, 234, 254, 0.98);
 }
 
 .pdm-terms-page__docs-layout {
@@ -117,6 +147,10 @@
     border-color 0.16s ease,
     background-color 0.16s ease,
     color 0.16s ease;
+}
+
+.pdm-terms-page__nav-link .pdm-terms-page__api-badge {
+  margin-top: 0.12rem;
 }
 
 .pdm-terms-page__nav-link:hover {

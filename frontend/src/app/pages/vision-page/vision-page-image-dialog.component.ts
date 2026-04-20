@@ -6,6 +6,9 @@ export interface VisionPageImageDialogData {
   imagePath: string;
   imageAlt: string;
   caption: string;
+  description?: string;
+  width?: number;
+  height?: number;
 }
 
 const VISION_IMAGE_DIALOG_TITLE = 'Vision reference';
@@ -23,6 +26,7 @@ export class VisionPageImageDialogComponent {
   protected readonly data = inject<VisionPageImageDialogData>(MAT_DIALOG_DATA);
   protected readonly dialogTitle = VISION_IMAGE_DIALOG_TITLE;
   protected readonly closeLabel = VISION_IMAGE_DIALOG_CLOSE_LABEL;
+  protected readonly descriptionText = this.data.description ?? this.data.caption;
 
   constructor(private readonly dialogRef: MatDialogRef<VisionPageImageDialogComponent>) {}
 

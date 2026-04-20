@@ -13,11 +13,11 @@ app-vision-page-image-dialog {
 }
 
 .pdm-vision-image-dialog {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  display: grid;
+  gap: 18px;
   width: min(100%, 1240px);
   max-height: calc(100dvh - 24px);
+  overflow: auto;
   padding: clamp(16px, 2.5vw, 28px);
   box-sizing: border-box;
   color: #0f172a;
@@ -76,8 +76,25 @@ app-vision-page-image-dialog {
 }
 
 .pdm-vision-image-dialog__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(16rem, 0.85fr);
+  gap: 18px;
   min-height: 0;
-  overflow: auto;
+}
+
+.pdm-vision-image-dialog__media,
+.pdm-vision-image-dialog__detail {
+  min-width: 0;
+  margin: 0;
+}
+
+.pdm-vision-image-dialog__media {
+  display: grid;
+  gap: 10px;
+}
+
+.pdm-vision-image-dialog__image-shell {
+  overflow: hidden;
   border: 1px solid rgba(148, 163, 184, 0.16);
   border-radius: 24px;
   background:
@@ -95,11 +112,47 @@ app-vision-page-image-dialog {
   max-width: 100%;
 }
 
-.pdm-vision-image-dialog__caption {
+.pdm-vision-image-dialog__detail {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  padding: 18px;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 24px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 250, 255, 0.9)),
+    rgba(255, 255, 255, 0.92);
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.03),
+    0 10px 24px rgba(15, 23, 42, 0.05);
+}
+
+.pdm-vision-image-dialog__detail-label {
   margin: 0;
-  color: #475569;
-  font-size: 0.96rem;
-  line-height: 1.7;
+  color: #2563eb;
+  font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pdm-vision-image-dialog__detail-copy {
+  margin: 0;
+  color: #334155;
+  font-size: 0.98rem;
+  line-height: 1.72;
+}
+
+.pdm-vision-image-dialog__detail-note {
+  margin: 0;
+  color: #64748b;
+  font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1.45;
+  text-transform: uppercase;
 }
 
 @media (max-width: 839px) {
@@ -122,7 +175,15 @@ app-vision-page-image-dialog {
     font-size: clamp(1.1rem, 5vw, 1.5rem);
   }
 
-  .pdm-vision-image-dialog__caption {
-    font-size: 0.92rem;
+  .pdm-vision-image-dialog__body {
+    grid-template-columns: 1fr;
+  }
+
+  .pdm-vision-image-dialog__detail {
+    padding: 16px;
+  }
+
+  .pdm-vision-image-dialog__detail-copy {
+    font-size: 0.94rem;
   }
 }

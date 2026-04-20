@@ -21,6 +21,27 @@ export interface TermsPageSectionMetric {
   top: number;
 }
 
+export interface TermsPageLabelParts {
+  text: string;
+  badge: string | null;
+}
+
+export function splitTermsPageApiLabel(label: string): TermsPageLabelParts {
+  const apiSuffix = ' API';
+
+  if (!label.endsWith(apiSuffix)) {
+    return {
+      text: label,
+      badge: null,
+    };
+  }
+
+  return {
+    text: label.slice(0, -apiSuffix.length),
+    badge: 'API',
+  };
+}
+
 export function resolveActiveTermsPageSectionId(
   sectionMetrics: readonly TermsPageSectionMetric[],
   activationOffset: number,
@@ -73,6 +94,7 @@ export function resolveActiveTermsPageSectionIdFromHash(
 export class TermsPageComponent implements AfterViewInit, OnDestroy {
   protected readonly viewModel = computed(() => buildTermsPageViewModel(POLICY_SURFACE_DATA.terms));
   protected readonly activeSectionId = signal(this.viewModel().sectionOrder[0]?.id ?? 'overview');
+  protected readonly splitTermsPageApiLabel = splitTermsPageApiLabel;
 
   @ViewChildren('apiSection', { read: ElementRef })
   private readonly apiSections?: QueryList<ElementRef<HTMLElement>>;

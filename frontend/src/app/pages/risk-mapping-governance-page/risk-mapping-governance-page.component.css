@@ -371,16 +371,60 @@
 }
 
 .pdm-rmg__json-shell {
+  display: grid;
+  gap: 14px;
   padding: 18px;
-  border: 1px solid rgba(148, 163, 184, 0.16);
+  border: 1px solid rgba(15, 23, 42, 0.28);
   border-radius: 22px;
   background:
-    linear-gradient(180deg, rgba(248, 250, 252, 0.98), rgba(243, 248, 255, 0.92)),
-    #f8fbff;
+    linear-gradient(180deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.94)),
+    #0f172a;
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.72),
-    0 10px 26px rgba(15, 23, 42, 0.04);
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 18px 36px rgba(15, 23, 42, 0.16);
   overflow-x: auto;
+}
+
+.pdm-rmg__json-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.pdm-rmg__json-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 2rem;
+  padding: 0.45rem 0.78rem;
+  border-radius: 999px;
+  background: rgba(30, 41, 59, 0.94);
+  color: #e2e8f0;
+  font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.pdm-rmg__json-dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 999px;
+  background: #60a5fa;
+  box-shadow: 0 0 0 0 rgba(96, 165, 250, 0.55);
+  animation: pdm-rmg-json-pulse 1.45s ease-in-out infinite;
+}
+
+.pdm-rmg__json-meta-label {
+  color: #94a3b8;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1.45;
+  text-transform: uppercase;
 }
 
 .pdm-rmg__json-line {
@@ -389,7 +433,7 @@
   align-items: baseline;
   min-height: 1.68rem;
   white-space: pre;
-  color: #0f172a;
+  color: #dbe4f0;
   font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
   font-size: 0.9rem;
   line-height: 1.7;
@@ -405,21 +449,52 @@
 }
 
 .pdm-rmg__json-key {
-  color: #1d4ed8;
+  color: #93c5fd;
   font-weight: 600;
 }
 
 .pdm-rmg__json-string {
-  color: #0f766e;
+  color: #86efac;
 }
 
 .pdm-rmg__json-string--accent {
-  color: #7c3aed;
+  color: #c4b5fd;
   font-weight: 700;
 }
 
 .pdm-rmg__json-punctuation {
   color: #94a3b8;
+}
+
+.pdm-rmg__json-boolean {
+  color: #fda4af;
+  font-weight: 600;
+}
+
+.pdm-rmg__json-number {
+  color: #fbbf24;
+}
+
+.pdm-rmg__json-null {
+  color: #c4b5fd;
+  font-weight: 600;
+}
+
+@keyframes pdm-rmg-json-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(96, 165, 250, 0.5);
+    opacity: 1;
+  }
+
+  70% {
+    box-shadow: 0 0 0 8px rgba(96, 165, 250, 0);
+    opacity: 0.88;
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(96, 165, 250, 0);
+    opacity: 1;
+  }
 }
 
 .pdm-rmg__audit-grid {

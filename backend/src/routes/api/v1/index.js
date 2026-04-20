@@ -9,6 +9,7 @@ const militaryConstraintsRoute = require('./military-constraints.route');
 const riskMappingRoute = require('./risk-mapping.route');
 const sourcesRoute = require('./sources.route');
 const perspectivesRoute = require('./perspectives.route');
+const visionRoute = require('./vision.route');
 const zeeRoute = require('./zee.route');
 const vocabularyRoute = require('./vocabulary.route');
 const zeroglareRoute = require('./zeroglare.route');
@@ -19,7 +20,7 @@ router.get('/', (req, res) => {
   res.json({
     namespace: 'api/v1',
     stage: 'scaffold',
-    availableResources: ['concepts', 'feedback', 'intake', 'legal-validator', 'military-constraints', 'risk-mapping', 'sources', 'perspectives', 'vocabulary', 'zeroglare', 'zee'],
+    availableResources: ['concepts', 'feedback', 'intake', 'legal-validator', 'military-constraints', 'risk-mapping', 'sources', 'perspectives', 'vision', 'vocabulary', 'zeroglare', 'zee'],
   });
 });
 
@@ -31,6 +32,7 @@ router.use('/military-constraints', militaryConstraintsRoute);
 router.use('/risk-mapping', riskMappingRoute);
 router.use('/sources', sourcesRoute);
 router.use('/perspectives', perspectivesRoute);
+router.use('/vision', visionRoute);
 router.use('/vocabulary', vocabularyRoute);
 router.use('/zeroglare', zeroglareRoute);
 router.use('/zee', zeeRoute);

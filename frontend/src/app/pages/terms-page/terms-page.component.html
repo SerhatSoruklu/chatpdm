@@ -12,7 +12,12 @@
               [routerLink]="[]"
               [fragment]="section.id"
             >
-              {{ section.sectionLabel }}
+              @if (splitTermsPageApiLabel(section.sectionLabel); as labelParts) {
+                <span class="pdm-terms-page__label-text">{{ labelParts.text }} </span>
+                @if (labelParts.badge) {
+                  <span class="pdm-terms-page__api-badge">{{ labelParts.badge }}</span>
+                }
+              }
             </a>
           }
         </div>
@@ -33,7 +38,12 @@
                       [routerLink]="[]"
                       [fragment]="section.id"
                     >
-                      {{ section.sectionLabel }}
+                      @if (splitTermsPageApiLabel(section.sectionLabel); as labelParts) {
+                        <span class="pdm-terms-page__label-text">{{ labelParts.text }} </span>
+                        @if (labelParts.badge) {
+                          <span class="pdm-terms-page__api-badge">{{ labelParts.badge }}</span>
+                        }
+                      }
                     </a>
                   </li>
                 }
@@ -84,7 +94,12 @@
                 [attr.aria-labelledby]="section.id + '-title'"
               >
                 <h2 class="pdm-terms-page__section-title" [id]="section.id + '-title'">
-                  {{ section.title }}
+                  @if (splitTermsPageApiLabel(section.title); as labelParts) {
+                    <span class="pdm-terms-page__label-text">{{ labelParts.text }} </span>
+                    @if (labelParts.badge) {
+                      <span class="pdm-terms-page__api-badge">{{ labelParts.badge }}</span>
+                    }
+                  }
                 </h2>
 
                 @if (section.summary) {
