@@ -66,6 +66,14 @@ export const seoStaticEntries = {
     sitemapChangeFrequency: 'weekly',
     sitemapPriority: 0.8,
   },
+  'static.legal-validator-workbench': {
+    title: 'Analyst Workbench - ChatPDM Legal Validator',
+    description: 'Inspect legal-validator runtime runs, replay results, and governed artifacts through the live backend contracts.',
+    canonicalPath: '/inspect/legal-validator',
+    includeInSitemap: false,
+    sitemapChangeFrequency: 'weekly',
+    sitemapPriority: 0.67,
+  },
   'static.military-constraints-compiler': {
     title: 'Military Constraints Compiler - ChatPDM',
     description: 'Military Constraints Compiler is ChatPDM\'s deterministic execution gate for validated packs, structured facts, and refusal-first evaluation.',

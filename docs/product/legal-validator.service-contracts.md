@@ -96,6 +96,65 @@ The service may not write:
 - stop if governance status is not runtime-eligible
 - stop if the doctrine artifact does not provide the interpretation regime required for downstream interpretation
 
+## doctrine-governance.service
+
+### Purpose
+
+Inspect doctrine promotion readiness and, when explicitly requested, move a doctrine artifact through reviewed, approved, and locked governance states without changing authored doctrine content.
+
+This service is outside the locked validation path.
+
+### Inputs
+
+- `artifactId`
+- optional `validationRunId` for drift comparison
+- explicit promotion target:
+  - `targetStatus`
+  - `reviewedBy`
+  - `approvedBy`
+
+### Outputs
+
+- inspection outcome:
+  - `promotionReady`
+  - `promotionBlockers`
+  - current governance metadata
+  - validation-run drift summary when a run is supplied
+- promotion outcome:
+  - updated doctrine governance metadata
+  - explicit promotion receipt
+
+### Allowed Failure Codes
+
+- `UNGOVERNED_DOCTRINE_CHANGE`
+- `INTERPRETATION_REGIME_CHANGE_UNGOVERNED`
+
+### Persistence Rights
+
+The service may read:
+
+- `DoctrineArtifact`
+- `ValidationRun`
+- `Mapping`
+- `OverrideRecord`
+- live concept registry truth
+
+The service may write:
+
+- `DoctrineArtifact` governance metadata only when an explicit promotion request is accepted
+
+The service may not write:
+
+- `ValidationRun`
+- `Mapping`
+- `OverrideRecord`
+
+### Stop Conditions
+
+- stop if the requested promotion skips an authored review/approval step
+- stop if the preserved validation truth and the current doctrine artifact disagree on a governed dependency
+- stop if the artifact is not eligible for runtime use under its current governance state
+
 ## authority-registry.service
 
 ### Purpose
@@ -301,6 +360,8 @@ Apply structural, concept, authority, and completeness validation over resolver 
 - authority summary from `authority-registry.service`
 - admissibility summary from `admissibility.service`
 - persisted or in-memory `Mapping` results from `resolver.service`
+- doctrine-authored `validationRuleIds` from the loaded doctrine manifest
+- optional explicit refusal stop for narrow compatibility paths
 
 ### Outputs
 
@@ -308,7 +369,7 @@ Apply structural, concept, authority, and completeness validation over resolver 
   - `validationOutcome = valid`
   - `validationRuleIds`
   - `validationWritten = false`
-  - normalized mapping and doctrine context
+  - normalized mapping, doctrine, and authority context
 
 There is no downstream domain service after classification except `trace.service`.
 
@@ -343,13 +404,14 @@ The service may not write:
 
 - classification is terminal for the domain path
 - stop immediately when a kernel-owned `invalid` or `unresolved` condition is reached
+- stop when the loaded doctrine does not provide a usable unique validation rule set
 - do not continue to any additional reasoning service after kernel classification
 
 ## trace.service
 
 ### Purpose
 
-Assemble the deterministic trace, verify replay-critical invariants, and persist the final `ValidationRun`.
+Assemble the deterministic trace, verify replay-critical invariants, execute replay against preserved upstream state when requested, and persist the final `ValidationRun`.
 
 ### Inputs
 
@@ -400,6 +462,10 @@ Assemble the deterministic trace, verify replay-critical invariants, and persist
 The service may read:
 
 - `DoctrineArtifact`
+- `ValidationRun`
+- `SourceDocument`
+- `SourceSegment`
+- `ArgumentUnit`
 - `Mapping`
 - `OverrideRecord`
 - normalized upstream traceable context needed for trace assembly

@@ -9,6 +9,7 @@ const { connectMongo, disconnectMongo } = require('../../src/config/mongoose');
 const DoctrineArtifact = require('../../src/modules/legal-validator/doctrine/doctrine-artifact.model');
 const ArgumentUnit = require('../../src/modules/legal-validator/arguments/argument-unit.model');
 const AuthorityNode = require('../../src/modules/legal-validator/authority/authority-node.model');
+const OverrideRecord = require('../../src/modules/legal-validator/overrides/override-record.model');
 const doctrineLoaderService = require('../../src/modules/legal-validator/doctrine/doctrine-loader.service');
 const admissibilityService = require('../../src/modules/legal-validator/arguments/admissibility.service');
 const authorityRegistryService = require('../../src/modules/legal-validator/authority/authority-registry.service');
@@ -17,6 +18,7 @@ const validationKernelService = require('../../src/modules/legal-validator/valid
 const traceService = require('../../src/modules/legal-validator/validation/trace.service');
 const Mapping = require('../../src/modules/legal-validator/mapping/mapping.model');
 const ValidationRun = require('../../src/modules/legal-validator/validation/validation-run.model');
+const { CONCEPT_SET_VERSION } = require('../../src/modules/concepts/constants');
 
 let mongoServer;
 
@@ -108,11 +110,54 @@ async function createAuthorityNode(overrides = {}) {
   return authorityNode;
 }
 
+async function createOverrideRecord(overrides = {}) {
+  const overrideRecord = new OverrideRecord({
+    overrideId: 'override-1',
+    matterId: overrides.matterId || 'matter-1',
+    argumentUnitId: overrides.argumentUnitId || 'argument-unit-1',
+    mappingId: overrides.mappingId || 'mapping-1',
+    overrideType: 'mapping_override',
+    reason: 'Operator exception reviewed and approved.',
+    createdBy: 'reviewer-1',
+    reviewStatus: 'approved',
+    reviewedBy: 'reviewer-1',
+    reviewedAt: new Date('2026-03-30T12:00:00Z'),
+    ...overrides,
+  });
+
+  await overrideRecord.save();
+  return overrideRecord;
+}
+
 async function createResolverSuccessResult(overrides = {}) {
+  const artifactOverrides = overrides.artifactOverrides || {};
+  const manifestOverrides = artifactOverrides.manifest || {};
+  const validationRuleIds = Array.isArray(overrides.validationRuleIds)
+    ? overrides.validationRuleIds
+    : Array.isArray(manifestOverrides.validationRuleIds)
+      ? manifestOverrides.validationRuleIds
+      : ['validation-rule-1'];
   const artifact = await createDoctrineArtifact({
     artifactId: overrides.artifactId || 'artifact-kernel',
     hash: overrides.doctrineHash || 'f'.repeat(64),
-    ...(overrides.artifactOverrides || {}),
+    ...artifactOverrides,
+    manifest: {
+      packageId: 'uk-negligence',
+      jurisdiction: 'UK',
+      practiceArea: 'negligence',
+      sourceClasses: ['statute', 'case_law'],
+      interpretationRegime: {
+        regimeId: 'uk-textual-v1',
+        name: 'UK Textual v1',
+        hierarchy: ['text', 'definitions', 'whole_text'],
+      },
+      coreConceptsReferenced: ['authority'],
+      packageConceptsDeclared: ['duty_of_care'],
+      authorityIds: [],
+      mappingRuleIds: [],
+      ...manifestOverrides,
+      validationRuleIds,
+    },
   });
   const unit = await createArgumentUnit({
     argumentUnitId: overrides.argumentUnitId || 'argument-unit-kernel',
@@ -152,10 +197,6 @@ async function createKernelSuccessResult(overrides = {}) {
   const validationKernelResult = await validationKernelService.evaluate({
     doctrineLoadResult: context.doctrineLoadResult,
     resolverResult: context.resolverResult,
-    validationDecision: overrides.validationDecision || {
-      status: 'valid',
-      validationRuleIds: overrides.validationRuleIds || ['validation-rule-1'],
-    },
   });
 
   return {
@@ -210,6 +251,13 @@ test('doctrine-loader.service loads an approved doctrine artifact by artifactId'
   assert.equal(result.doctrineHash, artifact.hash);
   assert.equal(result.runtimeEligible, true);
   assert.equal(result.interpretationRegime.regimeId, 'uk-textual-v1');
+  assert.equal(result.conceptSetVersion, CONCEPT_SET_VERSION);
+  assert.deepEqual(result.coreConceptsReferenced, ['authority']);
+  assert.deepEqual(result.packageConceptsDeclared, ['duty_of_care']);
+  assert.deepEqual(result.resolvedCoreConceptIds, ['authority']);
+  assert.equal(result.resolvedCoreConcepts.length, 1);
+  assert.equal(result.resolvedCoreConcepts[0].conceptId, 'authority');
+  assert.equal(result.resolvedCoreConcepts[0].title, 'Authority');
 });
 
 test('doctrine-loader.service rejects doctrine artifacts that are not runtime-eligible', async () => {
@@ -290,6 +338,70 @@ test('doctrine-loader.service rejects artifactId and doctrineHash mismatches wit
   assert.equal(result.failureCode, 'DOCTRINE_HASH_MISMATCH');
   assert.equal(result.doctrineArtifactId, artifact.artifactId);
   assert.equal(result.doctrineHash, artifact.hash);
+});
+
+test('doctrine-loader.service rejects doctrine artifacts that reference non-live core concepts', async () => {
+  await createDoctrineArtifact({
+    artifactId: 'artifact-core-mismatch',
+    hash: 'e'.repeat(64),
+    manifest: {
+      packageId: 'uk-negligence',
+      jurisdiction: 'UK',
+      practiceArea: 'negligence',
+      sourceClasses: ['statute', 'case_law'],
+      interpretationRegime: {
+        regimeId: 'uk-textual-v1',
+        name: 'UK Textual v1',
+        hierarchy: ['text', 'definitions', 'whole_text'],
+      },
+      coreConceptsReferenced: ['duty_of_care'],
+      packageConceptsDeclared: ['duty_of_care'],
+      authorityIds: [],
+      mappingRuleIds: [],
+      validationRuleIds: [],
+    },
+  });
+
+  const result = await doctrineLoaderService.loadDoctrineArtifact({ artifactId: 'artifact-core-mismatch' });
+
+  assert.equal(result.ok, false);
+  assert.equal(result.terminal, true);
+  assert.equal(result.result, 'invalid');
+  assert.equal(result.failureCode, 'DOCTRINE_CORE_CONCEPT_UNREGISTERED');
+  assert.equal(result.doctrineArtifactId, 'artifact-core-mismatch');
+  assert.equal(result.doctrineHash, 'e'.repeat(64));
+});
+
+test('doctrine-loader.service rejects doctrine artifacts that redeclare registered concept identities as package concepts', async () => {
+  await createDoctrineArtifact({
+    artifactId: 'artifact-package-collision',
+    hash: 'f'.repeat(64),
+    manifest: {
+      packageId: 'uk-negligence',
+      jurisdiction: 'UK',
+      practiceArea: 'negligence',
+      sourceClasses: ['statute', 'case_law'],
+      interpretationRegime: {
+        regimeId: 'uk-textual-v1',
+        name: 'UK Textual v1',
+        hierarchy: ['text', 'definitions', 'whole_text'],
+      },
+      coreConceptsReferenced: ['authority'],
+      packageConceptsDeclared: ['authority'],
+      authorityIds: [],
+      mappingRuleIds: [],
+      validationRuleIds: [],
+    },
+  });
+
+  const result = await doctrineLoaderService.loadDoctrineArtifact({ artifactId: 'artifact-package-collision' });
+
+  assert.equal(result.ok, false);
+  assert.equal(result.terminal, true);
+  assert.equal(result.result, 'invalid');
+  assert.equal(result.failureCode, 'DOCTRINE_PACKAGE_CONCEPT_COLLISION');
+  assert.equal(result.doctrineArtifactId, 'artifact-package-collision');
+  assert.equal(result.doctrineHash, 'f'.repeat(64));
 });
 
 test('admissibility.service returns a continue outcome for accepted admissible argument units', async () => {
@@ -682,6 +794,14 @@ test('authority-registry.service returns continue only on the narrow explicit in
   assert.equal(result.jurisdiction, authorityNode.jurisdiction);
   assert.equal(result.precedentialWeight, authorityNode.precedentialWeight);
   assert.equal(result.interpretationRegimeId, 'uk-textual-v1');
+  assert.deepEqual(result.citationScope.doctrineSourceClasses, ['statute', 'case_law']);
+  assert.deepEqual(result.citationScope.doctrineAuthorityIds, []);
+  assert.equal(result.citationScope.doctrineJurisdiction, 'UK');
+  assert.equal(result.citationScope.expectedJurisdiction, null);
+  assert.equal(result.citationScope.requiredInterpretationRegimeId, 'uk-textual-v1');
+  assert.equal(result.citationScope.authorityId, authorityNode.authorityId);
+  assert.equal(result.citationScope.authorityJurisdiction, 'UK');
+  assert.equal(result.citationScope.authoritySourceClass, 'statute');
   assert.equal(result.authorityResolved, true);
 });
 
@@ -904,6 +1024,176 @@ test('resolver.service writes a Mapping only on the narrow explicit deterministi
   assert.equal(await Mapping.countDocuments({}), 1);
 });
 
+test('resolver.service writes a Mapping only on the governed exact_synonym path', async () => {
+  const artifact = await createDoctrineArtifact({
+    artifactId: 'artifact-synonym-success',
+    hash: 'f'.repeat(64),
+  });
+  const unit = await createArgumentUnit({
+    argumentUnitId: 'argument-unit-synonym-success',
+  });
+
+  const doctrineLoadResult = await doctrineLoaderService.loadDoctrineArtifact({ artifactId: artifact.artifactId });
+  const admissibilityResult = await admissibilityService.evaluateArgumentUnits({ argumentUnits: [unit] });
+
+  const result = await resolverService.resolve({
+    doctrineLoadResult,
+    admissibilityResult,
+    resolverDecision: {
+      status: 'success',
+      mappingId: 'mapping-synonym-success',
+      mappingType: 'concept',
+      matchBasis: 'exact_synonym',
+      synonymTerm: 'what is authority',
+      conceptId: 'authority',
+      resolverRuleId: 'resolver-rule-synonym-authority',
+    },
+  });
+
+  assert.equal(result.ok, true);
+  assert.equal(result.terminal, false);
+  assert.equal(result.mappingId, 'mapping-synonym-success');
+  assert.equal(result.matchBasis, 'exact_synonym');
+  assert.equal(result.synonymTerm, 'what is authority');
+  assert.equal(result.conceptId, 'authority');
+  assert.equal(result.mappingWritten, true);
+
+  const persistedMapping = await Mapping.findOne({ mappingId: 'mapping-synonym-success' }).lean().exec();
+
+  assert.ok(persistedMapping);
+  assert.equal(persistedMapping.matchBasis, 'exact_synonym');
+  assert.equal(persistedMapping.synonymTerm, 'what is authority');
+  assert.equal(persistedMapping.conceptId, 'authority');
+  assert.equal(await Mapping.countDocuments({}), 1);
+});
+
+test('resolver.service refuses exact_synonym mappings that are not governed by the active concept registry', async () => {
+  const artifact = await createDoctrineArtifact({
+    artifactId: 'artifact-synonym-ungoverned',
+    hash: '0'.repeat(64),
+  });
+  const unit = await createArgumentUnit({
+    argumentUnitId: 'argument-unit-synonym-ungoverned',
+  });
+
+  const doctrineLoadResult = await doctrineLoaderService.loadDoctrineArtifact({ artifactId: artifact.artifactId });
+  const admissibilityResult = await admissibilityService.evaluateArgumentUnits({ argumentUnits: [unit] });
+
+  const result = await resolverService.resolve({
+    doctrineLoadResult,
+    admissibilityResult,
+    resolverDecision: {
+      status: 'success',
+      mappingId: 'mapping-synonym-ungoverned',
+      mappingType: 'concept',
+      matchBasis: 'exact_synonym',
+      synonymTerm: 'governed synonym that does not exist',
+      conceptId: 'authority',
+      resolverRuleId: 'resolver-rule-synonym-ungoverned',
+    },
+  });
+
+  assert.equal(result.ok, false);
+  assert.equal(result.terminal, true);
+  assert.equal(result.result, 'invalid');
+  assert.equal(result.failureCode, 'UNDECLARED_SYNONYM_PATH');
+  assert.equal(result.mappingWritten, false);
+  assert.equal(await Mapping.countDocuments({}), 0);
+});
+
+test('resolver.service writes a Mapping only on the approved manual_override path', async () => {
+  const artifact = await createDoctrineArtifact({
+    artifactId: 'artifact-override-success',
+    hash: '1'.repeat(64),
+  });
+  const unit = await createArgumentUnit({
+    argumentUnitId: 'argument-unit-override-success',
+  });
+  await createOverrideRecord({
+    overrideId: 'override-approved-1',
+    matterId: unit.matterId,
+    argumentUnitId: unit.argumentUnitId,
+    mappingId: 'mapping-override-success',
+    reason: 'Reviewer approved manual mapping because the record is authoritative.',
+  });
+
+  const doctrineLoadResult = await doctrineLoaderService.loadDoctrineArtifact({ artifactId: artifact.artifactId });
+  const admissibilityResult = await admissibilityService.evaluateArgumentUnits({ argumentUnits: [unit] });
+
+  const result = await resolverService.resolve({
+    doctrineLoadResult,
+    admissibilityResult,
+    resolverDecision: {
+      status: 'success',
+      mappingId: 'mapping-override-success',
+      mappingType: 'concept',
+      matchBasis: 'manual_override',
+      conceptId: 'authority',
+      overrideId: 'override-approved-1',
+      resolverRuleId: 'resolver-rule-override-authority',
+    },
+  });
+
+  assert.equal(result.ok, true);
+  assert.equal(result.terminal, false);
+  assert.equal(result.mappingId, 'mapping-override-success');
+  assert.equal(result.matchBasis, 'manual_override');
+  assert.equal(result.overrideId, 'override-approved-1');
+  assert.equal(result.manualOverrideReason, 'Reviewer approved manual mapping because the record is authoritative.');
+  assert.equal(result.mappingWritten, true);
+
+  const persistedMapping = await Mapping.findOne({ mappingId: 'mapping-override-success' }).lean().exec();
+
+  assert.ok(persistedMapping);
+  assert.equal(persistedMapping.matchBasis, 'manual_override');
+  assert.equal(persistedMapping.overrideId, 'override-approved-1');
+  assert.equal(persistedMapping.manualOverrideReason, 'Reviewer approved manual mapping because the record is authoritative.');
+  assert.equal(await Mapping.countDocuments({}), 1);
+});
+
+test('resolver.service refuses manual_override mappings without an approved OverrideRecord', async () => {
+  const artifact = await createDoctrineArtifact({
+    artifactId: 'artifact-override-pending',
+    hash: '2'.repeat(64),
+  });
+  const unit = await createArgumentUnit({
+    argumentUnitId: 'argument-unit-override-pending',
+  });
+  await createOverrideRecord({
+    overrideId: 'override-pending-1',
+    matterId: unit.matterId,
+    argumentUnitId: unit.argumentUnitId,
+    mappingId: 'mapping-override-pending',
+    reviewStatus: 'pending',
+    reviewedBy: null,
+    reviewedAt: null,
+  });
+
+  const doctrineLoadResult = await doctrineLoaderService.loadDoctrineArtifact({ artifactId: artifact.artifactId });
+  const admissibilityResult = await admissibilityService.evaluateArgumentUnits({ argumentUnits: [unit] });
+
+  const result = await resolverService.resolve({
+    doctrineLoadResult,
+    admissibilityResult,
+    resolverDecision: {
+      status: 'success',
+      mappingId: 'mapping-override-pending',
+      mappingType: 'concept',
+      matchBasis: 'manual_override',
+      conceptId: 'authority',
+      overrideId: 'override-pending-1',
+      resolverRuleId: 'resolver-rule-override-pending',
+    },
+  });
+
+  assert.equal(result.ok, false);
+  assert.equal(result.terminal, true);
+  assert.equal(result.result, 'invalid');
+  assert.equal(result.failureCode, 'UNAPPROVED_OVERRIDE_RECORD');
+  assert.equal(result.mappingWritten, false);
+  assert.equal(await Mapping.countDocuments({}), 0);
+});
+
 test('validation-kernel.service rejects entry if resolver did not return continue', async () => {
   const artifact = await createDoctrineArtifact({
     artifactId: 'artifact-kernel-resolver-reject',
@@ -920,48 +1210,22 @@ test('validation-kernel.service rejects entry if resolver did not return continu
         result: 'unresolved',
         failureCode: 'RULE_NOT_DEFINED',
       },
-      validationDecision: {
-        status: 'valid',
-        validationRuleIds: ['validation-rule-1'],
-      },
     }),
     /requires a continue outcome from resolver\.service/,
   );
 });
 
-test('validation-kernel.service returns INSUFFICIENT_DOCTRINE on explicit doctrine gap', async () => {
+test('validation-kernel.service returns INSUFFICIENT_DOCTRINE when doctrine manifest lacks validationRuleIds', async () => {
   const { artifact, unit, doctrineLoadResult, resolverResult } = await createResolverSuccessResult({
     artifactId: 'artifact-kernel-doctrine-gap',
     doctrineHash: '2'.repeat(64),
     argumentUnitId: 'argument-unit-kernel-doctrine-gap',
     mappingId: 'mapping-kernel-doctrine-gap',
-  });
-
-  const result = await validationKernelService.evaluate({
-    doctrineLoadResult,
-    resolverResult,
-    validationDecision: {
-      status: 'doctrine_gap',
-      reason: 'The doctrine package lacks the rule needed to complete validation.',
+    artifactOverrides: {
+      manifest: {
+        validationRuleIds: [],
+      },
     },
-  });
-
-  assert.equal(result.ok, false);
-  assert.equal(result.terminal, true);
-  assert.equal(result.result, 'unresolved');
-  assert.equal(result.failureCode, 'INSUFFICIENT_DOCTRINE');
-  assert.equal(result.argumentUnitId, unit.argumentUnitId);
-  assert.equal(result.doctrineArtifactId, artifact.artifactId);
-  assert.equal(result.mappingId, resolverResult.mappingId);
-  assert.equal(result.validationWritten, false);
-});
-
-test('validation-kernel.service returns INSUFFICIENT_DOCTRINE when no validationDecision is provided', async () => {
-  const { artifact, unit, doctrineLoadResult, resolverResult } = await createResolverSuccessResult({
-    artifactId: 'artifact-kernel-no-decision',
-    doctrineHash: '2'.repeat(64),
-    argumentUnitId: 'argument-unit-kernel-no-decision',
-    mappingId: 'mapping-kernel-no-decision',
   });
 
   const result = await validationKernelService.evaluate({
@@ -1050,10 +1314,6 @@ test('validation-kernel.service propagates a terminal authority-registry result 
     doctrineLoadResult,
     resolverResult,
     authorityLookupResult: authorityResult,
-    validationDecision: {
-      status: 'valid',
-      validationRuleIds: ['validation-rule-1'],
-    },
   });
 
   assert.equal(result, authorityResult);
@@ -1147,10 +1407,6 @@ test('validation-kernel.service refuses success if mapping is missing or invalid
       mappingId: 'mapping-does-not-exist',
       mappingWritten: true,
     },
-    validationDecision: {
-      status: 'valid',
-      validationRuleIds: ['validation-rule-valid'],
-    },
   });
 
   assert.equal(result.ok, false);
@@ -1193,10 +1449,6 @@ test('validation-kernel.service refuses success if the persisted mapping is miss
       mappingId: 'mapping-partial-fields',
       mappingWritten: true,
     },
-    validationDecision: {
-      status: 'valid',
-      validationRuleIds: ['validation-rule-valid'],
-    },
   });
 
   assert.equal(result.ok, false);
@@ -1207,21 +1459,18 @@ test('validation-kernel.service refuses success if the persisted mapping is miss
   assert.equal(result.validationWritten, false);
 });
 
-test('validation-kernel.service returns continue only on the narrow explicit valid path', async () => {
+test('validation-kernel.service returns continue on the runtime-owned valid path', async () => {
   const { artifact, unit, doctrineLoadResult, resolverResult } = await createResolverSuccessResult({
     artifactId: 'artifact-kernel-valid',
     doctrineHash: '6'.repeat(64),
     argumentUnitId: 'argument-unit-kernel-valid',
     mappingId: 'mapping-kernel-valid',
+    validationRuleIds: ['validation-rule-1', 'validation-rule-2'],
   });
 
   const result = await validationKernelService.evaluate({
     doctrineLoadResult,
     resolverResult,
-    validationDecision: {
-      status: 'valid',
-      validationRuleIds: ['validation-rule-1', 'validation-rule-2'],
-    },
   });
 
   assert.equal(result.ok, true);
@@ -1237,27 +1486,30 @@ test('validation-kernel.service returns continue only on the narrow explicit val
   assert.equal(result.validationWritten, false);
 });
 
-test('validation-kernel.service refuses valid continuation when validationRuleIds contain duplicates', async () => {
-  const { doctrineLoadResult, resolverResult } = await createResolverSuccessResult({
+test('validation-kernel.service refuses doctrine manifests with duplicate validationRuleIds', async () => {
+  const { artifact, unit, doctrineLoadResult, resolverResult } = await createResolverSuccessResult({
     artifactId: 'artifact-kernel-duplicate-rules',
     doctrineHash: 'c'.repeat(64),
     argumentUnitId: 'argument-unit-kernel-duplicate-rules',
     mappingId: 'mapping-kernel-duplicate-rules',
+    artifactOverrides: {
+      manifest: {
+        validationRuleIds: ['validation-rule-1', 'validation-rule-1'],
+      },
+    },
   });
 
   const result = await validationKernelService.evaluate({
     doctrineLoadResult,
     resolverResult,
-    validationDecision: {
-      status: 'valid',
-      validationRuleIds: ['validation-rule-1', 'validation-rule-1'],
-    },
   });
 
   assert.equal(result.ok, false);
   assert.equal(result.terminal, true);
   assert.equal(result.result, 'invalid');
   assert.equal(result.failureCode, 'UNAUTHORIZED_DECISION_PATH');
+  assert.equal(result.argumentUnitId, unit.argumentUnitId);
+  assert.equal(result.doctrineArtifactId, artifact.artifactId);
   assert.equal(result.validationWritten, false);
 });
 
@@ -1268,15 +1520,16 @@ test('trace.service persists ValidationRun on a terminal invalid kernel result',
     argumentUnitId: 'argument-unit-trace-kernel-invalid',
     mappingId: 'mapping-trace-kernel-invalid',
     resolverRuleId: 'resolver-rule-trace-kernel-invalid',
+    artifactOverrides: {
+      manifest: {
+        validationRuleIds: ['validation-rule-trace-invalid', 'validation-rule-trace-invalid'],
+      },
+    },
   });
 
   const validationKernelResult = await validationKernelService.evaluate({
     doctrineLoadResult,
     resolverResult,
-    validationDecision: {
-      status: 'source_override',
-      reason: 'The claim attempts to override the controlling source.',
-    },
   });
 
   const result = await traceService.finalize({
@@ -1292,7 +1545,7 @@ test('trace.service persists ValidationRun on a terminal invalid kernel result',
   assert.equal(result.ok, true);
   assert.equal(result.terminal, false);
   assert.equal(result.result, 'invalid');
-  assert.deepEqual(result.failureCodes, ['SOURCE_OVERRIDE_ATTEMPT']);
+  assert.deepEqual(result.failureCodes, ['UNAUTHORIZED_DECISION_PATH']);
   assert.equal(result.doctrineArtifactId, artifact.artifactId);
   assert.equal(result.mappingId, resolverResult.mappingId);
   assert.equal(result.validationRunWritten, true);
@@ -1308,7 +1561,7 @@ test('trace.service persists ValidationRun on a terminal invalid kernel result',
 
   assert.ok(persistedRun);
   assert.equal(persistedRun.result, 'invalid');
-  assert.deepEqual(persistedRun.failureCodes, ['SOURCE_OVERRIDE_ATTEMPT']);
+  assert.deepEqual(persistedRun.failureCodes, ['UNAUTHORIZED_DECISION_PATH']);
   assert.deepEqual(persistedRun.trace.sourceAnchors, ['segment-1', 'segment-2']);
   assert.deepEqual(persistedRun.trace.mappingRuleIds, ['resolver-rule-trace-kernel-invalid']);
   assert.deepEqual(persistedRun.trace.validationRuleIds, []);
@@ -1784,15 +2037,16 @@ test('trace.service rejects validationRuleIds not produced by a terminal kernel 
     argumentUnitId: 'argument-unit-trace-kernel-no-validation-rules',
     mappingId: 'mapping-trace-kernel-no-validation-rules',
     resolverRuleId: 'resolver-rule-trace-kernel-no-validation-rules',
+    artifactOverrides: {
+      manifest: {
+        validationRuleIds: ['validation-rule-trace-invalid', 'validation-rule-trace-invalid'],
+      },
+    },
   });
 
   const validationKernelResult = await validationKernelService.evaluate({
     doctrineLoadResult,
     resolverResult,
-    validationDecision: {
-      status: 'source_override',
-      reason: 'The claim attempts to override the controlling source.',
-    },
   });
 
   const result = await traceService.finalize({
@@ -1813,7 +2067,7 @@ test('trace.service rejects validationRuleIds not produced by a terminal kernel 
   assert.equal(await ValidationRun.countDocuments({}), 0);
 });
 
-test('trace.service writes ValidationRun with canonical trace array ordering on the narrow explicit valid path', async () => {
+test('trace.service writes ValidationRun with canonical trace array ordering on the runtime-owned valid path', async () => {
   const { artifact, doctrineLoadResult, resolverResult, validationKernelResult } = await createKernelSuccessResult({
     artifactId: 'artifact-trace-valid',
     doctrineHash: '4'.repeat(64),

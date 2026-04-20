@@ -9,7 +9,7 @@ describe('buildTermsPageViewModel', () => {
 
     expect(viewModel.title).toBe('Current public API reference.');
     expect(viewModel.intro).toBe(
-      'This page models the public API as a scoped runtime section plus separate Shared Intake Router, Risk Mapping Governance, Military Constraints Compiler, and ZEE surfaces. The hero counts are scoped to the runtime section only.',
+      'This page models the public API as a scoped runtime section plus separate Shared Intake Router, Risk Mapping Governance, Military Constraints Compiler, Legal Validator, and ZEE surfaces. The hero counts are scoped to the runtime section only.',
     );
     expect(viewModel.sectionGroups.map((group) => group.label)).toEqual([
       'Overview',
@@ -18,11 +18,12 @@ describe('buildTermsPageViewModel', () => {
       'Risk Mapping Governance',
       'Military Constraints Compiler',
       'ZeroGlare Evidence Engine',
+      'Legal Validator',
       'Shared Intake Router',
       'Support / Notes',
     ]);
     expect(viewModel.sectionGroups.map((group) => group.sections.length)).toEqual([
-      1, 1, 1, 1, 1, 1, 1, 3,
+      1, 1, 1, 1, 1, 1, 1, 1, 3,
     ]);
     expect(viewModel.sectionOrder.map((section) => section.id)).toEqual([
       'overview',
@@ -31,6 +32,7 @@ describe('buildTermsPageViewModel', () => {
       'risk-mapping-governance',
       'military-constraints',
       'zee-api',
+      'legal-validator-api',
       'shared-intake-router',
       'platform-rules',
       'runtime-boundaries',
@@ -43,7 +45,7 @@ describe('buildTermsPageViewModel', () => {
       sectionLabel: 'Overview',
       title: 'Current public API reference.',
       summary:
-        'This page models the public API as a scoped runtime section plus separate Shared Intake Router, Risk Mapping Governance, Military Constraints Compiler, and ZEE surfaces. The hero counts are scoped to the runtime section only.',
+        'This page models the public API as a scoped runtime section plus separate Shared Intake Router, Risk Mapping Governance, Military Constraints Compiler, Legal Validator, and ZEE surfaces. The hero counts are scoped to the runtime section only.',
     });
     expect(viewModel.sectionOrder[3]).toMatchObject({
       id: 'risk-mapping-governance',
@@ -73,6 +75,15 @@ describe('buildTermsPageViewModel', () => {
         'ZeroGlare Evidence Engine is exposed through a read-only ZEE scaffold and a separate zeroglare analysis route. The ZEE scaffold exposes discovery, contract, explain, and audit metadata only; the zeroglare analysis route accepts structured text input through q or input and returns bounded diagnostics.',
     });
     expect(viewModel.sectionOrder[6]).toMatchObject({
+      id: 'legal-validator-api',
+      groupId: 'legal-validator-api',
+      groupLabel: 'Legal Validator',
+      sectionLabel: 'Legal Validator API',
+      title: 'Legal Validator API',
+      summary:
+        'Legal Validator is exposed separately as a bounded runtime surface. The backend exposes intake, orchestrate, replay, runs, and governance routes under a strict refusal-first contract.',
+    });
+    expect(viewModel.sectionOrder[7]).toMatchObject({
       id: 'shared-intake-router',
       groupId: 'shared-intake-router',
       groupLabel: 'Shared Intake Router',
@@ -80,6 +91,15 @@ describe('buildTermsPageViewModel', () => {
       title: 'Shared Intake Router API',
       summary:
         'The shared intake router accepts one input and dispatches it deterministically to Concepts or Risk Mapping by input shape. Unstructured raw text goes to Concepts; explicit RiskMapQuery field blocks or structured RiskMapQuery objects go to Risk Mapping. Mixed prose/field blocks are refused.',
+    });
+    expect(viewModel.sectionOrder[9]).toMatchObject({
+      id: 'runtime-boundaries',
+      groupId: 'support-notes',
+      groupLabel: 'Support / Notes',
+      sectionLabel: 'Runtime boundaries',
+      title: 'Runtime boundaries',
+      summary:
+        'The Legal Validator is a deterministic validation system for structured argument analysis. It does not provide legal advice, interpretation, or recommendations.',
     });
     expect(viewModel.badges).toEqual(
       [
@@ -90,6 +110,14 @@ describe('buildTermsPageViewModel', () => {
       ],
       'Terms hero badges must be derived from typed terms truth.',
     );
+    expect(viewModel.legalValidatorTitle).toBe('Legal Validator API');
+    expect(viewModel.legalValidatorIntro).toBe(
+      'Legal Validator is exposed separately as a bounded runtime surface. The backend exposes intake, orchestrate, replay, runs, and governance routes under a strict refusal-first contract.',
+    );
+    expect(viewModel.legalValidatorCountsLine).toBe(
+      'Legal Validator adds 5 endpoints, 26 request fields, and 6 refusal boundaries.',
+    );
+    expect(viewModel.legalValidatorInspectRoute).toBe('/inspect/legal-validator');
     expect(viewModel.endpointRows).toEqual(
       [
         {
@@ -460,6 +488,126 @@ describe('buildTermsPageViewModel', () => {
         evidence: 'backend/src/routes/api/v1/zeroglare.route.js:35-40',
       },
     ]);
+    expect(viewModel.legalValidatorEndpointRows).toEqual([
+      {
+        claimId: 'lv-api-1',
+        operation: 'intake',
+        method: 'POST',
+        path: '/api/v1/legal-validator/intake',
+        input: 'body: input',
+        evidence: 'backend/src/routes/api/v1/legal-validator-intake.route.js:27-98',
+      },
+      {
+        claimId: 'lv-api-2',
+        operation: 'orchestrate',
+        method: 'POST',
+        path: '/api/v1/legal-validator/orchestrate',
+        input: 'body: input',
+        evidence: 'backend/src/routes/api/v1/legal-validator-orchestrate.route.js:28-90',
+      },
+      {
+        claimId: 'lv-api-3',
+        operation: 'replay',
+        method: 'POST',
+        path: '/api/v1/legal-validator/replay',
+        input: 'body: input',
+        evidence: 'backend/src/routes/api/v1/legal-validator-replay.route.js:27-101',
+      },
+      {
+        claimId: 'lv-api-4',
+        operation: 'run inspection',
+        method: 'GET',
+        path: '/api/v1/legal-validator/runs/:validationRunId',
+        input: 'route: validationRunId',
+        evidence: 'backend/src/routes/api/v1/legal-validator-runs.route.js:494-515',
+      },
+      {
+        claimId: 'lv-api-5',
+        operation: 'governance',
+        method: 'GET',
+        path: '/api/v1/legal-validator/governance',
+        input: 'none',
+        evidence: 'backend/src/routes/api/v1/legal-validator-governance.route.js:132-155',
+      },
+    ]);
+    expect(viewModel.legalValidatorIntakeFieldRows.map((row) => row.field)).toEqual([
+      'input',
+      'matter',
+      'sourceDocumentIds',
+      'matter.matterId',
+      'matter.title',
+      'matter.jurisdiction',
+      'matter.practiceArea',
+      'matter.status',
+      'matter.createdBy',
+    ]);
+    expect(viewModel.legalValidatorOrchestrateFieldRows.map((row) => row.field)).toEqual([
+      'input',
+      'product',
+      'scope',
+      'matterId',
+      'jurisdiction',
+      'practiceArea',
+      'sourceDocumentId',
+      'doctrineArtifactId',
+      'authorityInput',
+      'resolverDecision',
+      'validationDecision',
+      'traceInput',
+      'traceInput.validationRunId',
+      'traceInput.resolverVersion',
+      'traceInput.inputHash',
+    ]);
+    expect(viewModel.legalValidatorReplayFieldRows.map((row) => row.field)).toEqual([
+      'input',
+      'validationRunId',
+    ]);
+    expect(viewModel.legalValidatorBoundaryRows).toEqual([
+      {
+        claimId: 'lv-boundary-1',
+        boundary: 'invalid validator input',
+        condition: 'request body is not a single-input wrapper or required strings are empty',
+        effect: 'rejected with invalid_legal_validator_input',
+        evidence:
+          'backend/src/routes/api/v1/legal-validator.route.js:43-90 | backend/src/routes/api/v1/legal-validator-intake.route.js:27-39 | backend/src/routes/api/v1/legal-validator-orchestrate.route.js:28-45 | backend/src/routes/api/v1/legal-validator-replay.route.js:27-39',
+      },
+      {
+        claimId: 'lv-boundary-2',
+        boundary: 'scope lock violation',
+        condition: 'product, scope, matterId, jurisdiction, or practiceArea do not match the locked boundary',
+        effect: 'rejected with legal_validator_scope_lock_violation',
+        evidence:
+          'backend/src/routes/api/v1/legal-validator.route.js:61-90 | backend/src/routes/api/v1/legal-validator-orchestrate.route.js:36-45 | backend/src/modules/legal-validator/shared/legal-validator-runtime.contract.js:89-157,285-314',
+      },
+      {
+        claimId: 'lv-boundary-3',
+        boundary: 'doctrine mismatch',
+        condition: 'the doctrine artifact cannot be recognized or does not satisfy the runtime-eligible doctrine contract',
+        effect: 'rejected with DOCTRINE_NOT_RECOGNIZED',
+        evidence: 'backend/src/modules/legal-validator/doctrine/doctrine-loader.service.js:57-106',
+      },
+      {
+        claimId: 'lv-boundary-4',
+        boundary: 'authority scope violation',
+        condition: 'authority falls outside doctrine scope, jurisdiction, or required interpretation regime',
+        effect: 'rejected with AUTHORITY_SCOPE_VIOLATION',
+        evidence: 'backend/src/modules/legal-validator/authority/authority-registry.service.js:274-369',
+      },
+      {
+        claimId: 'lv-boundary-5',
+        boundary: 'mapping conflict',
+        condition: 'resolver output is ambiguous, non-deterministic, or uses an unapproved override record',
+        effect: 'rejected with AMBIGUOUS_CONCEPT_MAPPING',
+        evidence: 'backend/src/modules/legal-validator/mapping/resolver.service.js:277-379,443-463',
+      },
+      {
+        claimId: 'lv-boundary-6',
+        boundary: 'replay divergence',
+        condition: 'the replayed trace diverges from the recorded run signature or retained doctrine artifact',
+        effect: 'rejected with REPLAY_ARTIFACT_MISMATCH',
+        evidence: 'backend/src/modules/legal-validator/validation/trace.service.js:917-975,1084-1143,1237-1278',
+      },
+    ]);
     expect(viewModel.sharedIntakeTitle).toBe('Shared Intake Router API');
   expect(viewModel.sharedIntakeIntro).toBe(
     'The shared intake router accepts one input and dispatches it deterministically to Concepts or Risk Mapping by input shape. Unstructured raw text goes to Concepts; explicit RiskMapQuery field blocks or structured RiskMapQuery objects go to Risk Mapping. Mixed prose/field blocks are refused.',
@@ -526,7 +674,7 @@ describe('buildTermsPageViewModel', () => {
   ]);
     expect(viewModel.zeeApiTrustRoute).toBe('/zeroglare-evidence-engine');
     expect(viewModel.summaryLine).toBe(
-      'Runtime section shows 8 public endpoints, 22 field rules, 1 platform rule, 1 runtime boundary, and 8 refusal boundaries.',
+      'Runtime section shows 8 public endpoints, 22 field rules, 1 platform rule, 1 runtime boundary, and 8 refusal boundaries. Legal Validator adds 5 endpoints, 26 request fields, and 6 refusal boundaries.',
     );
   });
 });

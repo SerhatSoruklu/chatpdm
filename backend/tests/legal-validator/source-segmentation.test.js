@@ -113,6 +113,7 @@ test('segmentation.service preserves structural ordering, section labels, and re
 
   assert.equal(result.ok, true);
   assert.equal(result.segmentCount, 3);
+  assert.deepEqual(result.sourceAnchors, sourceSegments.map((segment) => segment.sourceAnchor));
   assert.deepEqual(sourceSegments.map((segment) => segment.sequence), [1, 2, 3]);
   assert.deepEqual(sourceSegments.map((segment) => segment.pageNumber), [1, 1, 1]);
   assert.deepEqual(sourceSegments.map((segment) => segment.segmentType), [
@@ -125,11 +126,80 @@ test('segmentation.service preserves structural ordering, section labels, and re
     'Duty of Care',
     'Duty of Care',
   ]);
+  assert.deepEqual(sourceSegments.map((segment) => segment.sourceContentHash), [
+    sourceDocument.contentHash,
+    sourceDocument.contentHash,
+    sourceDocument.contentHash,
+  ]);
+  assert.deepEqual(sourceSegments.map((segment) => segment.sourceDocumentId), [
+    sourceDocument.sourceDocumentId,
+    sourceDocument.sourceDocumentId,
+    sourceDocument.sourceDocumentId,
+  ]);
+  assert.match(sourceSegments[0].sourceSegmentId, /^source-document-test-1:[a-f0-9]{12}:p1:s1$/);
+  assert.match(sourceSegments[0].sourceAnchor, /^document-test-1@[a-f0-9]{12}#p1\.s1$/);
+  assert.match(sourceSegments[1].sourceSegmentId, /^source-document-test-1:[a-f0-9]{12}:p1:s2$/);
+  assert.match(sourceSegments[1].sourceAnchor, /^document-test-1@[a-f0-9]{12}#p1\.s2$/);
+  assert.match(sourceSegments[2].sourceSegmentId, /^source-document-test-1:[a-f0-9]{12}:p1:s3$/);
+  assert.match(sourceSegments[2].sourceAnchor, /^document-test-1@[a-f0-9]{12}#p1\.s3$/);
 
   sourceSegments.forEach((segment) => {
+    assert.ok(Number.isInteger(segment.charStart));
+    assert.ok(Number.isInteger(segment.charEnd));
+    assert.ok(segment.charEnd > segment.charStart);
+    assert.equal(segment.sourceContentHash, sourceDocument.contentHash);
+    assert.equal(segment.segmentationVersion, 'structural-v1');
     assert.equal(
       sourceDocument.content.slice(segment.charStart, segment.charEnd),
       segment.text,
     );
   });
+});
+
+test('segmentation.service rejects unsupported sourceDocument segmentation versions', async () => {
+  const sourceDocument = await createSourceDocument({
+    segmentationVersion: 'legacy-v0',
+    content: [
+      '# Duty of Care',
+      '',
+      'The defendant owed a duty of care.',
+    ].join('\n'),
+  });
+
+  await assert.rejects(
+    segmentationService.segmentSourceDocument({ sourceDocument }),
+    /supports only segmentationVersion=structural-v1/,
+  );
+});
+
+test('source-segment.model rejects malformed offsets and anchor state', async () => {
+  const sourceDocument = await createSourceDocument({
+    content: [
+      '# Duty of Care',
+      '',
+      'The defendant owed a duty of care.',
+    ].join('\n'),
+  });
+
+  const invalidSegment = new SourceSegment({
+    sourceSegmentId: `${sourceDocument.sourceDocumentId}:${sourceDocument.contentHash.slice(0, 12)}:p1:s1`,
+    sourceDocumentId: sourceDocument.sourceDocumentId,
+    matterId: sourceDocument.matterId,
+    documentId: sourceDocument.documentId,
+    sourceContentHash: sourceDocument.contentHash,
+    segmentationVersion: 'structural-v1',
+    sequence: 1,
+    pageNumber: 1,
+    segmentType: 'paragraph',
+    sourceAnchor: `${sourceDocument.documentId}@${sourceDocument.contentHash.slice(0, 12)}#p1.s1`,
+    sectionLabel: 'Duty of Care',
+    charStart: 12,
+    charEnd: 12,
+    text: 'The defendant owed a duty of care.',
+  });
+
+  await assert.rejects(
+    invalidSegment.save(),
+    /charEnd|sourceAnchor|sourceSegmentId/,
+  );
 });

@@ -33,6 +33,14 @@ export const seoDocsEntries = {
     sitemapChangeFrequency: 'monthly',
     sitemapPriority: 0.68,
   },
+  'docs.legal-validator': {
+    title: 'Legal Validator - ChatPDM',
+    description: 'Deterministic validation surface for structured legal arguments, including its pipeline, refusal boundaries, and replay contract.',
+    canonicalPath: '/legal-validator',
+    includeInSitemap: false,
+    sitemapChangeFrequency: 'monthly',
+    sitemapPriority: 0.66,
+  },
   'docs.source-model': {
     title: 'Source Model - ChatPDM',
     description: 'Source governance for ChatPDM: how source material is admitted, constrained, and used without becoming runtime canon directly.',

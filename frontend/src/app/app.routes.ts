@@ -3,6 +3,9 @@ import { AboutPageComponent } from './pages/about-page/about-page.component';
 import { ControlledComparisonsPageComponent } from './pages/controlled-comparisons-page/controlled-comparisons-page.component';
 import { HowItWorksPageComponent } from './pages/how-it-works-page/how-it-works-page.component';
 import { InspectIndexPageComponent } from './pages/inspect-index-page/inspect-index-page.component';
+import { LegalValidatorPageComponent } from './pages/legal-validator-page/legal-validator-page.component';
+import { LEGAL_VALIDATOR_WORKBENCH_ROUTE_SEGMENT, LEGAL_VALIDATOR_WORKBENCH_SEO_KEY } from './pages/legal-validator-workbench-page/legal-validator-workbench-page.constants';
+import { LegalValidatorWorkbenchPageComponent } from './pages/legal-validator-workbench-page/legal-validator-workbench-page.component';
 import { LandingPageComponent } from './pages/landing/landing-page.component';
 import { LiveConceptsPageComponent } from './pages/live-concepts-page/live-concepts-page.component';
 import {
@@ -196,6 +199,11 @@ export const routes: Routes = [
     data: policyRouteData('cookies', 'legal.cookies.inspect'),
   },
   {
+    path: LEGAL_VALIDATOR_WORKBENCH_ROUTE_SEGMENT,
+    component: LegalValidatorWorkbenchPageComponent,
+    data: seoRouteData(LEGAL_VALIDATOR_WORKBENCH_SEO_KEY),
+  },
+  {
     path: 'inspect',
     component: InspectIndexPageComponent,
     data: seoRouteData('legal.inspect'),
@@ -204,6 +212,11 @@ export const routes: Routes = [
     path: 'docs',
     component: PublicPageComponent,
     data: pageRouteData('docs', 'docs.index'),
+  },
+  {
+    path: 'legal-validator',
+    component: LegalValidatorPageComponent,
+    data: seoRouteData('docs.legal-validator'),
   },
   {
     path: 'scope-model',

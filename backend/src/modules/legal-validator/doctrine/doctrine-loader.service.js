@@ -1,12 +1,18 @@
 'use strict';
 
 const DoctrineArtifact = require('./doctrine-artifact.model');
+const conceptRegistryService = require('./concept-registry.service');
 
 const SERVICE_NAME = 'doctrine-loader.service';
 const OWNED_FAILURE_CODES = new Set([
   'DOCTRINE_NOT_RECOGNIZED',
   'INTERPRETATION_RULE_UNSPECIFIED',
   'DOCTRINE_HASH_MISMATCH',
+  'CONCEPT_REGISTRY_UNAVAILABLE',
+  'DOCTRINE_CONCEPT_REFERENCE_INVALID',
+  'DOCTRINE_CORE_CONCEPT_UNREGISTERED',
+  'DOCTRINE_PACKAGE_CONCEPT_COLLISION',
+  'DOCTRINE_CONCEPT_REGISTRY_RUNTIME_FAILURE',
 ]);
 
 function buildTerminalResult(failureCode, reason, extras = {}) {
@@ -111,7 +117,28 @@ async function loadDoctrineArtifact({ artifactId = null, doctrineHash = null } =
     );
   }
 
-  return buildContinueResult(doctrineArtifact);
+  const conceptRegistryResult = conceptRegistryService.resolveDoctrineConceptBindings(doctrineArtifact);
+
+  if (!conceptRegistryResult.ok) {
+    return buildTerminalResult(
+      conceptRegistryResult.failureCode,
+      conceptRegistryResult.reason,
+      {
+        doctrineArtifactId: conceptRegistryResult.doctrineArtifactId || doctrineArtifact.artifactId,
+        doctrineHash: conceptRegistryResult.doctrineHash || doctrineArtifact.hash,
+      },
+    );
+  }
+
+  return {
+    ...buildContinueResult(doctrineArtifact),
+    conceptSetVersion: conceptRegistryResult.conceptSetVersion,
+    liveConceptIds: conceptRegistryResult.liveConceptIds,
+    coreConceptsReferenced: conceptRegistryResult.coreConceptsReferenced,
+    packageConceptsDeclared: conceptRegistryResult.packageConceptsDeclared,
+    resolvedCoreConcepts: conceptRegistryResult.resolvedCoreConcepts,
+    resolvedCoreConceptIds: conceptRegistryResult.resolvedCoreConceptIds,
+  };
 }
 
 module.exports = {

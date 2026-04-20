@@ -20,6 +20,100 @@ const validationTraceManifestSchema = new mongoose.Schema(
   },
 );
 
+const validationTraceReplayContextSchema = new mongoose.Schema(
+  {
+    sourceDocumentId: {
+      type: String,
+      default: null,
+      trim: true,
+    },
+    sourceSegmentIds: {
+      type: [String],
+      default: [],
+    },
+    argumentUnitIds: {
+      type: [String],
+      default: [],
+    },
+    authorityInput: {
+      type: mongoose.Schema.Types.Mixed,
+      default: null,
+    },
+    resolverDecision: {
+      type: mongoose.Schema.Types.Mixed,
+      default: null,
+    },
+    validationDecision: {
+      type: mongoose.Schema.Types.Mixed,
+      default: null,
+    },
+    authorityId: {
+      type: String,
+      default: null,
+      trim: true,
+    },
+    authorityCitation: {
+      type: String,
+      default: null,
+      trim: true,
+    },
+    mappingId: {
+      type: String,
+      default: null,
+      trim: true,
+    },
+    mappingType: {
+      type: String,
+      default: null,
+      trim: true,
+    },
+    matchBasis: {
+      type: String,
+      default: null,
+      trim: true,
+    },
+    conceptId: {
+      type: String,
+      default: null,
+      trim: true,
+    },
+    overrideId: {
+      type: String,
+      default: null,
+      trim: true,
+    },
+    synonymTerm: {
+      type: String,
+      default: null,
+      trim: true,
+    },
+    manualOverrideReason: {
+      type: String,
+      default: null,
+      trim: true,
+    },
+    doctrineArtifactId: {
+      type: String,
+      default: null,
+      trim: true,
+    },
+    doctrineHash: {
+      type: String,
+      default: null,
+      trim: true,
+    },
+    matterId: {
+      type: String,
+      default: null,
+      trim: true,
+    },
+  },
+  {
+    _id: false,
+    strict: 'throw',
+  },
+);
+
 const validationTraceSchema = new mongoose.Schema(
   {
     sourceAnchors: {
@@ -54,6 +148,11 @@ const validationTraceSchema = new mongoose.Schema(
     },
     loadedManifest: {
       type: validationTraceManifestSchema,
+      required: true,
+      default: () => ({}),
+    },
+    replayContext: {
+      type: validationTraceReplayContextSchema,
       required: true,
       default: () => ({}),
     },

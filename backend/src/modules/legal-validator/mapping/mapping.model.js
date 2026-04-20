@@ -3,6 +3,51 @@
 const mongoose = require('mongoose');
 const legalValidatorSchemas = require('../shared/legal-validator.schemas');
 const ArgumentUnit = require('../arguments/argument-unit.model');
+const OverrideRecord = require('../overrides/override-record.model');
+const { loadConceptSet } = require('../../concepts/concept-loader');
+const { deriveRoutingText, normalizeQuery } = require('../../concepts/normalizer');
+
+let cachedSynonymIndex = null;
+
+function pushCandidate(map, key, concept) {
+  if (!map.has(key)) {
+    map.set(key, []);
+  }
+
+  map.get(key).push(concept);
+}
+
+function loadSynonymIndex() {
+  if (cachedSynonymIndex) {
+    return cachedSynonymIndex;
+  }
+
+  const liveConcepts = loadConceptSet();
+  const liveConceptsById = new Map(liveConcepts.map((concept) => [concept.conceptId, concept]));
+  const governedSynonyms = new Map();
+
+  for (const concept of liveConcepts) {
+    const seen = new Set();
+
+    for (const synonym of [...concept.aliases, ...concept.normalizedAliases]) {
+      const synonymKey = deriveRoutingText(normalizeQuery(synonym));
+
+      if (seen.has(synonymKey)) {
+        continue;
+      }
+
+      seen.add(synonymKey);
+      pushCandidate(governedSynonyms, synonymKey, concept);
+    }
+  }
+
+  cachedSynonymIndex = Object.freeze({
+    liveConceptsById,
+    governedSynonyms,
+  });
+
+  return cachedSynonymIndex;
+}
 
 const mappingSchema = new mongoose.Schema(
   {
@@ -48,6 +93,16 @@ const mappingSchema = new mongoose.Schema(
       default: null,
       trim: true,
       index: true,
+    },
+    manualOverrideReason: {
+      type: String,
+      default: null,
+      trim: true,
+    },
+    synonymTerm: {
+      type: String,
+      default: null,
+      trim: true,
     },
     mappingType: {
       type: String,
@@ -116,6 +171,42 @@ mappingSchema.pre('validate', async function validateMapping() {
 
     if (blocker) {
       this.invalidate('argumentUnitId', blocker);
+    }
+
+    if (this.matchBasis === 'exact_synonym') {
+      if (!legalValidatorSchemas.isNonEmptyTrimmedString(this.synonymTerm)) {
+        this.invalidate('synonymTerm', 'Exact synonym mappings require synonymTerm.');
+      } else {
+        const synonymIndex = loadSynonymIndex();
+        const concept = synonymIndex.liveConceptsById.get(this.conceptId);
+
+        if (!concept) {
+          this.invalidate('synonymTerm', `Exact synonym mappings require a live conceptId, received ${this.conceptId}.`);
+        } else {
+        const synonymKey = deriveRoutingText(normalizeQuery(this.synonymTerm));
+        const candidates = synonymIndex.governedSynonyms.get(synonymKey) || [];
+
+        if (candidates.length === 0) {
+          this.invalidate('synonymTerm', `Synonym "${this.synonymTerm}" is not governed by the active concept registry.`);
+        } else if (candidates.length > 1) {
+          this.invalidate('synonymTerm', `Synonym "${this.synonymTerm}" is shared by multiple live concepts.`);
+        } else if (candidates[0].conceptId !== this.conceptId) {
+          this.invalidate('synonymTerm', `Synonym "${this.synonymTerm}" is governed by conceptId=${candidates[0].conceptId}, not conceptId=${this.conceptId}.`);
+        }
+        }
+      }
+    }
+
+    if (this.matchBasis === 'manual_override') {
+      const overrideCheck = await OverrideRecord.findApprovedMappingOverride(this.overrideId, {
+        matterId: this.matterId,
+        argumentUnitId: this.argumentUnitId,
+        mappingId: this.mappingId,
+      });
+
+      if (overrideCheck.blocker) {
+        this.invalidate('overrideId', overrideCheck.blocker.reason);
+      }
     }
   }
 });

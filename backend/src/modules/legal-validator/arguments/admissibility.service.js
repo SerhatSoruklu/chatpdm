@@ -55,6 +55,44 @@ function buildContinueResult(argumentUnits) {
   };
 }
 
+function isPersistableArgumentUnit(argumentUnit) {
+  return Boolean(argumentUnit && typeof argumentUnit.argumentUnitId === 'string' && argumentUnit.argumentUnitId.trim().length > 0);
+}
+
+function shouldPersistBlockedState(argumentUnit, blocker) {
+  if (!isPersistableArgumentUnit(argumentUnit) || !blocker) {
+    return false;
+  }
+
+  return argumentUnit.reviewState === 'pending_review'
+    || argumentUnit.reviewState === 'rejected'
+    || argumentUnit.admissibility === 'blocked';
+}
+
+function buildPersistedAdmissibilityPatch(argumentUnit, blocker = null) {
+  if (!blocker) {
+    return {
+      reviewState: argumentUnit.reviewState,
+      admissibility: 'admissible',
+      unresolvedReason: null,
+    };
+  }
+
+  if (blocker.failureCode === 'PENDING_REVIEW_BLOCK') {
+    return {
+      reviewState: 'pending_review',
+      admissibility: 'blocked',
+      unresolvedReason: blocker.reason,
+    };
+  }
+
+  return {
+    reviewState: argumentUnit.reviewState,
+    admissibility: 'blocked',
+    unresolvedReason: blocker.reason,
+  };
+}
+
 async function resolveArgumentUnits({ matterId = null, argumentUnitIds = [], argumentUnits = null } = {}) {
   if (Array.isArray(argumentUnits)) {
     return argumentUnits;
@@ -70,6 +108,27 @@ async function resolveArgumentUnits({ matterId = null, argumentUnitIds = [], arg
   })
     .sort({ sequence: 1 })
     .exec();
+}
+
+async function persistArgumentUnitAdmissibility(argumentUnit, blocker = null) {
+  if (!isPersistableArgumentUnit(argumentUnit)) {
+    return null;
+  }
+
+  const persistedUnit = await ArgumentUnit.findOneAndUpdate(
+    { argumentUnitId: argumentUnit.argumentUnitId },
+    {
+      $set: buildPersistedAdmissibilityPatch(argumentUnit, blocker),
+    },
+    {
+      returnDocument: 'after',
+      runValidators: true,
+    },
+  )
+    .lean()
+    .exec();
+
+  return persistedUnit;
 }
 
 function getEligibilityFailure(argumentUnit) {
@@ -141,19 +200,28 @@ async function evaluateArgumentUnits(input = {}) {
     throw new Error(`${SERVICE_NAME} requires at least one ArgumentUnit.`);
   }
 
+  const persistedEligibleArgumentUnits = [];
+
   for (const argumentUnit of argumentUnits) {
     const blocker = getEligibilityFailure(argumentUnit);
 
     if (blocker) {
+      if (shouldPersistBlockedState(argumentUnit, blocker)) {
+        await persistArgumentUnitAdmissibility(argumentUnit, blocker);
+      }
+
       return buildTerminalResult(
         blocker.failureCode,
         blocker.reason,
         argumentUnit,
       );
     }
+
+    const persistedArgumentUnit = await persistArgumentUnitAdmissibility(argumentUnit);
+    persistedEligibleArgumentUnits.push(persistedArgumentUnit || argumentUnit);
   }
 
-  return buildContinueResult(argumentUnits);
+  return buildContinueResult(persistedEligibleArgumentUnits);
 }
 
 module.exports = {
@@ -163,4 +231,5 @@ module.exports = {
   buildTerminalResult,
   buildContinueResult,
   getEligibilityFailure,
+  persistArgumentUnitAdmissibility,
 };

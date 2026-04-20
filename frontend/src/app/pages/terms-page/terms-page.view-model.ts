@@ -17,6 +17,7 @@ export type TermsPageSectionGroupId =
   | 'risk-mapping-governance'
   | 'military-constraints'
   | 'zee-api'
+  | 'legal-validator-api'
   | 'support-notes';
 
 export interface TermsPageSection {
@@ -47,7 +48,7 @@ export const TERMS_PAGE_SECTION_GROUPS = [
         sectionLabel: 'Overview',
         title: 'Current public API reference.',
         summary:
-          'This page models the public API as a scoped runtime section plus separate Shared Intake Router, Risk Mapping Governance, Military Constraints Compiler, and ZEE surfaces. The hero counts are scoped to the runtime section only.',
+          'This page models the public API as a scoped runtime section plus separate Shared Intake Router, Risk Mapping Governance, Military Constraints Compiler, Legal Validator, and ZEE surfaces. The hero counts are scoped to the runtime section only.',
       },
     ],
   },
@@ -123,6 +124,21 @@ export const TERMS_PAGE_SECTION_GROUPS = [
     ],
   },
   {
+    id: 'legal-validator-api',
+    label: 'Legal Validator',
+    sections: [
+      {
+        id: 'legal-validator-api',
+        groupId: 'legal-validator-api',
+        groupLabel: 'Legal Validator',
+        sectionLabel: 'Legal Validator API',
+        title: 'Legal Validator API',
+        summary:
+          'Legal Validator is exposed separately as a bounded runtime surface. The backend exposes intake, orchestrate, replay, runs, and governance routes under a strict refusal-first contract.',
+      },
+    ],
+  },
+  {
     id: 'shared-intake-router',
     label: 'Shared Intake Router',
     sections: [
@@ -154,6 +170,8 @@ export const TERMS_PAGE_SECTION_GROUPS = [
         groupLabel: 'Support / Notes',
         sectionLabel: 'Runtime boundaries',
         title: 'Runtime boundaries',
+        summary:
+          'The Legal Validator is a deterministic validation system for structured argument analysis. It does not provide legal advice, interpretation, or recommendations.',
       },
       {
         id: 'refusal-boundaries',
@@ -243,6 +261,16 @@ export interface TermsPageViewModel {
   zeroglareFieldRows: readonly TermsPageFieldRow[];
   zeroglareBoundaryRows: readonly TermsPageBoundaryRow[];
   zeeApiTrustRoute: string;
+  legalValidatorTitle: string;
+  legalValidatorIntro: string;
+  legalValidatorCountsLine: string;
+  legalValidatorEndpointRows: readonly TermsPageEndpointRow[];
+  legalValidatorIntakeFieldRows: readonly TermsPageFieldRow[];
+  legalValidatorOrchestrateFieldRows: readonly TermsPageFieldRow[];
+  legalValidatorReplayFieldRows: readonly TermsPageFieldRow[];
+  legalValidatorBoundaryRows: readonly TermsPageBoundaryRow[];
+  legalValidatorTrustRoute: string;
+  legalValidatorInspectRoute: string;
   sharedIntakeTitle: string;
   sharedIntakeIntro: string;
   sharedIntakeEndpointRows: readonly TermsPageEndpointRow[];
@@ -266,6 +294,7 @@ export function buildTermsPageViewModel(surface: PolicySurfaceDefinition): Terms
   const riskMappingSection = requireSection(sectionOrder, 'risk-mapping-governance');
   const militaryConstraintsSection = requireSection(sectionOrder, 'military-constraints');
   const zeeSection = requireSection(sectionOrder, 'zee-api');
+  const legalValidatorSection = requireSection(sectionOrder, 'legal-validator-api');
   const sharedIntakeSection = requireSection(sectionOrder, 'shared-intake-router');
   const { endpointContracts, fieldContracts, platformRules, runtimeBoundaries, refusalBoundaries } =
     surface.termsTruth;
@@ -615,6 +644,295 @@ export function buildTermsPageViewModel(surface: PolicySurfaceDefinition): Terms
     },
   ] satisfies readonly TermsPageBoundaryRow[];
 
+  const legalValidatorEndpointRows = [
+    {
+      claimId: 'lv-api-1',
+      operation: 'intake',
+      method: 'POST',
+      path: '/api/v1/legal-validator/intake',
+      input: 'body: input',
+      evidence: 'backend/src/routes/api/v1/legal-validator-intake.route.js:27-98',
+    },
+    {
+      claimId: 'lv-api-2',
+      operation: 'orchestrate',
+      method: 'POST',
+      path: '/api/v1/legal-validator/orchestrate',
+      input: 'body: input',
+      evidence: 'backend/src/routes/api/v1/legal-validator-orchestrate.route.js:28-90',
+    },
+    {
+      claimId: 'lv-api-3',
+      operation: 'replay',
+      method: 'POST',
+      path: '/api/v1/legal-validator/replay',
+      input: 'body: input',
+      evidence: 'backend/src/routes/api/v1/legal-validator-replay.route.js:27-101',
+    },
+    {
+      claimId: 'lv-api-4',
+      operation: 'run inspection',
+      method: 'GET',
+      path: '/api/v1/legal-validator/runs/:validationRunId',
+      input: 'route: validationRunId',
+      evidence: 'backend/src/routes/api/v1/legal-validator-runs.route.js:494-515',
+    },
+    {
+      claimId: 'lv-api-5',
+      operation: 'governance',
+      method: 'GET',
+      path: '/api/v1/legal-validator/governance',
+      input: 'none',
+      evidence: 'backend/src/routes/api/v1/legal-validator-governance.route.js:132-155',
+    },
+  ] satisfies readonly TermsPageEndpointRow[];
+
+  const legalValidatorIntakeFieldRows = [
+    {
+      claimId: 'lv-intake-field-1',
+      field: 'input',
+      rule: 'required top-level wrapper',
+      condition: 'requests must contain exactly one top-level input field',
+      evidence: 'backend/src/modules/legal-validator/shared/legal-validator-runtime.contract.js:43-63',
+    },
+    {
+      claimId: 'lv-intake-field-2',
+      field: 'matter',
+      rule: 'required intake payload',
+      condition: 'plain object with matterId, title, jurisdiction, practiceArea, status, and createdBy',
+      evidence: 'backend/src/modules/legal-validator/shared/legal-validator-runtime.contract.js:18-25,383-419',
+    },
+    {
+      claimId: 'lv-intake-field-3',
+      field: 'sourceDocumentIds',
+      rule: 'optional intake payload',
+      condition: 'optional unique array of sourceDocumentId strings',
+      evidence:
+        'backend/src/routes/api/v1/legal-validator-intake.route.js:78-95 | backend/src/modules/legal-validator/shared/legal-validator-runtime.contract.js:408-418',
+    },
+    {
+      claimId: 'lv-intake-field-4',
+      field: 'matter.matterId',
+      rule: 'required matter field',
+      condition: 'non-empty trimmed string',
+      evidence: 'backend/src/modules/legal-validator/shared/legal-validator-runtime.contract.js:18-25,160-227',
+    },
+    {
+      claimId: 'lv-intake-field-5',
+      field: 'matter.title',
+      rule: 'required matter field',
+      condition: 'non-empty trimmed string',
+      evidence: 'backend/src/modules/legal-validator/shared/legal-validator-runtime.contract.js:18-25,160-227',
+    },
+    {
+      claimId: 'lv-intake-field-6',
+      field: 'matter.jurisdiction',
+      rule: 'required matter field',
+      condition: 'non-empty trimmed string',
+      evidence: 'backend/src/modules/legal-validator/shared/legal-validator-runtime.contract.js:18-25,160-227',
+    },
+    {
+      claimId: 'lv-intake-field-7',
+      field: 'matter.practiceArea',
+      rule: 'required matter field',
+      condition: 'non-empty trimmed string',
+      evidence: 'backend/src/modules/legal-validator/shared/legal-validator-runtime.contract.js:18-25,160-227',
+    },
+    {
+      claimId: 'lv-intake-field-8',
+      field: 'matter.status',
+      rule: 'required matter field',
+      condition: 'must be draft, active, or closed',
+      evidence: 'backend/src/modules/legal-validator/shared/legal-validator-runtime.contract.js:17-25,200-209',
+    },
+    {
+      claimId: 'lv-intake-field-9',
+      field: 'matter.createdBy',
+      rule: 'required matter field',
+      condition: 'non-empty trimmed string',
+      evidence: 'backend/src/modules/legal-validator/shared/legal-validator-runtime.contract.js:18-25,160-227',
+    },
+  ] satisfies readonly TermsPageFieldRow[];
+
+  const legalValidatorOrchestrateFieldRows = [
+    {
+      claimId: 'lv-orchestrate-field-1',
+      field: 'input',
+      rule: 'required top-level wrapper',
+      condition: 'requests must contain exactly one top-level input field',
+      evidence: 'backend/src/modules/legal-validator/shared/legal-validator-runtime.contract.js:43-63',
+    },
+    {
+      claimId: 'lv-orchestrate-field-2',
+      field: 'product',
+      rule: 'required boundary field',
+      condition: 'must equal legal-argument-validator',
+      evidence: 'backend/src/modules/legal-validator/shared/legal-validator-runtime.contract.js:10-16,89-157,285-314',
+    },
+    {
+      claimId: 'lv-orchestrate-field-3',
+      field: 'scope',
+      rule: 'required boundary field',
+      condition: 'must equal bounded-legal-validation',
+      evidence: 'backend/src/modules/legal-validator/shared/legal-validator-runtime.contract.js:10-16,89-157,285-314',
+    },
+    {
+      claimId: 'lv-orchestrate-field-4',
+      field: 'matterId',
+      rule: 'required boundary field',
+      condition: 'non-empty trimmed string',
+      evidence: 'backend/src/modules/legal-validator/shared/legal-validator-runtime.contract.js:10-16,89-157,285-314',
+    },
+    {
+      claimId: 'lv-orchestrate-field-5',
+      field: 'jurisdiction',
+      rule: 'required boundary field',
+      condition: 'non-empty trimmed string',
+      evidence: 'backend/src/modules/legal-validator/shared/legal-validator-runtime.contract.js:10-16,89-157,285-314',
+    },
+    {
+      claimId: 'lv-orchestrate-field-6',
+      field: 'practiceArea',
+      rule: 'required boundary field',
+      condition: 'non-empty trimmed string',
+      evidence: 'backend/src/modules/legal-validator/shared/legal-validator-runtime.contract.js:10-16,89-157,285-314',
+    },
+    {
+      claimId: 'lv-orchestrate-field-7',
+      field: 'sourceDocumentId',
+      rule: 'required orchestrator field',
+      condition: 'non-empty trimmed string',
+      evidence:
+        'backend/src/routes/api/v1/legal-validator-orchestrate.route.js:67-85 | backend/src/modules/legal-validator/shared/legal-validator-runtime.contract.js:26-34,285-380',
+    },
+    {
+      claimId: 'lv-orchestrate-field-8',
+      field: 'doctrineArtifactId',
+      rule: 'required orchestrator field',
+      condition: 'non-empty trimmed string',
+      evidence:
+        'backend/src/routes/api/v1/legal-validator-orchestrate.route.js:67-85 | backend/src/modules/legal-validator/shared/legal-validator-runtime.contract.js:26-34,285-380',
+    },
+    {
+      claimId: 'lv-orchestrate-field-9',
+      field: 'authorityInput',
+      rule: 'optional orchestrator field',
+      condition: 'optional plain object when present',
+      evidence:
+        'backend/src/routes/api/v1/legal-validator-orchestrate.route.js:67-85 | backend/src/modules/legal-validator/shared/legal-validator-runtime.contract.js:230-280,285-380',
+    },
+    {
+      claimId: 'lv-orchestrate-field-10',
+      field: 'resolverDecision',
+      rule: 'optional orchestrator field',
+      condition: 'optional plain object when present',
+      evidence:
+        'backend/src/routes/api/v1/legal-validator-orchestrate.route.js:67-85 | backend/src/modules/legal-validator/shared/legal-validator-runtime.contract.js:230-280,285-380',
+    },
+    {
+      claimId: 'lv-orchestrate-field-11',
+      field: 'validationDecision',
+      rule: 'optional orchestrator field',
+      condition: 'optional plain object when present',
+      evidence:
+        'backend/src/routes/api/v1/legal-validator-orchestrate.route.js:67-85 | backend/src/modules/legal-validator/shared/legal-validator-runtime.contract.js:230-280,285-380',
+    },
+    {
+      claimId: 'lv-orchestrate-field-12',
+      field: 'traceInput',
+      rule: 'required orchestrator field',
+      condition: 'required plain object with trace lineage keys',
+      evidence:
+        'backend/src/routes/api/v1/legal-validator-orchestrate.route.js:67-85 | backend/src/modules/legal-validator/shared/legal-validator-runtime.contract.js:341-380',
+    },
+    {
+      claimId: 'lv-orchestrate-field-13',
+      field: 'traceInput.validationRunId',
+      rule: 'required trace field',
+      condition: 'non-empty trimmed string',
+      evidence: 'backend/src/modules/legal-validator/shared/legal-validator-runtime.contract.js:341-380',
+    },
+    {
+      claimId: 'lv-orchestrate-field-14',
+      field: 'traceInput.resolverVersion',
+      rule: 'required trace field',
+      condition: 'non-empty trimmed string',
+      evidence: 'backend/src/modules/legal-validator/shared/legal-validator-runtime.contract.js:341-380',
+    },
+    {
+      claimId: 'lv-orchestrate-field-15',
+      field: 'traceInput.inputHash',
+      rule: 'required trace field',
+      condition: 'non-empty trimmed string',
+      evidence: 'backend/src/modules/legal-validator/shared/legal-validator-runtime.contract.js:341-380',
+    },
+  ] satisfies readonly TermsPageFieldRow[];
+
+  const legalValidatorReplayFieldRows = [
+    {
+      claimId: 'lv-replay-field-1',
+      field: 'input',
+      rule: 'required top-level wrapper',
+      condition: 'requests must contain exactly one top-level input field',
+      evidence: 'backend/src/modules/legal-validator/shared/legal-validator-runtime.contract.js:43-63',
+    },
+    {
+      claimId: 'lv-replay-field-2',
+      field: 'validationRunId',
+      rule: 'required replay field',
+      condition: 'non-empty trimmed string',
+      evidence:
+        'backend/src/routes/api/v1/legal-validator-replay.route.js:83-101 | backend/src/modules/legal-validator/shared/legal-validator-runtime.contract.js:35-37,421-449',
+    },
+  ] satisfies readonly TermsPageFieldRow[];
+
+  const legalValidatorBoundaryRows = [
+    {
+      claimId: 'lv-boundary-1',
+      boundary: 'invalid validator input',
+      condition: 'request body is not a single-input wrapper or required strings are empty',
+      effect: 'rejected with invalid_legal_validator_input',
+      evidence:
+        'backend/src/routes/api/v1/legal-validator.route.js:43-90 | backend/src/routes/api/v1/legal-validator-intake.route.js:27-39 | backend/src/routes/api/v1/legal-validator-orchestrate.route.js:28-45 | backend/src/routes/api/v1/legal-validator-replay.route.js:27-39',
+    },
+    {
+      claimId: 'lv-boundary-2',
+      boundary: 'scope lock violation',
+      condition: 'product, scope, matterId, jurisdiction, or practiceArea do not match the locked boundary',
+      effect: 'rejected with legal_validator_scope_lock_violation',
+      evidence:
+        'backend/src/routes/api/v1/legal-validator.route.js:61-90 | backend/src/routes/api/v1/legal-validator-orchestrate.route.js:36-45 | backend/src/modules/legal-validator/shared/legal-validator-runtime.contract.js:89-157,285-314',
+    },
+    {
+      claimId: 'lv-boundary-3',
+      boundary: 'doctrine mismatch',
+      condition: 'the doctrine artifact cannot be recognized or does not satisfy the runtime-eligible doctrine contract',
+      effect: 'rejected with DOCTRINE_NOT_RECOGNIZED',
+      evidence: 'backend/src/modules/legal-validator/doctrine/doctrine-loader.service.js:57-106',
+    },
+    {
+      claimId: 'lv-boundary-4',
+      boundary: 'authority scope violation',
+      condition: 'authority falls outside doctrine scope, jurisdiction, or required interpretation regime',
+      effect: 'rejected with AUTHORITY_SCOPE_VIOLATION',
+      evidence: 'backend/src/modules/legal-validator/authority/authority-registry.service.js:274-369',
+    },
+    {
+      claimId: 'lv-boundary-5',
+      boundary: 'mapping conflict',
+      condition: 'resolver output is ambiguous, non-deterministic, or uses an unapproved override record',
+      effect: 'rejected with AMBIGUOUS_CONCEPT_MAPPING',
+      evidence: 'backend/src/modules/legal-validator/mapping/resolver.service.js:277-379,443-463',
+    },
+    {
+      claimId: 'lv-boundary-6',
+      boundary: 'replay divergence',
+      condition: 'the replayed trace diverges from the recorded run signature or retained doctrine artifact',
+      effect: 'rejected with REPLAY_ARTIFACT_MISMATCH',
+      evidence: 'backend/src/modules/legal-validator/validation/trace.service.js:917-975,1084-1143,1237-1278',
+    },
+  ] satisfies readonly TermsPageBoundaryRow[];
+
   const sharedIntakeEndpointRows = [
     {
       claimId: 'intake-api-0',
@@ -676,13 +994,15 @@ export function buildTermsPageViewModel(surface: PolicySurfaceDefinition): Terms
     },
   ] satisfies readonly TermsPageBoundaryRow[];
 
+  const legalValidatorCountsLine = `Legal Validator adds ${formatCount(legalValidatorEndpointRows.length, 'endpoint')}, ${formatCount(legalValidatorIntakeFieldRows.length + legalValidatorOrchestrateFieldRows.length + legalValidatorReplayFieldRows.length, 'request field')}, and ${formatCount(legalValidatorBoundaryRows.length, 'refusal boundary')}.`;
+
   return {
     eyebrow: 'API Reference',
     title: overviewSection.title,
     intro:
       overviewSection.summary ??
-      'This page models the public API as a scoped runtime section plus separate Shared Intake Router, Risk Mapping Governance, Military Constraints Compiler, and ZEE surfaces. The hero counts are scoped to the runtime section only.',
-    summaryLine: `Runtime section shows ${formatCount(endpointContracts.length, 'public endpoint')}, ${formatCount(fieldContracts.length, 'field rule')}, ${formatCount(platformRules.length, 'platform rule')}, ${formatCount(runtimeBoundaries.length, 'runtime boundary')}, and ${formatCount(refusalBoundaries.length, 'refusal boundary')}.`,
+      'This page models the public API as a scoped runtime section plus separate Shared Intake Router, Risk Mapping Governance, Military Constraints Compiler, Legal Validator, and ZEE surfaces. The hero counts are scoped to the runtime section only.',
+    summaryLine: `Runtime section shows ${formatCount(endpointContracts.length, 'public endpoint')}, ${formatCount(fieldContracts.length, 'field rule')}, ${formatCount(platformRules.length, 'platform rule')}, ${formatCount(runtimeBoundaries.length, 'runtime boundary')}, and ${formatCount(refusalBoundaries.length, 'refusal boundary')}. ${legalValidatorCountsLine}`,
     badges: [
       {
         label: 'Endpoints',
@@ -758,6 +1078,18 @@ export function buildTermsPageViewModel(surface: PolicySurfaceDefinition): Terms
     zeroglareFieldRows,
     zeroglareBoundaryRows,
     zeeApiTrustRoute: ZEE_ROUTE_PATH,
+    legalValidatorTitle: legalValidatorSection.title,
+    legalValidatorIntro:
+      legalValidatorSection.summary ??
+      'Legal Validator is exposed separately as a bounded runtime surface. The backend exposes intake, orchestrate, replay, runs, and governance routes under a strict refusal-first contract.',
+    legalValidatorCountsLine,
+    legalValidatorEndpointRows,
+    legalValidatorIntakeFieldRows,
+    legalValidatorOrchestrateFieldRows,
+    legalValidatorReplayFieldRows,
+    legalValidatorBoundaryRows,
+    legalValidatorTrustRoute: '/legal-validator',
+    legalValidatorInspectRoute: '/inspect/legal-validator',
     sharedIntakeTitle: sharedIntakeSection.title,
     sharedIntakeIntro:
       sharedIntakeSection.summary ??
