@@ -13,6 +13,15 @@ It complements:
 Validation decides.
 Runtime obeys.
 
+## Document Role
+
+- Role: controlling enforcement principle for the kernel runtime.
+- Scope: how validator output is consumed and enforced at runtime.
+- Governs: refusal, blocking, and non-reinterpretation of validator state.
+- Does not govern: canonical meaning authoring, policy-page structure, or roadmap sequencing.
+- Related docs: [KERNEL_INTEGRITY.md](./KERNEL_INTEGRITY.md), [KERNEL_INTEGRITY_INVARIANT_MAP.md](./KERNEL_INTEGRITY_INVARIANT_MAP.md), [document-authority-index.md](./docs/meta/document-authority-index.md).
+- Precedence: this principle refines runtime obedience; it does not replace validator output or the kernel law that consumes it.
+
 If validator output marks a state as blocked, runtime must not treat that state as normal, actionable, or equivalent to a valid concept.
 
 ## Operational Rules

@@ -5,6 +5,14 @@
 - Snapshot status: frozen
 - Update rule: do not update this file unless the user explicitly asks for this file to be updated
 
+## Document Role
+
+- Status: evidence snapshot.
+- Role: frozen baseline record for current system evidence.
+- Does not govern: runtime truth, roadmap sequencing, or future implementation choices.
+- Related docs: [document-authority-index.md](../meta/document-authority-index.md), [phase-7-5-runtime-proof.md](./phase-7-5-runtime-proof.md), [query-stress-summary.v1.md](../../tests/runtime/reports/query-stress-summary.v1.md).
+- Precedence: snapshot evidence only; it cannot override control docs or roadmaps.
+
 ## Purpose
 
 This snapshot records the current evidence-backed baseline for ChatPDM system behavior.

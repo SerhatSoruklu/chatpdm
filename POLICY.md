@@ -14,6 +14,15 @@ This file is the source of truth for:
 
 All future policy edits must comply with this specification.
 
+## Document Role
+
+- Role: controlling policy-system specification.
+- Scope: policy page structure, tone, claims, and file structure for `policies/*.md`.
+- Governs: `privacy.md`, `terms.md`, and `cookies.md`.
+- Does not govern: runtime resolver behavior, roadmap order, or audit evidence.
+- Related docs: [document-authority-index.md](./docs/meta/document-authority-index.md), [docs/public/review-law.md](./docs/public/review-law.md).
+- Precedence: this file overrides individual policy pages on structure and tone; policy pages remain content sources inside this policy scope.
+
 ## 1. Purpose
 
 The ChatPDM policy system exists to produce legal and policy pages that are:

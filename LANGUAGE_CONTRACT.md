@@ -16,6 +16,15 @@ Canonical meaning in ChatPDM comes from:
 
 Language may vary by register or presentation surface, but canonical meaning must remain fixed.
 
+## Document Role
+
+- Role: controlling meaning and language contract.
+- Scope: canonical meaning sources and the advisory-layer boundary.
+- Governs: what counts as canonical meaning and how AI or advisory layers may participate.
+- Does not govern: kernel containment, policy-page structure, or roadmap sequencing.
+- Related docs: [docs/governance/LLGS_AI_BOUNDARY_PROTOCOL.md](./docs/governance/LLGS_AI_BOUNDARY_PROTOCOL.md), [docs/governance/AI_INTERACTION_CONTRACT.md](./docs/governance/AI_INTERACTION_CONTRACT.md), [document-authority-index.md](./docs/meta/document-authority-index.md).
+- Precedence: this file governs canonical meaning language; advisory layers remain subordinate.
+
 ## AI Advisory Layer
 
 If AI is present, it exists only as an advisory layer.

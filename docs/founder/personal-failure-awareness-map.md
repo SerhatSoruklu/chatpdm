@@ -6,6 +6,14 @@
 **Context:** Solo founder, deterministic system builder (ChatPDM)  
 **Purpose:** Prevent silent system corruption through early awareness of failure patterns
 
+## Document Role
+
+- Role: founder discipline note.
+- Scope: personal failure-awareness framing for development discipline.
+- Does not govern: runtime law, roadmap sequencing, or evidence artifacts.
+- Related docs: [document-authority-index.md](../meta/document-authority-index.md), [../../README.md](../../README.md), [../../PRODUCT-IDENTITY.md](../../PRODUCT-IDENTITY.md).
+- Precedence: context only; control docs override this file.
+
 ---
 
 ## Core Principle

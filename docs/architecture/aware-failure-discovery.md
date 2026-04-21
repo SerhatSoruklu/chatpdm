@@ -4,6 +4,14 @@
 **Scope:** System Development Only  
 **Visibility:** Not user-facing
 
+## Document Role
+
+- Role: internal process/context note.
+- Scope: observable failure discovery during normal interaction.
+- Does not govern: runtime law, roadmap sequencing, or evidence truth.
+- Related docs: [document-authority-index.md](../meta/document-authority-index.md), [failure-modes.md](./failure-modes.md), [concept-review-checklist.md](./concept-review-checklist.md).
+- Precedence: process framing only; control docs override this file.
+
 ---
 
 ## Definition

@@ -8,6 +8,14 @@ It resolves queries only against a fixed set of authored, versioned concepts. If
 There is no guessing, no probabilistic output, and no runtime meaning creation.
 The same input, under the same concept set and version state, produces the same result or the same refusal.
 
+## Document Role
+
+- Role: repository overview and product introduction.
+- Scope: public-facing explanation of what ChatPDM is.
+- Does not govern: runtime law, roadmap sequencing, or evidence truth.
+- Related docs: [document-authority-index.md](./docs/meta/document-authority-index.md), [AGENTS.md](./AGENTS.md), [docs/runtime/chatpdm-llgs-roadmap.md](./docs/runtime/chatpdm-llgs-roadmap.md).
+- Precedence: context only; control docs override this file.
+
 ## Why This Exists
 
 Most systems treat wording as flexible. That is acceptable for open-ended text, but unsafe when concept meaning must stay fixed.

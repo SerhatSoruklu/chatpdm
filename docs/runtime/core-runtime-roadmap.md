@@ -17,6 +17,15 @@ It does not authorize:
 References, concept sources, and implementation opportunities may inform a phase.
 They do not replace the roadmap.
 
+## Document Role
+
+- Role: active runtime execution roadmap.
+- Scope: runtime phase discipline after the architecture layer is locked.
+- Governs: current runtime execution order, active phase status, and bounded expansion.
+- Does not govern: LLGS completion law, policy-system structure, or evidence snapshots.
+- Related docs: [document-authority-index.md](../meta/document-authority-index.md), [chatpdm-llgs-roadmap.md](./chatpdm-llgs-roadmap.md), [../governance/LLGS_AI_BOUNDARY_PROTOCOL.md](../governance/LLGS_AI_BOUNDARY_PROTOCOL.md).
+- Precedence: this roadmap governs current runtime execution only; the LLGS roadmap constrains completion work above it.
+
 ## 2. Foundation Layers
 
 ### 2.1 Layer 1: Architecture

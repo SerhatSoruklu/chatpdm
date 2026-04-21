@@ -6,6 +6,14 @@ ChatPDM ships with a light theme by default.
 
 That is intentional.
 
+## Document Role
+
+- Role: visual direction note.
+- Scope: public-page tone, palette, and structural theme guidance.
+- Does not govern: runtime law, roadmap sequencing, or evidence artifacts.
+- Related docs: [document-authority-index.md](../meta/document-authority-index.md), [../../README.md](../../README.md), [../../PRODUCT-IDENTITY.md](../../PRODUCT-IDENTITY.md).
+- Precedence: design context only; control docs override this file.
+
 The current landing shell should feel:
 
 - calm

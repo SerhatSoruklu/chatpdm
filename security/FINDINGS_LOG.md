@@ -10,6 +10,14 @@ This log is a working template for future adversarial and security research on C
 
 It is meant to record deterministic evidence about whether the system stays bounded, refusal-first, and contract-correct under probe pressure.
 
+## Document Role
+
+- Status: evidence artifact.
+- Role: security findings log and working probe record.
+- Does not govern: runtime law, roadmap sequencing, or policy structure.
+- Related docs: [document-authority-index.md](../docs/meta/document-authority-index.md), [../docs/audits/2026-04-21-llgs-audit.md](../docs/audits/2026-04-21-llgs-audit.md).
+- Precedence: findings in this log inform follow-up work but do not override control documents.
+
 ## Logging Rules
 
 - Log only observable behavior.

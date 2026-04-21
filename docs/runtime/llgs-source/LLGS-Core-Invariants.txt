@@ -1,0 +1,209 @@
+LLGS-Core-Invariants.txt
+ChatPDM — Language-Level Governance System
+Core Invariants (Non-Negotiable)
+
+----------------------------------------------------------------
+1. DETERMINISM
+----------------------------------------------------------------
+Same input + same versions → same output
+
+- No randomness
+- No time-based variation
+- No hidden state influence
+- No probabilistic ranking
+- No fallback paths that change outcomes
+
+Every output must be reproducible using:
+- inputHash
+- registryVersion
+- policyVersion
+- validatorVersion
+- exposureVersion
+
+----------------------------------------------------------------
+2. NO IMPLICIT STATES
+----------------------------------------------------------------
+All system states must be explicit, typed, and observable
+
+- No inferred states
+- No hidden flags
+- No silent defaults
+- No undeclared transitions
+- No missing required fields
+
+Every response MUST include:
+- type
+- finalState
+- validationState
+- traceId
+
+If a state is not explicitly defined, it must NOT exist.
+
+----------------------------------------------------------------
+3. NO HIDDEN FALLBACKS
+----------------------------------------------------------------
+All behavior must be declared and traceable
+
+- No silent retries that alter meaning
+- No backup logic that changes outcomes
+- No alternative resolution paths without trace
+- No “best effort” substitutions
+
+If the system cannot resolve deterministically:
+→ It MUST refuse
+
+----------------------------------------------------------------
+4. REGISTRY IS RUNTIME AUTHORITY
+----------------------------------------------------------------
+The Canonical Registry is the single source of truth
+
+- All admission decisions derive from registry + policy
+- No ID-based allowlists or blocklists outside registry
+- No overlays, patches, or external decision sources
+- No runtime bypass of registry checks
+
+If registry does not admit a concept:
+→ The system MUST reject it
+
+----------------------------------------------------------------
+5. MEANING INVARIANCE IS MANDATORY
+----------------------------------------------------------------
+Meaning must never change across transformations
+
+- All profiles MUST preserve the same canonical invariant
+- No semantic drift allowed
+- No approximation of meaning
+- No “looks similar” validation
+
+All outputs MUST pass:
+→ Semantic Invariance Validator
+
+If invariance fails:
+→ Output MUST be rejected
+
+----------------------------------------------------------------
+6. FRONTEND CONSUMES TRUTH ONLY
+----------------------------------------------------------------
+Client must render exactly what backend provides
+
+- No reconstruction logic
+- No inference
+- No hidden mappings
+- No state guessing
+- No fallback rendering paths
+
+Frontend behavior:
+- Render based on finalState
+- Display reason and failedLayer as-is
+- Respect validationState and exposure rules
+
+The frontend does NOT interpret.
+It only presents.
+
+----------------------------------------------------------------
+7. EXPOSURE IS STRICTLY ENFORCED
+----------------------------------------------------------------
+Only validated outputs may be exposed
+
+Mapping:
+- valid → full exposure
+- partial → limited exposure
+- degraded → reduced exposure
+- refused → refusal only
+- invalid → hidden (fail closed)
+
+- No internal data leakage
+- No bypass of exposure layer
+- No UI showing more than backend allows
+
+----------------------------------------------------------------
+8. FAIL SAFE, NOT SILENT
+----------------------------------------------------------------
+Uncertainty must result in refusal, not approximation
+
+- No silent degradation
+- No hidden corrections
+- No auto-fixing invalid states
+
+If any layer fails:
+→ STOP
+→ RETURN refused with reason + failedLayer
+
+----------------------------------------------------------------
+9. FULL TRACEABILITY
+----------------------------------------------------------------
+Every decision must be explainable and reproducible
+
+Every response MUST include:
+- traceId
+- deterministicKey
+- registryVersion
+- policyVersion
+- validatorVersion (if applicable)
+
+All decisions must be:
+- auditable
+- reproducible
+- attributable
+
+No decision exists without a trace.
+
+----------------------------------------------------------------
+10. TELEMETRY IS OBSERVATIONAL ONLY
+----------------------------------------------------------------
+Telemetry must NEVER directly affect runtime behavior
+
+- No automatic runtime mutation
+- No live tuning from metrics
+- No feedback loop bypassing governance
+
+Allowed:
+- logging
+- aggregation
+- drift detection
+- alerting
+
+Required flow:
+Telemetry → Alert → Review → Approval → Registry/Policy Update → Version bump
+
+Direct mutation is forbidden.
+
+----------------------------------------------------------------
+11. VERSIONED GOVERNANCE
+----------------------------------------------------------------
+All system truth must be version-controlled
+
+- registryVersion increments on registry changes
+- policyVersion increments on rule changes
+- validatorVersion increments on invariance logic changes
+- exposureVersion increments on exposure logic changes
+
+deterministicKey MUST include all relevant versions
+
+No unversioned change is allowed.
+
+----------------------------------------------------------------
+12. NO BYPASS RULES
+----------------------------------------------------------------
+These rules are absolute and cannot be overridden
+
+NB1. No resolver output may bypass contract enforcement
+NB2. No admission decision may bypass registry authority
+NB3. No profile may bypass invariance validation
+NB4. No client may bypass exposure contract
+NB5. No telemetry may bypass governance workflow
+
+----------------------------------------------------------------
+SYSTEM GUARANTEE
+----------------------------------------------------------------
+The system must:
+
+- Preserve meaning
+- Enforce determinism
+- Fail safely
+- Remain fully traceable
+- Resist drift under pressure
+
+If any invariant is violated:
+→ The system is considered UNSAFE
+→ Execution must be halted and corrected

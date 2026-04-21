@@ -8,6 +8,15 @@ It is intentionally conservative:
 - it marks partial enforcement explicitly
 - it distinguishes declared policy from executable checks
 
+## Document Role
+
+- Role: supporting anti-corruption invariant map.
+- Scope: current enforcement coverage for anti-corruption law sections.
+- Governs: how implementation reality is classified against the law doc.
+- Does not govern: runtime execution order, kernel containment details, or evidence snapshots.
+- Related docs: [ANTI_CORRUPTION_SYSTEM_LAW.md](./ANTI_CORRUPTION_SYSTEM_LAW.md), [KERNEL_INTEGRITY_INVARIANT_MAP.md](../KERNEL_INTEGRITY_INVARIANT_MAP.md), [document-authority-index.md](../docs/meta/document-authority-index.md).
+- Precedence: this map is below the anti-corruption system law and above local notebooks or ad hoc notes.
+
 ## Status Legend
 
 - `enforced`: the canonical validator/runtime path enforces this invariant in code and has focused proof coverage

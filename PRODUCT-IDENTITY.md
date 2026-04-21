@@ -2,6 +2,14 @@
 
 This note captures the durable product direction for ChatPDM.
 
+## Document Role
+
+- Role: product-direction note.
+- Scope: durable product framing and current positioning.
+- Does not govern: runtime law, roadmap sequencing, or evidence artifacts.
+- Related docs: [document-authority-index.md](./docs/meta/document-authority-index.md), [README.md](./README.md), [docs/runtime/core-runtime-roadmap.md](./docs/runtime/core-runtime-roadmap.md).
+- Precedence: this file informs product framing but does not override control docs.
+
 ## Core Identity
 
 ChatPDM is:

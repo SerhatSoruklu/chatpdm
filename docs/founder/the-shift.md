@@ -2,6 +2,14 @@
 
 **Author:** Serhat Soruklu
 
+## Document Role
+
+- Role: founder context note.
+- Scope: personal and process framing for ChatPDM development discipline.
+- Does not govern: runtime law, roadmap sequencing, or evidence artifacts.
+- Related docs: [document-authority-index.md](../meta/document-authority-index.md), [../../README.md](../../README.md), [../../PRODUCT-IDENTITY.md](../../PRODUCT-IDENTITY.md).
+- Precedence: context only; control docs override this file.
+
 ---
 
 ## Context

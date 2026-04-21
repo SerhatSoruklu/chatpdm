@@ -9,6 +9,15 @@ The distinction is deliberate:
 - anti-corruption law defines what the system must not become
 - kernel integrity defines how invalid states must be contained, refused, or marked before they can be served or acted upon
 
+## Document Role
+
+- Role: controlling kernel containment law.
+- Scope: how invalid states are contained, refused, or marked before serving or downstream action.
+- Governs: validator-derived governance state, refusal of blocked concepts, and kernel-path obedience.
+- Does not govern: policy-page structure, product narrative, or roadmap sequencing.
+- Related docs: [ANTI_CORRUPTION/ANTI_CORRUPTION_SYSTEM_LAW.md](./ANTI_CORRUPTION/ANTI_CORRUPTION_SYSTEM_LAW.md), [KERNEL_INTEGRITY_INVARIANT_MAP.md](./KERNEL_INTEGRITY_INVARIANT_MAP.md), [document-authority-index.md](./docs/meta/document-authority-index.md).
+- Precedence: this file sits below anti-corruption system law and above ad hoc runtime helper behavior within kernel containment scope.
+
 ## Kernel Rules
 
 ### 1. Single Governed Access Path
