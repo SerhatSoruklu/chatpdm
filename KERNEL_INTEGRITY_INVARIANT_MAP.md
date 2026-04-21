@@ -9,6 +9,15 @@ The distinction is:
 - anti-corruption = law and invariants against drift, collapse, and synthetic truth
 - kernel integrity = operational containment of invalid states in validator and runtime paths
 
+## Document Role
+
+- Role: supporting invariant coverage map for kernel containment.
+- Scope: coverage and enforcement status for kernel-path invalid-state containment.
+- Governs: how the kernel containment layer is audited and interpreted.
+- Does not govern: anti-corruption system law, runtime roadmap order, or evidence snapshots.
+- Related docs: [ANTI_CORRUPTION/ANTI_CORRUPTION_SYSTEM_LAW.md](./ANTI_CORRUPTION/ANTI_CORRUPTION_SYSTEM_LAW.md), [ANTI_CORRUPTION/INVARIANT_MAP.md](./ANTI_CORRUPTION/INVARIANT_MAP.md), [document-authority-index.md](./docs/meta/document-authority-index.md).
+- Precedence: this map is subordinate to the anti-corruption system law and exists to record kernel-specific coverage.
+
 ## Status Legend
 
 - `enforced`: the canonical kernel path enforces the invariant in code with focused proof coverage

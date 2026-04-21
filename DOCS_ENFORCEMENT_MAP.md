@@ -9,10 +9,11 @@ It answers:
 - which docs are descriptive and do not need enforcement
 
 This map covers `docs/` only. It does not replace the root-level law and invariant sets under [ANTI_CORRUPTION](./ANTI_CORRUPTION) or the root kernel-integrity docs.
+For repo-wide document authority, see [docs/meta/document-authority-index.md](./docs/meta/document-authority-index.md).
 
 ## Authority Lock
 
-- This file is the authoritative shared enforcement map for the repository `docs/` tree.
+- This file is the authoritative shared enforcement map for the repository `docs/` tree only.
 - Any durable finding, classification change, contradiction, priority change, or conversion decision discovered in local notes must be promoted here before it is treated as shared truth.
 - Any durable finding must be promoted before:
   - a commit is finalized
@@ -20,6 +21,7 @@ This map covers `docs/` only. It does not replace the root-level law and invaria
   - or a related code change is merged
 - Local-only notebooks may assist analysis, but they must not be the only place where a standing decision lives.
 - If a local note and this file diverge, this file remains the shared source of truth until it is explicitly updated.
+- This file is not repo-wide markdown law and does not override control docs, roadmaps, or evidence outside the `docs/` tree.
 
 ## Summary
 

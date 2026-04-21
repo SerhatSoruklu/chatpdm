@@ -12,6 +12,14 @@ It is a structural lens used to:
 - guide future architectural decisions
 - evaluate new features and concepts
 
+## Document Role
+
+- Role: architectural mental-model note.
+- Scope: structural lens for reasoning about system behavior.
+- Does not govern: runtime law, roadmap sequencing, or evidence artifacts.
+- Related docs: [document-authority-index.md](../meta/document-authority-index.md), [../../SOVEREIGN_CORE_ARCHITECTURE.md](../../SOVEREIGN_CORE_ARCHITECTURE.md), [../../KERNEL_INTEGRITY.md](../../KERNEL_INTEGRITY.md).
+- Precedence: mental model only; control docs override this file.
+
 ---
 
 ## Core Distribution

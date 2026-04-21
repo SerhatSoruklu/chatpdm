@@ -33,6 +33,15 @@ The application now lives directly in this repo root, with:
 - [data](./data)
 - [tests](./tests)
 
+## Document Role
+
+- Role: repo operating law.
+- Scope: workspace targeting, repo boundary, shell precedence, and publication discipline.
+- Governs: ChatPDM repo work only.
+- Does not govern: runtime truth, policy-page structure, or product semantics.
+- Related docs: [document-authority-index.md](./docs/meta/document-authority-index.md), [POLICY.md](./POLICY.md), [SOVEREIGN_CORE_ARCHITECTURE.md](./SOVEREIGN_CORE_ARCHITECTURE.md).
+- Precedence: this file governs repo-work behavior within ChatPDM; narrower system-law docs govern their own runtime and policy scopes.
+
 ## Shell context precedence
 
 Treat the user's active shell path as the primary repo target when it is shown explicitly.

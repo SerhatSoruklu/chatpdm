@@ -5,6 +5,14 @@ This note is an analogy for execution gating in ChatPDM.
 It is not the product definition.
 It is a compact way to think about how the system evaluates inputs and refuses invalid execution states.
 
+## Document Role
+
+- Role: analogy and governance context note.
+- Scope: execution gating explanation.
+- Does not govern: runtime law, roadmap sequencing, or evidence artifacts.
+- Related docs: [document-authority-index.md](../../meta/document-authority-index.md), [../../../SOVEREIGN_CORE_ARCHITECTURE.md](../../../SOVEREIGN_CORE_ARCHITECTURE.md), [../../../KERNEL_INTEGRITY.md](../../../KERNEL_INTEGRITY.md).
+- Precedence: analogy only; control docs override this file.
+
 ## Traffic analogy
 
 - rules -> speed limit

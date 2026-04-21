@@ -11,6 +11,15 @@ Truth must not drift.
 Truth must not be misrepresented.
 Truth must not be simulated.
 
+## Document Role
+
+- Role: controlling anti-corruption system law.
+- Scope: truth integrity, schema integrity, relation law, boundary law, and validator enforcement.
+- Governs: what the system must not become and what the integrity kernel must reject.
+- Does not govern: runtime roadmap sequencing, policy-page structure, or narrative/context docs.
+- Related docs: [document-authority-index.md](../docs/meta/document-authority-index.md), [KERNEL_INTEGRITY.md](../KERNEL_INTEGRITY.md), [KERNEL_INTEGRITY_INVARIANT_MAP.md](../KERNEL_INTEGRITY_INVARIANT_MAP.md), [INVARIANT_MAP.md](./INVARIANT_MAP.md).
+- Precedence: this file is the top anti-corruption law for its scope; kernel integrity and invariant maps operate below it as supporting enforcement and coverage docs.
+
 ---
 
 ## Integrity Kernel

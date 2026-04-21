@@ -2,6 +2,15 @@
 
 Use this checklist before adding any new validator path, API route, runtime resolver, or concept-serving helper.
 
+## Document Role
+
+- Role: supporting enforcement checklist.
+- Scope: pre-change review for validator paths, runtime routes, and concept-serving helpers.
+- Governs: checklist discipline before adding or changing enforcement code.
+- Does not govern: law definition, roadmap sequencing, or audit truth.
+- Related docs: [ANTI_CORRUPTION_SYSTEM_LAW.md](./ANTI_CORRUPTION_SYSTEM_LAW.md), [INVARIANT_MAP.md](./INVARIANT_MAP.md), [document-authority-index.md](../docs/meta/document-authority-index.md).
+- Precedence: this checklist is advisory support for the law and maps; it does not override them.
+
 ## Required Validator Inputs
 
 - Consume validator-derived governance state through [backend/src/modules/concepts/concept-validation-state-loader.js](../backend/src/modules/concepts/concept-validation-state-loader.js).

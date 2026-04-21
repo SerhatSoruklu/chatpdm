@@ -9,6 +9,14 @@
 - Average score: `2`
 - Deterministic failures: `0`
 
+## Document Role
+
+- Status: evidence artifact.
+- Role: runtime stress-report snapshot.
+- Does not govern: runtime law, roadmap sequencing, or implementation scope.
+- Related docs: [document-authority-index.md](../../../docs/meta/document-authority-index.md), [phase-7-5-runtime-proof.md](../../../docs/runtime/phase-7-5-runtime-proof.md), [baseline-metrics-snapshot-2026-03-27-16-18-gmt.md](../../../docs/runtime/baseline-metrics-snapshot-2026-03-27-16-18-gmt.md).
+- Precedence: this report is evidence only and cannot override control docs.
+
 ## Failure Labels
 
 - `collapse`: `0`

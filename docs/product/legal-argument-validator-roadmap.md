@@ -20,6 +20,15 @@ This document does not yet define:
 - implementation dates
 - detailed delivery scope inside each phase
 
+## Document Role
+
+- Role: subsystem / product roadmap.
+- Scope: Legal Argument Validator naming, phase order, and workstream planning.
+- Governs: subsystem-level roadmap identity and phase sequence.
+- Does not govern: ChatPDM runtime law, LLGS completion law, or evidence artifacts.
+- Related docs: [document-authority-index.md](../meta/document-authority-index.md), [../runtime/chatpdm-llgs-roadmap.md](../runtime/chatpdm-llgs-roadmap.md), [../runtime/core-runtime-roadmap.md](../runtime/core-runtime-roadmap.md).
+- Precedence: this roadmap sits below the LLGS completion roadmap and the core runtime roadmap for repo-wide execution authority.
+
 ## Canonical Title
 
 The controlling roadmap title is:

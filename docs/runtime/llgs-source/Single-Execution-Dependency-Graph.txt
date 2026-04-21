@@ -1,0 +1,452 @@
+LLGS EXECUTION DEPENDENCY GRAPH
+ChatPDM
+Goal: build in the only safe order, where each later phase depends on guarantees locked earlier
+
+ROOT INVARIANTS
+  I1. Determinism is mandatory
+  I2. No implicit states
+  I3. No hidden fallbacks
+  I4. No client-side truth reconstruction
+  I5. Fail safe on uncertainty
+  I6. All state transitions are traceable
+  I7. Governance changes must be versioned
+  I8. Telemetry must not directly mutate runtime behavior
+
+================================================================
+LAYER 0: PRECONDITIONS
+================================================================
+
+P0.1 Current runtime exists
+P0.2 Resolver route exists
+P0.3 Refusal paths exist
+P0.4 Basic output validation exists
+P0.5 Audit snapshot frozen (2026-04-21)
+P0.6 Phase roadmaps frozen
+
+If any of P0.1-P0.6 fail:
+  STOP
+  Do not start LLGS hardening
+
+================================================================
+PHASE 1: DETERMINISTIC CONTRACT LOCK
+================================================================
+
+P1.A Inventory current public responses
+  -> list all route response types
+  -> capture current field variability
+  -> identify implicit states
+
+P1.B Define strict public contract
+  requires: P1.A
+  outputs:
+    - type
+    - finalState
+    - validationState
+    - reason
+    - failedLayer
+    - details
+    - traceId
+    - deterministicKey
+    - registryVersion
+    - policyVersion
+    - timestamp
+
+P1.C Define state semantics
+  requires: P1.B
+  outputs:
+    - valid
+    - partial
+    - degraded
+    - refused
+
+P1.D Centralize backend response shaping
+  requires: P1.B, P1.C
+
+P1.E Enforce contract in route serialization
+  requires: P1.D
+
+P1.F Add route-level contract tests
+  requires: P1.E
+
+P1.G Remove frontend heuristic reconstruction
+  requires: P1.E
+
+P1.H Align frontend types to backend contract
+  requires: P1.E, P1.G
+
+P1.I Add regression locks / snapshots
+  requires: P1.F, P1.H
+
+P1.J Remove stale Phase 1 verification drift
+  requires: P1.F, P1.I
+
+PHASE 1 DONE WHEN:
+  P1.E + P1.F + P1.G + P1.H + P1.I + P1.J all true
+
+CRITICAL RISKS IN PHASE 1
+  R1. finalState absent in any path
+  R2. reason/failedLayer inconsistent
+  R3. frontend still infers truth
+  R4. deterministicKey underspecified
+  R5. stale scripts create false confidence
+
+================================================================
+PHASE 2: CANONICAL REGISTRY AUTHORITY
+================================================================
+
+P2.A Inventory all admission-control sources
+  requires: Phase 1 complete
+  outputs:
+    - ID lists
+    - overlays
+    - review states
+    - rejection states
+    - visibility logic
+
+P2.B Define canonical registry contract
+  requires: P2.A
+  outputs:
+    - conceptId
+    - version
+    - lifecycle.status
+    - governance.state
+    - visibility.state
+    - sourceRefs
+    - metadata
+    - updatedAt
+    - updatedBy
+
+P2.C Define state enums
+  requires: P2.B
+  lifecycle.status:
+    - active
+    - deprecated
+    - disputed
+    - retired
+  governance.state:
+    - approved
+    - under-review
+    - disputed
+    - rejected
+  visibility.state:
+    - public
+    - visible-only
+    - blocked
+    - private
+
+P2.D Define deterministic admission matrix
+  requires: P2.C
+
+P2.E Build registry loader / registry authority module
+  requires: P2.B, P2.C, P2.D
+
+P2.F Normalize existing concept data into registry
+  requires: P2.E
+
+P2.G Collapse review/rejection/visibility overlays into registry authority
+  requires: P2.F
+
+P2.H Build deriveAdmission(registryEntry, policy)
+  requires: P2.D, P2.G
+
+P2.I Integrate resolver -> check registry -> derive admission
+  requires: P2.H
+
+P2.J Remove ID-based admission lists and runtime overlay bypasses
+  requires: P2.I
+
+P2.K Add decision traceability
+  requires: P2.I
+  outputs:
+    - decision
+    - reason
+    - traceId
+    - registryVersion
+
+P2.L Add admission test matrix
+  requires: P2.I, P2.J, P2.K
+
+PHASE 2 DONE WHEN:
+  P2.I + P2.J + P2.K + P2.L all true
+
+CRITICAL RISKS IN PHASE 2
+  R6. registry remains metadata, not authority
+  R7. manual lists survive in hidden paths
+  R8. lifecycle.status validated but still not governing
+  R9. registry schema incomplete or non-versioned
+  R10. admission not fully derived from registry + policy
+
+================================================================
+PHASE 3: MEANING PRESERVATION ENFORCEMENT
+================================================================
+
+P3.A Define canonical invariant contract
+  requires: Phase 2 complete
+  outputs:
+    - invariant text
+    - boundaries
+    - exclusions
+    - relationships
+    - sourceRefs
+
+P3.B Define semantic profiles
+  requires: P3.A
+  outputs:
+    - standard
+    - simplified
+    - formal
+
+P3.C Define deterministic generation rules per profile
+  requires: P3.B
+
+P3.D Define allowed invariance checks
+  requires: P3.A, P3.B
+  allowed:
+    - boundary equality
+    - exclusion equality
+    - relationship equality
+    - constraint preservation
+    - structural preservation
+  forbidden:
+    - fuzzy similarity
+    - embeddings
+    - probabilistic matching
+    - human judgment as runtime gate
+
+P3.E Build profile generator
+  requires: P3.C
+
+P3.F Build semantic invariance validator
+  requires: P3.D
+
+P3.G Generate all profiles from same invariant
+  requires: P3.E
+
+P3.H Validate all profiles against invariant
+  requires: P3.F, P3.G
+
+P3.I Enforce PASS -> expose, FAIL -> reject
+  requires: P3.H
+
+P3.J Attach invariance proof metadata
+  requires: P3.I
+  outputs:
+    - validatorVersion
+    - thresholds
+    - result
+    - traceId
+
+P3.K Remove all remaining "looks similar" logic
+  requires: P3.I
+
+P3.L Add invariance test suite
+  requires: P3.I, P3.J, P3.K
+
+PHASE 3 DONE WHEN:
+  P3.H + P3.I + P3.J + P3.K + P3.L all true
+
+CRITICAL RISKS IN PHASE 3
+  R11. semantic preservation becomes fuzzy
+  R12. profiles drift without rejection
+  R13. invariance checks are probabilistic
+  R14. validator is optional instead of mandatory
+  R15. proof metadata missing
+
+================================================================
+PHASE 4: END-TO-END EXPOSURE INTEGRITY
+================================================================
+
+P4.A Define public output validation contract
+  requires: Phase 3 complete
+
+P4.B Define strict exposure rules
+  requires: P4.A
+  mapping:
+    valid -> full exposure
+    partial -> limited exposure
+    degraded -> downgraded exposure
+    refused -> refusal only
+    invalid/out-of-contract -> hide
+
+P4.C Build exposure enforcement layer
+  requires: P4.B
+
+P4.D Integrate validation -> exposure -> response
+  requires: P4.C
+
+P4.E Define strict frontend consumption rules
+  requires: P4.D
+  frontend:
+    - consumes response as-is
+    - renders by finalState/validationState only
+    - no reconstruction
+    - no hidden mappings
+    - no heuristic fallbacks
+
+P4.F Refactor frontend to strict consumer
+  requires: P4.E
+
+P4.G Remove all client-side inference
+  requires: P4.F
+
+P4.H Add contract and exposure tests
+  requires: P4.D, P4.F, P4.G
+
+P4.I Add fail-closed behavior
+  requires: P4.C, P4.H
+
+P4.J Verify request -> response -> render integrity
+  requires: P4.H, P4.I
+
+PHASE 4 DONE WHEN:
+  P4.D + P4.F + P4.G + P4.H + P4.I + P4.J all true
+
+CRITICAL RISKS IN PHASE 4
+  R16. frontend still reconstructs state
+  R17. partial vs degraded not explicitly defined
+  R18. backend leaks internal invalid states
+  R19. exposure rules inconsistent across surfaces
+  R20. UI differs from backend truth
+
+================================================================
+PHASE 5: GOVERNANCE FEEDBACK SYSTEM
+================================================================
+
+P5.A Define telemetry event schema
+  requires: Phase 4 complete
+  events:
+    - refusal
+    - mismatch
+    - degraded
+    - exposure_block
+    - validation_failure
+    - policy_violation
+    - system_error
+
+P5.B Build event collection layer (H1)
+  requires: P5.A
+
+P5.C Instrument resolver/validation/exposure/user/system signals
+  requires: P5.B
+
+P5.D Build metrics aggregation layer (H2)
+  requires: P5.C
+
+P5.E Define drift signals (H3)
+  requires: P5.D
+  signals:
+    - semantic drift
+    - policy drift
+    - coverage drift
+    - anomaly score
+
+P5.F Build drift detector
+  requires: P5.E
+
+P5.G Define drift contracts / thresholds
+  requires: P5.E, P5.F
+
+P5.H Build feedback engine (H4)
+  requires: P5.G
+
+P5.I Constrain feedback actions through governance workflow only
+  requires: P5.H
+  rule:
+    telemetry -> alert/review/update proposal
+    never telemetry -> direct runtime mutation
+
+P5.J Build governance reports (H5)
+  requires: P5.D, P5.F, P5.H
+
+P5.K Build append-only audit logs and snapshots
+  requires: P5.B, P5.H, P5.J
+
+P5.L Build observability dashboard
+  requires: P5.D, P5.F, P5.J
+
+P5.M Validate closed-loop governance
+  requires: P5.I, P5.J, P5.K, P5.L
+
+PHASE 5 DONE WHEN:
+  P5.C + P5.D + P5.F + P5.G + P5.H + P5.I + P5.J + P5.K + P5.M all true
+
+CRITICAL RISKS IN PHASE 5
+  R21. telemetry mutates runtime behavior directly
+  R22. feedback loop bypasses governance approval
+  R23. metrics are noisy / non-explainable
+  R24. drift contracts are vague
+  R25. reports disagree with event truth
+
+================================================================
+CROSS-PHASE HARD DEPENDENCIES
+================================================================
+
+Phase 2 depends on Phase 1 because:
+  - you cannot make registry authoritative if output/route truth is still ambiguous
+
+Phase 3 depends on Phase 2 because:
+  - invariance requires a stable canonical registry and invariant authority
+
+Phase 4 depends on Phase 3 because:
+  - exposure integrity is meaningless if semantic validation is not trusted
+
+Phase 5 depends on Phase 4 because:
+  - telemetry must observe stable truth, not unstable UI/backend disagreement
+
+================================================================
+ABSOLUTE NO-BYPASS RULES
+================================================================
+
+NB1. No resolver output may bypass Phase 1 contract
+NB2. No admission decision may bypass registry authority
+NB3. No profile may bypass invariance validation
+NB4. No client may bypass exposure contract
+NB5. No feedback action may bypass governance workflow
+
+================================================================
+VERSIONING RULES YOU MUST LOCK
+================================================================
+
+V1. registryVersion increments on any registry truth change
+V2. policyVersion increments on any decision-rule change
+V3. validatorVersion increments on any invariance check change
+V4. exposureVersion increments on any exposure mapping change
+V5. deterministicKey must include all relevant version inputs
+
+Recommended deterministicKey basis:
+  hash(
+    inputHash +
+    registryVersion +
+    policyVersion +
+    validatorVersion +
+    exposureVersion
+  )
+
+================================================================
+FAILURE TAXONOMY
+================================================================
+
+F1. intake_failure
+F2. structure_failure
+F3. semantic_failure
+F4. registry_failure
+F5. policy_failure
+F6. invariance_failure
+F7. validation_failure
+F8. exposure_failure
+
+Every refused/degraded/partial state should map to one or more of F1-F8.
+
+================================================================
+ONE-LINE EXECUTION ORDER
+================================================================
+
+Contract Lock
+  -> Registry Authority
+  -> Meaning Preservation
+  -> Exposure Integrity
+  -> Governance Feedback
+
+If any phase is only partial:
+  STOP
+  do not begin the next phase as if the prior one is finished.

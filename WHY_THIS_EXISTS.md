@@ -2,6 +2,14 @@
 
 ChatPDM exists because meaning drift is a real failure mode. If a system rewrites, paraphrases, or “helps” too much, it can quietly change what a term means. ChatPDM is built to keep meaning anchored: authored concepts stay authoritative, registry terms stay visible but bounded, and unsupported queries are refused instead of guessed.
 
+## Document Role
+
+- Role: narrative/context note.
+- Scope: why the product exists and what problem it is meant to prevent.
+- Does not govern: runtime law, roadmap sequencing, or evidence truth.
+- Related docs: [document-authority-index.md](./docs/meta/document-authority-index.md), [PRODUCT-IDENTITY.md](./PRODUCT-IDENTITY.md), [README.md](./README.md).
+- Precedence: context only; control docs override this file.
+
 ## The Problem
 
 In many systems, wording changes are treated as harmless. In practice, they are not.

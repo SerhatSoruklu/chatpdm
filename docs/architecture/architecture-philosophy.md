@@ -10,6 +10,14 @@ It is designed for situations where wording matters, definitions matter, and sma
 
 ChatPDM does not try to sound intelligent. It tries to remain structurally correct.
 
+## Document Role
+
+- Role: architecture philosophy note.
+- Scope: rationale for deterministic meaning systems and structural constraint.
+- Does not govern: runtime law, roadmap sequencing, or evidence artifacts.
+- Related docs: [document-authority-index.md](../meta/document-authority-index.md), [../../SOVEREIGN_CORE_ARCHITECTURE.md](../../SOVEREIGN_CORE_ARCHITECTURE.md), [../../LANGUAGE_CONTRACT.md](../../LANGUAGE_CONTRACT.md).
+- Precedence: philosophy and rationale only; control docs override this file.
+
 ## The Problem ChatPDM Is Solving
 
 Probabilistic generation is powerful, but it comes with architectural consequences:
