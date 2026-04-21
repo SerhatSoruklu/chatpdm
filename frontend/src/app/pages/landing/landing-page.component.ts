@@ -5,6 +5,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
+import { MatIconModule } from '@angular/material/icon';
 
 import { ConceptResolverService } from '../../core/concepts/concept-resolver.service';
 import {
@@ -220,6 +221,7 @@ const NO_EXACT_MATCH_FEEDBACK_OPTIONS: FeedbackOption[] = [
     CommonModule,
     FormsModule,
     RouterLink,
+    MatIconModule,
     AiAdvisoryComponent,
     InspectableItemDisclosureComponent,
     ExamplePreviewComponent,
