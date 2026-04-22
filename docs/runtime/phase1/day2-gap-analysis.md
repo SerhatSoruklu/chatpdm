@@ -1,4 +1,4 @@
-# Phase 1 — Day 2
+# Phase 1 - Day 2
 
 Contract Gap Analysis
 Date: 2026-04-22

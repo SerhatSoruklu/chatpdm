@@ -1,4 +1,4 @@
-# Phase 1 — Day 1
+# Phase 1 - Day 1
 
 Deterministic Contract Lock
 Date: 2026-04-22
@@ -15,7 +15,7 @@ HTTP error envelopes excluded.
 
 ---
 
-## Phase A — Code Truth (Enumeration)
+## Phase A - Code Truth (Enumeration)
 
 ### Response Types (from code)
 
@@ -36,14 +36,14 @@ For each response type, include:
 - trigger condition
 - short note
 
-- concept_match — origin: `resolveConceptQuery` in `backend/src/modules/concepts/resolver.js:561`; upstream match source: `matchQuery` in `backend/src/modules/concepts/matcher.js:114`; trigger: a live concept match survives the guard, vocabulary, rejection, governance, and visibility checks.
-- comparison — origin: `resolveConceptQuery` in `backend/src/modules/concepts/resolver.js:520`; trigger: `queryClassification.queryType === 'comparison_query'`, no visible-only concept is mentioned, no blocked concepts remain, and `resolveComparisonQuery(...)` returns a comparison payload.
-- rejected_concept — origin: `buildRejectedConceptResponse` in `backend/src/modules/concepts/resolver.js:113`; trigger: `getRejectedConceptRecord(...)` returns a record before the main concept set lookup.
-- VOCABULARY_DETECTED — origin: `buildVocabularyDetectedResponse` in `backend/src/modules/concepts/resolver.js:142`; trigger: vocabulary matches and the target is neither live nor visible-only.
-- no_exact_match — origin: multiple resolver branches, including `buildPreResolutionGuardResponse` at `resolver.js:94`, `buildValidationBlockedResponse` at `resolver.js:191`, `buildVisibleOnlyConceptResponse` at `resolver.js:254`, and the fallback at `resolver.js:639`; trigger: pre-resolution refusal, governance-scope enforcement, out-of-scope interaction, visible-only routing, comparison fallback, governance-unavailable live concept, blocked concept/candidate set, or default no-match suggestions.
-- invalid_query — origin: `buildInvalidQueryResponse` in `backend/src/modules/concepts/resolver.js:277`; trigger: `queryClassification.queryType === 'invalid_query'`.
-- unsupported_query_type — origin: `buildUnsupportedQueryTypeResponse` in `backend/src/modules/concepts/resolver.js:288`; trigger: `queryClassification.queryType` is `relation_query`, `role_or_actor_query`, or `unsupported_complex_query` with no recoverable exact response.
-- ambiguous_match — origin: `matchQuery` in `backend/src/modules/concepts/matcher.js:101` and public emission in `resolveConceptQuery` at `resolver.js:620`; trigger: alias collision or author-defined disambiguation yields ambiguous candidates, and at least one candidate remains actionable after blocked filtering.
+- concept_match - origin: `resolveConceptQuery` in `backend/src/modules/concepts/resolver.js:561`; upstream match source: `matchQuery` in `backend/src/modules/concepts/matcher.js:114`; trigger: a live concept match survives the guard, vocabulary, rejection, governance, and visibility checks.
+- comparison - origin: `resolveConceptQuery` in `backend/src/modules/concepts/resolver.js:520`; trigger: `queryClassification.queryType === 'comparison_query'`, no visible-only concept is mentioned, no blocked concepts remain, and `resolveComparisonQuery(...)` returns a comparison payload.
+- rejected_concept - origin: `buildRejectedConceptResponse` in `backend/src/modules/concepts/resolver.js:113`; trigger: `getRejectedConceptRecord(...)` returns a record before the main concept set lookup.
+- VOCABULARY_DETECTED - origin: `buildVocabularyDetectedResponse` in `backend/src/modules/concepts/resolver.js:142`; trigger: vocabulary matches and the target is neither live nor visible-only.
+- no_exact_match - origin: multiple resolver branches, including `buildPreResolutionGuardResponse` at `resolver.js:94`, `buildValidationBlockedResponse` at `resolver.js:191`, `buildVisibleOnlyConceptResponse` at `resolver.js:254`, and the fallback at `resolver.js:639`; trigger: pre-resolution refusal, governance-scope enforcement, out-of-scope interaction, visible-only routing, comparison fallback, governance-unavailable live concept, blocked concept/candidate set, or default no-match suggestions.
+- invalid_query - origin: `buildInvalidQueryResponse` in `backend/src/modules/concepts/resolver.js:277`; trigger: `queryClassification.queryType === 'invalid_query'`.
+- unsupported_query_type - origin: `buildUnsupportedQueryTypeResponse` in `backend/src/modules/concepts/resolver.js:288`; trigger: `queryClassification.queryType` is `relation_query`, `role_or_actor_query`, or `unsupported_complex_query` with no recoverable exact response.
+- ambiguous_match - origin: `matchQuery` in `backend/src/modules/concepts/matcher.js:101` and public emission in `resolveConceptQuery` at `resolver.js:620`; trigger: alias collision or author-defined disambiguation yields ambiguous candidates, and at least one candidate remains actionable after blocked filtering.
 
 ### Excluded from this inventory
 
@@ -61,7 +61,7 @@ Excluded inventory notes:
 
 ---
 
-## Phase B — Runtime Truth (Field Inventory)
+## Phase B - Runtime Truth (Field Inventory)
 
 Important:
 This section is currently code-derived, not live-captured.
@@ -260,7 +260,7 @@ Add these bullets exactly as findings:
 
 ---
 
-## Phase C — Surface Reality (Implicit State & Risk Detection)
+## Phase C - Surface Reality (Implicit State & Risk Detection)
 
 ### 1. Implicit States
 

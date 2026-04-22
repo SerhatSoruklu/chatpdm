@@ -1,4 +1,4 @@
-# Phase 1 — Day 6
+# Phase 1 - Day 6
 
 Deterministic Key Implementation Path
 Date: 2026-04-22

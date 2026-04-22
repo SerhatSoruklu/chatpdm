@@ -1,4 +1,4 @@
-# Phase 1 — Day 4
+# Phase 1 - Day 4
 
 FinalState Vocabulary Lock
 Date: 2026-04-22
