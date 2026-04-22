@@ -1,4 +1,7 @@
-<div class="pdm-vision-image-dialog">
+<div
+  class="pdm-vision-image-dialog"
+  [class.pdm-vision-image-dialog--sequence]="data.mode === 'sequence'"
+>
   <div class="pdm-vision-image-dialog__header">
     <div class="pdm-vision-image-dialog__title-group">
       <p class="pdm-vision-image-dialog__eyebrow">{{ dialogTitle }}</p>
@@ -15,25 +18,53 @@
     </button>
   </div>
 
-  <div class="pdm-vision-image-dialog__body">
-    <figure class="pdm-vision-image-dialog__media">
-      <div class="pdm-vision-image-dialog__image-shell">
-        <img
-          class="pdm-vision-image-dialog__image"
-          [src]="data.imagePath"
-          [alt]="data.imageAlt"
-          [width]="data.width"
-          [height]="data.height"
-          loading="eager"
-          decoding="async"
-        />
+  @if (data.mode === 'sequence') {
+    <div class="pdm-vision-image-dialog__sequence">
+      <div class="pdm-vision-image-dialog__sequence-grid">
+        @for (stage of data.stages ?? []; track stage.label) {
+          <article class="pdm-vision-image-dialog__sequence-stage">
+            <div class="pdm-vision-image-dialog__stage-image-shell">
+              <img
+                class="pdm-vision-image-dialog__stage-image"
+                [src]="stage.imagePath"
+                [alt]="stage.imageAlt"
+                [width]="stage.width"
+                [height]="stage.height"
+                loading="eager"
+                decoding="async"
+              />
+            </div>
+            <p class="pdm-vision-image-dialog__stage-label">{{ stage.label }}</p>
+            <p class="pdm-vision-image-dialog__stage-copy">{{ stage.copy }}</p>
+          </article>
+        }
       </div>
-    </figure>
 
-    <aside class="pdm-vision-image-dialog__detail" aria-label="Image description">
-      <p class="pdm-vision-image-dialog__detail-label">What this represents</p>
-      <p class="pdm-vision-image-dialog__detail-copy">{{ descriptionText }}</p>
-      <p class="pdm-vision-image-dialog__detail-note">{{ data.caption }}</p>
-    </aside>
-  </div>
+      @if (data.trailer) {
+        <p class="pdm-vision-image-dialog__sequence-line">{{ data.trailer }}</p>
+      }
+    </div>
+  } @else {
+    <div class="pdm-vision-image-dialog__body">
+      <figure class="pdm-vision-image-dialog__media">
+        <div class="pdm-vision-image-dialog__image-shell">
+          <img
+            class="pdm-vision-image-dialog__image"
+            [src]="data.imagePath"
+            [alt]="data.imageAlt"
+            [width]="data.width"
+            [height]="data.height"
+            loading="eager"
+            decoding="async"
+          />
+        </div>
+      </figure>
+
+      <aside class="pdm-vision-image-dialog__detail" aria-label="Image description">
+        <p class="pdm-vision-image-dialog__detail-label">What this represents</p>
+        <p class="pdm-vision-image-dialog__detail-copy">{{ descriptionText }}</p>
+        <p class="pdm-vision-image-dialog__detail-note">{{ data.caption }}</p>
+      </aside>
+    </div>
+  }
 </div>
