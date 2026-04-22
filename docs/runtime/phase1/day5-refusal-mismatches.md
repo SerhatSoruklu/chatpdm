@@ -2,8 +2,8 @@
 
 Refusal Mismatches
 Date: 2026-04-22
-Time: [leave as placeholder if unknown]
-Commit/Branch: [leave as placeholder if unknown]
+Time: 2026-04-22 16:07 BST
+Commit/Branch: main @ 0c7f5df0cf37a7adf3704052e4e9743a70e58181
 
 ---
 
