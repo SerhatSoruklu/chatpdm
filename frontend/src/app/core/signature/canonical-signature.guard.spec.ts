@@ -7,6 +7,9 @@ import { describe, expect, it, vi } from 'vitest';
 import {
   CANONICAL_SIGNATURE_ALGORITHM,
   CANONICAL_SIGNATURE_KEY_ID,
+  CANONICAL_SIGNATURE_LOCALHOST_PUBLIC_KEY_PEM,
+  CANONICAL_SIGNATURE_PUBLIC_KEY_PEM,
+  resolveCanonicalSignaturePublicKeyPem,
 } from './canonical-signature.keys';
 import {
   canonicalJSONStringify,
@@ -64,6 +67,21 @@ function createTestSignedEnvelope(signatureImageHash: string, expiresAt?: string
 }
 
 describe('canonical signature guard', () => {
+  it('selects the localhost public key for local origins', () => {
+    expect(resolveCanonicalSignaturePublicKeyPem('http://127.0.0.1:4200/')).toBe(
+      CANONICAL_SIGNATURE_LOCALHOST_PUBLIC_KEY_PEM,
+    );
+    expect(resolveCanonicalSignaturePublicKeyPem('http://localhost:4200/')).toBe(
+      CANONICAL_SIGNATURE_LOCALHOST_PUBLIC_KEY_PEM,
+    );
+  });
+
+  it('selects the production public key for non-local origins', () => {
+    expect(resolveCanonicalSignaturePublicKeyPem('https://chatpdm.com/')).toBe(
+      CANONICAL_SIGNATURE_PUBLIC_KEY_PEM,
+    );
+  });
+
   it('refuses a malformed signed envelope', async () => {
     const verification = await verifyCanonicalSignatureEnvelope(
       {} as Parameters<typeof verifyCanonicalSignatureEnvelope>[0],
