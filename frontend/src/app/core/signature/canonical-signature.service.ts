@@ -5,6 +5,7 @@ import { Observable, catchError, map, of, shareReplay, startWith, switchMap, fro
 
 import { resolveApiOrigin } from '../api/api-origin';
 import { verifyCanonicalSignatureEnvelope } from './canonical-signature.guard';
+import { resolveCanonicalSignaturePublicKeyPem } from './canonical-signature.keys';
 import type {
   CanonicalSignatureResponse,
   CanonicalSignatureVerificationState,
@@ -26,12 +27,14 @@ export class CanonicalSignatureService {
     .get<CanonicalSignatureResponse>(`${resolveApiOrigin(this.document)}/api/v1/vision/signature`)
     .pipe(
       switchMap((response) =>
-        from(
-          verifyCanonicalSignatureEnvelope(
+        from((async () => {
+          const baseUrl = this.document?.baseURI || 'http://127.0.0.1:4200/';
+          return verifyCanonicalSignatureEnvelope(
             response.signedEnvelope,
-            this.document?.baseURI || 'http://127.0.0.1:4200/',
-          ),
-        ).pipe(
+            baseUrl,
+            resolveCanonicalSignaturePublicKeyPem(baseUrl),
+          );
+        })()).pipe(
           map((verification) =>
             verification.verified
               ? ({
