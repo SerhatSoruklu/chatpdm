@@ -2,13 +2,23 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation, inject } from '@
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 export interface VisionPageImageDialogData {
+  mode: 'single' | 'sequence';
   title: string;
-  imagePath: string;
-  imageAlt: string;
-  caption: string;
+  caption?: string;
   description?: string;
+  imagePath?: string;
+  imageAlt?: string;
   width?: number;
   height?: number;
+  stages?: readonly {
+    label: string;
+    copy: string;
+    imagePath: string;
+    imageAlt: string;
+    width: number;
+    height: number;
+  }[];
+  trailer?: string;
 }
 
 const VISION_IMAGE_DIALOG_TITLE = 'Vision reference';
@@ -26,7 +36,7 @@ export class VisionPageImageDialogComponent {
   protected readonly data = inject<VisionPageImageDialogData>(MAT_DIALOG_DATA);
   protected readonly dialogTitle = VISION_IMAGE_DIALOG_TITLE;
   protected readonly closeLabel = VISION_IMAGE_DIALOG_CLOSE_LABEL;
-  protected readonly descriptionText = this.data.description ?? this.data.caption;
+  protected readonly descriptionText = this.data.description ?? this.data.caption ?? '';
 
   constructor(private readonly dialogRef: MatDialogRef<VisionPageImageDialogComponent>) {}
 

@@ -72,6 +72,7 @@ describe('VisionPageComponent', () => {
         panelClass: 'pdm-vision-image-dialog-panel',
         restoreFocus: true,
         data: expect.objectContaining({
+          mode: 'single',
           title: 'Refused vision page',
           imagePath: '/assets/vision/refused-vision-page.webp?v=20260420-1',
           imageAlt: 'Refused vision page reference image showing the ChatPDM vision hero strip',
@@ -103,20 +104,41 @@ describe('VisionPageComponent', () => {
       VisionPageImageDialogComponent,
       expect.objectContaining({
         width: 'calc(100vw - 24px)',
-        maxWidth: '1240px',
+        maxWidth: '1120px',
         maxHeight: 'calc(100dvh - 24px)',
         ariaLabel: 'Reality can be fabricated',
         panelClass: 'pdm-vision-image-dialog-panel',
         restoreFocus: true,
         data: expect.objectContaining({
+          mode: 'sequence',
           title: 'Reality can be fabricated',
-          imagePath: '/assets/vision/why-this-matters/vision-fabricated-image-87f8d2c79d.webp',
-          imageAlt: 'Symbolic vision card for fabricated imagery in ChatPDM',
-          caption: 'Faces, memories, and moments can be forged in seconds.',
-          description:
-            'A believable image can still be synthetic. The surface may look real while the underlying scene was generated, altered, or never existed.',
-          width: 1402,
-          height: 1122,
+          trailer: 'Same position. Same setting. Different reality.',
+          stages: expect.arrayContaining([
+            expect.objectContaining({
+              label: 'Original',
+              copy: 'A stable, trusted representation.',
+              imagePath: '/assets/reality/reality-integrity-stage-1-original.f27ca841.webp',
+              imageAlt: 'Reality integrity stage 1 original',
+              width: 2304,
+              height: 1846,
+            }),
+            expect.objectContaining({
+              label: 'Drift',
+              copy: 'Structure begins to change while appearing continuous.',
+              imagePath: '/assets/reality/reality-integrity-stage-2-drift.6940a9f9.webp',
+              imageAlt: 'Reality integrity stage 2 drift',
+              width: 2304,
+              height: 1842,
+            }),
+            expect.objectContaining({
+              label: 'Replacement',
+              copy: 'A new reality fully replaces the original.',
+              imagePath: '/assets/reality/reality-integrity-stage-3-replacement.c237ea65.webp',
+              imageAlt: 'Reality integrity stage 3 replacement',
+              width: 2304,
+              height: 1840,
+            }),
+          ]),
         }),
       }),
     );

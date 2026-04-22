@@ -31,6 +31,25 @@ interface VisionFutureDomainChip {
   tone: 'education' | 'healthcare' | 'technical-systems';
 }
 
+interface VisionTruthLine {
+  title: string;
+}
+
+interface VisionRealitySequenceStage {
+  label: string;
+  copy: string;
+  imagePath: string;
+  imageAlt: string;
+  width: number;
+  height: number;
+}
+
+const VISION_REALITY_STAGE_1_IMAGE_PATH =
+  '/assets/reality/reality-integrity-stage-1-original.f27ca841.webp';
+const VISION_REALITY_STAGE_2_IMAGE_PATH = '/assets/reality/reality-integrity-stage-2-drift.6940a9f9.webp';
+const VISION_REALITY_STAGE_3_IMAGE_PATH =
+  '/assets/reality/reality-integrity-stage-3-replacement.c237ea65.webp';
+
 @Component({
   selector: 'app-vision-page',
   standalone: true,
@@ -54,6 +73,33 @@ export class VisionPageComponent {
     'Refused vision page reference image showing the ChatPDM vision hero strip';
   protected readonly heroImageTitle = 'Refused vision page';
   protected readonly heroImageCaption = 'Inspect the validation pipeline.';
+
+  protected readonly realitySequenceStages: readonly VisionRealitySequenceStage[] = [
+    {
+      label: 'Original',
+      copy: 'A stable, trusted representation.',
+      imagePath: VISION_REALITY_STAGE_1_IMAGE_PATH,
+      imageAlt: 'Reality integrity stage 1 original',
+      width: 2304,
+      height: 1846,
+    },
+    {
+      label: 'Drift',
+      copy: 'Structure begins to change while appearing continuous.',
+      imagePath: VISION_REALITY_STAGE_2_IMAGE_PATH,
+      imageAlt: 'Reality integrity stage 2 drift',
+      width: 2304,
+      height: 1842,
+    },
+    {
+      label: 'Replacement',
+      copy: 'A new reality fully replaces the original.',
+      imagePath: VISION_REALITY_STAGE_3_IMAGE_PATH,
+      imageAlt: 'Reality integrity stage 3 replacement',
+      width: 2304,
+      height: 1840,
+    },
+  ] as const;
 
   protected readonly whyThisMattersNowCards: readonly VisionImageCard[] = [
     {
@@ -90,10 +136,10 @@ export class VisionPageComponent {
       wide: false,
     },
     {
-      title: 'Meaning often remains unclear even when something looks correct',
-      caption: 'Meaning often remains incomplete, even when the picture appears almost whole.',
+      title: 'Looks complete',
+      caption: 'A polished surface can still hide missing grounding.',
       description:
-        'Confidence, polish, and structure can create the appearance of validity. Something can look complete and trustworthy while still lacking support, scope, or grounding.',
+        'Confidence, polish, and structure can create the appearance of validity. Something can look complete while still lacking support, scope, or grounding.',
       imagePath: '/assets/vision/why-this-matters/vision-confidence-without-grounding-9b8d94a8ed.webp',
       imageAlt: 'Symbolic vision card for confident wording without grounding in ChatPDM',
       width: 1402,
@@ -102,14 +148,12 @@ export class VisionPageComponent {
     },
   ];
 
-  protected readonly infrastructureTraits = [
-    'deterministic',
-    'bounded',
-    'source-backed',
-    'refusal-capable',
-    'open source',
-    'durable',
-  ] as const;
+  protected readonly operatingTruths: readonly VisionTruthLine[] = [
+    { title: 'It does not guess.' },
+    { title: 'It validates or refuses.' },
+    { title: 'It keeps scope visible.' },
+    { title: 'It admits only supported concepts.' },
+  ];
 
   protected readonly expansionStages: readonly VisionStage[] = [
     {
@@ -159,6 +203,7 @@ export class VisionPageComponent {
       panelClass: 'pdm-vision-image-dialog-panel',
       restoreFocus: true,
       data: {
+        mode: 'single',
         title: this.heroImageTitle,
         imagePath: this.heroImagePath,
         imageAlt: this.heroImageAlt,
@@ -172,6 +217,24 @@ export class VisionPageComponent {
   }
 
   protected openWhyThisMattersNowDialog(card: VisionImageCard): void {
+    if (card.title === 'Reality can be fabricated') {
+      this.dialog.open(VisionPageImageDialogComponent, {
+        width: 'calc(100vw - 24px)',
+        maxWidth: '1120px',
+        maxHeight: 'calc(100dvh - 24px)',
+        ariaLabel: card.title,
+        panelClass: 'pdm-vision-image-dialog-panel',
+        restoreFocus: true,
+        data: {
+          mode: 'sequence',
+          title: card.title,
+          stages: this.realitySequenceStages,
+          trailer: 'Same position. Same setting. Different reality.',
+        },
+      });
+      return;
+    }
+
     this.dialog.open(VisionPageImageDialogComponent, {
       width: 'calc(100vw - 24px)',
       maxWidth: '1240px',
@@ -180,6 +243,7 @@ export class VisionPageComponent {
       panelClass: 'pdm-vision-image-dialog-panel',
       restoreFocus: true,
       data: {
+        mode: 'single',
         title: card.title,
         imagePath: card.imagePath,
         imageAlt: card.imageAlt,
