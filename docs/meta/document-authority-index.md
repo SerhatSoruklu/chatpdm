@@ -48,6 +48,25 @@ Roadmap rule:
 - a roadmap does not override control docs
 - a roadmap does not override evidence
 
+## Protocol Drafts
+
+These docs define target contract surfaces or binding semantic targets for future enforcement.
+
+- `docs/runtime/phase1/day3-contract-spec.md` - Phase 1 target public resolver contract
+- `docs/runtime/phase1/day4-finalstate-vocabulary.md` - Phase 1 finalState vocabulary lock
+- `docs/runtime/phase1/day4-response-state-mapping.md` - Phase 1 response-state mapping
+- `docs/runtime/phase1/day5-refusal-contract.md` - Phase 1 refusal contract
+- `docs/runtime/phase1/day5-refusal-mismatches.md` - Phase 1 refusal mismatches
+- `docs/runtime/phase1/day6-deterministic-key-spec.md` - Phase 1 deterministic key spec
+- `docs/runtime/phase1/day6-deterministic-key-implementation-path.md` - Phase 1 deterministic key implementation path
+- `docs/runtime/phase1/day7-week1-baseline-lock.md` - Phase 1 Week 1 baseline lock
+
+Protocol draft rule:
+
+- a protocol draft can define the intended contract target
+- a protocol draft does not override control docs
+- a protocol draft does not override evidence until it is adopted into control law
+
 ## Evidence Docs
 
 Evidence docs record current state, test results, findings, or snapshots.
@@ -57,6 +76,9 @@ They are not governing truth.
 Examples:
 
 - `docs/audits/*`
+- `docs/runtime/phase1/day1-inventory.md`
+- `docs/runtime/phase1/day2-field-matrix.md`
+- `docs/runtime/phase1/day2-gap-analysis.md`
 - `docs/runtime/baseline-metrics-snapshot-*.md`
 - `security/FINDINGS_LOG.md`
 - `tests/runtime/reports/*.md`
