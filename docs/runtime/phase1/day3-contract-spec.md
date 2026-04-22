@@ -1,4 +1,4 @@
-# Phase 1 — Day 3
+# Phase 1 - Day 3
 
 Target Public Resolver Contract
 Date: 2026-04-22

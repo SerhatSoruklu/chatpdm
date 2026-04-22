@@ -1,4 +1,4 @@
-# Phase 1 — Day 7
+# Phase 1 - Day 7
 
 Week 1 Baseline Lock
 Date: 2026-04-22

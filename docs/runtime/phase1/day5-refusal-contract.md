@@ -1,4 +1,4 @@
-# Phase 1 — Day 5
+# Phase 1 - Day 5
 
 Refusal Contract
 Date: 2026-04-22
