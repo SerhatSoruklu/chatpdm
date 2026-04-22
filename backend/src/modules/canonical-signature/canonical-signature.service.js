@@ -29,7 +29,25 @@ CwIDAQAB
 -----END PUBLIC KEY-----`;
 
 function getCanonicalSignaturePublicKeyPem() {
-  return env.signaturePublicKeyPem || DEFAULT_CANONICAL_SIGNATURE_PUBLIC_KEY_PEM;
+  if (env.signaturePublicKeyPem) {
+    return env.signaturePublicKeyPem;
+  }
+
+  if (!env.signaturePrivateKeyFile) {
+    return DEFAULT_CANONICAL_SIGNATURE_PUBLIC_KEY_PEM;
+  }
+
+  const privateKeyPem = readSignaturePrivateKeyPem();
+  const privateKey = crypto.createPrivateKey({
+    key: privateKeyPem,
+    format: 'pem',
+  });
+
+  return crypto
+    .createPublicKey(privateKey)
+    .export({ format: 'pem', type: 'spki' })
+    .toString()
+    .trim();
 }
 
 function isPlainObject(value) {
