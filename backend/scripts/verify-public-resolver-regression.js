@@ -15,16 +15,20 @@ function loadLocks() {
   return JSON.parse(fs.readFileSync(fixturePath, 'utf8'));
 }
 
+// traceId and timestamp are request-specific transport metadata and are intentionally
+// excluded from the public contract golden comparison.
 function extractPublicContract(response) {
   const extracted = {
     normalizedQuery: response.normalizedQuery,
     type: response.type,
     queryType: response.queryType,
+    finalState: response.finalState,
+    reason: response.reason,
+    failedLayer: response.failedLayer,
+    deterministicKey: response.deterministicKey,
+    registryVersion: response.registryVersion,
+    policyVersion: response.policyVersion,
   };
-
-  if (Object.prototype.hasOwnProperty.call(response, 'finalState')) {
-    extracted.finalState = response.finalState;
-  }
 
   if (Object.prototype.hasOwnProperty.call(response, 'resolution')) {
     extracted.resolution = response.resolution;

@@ -3,6 +3,16 @@ export interface ConceptContext {
   appliesTo: string[];
 }
 
+export type ResolveResponseType =
+  | 'concept_match'
+  | 'no_exact_match'
+  | 'invalid_query'
+  | 'unsupported_query_type'
+  | 'VOCABULARY_DETECTED'
+  | 'rejected_concept'
+  | 'ambiguous_match'
+  | 'comparison';
+
 export type QueryType =
   | 'exact_concept_query'
   | 'canonical_id_query'
@@ -43,6 +53,42 @@ export interface QueryInterpretation {
   targetConceptId?: string;
   concept?: string;
   domain?: string;
+}
+
+export type ResolveFinalState = 'valid' | 'refused';
+
+export type ResolveReason =
+  | 'registry_rejection'
+  | 'exposure_boundary'
+  | 'semantic_no_exact_match'
+  | 'intake_invalid_query'
+  | 'structure_unsupported_query_type'
+  | 'semantic_ambiguous_match';
+
+export type ResolveFailedLayer =
+  | 'intake'
+  | 'structure'
+  | 'semantic'
+  | 'registry'
+  | 'exposure';
+
+export interface ResolveProductResponseBase {
+  type: ResolveResponseType;
+  query: string;
+  normalizedQuery: string;
+  contractVersion: string;
+  normalizerVersion: string;
+  matcherVersion: string;
+  conceptSetVersion: string;
+  queryType: QueryType;
+  finalState: ResolveFinalState;
+  reason: ResolveReason | null;
+  failedLayer: ResolveFailedLayer | null;
+  traceId: string;
+  timestamp: string;
+  deterministicKey: string;
+  registryVersion: string;
+  policyVersion: string;
 }
 
 export interface ConceptSource {
@@ -201,15 +247,12 @@ export interface ConceptDetailResponse {
   rejection: RejectionState | null;
 }
 
-export interface ConceptMatchResponse {
+export interface ConceptMatchResponse extends ResolveProductResponseBase {
   type: 'concept_match';
-  query: string;
-  normalizedQuery: string;
-  contractVersion: string;
-  normalizerVersion: string;
-  matcherVersion: string;
-  conceptSetVersion: string;
-  queryType: QueryType;
+  queryType: 'exact_concept_query' | 'canonical_id_query';
+  finalState: 'valid';
+  reason: null;
+  failedLayer: null;
   interpretation: null;
   resolution: {
     method: 'exact_alias' | 'normalized_alias' | 'canonical_id';
@@ -236,15 +279,12 @@ export interface Suggestion {
   reason: 'similar_term' | 'broader_topic' | 'related_concept';
 }
 
-export interface NoExactMatchResponse {
+export interface NoExactMatchResponse extends ResolveProductResponseBase {
   type: 'no_exact_match';
-  query: string;
-  normalizedQuery: string;
-  contractVersion: string;
-  normalizerVersion: string;
-  matcherVersion: string;
-  conceptSetVersion: string;
   queryType: QueryType;
+  finalState: 'refused';
+  reason: 'semantic_no_exact_match';
+  failedLayer: 'semantic';
   interpretation: QueryInterpretation;
   resolution: {
     method: 'no_exact_match';
@@ -253,15 +293,12 @@ export interface NoExactMatchResponse {
   suggestions: Suggestion[];
 }
 
-export interface InvalidQueryResponse {
+export interface InvalidQueryResponse extends ResolveProductResponseBase {
   type: 'invalid_query';
-  query: string;
-  normalizedQuery: string;
-  contractVersion: string;
-  normalizerVersion: string;
-  matcherVersion: string;
-  conceptSetVersion: string;
   queryType: 'invalid_query';
+  finalState: 'refused';
+  reason: 'intake_invalid_query';
+  failedLayer: 'intake';
   interpretation: QueryInterpretation;
   resolution: {
     method: 'invalid_query';
@@ -269,15 +306,12 @@ export interface InvalidQueryResponse {
   message: string;
 }
 
-export interface UnsupportedQueryTypeResponse {
+export interface UnsupportedQueryTypeResponse extends ResolveProductResponseBase {
   type: 'unsupported_query_type';
-  query: string;
-  normalizedQuery: string;
-  contractVersion: string;
-  normalizerVersion: string;
-  matcherVersion: string;
-  conceptSetVersion: string;
   queryType: 'relation_query' | 'role_or_actor_query' | 'unsupported_complex_query';
+  finalState: 'refused';
+  reason: 'structure_unsupported_query_type';
+  failedLayer: 'structure';
   interpretation: QueryInterpretation;
   resolution: {
     method: 'unsupported_query_type';
@@ -285,16 +319,12 @@ export interface UnsupportedQueryTypeResponse {
   message: string;
 }
 
-export interface VocabularyDetectedResponse {
+export interface VocabularyDetectedResponse extends ResolveProductResponseBase {
   type: 'VOCABULARY_DETECTED';
-  query: string;
-  normalizedQuery: string;
-  contractVersion: string;
-  normalizerVersion: string;
-  matcherVersion: string;
-  conceptSetVersion: string;
   queryType: 'exact_concept_query' | 'canonical_id_query';
   finalState: 'refused';
+  reason: 'exposure_boundary';
+  failedLayer: 'exposure';
   interpretation: null;
   resolution: {
     method: 'vocabulary_guard';
@@ -309,15 +339,12 @@ export type RefusalResponse =
   | UnsupportedQueryTypeResponse
   | VocabularyDetectedResponse;
 
-export interface RejectedConceptResponse {
+export interface RejectedConceptResponse extends ResolveProductResponseBase {
   type: 'rejected_concept';
-  query: string;
-  normalizedQuery: string;
-  contractVersion: string;
-  normalizerVersion: string;
-  matcherVersion: string;
-  conceptSetVersion: string;
   queryType: 'exact_concept_query' | 'canonical_id_query';
+  finalState: 'refused';
+  reason: 'registry_rejection';
+  failedLayer: 'registry';
   interpretation: QueryInterpretation & {
     interpretationType: 'explicitly_rejected_concept';
     targetConceptId: string;
@@ -338,15 +365,12 @@ export interface AmbiguousCandidate {
   basis: 'shared_alias' | 'normalized_overlap' | 'author_defined_disambiguation';
 }
 
-export interface AmbiguousMatchResponse {
+export interface AmbiguousMatchResponse extends ResolveProductResponseBase {
   type: 'ambiguous_match';
-  query: string;
-  normalizedQuery: string;
-  contractVersion: string;
-  normalizerVersion: string;
-  matcherVersion: string;
-  conceptSetVersion: string;
   queryType: QueryType;
+  finalState: 'refused';
+  reason: 'semantic_ambiguous_match';
+  failedLayer: 'semantic';
   interpretation: QueryInterpretation;
   resolution: {
     method:
@@ -371,16 +395,13 @@ export interface ComparisonAxisStatement {
 
 export type ComparisonAxis = ComparisonAxisValue | ComparisonAxisStatement;
 
-export interface ComparisonResponse {
+export interface ComparisonResponse extends ResolveProductResponseBase {
   type: 'comparison';
   mode: 'comparison';
-  query: string;
-  normalizedQuery: string;
-  contractVersion: string;
-  normalizerVersion: string;
-  matcherVersion: string;
-  conceptSetVersion: string;
   queryType: 'comparison_query';
+  finalState: 'valid';
+  reason: null;
+  failedLayer: null;
   interpretation: null;
   comparison: {
     conceptA: string;

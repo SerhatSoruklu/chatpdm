@@ -1,5 +1,7 @@
 'use strict';
 
+const { randomUUID } = require('node:crypto');
+
 const {
   AMBIGUOUS_MATCH_MESSAGE,
   CONCEPT_SET_VERSION,
@@ -36,6 +38,7 @@ const { evaluatePreResolutionGuard } = require('./pre-resolution-guard');
 const { assertDeterministicPathFreeOfAiMarkers } = require('../../lib/ai-governance-guard');
 const { assertValidProductResponse } = require('../../lib/product-response-validator');
 const { classifyVocabularySurface } = require('../../vocabulary/vocabulary-service.ts');
+const { buildPublicResolverResponse } = require('./public-response-normalizer');
 const {
   buildCoreConceptResponsePayload,
 } = require('../inspectable-item-contract');
@@ -297,9 +300,15 @@ function buildUnsupportedQueryTypeResponse(baseResponse) {
 }
 
 function finalizeResolvedResponse(response) {
-  assertSingleRuntimeResolutionState(response);
-  assertDeterministicPathFreeOfAiMarkers(response, 'Concept resolver response');
-  return assertValidProductResponse(response);
+  const publicResponse = buildPublicResolverResponse(response, {
+    source: 'concepts.resolve',
+    traceId: randomUUID(),
+    timestamp: new Date().toISOString(),
+  });
+
+  assertSingleRuntimeResolutionState(publicResponse);
+  assertDeterministicPathFreeOfAiMarkers(publicResponse, 'Concept resolver response');
+  return assertValidProductResponse(publicResponse);
 }
 
 function isBlockedConceptId(conceptId) {

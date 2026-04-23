@@ -33,6 +33,11 @@ import {
   buildInspectableItemDisclosureCoreData,
   type InspectableItemDisclosureCoreData,
 } from '../../core/concepts/inspectable-item-disclosure/inspectable-item-disclosure.model';
+import {
+  resolverExecutionStateLabel,
+  resolverRenderMode,
+  type ResolverRenderMode,
+} from '../../core/concepts/resolver-rendering';
 import { ExamplePreviewComponent } from '../../core/preview/example-preview.component';
 import { PdmTooltipDirective } from '../../core/ui/tooltip/pdm-tooltip.directive';
 import {
@@ -43,7 +48,6 @@ import {
   ReadingLensMode,
 } from '../../core/concepts/derived-explanation-reading-lens-ui.policy';
 import {
-  DETAIL_BACKED_CONCEPT_IDS,
   LIVE_RUNTIME_CONCEPT_IDS,
   REJECTED_CONCEPT_IDS,
   RUNTIME_SCOPE_BY_CONCEPT,
@@ -76,18 +80,6 @@ const VOCABULARY_TERM_IDS = new Set<string>(['obligation', 'liability', 'jurisdi
 const REJECTED_CONCEPTS = new Set<string>(
   REJECTED_CONCEPT_IDS.filter((conceptId) => !VOCABULARY_TERM_IDS.has(conceptId)),
 );
-const DETAIL_BACKED_CONCEPTS = new Set<string>(DETAIL_BACKED_CONCEPT_IDS);
-const REVIEWED_NOT_LIVE_ADMISSIONS = new Set<ReviewState['admission']>([
-  'visible_only_derived',
-  'phase1_passed',
-  'phase2_stable',
-  'pending_overlap_scan',
-  'overlap_scan_passed',
-  'overlap_scan_failed_conflict',
-  'overlap_scan_failed_duplicate',
-  'overlap_scan_failed_compression',
-  'overlap_scan_boundary_required',
-]);
 
 const SCOPE_GROUPS: ScopeGroup[] = [
   {
@@ -320,13 +312,13 @@ export class LandingPageComponent {
 
     try {
       const response = await firstValueFrom(this.resolver.resolve(query));
-      const detail = await this.loadConceptDetail(query, response);
+      const detail = await this.loadConceptDetail(response);
       this.activeEntry.set({
         submittedQuery,
         status: 'success',
         response,
         detail,
-        feedback: this.buildFeedbackState(response, detail, options.feedbackOrigin),
+        feedback: this.buildFeedbackState(response, options.feedbackOrigin),
       });
       this.scheduleScrollToResult();
     } catch (error) {
@@ -432,7 +424,6 @@ export class LandingPageComponent {
       !this.isLiveConcept(concept)
       && !this.isVisibleOnlyConceptId(concept)
       && !this.isRejectedConcept(concept)
-      && !DETAIL_BACKED_CONCEPTS.has(concept)
     ) {
       return;
     }
@@ -548,27 +539,11 @@ export class LandingPageComponent {
   }
 
   protected executionStateLabel(response: ResolveProductResponse): string {
-    if (response.type === 'concept_match' || response.type === 'comparison') {
-      return 'Executable';
-    }
+    return resolverExecutionStateLabel(response);
+  }
 
-    if (response.type === 'VOCABULARY_DETECTED') {
-      return 'Excluded';
-    }
-
-    if (response.type === 'rejected_concept') {
-      return 'Rejected';
-    }
-
-    if (response.type === 'invalid_query' || response.type === 'unsupported_query_type') {
-      return 'Refused';
-    }
-
-    if (response.type === 'no_exact_match' && response.interpretation?.interpretationType === 'out_of_scope') {
-      return 'Out-of-scope';
-    }
-
-    return 'Blocked';
+  protected renderMode(response: ResolveProductResponse | null | undefined): ResolverRenderMode | null {
+    return resolverRenderMode(response);
   }
 
   protected runtimeScopeLabel(response: ResolveProductResponse): string {
@@ -782,56 +757,53 @@ export class LandingPageComponent {
     return 'System Checks';
   }
 
-  protected isReviewedNotLive(detail: ConceptDetailResponse | null | undefined): boolean {
-    const admission = detail?.reviewState?.admission;
-    return admission ? REVIEWED_NOT_LIVE_ADMISSIONS.has(admission) : false;
-  }
-
-  protected isVisibleOnlyDetail(detail: ConceptDetailResponse | null | undefined): boolean {
-    return detail?.conceptId ? VISIBLE_ONLY_PUBLIC_CONCEPTS.has(detail.conceptId) : false;
-  }
-
-  protected isDerivedVisibleOnlyDetail(detail: ConceptDetailResponse | null | undefined): boolean {
-    return detail?.reviewState?.admission === 'visible_only_derived';
-  }
-
   protected visibleOnlyDisclosureData(detail: ConceptDetailResponse): InspectableItemDisclosureCoreData | null {
     return buildInspectableItemDisclosureCoreData(detail);
   }
 
   protected isVisibleOnlyRefusal(
     response: RefusalResponse,
-    detail: ConceptDetailResponse | null | undefined,
   ): boolean {
-    return this.isVisibleOnlyDetail(detail)
-      || response.interpretation?.interpretationType === 'visible_only_public_concept';
+    return response.interpretation?.interpretationType === 'visible_only_public_concept';
   }
 
-  protected noExactMatchStripLabel(detail: ConceptDetailResponse | null | undefined): string {
-    if (this.isVisibleOnlyDetail(detail)) {
+  protected noExactMatchStripLabel(response: RefusalResponse): string {
+    if (response.type === 'VOCABULARY_DETECTED') {
+      return 'Vocabulary';
+    }
+
+    if (response.interpretation?.interpretationType === 'visible_only_public_concept') {
       return 'Public scope';
     }
 
-    return this.isReviewedNotLive(detail) ? 'Runtime' : 'Resolution';
+    return response.reason === 'semantic_no_exact_match' ? 'Resolution' : 'Response';
   }
 
   protected noExactMatchResolutionValue(
     response: RefusalResponse,
-    detail: ConceptDetailResponse | null | undefined,
   ): string {
-    if (this.isVisibleOnlyRefusal(response, detail)) {
+    if (response.type === 'VOCABULARY_DETECTED') {
+      return 'Vocabulary only';
+    }
+
+    if (this.isVisibleOnlyRefusal(response)) {
       return 'Visible only';
     }
 
-    return this.isReviewedNotLive(detail) ? 'Not yet live' : this.resolutionTypeLabel(response);
+    if (response.interpretation?.interpretationType === 'out_of_scope') {
+      return 'Out-of-scope';
+    }
+
+    return this.resolutionTypeLabel(response);
   }
 
   protected noExactMatchScopeValue(
     response: ResolveProductResponse,
-    detail: ConceptDetailResponse | null | undefined,
   ): string {
-    if (detail?.conceptId) {
-      return this.scopeLabelForConcept(detail.conceptId);
+    const targetConceptId = response.interpretation?.targetConceptId;
+
+    if (targetConceptId) {
+      return this.scopeLabelForConcept(targetConceptId);
     }
 
     return this.runtimeScopeLabel(response);
@@ -839,108 +811,94 @@ export class LandingPageComponent {
 
   protected noExactMatchExecutionValue(
     response: RefusalResponse,
-    detail: ConceptDetailResponse | null | undefined,
   ): string {
-    if (this.isVisibleOnlyRefusal(response, detail)) {
+    if (this.isVisibleOnlyRefusal(response)) {
       return 'Not admitted';
     }
 
-    return this.isReviewedNotLive(detail) ? 'Not admitted' : this.executionStateLabel(response);
+    return this.executionStateLabel(response);
   }
 
   protected noExactMatchResponseLabel(
     response: RefusalResponse,
-    detail: ConceptDetailResponse | null | undefined,
   ): string {
     if (response.type === 'VOCABULARY_DETECTED') {
       return 'Vocabulary insight';
     }
 
-    if (this.isVisibleOnlyRefusal(response, detail)) {
+    if (this.isVisibleOnlyRefusal(response)) {
       return 'Visible-only concept';
     }
 
-    return this.isReviewedNotLive(detail) ? 'Reviewed concept' : this.resolutionTypeLabel(response);
+    if (response.interpretation?.interpretationType === 'out_of_scope') {
+      return 'Out-of-scope refusal';
+    }
+
+    return this.resolutionTypeLabel(response);
   }
 
   protected noExactMatchTitle(
     response: RefusalResponse,
-    detail: ConceptDetailResponse | null | undefined,
   ): string {
     if (response.type === 'VOCABULARY_DETECTED') {
       return 'Recognized term, excluded from resolution';
     }
 
-    if (this.isVisibleOnlyRefusal(response, detail)) {
-      if (this.isDerivedVisibleOnlyDetail(detail)) {
-        return 'Derived concept, inspectable only';
-      }
-
+    if (this.isVisibleOnlyRefusal(response)) {
       return 'Visible in public scope, not live';
     }
 
-    switch (detail?.reviewState?.admission) {
-      case 'phase2_stable':
-        return 'Reviewed and stable, not yet live';
-      case 'phase1_passed':
-        return 'Reviewed, not yet live';
-      default:
-        if (response.type === 'invalid_query') {
-          return 'Invalid query input';
-        }
-
-        if (response.type === 'unsupported_query_type') {
-          return 'Unsupported query type';
-        }
-
-        return 'No canonical concept resolved';
+    if (response.type === 'invalid_query') {
+      return 'Invalid query input';
     }
+
+    if (response.type === 'unsupported_query_type') {
+      return 'Unsupported query type';
+    }
+
+    if (response.interpretation?.interpretationType === 'out_of_scope') {
+      return 'Out of scope';
+    }
+
+    return 'No canonical concept resolved';
   }
 
   protected noExactMatchBody(
     response: RefusalResponse,
-    detail: ConceptDetailResponse | null | undefined,
   ): string {
     if (response.type === 'VOCABULARY_DETECTED') {
       return response.message;
     }
 
-    if (this.isVisibleOnlyRefusal(response, detail)) {
-      if (this.isDerivedVisibleOnlyDetail(detail)) {
-        return 'Violation remains inspectable as a derived concept computed from duty evaluation, but it is not admitted to the live public runtime.';
-      }
-
-      return 'This concept is publicly visible and inspectable, but it is not admitted to the live public runtime.';
+    if (this.isVisibleOnlyRefusal(response)) {
+      return response.interpretation?.message
+        ?? 'This concept is publicly visible and inspectable, but it is not admitted to the live public runtime.';
     }
 
-    switch (detail?.reviewState?.admission) {
-      case 'phase2_stable':
-        return 'This concept has passed internal review and remains stable, but is not yet admitted to the live public runtime.';
-      case 'phase1_passed':
-        return 'This concept has passed Phase 1 review but is not yet admitted to the live public runtime.';
-      default:
-        return response.message;
+    if (response.interpretation?.interpretationType === 'out_of_scope') {
+      return response.interpretation.message ?? response.message;
     }
+
+    if (response.type === 'invalid_query' || response.type === 'unsupported_query_type') {
+      return response.message;
+    }
+
+    return response.interpretation?.message ?? response.message;
   }
 
   protected noExactMatchSupportCopy(
     response: RefusalResponse,
-    detail: ConceptDetailResponse | null | undefined,
   ): string {
     if (response.type === 'VOCABULARY_DETECTED') {
       return 'Vocabulary can be classified and displayed, but it never enters deterministic resolution.';
     }
 
-    if (this.isVisibleOnlyRefusal(response, detail)) {
-      if (this.isDerivedVisibleOnlyDetail(detail)) {
-        return 'Derived concepts remain visible only for inspection and explanation; they do not enter live runtime resolution or comparison support.';
-      }
-
+    if (this.isVisibleOnlyRefusal(response)) {
       return 'Visible-only concepts expose authored detail without entering live runtime resolution or comparison support.';
     }
 
-    if (this.isReviewedNotLive(detail)) {
-      return 'Only live concepts resolve in the current public runtime.';
+    if (response.interpretation?.interpretationType === 'out_of_scope') {
+      return 'The query stays outside the current authored runtime boundary.';
     }
 
     if (response.type === 'invalid_query') {
@@ -956,18 +914,17 @@ export class LandingPageComponent {
 
   protected noExactMatchMetaChips(
     response: RefusalResponse,
-    detail: ConceptDetailResponse | null | undefined,
   ): string[] {
     if (response.type === 'VOCABULARY_DETECTED') {
       return ['Vocabulary only', response.contractVersion];
     }
 
-    if (this.isVisibleOnlyRefusal(response, detail)) {
+    if (this.isVisibleOnlyRefusal(response)) {
       return ['Visible only', response.contractVersion];
     }
 
-    if (this.isReviewedNotLive(detail)) {
-      return ['Review-backed', response.contractVersion];
+    if (response.interpretation?.interpretationType === 'out_of_scope') {
+      return ['Out of scope', response.contractVersion];
     }
 
     return [
@@ -1082,10 +1039,13 @@ export class LandingPageComponent {
 
   private buildFeedbackState(
     response: ResolveProductResponse,
-    detail: ConceptDetailResponse | null,
     feedbackOrigin?: AmbiguousSelectionOrigin,
   ): EntryFeedbackState | undefined {
-    if (detail?.reviewState || this.isVisibleOnlyDetail(detail)) {
+    if (this.renderMode(response) !== 'valid' && response.type !== 'no_exact_match') {
+      return undefined;
+    }
+
+    if (response.type === 'no_exact_match' && response.interpretation?.interpretationType === 'visible_only_public_concept') {
       return undefined;
     }
 
@@ -1261,10 +1221,9 @@ export class LandingPageComponent {
   }
 
   private async loadConceptDetail(
-    query: string,
     response: ResolveProductResponse,
   ): Promise<ConceptDetailResponse | null> {
-    const conceptId = this.detailConceptId(query, response);
+    const conceptId = this.detailConceptId(response);
 
     if (!conceptId) {
       return null;
@@ -1281,29 +1240,9 @@ export class LandingPageComponent {
     }
   }
 
-  private detailConceptId(query: string, response: ResolveProductResponse): string | null {
-    if (response.type === 'concept_match' || response.type === 'rejected_concept') {
+  private detailConceptId(response: ResolveProductResponse): string | null {
+    if (response.type === 'concept_match') {
       return response.resolution.conceptId;
-    }
-
-    if (response.type !== 'no_exact_match') {
-      return null;
-    }
-
-    const trimmedQuery = query.trim();
-
-    if (!trimmedQuery) {
-      return null;
-    }
-
-    if (trimmedQuery.startsWith('concept:')) {
-      const conceptId = trimmedQuery.slice('concept:'.length).trim();
-      return conceptId || null;
-    }
-
-    const normalizedCandidate = response.normalizedQuery.trim();
-    if (DETAIL_BACKED_CONCEPTS.has(normalizedCandidate)) {
-      return normalizedCandidate;
     }
 
     return null;

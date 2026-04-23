@@ -6,6 +6,12 @@
       "normalizedQuery": "authority",
       "type": "concept_match",
       "queryType": "exact_concept_query",
+      "finalState": "valid",
+      "reason": null,
+      "failedLayer": null,
+      "deterministicKey": "ea443a4d67598aea54aae708a8080d81482a43c0be468bc33421d8d56c929ff1",
+      "registryVersion": "20260401.2",
+      "policyVersion": "v1.7",
       "resolution": {
         "method": "exact_alias",
         "conceptId": "authority",
@@ -21,6 +27,12 @@
       "normalizedQuery": "authority?",
       "type": "concept_match",
       "queryType": "exact_concept_query",
+      "finalState": "valid",
+      "reason": null,
+      "failedLayer": null,
+      "deterministicKey": "c1c058fba15646af3cc589cfe3a632423cd93ccaa267454fc0787aef2f27b1ec",
+      "registryVersion": "20260401.2",
+      "policyVersion": "v1.7",
       "resolution": {
         "method": "exact_alias",
         "conceptId": "authority",
@@ -35,13 +47,18 @@
     "expected": {
       "normalizedQuery": "obligation",
       "type": "VOCABULARY_DETECTED",
-      "finalState": "refused",
       "queryType": "exact_concept_query",
-      "message": "Recognized term is not a core system concept and is excluded from resolution.",
+      "finalState": "refused",
+      "reason": "exposure_boundary",
+      "failedLayer": "exposure",
+      "deterministicKey": "263bfbc8931db00420745111aef6e8d00e871c29b5a230da080ae9509b65cfdc",
+      "registryVersion": "20260401.2",
+      "policyVersion": "v1.7",
       "resolution": {
         "method": "vocabulary_guard"
       },
       "interpretation": null,
+      "message": "Recognized term is not a core system concept and is excluded from resolution.",
       "vocabulary": {
         "input": "obligation",
         "normalizedInput": "obligation",
@@ -71,13 +88,18 @@
     "expected": {
       "normalizedQuery": "obligation?",
       "type": "VOCABULARY_DETECTED",
-      "finalState": "refused",
       "queryType": "exact_concept_query",
-      "message": "Recognized term is not a core system concept and is excluded from resolution.",
+      "finalState": "refused",
+      "reason": "exposure_boundary",
+      "failedLayer": "exposure",
+      "deterministicKey": "655c19381b5c5c5b538c3862113f690bc10efa1b15d9db13ed289cd5f461aeda",
+      "registryVersion": "20260401.2",
+      "policyVersion": "v1.7",
       "resolution": {
         "method": "vocabulary_guard"
       },
       "interpretation": null,
+      "message": "Recognized term is not a core system concept and is excluded from resolution.",
       "vocabulary": {
         "input": "obligation",
         "normalizedInput": "obligation",
@@ -108,7 +130,12 @@
       "normalizedQuery": "defeasibility",
       "type": "rejected_concept",
       "queryType": "exact_concept_query",
-      "message": "This concept is structurally rejected under the current system state.",
+      "finalState": "refused",
+      "reason": "registry_rejection",
+      "failedLayer": "registry",
+      "deterministicKey": "cf17809a04642a147f1090d2ab8f9e70b6636bae4c8bd35e7556d582650bc5d5",
+      "registryVersion": "20260401.2",
+      "policyVersion": "v1.7",
       "resolution": {
         "method": "rejection_registry",
         "conceptId": "defeasibility"
@@ -121,6 +148,7 @@
         ],
         "message": "The concept \"defeasibility\" is explicitly rejected under the current system state."
       },
+      "message": "This concept is structurally rejected under the current system state.",
       "rejection": {
         "status": "REJECTED",
         "decisionType": "STRUCTURAL_REJECTION",
@@ -135,7 +163,12 @@
       "normalizedQuery": "defeasibility?",
       "type": "rejected_concept",
       "queryType": "exact_concept_query",
-      "message": "This concept is structurally rejected under the current system state.",
+      "finalState": "refused",
+      "reason": "registry_rejection",
+      "failedLayer": "registry",
+      "deterministicKey": "d9b3a80d9c08a251b017765b0cda6a4eb2d5ee5581f2d3ae82a8e5977236037e",
+      "registryVersion": "20260401.2",
+      "policyVersion": "v1.7",
       "resolution": {
         "method": "rejection_registry",
         "conceptId": "defeasibility"
@@ -148,6 +181,7 @@
         ],
         "message": "The concept \"defeasibility\" is explicitly rejected under the current system state."
       },
+      "message": "This concept is structurally rejected under the current system state.",
       "rejection": {
         "status": "REJECTED",
         "decisionType": "STRUCTURAL_REJECTION",
@@ -162,7 +196,12 @@
       "normalizedQuery": "violation",
       "type": "no_exact_match",
       "queryType": "exact_concept_query",
-      "message": "No exact canonical concept match was found for this query.",
+      "finalState": "refused",
+      "reason": "semantic_no_exact_match",
+      "failedLayer": "semantic",
+      "deterministicKey": "e4d603ce6761ad94c4ea867c7962ce5ef30e1b770af18be7f19457f920dcbbda",
+      "registryVersion": "20260401.2",
+      "policyVersion": "v1.7",
       "resolution": {
         "method": "out_of_scope"
       },
@@ -174,6 +213,7 @@
         ],
         "message": "The concept \"violation\" is inspectable as a derived concept computed from duty evaluation, but it is not admitted to the live public runtime."
       },
+      "message": "No exact canonical concept match was found for this query.",
       "suggestions": []
     }
   },
@@ -184,14 +224,20 @@
       "normalizedQuery": "mens rea",
       "type": "unsupported_query_type",
       "queryType": "unsupported_complex_query",
-      "message": "This query has recognizable structure, but the current runtime does not support this query type yet.",
+      "finalState": "refused",
+      "reason": "structure_unsupported_query_type",
+      "failedLayer": "structure",
+      "deterministicKey": "0fc588a55ec9b61ec59944e443de20d578e3ed8b22ad10ca338fc0bef700fee7",
+      "registryVersion": "20260401.2",
+      "policyVersion": "v1.7",
       "resolution": {
         "method": "unsupported_query_type"
       },
       "interpretation": {
         "interpretationType": "unsupported_complex",
         "message": "This query does not match a supported concept query form in the current runtime."
-      }
+      },
+      "message": "This query has recognizable structure, but the current runtime does not support this query type yet."
     }
   },
   {
@@ -201,7 +247,12 @@
       "normalizedQuery": "commitment",
       "type": "no_exact_match",
       "queryType": "exact_concept_query",
-      "message": "No exact canonical concept match was found for this query.",
+      "finalState": "refused",
+      "reason": "semantic_no_exact_match",
+      "failedLayer": "semantic",
+      "deterministicKey": "f2485f1cb3947867c0c8e93e4c80f0f6d1deb2d7984f060bc0d584317a6cac69",
+      "registryVersion": "20260401.2",
+      "policyVersion": "v1.7",
       "resolution": {
         "method": "out_of_scope"
       },
@@ -213,6 +264,7 @@
         ],
         "message": "This term belongs to a pre-governance interaction layer and remains outside the ChatPDM governance kernel unless explicitly anchored to law or duty."
       },
+      "message": "No exact canonical concept match was found for this query.",
       "suggestions": []
     }
   },
@@ -223,7 +275,12 @@
       "normalizedQuery": "commitment?",
       "type": "no_exact_match",
       "queryType": "exact_concept_query",
-      "message": "No exact canonical concept match was found for this query.",
+      "finalState": "refused",
+      "reason": "semantic_no_exact_match",
+      "failedLayer": "semantic",
+      "deterministicKey": "53e5b569a0ee224b29275fcebb4a4ba5dccaff55af83d1f90658d76ec9aafea8",
+      "registryVersion": "20260401.2",
+      "policyVersion": "v1.7",
       "resolution": {
         "method": "out_of_scope"
       },
@@ -235,6 +292,7 @@
         ],
         "message": "This term belongs to a pre-governance interaction layer and remains outside the ChatPDM governance kernel unless explicitly anchored to law or duty."
       },
+      "message": "No exact canonical concept match was found for this query.",
       "suggestions": []
     }
   }

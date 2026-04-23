@@ -5,35 +5,21 @@ import {
   runInInjectionContext,
   type EnvironmentInjector,
 } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { describe, expect, it } from 'vitest';
-import { of } from 'rxjs';
 
-import { AiTrackingService } from '../../core/ai/ai-tracking.service';
 import type { ResolveProductResponse } from '../../core/concepts/concept-resolver.types';
-import { ConceptResolverService } from '../../core/concepts/concept-resolver.service';
 import {
   resolverExecutionStateLabel,
   resolverRenderMode,
 } from '../../core/concepts/resolver-rendering';
+import { ConceptResolverService } from '../../core/concepts/concept-resolver.service';
 import { FeedbackService } from '../../core/feedback/feedback.service';
-import { LandingPageComponent } from './landing-page.component';
+import { RuntimePageComponent } from './runtime-page.component';
 
-function createComponent(): LandingPageComponent {
+function createComponent(): RuntimePageComponent {
   const injector = createEnvironmentInjector([
     {
-      provide: ActivatedRoute,
-      useValue: {
-        data: of({}),
-        snapshot: { data: {} },
-      },
-    },
-    {
       provide: ConceptResolverService,
-      useValue: {},
-    },
-    {
-      provide: AiTrackingService,
       useValue: {},
     },
     {
@@ -42,7 +28,7 @@ function createComponent(): LandingPageComponent {
     },
   ], null as unknown as EnvironmentInjector);
 
-  const component = runInInjectionContext(injector, () => new LandingPageComponent());
+  const component = runInInjectionContext(injector, () => new RuntimePageComponent());
   injector.destroy();
 
   return component;
@@ -63,7 +49,7 @@ function createResponse(
     finalState: 'valid',
     reason: null,
     failedLayer: null,
-    traceId: 'trace-landing-page',
+    traceId: 'trace-runtime-page',
     timestamp: '2026-04-23T12:00:00.000Z',
     deterministicKey: '0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef',
     registryVersion: '20260401.2',
@@ -131,51 +117,31 @@ function createResponse(
   } as unknown as ResolveProductResponse;
 }
 
-describe('LandingPageComponent', () => {
-  it('switches walkthrough cards between plain language and technical details', () => {
-    const component = createComponent();
-
-    expect(component['walkthroughModeOptions'].map((option) => option.label)).toEqual([
-      'Plain language',
-      'Technical details',
-    ]);
-
-    expect(component['walkthroughCards']()).toHaveLength(6);
-    expect(component['walkthroughCards']()[0].view.title).toBe('What is being processed?');
-    expect(component['walkthroughCards']()[0].view.resultLine).toBe('Captures the input');
-
-    component['setWalkthroughMode']('technical');
-
-    expect(component['walkthroughCards']()[0].view.title).toBe('Input capture');
-    expect(component['walkthroughCards']()[0].view.resultLine).toBe('Exact input boundary');
-    expect(component['walkthroughCards']()[5].view.pipelineStage).toBe('analysis / refusal');
-  });
-
+describe('RuntimePageComponent', () => {
   it('delegates render mode selection to the shared rendering law', () => {
     const component = createComponent();
-    const validResponse = createResponse({ type: 'comparison', finalState: 'valid' });
-    const ambiguousResponse = createResponse({
-      type: 'ambiguous_match',
-      finalState: 'refused',
-      reason: 'semantic_ambiguous_match',
-      failedLayer: 'semantic',
-    });
+    const partialResponse = createResponse({ type: 'concept_match', finalState: 'partial' });
+    const degradedResponse = createResponse({ type: 'comparison', finalState: 'degraded' });
 
-    expect(component['renderMode'](validResponse)).toBe(resolverRenderMode(validResponse));
-    expect(component['renderMode'](ambiguousResponse)).toBe(resolverRenderMode(ambiguousResponse));
+    expect(component['renderMode'](partialResponse)).toBe(resolverRenderMode(partialResponse));
+    expect(component['renderMode'](degradedResponse)).toBe(resolverRenderMode(degradedResponse));
   });
 
-  it('delegates execution-state labels to the shared rendering helper', () => {
+  it('delegates refused-state labels to the shared rendering helper', () => {
     const component = createComponent();
-    const rejectedResponse = createResponse({
-      type: 'rejected_concept',
+    const visibleOnlyResponse = createResponse({
+      type: 'no_exact_match',
       finalState: 'refused',
-      reason: 'registry_rejection',
-      failedLayer: 'registry',
+      reason: 'semantic_no_exact_match',
+      failedLayer: 'semantic',
+      interpretation: {
+        interpretationType: 'visible_only_public_concept',
+        message: 'Visible only.',
+      },
     });
 
-    expect(component['executionStateLabel'](rejectedResponse)).toBe(
-      resolverExecutionStateLabel(rejectedResponse),
+    expect(component['executionStateLabel'](visibleOnlyResponse)).toBe(
+      resolverExecutionStateLabel(visibleOnlyResponse),
     );
   });
 });

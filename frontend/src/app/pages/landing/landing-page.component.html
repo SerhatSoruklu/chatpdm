@@ -196,618 +196,538 @@
 
               @if (entry.status === 'success') {
                 @if (entry.response; as response) {
-                @if (response.type === 'concept_match') {
-                  <section class="pdm-home__response-card pdm-site-surface">
-                    <div class="pdm-home__resolution-strip" aria-label="Resolution status">
-                      <div class="pdm-home__resolution-item">
-                        <span class="pdm-home__resolution-label">Resolution</span>
-                        <span class="pdm-home__resolution-value">{{ resolutionTypeLabel(response) }}</span>
-                      </div>
-                      <div class="pdm-home__resolution-item">
-                        <span class="pdm-home__resolution-label">Scope</span>
-                        <span class="pdm-home__resolution-value">{{ runtimeScopeLabel(response) }}</span>
-                      </div>
-                      <div class="pdm-home__resolution-item">
-                        <span class="pdm-home__resolution-label">Execution</span>
-                        <span class="pdm-home__resolution-value">{{ executionStateLabel(response) }}</span>
-                      </div>
-                    </div>
-
-                    <div class="pdm-home__response-head">
-                      <div>
-                        <p class="pdm-home__micro-label">{{ responseLabel(response) }}</p>
-                        <h3 class="pdm-home__response-title">{{ asConceptMatch(response).answer.title }}</h3>
-                      </div>
-
-                      <div class="pdm-home__meta-row pdm-home__meta-row--tight">
-                        <span class="pdm-site-chip">{{ methodLabel(asConceptMatch(response).resolution.method) }}</span>
-                        <span class="pdm-site-chip">{{ queryTypeLabel(response.queryType) }}</span>
-                        <span class="pdm-site-chip">{{ response.contractVersion }}</span>
-                      </div>
-                    </div>
-
-                    @if (entry.detail; as detail) {
-                      @if (detail.reviewState; as reviewState) {
-                        <section class="pdm-home__review-state-surface" aria-label="Concept lifecycle evidence">
-                          <div class="pdm-home__review-state-grid">
-                            <div class="pdm-home__review-state-item">
-                              <span class="pdm-home__micro-label">Status</span>
-                              <span class="pdm-home__review-state-value">
-                                {{ reviewAdmissionLabel(reviewState.admission) }}
-                              </span>
+                  @switch (renderMode(response)) {
+                    @case ('valid') {
+                      @if (response.type === 'concept_match') {
+                        <section class="pdm-home__response-card pdm-site-surface">
+                          <div class="pdm-home__resolution-strip" aria-label="Resolution status">
+                            <div class="pdm-home__resolution-item">
+                              <span class="pdm-home__resolution-label">Resolution</span>
+                              <span class="pdm-home__resolution-value">{{ resolutionTypeLabel(response) }}</span>
                             </div>
-
-                            <div class="pdm-home__review-state-item">
-                              <span class="pdm-home__micro-label">Validation</span>
-                              <span class="pdm-home__review-state-value">{{ reviewValidationLabel(detail) }}</span>
+                            <div class="pdm-home__resolution-item">
+                              <span class="pdm-home__resolution-label">Scope</span>
+                              <span class="pdm-home__resolution-value">{{ runtimeScopeLabel(response) }}</span>
+                            </div>
+                            <div class="pdm-home__resolution-item">
+                              <span class="pdm-home__resolution-label">Execution</span>
+                              <span class="pdm-home__resolution-value">{{ executionStateLabel(response) }}</span>
                             </div>
                           </div>
 
-                          <button
-                            class="pdm-home__trace-toggle"
-                            type="button"
-                            [attr.aria-expanded]="validationTraceVisible()"
-                            [disabled]="isSubmitting()"
-                            (click)="toggleValidationTrace()"
-                          >
-                            {{ validationTraceToggleLabel() }}
-                          </button>
+                          <div class="pdm-home__response-head">
+                            <div>
+                              <p class="pdm-home__micro-label">{{ responseLabel(response) }}</p>
+                              <h3 class="pdm-home__response-title">{{ asConceptMatch(response).answer.title }}</h3>
+                            </div>
 
-                          @if (validationTraceVisible()) {
-                            <dl class="pdm-home__trace-list">
-                              @for (row of validationTraceRows(detail); track row.label) {
-                                <div class="pdm-home__trace-row">
-                                  <dt class="pdm-home__trace-label pdm-mono">{{ row.label }}</dt>
-                                  <dd class="pdm-home__trace-value">{{ row.value }}</dd>
+                            <div class="pdm-home__meta-row pdm-home__meta-row--tight">
+                              <span class="pdm-site-chip">{{ methodLabel(asConceptMatch(response).resolution.method) }}</span>
+                              <span class="pdm-site-chip">{{ queryTypeLabel(response.queryType) }}</span>
+                              <span class="pdm-site-chip">{{ response.contractVersion }}</span>
+                            </div>
+                          </div>
+
+                          <section class="pdm-home__reading-surface" aria-label="Reading registers">
+                            <div class="pdm-home__reading-trust-zone">
+                              <div class="pdm-home__reading-trust-copy">
+                                <p class="pdm-home__micro-label">Reading register</p>
+                                <p class="pdm-home__reading-trust-line">{{ readingLensTrustCopy }}</p>
+                              </div>
+
+                              <div class="pdm-home__reading-anchor-grid" aria-label="Canonical anchor">
+                                <div class="pdm-home__reading-anchor-item">
+                                  <span class="pdm-home__micro-label">Concept</span>
+                                  <span class="pdm-home__reading-anchor-value pdm-home__reading-anchor-value--mono">
+                                    {{ asConceptMatch(response).resolution.conceptId }}
+                                  </span>
                                 </div>
-                              }
-                            </dl>
-                          }
-                        </section>
-                      }
-                    }
 
-                    <section class="pdm-home__reading-surface" aria-label="Reading registers">
-                      <div class="pdm-home__reading-trust-zone">
-                        <div class="pdm-home__reading-trust-copy">
-                          <p class="pdm-home__micro-label">Reading register</p>
-                          <p class="pdm-home__reading-trust-line">{{ readingLensTrustCopy }}</p>
-                        </div>
-
-                        <div class="pdm-home__reading-anchor-grid" aria-label="Canonical anchor">
-                          <div class="pdm-home__reading-anchor-item">
-                            <span class="pdm-home__micro-label">Concept</span>
-                            <span class="pdm-home__reading-anchor-value pdm-home__reading-anchor-value--mono">
-                              {{ asConceptMatch(response).resolution.conceptId }}
-                            </span>
-                          </div>
-
-                          <div class="pdm-home__reading-anchor-item">
-                            <span class="pdm-home__micro-label">Version</span>
-                            <span class="pdm-home__reading-anchor-value">
-                              {{ asConceptMatch(response).resolution.conceptVersion }}
-                            </span>
-                          </div>
-
-                          <div class="pdm-home__reading-anchor-item">
-                            <span class="pdm-home__micro-label">Integrity ref</span>
-                            <span class="pdm-home__reading-anchor-value pdm-home__reading-anchor-value--mono">
-                              {{ canonicalHashShort(asConceptMatch(response)) }}
-                            </span>
-                          </div>
-
-                          @if (sourceAnchor(asConceptMatch(response)); as sourceAnchorValue) {
-                            <div class="pdm-home__reading-anchor-item">
-                              <span class="pdm-home__micro-label">Source anchor</span>
-                              <span class="pdm-home__reading-anchor-value pdm-home__reading-anchor-value--mono">
-                                {{ sourceAnchorValue }}
-                              </span>
-                            </div>
-                          }
-                        </div>
-                      </div>
-
-                      <div class="pdm-home__reading-switch-shell">
-                        <p class="pdm-home__micro-label">Active register</p>
-                        <div class="pdm-home__reading-switch" role="group" aria-label="Reading register">
-                          @for (lens of visibleReadingLensOptions(asConceptMatch(response)); track lens.mode) {
-                            <button
-                              class="pdm-home__reading-switch-option"
-                              type="button"
-                              [class.pdm-home__reading-switch-option--active]="activeReadingMode(asConceptMatch(response)) === lens.mode"
-                              [attr.aria-pressed]="activeReadingMode(asConceptMatch(response)) === lens.mode"
-                              [disabled]="isSubmitting()"
-                              (click)="selectReadingLens(lens.mode)"
-                            >
-                              {{ lens.label }}
-                            </button>
-                          }
-                        </div>
-
-                        @if (!readingLensesAvailable(asConceptMatch(response))) {
-                          <p class="pdm-home__support-copy pdm-home__reading-fallback-copy">
-                            {{ readingLensFallbackCopy }}
-                          </p>
-                        }
-                      </div>
-                    </section>
-
-                    <section class="pdm-home__definition-lead" aria-label="Primary resolved definition">
-                      <p class="pdm-home__micro-label">Short definition</p>
-                      <p class="pdm-home__definition-lead-copy">
-                        {{ activeReadingFields(asConceptMatch(response)).shortDefinition }}
-                      </p>
-                    </section>
-
-                    <app-inspectable-item-disclosure
-                      [itemType]="'core_concept'"
-                      [semanticData]="activeReadingFields(asConceptMatch(response))"
-                    />
-
-                    <div class="pdm-home__response-grid">
-                      <section class="pdm-home__response-section pdm-home__response-section--flat">
-                        <p class="pdm-home__micro-label">Contexts</p>
-
-                        @for (context of asConceptMatch(response).answer.contexts; track context.label) {
-                          <div class="pdm-home__context-row">
-                            <span class="pdm-home__context-label">{{ context.label }}</span>
-
-                            @if (contextUsages(context).length > 0) {
-                                <div class="pdm-home__tag-row">
-                                  @for (usage of contextUsages(context); track usage) {
-                                    <span class="pdm-home__mini-chip pdm-site-chip">{{ usage }}</span>
-                                  }
+                                <div class="pdm-home__reading-anchor-item">
+                                  <span class="pdm-home__micro-label">Version</span>
+                                  <span class="pdm-home__reading-anchor-value">
+                                    {{ asConceptMatch(response).resolution.conceptVersion }}
+                                  </span>
                                 </div>
-                            }
-                          </div>
-                        }
-                      </section>
 
-                      <section class="pdm-home__response-section pdm-home__response-section--sources pdm-site-surface">
-                        <p class="pdm-home__micro-label">Sources</p>
+                                <div class="pdm-home__reading-anchor-item">
+                                  <span class="pdm-home__micro-label">Integrity ref</span>
+                                  <span class="pdm-home__reading-anchor-value pdm-home__reading-anchor-value--mono">
+                                    {{ canonicalHashShort(asConceptMatch(response)) }}
+                                  </span>
+                                </div>
 
-                        @for (source of asConceptMatch(response).answer.sources; track source.id; let sourceIndex = $index) {
-                          <div class="pdm-home__source-row">
-                            <div class="pdm-home__source-meta">
-                              <span class="pdm-tooltip-wrapper">
-                                <span
-                                  class="pdm-home__source-icon pdm-mono"
-                                  [attr.data-source-type]="source.type"
-                                  [attr.aria-label]="sourceTypeLabel(source.type)"
-                                  tabindex="0"
-                                  [pdmTooltip]="sourceTypeLabel(source.type)"
-                                >
-                                  {{ sourceTypeCode(source.type) }}
-                                </span>
-                              </span>
-
-                              <div>
-                              <p class="pdm-home__source-rank">{{ sourceRankLabel(sourceIndex) }}</p>
-                              <p class="pdm-home__source-label">{{ source.label }}</p>
-                              <p class="pdm-home__support-copy">{{ source.usedFor }}</p>
+                                @if (sourceAnchor(asConceptMatch(response)); as sourceAnchorValue) {
+                                  <div class="pdm-home__reading-anchor-item">
+                                    <span class="pdm-home__micro-label">Source anchor</span>
+                                    <span class="pdm-home__reading-anchor-value pdm-home__reading-anchor-value--mono">
+                                      {{ sourceAnchorValue }}
+                                    </span>
+                                  </div>
+                                }
                               </div>
                             </div>
-                            <span class="pdm-home__mini-chip pdm-site-chip">{{ sourceTypeLabel(source.type) }}</span>
-                          </div>
-                        }
-                      </section>
-                    </div>
 
-                    <section class="pdm-home__relationship-surface">
-                      <p class="pdm-home__micro-label">Related concepts</p>
-                      <div class="pdm-home__relationship-list">
-                        @for (related of asConceptMatch(response).answer.relatedConcepts; track related.conceptId) {
-                          <button
-                            class="pdm-home__relationship-row"
-                            type="button"
-                            [disabled]="isSubmitting()"
-                            (click)="resolveRelatedConcept(related)"
-                          >
-                            <span class="pdm-home__relationship-tag">{{ relationLabel(related.relationType) }}</span>
-                            <span>
-                              <span class="pdm-home__action-title">{{ related.title }}</span>
-                              <span class="pdm-home__relationship-line">
-                                {{ asConceptMatch(response).answer.title }} -> {{ relationLabel(related.relationType) }} -> {{ related.title }}
-                              </span>
-                            </span>
-                          </button>
-                        }
-                      </div>
-                    </section>
+                            <div class="pdm-home__reading-switch-shell">
+                              <p class="pdm-home__micro-label">Active register</p>
+                              <div class="pdm-home__reading-switch" role="group" aria-label="Reading register">
+                                @for (lens of visibleReadingLensOptions(asConceptMatch(response)); track lens.mode) {
+                                  <button
+                                    class="pdm-home__reading-switch-option"
+                                    type="button"
+                                    [class.pdm-home__reading-switch-option--active]="activeReadingMode(asConceptMatch(response)) === lens.mode"
+                                    [attr.aria-pressed]="activeReadingMode(asConceptMatch(response)) === lens.mode"
+                                    [disabled]="isSubmitting()"
+                                    (click)="selectReadingLens(lens.mode)"
+                                  >
+                                    {{ lens.label }}
+                                  </button>
+                                }
+                              </div>
 
-                    @if (entry.feedback; as feedback) {
-                      <section class="pdm-home__feedback-inline">
-                        <p class="pdm-home__micro-label">Diagnostic feedback</p>
-                        <p class="pdm-home__support-copy">{{ feedback.question }}</p>
-
-                        @if (feedback.status === 'submitted') {
-                          <p class="pdm-home__feedback-state">Recorded: {{ feedbackOptionLabel(feedback) }}</p>
-                        } @else {
-                          <div class="pdm-home__feedback-actions">
-                            @for (option of feedback.options; track option.value) {
-                              <button
-                                class="pdm-home__feedback-option pdm-site-chip"
-                                type="button"
-                                [disabled]="feedback.status === 'submitting'"
-                                (click)="submitFeedback(option)"
-                              >
-                                {{ option.label }}
-                              </button>
-                            }
-                          </div>
-
-                          @if (feedback.status === 'submitting') {
-                            <p class="pdm-home__feedback-state">Recording feedback…</p>
-                          }
-
-                          @if (feedback.status === 'error' && feedback.errorMessage) {
-                            <p class="pdm-home__feedback-error">{{ feedback.errorMessage }}</p>
-                          }
-                        }
-                      </section>
-                    }
-
-                    <app-ai-advisory
-                      [conceptTitle]="asConceptMatch(response).answer.title"
-                      [shortDefinition]="activeReadingFields(asConceptMatch(response)).shortDefinition"
-                      [coreMeaning]="activeReadingFields(asConceptMatch(response)).coreMeaning"
-                      [disabled]="isSubmitting()"
-                      (advisoryViewed)="trackAiAdvisoryEvent('AI_VIEWED', asConceptMatch(response), entry.submittedQuery)"
-                      (advisoryFollowed)="trackAiAdvisoryEvent('AI_FOLLOWED', asConceptMatch(response), entry.submittedQuery)"
-                      (canonicalUsed)="trackAiAdvisoryEvent('CANONICAL_USED', asConceptMatch(response), entry.submittedQuery)"
-                    />
-                  </section>
-                }
-
-                @if (response.type === 'comparison') {
-                  <section class="pdm-home__response-card pdm-site-surface">
-                    <div class="pdm-home__resolution-strip" aria-label="Resolution status">
-                      <div class="pdm-home__resolution-item">
-                        <span class="pdm-home__resolution-label">Resolution</span>
-                        <span class="pdm-home__resolution-value">{{ resolutionTypeLabel(response) }}</span>
-                      </div>
-                      <div class="pdm-home__resolution-item">
-                        <span class="pdm-home__resolution-label">Scope</span>
-                        <span class="pdm-home__resolution-value">{{ runtimeScopeLabel(response) }}</span>
-                      </div>
-                      <div class="pdm-home__resolution-item">
-                        <span class="pdm-home__resolution-label">Execution</span>
-                        <span class="pdm-home__resolution-value">{{ executionStateLabel(response) }}</span>
-                      </div>
-                    </div>
-
-                    <div class="pdm-home__response-head">
-                      <div>
-                        <p class="pdm-home__micro-label">{{ responseLabel(response) }}</p>
-                        <h3 class="pdm-home__response-title">
-                          {{ formatConceptLabel(asComparison(response).comparison.conceptA) }}
-                          vs
-                          {{ formatConceptLabel(asComparison(response).comparison.conceptB) }}
-                        </h3>
-                      </div>
-
-                      <div class="pdm-home__meta-row pdm-home__meta-row--tight">
-                        <span class="pdm-site-chip">{{ queryTypeLabel(response.queryType) }}</span>
-                        <span class="pdm-site-chip">{{ response.contractVersion }}</span>
-                      </div>
-                    </div>
-
-                    <p class="pdm-home__support-copy">
-                      Comparison output stays authored and structural. No equivalence or extra synthesis is inferred.
-                    </p>
-
-                    <div class="pdm-home__comparison-grid">
-                      @for (axis of asComparison(response).comparison.axes; track axis.axis) {
-                        <section class="pdm-home__comparison-card pdm-site-surface">
-                          <p class="pdm-home__micro-label">{{ axisLabel(axis.axis) }}</p>
-
-                          @if (comparisonAxisHasValues(axis)) {
-                            <div class="pdm-home__comparison-values">
-                              <section>
-                                <span class="pdm-home__comparison-concept">
-                                  {{ formatConceptLabel(asComparison(response).comparison.conceptA) }}
-                                </span>
-                                <p class="pdm-home__body-copy">{{ axis.A }}</p>
-                              </section>
-
-                              <section>
-                                <span class="pdm-home__comparison-concept">
-                                  {{ formatConceptLabel(asComparison(response).comparison.conceptB) }}
-                                </span>
-                                <p class="pdm-home__body-copy">{{ axis.B }}</p>
-                              </section>
-                            </div>
-                          } @else {
-                            <p class="pdm-home__body-copy">{{ axis.statement }}</p>
-                          }
-                        </section>
-                      }
-                    </div>
-                  </section>
-                }
-
-                @if (response.type === 'ambiguous_match') {
-                  <section class="pdm-home__response-card pdm-site-surface">
-                    <div class="pdm-home__resolution-strip" aria-label="Resolution status">
-                      <div class="pdm-home__resolution-item">
-                        <span class="pdm-home__resolution-label">Resolution</span>
-                        <span class="pdm-home__resolution-value">{{ resolutionTypeLabel(response) }}</span>
-                      </div>
-                      <div class="pdm-home__resolution-item">
-                        <span class="pdm-home__resolution-label">Scope</span>
-                        <span class="pdm-home__resolution-value">{{ noExactMatchScopeValue(response, entry.detail) }}</span>
-                      </div>
-                      <div class="pdm-home__resolution-item">
-                        <span class="pdm-home__resolution-label">Execution</span>
-                        <span class="pdm-home__resolution-value">{{ executionStateLabel(response) }}</span>
-                      </div>
-                    </div>
-
-                    <div class="pdm-home__response-head">
-                      <div>
-                        <p class="pdm-home__micro-label">{{ responseLabel(response) }}</p>
-                        <h3 class="pdm-home__response-title">Choose one authored concept</h3>
-                      </div>
-
-                      <div class="pdm-home__meta-row pdm-home__meta-row--tight">
-                        <span class="pdm-site-chip">{{ methodLabel(asAmbiguousMatch(response).resolution.method) }}</span>
-                        <span class="pdm-site-chip">{{ queryTypeLabel(response.queryType) }}</span>
-                        <span class="pdm-site-chip">{{ response.contractVersion }}</span>
-                      </div>
-                    </div>
-
-                    <p class="pdm-home__body-copy">{{ asAmbiguousMatch(response).message }}</p>
-
-                    <div class="pdm-home__action-grid">
-                      @for (candidate of asAmbiguousMatch(response).candidates; track candidate.conceptId) {
-                          <button
-                            class="pdm-home__action-card pdm-site-surface"
-                            type="button"
-                            [disabled]="isSubmitting()"
-                            (click)="resolveAmbiguousCandidate(asAmbiguousMatch(response), candidate)"
-                        >
-                          <span class="pdm-home__action-title">{{ candidate.title }}</span>
-                          <span class="pdm-home__action-copy">{{ candidate.shortDefinition }}</span>
-                        </button>
-                      }
-                    </div>
-                  </section>
-                }
-
-                @if (response.type === 'rejected_concept') {
-                  <section class="pdm-home__response-card pdm-home__response-card--rejected pdm-site-surface">
-                    <div class="pdm-home__resolution-strip" aria-label="Resolution status">
-                      <div class="pdm-home__resolution-item">
-                        <span class="pdm-home__resolution-label">Status</span>
-                        <span class="pdm-home__resolution-value">{{ resolutionTypeLabel(response) }}</span>
-                      </div>
-                      <div class="pdm-home__resolution-item">
-                        <span class="pdm-home__resolution-label">Runtime</span>
-                        <span class="pdm-home__resolution-value">Current system state</span>
-                      </div>
-                      <div class="pdm-home__resolution-item">
-                        <span class="pdm-home__resolution-label">Method</span>
-                        <span class="pdm-home__resolution-value">{{ methodLabel(asRejectedConcept(response).resolution.method) }}</span>
-                      </div>
-                    </div>
-
-                    <div class="pdm-home__response-head">
-                      <div>
-                        <p class="pdm-home__micro-label">{{ responseLabel(response) }}</p>
-                        <h3 class="pdm-home__response-title">Structurally rejected</h3>
-                      </div>
-
-                      <div class="pdm-home__meta-row pdm-home__meta-row--tight">
-                        <span class="pdm-site-chip pdm-home__response-chip--rejected">Concept not admitted</span>
-                        <span class="pdm-site-chip">{{ queryTypeLabel(response.queryType) }}</span>
-                        <span class="pdm-site-chip">{{ response.contractVersion }}</span>
-                      </div>
-                    </div>
-
-                    @if (entry.detail; as detail) {
-                      @if (detail.reviewState; as reviewState) {
-                        <section class="pdm-home__review-state-surface" aria-label="Concept lifecycle evidence">
-                          <div class="pdm-home__review-state-grid">
-                            <div class="pdm-home__review-state-item">
-                              <span class="pdm-home__micro-label">Status</span>
-                              <span class="pdm-home__review-state-value">
-                                {{ reviewAdmissionLabel(reviewState.admission) }}
-                              </span>
-                            </div>
-
-                            <div class="pdm-home__review-state-item">
-                              <span class="pdm-home__micro-label">Validation</span>
-                              <span class="pdm-home__review-state-value">{{ reviewValidationLabel(detail) }}</span>
-                            </div>
-                          </div>
-
-                          <button
-                            class="pdm-home__trace-toggle"
-                            type="button"
-                            [attr.aria-expanded]="validationTraceVisible()"
-                            [disabled]="isSubmitting()"
-                            (click)="toggleValidationTrace()"
-                          >
-                            {{ validationTraceToggleLabel() }}
-                          </button>
-
-                          @if (validationTraceVisible()) {
-                            <dl class="pdm-home__trace-list">
-                              @for (row of validationTraceRows(detail); track row.label) {
-                                <div class="pdm-home__trace-row">
-                                  <dt class="pdm-home__trace-label pdm-mono">{{ row.label }}</dt>
-                                  <dd class="pdm-home__trace-value">{{ row.value }}</dd>
-                                </div>
+                              @if (!readingLensesAvailable(asConceptMatch(response))) {
+                                <p class="pdm-home__support-copy pdm-home__reading-fallback-copy">
+                                  {{ readingLensFallbackCopy }}
+                                </p>
                               }
-                            </dl>
-                          }
-                        </section>
-                      }
-                    }
-
-                    <p class="pdm-home__body-copy">
-                      This concept was evaluated and rejected under the current system state.
-                    </p>
-
-                    <p class="pdm-home__support-copy">
-                      This is a governed rejection, not a no-match response.
-                    </p>
-                  </section>
-                }
-
-                @if (
-                  response.type === 'no_exact_match'
-                  || response.type === 'invalid_query'
-                  || response.type === 'unsupported_query_type'
-                  || response.type === 'VOCABULARY_DETECTED'
-                ) {
-                  <section class="pdm-home__response-card pdm-site-surface">
-                    <div class="pdm-home__resolution-strip" aria-label="Resolution status">
-                      <div class="pdm-home__resolution-item">
-                        <span class="pdm-home__resolution-label">{{ noExactMatchStripLabel(entry.detail) }}</span>
-                        <span class="pdm-home__resolution-value">
-                          {{ noExactMatchResolutionValue(asRefusal(response), entry.detail) }}
-                        </span>
-                      </div>
-                      <div class="pdm-home__resolution-item">
-                        <span class="pdm-home__resolution-label">Scope</span>
-                        <span class="pdm-home__resolution-value">{{ noExactMatchScopeValue(response, entry.detail) }}</span>
-                      </div>
-                      <div class="pdm-home__resolution-item">
-                        <span class="pdm-home__resolution-label">Execution</span>
-                        <span class="pdm-home__resolution-value">
-                          {{ noExactMatchExecutionValue(asRefusal(response), entry.detail) }}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div class="pdm-home__response-head">
-                      <div>
-                        <p class="pdm-home__micro-label">{{ noExactMatchResponseLabel(asRefusal(response), entry.detail) }}</p>
-                        <h3 class="pdm-home__response-title">{{ noExactMatchTitle(asRefusal(response), entry.detail) }}</h3>
-                      </div>
-
-                      <div class="pdm-home__meta-row pdm-home__meta-row--tight">
-                        @for (chip of noExactMatchMetaChips(asRefusal(response), entry.detail); track chip) {
-                          <span class="pdm-site-chip">{{ chip }}</span>
-                        }
-                      </div>
-                    </div>
-
-                    @if (entry.detail; as detail) {
-                      @if (detail.reviewState; as reviewState) {
-                        <section class="pdm-home__review-state-surface" aria-label="Concept lifecycle evidence">
-                          <div class="pdm-home__review-state-grid">
-                            <div class="pdm-home__review-state-item">
-                              <span class="pdm-home__micro-label">Status</span>
-                              <span class="pdm-home__review-state-value">
-                                {{ reviewAdmissionLabel(reviewState.admission) }}
-                              </span>
                             </div>
+                          </section>
 
-                            <div class="pdm-home__review-state-item">
-                              <span class="pdm-home__micro-label">Validation</span>
-                              <span class="pdm-home__review-state-value">{{ reviewValidationLabel(detail) }}</span>
-                            </div>
-                          </div>
+                          <section class="pdm-home__definition-lead" aria-label="Primary resolved definition">
+                            <p class="pdm-home__micro-label">Short definition</p>
+                            <p class="pdm-home__definition-lead-copy">
+                              {{ activeReadingFields(asConceptMatch(response)).shortDefinition }}
+                            </p>
+                          </section>
 
-                          <button
-                            class="pdm-home__trace-toggle"
-                            type="button"
-                            [attr.aria-expanded]="validationTraceVisible()"
-                            [disabled]="isSubmitting()"
-                            (click)="toggleValidationTrace()"
-                          >
-                            {{ validationTraceToggleLabel() }}
-                          </button>
-
-                          @if (validationTraceVisible()) {
-                            <dl class="pdm-home__trace-list">
-                              @for (row of validationTraceRows(detail); track row.label) {
-                                <div class="pdm-home__trace-row">
-                                  <dt class="pdm-home__trace-label pdm-mono">{{ row.label }}</dt>
-                                  <dd class="pdm-home__trace-value">{{ row.value }}</dd>
-                                </div>
-                              }
-                            </dl>
-                          }
-                        </section>
-                      }
-                    }
-
-                    <p class="pdm-home__body-copy">{{ noExactMatchBody(asRefusal(response), entry.detail) }}</p>
-
-                    @if (entry.detail; as detail) {
-                      @if (isVisibleOnlyDetail(detail)) {
-                        <section class="pdm-home__definition-lead" aria-label="Visible-only concept detail">
-                          <p class="pdm-home__micro-label">Short definition</p>
-                          <p class="pdm-home__definition-lead-copy">{{ detail.shortDefinition }}</p>
-                        </section>
-
-                        @if (visibleOnlyDisclosureData(detail); as disclosureData) {
                           <app-inspectable-item-disclosure
                             [itemType]="'core_concept'"
-                            [semanticData]="disclosureData"
+                            [semanticData]="activeReadingFields(asConceptMatch(response))"
                           />
-                        }
+
+                          <div class="pdm-home__response-grid">
+                            <section class="pdm-home__response-section pdm-home__response-section--flat">
+                              <p class="pdm-home__micro-label">Contexts</p>
+
+                              @for (context of asConceptMatch(response).answer.contexts; track context.label) {
+                                <div class="pdm-home__context-row">
+                                  <span class="pdm-home__context-label">{{ context.label }}</span>
+
+                                  @if (contextUsages(context).length > 0) {
+                                    <div class="pdm-home__tag-row">
+                                      @for (usage of contextUsages(context); track usage) {
+                                        <span class="pdm-home__mini-chip pdm-site-chip">{{ usage }}</span>
+                                      }
+                                    </div>
+                                  }
+                                </div>
+                              }
+                            </section>
+
+                            <section class="pdm-home__response-section pdm-home__response-section--sources pdm-site-surface">
+                              <p class="pdm-home__micro-label">Sources</p>
+
+                              @for (source of asConceptMatch(response).answer.sources; track source.id; let sourceIndex = $index) {
+                                <div class="pdm-home__source-row">
+                                  <div class="pdm-home__source-meta">
+                                    <span class="pdm-tooltip-wrapper">
+                                      <span
+                                        class="pdm-home__source-icon pdm-mono"
+                                        [attr.data-source-type]="source.type"
+                                        [attr.aria-label]="sourceTypeLabel(source.type)"
+                                        tabindex="0"
+                                        [pdmTooltip]="sourceTypeLabel(source.type)"
+                                      >
+                                        {{ sourceTypeCode(source.type) }}
+                                      </span>
+                                    </span>
+
+                                    <div>
+                                      <p class="pdm-home__source-rank">{{ sourceRankLabel(sourceIndex) }}</p>
+                                      <p class="pdm-home__source-label">{{ source.label }}</p>
+                                      <p class="pdm-home__support-copy">{{ source.usedFor }}</p>
+                                    </div>
+                                  </div>
+                                  <span class="pdm-home__mini-chip pdm-site-chip">{{ sourceTypeLabel(source.type) }}</span>
+                                </div>
+                              }
+                            </section>
+                          </div>
+
+                          <section class="pdm-home__relationship-surface">
+                            <p class="pdm-home__micro-label">Related concepts</p>
+                            <div class="pdm-home__relationship-list">
+                              @for (related of asConceptMatch(response).answer.relatedConcepts; track related.conceptId) {
+                                <button
+                                  class="pdm-home__relationship-row"
+                                  type="button"
+                                  [disabled]="isSubmitting()"
+                                  (click)="resolveRelatedConcept(related)"
+                                >
+                                  <span class="pdm-home__relationship-tag">{{ relationLabel(related.relationType) }}</span>
+                                  <span>
+                                    <span class="pdm-home__action-title">{{ related.title }}</span>
+                                    <span class="pdm-home__relationship-line">
+                                      {{ asConceptMatch(response).answer.title }} -> {{ relationLabel(related.relationType) }} -> {{ related.title }}
+                                    </span>
+                                  </span>
+                                </button>
+                              }
+                            </div>
+                          </section>
+
+                          @if (entry.feedback; as feedback) {
+                            <section class="pdm-home__feedback-inline">
+                              <p class="pdm-home__micro-label">Diagnostic feedback</p>
+                              <p class="pdm-home__support-copy">{{ feedback.question }}</p>
+
+                              @if (feedback.status === 'submitted') {
+                                <p class="pdm-home__feedback-state">Recorded: {{ feedbackOptionLabel(feedback) }}</p>
+                              } @else {
+                                <div class="pdm-home__feedback-actions">
+                                  @for (option of feedback.options; track option.value) {
+                                    <button
+                                      class="pdm-home__feedback-option pdm-site-chip"
+                                      type="button"
+                                      [disabled]="feedback.status === 'submitting'"
+                                      (click)="submitFeedback(option)"
+                                    >
+                                      {{ option.label }}
+                                    </button>
+                                  }
+                                </div>
+
+                                @if (feedback.status === 'submitting') {
+                                  <p class="pdm-home__feedback-state">Recording feedback…</p>
+                                }
+
+                                @if (feedback.status === 'error' && feedback.errorMessage) {
+                                  <p class="pdm-home__feedback-error">{{ feedback.errorMessage }}</p>
+                                }
+                              }
+                            </section>
+                          }
+
+                          <app-ai-advisory
+                            [conceptTitle]="asConceptMatch(response).answer.title"
+                            [shortDefinition]="activeReadingFields(asConceptMatch(response)).shortDefinition"
+                            [coreMeaning]="activeReadingFields(asConceptMatch(response)).coreMeaning"
+                            [disabled]="isSubmitting()"
+                            (advisoryViewed)="trackAiAdvisoryEvent('AI_VIEWED', asConceptMatch(response), entry.submittedQuery)"
+                            (advisoryFollowed)="trackAiAdvisoryEvent('AI_FOLLOWED', asConceptMatch(response), entry.submittedQuery)"
+                            (canonicalUsed)="trackAiAdvisoryEvent('CANONICAL_USED', asConceptMatch(response), entry.submittedQuery)"
+                          />
+                        </section>
+                      } @else if (response.type === 'comparison') {
+                        <section class="pdm-home__response-card pdm-site-surface">
+                          <div class="pdm-home__resolution-strip" aria-label="Resolution status">
+                            <div class="pdm-home__resolution-item">
+                              <span class="pdm-home__resolution-label">Resolution</span>
+                              <span class="pdm-home__resolution-value">{{ resolutionTypeLabel(response) }}</span>
+                            </div>
+                            <div class="pdm-home__resolution-item">
+                              <span class="pdm-home__resolution-label">Scope</span>
+                              <span class="pdm-home__resolution-value">{{ runtimeScopeLabel(response) }}</span>
+                            </div>
+                            <div class="pdm-home__resolution-item">
+                              <span class="pdm-home__resolution-label">Execution</span>
+                              <span class="pdm-home__resolution-value">{{ executionStateLabel(response) }}</span>
+                            </div>
+                          </div>
+
+                          <div class="pdm-home__response-head">
+                            <div>
+                              <p class="pdm-home__micro-label">{{ responseLabel(response) }}</p>
+                              <h3 class="pdm-home__response-title">
+                                {{ formatConceptLabel(asComparison(response).comparison.conceptA) }}
+                                vs
+                                {{ formatConceptLabel(asComparison(response).comparison.conceptB) }}
+                              </h3>
+                            </div>
+
+                            <div class="pdm-home__meta-row pdm-home__meta-row--tight">
+                              <span class="pdm-site-chip">{{ queryTypeLabel(response.queryType) }}</span>
+                              <span class="pdm-site-chip">{{ response.contractVersion }}</span>
+                            </div>
+                          </div>
+
+                          <p class="pdm-home__support-copy">
+                            Comparison output stays authored and structural. No equivalence or extra synthesis is inferred.
+                          </p>
+
+                          <div class="pdm-home__comparison-grid">
+                            @for (axis of asComparison(response).comparison.axes; track axis.axis) {
+                              <section class="pdm-home__comparison-card pdm-site-surface">
+                                <p class="pdm-home__micro-label">{{ axisLabel(axis.axis) }}</p>
+
+                                @if (comparisonAxisHasValues(axis)) {
+                                  <div class="pdm-home__comparison-values">
+                                    <section>
+                                      <span class="pdm-home__comparison-concept">
+                                        {{ formatConceptLabel(asComparison(response).comparison.conceptA) }}
+                                      </span>
+                                      <p class="pdm-home__body-copy">{{ axis.A }}</p>
+                                    </section>
+
+                                    <section>
+                                      <span class="pdm-home__comparison-concept">
+                                        {{ formatConceptLabel(asComparison(response).comparison.conceptB) }}
+                                      </span>
+                                      <p class="pdm-home__body-copy">{{ axis.B }}</p>
+                                    </section>
+                                  </div>
+                                } @else {
+                                  <p class="pdm-home__body-copy">{{ axis.statement }}</p>
+                                }
+                              </section>
+                            }
+                          </div>
+                        </section>
+                      } @else {
+                        <section class="pdm-home__response-card pdm-site-surface">
+                          <div>
+                            <p class="pdm-home__micro-label">Valid result</p>
+                            <h3 class="pdm-home__response-title">The runtime returned a valid response.</h3>
+                          </div>
+                        </section>
                       }
                     }
 
-                    @if (refusalHasSuggestions(asRefusal(response))) {
-                      <div class="pdm-home__action-grid">
-                        @for (suggestion of refusalSuggestions(asRefusal(response)); track suggestion.conceptId) {
-                          <button
-                            class="pdm-home__action-card pdm-site-surface"
-                            type="button"
-                            [disabled]="isSubmitting()"
-                            (click)="resolveSuggestedConcept(suggestion)"
-                          >
-                            <span class="pdm-home__action-title">{{ suggestion.title }}</span>
-                            <span class="pdm-home__action-copy">{{ suggestionReason(suggestion.reason) }}</span>
-                          </button>
-                        }
-                      </div>
-                    } @else {
-                      <p class="pdm-home__support-copy">
-                        {{ noExactMatchSupportCopy(asRefusal(response), entry.detail) }}
-                      </p>
+                    @case ('partial') {
+                      <section class="pdm-home__response-card pdm-site-surface">
+                        <div class="pdm-home__resolution-strip" aria-label="Resolution status">
+                          <div class="pdm-home__resolution-item">
+                            <span class="pdm-home__resolution-label">Mode</span>
+                            <span class="pdm-home__resolution-value">Limited result</span>
+                          </div>
+                          <div class="pdm-home__resolution-item">
+                            <span class="pdm-home__resolution-label">Reason</span>
+                            <span class="pdm-home__resolution-value">{{ response.reason ?? 'Unavailable' }}</span>
+                          </div>
+                          <div class="pdm-home__resolution-item">
+                            <span class="pdm-home__resolution-label">Layer</span>
+                            <span class="pdm-home__resolution-value">{{ response.failedLayer ?? 'Unavailable' }}</span>
+                          </div>
+                        </div>
+
+                        <div class="pdm-home__response-head">
+                          <div>
+                            <p class="pdm-home__micro-label">Limited result</p>
+                            <h3 class="pdm-home__response-title">The runtime returned a partial result.</h3>
+                          </div>
+                        </div>
+                      </section>
                     }
 
-                    @if (entry.feedback; as feedback) {
-                      <section class="pdm-home__feedback-inline">
-                        <p class="pdm-home__micro-label">Diagnostic feedback</p>
-                        <p class="pdm-home__support-copy">{{ feedback.question }}</p>
+                    @case ('degraded') {
+                      <section class="pdm-home__response-card pdm-site-surface">
+                        <div class="pdm-home__resolution-strip" aria-label="Resolution status">
+                          <div class="pdm-home__resolution-item">
+                            <span class="pdm-home__resolution-label">Mode</span>
+                            <span class="pdm-home__resolution-value">Degraded result</span>
+                          </div>
+                          <div class="pdm-home__resolution-item">
+                            <span class="pdm-home__resolution-label">Reason</span>
+                            <span class="pdm-home__resolution-value">{{ response.reason ?? 'Unavailable' }}</span>
+                          </div>
+                          <div class="pdm-home__resolution-item">
+                            <span class="pdm-home__resolution-label">Layer</span>
+                            <span class="pdm-home__resolution-value">{{ response.failedLayer ?? 'Unavailable' }}</span>
+                          </div>
+                        </div>
 
-                        @if (feedback.status === 'submitted') {
-                          <p class="pdm-home__feedback-state">Recorded: {{ feedbackOptionLabel(feedback) }}</p>
-                        } @else {
-                          <div class="pdm-home__feedback-actions">
-                            @for (option of feedback.options; track option.value) {
+                        <div class="pdm-home__response-head">
+                          <div>
+                            <p class="pdm-home__micro-label">Degraded result</p>
+                            <h3 class="pdm-home__response-title">The runtime returned a degraded result.</h3>
+                          </div>
+                        </div>
+                      </section>
+                    }
+
+                    @case ('refused') {
+                      @if (response.type === 'ambiguous_match') {
+                        <section class="pdm-home__response-card pdm-site-surface">
+                          <div class="pdm-home__resolution-strip" aria-label="Resolution status">
+                            <div class="pdm-home__resolution-item">
+                              <span class="pdm-home__resolution-label">Resolution</span>
+                              <span class="pdm-home__resolution-value">{{ resolutionTypeLabel(response) }}</span>
+                            </div>
+                            <div class="pdm-home__resolution-item">
+                              <span class="pdm-home__resolution-label">Scope</span>
+                              <span class="pdm-home__resolution-value">{{ noExactMatchScopeValue(response) }}</span>
+                            </div>
+                            <div class="pdm-home__resolution-item">
+                              <span class="pdm-home__resolution-label">Execution</span>
+                              <span class="pdm-home__resolution-value">{{ executionStateLabel(response) }}</span>
+                            </div>
+                          </div>
+
+                          <div class="pdm-home__response-head">
+                            <div>
+                              <p class="pdm-home__micro-label">{{ responseLabel(response) }}</p>
+                              <h3 class="pdm-home__response-title">Choose one authored concept</h3>
+                            </div>
+
+                            <div class="pdm-home__meta-row pdm-home__meta-row--tight">
+                              <span class="pdm-site-chip">{{ methodLabel(asAmbiguousMatch(response).resolution.method) }}</span>
+                              <span class="pdm-site-chip">{{ queryTypeLabel(response.queryType) }}</span>
+                              <span class="pdm-site-chip">{{ response.contractVersion }}</span>
+                            </div>
+                          </div>
+
+                          <p class="pdm-home__body-copy">{{ asAmbiguousMatch(response).message }}</p>
+
+                          <div class="pdm-home__action-grid">
+                            @for (candidate of asAmbiguousMatch(response).candidates; track candidate.conceptId) {
                               <button
-                                class="pdm-home__feedback-option pdm-site-chip"
+                                class="pdm-home__action-card pdm-site-surface"
                                 type="button"
-                                [disabled]="feedback.status === 'submitting'"
-                                (click)="submitFeedback(option)"
+                                [disabled]="isSubmitting()"
+                                (click)="resolveAmbiguousCandidate(asAmbiguousMatch(response), candidate)"
                               >
-                                {{ option.label }}
+                                <span class="pdm-home__action-title">{{ candidate.title }}</span>
+                                <span class="pdm-home__action-copy">{{ candidate.shortDefinition }}</span>
                               </button>
                             }
                           </div>
+                        </section>
+                      } @else if (response.type === 'rejected_concept') {
+                        <section class="pdm-home__response-card pdm-home__response-card--rejected pdm-site-surface">
+                          <div class="pdm-home__resolution-strip" aria-label="Resolution status">
+                            <div class="pdm-home__resolution-item">
+                              <span class="pdm-home__resolution-label">Status</span>
+                              <span class="pdm-home__resolution-value">{{ resolutionTypeLabel(response) }}</span>
+                            </div>
+                            <div class="pdm-home__resolution-item">
+                              <span class="pdm-home__resolution-label">Execution</span>
+                              <span class="pdm-home__resolution-value">{{ executionStateLabel(response) }}</span>
+                            </div>
+                            <div class="pdm-home__resolution-item">
+                              <span class="pdm-home__resolution-label">Method</span>
+                              <span class="pdm-home__resolution-value">{{ methodLabel(asRejectedConcept(response).resolution.method) }}</span>
+                            </div>
+                          </div>
 
-                          @if (feedback.status === 'submitting') {
-                            <p class="pdm-home__feedback-state">Recording feedback…</p>
+                          <div class="pdm-home__response-head">
+                            <div>
+                              <p class="pdm-home__micro-label">{{ responseLabel(response) }}</p>
+                              <h3 class="pdm-home__response-title">Structurally rejected</h3>
+                            </div>
+
+                            <div class="pdm-home__meta-row pdm-home__meta-row--tight">
+                              <span class="pdm-site-chip pdm-home__response-chip--rejected">Concept not admitted</span>
+                              <span class="pdm-site-chip">{{ queryTypeLabel(response.queryType) }}</span>
+                              <span class="pdm-site-chip">{{ response.contractVersion }}</span>
+                            </div>
+                          </div>
+
+                          <p class="pdm-home__body-copy">
+                            This concept was evaluated and rejected under the current system state.
+                          </p>
+
+                          <p class="pdm-home__support-copy">
+                            This is a governed rejection, not a no-match response.
+                          </p>
+                        </section>
+                      } @else if (
+                        response.type === 'no_exact_match'
+                        || response.type === 'invalid_query'
+                        || response.type === 'unsupported_query_type'
+                        || response.type === 'VOCABULARY_DETECTED'
+                      ) {
+                        <section class="pdm-home__response-card pdm-site-surface">
+                          <div class="pdm-home__resolution-strip" aria-label="Resolution status">
+                            <div class="pdm-home__resolution-item">
+                              <span class="pdm-home__resolution-label">{{ noExactMatchStripLabel(asRefusal(response)) }}</span>
+                              <span class="pdm-home__resolution-value">
+                                {{ noExactMatchResolutionValue(asRefusal(response)) }}
+                              </span>
+                            </div>
+                            <div class="pdm-home__resolution-item">
+                              <span class="pdm-home__resolution-label">Scope</span>
+                              <span class="pdm-home__resolution-value">{{ noExactMatchScopeValue(response) }}</span>
+                            </div>
+                            <div class="pdm-home__resolution-item">
+                              <span class="pdm-home__resolution-label">Execution</span>
+                              <span class="pdm-home__resolution-value">
+                                {{ noExactMatchExecutionValue(asRefusal(response)) }}
+                              </span>
+                            </div>
+                          </div>
+
+                          <div class="pdm-home__response-head">
+                            <div>
+                              <p class="pdm-home__micro-label">{{ noExactMatchResponseLabel(asRefusal(response)) }}</p>
+                              <h3 class="pdm-home__response-title">{{ noExactMatchTitle(asRefusal(response)) }}</h3>
+                            </div>
+
+                            <div class="pdm-home__meta-row pdm-home__meta-row--tight">
+                              @for (chip of noExactMatchMetaChips(asRefusal(response)); track chip) {
+                                <span class="pdm-site-chip">{{ chip }}</span>
+                              }
+                            </div>
+                          </div>
+
+                          <p class="pdm-home__body-copy">{{ noExactMatchBody(asRefusal(response)) }}</p>
+
+                          @if (refusalHasSuggestions(asRefusal(response))) {
+                            <div class="pdm-home__action-grid">
+                              @for (suggestion of refusalSuggestions(asRefusal(response)); track suggestion.conceptId) {
+                                <button
+                                  class="pdm-home__action-card pdm-site-surface"
+                                  type="button"
+                                  [disabled]="isSubmitting()"
+                                  (click)="resolveSuggestedConcept(suggestion)"
+                                >
+                                  <span class="pdm-home__action-title">{{ suggestion.title }}</span>
+                                  <span class="pdm-home__action-copy">{{ suggestionReason(suggestion.reason) }}</span>
+                                </button>
+                              }
+                            </div>
+                          } @else {
+                            <p class="pdm-home__support-copy">
+                              {{ noExactMatchSupportCopy(asRefusal(response)) }}
+                            </p>
                           }
 
-                          @if (feedback.status === 'error' && feedback.errorMessage) {
-                            <p class="pdm-home__feedback-error">{{ feedback.errorMessage }}</p>
+                          @if (entry.feedback; as feedback) {
+                            <section class="pdm-home__feedback-inline">
+                              <p class="pdm-home__micro-label">Diagnostic feedback</p>
+                              <p class="pdm-home__support-copy">{{ feedback.question }}</p>
+
+                              @if (feedback.status === 'submitted') {
+                                <p class="pdm-home__feedback-state">Recorded: {{ feedbackOptionLabel(feedback) }}</p>
+                              } @else {
+                                <div class="pdm-home__feedback-actions">
+                                  @for (option of feedback.options; track option.value) {
+                                    <button
+                                      class="pdm-home__feedback-option pdm-site-chip"
+                                      type="button"
+                                      [disabled]="feedback.status === 'submitting'"
+                                      (click)="submitFeedback(option)"
+                                    >
+                                      {{ option.label }}
+                                    </button>
+                                  }
+                                </div>
+
+                                @if (feedback.status === 'submitting') {
+                                  <p class="pdm-home__feedback-state">Recording feedback…</p>
+                                }
+
+                                @if (feedback.status === 'error' && feedback.errorMessage) {
+                                  <p class="pdm-home__feedback-error">{{ feedback.errorMessage }}</p>
+                                }
+                              }
+                            </section>
                           }
-                        }
-                      </section>
+                        </section>
+                      }
                     }
-                  </section>
-                }
+                  }
 
-                <app-vocabulary-panel [response]="response" />
+                  <app-vocabulary-panel [response]="response" />
                 }
               }
             } @else {
