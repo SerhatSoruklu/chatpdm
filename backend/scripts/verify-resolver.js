@@ -4,6 +4,11 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const { resolveConceptQuery } = require('../src/modules/concepts');
+const { buildPublicResolverResponse } = require('../src/modules/concepts/public-response-normalizer');
+const {
+  CONCEPT_SET_VERSION,
+  CONTRACT_VERSION,
+} = require('../src/modules/concepts/constants');
 const { getConceptRuntimeGovernanceState } = require('../src/modules/concepts/concept-validation-state-loader');
 const { validateConceptShape } = require('../src/modules/concepts/concept-loader');
 
@@ -15,6 +20,7 @@ const comparisonFixturePath = path.resolve(
   __dirname,
   '../../tests/runtime/fixtures/phase-11-comparison-cases.json',
 );
+const ISO_8601_TIMESTAMP_PATTERN = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})Z$/;
 
 function loadCases() {
   return [
@@ -101,6 +107,46 @@ function verifyReservedOverlayFieldsAreRejected() {
   process.stdout.write('PASS legacy_overlay_fields_rejected\n');
 }
 
+function verifyPublicResolverContextIsRequired() {
+  const resolvedAuthority = resolveConceptQuery('authority');
+
+  assert.throws(
+    () => buildPublicResolverResponse(resolvedAuthority, {
+      source: 'concepts.resolve',
+      timestamp: resolvedAuthority.timestamp,
+    }),
+    /Public resolver response context\.traceId must be a non-empty string\./,
+    'public resolver responses must require an explicit traceId context field.',
+  );
+
+  assert.throws(
+    () => buildPublicResolverResponse(resolvedAuthority, {
+      source: 'concepts.resolve',
+      traceId: resolvedAuthority.traceId,
+    }),
+    /Public resolver response context\.timestamp must be a non-empty string\./,
+    'public resolver responses must require an explicit timestamp context field.',
+  );
+
+  const rebuiltAuthority = buildPublicResolverResponse(resolvedAuthority, {
+    source: 'concepts.resolve',
+    traceId: resolvedAuthority.traceId,
+    timestamp: resolvedAuthority.timestamp,
+  });
+
+  assert.equal(
+    rebuiltAuthority.traceId,
+    resolvedAuthority.traceId,
+    'explicit traceId should be preserved by the public response builder.',
+  );
+  assert.equal(
+    rebuiltAuthority.timestamp,
+    resolvedAuthority.timestamp,
+    'explicit timestamp should be preserved by the public response builder.',
+  );
+  process.stdout.write('PASS public_resolver_context_required\n');
+}
+
 function assertSubset(actualValue, expectedValue, context) {
   assert.notEqual(actualValue, null, `${context} is missing.`);
 
@@ -130,13 +176,56 @@ function assertSubset(actualValue, expectedValue, context) {
   }
 }
 
+function stripTransportMetadata(response) {
+  // The Day 11 contract adds request/response metadata that may vary between calls.
+  // Keep the resolver determinism proof focused on the contract-bearing payload.
+  const stableResponse = { ...response };
+
+  delete stableResponse.traceId;
+  delete stableResponse.timestamp;
+
+  return stableResponse;
+}
+
 function runCase(testCase) {
   const firstResult = resolveConceptQuery(testCase.input);
   const secondResult = resolveConceptQuery(testCase.input);
   const thirdResult = resolveConceptQuery(testCase.input);
 
-  assert.deepEqual(secondResult, firstResult, `${testCase.name} changed between run 1 and run 2.`);
-  assert.deepEqual(thirdResult, firstResult, `${testCase.name} changed between run 1 and run 3.`);
+  assert.equal(typeof firstResult.traceId, 'string', `${testCase.name} traceId must be a string.`);
+  assert.ok(firstResult.traceId.length > 0, `${testCase.name} traceId must be non-empty.`);
+  assert.match(firstResult.timestamp, ISO_8601_TIMESTAMP_PATTERN, `${testCase.name} timestamp format mismatch.`);
+  assert.equal(typeof firstResult.deterministicKey, 'string', `${testCase.name} deterministicKey must be a string.`);
+  assert.ok(firstResult.deterministicKey.length > 0, `${testCase.name} deterministicKey must be non-empty.`);
+  assert.equal(firstResult.registryVersion, CONCEPT_SET_VERSION, `${testCase.name} registryVersion mismatch.`);
+  assert.equal(firstResult.policyVersion, CONTRACT_VERSION, `${testCase.name} policyVersion mismatch.`);
+
+  assert.equal(typeof secondResult.traceId, 'string', `${testCase.name} traceId must be a string on run 2.`);
+  assert.ok(secondResult.traceId.length > 0, `${testCase.name} traceId must be non-empty on run 2.`);
+  assert.match(secondResult.timestamp, ISO_8601_TIMESTAMP_PATTERN, `${testCase.name} timestamp format mismatch on run 2.`);
+  assert.equal(typeof secondResult.deterministicKey, 'string', `${testCase.name} deterministicKey must be a string on run 2.`);
+  assert.ok(secondResult.deterministicKey.length > 0, `${testCase.name} deterministicKey must be non-empty on run 2.`);
+  assert.equal(secondResult.registryVersion, CONCEPT_SET_VERSION, `${testCase.name} registryVersion mismatch on run 2.`);
+  assert.equal(secondResult.policyVersion, CONTRACT_VERSION, `${testCase.name} policyVersion mismatch on run 2.`);
+
+  assert.equal(typeof thirdResult.traceId, 'string', `${testCase.name} traceId must be a string on run 3.`);
+  assert.ok(thirdResult.traceId.length > 0, `${testCase.name} traceId must be non-empty on run 3.`);
+  assert.match(thirdResult.timestamp, ISO_8601_TIMESTAMP_PATTERN, `${testCase.name} timestamp format mismatch on run 3.`);
+  assert.equal(typeof thirdResult.deterministicKey, 'string', `${testCase.name} deterministicKey must be a string on run 3.`);
+  assert.ok(thirdResult.deterministicKey.length > 0, `${testCase.name} deterministicKey must be non-empty on run 3.`);
+  assert.equal(thirdResult.registryVersion, CONCEPT_SET_VERSION, `${testCase.name} registryVersion mismatch on run 3.`);
+  assert.equal(thirdResult.policyVersion, CONTRACT_VERSION, `${testCase.name} policyVersion mismatch on run 3.`);
+
+  assert.deepEqual(
+    stripTransportMetadata(secondResult),
+    stripTransportMetadata(firstResult),
+    `${testCase.name} changed between run 1 and run 2.`,
+  );
+  assert.deepEqual(
+    stripTransportMetadata(thirdResult),
+    stripTransportMetadata(firstResult),
+    `${testCase.name} changed between run 1 and run 3.`,
+  );
 
   assert.equal(firstResult.normalizedQuery, testCase.expectedNormalizedQuery, `${testCase.name} normalizedQuery mismatch.`);
   assert.equal(firstResult.type, testCase.expectedType, `${testCase.name} response type mismatch.`);
@@ -245,6 +334,7 @@ function main() {
   process.stdout.write('PASS empty_string_rejected_before_product_response\n');
 
   verifyReservedOverlayFieldsAreRejected();
+  verifyPublicResolverContextIsRequired();
 
   const cases = loadCases();
   cases.forEach(runCase);

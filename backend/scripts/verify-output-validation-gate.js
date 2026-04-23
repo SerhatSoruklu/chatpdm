@@ -29,7 +29,7 @@ function verifyValidStateMapping() {
   });
   const visibleExposure = validateAndExposeOutput(visibleResult);
 
-  assert.equal(visibleExposure.state, FINAL_OUTPUT_STATES.valid, 'VISIBLE_INSPECTION should expose as valid.');
+  assert.equal(visibleExposure.state, FINAL_OUTPUT_STATES.partial, 'VISIBLE_INSPECTION should expose as partial.');
   assert.equal(visibleExposure.type, RESOLUTION_ENGINE_TYPES.VISIBLE_INSPECTION, 'VISIBLE_INSPECTION type mismatch.');
   assert.equal(visibleExposure.payload, visibleResult.payload, 'VISIBLE_INSPECTION payload must remain unchanged.');
 
@@ -111,7 +111,7 @@ function verifyClassifiedStateMapping() {
   });
   const vocabExposure = validateAndExposeOutput(vocabResult);
 
-  assert.equal(vocabExposure.state, FINAL_OUTPUT_STATES.classified, 'VOCAB_CLASSIFICATION should expose as classified.');
+  assert.equal(vocabExposure.state, FINAL_OUTPUT_STATES.degraded, 'VOCAB_CLASSIFICATION should expose as degraded.');
   assert.equal(vocabExposure.type, RESOLUTION_ENGINE_TYPES.VOCAB_CLASSIFICATION, 'VOCAB_CLASSIFICATION type mismatch.');
   assert.equal(vocabExposure.payload, vocabResult.payload, 'VOCAB_CLASSIFICATION payload must remain unchanged.');
 

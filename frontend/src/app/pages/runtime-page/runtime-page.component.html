@@ -173,338 +173,219 @@
           </section>
         } @else if (activeEntry(); as entry) {
           @if (entry.response; as response) {
-            @switch (resultDisplayState(entry)) {
-              @case ('concept_match') {
-                <section class="pdm-runtime__result-card pdm-site-surface pdm-site-panel">
-                  <div class="pdm-runtime__meta-grid">
-                    <article class="pdm-runtime__meta-item">
-                      <span class="pdm-runtime__meta-label">Runtime</span>
-                      <span class="pdm-runtime__meta-value">Live</span>
-                    </article>
-                    <article class="pdm-runtime__meta-item">
-                      <span class="pdm-runtime__meta-label">Resolution</span>
-                      <span class="pdm-runtime__meta-value">{{ resolutionTypeLabel(response) }}</span>
-                    </article>
-                    <article class="pdm-runtime__meta-item">
-                      <span class="pdm-runtime__meta-label">Scope</span>
-                      <span class="pdm-runtime__meta-value">{{ runtimeScopeLabel(response) }}</span>
-                    </article>
-                  </div>
-
-                  <div class="pdm-runtime__result-head">
-                    <p class="pdm-runtime__section-label">Canonical concept</p>
-                    <h2 class="pdm-runtime__result-title">{{ asConceptMatch(response).answer.title }}</h2>
-                    <p class="pdm-runtime__result-subtitle">{{ asConceptMatch(response).answer.shortDefinition }}</p>
-                  </div>
-
-                  <div class="pdm-runtime__chip-line">
-                    <span class="pdm-site-chip">{{ methodLabel(asConceptMatch(response).resolution.method) }}</span>
-                    <span class="pdm-site-chip">{{ queryTypeLabel(response.queryType) }}</span>
-                    <span class="pdm-site-chip">{{ response.contractVersion }}</span>
-                  </div>
-
-                  <app-inspectable-item-disclosure
-                    [itemType]="'core_concept'"
-                    [semanticData]="asConceptMatch(response).answer"
-                  />
-
-                  <div class="pdm-runtime__result-split">
-                    <section class="pdm-runtime__content-block">
-                      <p class="pdm-runtime__block-label">Sources</p>
-                      <div class="pdm-runtime__source-list">
-                        @for (source of asConceptMatch(response).answer.sources; track source.id) {
-                          <article class="pdm-runtime__source-card">
-                            <p class="pdm-runtime__source-title">{{ source.label }}</p>
-                            <p class="pdm-runtime__copy">{{ source.usedFor }}</p>
-                            <span class="pdm-site-chip">{{ sourceTypeLabel(source.type) }}</span>
-                          </article>
-                        }
-                      </div>
-                    </section>
-
-                    <section class="pdm-runtime__content-block">
-                      <p class="pdm-runtime__block-label">Related concepts</p>
-                      <div class="pdm-runtime__action-list">
-                        @for (relatedConcept of asConceptMatch(response).answer.relatedConcepts; track relatedConcept.conceptId) {
-                          <button
-                            class="pdm-runtime__action-card"
-                            type="button"
-                            (click)="resolveRelatedConcept(relatedConcept)"
-                          >
-                            <span class="pdm-runtime__action-title">{{ relatedConcept.title }}</span>
-                            <span class="pdm-runtime__action-copy">{{ relationLabel(relatedConcept.relationType) }}</span>
-                          </button>
-                        }
-                      </div>
-                    </section>
-                  </div>
-
-                  @if (entry.feedback; as feedback) {
-                    <section class="pdm-runtime__feedback">
-                      <p class="pdm-runtime__block-label">{{ feedback.question }}</p>
-                      <div class="pdm-runtime__feedback-options">
-                        @for (option of feedback.options; track option.value) {
-                          <button
-                            class="pdm-runtime__feedback-option pdm-site-chip"
-                            type="button"
-                            [disabled]="feedback.status === 'submitting' || feedback.status === 'submitted'"
-                            (click)="submitFeedback(option)"
-                          >
-                            {{ option.label }}
-                          </button>
-                        }
-                      </div>
-
-                      @if (feedback.status === 'submitted') {
-                        <p class="pdm-runtime__feedback-message">Recorded: {{ feedbackOptionLabel(feedback) }}</p>
-                      } @else if (feedback.status === 'error') {
-                        <p class="pdm-runtime__feedback-message pdm-runtime__feedback-message--error">
-                          {{ feedback.errorMessage }}
-                        </p>
-                      }
-                    </section>
-                  }
-                </section>
-              }
-
-              @case ('comparison') {
-                <section class="pdm-runtime__result-card pdm-site-surface pdm-site-panel">
-                  <div class="pdm-runtime__meta-grid">
-                    <article class="pdm-runtime__meta-item">
-                      <span class="pdm-runtime__meta-label">Runtime</span>
-                      <span class="pdm-runtime__meta-value">Live</span>
-                    </article>
-                    <article class="pdm-runtime__meta-item">
-                      <span class="pdm-runtime__meta-label">Resolution</span>
-                      <span class="pdm-runtime__meta-value">{{ resolutionTypeLabel(response) }}</span>
-                    </article>
-                    <article class="pdm-runtime__meta-item">
-                      <span class="pdm-runtime__meta-label">Scope</span>
-                      <span class="pdm-runtime__meta-value">{{ runtimeScopeLabel(response) }}</span>
-                    </article>
-                  </div>
-
-                  <div class="pdm-runtime__result-head">
-                    <p class="pdm-runtime__section-label">Controlled comparison</p>
-                    <h2 class="pdm-runtime__result-title">{{ entry.submittedQuery }}</h2>
-                    <p class="pdm-runtime__result-subtitle">
-                      This comparison pair is allowlisted in the current public runtime.
-                    </p>
-                  </div>
-
-                  <div class="pdm-runtime__chip-line">
-                    <span class="pdm-site-chip">{{ queryTypeLabel(response.queryType) }}</span>
-                    <span class="pdm-site-chip">{{ response.contractVersion }}</span>
-                  </div>
-
-                  <div class="pdm-runtime__comparison-grid">
-                    @for (axis of asComparison(response).comparison.axes; track axis.axis) {
-                      <article class="pdm-runtime__comparison-card">
-                        <p class="pdm-runtime__block-label">{{ axis.axis.replaceAll('_', ' ') }}</p>
-                        @if (comparisonAxisHasValues(axis)) {
-                          <div class="pdm-runtime__comparison-values">
-                            <div>
-                              <span class="pdm-runtime__comparison-side">A</span>
-                              <p class="pdm-runtime__copy">{{ axis.A }}</p>
-                            </div>
-                            <div>
-                              <span class="pdm-runtime__comparison-side">B</span>
-                              <p class="pdm-runtime__copy">{{ axis.B }}</p>
-                            </div>
-                          </div>
-                        } @else {
-                          <p class="pdm-runtime__copy">{{ axis.statement }}</p>
-                        }
-                      </article>
-                    }
-                  </div>
-                </section>
-              }
-
-              @case ('ambiguous_match') {
-                <section class="pdm-runtime__result-card pdm-site-surface pdm-site-panel">
-                  <div class="pdm-runtime__meta-grid">
-                    <article class="pdm-runtime__meta-item">
-                      <span class="pdm-runtime__meta-label">Runtime</span>
-                      <span class="pdm-runtime__meta-value">Bounded</span>
-                    </article>
-                    <article class="pdm-runtime__meta-item">
-                      <span class="pdm-runtime__meta-label">Resolution</span>
-                      <span class="pdm-runtime__meta-value">{{ resolutionTypeLabel(response) }}</span>
-                    </article>
-                    <article class="pdm-runtime__meta-item">
-                      <span class="pdm-runtime__meta-label">Execution</span>
-                      <span class="pdm-runtime__meta-value">{{ executionStateLabel(response) }}</span>
-                    </article>
-                  </div>
-
-                  <div class="pdm-runtime__result-head">
-                    <p class="pdm-runtime__section-label">Need a precise choice</p>
-                    <h2 class="pdm-runtime__result-title">Select the intended concept.</h2>
-                    <p class="pdm-runtime__result-subtitle">{{ asAmbiguousMatch(response).message }}</p>
-                  </div>
-
-                  <div class="pdm-runtime__action-list">
-                    @for (candidate of asAmbiguousMatch(response).candidates; track candidate.conceptId) {
-                      <button
-                        class="pdm-runtime__action-card"
-                        type="button"
-                        (click)="resolveAmbiguousCandidate(asAmbiguousMatch(response), candidate)"
-                      >
-                        <span class="pdm-runtime__action-title">{{ candidate.title }}</span>
-                        <span class="pdm-runtime__action-copy">{{ candidate.shortDefinition }}</span>
-                      </button>
-                    }
-                  </div>
-                </section>
-              }
-
-              @case ('reviewed_not_live') {
-                @if (entry.detail; as detail) {
-                  @if (detail.reviewState; as reviewState) {
-                    <section class="pdm-runtime__result-card pdm-site-surface pdm-site-panel">
-                      <div class="pdm-runtime__meta-grid">
-                        <article class="pdm-runtime__meta-item">
-                          <span class="pdm-runtime__meta-label">Runtime</span>
-                          <span class="pdm-runtime__meta-value">Not yet live</span>
-                        </article>
-                        <article class="pdm-runtime__meta-item">
-                          <span class="pdm-runtime__meta-label">Status</span>
-                          <span class="pdm-runtime__meta-value">
-                            {{ reviewAdmissionLabel(reviewState.admission) }}
-                          </span>
-                        </article>
-                        <article class="pdm-runtime__meta-item">
-                          <span class="pdm-runtime__meta-label">Validation</span>
-                          <span class="pdm-runtime__meta-value">{{ reviewValidationLabel(detail) }}</span>
-                        </article>
-                      </div>
-
-                      <div class="pdm-runtime__result-head">
-                        <p class="pdm-runtime__section-label">Reviewed concept</p>
-                        <h2 class="pdm-runtime__result-title">{{ reviewConceptTitle(detail) }}</h2>
-                        <p class="pdm-runtime__result-subtitle">{{ reviewedNotLiveTitle(detail) }}</p>
-                      </div>
-
-                      <p class="pdm-runtime__copy">{{ reviewedNotLiveBody(detail) }}</p>
-                      <p class="pdm-runtime__support">Only live concepts resolve in the current public runtime.</p>
-
-                      <button class="pdm-runtime__trace-toggle" type="button" (click)="toggleValidationTrace()">
-                        {{ validationTraceToggleLabel() }}
-                      </button>
-
-                      @if (validationTraceVisible()) {
-                        <dl class="pdm-runtime__trace-grid">
-                          @for (row of validationTraceRows(detail); track row.label) {
-                            <div class="pdm-runtime__trace-row">
-                              <dt>{{ row.label }}</dt>
-                              <dd>{{ row.value }}</dd>
-                            </div>
-                          }
-                        </dl>
-                      }
-                    </section>
-                  }
-                }
-              }
-
-              @case ('visible_only') {
-                @if (entry.detail; as detail) {
+            @switch (renderMode(response)) {
+              @case ('valid') {
+                @if (response.type === 'concept_match') {
                   <section class="pdm-runtime__result-card pdm-site-surface pdm-site-panel">
                     <div class="pdm-runtime__meta-grid">
                       <article class="pdm-runtime__meta-item">
                         <span class="pdm-runtime__meta-label">Runtime</span>
-                        <span class="pdm-runtime__meta-value">Visible only</span>
+                        <span class="pdm-runtime__meta-value">Live</span>
                       </article>
                       <article class="pdm-runtime__meta-item">
-                        <span class="pdm-runtime__meta-label">Detail</span>
-                        <span class="pdm-runtime__meta-value">Inspectable</span>
+                        <span class="pdm-runtime__meta-label">Resolution</span>
+                        <span class="pdm-runtime__meta-value">{{ resolutionTypeLabel(response) }}</span>
                       </article>
                       <article class="pdm-runtime__meta-item">
                         <span class="pdm-runtime__meta-label">Scope</span>
-                        <span class="pdm-runtime__meta-value">{{ visibleOnlyScopeLabel(detail) }}</span>
+                        <span class="pdm-runtime__meta-value">{{ runtimeScopeLabel(response) }}</span>
                       </article>
                     </div>
 
                     <div class="pdm-runtime__result-head">
-                      <p class="pdm-runtime__section-label">Visible-only concept</p>
-                      <h2 class="pdm-runtime__result-title">{{ visibleOnlyTitle(detail) }}</h2>
-                      <p class="pdm-runtime__result-subtitle">{{ detail.shortDefinition }}</p>
+                      <p class="pdm-runtime__section-label">Canonical concept</p>
+                      <h2 class="pdm-runtime__result-title">{{ asConceptMatch(response).answer.title }}</h2>
+                      <p class="pdm-runtime__result-subtitle">{{ asConceptMatch(response).answer.shortDefinition }}</p>
                     </div>
 
-                    @if (visibleOnlyDisclosureData(detail); as disclosureData) {
-                      <app-inspectable-item-disclosure
-                        [itemType]="'core_concept'"
-                        [semanticData]="disclosureData"
-                      />
-                    }
+                    <div class="pdm-runtime__chip-line">
+                      <span class="pdm-site-chip">{{ methodLabel(asConceptMatch(response).resolution.method) }}</span>
+                      <span class="pdm-site-chip">{{ queryTypeLabel(response.queryType) }}</span>
+                      <span class="pdm-site-chip">{{ response.contractVersion }}</span>
+                    </div>
 
-                    <p class="pdm-runtime__support">{{ visibleOnlySupportCopy(detail) }}</p>
+                    <app-inspectable-item-disclosure
+                      [itemType]="'core_concept'"
+                      [semanticData]="asConceptMatch(response).answer"
+                    />
+
+                    <div class="pdm-runtime__result-split">
+                      <section class="pdm-runtime__content-block">
+                        <p class="pdm-runtime__block-label">Sources</p>
+                        <div class="pdm-runtime__source-list">
+                          @for (source of asConceptMatch(response).answer.sources; track source.id) {
+                            <article class="pdm-runtime__source-card">
+                              <p class="pdm-runtime__source-title">{{ source.label }}</p>
+                              <p class="pdm-runtime__copy">{{ source.usedFor }}</p>
+                              <span class="pdm-site-chip">{{ sourceTypeLabel(source.type) }}</span>
+                            </article>
+                          }
+                        </div>
+                      </section>
+
+                      <section class="pdm-runtime__content-block">
+                        <p class="pdm-runtime__block-label">Related concepts</p>
+                        <div class="pdm-runtime__action-list">
+                          @for (relatedConcept of asConceptMatch(response).answer.relatedConcepts; track relatedConcept.conceptId) {
+                            <button
+                              class="pdm-runtime__action-card"
+                              type="button"
+                              (click)="resolveRelatedConcept(relatedConcept)"
+                            >
+                              <span class="pdm-runtime__action-title">{{ relatedConcept.title }}</span>
+                              <span class="pdm-runtime__action-copy">{{ relationLabel(relatedConcept.relationType) }}</span>
+                            </button>
+                          }
+                        </div>
+                      </section>
+                    </div>
+
+                    @if (entry.feedback; as feedback) {
+                      <section class="pdm-runtime__feedback">
+                        <p class="pdm-runtime__block-label">{{ feedback.question }}</p>
+                        <div class="pdm-runtime__feedback-options">
+                          @for (option of feedback.options; track option.value) {
+                            <button
+                              class="pdm-runtime__feedback-option pdm-site-chip"
+                              type="button"
+                              [disabled]="feedback.status === 'submitting' || feedback.status === 'submitted'"
+                              (click)="submitFeedback(option)"
+                            >
+                              {{ option.label }}
+                            </button>
+                          }
+                        </div>
+
+                        @if (feedback.status === 'submitted') {
+                          <p class="pdm-runtime__feedback-message">Recorded: {{ feedbackOptionLabel(feedback) }}</p>
+                        } @else if (feedback.status === 'error') {
+                          <p class="pdm-runtime__feedback-message pdm-runtime__feedback-message--error">
+                            {{ feedback.errorMessage }}
+                          </p>
+                        }
+                      </section>
+                    }
+                  </section>
+                } @else if (response.type === 'comparison') {
+                  <section class="pdm-runtime__result-card pdm-site-surface pdm-site-panel">
+                    <div class="pdm-runtime__meta-grid">
+                      <article class="pdm-runtime__meta-item">
+                        <span class="pdm-runtime__meta-label">Runtime</span>
+                        <span class="pdm-runtime__meta-value">Live</span>
+                      </article>
+                      <article class="pdm-runtime__meta-item">
+                        <span class="pdm-runtime__meta-label">Resolution</span>
+                        <span class="pdm-runtime__meta-value">{{ resolutionTypeLabel(response) }}</span>
+                      </article>
+                      <article class="pdm-runtime__meta-item">
+                        <span class="pdm-runtime__meta-label">Scope</span>
+                        <span class="pdm-runtime__meta-value">{{ runtimeScopeLabel(response) }}</span>
+                      </article>
+                    </div>
+
+                    <div class="pdm-runtime__result-head">
+                      <p class="pdm-runtime__section-label">Controlled comparison</p>
+                      <h2 class="pdm-runtime__result-title">{{ entry.submittedQuery }}</h2>
+                      <p class="pdm-runtime__result-subtitle">
+                        This comparison pair is allowlisted in the current public runtime.
+                      </p>
+                    </div>
+
+                    <div class="pdm-runtime__chip-line">
+                      <span class="pdm-site-chip">{{ queryTypeLabel(response.queryType) }}</span>
+                      <span class="pdm-site-chip">{{ response.contractVersion }}</span>
+                    </div>
+
+                    <div class="pdm-runtime__comparison-grid">
+                      @for (axis of asComparison(response).comparison.axes; track axis.axis) {
+                        <article class="pdm-runtime__comparison-card">
+                          <p class="pdm-runtime__block-label">{{ axis.axis.replaceAll('_', ' ') }}</p>
+                          @if (comparisonAxisHasValues(axis)) {
+                            <div class="pdm-runtime__comparison-values">
+                              <div>
+                                <span class="pdm-runtime__comparison-side">A</span>
+                                <p class="pdm-runtime__copy">{{ axis.A }}</p>
+                              </div>
+                              <div>
+                                <span class="pdm-runtime__comparison-side">B</span>
+                                <p class="pdm-runtime__copy">{{ axis.B }}</p>
+                              </div>
+                            </div>
+                          } @else {
+                            <p class="pdm-runtime__copy">{{ axis.statement }}</p>
+                          }
+                        </article>
+                      }
+                    </div>
+                  </section>
+                } @else {
+                  <section class="pdm-runtime__result-card pdm-site-surface pdm-site-panel">
+                    <div class="pdm-runtime__result-head">
+                      <p class="pdm-runtime__section-label">Result</p>
+                      <h2 class="pdm-runtime__result-title">Valid runtime output</h2>
+                      <p class="pdm-runtime__result-subtitle">
+                        The runtime returned a valid output shape for this query.
+                      </p>
+                    </div>
                   </section>
                 }
               }
 
-              @case ('blocked') {
-                <section class="pdm-runtime__result-card pdm-runtime__result-card--blocked pdm-site-surface pdm-site-panel">
+              @case ('partial') {
+                <section class="pdm-runtime__result-card pdm-site-surface pdm-site-panel">
                   <div class="pdm-runtime__meta-grid">
                     <article class="pdm-runtime__meta-item">
-                      <span class="pdm-runtime__meta-label">Resolution</span>
-                      <span class="pdm-runtime__meta-value">Refused</span>
+                      <span class="pdm-runtime__meta-label">Mode</span>
+                      <span class="pdm-runtime__meta-value">Limited result</span>
                     </article>
                     <article class="pdm-runtime__meta-item">
-                      <span class="pdm-runtime__meta-label">Status</span>
-                      <span class="pdm-runtime__meta-value">
-                        @if (entry.detail?.reviewState; as reviewState) {
-                          {{ reviewAdmissionLabel(reviewState.admission) }}
-                        } @else {
-                          Rejected
-                        }
-                      </span>
+                      <span class="pdm-runtime__meta-label">Reason</span>
+                      <span class="pdm-runtime__meta-value">{{ response.reason ?? 'Unavailable' }}</span>
                     </article>
                     <article class="pdm-runtime__meta-item">
-                      <span class="pdm-runtime__meta-label">Validation</span>
-                      <span class="pdm-runtime__meta-value">
-                        @if (entry.detail?.reviewState) {
-                          @if (entry.detail; as detail) {
-                            {{ reviewValidationLabel(detail) }}
-                          }
-                        } @else {
-                          Runtime refusal
-                        }
-                      </span>
+                      <span class="pdm-runtime__meta-label">Layer</span>
+                      <span class="pdm-runtime__meta-value">{{ response.failedLayer ?? 'Unavailable' }}</span>
                     </article>
                   </div>
 
                   <div class="pdm-runtime__result-head">
-                    <p class="pdm-runtime__section-label">{{ blockedSectionLabel(response, entry.detail) }}</p>
-                    <h2 class="pdm-runtime__result-title">{{ blockedTitle(entry.detail) }}</h2>
-                    <p class="pdm-runtime__result-subtitle">{{ blockedBody(response, entry.detail) }}</p>
+                    <p class="pdm-runtime__section-label">Limited result</p>
+                    <h2 class="pdm-runtime__result-title">The runtime returned a partial result.</h2>
+                    <p class="pdm-runtime__result-subtitle">
+                      This surface preserves the limitation instead of upgrading it to a full result.
+                    </p>
                   </div>
-
-                  <p class="pdm-runtime__support">{{ blockedSupportCopy(response, entry.detail) }}</p>
-
-                  @if (entry.detail?.reviewState) {
-                    <button class="pdm-runtime__trace-toggle" type="button" (click)="toggleValidationTrace()">
-                      {{ validationTraceToggleLabel() }}
-                    </button>
-
-                    @if (validationTraceVisible()) {
-                      @if (entry.detail; as detail) {
-                        <dl class="pdm-runtime__trace-grid">
-                          @for (row of validationTraceRows(detail); track row.label) {
-                            <div class="pdm-runtime__trace-row">
-                              <dt>{{ row.label }}</dt>
-                              <dd>{{ row.value }}</dd>
-                            </div>
-                          }
-                        </dl>
-                      }
-                    }
-                  }
                 </section>
               }
 
-              @default {
+              @case ('degraded') {
+                <section class="pdm-runtime__result-card pdm-site-surface pdm-site-panel">
+                  <div class="pdm-runtime__meta-grid">
+                    <article class="pdm-runtime__meta-item">
+                      <span class="pdm-runtime__meta-label">Mode</span>
+                      <span class="pdm-runtime__meta-value">Degraded result</span>
+                    </article>
+                    <article class="pdm-runtime__meta-item">
+                      <span class="pdm-runtime__meta-label">Reason</span>
+                      <span class="pdm-runtime__meta-value">{{ response.reason ?? 'Unavailable' }}</span>
+                    </article>
+                    <article class="pdm-runtime__meta-item">
+                      <span class="pdm-runtime__meta-label">Layer</span>
+                      <span class="pdm-runtime__meta-value">{{ response.failedLayer ?? 'Unavailable' }}</span>
+                    </article>
+                  </div>
+
+                  <div class="pdm-runtime__result-head">
+                    <p class="pdm-runtime__section-label">Degraded result</p>
+                    <h2 class="pdm-runtime__result-title">The runtime returned a degraded result.</h2>
+                    <p class="pdm-runtime__result-subtitle">
+                      This surface preserves the degradation instead of presenting it as a normal result.
+                    </p>
+                  </div>
+                </section>
+              }
+
+              @case ('refused') {
                 <section class="pdm-runtime__result-card pdm-site-surface pdm-site-panel">
                   <div class="pdm-runtime__meta-grid">
                     <article class="pdm-runtime__meta-item">
@@ -523,15 +404,32 @@
 
                   <div class="pdm-runtime__result-head">
                     <p class="pdm-runtime__section-label">Refusal</p>
-                    <h2 class="pdm-runtime__result-title">{{ refusalTitle(asRefusal(response)) }}</h2>
+                    <h2 class="pdm-runtime__result-title">
+                      {{ response.type === 'ambiguous_match' ? 'Select the intended concept.' : refusalTitle(asRefusal(response)) }}
+                    </h2>
                     <p class="pdm-runtime__result-subtitle">
-                      {{ refusalPrimaryMessage(asRefusal(response)) }}
+                      {{ response.type === 'ambiguous_match' ? asAmbiguousMatch(response).message : refusalPrimaryMessage(asRefusal(response)) }}
                     </p>
                   </div>
 
-                  <p class="pdm-runtime__support">{{ refusalSupportCopy(asRefusal(response), entry.detail) }}</p>
+                  @if (response.type === 'ambiguous_match') {
+                    <div class="pdm-runtime__action-list">
+                      @for (candidate of asAmbiguousMatch(response).candidates; track candidate.conceptId) {
+                        <button
+                          class="pdm-runtime__action-card"
+                          type="button"
+                          (click)="resolveAmbiguousCandidate(asAmbiguousMatch(response), candidate)"
+                        >
+                          <span class="pdm-runtime__action-title">{{ candidate.title }}</span>
+                          <span class="pdm-runtime__action-copy">{{ candidate.shortDefinition }}</span>
+                        </button>
+                      }
+                    </div>
+                  } @else {
+                    <p class="pdm-runtime__support">{{ refusalSupportCopy(asRefusal(response)) }}</p>
+                  }
 
-                  @if (refusalHasSuggestions(asRefusal(response))) {
+                  @if (response.type !== 'ambiguous_match' && refusalHasSuggestions(asRefusal(response))) {
                     <section class="pdm-runtime__content-block">
                       <p class="pdm-runtime__block-label">Suggested concepts</p>
                       <div class="pdm-runtime__action-list">
@@ -549,7 +447,7 @@
                     </section>
                   }
 
-                  @if (entry.feedback; as feedback) {
+                  @if (response.type !== 'ambiguous_match' && entry.feedback; as feedback) {
                     <section class="pdm-runtime__feedback">
                       <p class="pdm-runtime__block-label">{{ feedback.question }}</p>
                       <div class="pdm-runtime__feedback-options">

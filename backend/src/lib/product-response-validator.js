@@ -13,10 +13,26 @@ const {
   VOCABULARY_DETECTED_MESSAGE,
 } = require('../modules/concepts/constants');
 const {
+  RESPONSE_CONTRACT_BY_TYPE,
+  buildDeterministicKey,
+} = require('../modules/concepts/public-response-normalizer');
+const {
   CORE_CONCEPT_ITEM_TYPE,
 } = require('../modules/inspectable-item-contract');
 
 const CANONICAL_HASH_PATTERN = /^[a-f0-9]{64}$/;
+const ISO_8601_TIMESTAMP_PATTERN = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})Z$/;
+const RESOLVER_TOP_LEVEL_KEYS = Object.freeze([
+  'type',
+  'finalState',
+  'reason',
+  'failedLayer',
+  'deterministicKey',
+  'registryVersion',
+  'policyVersion',
+  'traceId',
+  'timestamp',
+]);
 
 const GENERAL_INTERPRETATION_TYPES = new Set([
   'comparison_not_supported',
@@ -293,6 +309,45 @@ function assertAllowedKeys(value, label, requiredKeys, optionalKeys = []) {
   if (missingKeys.length > 0) {
     throw new Error(`${label} is missing required field(s): ${missingKeys.join(', ')}.`);
   }
+}
+
+function validateContractLifecycleFields(response) {
+  const contract = RESPONSE_CONTRACT_BY_TYPE[response.type];
+
+  if (!contract) {
+    throw new Error(`Unsupported product response type "${response.type}".`);
+  }
+
+  if (response.finalState !== contract.finalState) {
+    throw new Error(`product response.finalState must be "${contract.finalState}".`);
+  }
+
+  if (contract.reason === null) {
+    if (response.reason !== null) {
+      throw new Error('product response.reason must be null.');
+    }
+  } else {
+    assertExactStringValue(response.reason, 'product response.reason', contract.reason);
+  }
+
+  if (contract.failedLayer === null) {
+    if (response.failedLayer !== null) {
+      throw new Error('product response.failedLayer must be null.');
+    }
+  } else {
+    assertExactStringValue(response.failedLayer, 'product response.failedLayer', contract.failedLayer);
+  }
+
+  assertStringValue(response.deterministicKey, 'product response.deterministicKey');
+  assertExactStringValue(response.registryVersion, 'product response.registryVersion', CONCEPT_SET_VERSION);
+  assertExactStringValue(response.policyVersion, 'product response.policyVersion', CONTRACT_VERSION);
+  assertExactStringValue(
+    response.deterministicKey,
+    'product response.deterministicKey',
+    buildDeterministicKey(response.normalizedQuery, response.registryVersion, response.policyVersion),
+  );
+  assertStringValue(response.traceId, 'product response.traceId');
+  assertPatternValue(response.timestamp, 'product response.timestamp', ISO_8601_TIMESTAMP_PATTERN);
 }
 
 function validateInterpretationObject(value, label = 'interpretation') {
@@ -703,7 +758,7 @@ function validateVocabularyClassificationResult(value, label = 'vocabulary') {
 
 function validateConceptMatchResponse(response) {
   assertAllowedKeys(response, 'product response', [
-    'type',
+    ...RESOLVER_TOP_LEVEL_KEYS,
     'query',
     'normalizedQuery',
     'contractVersion',
@@ -719,6 +774,8 @@ function validateConceptMatchResponse(response) {
   if (response.type !== 'concept_match') {
     throw new Error('Product response type must be "concept_match".');
   }
+
+  validateContractLifecycleFields(response);
 
   assertStringValue(response.query, 'product response.query');
   assertStringValue(response.normalizedQuery, 'product response.normalizedQuery');
@@ -738,7 +795,7 @@ function validateConceptMatchResponse(response) {
 
 function validateComparisonResponse(response) {
   assertAllowedKeys(response, 'product response', [
-    'type',
+    ...RESOLVER_TOP_LEVEL_KEYS,
     'mode',
     'query',
     'normalizedQuery',
@@ -758,6 +815,8 @@ function validateComparisonResponse(response) {
   if (response.mode !== 'comparison') {
     throw new Error('Product response mode must be "comparison".');
   }
+
+  validateContractLifecycleFields(response);
 
   assertStringValue(response.query, 'product response.query');
   assertStringValue(response.normalizedQuery, 'product response.normalizedQuery');
@@ -779,7 +838,7 @@ function validateComparisonResponse(response) {
 
 function validateRejectedConceptResponse(response) {
   assertAllowedKeys(response, 'product response', [
-    'type',
+    ...RESOLVER_TOP_LEVEL_KEYS,
     'query',
     'normalizedQuery',
     'contractVersion',
@@ -796,6 +855,8 @@ function validateRejectedConceptResponse(response) {
   if (response.type !== 'rejected_concept') {
     throw new Error('Product response type must be "rejected_concept".');
   }
+
+  validateContractLifecycleFields(response);
 
   assertStringValue(response.query, 'product response.query');
   assertStringValue(response.normalizedQuery, 'product response.normalizedQuery');
@@ -826,8 +887,7 @@ function validateRejectedConceptResponse(response) {
 
 function validateVocabularyDetectedResponse(response) {
   assertAllowedKeys(response, 'product response', [
-    'type',
-    'finalState',
+    ...RESOLVER_TOP_LEVEL_KEYS,
     'query',
     'normalizedQuery',
     'contractVersion',
@@ -845,9 +905,7 @@ function validateVocabularyDetectedResponse(response) {
     throw new Error('Product response type must be "VOCABULARY_DETECTED".');
   }
 
-  if (response.finalState !== 'refused') {
-    throw new Error('product response.finalState must be "refused".');
-  }
+  validateContractLifecycleFields(response);
 
   assertStringValue(response.query, 'product response.query');
   assertStringValue(response.normalizedQuery, 'product response.normalizedQuery');
@@ -872,7 +930,7 @@ function validateVocabularyDetectedResponse(response) {
 
 function validateNoExactMatchResponse(response) {
   assertAllowedKeys(response, 'product response', [
-    'type',
+    ...RESOLVER_TOP_LEVEL_KEYS,
     'query',
     'normalizedQuery',
     'contractVersion',
@@ -889,6 +947,8 @@ function validateNoExactMatchResponse(response) {
   if (response.type !== 'no_exact_match') {
     throw new Error('Product response type must be "no_exact_match".');
   }
+
+  validateContractLifecycleFields(response);
 
   assertStringValue(response.query, 'product response.query');
   assertStringValue(response.normalizedQuery, 'product response.normalizedQuery');
@@ -909,7 +969,7 @@ function validateNoExactMatchResponse(response) {
 
 function validateInvalidQueryResponse(response) {
   assertAllowedKeys(response, 'product response', [
-    'type',
+    ...RESOLVER_TOP_LEVEL_KEYS,
     'query',
     'normalizedQuery',
     'contractVersion',
@@ -925,6 +985,8 @@ function validateInvalidQueryResponse(response) {
   if (response.type !== 'invalid_query') {
     throw new Error('Product response type must be "invalid_query".');
   }
+
+  validateContractLifecycleFields(response);
 
   assertStringValue(response.query, 'product response.query');
   assertStringValue(response.normalizedQuery, 'product response.normalizedQuery');
@@ -947,7 +1009,7 @@ function validateInvalidQueryResponse(response) {
 
 function validateUnsupportedQueryTypeResponse(response) {
   assertAllowedKeys(response, 'product response', [
-    'type',
+    ...RESOLVER_TOP_LEVEL_KEYS,
     'query',
     'normalizedQuery',
     'contractVersion',
@@ -963,6 +1025,8 @@ function validateUnsupportedQueryTypeResponse(response) {
   if (response.type !== 'unsupported_query_type') {
     throw new Error('Product response type must be "unsupported_query_type".');
   }
+
+  validateContractLifecycleFields(response);
 
   assertStringValue(response.query, 'product response.query');
   assertStringValue(response.normalizedQuery, 'product response.normalizedQuery');
@@ -981,7 +1045,7 @@ function validateUnsupportedQueryTypeResponse(response) {
 
 function validateAmbiguousMatchResponse(response) {
   assertAllowedKeys(response, 'product response', [
-    'type',
+    ...RESOLVER_TOP_LEVEL_KEYS,
     'query',
     'normalizedQuery',
     'contractVersion',
@@ -998,6 +1062,8 @@ function validateAmbiguousMatchResponse(response) {
   if (response.type !== 'ambiguous_match') {
     throw new Error('Product response type must be "ambiguous_match".');
   }
+
+  validateContractLifecycleFields(response);
 
   assertStringValue(response.query, 'product response.query');
   assertStringValue(response.normalizedQuery, 'product response.normalizedQuery');

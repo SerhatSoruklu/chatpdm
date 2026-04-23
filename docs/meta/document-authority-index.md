@@ -82,6 +82,7 @@ Examples:
 - `docs/runtime/baseline-metrics-snapshot-*.md`
 - `security/FINDINGS_LOG.md`
 - `tests/runtime/reports/*.md`
+- `docs/architecture/phase-1-completion-report.md` - Phase 1 completion report and frozen baseline evidence
 
 ## Narrative Docs
 
