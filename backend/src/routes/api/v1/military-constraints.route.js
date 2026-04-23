@@ -3,31 +3,84 @@
 const path = require('node:path');
 const { Router } = require('express');
 
-const { listReferencePacks } = require('../../../modules/military-constraints/list-reference-packs');
-const { evaluateBundle } = require('../../../modules/military-constraints/evaluate-bundle');
-const { validateFactPacket, isPlainObject } = require('../../../modules/military-constraints/fact-schema-utils');
-const { createPreparedBundleCache } = require('../../../modules/military-constraints/prepared-bundle-cache');
-const { loadPackRegistry, validatePackRegistry } = require('../../../modules/military-constraints/reference-pack-utils');
-
-const MODULE_ROOT = path.resolve(__dirname, '../../../modules/military-constraints');
-const FACT_SCHEMA = require('../../../modules/military-constraints/military-constraint-fact.schema.json');
 const PACK_ID_PATTERN = /^[A-Za-z0-9._-]+$/;
+const MILITARY_CONSTRAINTS_UNAVAILABLE_CODE = 'military_constraints_unavailable';
+const MILITARY_CONSTRAINTS_UNAVAILABLE_MESSAGE = 'The military constraints service is temporarily unavailable.';
 
 const router = Router();
-const PACK_INDEX = listReferencePacks({ rootDir: MODULE_ROOT });
-const PACK_REGISTRY = loadPackRegistry(MODULE_ROOT);
-const PACK_REGISTRY_VALIDATION = validatePackRegistry(PACK_REGISTRY);
-const PACK_BUNDLE_CACHE = createPreparedBundleCache({
-  rootDir: MODULE_ROOT,
-  packIndex: PACK_INDEX,
-});
+
+function isPlainObject(value) {
+  return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
+}
+
+let militaryConstraintsRuntime = null;
+
+function loadMilitaryConstraintsRuntime() {
+  if (militaryConstraintsRuntime !== null) {
+    return militaryConstraintsRuntime;
+  }
+
+  try {
+    const { listReferencePacks } = require('../../../modules/military-constraints/list-reference-packs');
+    const { evaluateBundle } = require('../../../modules/military-constraints/evaluate-bundle');
+    const { validateFactPacket } = require('../../../modules/military-constraints/fact-schema-utils');
+    const { createPreparedBundleCache } = require('../../../modules/military-constraints/prepared-bundle-cache');
+    const { loadPackRegistry, validatePackRegistry } = require('../../../modules/military-constraints/reference-pack-utils');
+
+    const moduleRoot = path.resolve(__dirname, '../../../modules/military-constraints');
+    const factSchema = require('../../../modules/military-constraints/military-constraint-fact.schema.json');
+    const packIndex = listReferencePacks({ rootDir: moduleRoot });
+    const packRegistry = loadPackRegistry(moduleRoot);
+    const packRegistryValidation = validatePackRegistry(packRegistry);
+    const packBundleCache = createPreparedBundleCache({
+      rootDir: moduleRoot,
+      packIndex,
+    });
+
+    militaryConstraintsRuntime = Object.freeze({
+      available: true,
+      moduleRoot,
+      factSchema,
+      evaluateBundle,
+      validateFactPacket,
+      packIndex,
+      packRegistry,
+      packRegistryValidation,
+      packBundleCache,
+    });
+  } catch (error) {
+    militaryConstraintsRuntime = Object.freeze({
+      available: false,
+      error,
+    });
+  }
+
+  return militaryConstraintsRuntime;
+}
+
+const MILITARY_CONSTRAINTS_RUNTIME = loadMilitaryConstraintsRuntime();
+
+function ensureMilitaryConstraintsRuntime(res) {
+  if (MILITARY_CONSTRAINTS_RUNTIME.available) {
+    return MILITARY_CONSTRAINTS_RUNTIME;
+  }
+
+  writeError(res, 503, MILITARY_CONSTRAINTS_UNAVAILABLE_CODE, MILITARY_CONSTRAINTS_UNAVAILABLE_MESSAGE);
+  return null;
+}
 
 function countRegistryEntries(predicate) {
-  if (!Array.isArray(PACK_REGISTRY) || !PACK_REGISTRY_VALIDATION.valid) {
+  if (!MILITARY_CONSTRAINTS_RUNTIME.available) {
     return 0;
   }
 
-  return PACK_REGISTRY.filter((entry) => {
+  const { packRegistry, packRegistryValidation } = MILITARY_CONSTRAINTS_RUNTIME;
+
+  if (!Array.isArray(packRegistry) || !packRegistryValidation.valid) {
+    return 0;
+  }
+
+  return packRegistry.filter((entry) => {
     return entry && typeof entry === 'object' && predicate(entry);
   }).length;
 }
@@ -81,16 +134,24 @@ function readPackId(rawPackId) {
   return packId;
 }
 
-function getPackRecord(packId) {
-  return PACK_INDEX.find((pack) => pack.packId === packId) || null;
+function getPackRecord(packIndex, packId) {
+  if (!Array.isArray(packIndex)) {
+    return null;
+  }
+
+  return packIndex.find((pack) => pack.packId === packId) || null;
 }
 
-function buildPackDetail(packRecord) {
+function buildPackDetail(runtime, packRecord) {
+  if (!runtime || !runtime.available) {
+    return null;
+  }
+
   if (!packRecord || typeof packRecord.manifestPath !== 'string' || packRecord.manifestPath.length === 0) {
     return null;
   }
 
-  const cacheRecord = PACK_BUNDLE_CACHE.get(packRecord.packId);
+  const cacheRecord = runtime.packBundleCache.get(packRecord.packId);
   if (!cacheRecord || !cacheRecord.valid || !cacheRecord.metadata) {
     return {
       valid: false,
@@ -142,12 +203,17 @@ function stampBundleIdentity(facts, bundle) {
 }
 
 function handleRootRequest(_req, res) {
+  const runtime = ensureMilitaryConstraintsRuntime(res);
+  if (!runtime) {
+    return;
+  }
+
   res.json({
     resource: 'military-constraints',
     status: 'active',
     availableOperations: ['packs', 'evaluate'],
-    packCount: PACK_INDEX.length,
-    registryPackCount: Array.isArray(PACK_REGISTRY) ? PACK_REGISTRY.length : 0,
+    packCount: runtime.packIndex.length,
+    registryPackCount: Array.isArray(runtime.packRegistry) ? runtime.packRegistry.length : 0,
     baselinePackCount: countRegistryEntries((entry) => entry.status === 'baseline'),
     admittedPackCount: countRegistryEntries((entry) => entry.status === 'admitted'),
     plannedPackCount: countRegistryEntries((entry) => entry.status === 'planned'),
@@ -156,14 +222,24 @@ function handleRootRequest(_req, res) {
 }
 
 function handleListPacksRequest(_req, res) {
+  const runtime = ensureMilitaryConstraintsRuntime(res);
+  if (!runtime) {
+    return;
+  }
+
   res.json({
     resource: 'military-constraints',
     status: 'active',
-    packs: PACK_INDEX.map((pack) => sanitizeListedPackRecord(pack)),
+    packs: runtime.packIndex.map((pack) => sanitizeListedPackRecord(pack)),
   });
 }
 
 function handlePackRequest(req, res) {
+  const runtime = ensureMilitaryConstraintsRuntime(res);
+  if (!runtime) {
+    return;
+  }
+
   const packId = readPackId(req.params.packId);
   if (packId === null) {
     writeError(
@@ -175,13 +251,13 @@ function handlePackRequest(req, res) {
     return;
   }
 
-  const packRecord = getPackRecord(packId);
+  const packRecord = getPackRecord(runtime.packIndex, packId);
   if (packRecord === null) {
     writeError(res, 404, 'military_constraints_pack_not_found', `No military constraints pack was found for packId "${packId}".`);
     return;
   }
 
-  const builtPack = buildPackDetail(packRecord);
+  const builtPack = buildPackDetail(runtime, packRecord);
   if (!builtPack) {
     writeError(res, 500, 'military_constraints_pack_failed', 'The military constraints pack could not be loaded from the prepared cache.');
     return;
@@ -222,6 +298,11 @@ function validateEvaluateBody(body) {
 }
 
 function handleEvaluateRequest(req, res) {
+  const runtime = ensureMilitaryConstraintsRuntime(res);
+  if (!runtime) {
+    return;
+  }
+
   const validationMessage = validateEvaluateBody(req.body);
   if (validationMessage !== null) {
     writeError(res, 400, 'invalid_military_constraints_request', validationMessage);
@@ -229,30 +310,30 @@ function handleEvaluateRequest(req, res) {
   }
 
   const packId = readPackId(req.body.packId);
-  const packRecord = getPackRecord(packId);
+  const packRecord = getPackRecord(runtime.packIndex, packId);
   if (!packRecord) {
     writeError(res, 404, 'military_constraints_pack_not_found', `No military constraints pack was found for packId "${packId}".`);
     return;
   }
 
-  const bundleRecord = PACK_BUNDLE_CACHE.get(packId);
+  const bundleRecord = runtime.packBundleCache.get(packId);
   if (!bundleRecord || !bundleRecord.valid || !bundleRecord.bundle || !bundleRecord.preparedBundle) {
     writeError(res, 500, 'military_constraints_bundle_failed', 'The military constraints bundle could not be loaded from the prepared cache.');
     return;
   }
 
   const evaluationFacts = stampBundleIdentity(req.body.facts, bundleRecord.bundle);
-  const stampedFactValidation = validateFactPacket(evaluationFacts, FACT_SCHEMA);
+  const stampedFactValidation = runtime.validateFactPacket(evaluationFacts, runtime.factSchema);
   if (!stampedFactValidation.valid) {
     writeError(res, 400, 'invalid_military_constraints_facts', stampedFactValidation.errors[0] || 'facts do not match the military constraints fact schema.');
     return;
   }
 
-  const decision = evaluateBundle({
+  const decision = runtime.evaluateBundle({
     preparedBundle: bundleRecord.preparedBundle,
     bundle: bundleRecord.bundle,
     facts: evaluationFacts,
-    factSchema: FACT_SCHEMA,
+    factSchema: runtime.factSchema,
   });
 
   res.json(buildEvaluateResponse(decision));
