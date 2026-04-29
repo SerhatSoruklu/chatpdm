@@ -1,0 +1,66 @@
+{
+  "generatedAt": "2026-04-29T19:05:24.033Z",
+  "mode": "approval_queue_v2_ranked_queue_only",
+  "totalRegistryEntriesConsidered": 3585,
+  "existingMeaningsExcluded": 293,
+  "batch007PendingExcluded": 30,
+  "eligibleFutureCandidateCount": 301,
+  "reviewRiskCandidateCount": 96,
+  "rankedCandidateCount": 397,
+  "skippedOrBlockedCount": 3188,
+  "whartonV3SupportedCandidateCount": 4,
+  "stroudV3SupportedCandidateCount": 236,
+  "eligibilityCounts": {
+    "eligible_for_future_batch": 301,
+    "review_risk": 96,
+    "skip_existing_meaning": 293,
+    "skip_no_black_primary": 319,
+    "skip_duplicate_alias_group": 1273,
+    "skip_alias_surface": 1273,
+    "skip_batch_007_pending": 30
+  },
+  "ocrBlockedSourcesExcluded": [
+    "bouvier_1839_vol_1",
+    "bouvier_1839_vol_2",
+    "burrill_1860",
+    "ballentine_1916"
+  ],
+  "safety": {
+    "queueArtifactsOnly": true,
+    "noVocabularyMeaningsWritten": true,
+    "noWritebackPreviewCreated": true,
+    "noWritebackApplied": true,
+    "noAliasesAdded": true,
+    "noFuzzyMatching": true,
+    "blackPrimaryMandatory": true,
+    "whartonStroudAssistiveOnly": true,
+    "ocrBlockedSourcesNotUsed": true,
+    "noBatch008DraftArtifactsCreated": true
+  },
+  "validationSnapshot": {
+    "protectedDiffStatus": {
+      "generatedMeaningSources": {
+        "clean": true,
+        "changedPaths": []
+      },
+      "dataConcepts": {
+        "clean": true,
+        "changedPaths": []
+      },
+      "backendConceptModules": {
+        "clean": true,
+        "changedPaths": []
+      }
+    }
+  },
+  "outputPaths": {
+    "rankedJson": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/approval_queue_v2/approval_queue_v2_ranked_candidates.json",
+    "rankedNdjson": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/approval_queue_v2/approval_queue_v2_ranked_candidates.ndjson",
+    "summaryMarkdown": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/approval_queue_v2/approval_queue_v2_summary.md",
+    "skippedOrBlockedJson": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/approval_queue_v2/approval_queue_v2_skipped_or_blocked.json",
+    "batchPlanMarkdown": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/approval_queue_v2/approval_queue_v2_batch_plan.md",
+    "batchPlanJson": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/approval_queue_v2/approval_queue_v2_batch_plan.json",
+    "repoSummaryMarkdown": "/home/serhat/code/chatpdm/docs/boundary/approval-queue-v2-summary.md",
+    "repoSummaryJson": "/home/serhat/code/chatpdm/docs/boundary/approval-queue-v2-summary.json"
+  }
+}

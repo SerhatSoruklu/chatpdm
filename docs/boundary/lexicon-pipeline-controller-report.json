@@ -1,0 +1,536 @@
+{
+  "generatedAt": "2026-04-24T14:32:00.396Z",
+  "status": "REPORT_ONLY",
+  "boundaryDiscipline": {
+    "vocabularyMeaningsModified": false,
+    "runtimeOntologyChanged": false,
+    "conceptPacketsChanged": false,
+    "writebackApplied": false
+  },
+  "controllerRules": {
+    "batchSize": {
+      "nextBatchFixedAt50": "batch_006 remains 50",
+      "batch007MayIncrease": "if batch_005 and batch_006 are clean, batch_007 may increase to 100",
+      "batch008MayIncrease": "if batch_007 is clean, batch_008 may increase to 150",
+      "batch009MayIncrease": "if batch_008 is clean, batch_009 may increase to 200",
+      "max250Rule": "move to 250 only after 3 clean batches at 100+",
+      "hardFailureRule": "downgrade one level on hard-gate failure",
+      "qualityFailureRule": "hold current size on quality-gate failure"
+    },
+    "hardGates": [
+      "target_mapping_failures == 0",
+      "runtime_collisions == 0",
+      "failed_writes == 0",
+      "alias_fanout_count == 0",
+      "missing_provenance_count == 0",
+      "provenance_coverage == 100%"
+    ],
+    "qualityGates": [
+      "skip_rate <= 15%",
+      "revision_rate <= 25%",
+      "failure_rate == 0%"
+    ]
+  },
+  "currentCompletedBatchCount": 5,
+  "batchStatuses": [
+    {
+      "batchId": "batch_001",
+      "batchNumber": 1,
+      "status": "clean",
+      "hardGatePassed": true,
+      "qualityGatePassed": true,
+      "draftCount": 50,
+      "approvedCount": 38,
+      "revisedCount": 7,
+      "rejectedCount": 5,
+      "skippedCount": 5,
+      "candidateCount": 45,
+      "rowsChanged": 45,
+      "sourceBasisCounts": {},
+      "hardGateMetrics": {
+        "targetMappingFailures": 0,
+        "runtimeCollisions": 0,
+        "failedWrites": 0,
+        "aliasFanoutCount": 0,
+        "missingProvenanceCount": 0,
+        "provenanceCoverage": 100
+      },
+      "qualityGateMetrics": {
+        "skipRate": 10,
+        "revisionRate": 14,
+        "failureRate": 0
+      },
+      "hardGateChecks": {
+        "targetMappingFailuresZero": true,
+        "runtimeCollisionsZero": true,
+        "failedWritesZero": true,
+        "aliasFanoutZero": true,
+        "missingProvenanceZero": true,
+        "provenanceCoverageComplete": true
+      },
+      "qualityGateChecks": {
+        "skipRateAtOrBelow15Percent": true,
+        "revisionRateAtOrBelow25Percent": true,
+        "failureRateZero": true
+      },
+      "inputFiles": {
+        "drafts": "C:\\Users\\coupy\\Desktop\\vocabulary-reference-lexicons\\vocabulary_reference_lexicons\\draft_meanings\\batch_001_first_50_drafts.json",
+        "preview": "C:\\Users\\coupy\\Desktop\\vocabulary-reference-lexicons\\vocabulary_reference_lexicons\\draft_meanings\\writeback_preview\\batch_001_writeback_validation_report.json",
+        "applied": "C:\\Users\\coupy\\Desktop\\vocabulary-reference-lexicons\\vocabulary_reference_lexicons\\draft_meanings\\writeback_applied\\batch_001_applied_diff.json",
+        "skipped": "C:\\Users\\coupy\\Desktop\\vocabulary-reference-lexicons\\vocabulary_reference_lexicons\\draft_meanings\\reports\\batch_001_skipped.json"
+      }
+    },
+    {
+      "batchId": "batch_002",
+      "batchNumber": 2,
+      "status": "clean",
+      "hardGatePassed": true,
+      "qualityGatePassed": true,
+      "draftCount": 50,
+      "approvedCount": 34,
+      "revisedCount": 11,
+      "rejectedCount": 5,
+      "skippedCount": 5,
+      "candidateCount": 45,
+      "rowsChanged": 45,
+      "sourceBasisCounts": {},
+      "hardGateMetrics": {
+        "targetMappingFailures": 0,
+        "runtimeCollisions": 0,
+        "failedWrites": 0,
+        "aliasFanoutCount": 0,
+        "missingProvenanceCount": 0,
+        "provenanceCoverage": 100
+      },
+      "qualityGateMetrics": {
+        "skipRate": 10,
+        "revisionRate": 22,
+        "failureRate": 0
+      },
+      "hardGateChecks": {
+        "targetMappingFailuresZero": true,
+        "runtimeCollisionsZero": true,
+        "failedWritesZero": true,
+        "aliasFanoutZero": true,
+        "missingProvenanceZero": true,
+        "provenanceCoverageComplete": true
+      },
+      "qualityGateChecks": {
+        "skipRateAtOrBelow15Percent": true,
+        "revisionRateAtOrBelow25Percent": true,
+        "failureRateZero": true
+      },
+      "inputFiles": {
+        "drafts": "C:\\Users\\coupy\\Desktop\\vocabulary-reference-lexicons\\vocabulary_reference_lexicons\\draft_meanings\\batch_002_second_50_drafts.json",
+        "preview": "C:\\Users\\coupy\\Desktop\\vocabulary-reference-lexicons\\vocabulary_reference_lexicons\\draft_meanings\\writeback_preview\\batch_002_writeback_validation_report.json",
+        "applied": "C:\\Users\\coupy\\Desktop\\vocabulary-reference-lexicons\\vocabulary_reference_lexicons\\draft_meanings\\writeback_applied\\batch_002_applied_diff.json",
+        "skipped": "C:\\Users\\coupy\\Desktop\\vocabulary-reference-lexicons\\vocabulary_reference_lexicons\\draft_meanings\\reports\\batch_002_skipped.json"
+      }
+    },
+    {
+      "batchId": "batch_003",
+      "batchNumber": 3,
+      "status": "quality_gate_hold",
+      "hardGatePassed": true,
+      "qualityGatePassed": false,
+      "draftCount": 50,
+      "approvedCount": 32,
+      "revisedCount": 16,
+      "rejectedCount": 2,
+      "skippedCount": 2,
+      "candidateCount": 48,
+      "rowsChanged": 48,
+      "sourceBasisCounts": {},
+      "hardGateMetrics": {
+        "targetMappingFailures": 0,
+        "runtimeCollisions": 0,
+        "failedWrites": 0,
+        "aliasFanoutCount": 0,
+        "missingProvenanceCount": 0,
+        "provenanceCoverage": 100
+      },
+      "qualityGateMetrics": {
+        "skipRate": 4,
+        "revisionRate": 32,
+        "failureRate": 0
+      },
+      "hardGateChecks": {
+        "targetMappingFailuresZero": true,
+        "runtimeCollisionsZero": true,
+        "failedWritesZero": true,
+        "aliasFanoutZero": true,
+        "missingProvenanceZero": true,
+        "provenanceCoverageComplete": true
+      },
+      "qualityGateChecks": {
+        "skipRateAtOrBelow15Percent": true,
+        "revisionRateAtOrBelow25Percent": false,
+        "failureRateZero": true
+      },
+      "inputFiles": {
+        "drafts": "C:\\Users\\coupy\\Desktop\\vocabulary-reference-lexicons\\vocabulary_reference_lexicons\\draft_meanings\\batch_003_third_50_drafts.json",
+        "preview": "C:\\Users\\coupy\\Desktop\\vocabulary-reference-lexicons\\vocabulary_reference_lexicons\\draft_meanings\\writeback_preview\\batch_003_writeback_validation_report.json",
+        "applied": "C:\\Users\\coupy\\Desktop\\vocabulary-reference-lexicons\\vocabulary_reference_lexicons\\draft_meanings\\writeback_applied\\batch_003_applied_diff.json",
+        "skipped": "C:\\Users\\coupy\\Desktop\\vocabulary-reference-lexicons\\vocabulary_reference_lexicons\\draft_meanings\\reports\\batch_003_skipped.json"
+      }
+    },
+    {
+      "batchId": "batch_004",
+      "batchNumber": 4,
+      "status": "clean",
+      "hardGatePassed": true,
+      "qualityGatePassed": true,
+      "draftCount": 50,
+      "approvedCount": 38,
+      "revisedCount": 7,
+      "rejectedCount": 5,
+      "skippedCount": 5,
+      "candidateCount": 45,
+      "rowsChanged": 45,
+      "sourceBasisCounts": {
+        "black_plus_anderson": 27,
+        "black_only": 18
+      },
+      "hardGateMetrics": {
+        "targetMappingFailures": 0,
+        "runtimeCollisions": 0,
+        "failedWrites": 0,
+        "aliasFanoutCount": 0,
+        "missingProvenanceCount": 0,
+        "provenanceCoverage": 100
+      },
+      "qualityGateMetrics": {
+        "skipRate": 10,
+        "revisionRate": 14,
+        "failureRate": 0
+      },
+      "hardGateChecks": {
+        "targetMappingFailuresZero": true,
+        "runtimeCollisionsZero": true,
+        "failedWritesZero": true,
+        "aliasFanoutZero": true,
+        "missingProvenanceZero": true,
+        "provenanceCoverageComplete": true
+      },
+      "qualityGateChecks": {
+        "skipRateAtOrBelow15Percent": true,
+        "revisionRateAtOrBelow25Percent": true,
+        "failureRateZero": true
+      },
+      "inputFiles": {
+        "drafts": "C:\\Users\\coupy\\Desktop\\vocabulary-reference-lexicons\\vocabulary_reference_lexicons\\draft_meanings\\batch_004_fourth_50_drafts.json",
+        "preview": "C:\\Users\\coupy\\Desktop\\vocabulary-reference-lexicons\\vocabulary_reference_lexicons\\draft_meanings\\writeback_preview\\batch_004_writeback_validation_report.json",
+        "applied": "C:\\Users\\coupy\\Desktop\\vocabulary-reference-lexicons\\vocabulary_reference_lexicons\\draft_meanings\\writeback_applied\\batch_004_applied_diff.json",
+        "skipped": "C:\\Users\\coupy\\Desktop\\vocabulary-reference-lexicons\\vocabulary_reference_lexicons\\draft_meanings\\reports\\batch_004_skipped.json"
+      }
+    },
+    {
+      "batchId": "batch_005",
+      "batchNumber": 5,
+      "status": "clean",
+      "hardGatePassed": true,
+      "qualityGatePassed": true,
+      "draftCount": 50,
+      "approvedCount": 42,
+      "revisedCount": 6,
+      "rejectedCount": 2,
+      "skippedCount": 2,
+      "candidateCount": 48,
+      "rowsChanged": 48,
+      "sourceBasisCounts": {
+        "black_plus_anderson": 29,
+        "black_only": 19
+      },
+      "hardGateMetrics": {
+        "targetMappingFailures": 0,
+        "runtimeCollisions": 0,
+        "failedWrites": 0,
+        "aliasFanoutCount": 0,
+        "missingProvenanceCount": 0,
+        "provenanceCoverage": 100
+      },
+      "qualityGateMetrics": {
+        "skipRate": 4,
+        "revisionRate": 12,
+        "failureRate": 0
+      },
+      "hardGateChecks": {
+        "targetMappingFailuresZero": true,
+        "runtimeCollisionsZero": true,
+        "failedWritesZero": true,
+        "aliasFanoutZero": true,
+        "missingProvenanceZero": true,
+        "provenanceCoverageComplete": true
+      },
+      "qualityGateChecks": {
+        "skipRateAtOrBelow15Percent": true,
+        "revisionRateAtOrBelow25Percent": true,
+        "failureRateZero": true
+      },
+      "inputFiles": {
+        "drafts": "C:\\Users\\coupy\\Desktop\\vocabulary-reference-lexicons\\vocabulary_reference_lexicons\\draft_meanings\\batch_005_fifth_50_drafts.json",
+        "preview": "C:\\Users\\coupy\\Desktop\\vocabulary-reference-lexicons\\vocabulary_reference_lexicons\\draft_meanings\\writeback_preview\\batch_005_writeback_validation_report.json",
+        "applied": "C:\\Users\\coupy\\Desktop\\vocabulary-reference-lexicons\\vocabulary_reference_lexicons\\draft_meanings\\writeback_applied\\batch_005_applied_diff.json",
+        "skipped": "C:\\Users\\coupy\\Desktop\\vocabulary-reference-lexicons\\vocabulary_reference_lexicons\\draft_meanings\\reports\\batch_005_skipped.json"
+      }
+    }
+  ],
+  "batchSizeDecision": {
+    "nextBatchNumber": 6,
+    "recommendedNextBatchSize": 50,
+    "escalationAllowed": false,
+    "reason": "Batch 006 remains at 50; batch 007 may increase to 100 only if both batch 005 and batch 006 are clean."
+  },
+  "aggregateHardGateStatus": {
+    "allCompletedBatchesHardGatePassed": true,
+    "latestBatchHardGatePassed": true,
+    "provenanceCoverage": 100,
+    "provenanceCoverageComplete": true
+  },
+  "aggregateQualityGateStatus": {
+    "allCompletedBatchesQualityGatePassed": false,
+    "latestBatchQualityGatePassed": true,
+    "latestBatchSkipRate": 4,
+    "latestBatchRevisionRate": 12,
+    "latestBatchFailureRate": 0
+  },
+  "sourceLanes": {
+    "activeSourceLanes": [
+      "black_1891_a",
+      "black_1891_b",
+      "black_1891_c",
+      "black_1891_d-e",
+      "black_1891_f-h",
+      "black_1891_i-j",
+      "black_1891_k-m",
+      "black_1891_n-o",
+      "black_1891_p-q",
+      "black_1891_r-s",
+      "black_1891_t-z",
+      "blacks_1910"
+    ],
+    "currentAuthoringLane": "Black primary lane with Anderson, Osborn exact-term comparator context where available",
+    "continueCurrentSourceLanes": true,
+    "usableComparatorLanes": [
+      {
+        "sourceId": "anderson_1889",
+        "sourceTitle": "Anderson's Law Dictionary",
+        "readinessClass": "ready_for_direct_text",
+        "sourceQualityTier": "provisional",
+        "fullExtractionReady": true,
+        "laneUse": "exact-term comparator support"
+      },
+      {
+        "sourceId": "osborn_1927",
+        "sourceTitle": "A Concise Law Dictionary",
+        "readinessClass": "ready_for_direct_text",
+        "sourceQualityTier": "provisional",
+        "fullExtractionReady": true,
+        "laneUse": "exact-term comparator support"
+      },
+      {
+        "sourceId": "stroud_1903",
+        "sourceTitle": "Stroud's Judicial Dictionary",
+        "readinessClass": "ready_for_direct_text",
+        "sourceQualityTier": "provisional",
+        "fullExtractionReady": false,
+        "laneUse": "proof/full-extraction required before authoring use"
+      }
+    ],
+    "ocrBlockedLanes": [
+      {
+        "sourceId": "ballentine_1916",
+        "sourceTitle": "Ballentine's Law Dictionary",
+        "year": 1916,
+        "pages": 646
+      },
+      {
+        "sourceId": "bouvier_1839_v1",
+        "sourceTitle": "Bouvier's Law Dictionary",
+        "year": 1839,
+        "pages": 573
+      },
+      {
+        "sourceId": "bouvier_1839_v2",
+        "sourceTitle": "Bouvier's Law Dictionary",
+        "year": 1839,
+        "pages": 639
+      },
+      {
+        "sourceId": "burrill_1860",
+        "sourceTitle": "A Law Dictionary and Glossary",
+        "year": 1860,
+        "pages": 1404
+      }
+    ],
+    "nextSourceProof": {
+      "sourceId": "stroud_1903",
+      "sourceTitle": "Stroud's Judicial Dictionary",
+      "readinessClass": "ready_for_direct_text",
+      "sourceQualityTier": "provisional",
+      "reason": "stroud_1903 is the next unproofed non-Black direct-text comparator candidate; proof it in parallel before any authoring use.",
+      "parallelOnly": true
+    },
+    "nextBatchShouldWaitForAnotherSource": false,
+    "sourceDecisionNotes": [
+      "Continue Black + Anderson + Osborn while hard and quality gates remain clean.",
+      "Do not block the next batch on unused sources.",
+      "Proof another source only in parallel.",
+      "Do not promote a new source into authoring until bounded proof, full extraction, and alignment pass are complete.",
+      "OCR sources remain blocked until OCR tooling is installed and validated.",
+      "Extra sources are exact-term support only for wrong-sense correction or historically narrow terms."
+    ],
+    "readinessSummary": {
+      "sourceRecordCount": 20,
+      "byReadinessClass": {
+        "ocr_required": 4,
+        "ready_for_direct_text": 15,
+        "usable_with_tuning": 1
+      },
+      "byExtractionMode": {
+        "direct_text": 15,
+        "mixed": 1,
+        "ocr": 4
+      },
+      "bySourceQualityTier": {
+        "noisy": 4,
+        "proven_clean": 12,
+        "provisional": 4
+      }
+    }
+  },
+  "writebackAndProvenanceSafeToContinue": true,
+  "qualityReports": [
+    {
+      "file": "C:\\Users\\coupy\\Desktop\\vocabulary-reference-lexicons\\vocabulary_reference_lexicons\\bouvier_comparator_prep\\reports\\bouvier_comparator_quality_report.json",
+      "sourceId": null,
+      "scope": "bouvier comparator preparation only",
+      "fullExtractionAssessment": null,
+      "comparatorReadiness": null,
+      "segmentationAssessment": null,
+      "counts": {}
+    },
+    {
+      "file": "C:\\Users\\coupy\\Desktop\\vocabulary-reference-lexicons\\vocabulary_reference_lexicons\\direct_text\\reports\\extraction_quality_report.json",
+      "sourceId": null,
+      "scope": "direct-text full extraction only",
+      "fullExtractionAssessment": null,
+      "comparatorReadiness": null,
+      "segmentationAssessment": null,
+      "counts": {}
+    },
+    {
+      "file": "C:\\Users\\coupy\\Desktop\\vocabulary-reference-lexicons\\vocabulary_reference_lexicons\\multi_source\\reports\\anderson_1889_comparator_quality_report.json",
+      "sourceId": "anderson_1889",
+      "scope": "bounded Anderson 1889 comparator proof only",
+      "fullExtractionAssessment": null,
+      "comparatorReadiness": "ready_for_full_comparator_extraction",
+      "segmentationAssessment": "reliable",
+      "counts": {
+        "targetTermCount": 58,
+        "targetTermsLocatedByHeadwordScan": 40,
+        "targetTermsLocatedByTextSearch": 56,
+        "targetTermsMatchedByHeadword": 17,
+        "pageRecordCount": 30,
+        "entryCandidateCount": 384,
+        "alignmentRecordCount": 26,
+        "rawPageRowsValidated": 30,
+        "entryCandidateRowsValidated": 384,
+        "alignmentRowsValidated": 26
+      }
+    },
+    {
+      "file": "C:\\Users\\coupy\\Desktop\\vocabulary-reference-lexicons\\vocabulary_reference_lexicons\\multi_source\\reports\\anderson_1889_full_extraction_quality_report.json",
+      "sourceId": "anderson_1889",
+      "scope": "full Anderson 1889 comparator extraction only",
+      "fullExtractionAssessment": "ready_for_comparator_alignment_use",
+      "comparatorReadiness": null,
+      "segmentationAssessment": null,
+      "counts": {
+        "expectedPageCount": 1150,
+        "documentPageCount": 1150,
+        "extractedPageCount": 1150,
+        "pageCountMatchesExpected": true,
+        "entryCandidateCount": 12072,
+        "alignmentRecordCount": 1358,
+        "uniqueMatchedBoundaryTerms": 585,
+        "ambiguousTargetTermCount": 58,
+        "ambiguousTargetTermsMatched": 40,
+        "emptyPageCount": 8,
+        "nearEmptyPageCount": 4,
+        "rawPageRowsValidated": 1150,
+        "entryCandidateRowsValidated": 12072,
+        "alignmentRowsValidated": 1358
+      }
+    },
+    {
+      "file": "C:\\Users\\coupy\\Desktop\\vocabulary-reference-lexicons\\vocabulary_reference_lexicons\\multi_source\\reports\\osborn_1927_comparator_quality_report.json",
+      "sourceId": "osborn_1927",
+      "scope": "bounded Osborn 1927 comparator proof only",
+      "fullExtractionAssessment": null,
+      "comparatorReadiness": "ready_for_full_comparator_extraction",
+      "segmentationAssessment": "reliable",
+      "counts": {
+        "targetTermCount": 92,
+        "targetTermsLocatedByHeadwordScan": 55,
+        "targetTermsLocatedByTextSearch": 80,
+        "boundaryTermsMatchedByHeadword": 77,
+        "targetTermsMatchedByHeadword": 20,
+        "helpedTargetTermCount": 20,
+        "pageRecordCount": 28,
+        "entryCandidateCount": 560,
+        "alignmentRecordCount": 85,
+        "rawPageRowsValidated": 28,
+        "entryCandidateRowsValidated": 560,
+        "alignmentRowsValidated": 85
+      }
+    },
+    {
+      "file": "C:\\Users\\coupy\\Desktop\\vocabulary-reference-lexicons\\vocabulary_reference_lexicons\\multi_source\\reports\\osborn_1927_full_extraction_quality_report.json",
+      "sourceId": "osborn_1927",
+      "scope": "full Osborn 1927 comparator extraction only",
+      "fullExtractionAssessment": "ready_for_comparator_alignment_use",
+      "comparatorReadiness": null,
+      "segmentationAssessment": null,
+      "counts": {
+        "expectedPageCount": 376,
+        "documentPageCount": 376,
+        "extractedPageCount": 376,
+        "pageCountMatchesExpected": true,
+        "entryCandidateCount": 9248,
+        "alignmentRecordCount": 755,
+        "uniqueMatchedBoundaryTerms": 434,
+        "ambiguousTargetTermCount": 92,
+        "ambiguousTargetTermsMatched": 60,
+        "emptyPageCount": 9,
+        "nearEmptyPageCount": 3,
+        "rawPageRowsValidated": 376,
+        "entryCandidateRowsValidated": 9248,
+        "alignmentRowsValidated": 755
+      }
+    },
+    {
+      "file": "C:\\Users\\coupy\\Desktop\\vocabulary-reference-lexicons\\vocabulary_reference_lexicons\\proof\\reports\\segmentation_quality_report.json",
+      "sourceId": null,
+      "scope": "direct-text extraction proof only",
+      "fullExtractionAssessment": null,
+      "comparatorReadiness": null,
+      "segmentationAssessment": null,
+      "counts": {}
+    }
+  ],
+  "sourceFiles": {
+    "meaningCoverageAudit": "/home/serhat/code/chatpdm/docs/boundary/meaning-coverage-audit.json",
+    "meaningSources": "/home/serhat/code/chatpdm/backend/src/modules/legal-vocabulary/vocabulary-meaning-sources.generated.json",
+    "sourceRegistry": "C:\\Users\\coupy\\Desktop\\vocabulary-reference-lexicons\\vocabulary_reference_lexicons\\multi_source\\source_registry\\source_registry.json",
+    "sourceReadinessReport": "C:\\Users\\coupy\\Desktop\\vocabulary-reference-lexicons\\vocabulary_reference_lexicons\\multi_source\\reports\\all_source_readiness_report.json",
+    "recommendedLaneOrder": "C:\\Users\\coupy\\Desktop\\vocabulary-reference-lexicons\\vocabulary_reference_lexicons\\multi_source\\reports\\recommended_lane_order.md",
+    "ocrBacklog": "C:\\Users\\coupy\\Desktop\\vocabulary-reference-lexicons\\vocabulary_reference_lexicons\\multi_source\\ocr_backlog\\ocr_backlog.json",
+    "provenanceReport": "/home/serhat/code/chatpdm/docs/boundary/meaning-source-provenance-report.json"
+  },
+  "outputFiles": {
+    "json": "/home/serhat/code/chatpdm/docs/boundary/lexicon-pipeline-controller-report.json",
+    "markdown": "/home/serhat/code/chatpdm/docs/boundary/lexicon-pipeline-controller-report.md"
+  },
+  "exactNextPrompt": "Task: Prepare batch 006 draft-only meaning candidates using the current Black lane plus Anderson and Osborn comparator context where available, with a target batch size of 50. Do not modify the live vocabulary dataset, runtime ontology, concept packets, or existing meaning text; preserve exact-term provenance only and keep this as draft-only preparation. Deliver batch_006_sixth_50_drafts.json, batch_006_review.md, batch_006_skipped.json, and batch_006_writeback_NOT_APPLIED.json."
+}

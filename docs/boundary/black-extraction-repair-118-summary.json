@@ -1,0 +1,836 @@
+{
+  "generatedAt": "2026-04-29T20:09:05.851Z",
+  "totalRepairInputTerms": 118,
+  "previouslyApplyEligibleBeforeRepair": 65,
+  "termsRepairedFromLowUnusable": 118,
+  "repairedReferenceHighConfidenceCount": 39,
+  "repairedReferenceMediumConfidenceCount": 55,
+  "repairedReferenceLowUnusableCount": 24,
+  "candidateWordingProducedCount": 118,
+  "promotedApplyEligibleCount": 0,
+  "movedFromLowUnusableToMediumManualReview": 59,
+  "manualReviewCount": 59,
+  "stillBlockedAfterRepair": 59,
+  "stillBlockedCount": 59,
+  "stillOcrDamagedCount": 50,
+  "multipleSensesCount": 1,
+  "broadScopeCount": 9,
+  "rejectedCount": 0,
+  "totalPotentialApplyEligibleAfterCombining": 65,
+  "manualReviewQueueTotalAfterCombining": 273,
+  "existingMediumManualReviewCount": 214,
+  "perBatchCounts": {
+    "batch_008": {
+      "total": 54,
+      "repairHighConfidenceCount": 20,
+      "repairMediumConfidenceCount": 29,
+      "repairLowUnusableCount": 5,
+      "candidateWordingProducedCount": 54,
+      "promotedApplyEligibleCount": 0,
+      "manualReviewCount": 31,
+      "stillBlockedCount": 23,
+      "stillOcrDamagedCount": 17,
+      "multipleSensesCount": 1,
+      "broadScopeCount": 6,
+      "rejectedCount": 0
+    },
+    "batch_009": {
+      "total": 64,
+      "repairHighConfidenceCount": 19,
+      "repairMediumConfidenceCount": 26,
+      "repairLowUnusableCount": 19,
+      "candidateWordingProducedCount": 64,
+      "promotedApplyEligibleCount": 0,
+      "manualReviewCount": 28,
+      "stillBlockedCount": 36,
+      "stillOcrDamagedCount": 33,
+      "multipleSensesCount": 0,
+      "broadScopeCount": 3,
+      "rejectedCount": 0
+    }
+  },
+  "top50RepairedMediumConfidenceCandidates": [
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 78,
+      "term": "contract",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "A term, used originally in the civil law, but."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 36,
+      "term": "court",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "In legislation."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 32,
+      "term": "obligation",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "That obligation which arises from the principal."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 43,
+      "term": "waste",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "In feudal law, Year. clay, and wa teo A forfeiLure of."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 44,
+      "term": "writ",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "A writ which lay for the reversioner, when the possession was withheld by the lessee, or."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 29,
+      "term": "demurrer",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "gued to the court in banc, who fare ingens upon the facts as shown in evidence."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 14,
+      "term": "malice",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "son defamed."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 131,
+      "term": "accommodation",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "See INDORSEMENT, INDORSEMENT."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 53,
+      "term": "domain",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "tate so owned."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 6,
+      "term": "examination",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "The interrogation of a married woman, who appears before an officer for the purpose of."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 104,
+      "term": "usage",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "A I I tic which has exi tall time out of."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 150,
+      "term": "allegation",
+      "reason": "Repaired Black context still appears to contain multiple senses; human review must choose the intended sense.",
+      "candidateProposedMeaningInLaw": "The opening pleading in a snit in the ecclesiastic al court."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 119,
+      "term": "memorandum",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "The statute of frauds requires a \"note or m m orandum \" of the particular transaction to."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 187,
+      "term": "dereliction",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "A steward of a manor may depute or: authorize another to hold a court; and the acts done in."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 311,
+      "term": "dispensation",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "In ola English law."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 26,
+      "term": "ouster",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "In practice, A putting oot; dieposseaslon: amotion of."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 225,
+      "term": "accessory",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "In Scotch practice."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 359,
+      "term": "collation",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "When upon the same label one seal was set on the back or reverse of the other."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 191,
+      "term": "infancy",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "A period of non-responsible life. which."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 193,
+      "term": "keeper",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "One who e bu ines it is to keep horse for bire or to let, or to keep. feed, or llO&rd horses for."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 195,
+      "term": "malpractice",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "See MALA PRAXIS."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 301,
+      "term": "maturity",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "In mercantile law, The Britt. c.28. hand; a thing produced by."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 250,
+      "term": "nullity",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "own property."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 196,
+      "term": "obiter",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "Lat."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 201,
+      "term": "quantum",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "As much as tuey were worth."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 326,
+      "term": "absolutism",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "Any system of govern ment, be it a monarchy or democracy, in."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 259,
+      "term": "accusation",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "In scotch Jaw."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 72,
+      "term": "assurance",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "One of the usual agreements entered into by a vendor for the protection of the vendee's interest in the."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 73,
+      "term": "carrier",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "One who undertakes to transport goods from."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 212,
+      "term": "connivance",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "lL."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 157,
+      "term": "counterpart",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "In conveyancing."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 162,
+      "term": "dissent",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "Contrariety of opinion; re fusal to agree WIth somethtng already stated or adjudged or."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 83,
+      "term": "distress",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "The taking a personal chat tel out of the possession of a wrong-doer into the cu.tody of the party injured, to procure a satisfaction for a wrong committed: as for."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 354,
+      "term": "engagement",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "In French law."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 145,
+      "term": "escheat",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "In feudal law."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 164,
+      "term": "eviction",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "Dispo ses ion by prncesa of law; the act of depriving a person of the possessiou of lands which."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 165,
+      "term": "executive",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "used as an impersonal de ignation of."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 138,
+      "term": "incorporation",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "The act or pro cess of forming or creating a corporation; the formation o( a legal or political body, with."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 141,
+      "term": "privity",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "The term \"privity\" means mutual or succe sive retationsuip to the same rights of property."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 350,
+      "term": "reformation",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "ee REFORM."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 269,
+      "term": "revocation",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "The recall of om power, authority. or thing granted, or a de stroying 01' making void of."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 257,
+      "term": "tradition",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "Delivery."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 105,
+      "term": "vendor",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "The person who transfers property by sale. particularly."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 272,
+      "term": "acquisition",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "The act of becoming the owner of certain property; the act by."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 313,
+      "term": "apprehension",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "Im practice."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 207,
+      "term": "condemnation",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "In admiralty law."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 369,
+      "term": "contestation",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "In an eccle 'ia tical cause. that stage of."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 320,
+      "term": "director",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "An of ficer having the control, management, and uperintendence of."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 240,
+      "term": "encumbrance",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "See INCUMBRANCE."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 215,
+      "term": "influence",
+      "reason": "Repaired Black context supports candidate wording, but quality or scope needs human review.",
+      "candidateProposedMeaningInLaw": "See UNDUE INFLUENCE, INFORMAL. inartificially drawn up."
+    }
+  ],
+  "newlyPromotedCandidates": [],
+  "stillBlockedTerms": [
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 16,
+      "term": "rule",
+      "safetyDecision": "hold_broad_scope",
+      "reason": "Broad ordinary-word legal scope remains unsafe after repair."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 20,
+      "term": "bankruptcy",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 28,
+      "term": "brief",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 49,
+      "term": "coercion",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 70,
+      "term": "action",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 81,
+      "term": "deed",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 90,
+      "term": "mercy",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 100,
+      "term": "slander",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 107,
+      "term": "check",
+      "safetyDecision": "hold_broad_scope",
+      "reason": "Broad ordinary-word legal scope remains unsafe after repair."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 113,
+      "term": "party",
+      "safetyDecision": "hold_broad_scope",
+      "reason": "Broad ordinary-word legal scope remains unsafe after repair."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 114,
+      "term": "property",
+      "safetyDecision": "hold_broad_scope",
+      "reason": "Broad ordinary-word legal scope remains unsafe after repair."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 120,
+      "term": "relief",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 129,
+      "term": "robbery",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 134,
+      "term": "caveat",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 136,
+      "term": "draft",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 139,
+      "term": "marshal",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 140,
+      "term": "plea",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 144,
+      "term": "dignity",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 148,
+      "term": "case",
+      "safetyDecision": "hold_broad_scope",
+      "reason": "Broad ordinary-word legal scope remains unsafe after repair."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 149,
+      "term": "service",
+      "safetyDecision": "hold_broad_scope",
+      "reason": "Broad ordinary-word legal scope remains unsafe after repair."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 174,
+      "term": "oath",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 177,
+      "term": "regress",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_008",
+      "queueV2Position": 180,
+      "term": "valuation",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 211,
+      "term": "cession",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 214,
+      "term": "disparagement",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 223,
+      "term": "subject",
+      "safetyDecision": "hold_broad_scope",
+      "reason": "Broad ordinary-word legal scope remains unsafe after repair."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 224,
+      "term": "abide",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 232,
+      "term": "concealment",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 235,
+      "term": "denial",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 245,
+      "term": "indulgence",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 277,
+      "term": "demand",
+      "safetyDecision": "hold_broad_scope",
+      "reason": "Broad ordinary-word legal scope remains unsafe after repair."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 294,
+      "term": "validity",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 300,
+      "term": "encroachment",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 302,
+      "term": "right",
+      "safetyDecision": "hold_broad_scope",
+      "reason": "Broad ordinary-word legal scope remains unsafe after repair."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 308,
+      "term": "gain",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 310,
+      "term": "stipendiary",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 315,
+      "term": "deficiency",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 316,
+      "term": "dependency",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 317,
+      "term": "detriment",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 318,
+      "term": "devolution",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 321,
+      "term": "expectation",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 328,
+      "term": "amicus",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 345,
+      "term": "lacuna",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 355,
+      "term": "vesting",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 357,
+      "term": "commendation",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 360,
+      "term": "interdict",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 364,
+      "term": "usufruct",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 365,
+      "term": "admissibility",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 366,
+      "term": "aiding",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 368,
+      "term": "closure",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 377,
+      "term": "misappropriation",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 386,
+      "term": "discipline",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 387,
+      "term": "contravention",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 389,
+      "term": "remission",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 392,
+      "term": "fault",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 393,
+      "term": "adherence",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 395,
+      "term": "consortium",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 396,
+      "term": "denunciation",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    },
+    {
+      "batchId": "batch_009",
+      "queueV2Position": 397,
+      "term": "imputation",
+      "safetyDecision": "hold_ocr_damage",
+      "reason": "Repaired Black text is still incomplete or OCR-damaged."
+    }
+  ],
+  "sourceHashBefore": "6a3be1403c2cdddea90d88f3d9cd06ddf1d6bb8a2143caf342175f6aa2ad15d3",
+  "sourceHashAfter": "6a3be1403c2cdddea90d88f3d9cd06ddf1d6bb8a2143caf342175f6aa2ad15d3",
+  "sourceHashUnchanged": true,
+  "safety": {
+    "noVocabularyMeaningsWritten": true,
+    "noWritebackPreviewCreated": true,
+    "noWritebackApplied": true,
+    "batch010NotStarted": true,
+    "noRuntimeOntologyChange": true,
+    "noConceptPacketChange": true,
+    "noResolverBehaviorChange": true,
+    "noAliasesAdded": true,
+    "bouvierBurrillBallentineNotUsed": true,
+    "comparatorSourcesDidNotOriginateMeanings": true,
+    "comparatorSourcesDidNotOverrideBlack": true
+  }
+}

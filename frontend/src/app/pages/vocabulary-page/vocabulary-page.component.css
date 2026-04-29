@@ -105,6 +105,11 @@
   gap: 8px;
 }
 
+.pdm-vocabulary-page__stats .pdm-vocabulary-page__section-head,
+.pdm-vocabulary-page__buckets .pdm-vocabulary-page__section-head {
+  margin-bottom: 12px;
+}
+
 .pdm-vocabulary-page__section-title,
 .pdm-vocabulary-page__state-title {
   font-size: clamp(1.46rem, 2vw, 1.92rem);
@@ -114,14 +119,14 @@
 
 .pdm-vocabulary-page__warning {
   padding: 18px 20px;
-  border: 1px solid rgba(191, 219, 254, 0.45);
+  border: 1px solid rgba(251, 191, 36, 0.36);
   background:
-    linear-gradient(180deg, rgba(239, 246, 255, 0.96), rgba(248, 250, 255, 0.92)),
-    rgba(239, 246, 255, 0.92);
+    linear-gradient(180deg, rgba(255, 251, 235, 0.98), rgba(255, 247, 237, 0.94)),
+    rgba(255, 251, 235, 0.92);
 }
 
 .pdm-vocabulary-page__warning-copy {
-  color: #1e3a8a;
+  color: #92400e;
   font-weight: 600;
 }
 
@@ -169,6 +174,7 @@
 .pdm-vocabulary-page__console-rail {
   display: grid;
   gap: 16px;
+  align-items: start;
 }
 
 .pdm-vocabulary-page__console-panel,
@@ -193,19 +199,77 @@
   gap: 10px;
 }
 
+.pdm-vocabulary-page__filter-shell {
+  gap: 16px;
+}
+
+.pdm-vocabulary-page__search-shell {
+  border-color: rgba(37, 99, 235, 0.22);
+  background:
+    linear-gradient(180deg, rgba(239, 246, 255, 0.98), rgba(248, 250, 255, 0.94)),
+    rgba(239, 246, 255, 0.9);
+  box-shadow:
+    0 16px 40px rgba(37, 99, 235, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
+.pdm-vocabulary-page__search-control {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
 .pdm-vocabulary-page__search-input {
   width: 100%;
   min-height: 56px;
-  padding: 0 18px;
-  border: 1px solid rgba(148, 163, 184, 0.18);
+  padding: 0 56px 0 18px;
+  border: 1px solid rgba(37, 99, 235, 0.24);
   border-radius: 18px;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.98);
   color: #0f172a;
   font-size: 1rem;
+  font-weight: 600;
   transition:
     border-color 150ms ease,
     box-shadow 150ms ease,
     background-color 150ms ease;
+}
+
+.pdm-vocabulary-page__search-clear {
+  position: absolute;
+  right: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 999px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(239, 246, 255, 0.9)),
+    rgba(255, 255, 255, 0.94);
+  color: #475569;
+  cursor: pointer;
+  transition:
+    border-color 140ms ease,
+    box-shadow 140ms ease,
+    color 140ms ease;
+}
+
+.pdm-vocabulary-page__search-clear:hover,
+.pdm-vocabulary-page__search-clear:focus-visible {
+  border-color: rgba(37, 99, 235, 0.28);
+  color: #1d4ed8;
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+}
+
+.pdm-vocabulary-page__search-clear mat-icon {
+  width: 20px;
+  height: 20px;
+  font-size: 20px;
+  line-height: 20px;
 }
 
 .pdm-vocabulary-page__search-input:hover,
@@ -215,7 +279,9 @@
 
 .pdm-vocabulary-page__search-input:focus {
   outline: none;
-  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+  box-shadow:
+    0 0 0 4px rgba(37, 99, 235, 0.13),
+    0 10px 24px rgba(37, 99, 235, 0.08);
 }
 
 .pdm-vocabulary-page__search-count {
@@ -232,6 +298,108 @@
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+.pdm-vocabulary-page__filter-group,
+.pdm-vocabulary-page__sort-shell {
+  display: grid;
+  gap: 10px;
+}
+
+.pdm-vocabulary-page__sort-shell {
+  padding-top: 14px;
+  border-top: 1px solid rgba(226, 232, 240, 0.82);
+}
+
+.pdm-vocabulary-page__sort-menu {
+  position: relative;
+}
+
+.pdm-vocabulary-page__sort-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  width: 100%;
+  min-height: 46px;
+  padding: 0 16px 0 18px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 16px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 255, 0.92)),
+    rgba(255, 255, 255, 0.94);
+  color: #1e293b;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+
+.pdm-vocabulary-page__sort-trigger:hover,
+.pdm-vocabulary-page__sort-trigger:focus-visible {
+  border-color: rgba(37, 99, 235, 0.24);
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+}
+
+.pdm-vocabulary-page__sort-caret {
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  color: #334155;
+  font-size: 20px;
+  line-height: 20px;
+  transition: transform 140ms ease;
+}
+
+.pdm-vocabulary-page__sort-trigger[aria-expanded='true'] .pdm-vocabulary-page__sort-caret {
+  transform: rotate(180deg);
+}
+
+.pdm-vocabulary-page__sort-options {
+  position: absolute;
+  z-index: 20;
+  inset: calc(100% + 8px) 0 auto 0;
+  display: grid;
+  gap: 4px;
+  padding: 8px;
+  border: 1px solid rgba(191, 219, 254, 0.72);
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(248, 250, 255, 0.97)),
+    rgba(255, 255, 255, 0.98);
+  box-shadow:
+    0 18px 34px rgba(15, 23, 42, 0.1),
+    0 0 0 1px rgba(255, 255, 255, 0.72) inset;
+}
+
+.pdm-vocabulary-page__sort-option {
+  min-height: 38px;
+  padding: 0 12px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  background: transparent;
+  color: #1e293b;
+  font-size: 0.92rem;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+
+.pdm-vocabulary-page__sort-option:hover,
+.pdm-vocabulary-page__sort-option:focus-visible {
+  border-color: rgba(37, 99, 235, 0.16);
+  background: rgba(239, 246, 255, 0.82);
+  color: #1d4ed8;
+  outline: none;
+}
+
+.pdm-vocabulary-page__sort-option--active {
+  border-color: rgba(20, 184, 166, 0.22);
+  background:
+    linear-gradient(180deg, rgba(240, 253, 250, 0.96), rgba(236, 253, 245, 0.86)),
+    rgba(240, 253, 250, 0.9);
+  color: #0f766e;
 }
 
 .pdm-vocabulary-page__filter-chips,
@@ -321,6 +489,7 @@
 .pdm-vocabulary-page__pager-label,
 .pdm-vocabulary-page__term-family,
 .pdm-vocabulary-page__term-badge,
+.pdm-vocabulary-page__meaning-sources-label,
 .pdm-vocabulary-page__term-detail dt {
   margin: 0;
   color: #64748b;
@@ -340,11 +509,17 @@
 }
 
 .pdm-vocabulary-page__summary-supporting,
+.pdm-vocabulary-page__stat-supporting,
+.pdm-vocabulary-page__canonical-term,
 .pdm-vocabulary-page__pager-copy,
 .pdm-vocabulary-page__pager-range,
 .pdm-vocabulary-page__state-copy,
 .pdm-vocabulary-page__list-note,
 .pdm-vocabulary-page__term-summary,
+.pdm-vocabulary-page__meaning-source-page,
+.pdm-vocabulary-page__meaning-source-note,
+.pdm-vocabulary-page__meaning-source-more,
+.pdm-vocabulary-page__meaning-source-disclaimer,
 .pdm-vocabulary-page__term-detail dd {
   margin: 0;
   color: #526277;
@@ -360,10 +535,34 @@
   list-style: none;
 }
 
+.pdm-vocabulary-page__term-viewport {
+  display: block;
+  width: 100%;
+  height: min(68vh, 760px);
+  min-height: 420px;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 24px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(248, 250, 255, 0.62)),
+    rgba(255, 255, 255, 0.74);
+  overflow: auto;
+}
+
 .pdm-vocabulary-page__term-card {
   display: grid;
   gap: 14px;
+  box-sizing: border-box;
+  height: 170px;
+  margin: 0 0 12px;
   padding: 18px;
+  overflow: hidden;
+}
+
+.pdm-vocabulary-page__term-card--selected {
+  border-color: rgba(20, 184, 166, 0.18);
+  box-shadow:
+    0 12px 28px rgba(15, 23, 42, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.82);
 }
 
 .pdm-vocabulary-page__term-card-head {
@@ -420,8 +619,149 @@
   color: #64748b;
 }
 
+.pdm-vocabulary-page__term-badge--meaning {
+  border-color: rgba(20, 184, 166, 0.16);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(240, 253, 250, 0.74)),
+    rgba(255, 255, 255, 0.92);
+  color: #47736f;
+}
+
+.pdm-vocabulary-page__meaning-dot {
+  width: 6px;
+  height: 6px;
+  margin-right: 6px;
+  border-radius: 999px;
+  background: #5eead4;
+  box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.08);
+}
+
 .pdm-vocabulary-page__term-summary {
   font-size: 0.98rem;
+}
+
+.pdm-vocabulary-page__inspect-button {
+  justify-self: start;
+  min-height: 36px;
+  padding: 0 13px;
+  border: 1px solid rgba(37, 99, 235, 0.18);
+  border-radius: 999px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(239, 246, 255, 0.9)),
+    rgba(255, 255, 255, 0.92);
+  color: #1d4ed8;
+  font-size: 0.86rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.pdm-vocabulary-page__inspect-button:hover,
+.pdm-vocabulary-page__inspect-button:focus-visible {
+  border-color: rgba(37, 99, 235, 0.34);
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.1);
+  outline: none;
+}
+
+.pdm-vocabulary-page__inspect-button--compact {
+  align-self: start;
+}
+
+.pdm-vocabulary-page__selected-detail {
+  display: grid;
+  gap: 14px;
+  margin-top: 8px;
+  padding: 22px;
+  scroll-margin-top: 24px;
+  border: 1px solid rgba(20, 184, 166, 0.12);
+  border-radius: 24px;
+  background:
+    linear-gradient(180deg, rgba(240, 253, 250, 0.26), rgba(248, 250, 252, 0.98)),
+    rgba(255, 255, 255, 0.9);
+  box-shadow:
+    0 12px 30px rgba(15, 23, 42, 0.035),
+    inset 0 1px 0 rgba(255, 255, 255, 0.82);
+}
+
+.pdm-vocabulary-page__selected-detail-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.pdm-vocabulary-page__selected-detail-title {
+  margin: 4px 0 0;
+  color: #0f172a;
+  font-size: clamp(1.2rem, 2vw, 1.5rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+}
+
+.pdm-vocabulary-page__canonical-term {
+  margin-top: 6px;
+  color: #64748b;
+  font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.pdm-vocabulary-page__meaning-sources {
+  display: grid;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 1px solid rgba(191, 219, 254, 0.42);
+  border-radius: 18px;
+  background: rgba(248, 250, 252, 0.72);
+}
+
+.pdm-vocabulary-page__meaning-sources-label {
+  color: #2563eb;
+}
+
+.pdm-vocabulary-page__meaning-source-list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pdm-vocabulary-page__meaning-source {
+  display: grid;
+  gap: 3px;
+}
+
+.pdm-vocabulary-page__meaning-source-title {
+  margin: 0;
+  color: #1e293b;
+  font-size: 0.92rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.pdm-vocabulary-page__meaning-source-page,
+.pdm-vocabulary-page__meaning-source-more {
+  color: #64748b;
+  font-size: 0.86rem;
+}
+
+.pdm-vocabulary-page__meaning-source-note {
+  color: #475569;
+  font-size: 0.9rem;
+}
+
+.pdm-vocabulary-page__meaning-source-snippet {
+  color: #64748b;
+  font-size: 0.86rem;
+  line-height: 1.5;
+}
+
+.pdm-vocabulary-page__meaning-source-disclaimer {
+  color: #1e3a8a;
+  font-size: 0.83rem;
+  font-weight: 700;
 }
 
 .pdm-vocabulary-page__term-details {
@@ -523,7 +863,7 @@
   }
 
   .pdm-vocabulary-page__stats-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .pdm-vocabulary-page__bucket-grid {
@@ -570,6 +910,10 @@
   .pdm-vocabulary-page__buckets,
   .pdm-vocabulary-page__list-shell {
     padding: 28px;
+  }
+
+  .pdm-vocabulary-page__stats-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 

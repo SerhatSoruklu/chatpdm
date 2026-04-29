@@ -1,0 +1,1682 @@
+{
+  "generatedAt": "2026-04-29T18:26:56.436Z",
+  "mode": "comparator_v3_coverage_report",
+  "totalRegistryTermsChecked": 3585,
+  "currentSourceBackedMeaningCount": 287,
+  "exactMatchesBySource": {
+    "bouvier_1839_vol_1": {
+      "exactMatchRecords": 0,
+      "uniqueExactBoundaryTerms": 0
+    },
+    "bouvier_1839_vol_2": {
+      "exactMatchRecords": 0,
+      "uniqueExactBoundaryTerms": 0
+    },
+    "wharton_1883": {
+      "exactMatchRecords": 21,
+      "uniqueExactBoundaryTerms": 13
+    },
+    "burrill_1860": {
+      "exactMatchRecords": 0,
+      "uniqueExactBoundaryTerms": 0
+    },
+    "stroud_1903": {
+      "exactMatchRecords": 565,
+      "uniqueExactBoundaryTerms": 521
+    },
+    "ballentine_1916": {
+      "exactMatchRecords": 0,
+      "uniqueExactBoundaryTerms": 0
+    }
+  },
+  "exactMatchesAcrossMultipleV3Sources": 11,
+  "termsWithBlackMissingButV3Present": [
+    "abatement",
+    "abeyance",
+    "abjuration",
+    "abstraction",
+    "abuse",
+    "accident",
+    "accommodation",
+    "accretion",
+    "accumulation",
+    "accusation",
+    "acquiescence",
+    "act",
+    "act of state",
+    "action",
+    "ademption",
+    "adjoining land",
+    "administration",
+    "aid",
+    "allotment",
+    "ambiguity",
+    "amortization",
+    "annuity",
+    "antecedent",
+    "anticipation",
+    "appearance",
+    "appraiser",
+    "appreciation",
+    "apprehension",
+    "arrangement",
+    "assurance",
+    "attornment",
+    "auction",
+    "author",
+    "balance",
+    "bankruptcy",
+    "beacon",
+    "bill",
+    "blackmail",
+    "bona fide",
+    "boundary",
+    "broker",
+    "buyer",
+    "capacity",
+    "carriage",
+    "carrier",
+    "case",
+    "certification",
+    "cession",
+    "charitable trust",
+    "claimant",
+    "clause",
+    "clerk",
+    "client",
+    "coercion",
+    "collation",
+    "collusion",
+    "commencement",
+    "commission",
+    "common carrier",
+    "common law",
+    "commutation",
+    "complainant",
+    "composition",
+    "compound",
+    "concealment",
+    "condemnation",
+    "confession",
+    "conflict",
+    "connivance",
+    "conscience",
+    "consignment",
+    "construction",
+    "contempt of court",
+    "contingency",
+    "continuance",
+    "contract",
+    "control",
+    "conversion",
+    "convoy",
+    "copyright",
+    "counterpart",
+    "court",
+    "covenant",
+    "debenture",
+    "decision",
+    "decree",
+    "dedication",
+    "deduction",
+    "deed",
+    "defamation",
+    "defeasance",
+    "defence",
+    "defendant",
+    "deficiency",
+    "definition",
+    "delay",
+    "demand",
+    "dependency",
+    "descent",
+    "detriment",
+    "devolution",
+    "difference",
+    "dignity",
+    "direction",
+    "director",
+    "discipline",
+    "discovery",
+    "disparagement",
+    "dissent",
+    "distress",
+    "document",
+    "domain",
+    "donation",
+    "drawer",
+    "due diligence",
+    "employer",
+    "encumbrance",
+    "endowment",
+    "engagement",
+    "enjoyment",
+    "entry",
+    "escheat",
+    "estate",
+    "eviction",
+    "examination",
+    "exchange",
+    "exclusive right",
+    "executive",
+    "existence",
+    "expectation",
+    "expiration",
+    "expression",
+    "extinction",
+    "extradition",
+    "fair comment",
+    "false imprisonment",
+    "false statement",
+    "fault",
+    "felony",
+    "final judgment",
+    "final order",
+    "finding",
+    "forcible entry",
+    "form",
+    "freight",
+    "gain",
+    "general rule",
+    "gift",
+    "good title",
+    "grace",
+    "grantee",
+    "grantor",
+    "guarantee",
+    "harm",
+    "heirs",
+    "holding over",
+    "ignorance",
+    "illegality",
+    "impartiality",
+    "impeachment",
+    "importunity",
+    "incident",
+    "incumbrance",
+    "indorsement",
+    "influence",
+    "inhibition",
+    "instigation",
+    "institution",
+    "instrumentality",
+    "insurable interest",
+    "intent",
+    "interdict",
+    "investment",
+    "jeopardy",
+    "joint tenancy",
+    "judge",
+    "judgment",
+    "jurisdiction",
+    "jury",
+    "keeper",
+    "laches",
+    "landlord",
+    "lapse",
+    "latent ambiguity",
+    "latent defect",
+    "lawful excuse",
+    "legacy duty",
+    "legal process",
+    "legality",
+    "liability",
+    "libel",
+    "liquidation",
+    "loss",
+    "maintenance",
+    "malice",
+    "master",
+    "material fact",
+    "mens rea",
+    "mercy",
+    "merits",
+    "method",
+    "misapplication",
+    "misdemeanor",
+    "misprision",
+    "monition",
+    "mortgagee",
+    "motive",
+    "neglect",
+    "negotiation",
+    "nolle prosequi",
+    "nominee",
+    "novation",
+    "nullity",
+    "oath",
+    "object",
+    "offence",
+    "offer",
+    "omission",
+    "opinion",
+    "opportunity",
+    "oppression",
+    "option",
+    "ordinary care",
+    "ouster",
+    "party",
+    "per capita",
+    "per stirpes",
+    "permission",
+    "perpetuity",
+    "personal property",
+    "persuasion",
+    "petitioner",
+    "power of attorney",
+    "prerogative",
+    "presentment",
+    "preservation",
+    "priority",
+    "privacy",
+    "privation",
+    "procedure",
+    "procurement",
+    "production",
+    "profit",
+    "promoter",
+    "proof",
+    "property",
+    "proprietor",
+    "provision",
+    "public authority",
+    "public duty",
+    "public interest",
+    "public office",
+    "public right",
+    "purchase",
+    "purchaser",
+    "quorum",
+    "real property",
+    "reason",
+    "receipt",
+    "receiver",
+    "reconciliation",
+    "reconveyance",
+    "record",
+    "reference",
+    "regard",
+    "regress",
+    "regulation",
+    "relief",
+    "renewal",
+    "renunciation",
+    "replevin",
+    "representation",
+    "resignation",
+    "resolution",
+    "right of way",
+    "robbery",
+    "rule",
+    "sale",
+    "salvage",
+    "sanction",
+    "satisfaction",
+    "scienter",
+    "seal",
+    "search",
+    "service",
+    "settlement",
+    "settlor",
+    "shipment",
+    "slander",
+    "specification",
+    "statute",
+    "stipendiary",
+    "stipulation",
+    "stockholder",
+    "subject",
+    "suit",
+    "supervision",
+    "surety",
+    "survivorship",
+    "tenancy",
+    "tenant",
+    "tender",
+    "termination",
+    "transaction",
+    "transferor",
+    "tribunal",
+    "ultra vires",
+    "undertaker",
+    "uniformity",
+    "union",
+    "usage",
+    "usurpation",
+    "usury",
+    "validity",
+    "valuation",
+    "value",
+    "vendor",
+    "venue",
+    "verdict",
+    "vesting",
+    "vicinage",
+    "voting",
+    "waiver",
+    "waste",
+    "wayleave",
+    "windfall",
+    "withdrawal",
+    "writ",
+    "yield"
+  ],
+  "termsWithBlackPresentAndV3Supports": [
+    "abduction",
+    "acceptance",
+    "accord",
+    "account",
+    "adjudication",
+    "affidavit",
+    "agent",
+    "alienation",
+    "amendment",
+    "amnesty",
+    "ancestor",
+    "appeal",
+    "arrest",
+    "article",
+    "assault",
+    "assembly",
+    "assignee",
+    "association",
+    "bailee",
+    "battery",
+    "beneficiary",
+    "betterment",
+    "blockade",
+    "board",
+    "bond",
+    "boycott",
+    "burden",
+    "burglary",
+    "capture",
+    "charter",
+    "code",
+    "cohabitation",
+    "committee",
+    "company",
+    "compensation",
+    "complaint",
+    "compromise",
+    "condition",
+    "condonation",
+    "consideration",
+    "conspiracy",
+    "contribution",
+    "conveyance",
+    "conviction",
+    "corporation",
+    "credit",
+    "crime",
+    "custody",
+    "custom",
+    "damages",
+    "debt",
+    "debtor",
+    "deceit",
+    "default",
+    "delegation",
+    "deposition",
+    "deprivation",
+    "designation",
+    "detainer",
+    "distribution",
+    "divorce",
+    "duress",
+    "easement",
+    "election",
+    "elector",
+    "emancipation",
+    "embargo",
+    "employment",
+    "escrow",
+    "evidence",
+    "exception",
+    "excuse",
+    "executor",
+    "exemption",
+    "exhibit",
+    "exoneration",
+    "failure",
+    "fee simple",
+    "force",
+    "foreclosure",
+    "franchise",
+    "fraud",
+    "garnishment",
+    "governor",
+    "guardian",
+    "hearsay",
+    "heir",
+    "holding",
+    "hypothecation",
+    "indemnity",
+    "indictment",
+    "inference",
+    "infringement",
+    "inheritance",
+    "injunction",
+    "injury",
+    "inspection",
+    "interpleader",
+    "intervention",
+    "intrusion",
+    "joinder",
+    "justification",
+    "knowledge",
+    "lease",
+    "leasehold",
+    "legatee",
+    "lessee",
+    "lessor",
+    "levy",
+    "liberty",
+    "license",
+    "lien",
+    "marriage",
+    "minority",
+    "misfeasance",
+    "mortgage",
+    "mortgagor",
+    "necessity",
+    "negligence",
+    "notice",
+    "nuisance",
+    "occupation",
+    "officer",
+    "ordinance",
+    "ownership",
+    "pardon",
+    "partnership",
+    "patent",
+    "patentee",
+    "patrimony",
+    "payment",
+    "penalty",
+    "perjury",
+    "petition",
+    "pleading",
+    "pledge",
+    "policy",
+    "possession",
+    "precedent",
+    "premium",
+    "presumption",
+    "price",
+    "principal",
+    "privilege",
+    "process",
+    "promise",
+    "prosecution",
+    "provocation",
+    "publication",
+    "rate",
+    "redemption",
+    "rejoinder",
+    "release",
+    "remainder",
+    "remedy",
+    "reparation",
+    "reprieve",
+    "restitution",
+    "restraint",
+    "restriction",
+    "reversion",
+    "review",
+    "sanctuary",
+    "section",
+    "security",
+    "sedition",
+    "seizure",
+    "sentence",
+    "servitude",
+    "shareholder",
+    "submission",
+    "subrogation",
+    "succession",
+    "successor",
+    "taxation",
+    "testator",
+    "testimony",
+    "theft",
+    "title",
+    "transcript",
+    "transfer",
+    "transferee",
+    "treason",
+    "treaty",
+    "trespass",
+    "trial",
+    "trust",
+    "trustee",
+    "undertaking",
+    "usufructuary",
+    "ward",
+    "warranty",
+    "will",
+    "witness"
+  ],
+  "likelyScopeWarnings": [
+    {
+      "term": "will",
+      "warnings": [
+        {
+          "sourceId": "wharton_1883",
+          "page": 229,
+          "warningSnippet": "Will. IV. c. 27, s. 36. Coventry Act, 22 & 23 Car. II. c."
+        },
+        {
+          "sourceId": "wharton_1883",
+          "page": 237,
+          "warningSnippet": "Will. IV. c. 34, s. 1"
+        },
+        {
+          "sourceId": "stroud_1903",
+          "page": 2475,
+          "warningSnippet": "WILL. — J'. Testament: Codicil: Last: IMade: Signed: Writ- ing: Nominate. \"The general principle I take to be clear. On the one hand, where a testator in a Codicil uses the word ' Will ' abstractedly from the context."
+        },
+        {
+          "sourceId": "stroud_1903",
+          "page": 2476,
+          "warningSnippet": "WILL 2250 WILL to set up the original Will unaffected Ly any Codicil\" (per Fry, J.,"
+        },
+        {
+          "sourceId": "stroud_1903",
+          "page": 2476,
+          "warningSnippet": "WILL to set up the original Will unaffected Ly any Codicil\" (per Fry, J., Green v. Tribe, 9 Ch. D. 234; 47 L. J. Ch. 785), or may revoke his Will witliout affecting a Codicil thereto (Farrerv. St. Catherine's Col-"
+        },
+        {
+          "sourceId": "stroud_1903",
+          "page": 2477,
+          "warningSnippet": "WILL: WILL AND DECLARE: WILL AND DESIRE.— V. Pkecatoky Tru.st. WILL ONLY. — If a \"J'owor be to Ajipoint l>y 'Will only,' witli vemaiuder over in default of appointment, an immediate disposition can-"
+        }
+      ]
+    },
+    {
+      "term": "inhibition",
+      "warnings": [
+        {
+          "sourceId": "wharton_1883",
+          "page": 424,
+          "warningSnippet": "Inhibition. An ancient synonym for Pro- hibition, which see. In the ecclesiastical law, the command of a bishop"
+        }
+      ]
+    },
+    {
+      "term": "account",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 248,
+          "warningSnippet": "ACCOUNT. — \" By the Common Law an Actiox of Account for the rents and profits may be maintained by the Heir, after he has at- tained the age of 14 years, against the Guardian in Socage; so, at the Common Law, Account will lie against the Bailiff or Receiver, and"
+        }
+      ]
+    },
+    {
+      "term": "acquiescence",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 255,
+          "warningSnippet": "ACQUIESCENCE. — This word does not mean simply an active intelligent consent, but will be implied if a person is content not to opi»ose irregular acts which he knows are being done (per Cairns, C, Evans v. Sviallcomhe, 37 L. J. Ch. 793; L. R. 3 H. L. 249)."
+        }
+      ]
+    },
+    {
+      "term": "administration",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 272,
+          "warningSnippet": "ADMINISTRATION. — V. Administer: Order of Ad.judica- TIOX. \" Administration of Justice \" : — English \" Laws and Statutes \" which are to be \" applied in the Administration of Justice,\" in a Colony, are"
+        }
+      ]
+    },
+    {
+      "term": "boycott",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 443,
+          "warningSnippet": "BOYCOTT. — To \" boycott \" a person, is the offence deJined in s. 2 (1), Criminal Law and Procedure (Ir) Act, 1887, 50 & 51 V. c. 20. on tchv, Re llea])hy, 22 L. E. Ir. 500. To declare a person \" boycotted,\"' or to threaten to \" boycott \" him, is to excite an Unlawful Confederacy"
+        }
+      ]
+    },
+    {
+      "term": "cession",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 516,
+          "warningSnippet": "CESSION. — \"Is when an Ecclesiastical Person is created Bishop, or when a Parson taketh another Benefice without Dispensation or otherwise not qualified, ^tc ; in both cases their first benefices are be- come void, and be said to become void, by Cession \" (Termes de la Ley)."
+        }
+      ]
+    },
+    {
+      "term": "clause",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 550,
+          "warningSnippet": "CLAUSE. —A testator (obit 1836), devised realty to \" E. Eley, her heirs and assigns for ever \" ; subsequently he obliterated \" Eley, her heirs and assigns for ever, \" and re-wrote \" Eley \" : held, a revocation of a \" Clause \" in the Will within s. 6, Statute of Frauds {Swinton v. Baily,"
+        }
+      ]
+    },
+    {
+      "term": "code",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 561,
+          "warningSnippet": "CODE. — As to construing Codifying Statutes; l'. Bn,r. ok Kx- CHANGK, Note towards end. CODICIL. — A Codicil is \"an addition or supplement added unto a Will or Testament after the finishing of it, for the supply of something"
+        }
+      ]
+    },
+    {
+      "term": "act",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 602,
+          "warningSnippet": "Act. 1896. CONGREGATION.— r. Public Reading. Qua (Jhurch Patronage (Scot) Act, 1S74, 37 & 38 V. c. 82; V. s. 9. CONJOINTLY. — By a Canadian Will there was a devise to A. for"
+        }
+      ]
+    },
+    {
+      "term": "contempt of court",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 613,
+          "warningSnippet": "CONTEMPT OF COURT.— 7'. per Blackburn, J., Sklpirit/rs Case, L. P. 9 Q. 1'). 232: Chiminal Cause: Criminal Prisoner: Oswald on Contempt oi Court. CONTENTIOUS. — Contentious Business, is the opposite of Com-"
+        }
+      ]
+    },
+    {
+      "term": "continuance",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 617,
+          "warningSnippet": "CONTINUANCE. —\"The continuance of Injury, or Damage\" which will extend the time within which an action may be brought for something done by a Public Body, s. 1 (a), 56 & 57 V. c. 61, means, the continuance of the Cause of Injury or Damage, and not the continuance"
+        }
+      ]
+    },
+    {
+      "term": "credit",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 662,
+          "warningSnippet": "CREDIT. — A Guarantee that \" if you give A. credit, we will be responsible that his payments shall be regularly made,\" is a Continuing Guarantee, and means, \" if you trust \" him, the \" credit \" to be given him is to be a fair and reasonable credit as between the parties, and not"
+        }
+      ]
+    },
+    {
+      "term": "defamation",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 718,
+          "warningSnippet": "DEFAMATION.— F. Libel: Slander. Note. The jurisdiction of the Ecclesiastical Courts in suits for Defa- mation was taken away by Phillimore's Act. DEFAULT. — '^Default is a French word, and defalta is legally"
+        }
+      ]
+    },
+    {
+      "term": "delay",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 726,
+          "warningSnippet": "DELAY. — Intent to defeat or delay Creditors; V. Defeat. \" Prosecute without delay\"; V. Prosecute, Where a kShareholder has a right to have a Transfer of his Shares registered \" without Delay,\" he cannot call for such registration if there"
+        }
+      ]
+    },
+    {
+      "term": "election",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 838,
+          "warningSnippet": "ELECTION. — \" 'Election,' is when a man is left to his owne free will to take or doe one thing or another which he pleaseth \" (Termes de la Ley). Thus, Bauldwin, C. J., puts this case, \" Home face lease re- servant devaunt tiel feast un liber de pepper ou saffron, ore devant le"
+        }
+      ]
+    },
+    {
+      "term": "excuse",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 890,
+          "warningSnippet": "EXCUSE. — V. Lawful Excuse: Eeasonable Excuse: Eeason- ably. EXECUTE. — 7'^. Undertake, 2nd par. C. Appointment: Deed: Will: Made: Signature: Signed, Sealed,"
+        }
+      ]
+    },
+    {
+      "term": "executive",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 893,
+          "warningSnippet": "EXECUTIVE. — Executive Proceedings; V. Nouvioii v. Freeman, cited Remate. EXECUTOR. — \" 'Executor' is when a man makes his Testament and last Will and therein nameth the person that shall execute his Testa-"
+        }
+      ]
+    },
+    {
+      "term": "executor",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 893,
+          "warningSnippet": "EXECUTOR. — \" 'Executor' is when a man makes his Testament and last Will and therein nameth the person that shall execute his Testa- ment, then he that is so named is his Executor; and is as much in the Civill Law as hceres designatus, or festamentarius\" (Termes de la Ley)."
+        }
+      ]
+    },
+    {
+      "term": "exoneration",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 898,
+          "warningSnippet": "EXONERATION. — A direction in a AVill to pay debts \"In aid of the personal and in exoneration of the real estate \" (^Re Newmarch, 4S L. J. ('h. -?8; 9 Ch. D. VI), or, \" in exoneration of the real estate \" {Re Rosslter, 49 L. J. Ch. 06; 13 (;h. I). 355), will not exonerate the testa-"
+        }
+      ]
+    },
+    {
+      "term": "extradition",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 908,
+          "warningSnippet": "EXTRADITION. — Is the delivery up by one State to another of a Fugitive Criminal: Vh, Clarke on Extradition: 5 Encyc. 263-281. \" Extradition Crime \" ; Stat. Def., Extradition Act, 1870, s. 26 ; Ex- tradition Act, 1873, s. 8 and Sch. Cj>, Political."
+        }
+      ]
+    },
+    {
+      "term": "gain",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 1023,
+          "warningSnippet": "GAIN. — Business CJompanies, of more than 20 persons, for \" the ucijui- sition of Gain\" must be registered (s. 4, ('orap Act, 1862). \" 'Gain,' means exactly Acquisition. Therefore the expression here is 'the acqui- sition of acquisition.' Gain is something obtained or ac([uired. It is"
+        }
+      ]
+    },
+    {
+      "term": "good title",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 1051,
+          "warningSnippet": "GOOD TITLE.— \"Good Title,\" in a contract for sale of realty, means, such a title as will bo forced on a purchaser in an action for specific performance, and as would be an answer to an action of ejectment by any claimant (Jeakes v. Jr/iitt', 21 L. J. Ex. 2(55; 6 Ex. 873). Cj), Bad."
+        }
+      ]
+    },
+    {
+      "term": "guardian",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 1072,
+          "warningSnippet": "GUARDIAN. — \"Guardian,\" when standing alone, generally means \" Guardian of the Person. An Infant may have several Guardians: he may have a Guardian of the Person, or a Guardian in Socage, or in Gavel kind, or, if he has a Copyhold estate, a Guardian according to the Custom"
+        }
+      ]
+    },
+    {
+      "term": "heir",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 1088,
+          "warningSnippet": "HEIR: HEIRS. — The word \"heir\" means the person born or be- gotten in wedlock (F. Child), of human shape, in allegiance to the Crown, and who, according to the English Canons of Descent, is entitled to the undevised freehold estates of inheritance in England of a"
+        }
+      ]
+    },
+    {
+      "term": "importunity",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 1147,
+          "warningSnippet": "IMPORTUNITY. — \" Importunity \" (to invalidate a Will). \" in its correct legal acceptation, must be m such a degree as to take away from tlie testator free agency; it must be such importunity as he is too weak to resist; such as will render the act no longer the act of the deceased;"
+        }
+      ]
+    },
+    {
+      "term": "jeopardy",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 1248,
+          "warningSnippet": "JEOPARDY. — \"It would be giving a ver}- narrow meaning to the word 'Jeopardy ' to hold that because nothing could be done that is im- proper, and because the security of the Debenture Holders will of course be preserved, they ought not to take care of themselves. That being so,"
+        }
+      ]
+    },
+    {
+      "term": "joinder",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 1250,
+          "warningSnippet": "JOINDER. — \"Joinder of Issue,\" is where the two parties to a liti- gation (whether civil or criminal) \"have agreed to rest the fate of the cause upon the truth of the fact in question \" (3 Bl. Com. 315). As to such Joinder in Civil actions; V. R. 18, Ord. 19; R. 5, Ord,"
+        }
+      ]
+    },
+    {
+      "term": "joint tenancy",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 1252,
+          "warningSnippet": "JOINT TENANCY. — \" A limitation, either at Common Law or in a Conveyance to Uses [or in a Will], of estates of the same nature to several, either nominatimor as a class, without more, makes them joint tenants. The estate must begin at the same time if the conveyance is at"
+        }
+      ]
+    },
+    {
+      "term": "lapse",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 1291,
+          "warningSnippet": "LAPSE. — \" 'Lapse,' is the omission of a Patron to present to a Church of his patronage within sixe moneths atter an Avoidance by death, or taking of another Benefice without qualification or notice to him given of the resignation or deprivation of the present Incumbent, by"
+        }
+      ]
+    },
+    {
+      "term": "legacy duty",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 1308,
+          "warningSnippet": "LEGACY DUTY. — A direction in a AVill that all legacies are \" to hejjaid, frue of Legacy Duty,\" will apply to all the specific legacies of chattels as well as to the pecuniary legacies; hut not to the Succession Duty in respect of a bequest of leaseliolds (Be Johnson, 53 L. J, Ch."
+        }
+      ]
+    },
+    {
+      "term": "monition",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 1451,
+          "warningSnippet": "MONITION. — \"'Munition' (wliich is sometimes itself called an Ecclesiastical Censure) is described in the books as of a ' preparatory ' nature, that is (as I understand the term) as a warning or command to be followed in case of disobedience by some coercive sanction \" (per Sel-"
+        }
+      ]
+    },
+    {
+      "term": "ownership",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 1623,
+          "warningSnippet": "OWNERSHIP. — Qua Small Dwellings Acquisition Act, 1899, 62 & 63 Y. c. 44, \" ' Ownership,' shall be such interest, or combination of in- terests, in a house as (together with the interest of the purchaser of the ownership) will constitute either a Eee Simple in possession, or a Lease-"
+        }
+      ]
+    },
+    {
+      "term": "per stirpes",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 1680,
+          "warningSnippet": "PER STIRPES. — A distribution of property \" per Stirpes and not per Capita,\" means, that all the beneficiaries will not, necessarily or probably, take equal shares but, that the property is to be divided into as many parts as there are Stocks and each Stock will have one, and only"
+        }
+      ]
+    },
+    {
+      "term": "perpetuity",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 1692,
+          "warningSnippet": "PERPETUITY. — The Rule against Perpetuities requires that gifts and limitations of property must necessarily vest in the beneficiaries during a life or any number of lives, in being at the time when the instrument becomes operative {e.g. in the case of a Will, the death of the"
+        }
+      ]
+    },
+    {
+      "term": "presentment",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 1772,
+          "warningSnippet": "PRESENTMENT. — \" 'Presentment' is of two significations : one is presentments to a Church, which when any man which hath right to give any Benefice Spirituall and nameth the person to the Bishop to whom bee will give it and maketh a writing to the Bishop for him, that"
+        }
+      ]
+    },
+    {
+      "term": "priority",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 1780,
+          "warningSnippet": "PRIORITY. — If a mesne ineumbvancor of realty be given a \"Pri- ority of Oliarge \" over a prior incumbrancer wlio lias the Legal Estate, that will not divest the latter of his legal estate (Doe d. T/iotii.pson v. Lediard, 4 B. & Ad. 137)."
+        }
+      ]
+    },
+    {
+      "term": "provocation",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 1825,
+          "warningSnippet": "PROVOCATION. — As to what is Provocation that will reduce Murder to Manslalkjhter; V. Steph. Cr. 161, 162: Arch. Cr. 759- 762 : Rose. Cr. 620. \"Provocation \" for riot, s. 2 (1), Riot (Damages) Act, 1886, 49 & 50"
+        }
+      ]
+    },
+    {
+      "term": "reconciliation",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 1909,
+          "warningSnippet": "RECONCILIATION. — A Reconciliation of a Church, is an excep- tion to the rule that a Church once consecrated cannot bo re-consecrated, for there is a Re-Consecration after a Church has been polluted by the shedding of blood, e.fj. on Oct 13, 1890, at St. Paul's Cathedral after"
+        }
+      ]
+    },
+    {
+      "term": "regress",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 1924,
+          "warningSnippet": "REGRESS. —F. Ingress. REGULAR CLERGYMAN. — A \"Regular Clergyman of the Church of England\" does not merely mean one who is duly ordained; he must also be duly inducted, or licensed by the Bishop to perform"
+        }
+      ]
+    },
+    {
+      "term": "remainder",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 1934,
+          "warningSnippet": "REMAINDER. — As used in a residuary clause in a Will this is a technical word, as is also the word \" Residue.\" \" Here the words are, * Ail the Remainder and Residue of all his estate and effects, both real and personal,' — which includes all the testator's property. All the"
+        }
+      ]
+    },
+    {
+      "term": "service",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 2064,
+          "warningSnippet": "SERVICE. — \" In my service at the time of my decease \" ; V. Servant. In feudal times, and still qua (/opyholds, \" Service \" \" is that Service which the Tenant, by reason of his Fee, oweth unto his Lord\" (Cowel). Cp, Suit, at end."
+        }
+      ]
+    },
+    {
+      "term": "settlement",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 2070,
+          "warningSnippet": "SETTLEMENT. — Qua Settled Land Acts, a \" Settlement,\" is \" any Deed, Will, Agreement for a Settlement or other agreement. Covenant to Surrender, Copy of Court Roll, Act of Parliament, or other Instru- ment, or any number of instruments, whether made or passed before or"
+        }
+      ]
+    },
+    {
+      "term": "stockholder",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 2169,
+          "warningSnippet": "STOCKHOLDER.— \"Stnckhol. lor,\" generally, means a Holder of Stock duly registered, e.r/. Colonial Stock Act, 1877, 40 & 41 V. k. T/j, s. 26; National Debt xVot, 1870, 33 & 34 V. c. 71, s. 3: Va, Shakk- holhek: Stock."
+        }
+      ]
+    },
+    {
+      "term": "supervision",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 2215,
+          "warningSnippet": "SUPERVISION.— \"Board of Supervision\"; F. Boaki). V. Winding-up. SUPPLEMENTAL. — A Deed expressed to be \" supplemetital \" to a previous deed, will, since the Conv & L. P. Act, 1881, have effect as"
+        }
+      ]
+    },
+    {
+      "term": "tenant",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 2247,
+          "warningSnippet": "TENANT. — In its feudal acceptation, \"Tenant\" has five signifi- cations; it signifies (1) the Estate held; (2) the Tenure of the land; (3) Performance of the obligations; (4) to be bound; and (5) \" to deeme or judge\" (Co. Litt. 1 a, b : Vf, 2 Bl. (Jom. ch. 5)."
+        }
+      ]
+    },
+    {
+      "term": "testator",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 2264,
+          "warningSnippet": "TESTATOR. —\"Testator,\" s. 2, Real Estates Cliarges Act, 1867, .')0 »& 31 V. c. 69, lias its general meaning, and applies to any deceased person who has made a Will ; even where such Will has not disposed of the testator's beneficial interest in the lands upon which a lien for unpaid"
+        }
+      ]
+    },
+    {
+      "term": "theft",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 2268,
+          "warningSnippet": "THEFT. — \"'Theft' is a wrongfull taking away of another mans goods, but not from his person, with a mind to steale them against his will whose goods they were \" (Termes de la Ley, Lareenie) : Vf, Take AND CARRY AWAY. The taking must be animo furancli, \" or, as the"
+        }
+      ]
+    },
+    {
+      "term": "treason",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 2319,
+          "warningSnippet": "TREASON. — \" ' Treason ' is in two manners, that is to say, Graund Treason, and Petit Treason\" (Termes de la Ley). Grand Treason; V. High Treason. \" 'Petit Treason,' is when a Servant kills his Mas- ter, a Wife her Husband; or when a Secular or Religious man kills his"
+        }
+      ]
+    },
+    {
+      "term": "treaty",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 2322,
+          "warningSnippet": "TREATY. — Qua International Copyright Act, 1886, 49 & 50 V. c. 33, \"'Treaty,' includes, any Convention or Arrangement\" (s. 11); qua 81ave Trade Acts it \" includes, any Convention, Agreement, Engage- ment, or Arrangement \" (s. 2, 36 & 37 V. c. 59; s. 2, 36 & 37 V. c. 88)."
+        }
+      ]
+    },
+    {
+      "term": "trespass",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 2322,
+          "warningSnippet": "TRESPASS. — \" ' Trespass,' signifies any transgression of the law under Treason, Felony, or Misprision of either\" (Cowcl : Vf, Jacob). \"A Trespass, is an injury committed with violence; and this violence maybe either actual or implied; and the law will imply violence, though"
+        }
+      ]
+    },
+    {
+      "term": "trial",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 2323,
+          "warningSnippet": "TRIAL: TRIED. — A \"Trial\" is the conclusion, by a competent Tribunal, of questions in issue in legal proceedings, whether civil or criminal. Therefore, the hearing of the reference of an action \" and all matters in difference \" is not a Trial within s. 1, 17 & 18 V. c. 34 {Hall"
+        }
+      ]
+    },
+    {
+      "term": "fraud",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 2352,
+          "warningSnippet": "Fraud. In the interpretation, indeed, of these words some latitude must be allowed. In order to come to the conclusion that a Will has been obtained by Coercion, it is not necessary to establish that actual violence has been used or even threatened. The conduct of a person in vigorous"
+        }
+      ]
+    },
+    {
+      "term": "usurpation",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 2391,
+          "warningSnippet": "USURPATION. — \"Usurpation hath two significations in the common law: (jn(3, when an estranger that no right liatli presenteth to a church, and liis clerke is admitted and instituted, hee is said to bee an usurper, and the wrongful 1 act that lie hath done is called an"
+        }
+      ]
+    },
+    {
+      "term": "windfall",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 2478,
+          "warningSnippet": "WINDFALL. — A Windfall is a Timber Tree blown down by the wind; the proceeds of Windfalls (as between Tenant for Life and llemainder-man) should be invested as Capital, the annual income generally going to the Tenant for Life, but who will, under some circum-"
+        }
+      ]
+    },
+    {
+      "term": "section",
+      "warnings": [
+        {
+          "sourceId": "stroud_1903",
+          "page": 2518,
+          "warningSnippet": "Section. Sub-sect. Admiralty Affidavit Appeal Court {st'<- Court of"
+        }
+      ]
+    }
+  ],
+  "possibleSourceConflicts": [],
+  "termsThatRemainSkipOnlyUnlessBlackPrimaryExists": [
+    "abatement",
+    "abeyance",
+    "abjuration",
+    "abstraction",
+    "abuse",
+    "accident",
+    "accommodation",
+    "accretion",
+    "accumulation",
+    "accusation",
+    "acquiescence",
+    "act",
+    "act of state",
+    "action",
+    "ademption",
+    "adjoining land",
+    "administration",
+    "aid",
+    "allotment",
+    "ambiguity",
+    "amortization",
+    "annuity",
+    "antecedent",
+    "anticipation",
+    "appearance",
+    "appraiser",
+    "appreciation",
+    "apprehension",
+    "arrangement",
+    "assurance",
+    "attornment",
+    "auction",
+    "author",
+    "balance",
+    "bankruptcy",
+    "beacon",
+    "bill",
+    "blackmail",
+    "bona fide",
+    "boundary",
+    "broker",
+    "buyer",
+    "capacity",
+    "carriage",
+    "carrier",
+    "case",
+    "certification",
+    "cession",
+    "charitable trust",
+    "claimant",
+    "clause",
+    "clerk",
+    "client",
+    "coercion",
+    "collation",
+    "collusion",
+    "commencement",
+    "commission",
+    "common carrier",
+    "common law",
+    "commutation",
+    "complainant",
+    "composition",
+    "compound",
+    "concealment",
+    "condemnation",
+    "confession",
+    "conflict",
+    "connivance",
+    "conscience",
+    "consignment",
+    "construction",
+    "contempt of court",
+    "contingency",
+    "continuance",
+    "contract",
+    "control",
+    "conversion",
+    "convoy",
+    "copyright",
+    "counterpart",
+    "court",
+    "covenant",
+    "debenture",
+    "decision",
+    "decree",
+    "dedication",
+    "deduction",
+    "deed",
+    "defamation",
+    "defeasance",
+    "defence",
+    "defendant",
+    "deficiency",
+    "definition",
+    "delay",
+    "demand",
+    "dependency",
+    "descent",
+    "detriment",
+    "devolution",
+    "difference",
+    "dignity",
+    "direction",
+    "director",
+    "discipline",
+    "discovery",
+    "disparagement",
+    "dissent",
+    "distress",
+    "document",
+    "domain",
+    "donation",
+    "drawer",
+    "due diligence",
+    "employer",
+    "encumbrance",
+    "endowment",
+    "engagement",
+    "enjoyment",
+    "entry",
+    "escheat",
+    "estate",
+    "eviction",
+    "examination",
+    "exchange",
+    "exclusive right",
+    "executive",
+    "existence",
+    "expectation",
+    "expiration",
+    "expression",
+    "extinction",
+    "extradition",
+    "fair comment",
+    "false imprisonment",
+    "false statement",
+    "fault",
+    "felony",
+    "final judgment",
+    "final order",
+    "finding",
+    "forcible entry",
+    "form",
+    "freight",
+    "gain",
+    "general rule",
+    "gift",
+    "good title",
+    "grace",
+    "grantee",
+    "grantor",
+    "guarantee",
+    "harm",
+    "heirs",
+    "holding over",
+    "ignorance",
+    "illegality",
+    "impartiality",
+    "impeachment",
+    "importunity",
+    "incident",
+    "incumbrance",
+    "indorsement",
+    "influence",
+    "inhibition",
+    "instigation",
+    "institution",
+    "instrumentality",
+    "insurable interest",
+    "intent",
+    "interdict",
+    "investment",
+    "jeopardy",
+    "joint tenancy",
+    "judge",
+    "judgment",
+    "jurisdiction",
+    "jury",
+    "keeper",
+    "laches",
+    "landlord",
+    "lapse",
+    "latent ambiguity",
+    "latent defect",
+    "lawful excuse",
+    "legacy duty",
+    "legal process",
+    "legality",
+    "liability",
+    "libel",
+    "liquidation",
+    "loss",
+    "maintenance",
+    "malice",
+    "master",
+    "material fact",
+    "mens rea",
+    "mercy",
+    "merits",
+    "method",
+    "misapplication",
+    "misdemeanor",
+    "misprision",
+    "monition",
+    "mortgagee",
+    "motive",
+    "neglect",
+    "negotiation",
+    "nolle prosequi",
+    "nominee",
+    "novation",
+    "nullity",
+    "oath",
+    "object",
+    "offence",
+    "offer",
+    "omission",
+    "opinion",
+    "opportunity",
+    "oppression",
+    "option",
+    "ordinary care",
+    "ouster",
+    "party",
+    "per capita",
+    "per stirpes",
+    "permission",
+    "perpetuity",
+    "personal property",
+    "persuasion",
+    "petitioner",
+    "power of attorney",
+    "prerogative",
+    "presentment",
+    "preservation",
+    "priority",
+    "privacy",
+    "privation",
+    "procedure",
+    "procurement",
+    "production",
+    "profit",
+    "promoter",
+    "proof",
+    "property",
+    "proprietor",
+    "provision",
+    "public authority",
+    "public duty",
+    "public interest",
+    "public office",
+    "public right",
+    "purchase",
+    "purchaser",
+    "quorum",
+    "real property",
+    "reason",
+    "receipt",
+    "receiver",
+    "reconciliation",
+    "reconveyance",
+    "record",
+    "reference",
+    "regard",
+    "regress",
+    "regulation",
+    "relief",
+    "renewal",
+    "renunciation",
+    "replevin",
+    "representation",
+    "resignation",
+    "resolution",
+    "right of way",
+    "robbery",
+    "rule",
+    "sale",
+    "salvage",
+    "sanction",
+    "satisfaction",
+    "scienter",
+    "seal",
+    "search",
+    "service",
+    "settlement",
+    "settlor",
+    "shipment",
+    "slander",
+    "specification",
+    "statute",
+    "stipendiary",
+    "stipulation",
+    "stockholder",
+    "subject",
+    "suit",
+    "supervision",
+    "surety",
+    "survivorship",
+    "tenancy",
+    "tenant",
+    "tender",
+    "termination",
+    "transaction",
+    "transferor",
+    "tribunal",
+    "ultra vires",
+    "undertaker",
+    "uniformity",
+    "union",
+    "usage",
+    "usurpation",
+    "usury",
+    "validity",
+    "valuation",
+    "value",
+    "vendor",
+    "venue",
+    "verdict",
+    "vesting",
+    "vicinage",
+    "voting",
+    "waiver",
+    "waste",
+    "wayleave",
+    "windfall",
+    "withdrawal",
+    "writ",
+    "yield"
+  ],
+  "authorityCaution": "Comparator v3 exact matches do not make a term writeback-eligible without Black primary provenance.",
+  "topExactMatchedTerms": [
+    {
+      "term": "act",
+      "count": 12
+    },
+    {
+      "term": "aid",
+      "count": 12
+    },
+    {
+      "term": "statute",
+      "count": 6
+    },
+    {
+      "term": "will",
+      "count": 6
+    },
+    {
+      "term": "accident",
+      "count": 2
+    },
+    {
+      "term": "appeal",
+      "count": 2
+    },
+    {
+      "term": "assembly",
+      "count": 2
+    },
+    {
+      "term": "carriage",
+      "count": 2
+    },
+    {
+      "term": "case",
+      "count": 2
+    },
+    {
+      "term": "common law",
+      "count": 2
+    },
+    {
+      "term": "condition",
+      "count": 2
+    },
+    {
+      "term": "contract",
+      "count": 2
+    },
+    {
+      "term": "court",
+      "count": 2
+    },
+    {
+      "term": "crime",
+      "count": 2
+    },
+    {
+      "term": "custom",
+      "count": 2
+    },
+    {
+      "term": "damages",
+      "count": 2
+    },
+    {
+      "term": "defamation",
+      "count": 2
+    },
+    {
+      "term": "felony",
+      "count": 2
+    },
+    {
+      "term": "foreclosure",
+      "count": 2
+    },
+    {
+      "term": "fraud",
+      "count": 2
+    },
+    {
+      "term": "indictment",
+      "count": 2
+    },
+    {
+      "term": "infringement",
+      "count": 2
+    },
+    {
+      "term": "intrusion",
+      "count": 2
+    },
+    {
+      "term": "jurisdiction",
+      "count": 2
+    },
+    {
+      "term": "jury",
+      "count": 2
+    },
+    {
+      "term": "keeper",
+      "count": 2
+    },
+    {
+      "term": "liquidation",
+      "count": 2
+    },
+    {
+      "term": "offence",
+      "count": 2
+    },
+    {
+      "term": "officer",
+      "count": 2
+    },
+    {
+      "term": "option",
+      "count": 2
+    },
+    {
+      "term": "personal property",
+      "count": 2
+    },
+    {
+      "term": "section",
+      "count": 2
+    },
+    {
+      "term": "tenancy",
+      "count": 2
+    },
+    {
+      "term": "title",
+      "count": 2
+    },
+    {
+      "term": "trustee",
+      "count": 2
+    },
+    {
+      "term": "abatement",
+      "count": 1
+    },
+    {
+      "term": "abduction",
+      "count": 1
+    },
+    {
+      "term": "abeyance",
+      "count": 1
+    },
+    {
+      "term": "abjuration",
+      "count": 1
+    },
+    {
+      "term": "abstraction",
+      "count": 1
+    },
+    {
+      "term": "abuse",
+      "count": 1
+    },
+    {
+      "term": "acceptance",
+      "count": 1
+    },
+    {
+      "term": "accommodation",
+      "count": 1
+    },
+    {
+      "term": "accord",
+      "count": 1
+    },
+    {
+      "term": "account",
+      "count": 1
+    },
+    {
+      "term": "accretion",
+      "count": 1
+    },
+    {
+      "term": "accumulation",
+      "count": 1
+    },
+    {
+      "term": "accusation",
+      "count": 1
+    },
+    {
+      "term": "acquiescence",
+      "count": 1
+    },
+    {
+      "term": "act of state",
+      "count": 1
+    }
+  ]
+}

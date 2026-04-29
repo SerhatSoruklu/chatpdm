@@ -1,0 +1,38 @@
+{
+  "generatedAt": "2026-04-24T14:16:42.345Z",
+  "scope": "vocabulary-boundary meaning source provenance backfill",
+  "boundaryDiscipline": {
+    "liveVocabularyMeaningTextChanged": false,
+    "runtimeOntologyChanged": false,
+    "conceptPacketsChanged": false,
+    "aliasFanoutPerformed": false
+  },
+  "counts": {
+    "authoredMeaningCount": 244,
+    "registryAuthoredMeaningCount": 242,
+    "packetBackedAuthoredMeaningCount": 2,
+    "appliedBatchRowsScanned": 138,
+    "comparatorAppliedRowsScanned": 17,
+    "comparatorV2AppliedRowsScanned": 63,
+    "batch004AppliedRowsScanned": 45,
+    "batch005AppliedRowsScanned": 48,
+    "legacyManualRowsScanned": 2,
+    "totalAppliedSourceRowsScanned": 313,
+    "termsWithGeneratedProvenance": 242,
+    "registryAuthoredTermsWithGeneratedProvenance": 242,
+    "registryAuthoredTermsMissingGeneratedProvenance": 0,
+    "missingDraftRows": 0,
+    "missingReferenceRows": 0,
+    "nonAppliedComparatorRows": 0
+  },
+  "registryAuthoredTermsMissingGeneratedProvenance": [],
+  "missingDraftRows": [],
+  "missingReferenceRows": [],
+  "nonAppliedRows": [],
+  "generatedSourcesPath": "/home/serhat/code/chatpdm/backend/src/modules/legal-vocabulary/vocabulary-meaning-sources.generated.json",
+  "comparatorAppliedDiffPath": "C:\\Users\\coupy\\Desktop\\vocabulary-reference-lexicons\\vocabulary_reference_lexicons\\multi_source\\reports\\comparator_writeback_applied_diff.json",
+  "comparatorV2AppliedDiffPath": "C:\\Users\\coupy\\Desktop\\vocabulary-reference-lexicons\\vocabulary_reference_lexicons\\multi_source\\reports\\comparator_v2_writeback_applied_diff.json",
+  "batch004AppliedDiffPath": "C:\\Users\\coupy\\Desktop\\vocabulary-reference-lexicons\\vocabulary_reference_lexicons\\draft_meanings\\writeback_applied\\batch_004_applied_diff.json",
+  "batch005AppliedDiffPath": "C:\\Users\\coupy\\Desktop\\vocabulary-reference-lexicons\\vocabulary_reference_lexicons\\draft_meanings\\writeback_applied\\batch_005_applied_diff.json",
+  "matchedRegistryTermsPath": "C:\\Users\\coupy\\Desktop\\vocabulary-reference-lexicons\\vocabulary_reference_lexicons\\alignment\\matched_registry_terms.json"
+}

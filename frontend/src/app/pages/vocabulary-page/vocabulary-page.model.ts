@@ -21,6 +21,13 @@ export const VOCABULARY_PAGE_SIZE_OPTIONS = [12, 24, 48, 96] as const;
 export const VOCABULARY_PAGE_SIZE_DEFAULT = 24;
 
 export type VocabularyRegistryFilterKey = 'all' | keyof VocabularyBoundaryBuckets;
+export type VocabularyRegistrySortKey =
+  | 'term_az'
+  | 'term_za'
+  | 'meaning_first'
+  | 'without_meaning_first'
+  | 'registry_only_first'
+  | 'packet_backed_first';
 
 export interface VocabularyRegistryFilterOption {
   readonly key: VocabularyRegistryFilterKey;
@@ -28,11 +35,48 @@ export interface VocabularyRegistryFilterOption {
   readonly count: number;
 }
 
+export interface VocabularyRegistrySortOption {
+  readonly key: VocabularyRegistrySortKey;
+  readonly label: string;
+}
+
+export const VOCABULARY_REGISTRY_SORT_OPTIONS: readonly VocabularyRegistrySortOption[] = [
+  {
+    key: 'term_az',
+    label: 'A-Z',
+  },
+  {
+    key: 'term_za',
+    label: 'Z-A',
+  },
+  {
+    key: 'meaning_first',
+    label: 'Meanings first',
+  },
+  {
+    key: 'without_meaning_first',
+    label: 'Without meanings first',
+  },
+  {
+    key: 'registry_only_first',
+    label: 'Registry-only first',
+  },
+  {
+    key: 'packet_backed_first',
+    label: 'Packet-backed first',
+  },
+];
+
 export interface VocabularyPaginationToken {
   readonly kind: 'page' | 'ellipsis';
   readonly page?: number;
   readonly label: string;
   readonly active: boolean;
+}
+
+export interface VocabularySearchIndexEntry {
+  readonly entry: VocabularyBoundaryEntry;
+  readonly searchText: string;
 }
 
 export function buildVocabularyRegistryFilterOptions(
@@ -53,21 +97,91 @@ export function buildVocabularyRegistryFilterOptions(
   ];
 }
 
-export function filterVocabularyEntries(
+export function getVocabularyMeaningInLawCount(entries: readonly VocabularyBoundaryEntry[]): number {
+  return entries.filter(hasVocabularyMeaningInLaw).length;
+}
+
+export function hasVocabularyMeaningInLaw(entry: VocabularyBoundaryEntry): boolean {
+  return (entry.meaningInLaw ?? '').trim().length > 0;
+}
+
+export function displayVocabularyTerm(term: string): string {
+  return term.replace(/_/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+export function hasVocabularyDisplayTermAlias(term: string): boolean {
+  return displayVocabularyTerm(term) !== term;
+}
+
+export function buildVocabularySearchIndex(
   entries: readonly VocabularyBoundaryEntry[],
+): readonly VocabularySearchIndexEntry[] {
+  return entries.map((entry) => ({
+    entry,
+    searchText: buildVocabularySearchText(entry),
+  }));
+}
+
+export function filterVocabularySearchIndex(
+  indexedEntries: readonly VocabularySearchIndexEntry[],
   rawQuery: string,
   filterKey: VocabularyRegistryFilterKey,
 ): readonly VocabularyBoundaryEntry[] {
   const query = rawQuery.trim().toLowerCase();
   const bucketFiltered = filterKey === 'all'
-    ? entries
-    : entries.filter((entry) => entry.classification === filterKey);
+    ? indexedEntries
+    : indexedEntries.filter(({ entry }) => entry.classification === filterKey);
 
   if (query.length === 0) {
-    return bucketFiltered;
+    return bucketFiltered.map(({ entry }) => entry);
   }
 
-  return bucketFiltered.filter((entry) => buildVocabularySearchText(entry).includes(query));
+  return bucketFiltered
+    .filter(({ searchText }) => searchText.includes(query))
+    .map(({ entry }) => entry);
+}
+
+export function filterVocabularyEntries(
+  entries: readonly VocabularyBoundaryEntry[],
+  rawQuery: string,
+  filterKey: VocabularyRegistryFilterKey,
+): readonly VocabularyBoundaryEntry[] {
+  return filterVocabularySearchIndex(buildVocabularySearchIndex(entries), rawQuery, filterKey);
+}
+
+export function sortVocabularyEntries(
+  entries: readonly VocabularyBoundaryEntry[],
+  sortKey: VocabularyRegistrySortKey,
+): readonly VocabularyBoundaryEntry[] {
+  const sortedEntries = [...entries];
+
+  switch (sortKey) {
+    case 'term_za':
+      return sortedEntries.sort((a, b) => compareVocabularyTerms(b, a));
+    case 'meaning_first':
+      return sortedEntries.sort((a, b) => (
+        compareBooleanRank(hasVocabularyMeaningInLaw(a), hasVocabularyMeaningInLaw(b))
+        || compareVocabularyTerms(a, b)
+      ));
+    case 'without_meaning_first':
+      return sortedEntries.sort((a, b) => (
+        compareBooleanRank(!hasVocabularyMeaningInLaw(a), !hasVocabularyMeaningInLaw(b))
+        || compareVocabularyTerms(a, b)
+      ));
+    case 'registry_only_first':
+      return sortedEntries.sort((a, b) => (
+        compareBooleanRank(a.sourceStatus === 'registry_only', b.sourceStatus === 'registry_only')
+        || compareVocabularyTerms(a, b)
+      ));
+    case 'packet_backed_first':
+      return sortedEntries.sort((a, b) => (
+        compareBooleanRank(a.sourceStatus === 'packet_backed', b.sourceStatus === 'packet_backed')
+        || compareVocabularyTerms(a, b)
+      ));
+    case 'term_az':
+    default:
+      return sortedEntries.sort(compareVocabularyTerms);
+  }
 }
 
 export function getVocabularyPageCount(totalEntries: number, pageSize: number): number {
@@ -157,10 +271,7 @@ export function buildVocabularyPaginationTokens(
 }
 
 export function buildVocabularySearchSummary(
-  visibleCount: number,
   filteredCount: number,
-  currentPage: number,
-  pageCount: number,
 ): string {
   if (filteredCount === 0) {
     return 'No terms matched the current search and filter.';
@@ -168,7 +279,18 @@ export function buildVocabularySearchSummary(
 
   const formatter = new Intl.NumberFormat('en-US');
 
-  return `Showing ${formatter.format(visibleCount)} of ${formatter.format(filteredCount)} matched terms · page ${formatter.format(currentPage)} of ${formatter.format(pageCount)}`;
+  return `Virtualized list over ${formatter.format(filteredCount)} matched terms`;
+}
+
+export function normalizeVocabularyDisplayText(value: string | null | undefined): string {
+  return (value ?? '').trim().replace(/\s+/g, ' ');
+}
+
+export function shouldRenderVocabularyBoundaryNote(entry: VocabularyBoundaryEntry): boolean {
+  const boundaryNote = normalizeVocabularyDisplayText(entry.boundaryNote);
+
+  return boundaryNote.length > 0
+    && boundaryNote !== normalizeVocabularyDisplayText(entry.whyRegistryOnly);
 }
 
 function buildVocabularySearchText(entry: VocabularyBoundaryEntry): string {
@@ -176,10 +298,19 @@ function buildVocabularySearchText(entry: VocabularyBoundaryEntry): string {
   // The canonical semantic contract now lives in the disclosure fields.
   return [
     entry.term,
+    displayVocabularyTerm(entry.term),
     entry.familyLabel,
     entry.classificationLabel,
     entry.sourceStatusLabel,
     entry.meaningInLaw ?? '',
+    ...entry.meaningSources.flatMap((source) => [
+      source.sourceTitle,
+      source.sourceId,
+      source.supportNoteDisplay,
+      source.snippetDisplay ?? '',
+      source.page.toString(),
+      source.year.toString(),
+    ]),
     entry.registryInterpretation,
     entry.whyRegistryOnly,
     entry.shortMeaning,
@@ -191,6 +322,14 @@ function buildVocabularySearchText(entry: VocabularyBoundaryEntry): string {
   ]
     .join(' ')
     .toLowerCase();
+}
+
+function compareVocabularyTerms(a: VocabularyBoundaryEntry, b: VocabularyBoundaryEntry): number {
+  return a.term.localeCompare(b.term, 'en', { sensitivity: 'base' });
+}
+
+function compareBooleanRank(a: boolean, b: boolean): number {
+  return Number(b) - Number(a);
 }
 
 function pageToken(page: number, activePage: number): VocabularyPaginationToken {

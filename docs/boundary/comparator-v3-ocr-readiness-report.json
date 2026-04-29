@@ -1,0 +1,134 @@
+{
+  "generatedAt": "2026-04-29T18:39:42.194Z",
+  "mode": "comparator_v3_ocr_readiness",
+  "tooling": {
+    "generatedAt": "2026-04-29T18:37:07.998Z",
+    "mode": "comparator_v3_ocr_tooling_detection",
+    "cliTools": {
+      "tesseract": {
+        "available": false,
+        "path": null
+      },
+      "pdftoppm": {
+        "available": false,
+        "path": null
+      },
+      "convert": {
+        "available": false,
+        "path": null
+      },
+      "magick": {
+        "available": false,
+        "path": null
+      }
+    },
+    "pythonLibraries": {
+      "fitz": true,
+      "PIL": true,
+      "pytesseract": false,
+      "pdf2image": false
+    },
+    "missingTools": [
+      "tesseract",
+      "pdftoppm",
+      "convert",
+      "magick",
+      "pytesseract",
+      "pdf2image"
+    ],
+    "recommendedOcrPath": "install_or_enable_tesseract_plus_pdf_rendering_before_ocr_repair_lane",
+    "fullOcrCanRunLocallyNow": false
+  },
+  "blockedPageSummary": {
+    "generatedAt": "2026-04-29T18:39:35.861Z",
+    "mode": "comparator_v3_ocr_page_extraction",
+    "status": "blocked_pending_ocr_tooling",
+    "attemptedSources": [
+      "bouvier_1839_vol_1",
+      "bouvier_1839_vol_2",
+      "burrill_1860",
+      "ballentine_1916"
+    ],
+    "reason": "OCR engine/tooling is not available locally; no OCR pages were produced.",
+    "comparatorRole": "assistive_v3_only",
+    "mayCreateMeaning": false,
+    "mayOverrideBlack": false,
+    "mayAdmitRuntimeOntology": false
+  },
+  "sourcesAttempted": [
+    "bouvier_1839_vol_1",
+    "bouvier_1839_vol_2",
+    "burrill_1860",
+    "ballentine_1916"
+  ],
+  "records": [
+    {
+      "sourceId": "bouvier_1839_vol_1",
+      "sourceTitle": "Bouvier's Law Dictionary",
+      "pagesOcred": 0,
+      "ocrCandidateCount": 0,
+      "exactMatchCount": 0,
+      "uniqueExactTermCount": 0,
+      "lowConfidenceCount": 0,
+      "blockedReason": "OCR engine/tooling unavailable locally; no OCR pages produced.",
+      "sourceStatus": "blocked_pending_ocr_tooling",
+      "sampleExactMatches": [],
+      "riskNotes": [
+        "OCR noise may corrupt headwords.",
+        "Exact-term alignment only; no fuzzy repair or alias fan-out.",
+        "Comparator v3 remains assistive-only and cannot originate meanings."
+      ]
+    },
+    {
+      "sourceId": "bouvier_1839_vol_2",
+      "sourceTitle": "Bouvier's Law Dictionary",
+      "pagesOcred": 0,
+      "ocrCandidateCount": 0,
+      "exactMatchCount": 0,
+      "uniqueExactTermCount": 0,
+      "lowConfidenceCount": 0,
+      "blockedReason": "OCR engine/tooling unavailable locally; no OCR pages produced.",
+      "sourceStatus": "blocked_pending_ocr_tooling",
+      "sampleExactMatches": [],
+      "riskNotes": [
+        "OCR noise may corrupt headwords.",
+        "Exact-term alignment only; no fuzzy repair or alias fan-out.",
+        "Comparator v3 remains assistive-only and cannot originate meanings."
+      ]
+    },
+    {
+      "sourceId": "burrill_1860",
+      "sourceTitle": "Burrill, A Law Dictionary and Glossary",
+      "pagesOcred": 0,
+      "ocrCandidateCount": 0,
+      "exactMatchCount": 0,
+      "uniqueExactTermCount": 0,
+      "lowConfidenceCount": 0,
+      "blockedReason": "OCR engine/tooling unavailable locally; no OCR pages produced.",
+      "sourceStatus": "blocked_pending_ocr_tooling",
+      "sampleExactMatches": [],
+      "riskNotes": [
+        "OCR noise may corrupt headwords.",
+        "Exact-term alignment only; no fuzzy repair or alias fan-out.",
+        "Comparator v3 remains assistive-only and cannot originate meanings."
+      ]
+    },
+    {
+      "sourceId": "ballentine_1916",
+      "sourceTitle": "Ballentine's Law Dictionary",
+      "pagesOcred": 0,
+      "ocrCandidateCount": 0,
+      "exactMatchCount": 0,
+      "uniqueExactTermCount": 0,
+      "lowConfidenceCount": 0,
+      "blockedReason": "OCR engine/tooling unavailable locally; no OCR pages produced.",
+      "sourceStatus": "blocked_pending_ocr_tooling",
+      "sampleExactMatches": [],
+      "riskNotes": [
+        "OCR noise may corrupt headwords.",
+        "Exact-term alignment only; no fuzzy repair or alias fan-out.",
+        "Comparator v3 remains assistive-only and cannot originate meanings."
+      ]
+    }
+  ]
+}

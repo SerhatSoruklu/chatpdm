@@ -33,20 +33,26 @@
           <article class="pdm-vocabulary-page__stat">
             <p class="pdm-vocabulary-page__stat-label">Published concept packets</p>
             <p class="pdm-vocabulary-page__stat-value">
-              {{ formatCount(boundaryData()?.surfaceCounts?.publishedConceptPackets) }}
+              {{ formatCount(boundaryStats().publishedConceptPackets) }}
             </p>
           </article>
 
           <article class="pdm-vocabulary-page__stat">
             <p class="pdm-vocabulary-page__stat-label">Current runtime boundary</p>
             <p class="pdm-vocabulary-page__stat-value">
-              {{ formatCount(boundaryData()?.surfaceCounts?.liveRuntimeConcepts) }}
+              {{ formatCount(boundaryStats().liveRuntimeConcepts) }}
             </p>
           </article>
 
           <article class="pdm-vocabulary-page__stat">
             <p class="pdm-vocabulary-page__stat-label">Recognized legal vocabulary terms</p>
-            <p class="pdm-vocabulary-page__stat-value">{{ formatCount(boundaryData()?.total) }}</p>
+            <p class="pdm-vocabulary-page__stat-value">{{ formatCount(boundaryStats().recognizedLegalVocabularyTerms) }}</p>
+          </article>
+
+          <article class="pdm-vocabulary-page__stat">
+            <p class="pdm-vocabulary-page__stat-label">Vocabulary meanings</p>
+            <p class="pdm-vocabulary-page__stat-value">{{ formatCount(meaningInLawCount()) }}</p>
+            <p class="pdm-vocabulary-page__stat-supporting">Entries with meaningInLaw</p>
           </article>
         </div>
       </section>
@@ -88,37 +94,96 @@
           <div class="pdm-vocabulary-page__console-rail">
             <section class="pdm-vocabulary-page__search-shell pdm-vocabulary-page__console-panel" aria-label="Search registry terms">
               <label class="pdm-vocabulary-page__search-label" for="pdm-vocabulary-search">Search registry</label>
-              <input
-                #vocabularySearchInput
-                id="pdm-vocabulary-search"
-                class="pdm-vocabulary-page__search-input"
-                type="search"
-                [value]="searchQuery()"
-                (input)="onSearchChange(vocabularySearchInput.value)"
-                placeholder="Search term, family, or boundary note"
-                autocomplete="off"
-                spellcheck="false"
-              />
+              <div class="pdm-vocabulary-page__search-control">
+                <input
+                  #vocabularySearchInput
+                  id="pdm-vocabulary-search"
+                  class="pdm-vocabulary-page__search-input"
+                  type="text"
+                  [value]="rawSearchQuery()"
+                  (input)="onSearchChange(vocabularySearchInput.value)"
+                  placeholder="Search term, family, or boundary note"
+                  autocomplete="off"
+                  spellcheck="false"
+                />
+                @if (rawSearchQuery().length > 0) {
+                  <button
+                    type="button"
+                    class="pdm-vocabulary-page__search-clear"
+                    aria-label="Clear registry search"
+                    (click)="clearSearch(vocabularySearchInput)"
+                  >
+                    <mat-icon aria-hidden="true">close</mat-icon>
+                  </button>
+                }
+              </div>
               <p class="pdm-vocabulary-page__search-count">
                 Matches term names, families, classifications, notes, and related terms.
               </p>
             </section>
 
             <section class="pdm-vocabulary-page__filter-shell pdm-vocabulary-page__console-panel" aria-label="Filter registry buckets">
-              <p class="pdm-vocabulary-page__filter-label">Filter by bucket</p>
-              <div class="pdm-vocabulary-page__filter-chips">
-                @for (filter of filterOptions(); track filter.key) {
+              <div class="pdm-vocabulary-page__filter-group">
+                <p class="pdm-vocabulary-page__filter-label">Filter by bucket</p>
+                <div class="pdm-vocabulary-page__filter-chips">
+                  @for (filter of filterOptions(); track filter.key) {
+                    <button
+                      type="button"
+                      class="pdm-vocabulary-page__filter-chip"
+                      [class.pdm-vocabulary-page__filter-chip--active]="selectedFilter() === filter.key"
+                      (click)="selectFilter(filter.key)"
+                      [attr.aria-pressed]="selectedFilter() === filter.key"
+                    >
+                      <span class="pdm-vocabulary-page__filter-chip-label">{{ filter.label }}</span>
+                      <span class="pdm-vocabulary-page__filter-chip-count">{{ formatCount(filter.count) }}</span>
+                    </button>
+                  }
+                </div>
+              </div>
+
+              <div class="pdm-vocabulary-page__sort-shell">
+                <p class="pdm-vocabulary-page__filter-label" id="pdm-vocabulary-sort-label">
+                  Sort view
+                </p>
+                <div
+                  class="pdm-vocabulary-page__sort-menu"
+                  (focusout)="closeSortMenuOnFocusOut($event)"
+                >
                   <button
                     type="button"
-                    class="pdm-vocabulary-page__filter-chip"
-                    [class.pdm-vocabulary-page__filter-chip--active]="selectedFilter() === filter.key"
-                    (click)="selectFilter(filter.key)"
-                    [attr.aria-pressed]="selectedFilter() === filter.key"
+                    class="pdm-vocabulary-page__sort-trigger"
+                    aria-haspopup="listbox"
+                    aria-labelledby="pdm-vocabulary-sort-label pdm-vocabulary-sort-value"
+                    [attr.aria-expanded]="sortMenuOpen()"
+                    (click)="toggleSortMenu()"
                   >
-                    <span class="pdm-vocabulary-page__filter-chip-label">{{ filter.label }}</span>
-                    <span class="pdm-vocabulary-page__filter-chip-count">{{ formatCount(filter.count) }}</span>
+                    <span id="pdm-vocabulary-sort-value">{{ selectedSortLabel() }}</span>
+                    <mat-icon class="pdm-vocabulary-page__sort-caret" aria-hidden="true">
+                      expand_more
+                    </mat-icon>
                   </button>
-                }
+
+                  @if (sortMenuOpen()) {
+                    <div
+                      class="pdm-vocabulary-page__sort-options"
+                      role="listbox"
+                      aria-labelledby="pdm-vocabulary-sort-label"
+                    >
+                      @for (sortOption of sortOptions; track sortOption.key) {
+                        <button
+                          type="button"
+                          class="pdm-vocabulary-page__sort-option"
+                          role="option"
+                          [class.pdm-vocabulary-page__sort-option--active]="selectedSort() === sortOption.key"
+                          [attr.aria-selected]="selectedSort() === sortOption.key"
+                          (click)="selectSort(sortOption.key)"
+                        >
+                          {{ sortOption.label }}
+                        </button>
+                      }
+                    </div>
+                  }
+                </div>
               </div>
             </section>
           </div>
@@ -139,9 +204,9 @@
 
             <article class="pdm-vocabulary-page__summary-card">
               <p class="pdm-vocabulary-page__summary-label">Page</p>
-              <p class="pdm-vocabulary-page__summary-value">{{ pageSummary() }}</p>
+              <p class="pdm-vocabulary-page__summary-value">Virtualized</p>
               <p class="pdm-vocabulary-page__summary-supporting">
-                {{ formatCount(pageSize()) }} rows per page
+                DOM nodes stay bounded while scrolling
               </p>
             </article>
           </div>
@@ -154,126 +219,130 @@
               </p>
             </section>
           } @else {
-            <ul class="pdm-vocabulary-page__term-grid" aria-label="Recognized legal vocabulary terms">
-              @for (entry of visibleEntries(); track entry.term) {
-                <li class="pdm-vocabulary-page__term-card">
-                  <div class="pdm-vocabulary-page__term-card-head">
-                    <div class="pdm-vocabulary-page__term-card-copy">
-                      <p class="pdm-vocabulary-page__term-family">{{ entry.familyLabel }}</p>
-                      <h3 class="pdm-vocabulary-page__term-name">{{ entry.term }}</h3>
-                    </div>
-
-                    <div class="pdm-vocabulary-page__term-badges">
-                      <span class="pdm-vocabulary-page__term-badge">{{ entry.classificationLabel }}</span>
-                      <span class="pdm-vocabulary-page__term-badge pdm-vocabulary-page__term-badge--muted">
-                        {{ entry.sourceStatusLabel }}
-                      </span>
-                    </div>
+            <div
+              class="pdm-vocabulary-page__term-viewport"
+              aria-label="Recognized legal vocabulary terms"
+              (scroll)="onVirtualScroll($event)"
+            >
+              <div aria-hidden="true" [style.height.px]="virtualTopPadding()"></div>
+              <article
+                *ngFor="let entry of virtualEntries(); trackBy: trackVocabularyEntry"
+                class="pdm-vocabulary-page__term-card"
+                [class.pdm-vocabulary-page__term-card--selected]="selectedEntryTerm() === entry.term"
+              >
+                <div class="pdm-vocabulary-page__term-card-head">
+                  <div class="pdm-vocabulary-page__term-card-copy">
+                    <p class="pdm-vocabulary-page__term-family">{{ entry.familyLabel }}</p>
+                    <h3 class="pdm-vocabulary-page__term-name">{{ displayTerm(entry.term) }}</h3>
                   </div>
 
-                  <p class="pdm-vocabulary-page__term-summary">{{ entry.shortMeaning }}</p>
+                  <div class="pdm-vocabulary-page__term-badges">
+                    @if (hasMeaningInLaw(entry)) {
+                      <span
+                        class="pdm-vocabulary-page__term-badge pdm-vocabulary-page__term-badge--meaning"
+                        aria-label="This vocabulary entry has meaningInLaw"
+                      >
+                        <span class="pdm-vocabulary-page__meaning-dot" aria-hidden="true"></span>
+                        Meaning
+                      </span>
+                    }
+                    <span class="pdm-vocabulary-page__term-badge">{{ entry.classificationLabel }}</span>
+                    <span class="pdm-vocabulary-page__term-badge pdm-vocabulary-page__term-badge--muted">
+                      {{ entry.sourceStatusLabel }}
+                    </span>
+                  </div>
+                </div>
 
-                  <app-inspectable-item-disclosure
-                    [itemType]="'registry_term'"
-                    [semanticData]="entry"
-                  />
+                <p class="pdm-vocabulary-page__term-summary">{{ entry.shortMeaning }}</p>
 
-                  <dl class="pdm-vocabulary-page__term-details">
-                    <div class="pdm-vocabulary-page__term-detail">
-                      <dt>Boundary note</dt>
-                      <dd>{{ entry.whyRegistryOnly }}</dd>
-                    </div>
-
-                    <div class="pdm-vocabulary-page__term-detail">
-                      <dt>Family</dt>
-                      <dd>{{ entry.familyLabel }}</dd>
-                    </div>
-                  </dl>
-                </li>
-              }
-            </ul>
-          }
-
-          <div class="pdm-vocabulary-page__pager-shell" aria-label="Vocabulary pagination and page size">
-            <div class="pdm-vocabulary-page__pager-meta">
-              <p class="pdm-vocabulary-page__pager-label">Registry pagination</p>
-              <p class="pdm-vocabulary-page__pager-copy">{{ resultsSummary() }}</p>
-              <p class="pdm-vocabulary-page__pager-range">{{ pageSummary() }}</p>
+                <button
+                  type="button"
+                  class="pdm-vocabulary-page__inspect-button"
+                  [attr.aria-pressed]="selectedEntryTerm() === entry.term"
+                  (click)="toggleSelectedEntry(entry)"
+                >
+                  {{ selectedEntryTerm() === entry.term ? 'Hide details' : 'Inspect details' }}
+                </button>
+              </article>
+              <div aria-hidden="true" [style.height.px]="virtualBottomPadding()"></div>
             </div>
 
-            <nav class="pdm-vocabulary-page__pager" aria-label="Vocabulary page navigation">
-              <button
-                type="button"
-                class="pdm-vocabulary-page__pager-button"
-                [disabled]="activePage() === 1 || filteredEntries().length === 0"
-                (click)="selectPage(1)"
+            @if (selectedEntry(); as entry) {
+              <section
+                class="pdm-vocabulary-page__selected-detail"
+                aria-label="Selected vocabulary entry details"
+                data-vocabulary-selected-detail="true"
               >
-                First
-              </button>
-
-              <button
-                type="button"
-                class="pdm-vocabulary-page__pager-button"
-                [disabled]="activePage() === 1 || filteredEntries().length === 0"
-                (click)="selectPage(activePage() - 1)"
-              >
-                Previous
-              </button>
-
-              <div class="pdm-vocabulary-page__pager-pages" aria-label="Page numbers">
-                @for (token of pageTokens(); track token.kind === 'page' ? token.page : token.label) {
-                  @if (token.kind === 'page') {
-                    <button
-                      type="button"
-                      class="pdm-vocabulary-page__pager-page"
-                      [class.pdm-vocabulary-page__pager-page--active]="token.active"
-                      [disabled]="token.active || filteredEntries().length === 0"
-                      (click)="selectPage(token.page ?? 1)"
-                    >
-                      {{ token.label }}
-                    </button>
-                  } @else {
-                    <span class="pdm-vocabulary-page__pager-ellipsis" aria-hidden="true">{{ token.label }}</span>
-                  }
-                }
-              </div>
-
-              <button
-                type="button"
-                class="pdm-vocabulary-page__pager-button"
-                [disabled]="activePage() === pageCount() || filteredEntries().length === 0"
-                (click)="selectPage(activePage() + 1)"
-              >
-                Next
-              </button>
-
-              <button
-                type="button"
-                class="pdm-vocabulary-page__pager-button"
-                [disabled]="activePage() === pageCount() || filteredEntries().length === 0"
-                (click)="selectPage(pageCount())"
-              >
-                Last
-              </button>
-            </nav>
-
-            <div class="pdm-vocabulary-page__page-size-shell">
-              <p class="pdm-vocabulary-page__pager-label">Rows per page</p>
-              <div class="pdm-vocabulary-page__page-size-options" role="group" aria-label="Rows per page">
-                @for (size of pageSizeOptions; track size) {
+                <div class="pdm-vocabulary-page__selected-detail-head">
+                  <div>
+                    <p class="pdm-vocabulary-page__summary-label">Selected entry</p>
+                    <h3 class="pdm-vocabulary-page__selected-detail-title">{{ displayTerm(entry.term) }}</h3>
+                    @if (hasDisplayTermAlias(entry.term)) {
+                      <p class="pdm-vocabulary-page__canonical-term">
+                        Canonical term: {{ entry.term }}
+                      </p>
+                    }
+                  </div>
                   <button
                     type="button"
-                    class="pdm-vocabulary-page__page-size-option"
-                    [class.pdm-vocabulary-page__page-size-option--active]="pageSize() === size"
-                    (click)="selectPageSize(size)"
-                    [attr.aria-pressed]="pageSize() === size"
+                    class="pdm-vocabulary-page__inspect-button pdm-vocabulary-page__inspect-button--compact"
+                    (click)="toggleSelectedEntry(entry)"
                   >
-                    {{ formatCount(size) }}
+                    Close
                   </button>
+                </div>
+
+                <app-inspectable-item-disclosure
+                  [itemType]="'registry_term'"
+                  [semanticData]="entry"
+                />
+
+                @if (entry.meaningSources.length > 0) {
+                  <section class="pdm-vocabulary-page__meaning-sources" aria-label="Supporting lexicon references">
+                    <p class="pdm-vocabulary-page__meaning-sources-label">Supporting lexicon references</p>
+                    <ul class="pdm-vocabulary-page__meaning-source-list">
+                      @for (source of entry.meaningSources.slice(0, 2); track trackMeaningSource($index, source)) {
+                        <li class="pdm-vocabulary-page__meaning-source">
+                          <p class="pdm-vocabulary-page__meaning-source-title">
+                            {{ source.citationDisplay }}
+                          </p>
+                          <p class="pdm-vocabulary-page__meaning-source-page">{{ source.pageDisplay }}</p>
+                          <p class="pdm-vocabulary-page__meaning-source-note">{{ source.supportNoteDisplay }}</p>
+                          @if (source.showSnippet && source.snippetDisplay) {
+                            <p class="pdm-vocabulary-page__meaning-source-snippet">{{ source.snippetDisplay }}</p>
+                          }
+                        </li>
+                      }
+                    </ul>
+
+                    @if (entry.meaningSources.length > 2) {
+                      <p class="pdm-vocabulary-page__meaning-source-more">
+                        +{{ entry.meaningSources.length - 2 }} more supporting references
+                      </p>
+                    }
+
+                    <p class="pdm-vocabulary-page__meaning-source-disclaimer">
+                      Reference status: Reference-only. Not runtime ontology admission.
+                    </p>
+                  </section>
                 }
-              </div>
-            </div>
-          </div>
+
+                <dl class="pdm-vocabulary-page__term-details">
+                  @if (shouldRenderBoundaryNote(entry)) {
+                    <div class="pdm-vocabulary-page__term-detail">
+                      <dt>Boundary note</dt>
+                      <dd>{{ entry.boundaryNote }}</dd>
+                    </div>
+                  }
+
+                  <div class="pdm-vocabulary-page__term-detail">
+                    <dt>Family</dt>
+                    <dd>{{ entry.familyLabel }}</dd>
+                  </div>
+                </dl>
+              </section>
+            }
+          }
         }
       </section>
     </div>

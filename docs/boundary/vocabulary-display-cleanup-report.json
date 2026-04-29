@@ -1,0 +1,3696 @@
+{
+  "generatedAt": "2026-04-24T14:56:14.859Z",
+  "summary": {
+    "recordsScanned": 3585,
+    "recordsChanged": 242,
+    "supportingReferenceHeadingsFixed": 1,
+    "duplicatedSupportingReferenceHeadingsRemoved": 0,
+    "supportingReferenceRecordsChanged": 237,
+    "supportingReferenceRowsChanged": 1054,
+    "registryInterpretationFieldsChanged": 242,
+    "whyRegistryOnlyFieldsChanged": 242,
+    "recordsSkipped": 3343
+  },
+  "beforeAfterSamples": [
+    {
+      "term": "ab initio",
+      "oldRegistryInterpretation": "Recognized legal vocabulary with fixed Latin usage, but not normalized here into a single runtime-safe structural concept.",
+      "newRegistryInterpretation": "Source-attested legal vocabulary entry. Used for inspection and reference only.",
+      "oldWhyRegistryOnly": "This term remains registry-only because its legal usage is inspectable but it is not admitted to runtime ontology.",
+      "newWhyRegistryOnly": "Not admitted to runtime ontology because this entry has not been normalized into a bounded structural concept.",
+      "oldSupportingReferenceText": "Supporting lexicon reference:\n\nA Dictionary of Law (1891)\nPage 15\nBlack 1891 defines ab initio as from the beginning or from the first act.\nBlack's Law Dictionary, 2nd Edition (1910)\nPage 9\nBlack 1910 defines ab initio as from the beginning or from the first act.\n\nReference only. Not runtime ontology admission.",
+      "newSupportingReferenceText": "Supporting lexicon references:\n\n- Black, A Dictionary of Law (1891), p. 15:\n  Defines \"ab initio\" as from the beginning or from the first act.\n- Black's Law Dictionary, 2nd ed. (1910), p. 9:\n  Defines \"ab initio\" as from the beginning or from the first act.\n\nReference status: Reference-only. Not runtime ontology admission.",
+      "meaningInLawChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "abandonment",
+      "oldRegistryInterpretation": "Recognized legal vocabulary with broad contextual usage, but not normalized here into a single runtime-safe structural concept.",
+      "newRegistryInterpretation": "Source-attested legal vocabulary entry. Used for inspection and reference only.",
+      "oldWhyRegistryOnly": "This term remains registry-only because its legal usage is contextual and it is not admitted to runtime ontology.",
+      "newWhyRegistryOnly": "Not admitted to runtime ontology because this entry has not been normalized into a bounded structural concept.",
+      "oldSupportingReferenceText": "Supporting lexicon reference:\n\nA Dictionary of Law (1891)\nPage 16\nBlack 1891 defines abandonment as surrender, relinquishment, disclaimer, or cession of property or rights.\nBlack's Law Dictionary, 2nd Edition (1910)\nPage 10\nBlack 1910 defines abandonment as surrender, relinquishment, disclaimer, or cession of property or rights.\n\nReference only. Not runtime ontology admission.",
+      "newSupportingReferenceText": "Supporting lexicon references:\n\n- Black, A Dictionary of Law (1891), p. 16:\n  Defines \"abandonment\" as surrender, relinquishment, disclaimer, or cession of property or rights.\n- Black's Law Dictionary, 2nd ed. (1910), p. 10:\n  Defines \"abandonment\" as surrender, relinquishment, disclaimer, or cession of property or rights.\n\nReference status: Reference-only. Not runtime ontology admission.",
+      "meaningInLawChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "account",
+      "oldRegistryInterpretation": "Recognized legal vocabulary interpreted as context-bearing rather than standalone conceptual structure.",
+      "newRegistryInterpretation": "Source-attested legal vocabulary entry. Used for inspection and reference only.",
+      "oldWhyRegistryOnly": "This term is visible in the registry only and is not backed by a published concept packet.",
+      "newWhyRegistryOnly": "Not admitted to runtime ontology because this entry has not been normalized into a bounded structural concept.",
+      "oldSupportingReferenceText": "Supporting lexicon reference:\n\nA Dictionary of Law (1891)\nPage 29\nBlack 1891 describes account as a detailed statement of debts and credits between parties.\nA Dictionary of Law (1891)\nPage 49\nBlack 1891 additional exact-term support on page 49.\n\nReference only. Not runtime ontology admission.",
+      "newSupportingReferenceText": "Supporting lexicon references:\n\n- Black, A Dictionary of Law (1891), p. 29:\n  Describes \"account\" as a detailed statement of debts and credits between parties.\n- Black, A Dictionary of Law (1891), p. 49:\n  Describes \"account\" as a detailed statement of debts and credits between parties.\n\nReference status: Reference-only. Not runtime ontology admission.",
+      "meaningInLawChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "heir",
+      "oldRegistryInterpretation": "Recognized legal vocabulary interpreted as context-bearing rather than standalone conceptual structure.",
+      "newRegistryInterpretation": "Source-attested legal vocabulary entry. Used for inspection and reference only.",
+      "oldWhyRegistryOnly": "This term is visible in the registry only and is not backed by a published concept packet.",
+      "newWhyRegistryOnly": "Not admitted to runtime ontology because this entry has not been normalized into a bounded structural concept.",
+      "oldSupportingReferenceText": "Supporting lexicon reference:\n\nAnderson's Law Dictionary (1889)\nPage 520\nAnderson 1889 exact-term support for this legal meaning.\nAnderson's Law Dictionary (1889)\nPage 521\nAnderson 1889 additional exact-term support on page 521.\n\nReference only. Not runtime ontology admission.",
+      "newSupportingReferenceText": "Supporting lexicon references:\n\n- Anderson's Law Dictionary (1889), p. 520:\n  Provides exact-term support for \"heir\".\n- Anderson's Law Dictionary (1889), p. 521:\n  Provides exact-term support for \"heir\".\n\nReference status: Reference-only. Not runtime ontology admission.",
+      "meaningInLawChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "probation",
+      "oldRegistryInterpretation": "Recognized legal vocabulary interpreted as part of legal process, sequence, filing, adjudication, or operational procedure.",
+      "newRegistryInterpretation": "Source-attested legal vocabulary entry. Used for inspection and reference only.",
+      "oldWhyRegistryOnly": "This term is visible in the registry only and is not backed by a published concept packet.",
+      "newWhyRegistryOnly": "Not admitted to runtime ontology because this entry has not been normalized into a bounded structural concept.",
+      "oldSupportingReferenceText": "Supporting lexicon reference:\n\nA Dictionary of Law (1891)\nPage 83\nBlack 1891 exact-term support for this legal meaning.\nBlack's Law Dictionary, 2nd Edition (1910)\nPage 952\nBlack 1910 exact-term support for this legal meaning.\n\nReference only. Not runtime ontology admission.",
+      "newSupportingReferenceText": "Supporting lexicon references:\n\n- Black, A Dictionary of Law (1891), p. 83:\n  Provides exact-term support for \"probation\".\n- Black's Law Dictionary, 2nd ed. (1910), p. 952:\n  Provides exact-term support for \"probation\".\n\nReference status: Reference-only. Not runtime ontology admission.",
+      "meaningInLawChanged": false,
+      "runtimeConceptPacketChanged": false
+    }
+  ],
+  "changedRecords": [
+    {
+      "term": "ab initio",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "abandonment",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "acceptance",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "account",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "accounting",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "adjudication",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "administrator",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "affidavit",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "agency",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "agent",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "alibi",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "alienation",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "allocation",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "amnesty",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "ancestor",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "appeal",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "apportionment",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "appurtenance",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "arrest",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "assault",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "assembly",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "assignment",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "association",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "attestation",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "audit",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "authentication",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "bailee",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "bailment",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "bailor",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "beneficiary",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "bequest",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "best evidence",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "best_evidence",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "betterment",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "board",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "bond",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "boycott",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "burden",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "burden of proof",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "burden_of_proof",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "cassation",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "certainty",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "charter",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "chattel",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "citizen",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "citizenship",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "code",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "cohabitation",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "committee",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "company",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "compensation",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "complaint",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "condition",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "condonation",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "consideration",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "contribution",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "conveyance",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "corporation",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "credibility",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "credit",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "creditor",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "custody",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "custom",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "damage",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "damages",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "debenture",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "debt",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "debtor",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "deceit",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "default",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "delict",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "deposition",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "dictum",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "distribution",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "divorce",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "dowry",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "duress",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "easement",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "election",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "elector",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "emancipation",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "employment",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "evidence",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "excuse",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "executor",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "exhibit",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "exoneration",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "failure",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "fee simple",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "fee_simple",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "filiation",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "force",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "foreclosure",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "forum",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "franchise",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "fraud",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "fund",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "garnishment",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "governor",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "guardian",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "guardianship",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "hearing",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "hearsay",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "heir",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "holding",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "homestead",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "hypothecation",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "imprisonment",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "indemnity",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "indictment",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "inference",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "infringement",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "inheritance",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "injunction",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "injury",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "insanity",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "inspection",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "instrument",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "insufficiency",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "interference",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "interpleader",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "intervention",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "intestacy",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "intrusion",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "joinder",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "judiciary",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "justification",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "lease",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "leasehold",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "legatee",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "legislator",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "lessee",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "lessor",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "levy",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "liberty",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "license",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "licensor",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "lien",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "lineage",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "malfeasance",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "marriage",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "materiality",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "minority",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "misconduct",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "misfeasance",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "misjoinder",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "misrepresentation",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "mistake",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "mitigation",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "mortgage",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "mortgagor",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "motion",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "necessity",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "negligence",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "nonfeasance",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "notice",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "notoriety",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "nuisance",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "obstruction",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "occupancy",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "officer",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "ordinance",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "ownership",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "pardon",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "partnership",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "patent",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "patentee",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "patrimony",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "payment",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "penalty",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "perjury",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "petition",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "pleading",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "pledge",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "pledgee",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "pledgor",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "policy",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "possession",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "precedent",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "premium",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "preponderance",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "presumption",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "price",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "principal",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "privilege",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "probation",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "process",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "provocation",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "publication",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "punishment",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "rate",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "recoupment",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "redemption",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "redress",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "rejoinder",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "release",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "remainder",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "remedy",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "reparation",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "reply",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "reprieve",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "rescission",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "restitution",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "restraint",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "reversion",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "review",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "royalty",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "sanctuary",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "security",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "sentence",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "servitude",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "shareholder",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "sovereignty",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "submission",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "subrogation",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "succession",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "successor",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "surplusage",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "suspension",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "taxation",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "tenure",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "testacy",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "testament",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "testator",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "testimony",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "title",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "transcript",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "transfer",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "transferee",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "treason",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "treaty",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "trespass",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "trial",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "trust",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "trustee",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "uncertainty",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "usufructuary",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "vacatur",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "ward",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "warranty",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "will",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    },
+    {
+      "term": "witness",
+      "filePath": "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "issueDetected": "registry-only boilerplate; supporting lexicon reference display boilerplate",
+      "fieldsChanged": [
+        "registryInterpretation",
+        "whyRegistryOnly",
+        "meaningSources[].supportNoteDisplay",
+        "meaningSources[].citationDisplay",
+        "meaningSources[].pageDisplay"
+      ],
+      "meaningInLawChanged": false,
+      "provenanceChanged": false,
+      "runtimeConceptPacketChanged": false
+    }
+  ],
+  "boundaryDiscipline": {
+    "meaningInLawChanged": false,
+    "sourceProvenanceChanged": false,
+    "runtimeOntologyChanged": false,
+    "conceptPacketsChanged": false,
+    "writebackToRuntimeConcepts": false,
+    "aliasFanoutPerformed": false
+  }
+}

@@ -6,6 +6,22 @@ export interface VocabularyBoundaryBuckets {
   readonly rejected_candidate: number;
 }
 
+export interface VocabularyBoundaryMeaningSource {
+  readonly sourceId: string;
+  readonly sourceTitle: string;
+  readonly year: number;
+  readonly page: number;
+  readonly lineNumber: number | null;
+  readonly headword: string | null;
+  readonly citationDisplay: string;
+  readonly pageDisplay: string;
+  readonly supportNoteDisplay: string;
+  readonly snippetDisplay: string | null;
+  readonly showSnippet: boolean;
+  readonly qualityFlag: 'clean' | 'suppressed' | 'suppressed_noisy';
+  readonly referenceRole: 'supporting_lexicon_reference';
+}
+
 export interface VocabularyBoundaryEntry {
   readonly term: string;
   readonly family: string;
@@ -15,6 +31,7 @@ export interface VocabularyBoundaryEntry {
   readonly sourceStatus: 'packet_backed' | 'registry_only';
   readonly sourceStatusLabel: string;
   readonly meaningInLaw: string | null;
+  readonly meaningSources: readonly VocabularyBoundaryMeaningSource[];
   readonly registryInterpretation: string;
   readonly whyRegistryOnly: string;
   readonly shortMeaning: string;
