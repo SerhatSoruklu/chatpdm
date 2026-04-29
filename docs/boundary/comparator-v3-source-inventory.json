@@ -1,0 +1,164 @@
+{
+  "generatedAt": "2026-04-29T18:21:36.656Z",
+  "mode": "comparator_v3_source_inventory_only",
+  "authorityRules": {
+    "blackPrimary": true,
+    "comparatorV3AssistiveOnly": true,
+    "mayCreateMeaning": false,
+    "mayOverrideBlack": false,
+    "mayAdmitRuntimeOntology": false,
+    "exactTermOnly": true
+  },
+  "records": [
+    {
+      "sourceId": "bouvier_1839_vol_1",
+      "title": "Bouvier's Law Dictionary",
+      "year": 1839,
+      "volume": "1",
+      "folderPath": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/bouviers_law_dictionary_1839_vol_1",
+      "expectedPdfPath": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/bouviers_law_dictionary_1839_vol_1/bouvierlawdictionary01.pdf",
+      "folderExists": true,
+      "fileCount": 1,
+      "detectedFileTypes": [
+        ".pdf"
+      ],
+      "pdfFileCount": 1,
+      "textExtractionInputExists": true,
+      "ocrOrTextFilesExist": false,
+      "estimatedPageAvailability": "573 PDF pages via PyMuPDF",
+      "estimatedLineAvailability": "available after PyMuPDF text line extraction",
+      "extractionReadiness": "ready_for_direct_pdf_text_extraction_attempt",
+      "risks": [
+        "early nineteenth-century legal terminology",
+        "multi-volume continuation",
+        "OCR/PDF extraction spacing noise",
+        "obsolete or jurisdiction-bound definitions"
+      ]
+    },
+    {
+      "sourceId": "bouvier_1839_vol_2",
+      "title": "Bouvier's Law Dictionary",
+      "year": 1839,
+      "volume": "2",
+      "folderPath": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/bouviers_law_dictionary_1839_vol_2",
+      "expectedPdfPath": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/bouviers_law_dictionary_1839_vol_2/bouvierlawdictionary02.pdf",
+      "folderExists": true,
+      "fileCount": 1,
+      "detectedFileTypes": [
+        ".pdf"
+      ],
+      "pdfFileCount": 1,
+      "textExtractionInputExists": true,
+      "ocrOrTextFilesExist": false,
+      "estimatedPageAvailability": "639 PDF pages via PyMuPDF",
+      "estimatedLineAvailability": "available after PyMuPDF text line extraction",
+      "extractionReadiness": "ready_for_direct_pdf_text_extraction_attempt",
+      "risks": [
+        "early nineteenth-century legal terminology",
+        "multi-volume continuation",
+        "OCR/PDF extraction spacing noise",
+        "obsolete or jurisdiction-bound definitions"
+      ]
+    },
+    {
+      "sourceId": "wharton_1883",
+      "title": "Wharton's Law Lexicon",
+      "year": 1883,
+      "volume": null,
+      "folderPath": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/whartons_law_lexicon_1883",
+      "expectedPdfPath": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/whartons_law_lexicon_1883/WHARTONS_LAW-LEXICON-1883.pdf",
+      "folderExists": true,
+      "fileCount": 1,
+      "detectedFileTypes": [
+        ".pdf"
+      ],
+      "pdfFileCount": 1,
+      "textExtractionInputExists": true,
+      "ocrOrTextFilesExist": false,
+      "estimatedPageAvailability": "902 PDF pages via PyMuPDF",
+      "estimatedLineAvailability": "available after PyMuPDF text line extraction",
+      "extractionReadiness": "ready_for_direct_pdf_text_extraction_attempt",
+      "risks": [
+        "English-law and historical scope",
+        "page header and column noise",
+        "hyphenation and split-entry extraction",
+        "obsolete legal usage"
+      ]
+    },
+    {
+      "sourceId": "burrill_1860",
+      "title": "Burrill, A Law Dictionary and Glossary",
+      "year": 1860,
+      "volume": null,
+      "folderPath": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/burrill_a_law_dictionary_and_glossary_1860",
+      "expectedPdfPath": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/burrill_a_law_dictionary_and_glossary_1860/lawdictionar_burr_1860_00.pdf",
+      "folderExists": true,
+      "fileCount": 1,
+      "detectedFileTypes": [
+        ".pdf"
+      ],
+      "pdfFileCount": 1,
+      "textExtractionInputExists": true,
+      "ocrOrTextFilesExist": false,
+      "estimatedPageAvailability": "1404 PDF pages via PyMuPDF",
+      "estimatedLineAvailability": "available after PyMuPDF text line extraction",
+      "extractionReadiness": "ready_for_direct_pdf_text_extraction_attempt",
+      "risks": [
+        "glossary-heavy historical definitions",
+        "abbreviation and citation noise",
+        "split columns",
+        "obsolete common-law usage"
+      ]
+    },
+    {
+      "sourceId": "stroud_1903",
+      "title": "Stroud's Judicial Dictionary",
+      "year": 1903,
+      "volume": null,
+      "folderPath": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/strouds_judicial_dictionary_1903",
+      "expectedPdfPath": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/strouds_judicial_dictionary_1903/Strouds_Judicial_Dictionary.pdf",
+      "folderExists": true,
+      "fileCount": 1,
+      "detectedFileTypes": [
+        ".pdf"
+      ],
+      "pdfFileCount": 1,
+      "textExtractionInputExists": true,
+      "ocrOrTextFilesExist": false,
+      "estimatedPageAvailability": "2534 PDF pages via PyMuPDF",
+      "estimatedLineAvailability": "available after PyMuPDF text line extraction",
+      "extractionReadiness": "ready_for_direct_pdf_text_extraction_attempt",
+      "risks": [
+        "judicial/example-heavy entries",
+        "case citation density",
+        "English-law scope",
+        "definitions may be interpretive rather than lexical"
+      ]
+    },
+    {
+      "sourceId": "ballentine_1916",
+      "title": "Ballentine's Law Dictionary",
+      "year": 1916,
+      "volume": null,
+      "folderPath": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/ballentines_law_dictionary_1916_first_edition",
+      "expectedPdfPath": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/ballentines_law_dictionary_1916_first_edition/lawdictionar_ball_1916_00.pdf",
+      "folderExists": true,
+      "fileCount": 1,
+      "detectedFileTypes": [
+        ".pdf"
+      ],
+      "pdfFileCount": 1,
+      "textExtractionInputExists": true,
+      "ocrOrTextFilesExist": false,
+      "estimatedPageAvailability": "646 PDF pages via PyMuPDF",
+      "estimatedLineAvailability": "available after PyMuPDF text line extraction",
+      "extractionReadiness": "ready_for_direct_pdf_text_extraction_attempt",
+      "risks": [
+        "early twentieth-century legal usage",
+        "OCR/PDF extraction line noise",
+        "page header/footer noise",
+        "modern-scope overread risk"
+      ]
+    }
+  ]
+}

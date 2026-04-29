@@ -1,0 +1,81 @@
+{
+  "generatedAt": "2026-04-29T18:46:35.496Z",
+  "mode": "comparator_v3_partial_readiness_freeze",
+  "finalFrozenRecommendation": "comparator_v3_partially_ready_for_future_batch_assist",
+  "finalSourceClassification": {
+    "wharton_1883": "direct_text_ready",
+    "stroud_1903": "direct_text_ready",
+    "bouvier_1839_vol_1": "blocked_pending_ocr_tooling",
+    "bouvier_1839_vol_2": "blocked_pending_ocr_tooling",
+    "burrill_1860": "blocked_pending_ocr_tooling",
+    "ballentine_1916": "blocked_pending_ocr_tooling"
+  },
+  "directTextReadySources": [
+    "wharton_1883",
+    "stroud_1903"
+  ],
+  "ocrBlockedSources": [
+    "bouvier_1839_vol_1",
+    "bouvier_1839_vol_2",
+    "burrill_1860",
+    "ballentine_1916"
+  ],
+  "exactMatchCounts": {
+    "bouvier_1839_vol_1": {
+      "exactMatchRecords": 0,
+      "uniqueExactBoundaryTerms": 0
+    },
+    "bouvier_1839_vol_2": {
+      "exactMatchRecords": 0,
+      "uniqueExactBoundaryTerms": 0
+    },
+    "wharton_1883": {
+      "exactMatchRecords": 21,
+      "uniqueExactBoundaryTerms": 13
+    },
+    "burrill_1860": {
+      "exactMatchRecords": 0,
+      "uniqueExactBoundaryTerms": 0
+    },
+    "stroud_1903": {
+      "exactMatchRecords": 565,
+      "uniqueExactBoundaryTerms": 521
+    },
+    "ballentine_1916": {
+      "exactMatchRecords": 0,
+      "uniqueExactBoundaryTerms": 0
+    }
+  },
+  "ocrToolingBlockers": {
+    "fullOcrCanRunLocallyNow": false,
+    "missingTools": [
+      "tesseract",
+      "pdftoppm",
+      "convert",
+      "magick",
+      "pytesseract",
+      "pdf2image"
+    ]
+  },
+  "allowedV3SourcesForFutureBatchAssist": [
+    "wharton_1883",
+    "stroud_1903"
+  ],
+  "blockedV3SourcesForFutureBatchAssist": [
+    "bouvier_1839_vol_1",
+    "bouvier_1839_vol_2",
+    "burrill_1860",
+    "ballentine_1916"
+  ],
+  "governanceRules": [
+    "Comparator v3 is assistive only.",
+    "Black primary provenance remains mandatory.",
+    "Wharton and Stroud may strengthen, narrow, or flag a draft.",
+    "Wharton and Stroud may not originate a draft.",
+    "Wharton and Stroud may not override Black.",
+    "Wharton and Stroud may not broaden scope.",
+    "Wharton and Stroud may not create aliases.",
+    "OCR-blocked sources are inventory-only until OCR tooling/source segmentation is repaired.",
+    "Any v3 conflict must increase caution, not force synthesis."
+  ]
+}

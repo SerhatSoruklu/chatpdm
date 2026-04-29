@@ -1,0 +1,54 @@
+{
+  "generatedAt": "2026-04-29T19:19:37.619Z",
+  "totalRegistryEntries": 3585,
+  "sourceBackedMeaningsLive": 290,
+  "boundaryMeaningsLive": 292,
+  "packetBackedConceptMeanings": 2,
+  "pendingBatchTerms": 426,
+  "noBlackPrimaryBlockers": 319,
+  "aliasBlockers": 1275,
+  "duplicateBlockers": 1273,
+  "ocrSourceRepairBlockers": 0,
+  "lowProvenanceBlockers": 0,
+  "conflictBlockers": 0,
+  "historicalScopeBlockers": 0,
+  "fullyProcessedCount": 3585,
+  "unresolvedCount": 0,
+  "remainingWithoutSourceBackedMeaning": 3295,
+  "stateCounts": {
+    "source_backed_meaning_live": 290,
+    "pending_review": 399,
+    "blocked_no_black_primary": 319,
+    "blocked_duplicate_alias_group": 1273,
+    "blocked_alias_surface": 1275,
+    "packet_backed_concept_meaning": 2,
+    "pending_draft": 27
+  },
+  "nextUnlockActionCounts": {
+    "none_live": 292,
+    "review_pending_batch": 426,
+    "repair_black_extraction": 319,
+    "create_alias_policy": 2548
+  },
+  "outputPaths": {
+    "ledgerJson": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/coverage/coverage_3585_ledger.json",
+    "ledgerNdjson": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/coverage/coverage_3585_ledger.ndjson",
+    "summaryMarkdown": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/coverage/coverage_3585_summary.md",
+    "blockedBreakdownJson": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/coverage/coverage_3585_blocked_breakdown.json",
+    "unlockPlanMarkdown": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/coverage/coverage_3585_next_unlock_plan.md",
+    "unlockPlanJson": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/coverage/coverage_3585_next_unlock_plan.json",
+    "repoSummaryMarkdown": "/home/serhat/code/chatpdm/docs/boundary/legal-vocabulary-3585-coverage-summary.md",
+    "repoSummaryJson": "/home/serhat/code/chatpdm/docs/boundary/legal-vocabulary-3585-coverage-summary.json"
+  },
+  "safety": {
+    "noVocabularyMeaningsWritten": true,
+    "noWritebackApplied": true,
+    "noWritebackPreviewCreated": true,
+    "noRuntimeOntologyChanges": true,
+    "noConceptPacketChanges": true,
+    "noResolverBehaviorChanges": true,
+    "noAliasesAdded": true,
+    "noFuzzyMatching": true,
+    "ocrBlockedSourcesNotUsedAsEvidence": true
+  }
+}

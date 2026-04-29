@@ -1,0 +1,106 @@
+{
+  "generatedAt": "2026-04-29T18:26:56.300Z",
+  "mode": "comparator_v3_parser_readiness",
+  "records": [
+    {
+      "sourceId": "bouvier_1839_vol_1",
+      "pageMarkerPattern": "PyMuPDF page index + 1; no source-authored page marker is trusted without review",
+      "headwordPattern": "uppercase or title-case line start ending with punctuation or strong whitespace boundary",
+      "lineStructure": "direct PDF text lines, trimmed; entry segmentation remains candidate-level",
+      "entryBoundaryConfidence": "blocked_without_ocr_or_source_specific_segmentation",
+      "parseConfidence": "not_ready_in_direct_text_lane",
+      "extractedPageCount": 573,
+      "entryCandidateCount": 0,
+      "knownRisks": [
+        "early nineteenth-century legal terminology",
+        "multi-volume continuation",
+        "OCR/PDF extraction spacing noise",
+        "obsolete or jurisdiction-bound definitions",
+        "direct text extraction did not produce usable headword candidates"
+      ]
+    },
+    {
+      "sourceId": "bouvier_1839_vol_2",
+      "pageMarkerPattern": "PyMuPDF page index + 1; no source-authored page marker is trusted without review",
+      "headwordPattern": "uppercase or title-case line start ending with punctuation or strong whitespace boundary",
+      "lineStructure": "direct PDF text lines, trimmed; entry segmentation remains candidate-level",
+      "entryBoundaryConfidence": "blocked_without_ocr_or_source_specific_segmentation",
+      "parseConfidence": "not_ready_in_direct_text_lane",
+      "extractedPageCount": 639,
+      "entryCandidateCount": 0,
+      "knownRisks": [
+        "early nineteenth-century legal terminology",
+        "multi-volume continuation",
+        "OCR/PDF extraction spacing noise",
+        "obsolete or jurisdiction-bound definitions",
+        "direct text extraction did not produce usable headword candidates"
+      ]
+    },
+    {
+      "sourceId": "wharton_1883",
+      "pageMarkerPattern": "PyMuPDF page index + 1; no source-authored page marker is trusted without review",
+      "headwordPattern": "uppercase or title-case line start ending with punctuation or strong whitespace boundary",
+      "lineStructure": "direct PDF text lines, trimmed; entry segmentation remains candidate-level",
+      "entryBoundaryConfidence": "medium",
+      "parseConfidence": "usable_for_exact_headword_alignment_with_review",
+      "extractedPageCount": 902,
+      "entryCandidateCount": 3860,
+      "knownRisks": [
+        "English-law and historical scope",
+        "page header and column noise",
+        "hyphenation and split-entry extraction",
+        "obsolete legal usage"
+      ]
+    },
+    {
+      "sourceId": "burrill_1860",
+      "pageMarkerPattern": "PyMuPDF page index + 1; no source-authored page marker is trusted without review",
+      "headwordPattern": "uppercase or title-case line start ending with punctuation or strong whitespace boundary",
+      "lineStructure": "direct PDF text lines, trimmed; entry segmentation remains candidate-level",
+      "entryBoundaryConfidence": "blocked_without_ocr_or_source_specific_segmentation",
+      "parseConfidence": "not_ready_in_direct_text_lane",
+      "extractedPageCount": 1404,
+      "entryCandidateCount": 0,
+      "knownRisks": [
+        "glossary-heavy historical definitions",
+        "abbreviation and citation noise",
+        "split columns",
+        "obsolete common-law usage",
+        "direct text extraction did not produce usable headword candidates"
+      ]
+    },
+    {
+      "sourceId": "stroud_1903",
+      "pageMarkerPattern": "PyMuPDF page index + 1; no source-authored page marker is trusted without review",
+      "headwordPattern": "uppercase or title-case line start ending with punctuation or strong whitespace boundary",
+      "lineStructure": "direct PDF text lines, trimmed; entry segmentation remains candidate-level",
+      "entryBoundaryConfidence": "medium_low",
+      "parseConfidence": "usable_for_exact_headword_alignment_with_review",
+      "extractedPageCount": 2534,
+      "entryCandidateCount": 22012,
+      "knownRisks": [
+        "judicial/example-heavy entries",
+        "case citation density",
+        "English-law scope",
+        "definitions may be interpretive rather than lexical"
+      ]
+    },
+    {
+      "sourceId": "ballentine_1916",
+      "pageMarkerPattern": "PyMuPDF page index + 1; no source-authored page marker is trusted without review",
+      "headwordPattern": "uppercase or title-case line start ending with punctuation or strong whitespace boundary",
+      "lineStructure": "direct PDF text lines, trimmed; entry segmentation remains candidate-level",
+      "entryBoundaryConfidence": "blocked_without_ocr_or_source_specific_segmentation",
+      "parseConfidence": "not_ready_in_direct_text_lane",
+      "extractedPageCount": 646,
+      "entryCandidateCount": 0,
+      "knownRisks": [
+        "early twentieth-century legal usage",
+        "OCR/PDF extraction line noise",
+        "page header/footer noise",
+        "modern-scope overread risk",
+        "direct text extraction did not produce usable headword candidates"
+      ]
+    }
+  ]
+}

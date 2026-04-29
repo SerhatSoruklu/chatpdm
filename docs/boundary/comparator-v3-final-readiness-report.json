@@ -1,0 +1,596 @@
+{
+  "generatedAt": "2026-04-29T18:26:56.448Z",
+  "mode": "comparator_v3_final_readiness_report",
+  "filesCreated": [
+    "/home/serhat/code/chatpdm/docs/boundary/comparator-v3-parser-readiness.md",
+    "/home/serhat/code/chatpdm/docs/boundary/comparator-v3-parser-readiness.json",
+    "/home/serhat/code/chatpdm/docs/boundary/comparator-v3-coverage-report.md",
+    "/home/serhat/code/chatpdm/docs/boundary/comparator-v3-coverage-report.json",
+    "/home/serhat/code/chatpdm/docs/boundary/comparator-v3-governance-contract.md",
+    "/home/serhat/code/chatpdm/docs/boundary/comparator-v3-governance-contract.json",
+    "/home/serhat/code/chatpdm/docs/boundary/comparator-v3-final-readiness-report.md",
+    "/home/serhat/code/chatpdm/docs/boundary/comparator-v3-final-readiness-report.json",
+    "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/multi_source_v3/reports/comparator_v3_extraction_summary.json",
+    "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/multi_source_v3/reports/comparator_v3_alignment_summary.json",
+    "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/multi_source_v3/raw_pages/bouvier_1839_vol_1.pages.ndjson",
+    "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/multi_source_v3/entry_candidates/bouvier_1839_vol_1.entry_candidates.ndjson",
+    "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/multi_source_v3/alignment/bouvier_1839_vol_1.boundary_alignment.ndjson",
+    "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/multi_source_v3/raw_pages/bouvier_1839_vol_2.pages.ndjson",
+    "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/multi_source_v3/entry_candidates/bouvier_1839_vol_2.entry_candidates.ndjson",
+    "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/multi_source_v3/alignment/bouvier_1839_vol_2.boundary_alignment.ndjson",
+    "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/multi_source_v3/raw_pages/wharton_1883.pages.ndjson",
+    "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/multi_source_v3/entry_candidates/wharton_1883.entry_candidates.ndjson",
+    "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/multi_source_v3/alignment/wharton_1883.boundary_alignment.ndjson",
+    "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/multi_source_v3/raw_pages/burrill_1860.pages.ndjson",
+    "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/multi_source_v3/entry_candidates/burrill_1860.entry_candidates.ndjson",
+    "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/multi_source_v3/alignment/burrill_1860.boundary_alignment.ndjson",
+    "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/multi_source_v3/raw_pages/stroud_1903.pages.ndjson",
+    "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/multi_source_v3/entry_candidates/stroud_1903.entry_candidates.ndjson",
+    "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/multi_source_v3/alignment/stroud_1903.boundary_alignment.ndjson",
+    "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/multi_source_v3/raw_pages/ballentine_1916.pages.ndjson",
+    "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/multi_source_v3/entry_candidates/ballentine_1916.entry_candidates.ndjson",
+    "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/multi_source_v3/alignment/ballentine_1916.boundary_alignment.ndjson"
+  ],
+  "sourceInventorySummaryPath": "/home/serhat/code/chatpdm/docs/boundary/comparator-v3-source-inventory.json",
+  "extractionReadinessSummary": [
+    {
+      "sourceId": "bouvier_1839_vol_1",
+      "parseConfidence": "not_ready_in_direct_text_lane",
+      "entryBoundaryConfidence": "blocked_without_ocr_or_source_specific_segmentation"
+    },
+    {
+      "sourceId": "bouvier_1839_vol_2",
+      "parseConfidence": "not_ready_in_direct_text_lane",
+      "entryBoundaryConfidence": "blocked_without_ocr_or_source_specific_segmentation"
+    },
+    {
+      "sourceId": "wharton_1883",
+      "parseConfidence": "usable_for_exact_headword_alignment_with_review",
+      "entryBoundaryConfidence": "medium"
+    },
+    {
+      "sourceId": "burrill_1860",
+      "parseConfidence": "not_ready_in_direct_text_lane",
+      "entryBoundaryConfidence": "blocked_without_ocr_or_source_specific_segmentation"
+    },
+    {
+      "sourceId": "stroud_1903",
+      "parseConfidence": "usable_for_exact_headword_alignment_with_review",
+      "entryBoundaryConfidence": "medium_low"
+    },
+    {
+      "sourceId": "ballentine_1916",
+      "parseConfidence": "not_ready_in_direct_text_lane",
+      "entryBoundaryConfidence": "blocked_without_ocr_or_source_specific_segmentation"
+    }
+  ],
+  "exactMatchCountsBySource": {
+    "bouvier_1839_vol_1": {
+      "exactMatchRecords": 0,
+      "uniqueExactBoundaryTerms": 0
+    },
+    "bouvier_1839_vol_2": {
+      "exactMatchRecords": 0,
+      "uniqueExactBoundaryTerms": 0
+    },
+    "wharton_1883": {
+      "exactMatchRecords": 21,
+      "uniqueExactBoundaryTerms": 13
+    },
+    "burrill_1860": {
+      "exactMatchRecords": 0,
+      "uniqueExactBoundaryTerms": 0
+    },
+    "stroud_1903": {
+      "exactMatchRecords": 565,
+      "uniqueExactBoundaryTerms": 521
+    },
+    "ballentine_1916": {
+      "exactMatchRecords": 0,
+      "uniqueExactBoundaryTerms": 0
+    }
+  },
+  "coverageContribution": {
+    "termsWithBlackMissingButV3Present": 329,
+    "termsWithBlackPresentAndV3Supports": 194,
+    "exactMatchesAcrossMultipleV3Sources": 11
+  },
+  "risks": [
+    {
+      "sourceId": "bouvier_1839_vol_1",
+      "risk": "early nineteenth-century legal terminology"
+    },
+    {
+      "sourceId": "bouvier_1839_vol_1",
+      "risk": "multi-volume continuation"
+    },
+    {
+      "sourceId": "bouvier_1839_vol_1",
+      "risk": "OCR/PDF extraction spacing noise"
+    },
+    {
+      "sourceId": "bouvier_1839_vol_1",
+      "risk": "obsolete or jurisdiction-bound definitions"
+    },
+    {
+      "sourceId": "bouvier_1839_vol_1",
+      "risk": "direct text extraction did not produce usable headword candidates"
+    },
+    {
+      "sourceId": "bouvier_1839_vol_2",
+      "risk": "early nineteenth-century legal terminology"
+    },
+    {
+      "sourceId": "bouvier_1839_vol_2",
+      "risk": "multi-volume continuation"
+    },
+    {
+      "sourceId": "bouvier_1839_vol_2",
+      "risk": "OCR/PDF extraction spacing noise"
+    },
+    {
+      "sourceId": "bouvier_1839_vol_2",
+      "risk": "obsolete or jurisdiction-bound definitions"
+    },
+    {
+      "sourceId": "bouvier_1839_vol_2",
+      "risk": "direct text extraction did not produce usable headword candidates"
+    },
+    {
+      "sourceId": "wharton_1883",
+      "risk": "English-law and historical scope"
+    },
+    {
+      "sourceId": "wharton_1883",
+      "risk": "page header and column noise"
+    },
+    {
+      "sourceId": "wharton_1883",
+      "risk": "hyphenation and split-entry extraction"
+    },
+    {
+      "sourceId": "wharton_1883",
+      "risk": "obsolete legal usage"
+    },
+    {
+      "sourceId": "burrill_1860",
+      "risk": "glossary-heavy historical definitions"
+    },
+    {
+      "sourceId": "burrill_1860",
+      "risk": "abbreviation and citation noise"
+    },
+    {
+      "sourceId": "burrill_1860",
+      "risk": "split columns"
+    },
+    {
+      "sourceId": "burrill_1860",
+      "risk": "obsolete common-law usage"
+    },
+    {
+      "sourceId": "burrill_1860",
+      "risk": "direct text extraction did not produce usable headword candidates"
+    },
+    {
+      "sourceId": "stroud_1903",
+      "risk": "judicial/example-heavy entries"
+    },
+    {
+      "sourceId": "stroud_1903",
+      "risk": "case citation density"
+    },
+    {
+      "sourceId": "stroud_1903",
+      "risk": "English-law scope"
+    },
+    {
+      "sourceId": "stroud_1903",
+      "risk": "definitions may be interpretive rather than lexical"
+    },
+    {
+      "sourceId": "ballentine_1916",
+      "risk": "early twentieth-century legal usage"
+    },
+    {
+      "sourceId": "ballentine_1916",
+      "risk": "OCR/PDF extraction line noise"
+    },
+    {
+      "sourceId": "ballentine_1916",
+      "risk": "page header/footer noise"
+    },
+    {
+      "sourceId": "ballentine_1916",
+      "risk": "modern-scope overread risk"
+    },
+    {
+      "sourceId": "ballentine_1916",
+      "risk": "direct text extraction did not produce usable headword candidates"
+    }
+  ],
+  "governanceRules": [
+    "Comparator v3 is assistive only.",
+    "Black primary provenance remains mandatory for future meaning admission.",
+    "Comparator v3 may strengthen, narrow, or flag a draft.",
+    "Comparator v3 may not originate a draft.",
+    "Comparator v3 may not override Black.",
+    "Comparator v3 may not broaden scope.",
+    "Comparator v3 may not create aliases.",
+    "Comparator v3 may not affect runtime ontology.",
+    "Comparator v3 may not affect concept packets.",
+    "Comparator v3 may not affect resolver behavior.",
+    "Any v3 conflict must increase caution, not force synthesis."
+  ],
+  "validationResults": [
+    {
+      "command": "node --check backend/scripts/lexicon/comparator-v3/comparator-v3-config.js",
+      "result": "pass"
+    },
+    {
+      "command": "node --check backend/scripts/lexicon/comparator-v3/comparator-v3-utils.js",
+      "result": "pass"
+    },
+    {
+      "command": "node --check backend/scripts/lexicon/comparator-v3/build-comparator-v3-source-inventory.js",
+      "result": "pass"
+    },
+    {
+      "command": "node --check backend/scripts/lexicon/comparator-v3/extract-comparator-v3-source.js",
+      "result": "pass"
+    },
+    {
+      "command": "node --check backend/scripts/lexicon/comparator-v3/align-comparator-v3-exact-terms.js",
+      "result": "pass"
+    },
+    {
+      "command": "node --check backend/scripts/lexicon/comparator-v3/report-comparator-v3-readiness.js",
+      "result": "pass"
+    },
+    {
+      "command": "node --test backend/tests/vocabulary/vocabulary-boundary.test.js backend/tests/vocabulary/vocabulary-boundary-anti-leak.test.js backend/tests/vocabulary/vocabulary-classification.freeze.test.js backend/tests/vocabulary/vocabulary-classifier.test.js",
+      "result": "pass_18_tests"
+    },
+    {
+      "command": "node backend/scripts/verify-vocabulary-boundary-contract.js",
+      "result": "pass"
+    },
+    {
+      "command": "node backend/scripts/verify-legal-vocabulary-recognition.js",
+      "result": "pass"
+    },
+    {
+      "command": "node backend/scripts/verify-resolver.js",
+      "result": "pass_65_cases"
+    },
+    {
+      "command": "node backend/scripts/verify-admission-boundary.js",
+      "result": "pass"
+    },
+    {
+      "command": "node backend/scripts/verify-blocked-concept-admission.js",
+      "result": "pass"
+    },
+    {
+      "command": "node backend/scripts/verify-pre-admission-contract-path.js",
+      "result": "pass"
+    },
+    {
+      "command": "node backend/scripts/verify-public-resolver-regression.js",
+      "result": "pass"
+    },
+    {
+      "command": "git diff -- backend/src/modules/legal-vocabulary/vocabulary-meaning-sources.generated.json",
+      "result": "empty"
+    },
+    {
+      "command": "git diff -- data/concepts",
+      "result": "empty"
+    },
+    {
+      "command": "git diff -- backend/src/modules/concepts",
+      "result": "empty"
+    }
+  ],
+  "finalRecommendation": "comparator_v3_partially_ready_for_future_batch_assist",
+  "constraintsObserved": {
+    "noVocabularyMeaningsWritten": true,
+    "batch007NotStarted": true,
+    "batch006NotAppliedByComparatorV3": true,
+    "runtimeOntologyUnchangedByComparatorV3": true,
+    "conceptPacketsUnchangedByComparatorV3": true,
+    "resolverUnchangedByComparatorV3": true,
+    "aliasesUnchangedByComparatorV3": true,
+    "generatedSourceBackedMeaningsUnchangedByComparatorV3": true,
+    "noVocabularyMeaningsWrittenByOcrRepair": true,
+    "batch007NotStartedByOcrRepair": true,
+    "batch006NotChangedByOcrRepair": true,
+    "runtimeOntologyUnchangedByOcrRepair": true,
+    "conceptPacketsUnchangedByOcrRepair": true,
+    "resolverUnchangedByOcrRepair": true,
+    "aliasesUnchangedByOcrRepair": true,
+    "frontendUiUnchangedByOcrRepair": true
+  },
+  "extractionSummary": {
+    "generatedAt": "2026-04-29T18:25:17.666Z",
+    "mode": "comparator_v3_pdf_direct_text_extraction",
+    "comparatorRole": "assistive_v3_only",
+    "mayCreateMeaning": false,
+    "mayOverrideBlack": false,
+    "mayAdmitRuntimeOntology": false,
+    "summaries": [
+      {
+        "sourceId": "bouvier_1839_vol_1",
+        "pageCount": 573,
+        "candidateCount": 0,
+        "highConfidenceCandidates": 0,
+        "mediumConfidenceCandidates": 0,
+        "lowConfidenceCandidates": 0,
+        "rawPagesPath": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/multi_source_v3/raw_pages/bouvier_1839_vol_1.pages.ndjson",
+        "candidatesPath": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/multi_source_v3/entry_candidates/bouvier_1839_vol_1.entry_candidates.ndjson"
+      },
+      {
+        "sourceId": "bouvier_1839_vol_2",
+        "pageCount": 639,
+        "candidateCount": 0,
+        "highConfidenceCandidates": 0,
+        "mediumConfidenceCandidates": 0,
+        "lowConfidenceCandidates": 0,
+        "rawPagesPath": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/multi_source_v3/raw_pages/bouvier_1839_vol_2.pages.ndjson",
+        "candidatesPath": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/multi_source_v3/entry_candidates/bouvier_1839_vol_2.entry_candidates.ndjson"
+      },
+      {
+        "sourceId": "wharton_1883",
+        "pageCount": 902,
+        "candidateCount": 3860,
+        "highConfidenceCandidates": 3832,
+        "mediumConfidenceCandidates": 1,
+        "lowConfidenceCandidates": 27,
+        "rawPagesPath": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/multi_source_v3/raw_pages/wharton_1883.pages.ndjson",
+        "candidatesPath": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/multi_source_v3/entry_candidates/wharton_1883.entry_candidates.ndjson"
+      },
+      {
+        "sourceId": "burrill_1860",
+        "pageCount": 1404,
+        "candidateCount": 0,
+        "highConfidenceCandidates": 0,
+        "mediumConfidenceCandidates": 0,
+        "lowConfidenceCandidates": 0,
+        "rawPagesPath": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/multi_source_v3/raw_pages/burrill_1860.pages.ndjson",
+        "candidatesPath": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/multi_source_v3/entry_candidates/burrill_1860.entry_candidates.ndjson"
+      },
+      {
+        "sourceId": "stroud_1903",
+        "pageCount": 2534,
+        "candidateCount": 22012,
+        "highConfidenceCandidates": 21833,
+        "mediumConfidenceCandidates": 146,
+        "lowConfidenceCandidates": 33,
+        "rawPagesPath": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/multi_source_v3/raw_pages/stroud_1903.pages.ndjson",
+        "candidatesPath": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/multi_source_v3/entry_candidates/stroud_1903.entry_candidates.ndjson"
+      },
+      {
+        "sourceId": "ballentine_1916",
+        "pageCount": 646,
+        "candidateCount": 0,
+        "highConfidenceCandidates": 0,
+        "mediumConfidenceCandidates": 0,
+        "lowConfidenceCandidates": 0,
+        "rawPagesPath": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/multi_source_v3/raw_pages/ballentine_1916.pages.ndjson",
+        "candidatesPath": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/multi_source_v3/entry_candidates/ballentine_1916.entry_candidates.ndjson"
+      }
+    ]
+  },
+  "alignmentSummary": {
+    "generatedAt": "2026-04-29T18:26:34.648Z",
+    "mode": "comparator_v3_exact_term_alignment_only",
+    "totalRegistryTermsChecked": 3585,
+    "exactTermOnly": true,
+    "fuzzyMatchingUsed": false,
+    "aliasFanOutUsed": false,
+    "comparatorRole": "assistive_v3_only",
+    "summaries": [
+      {
+        "sourceId": "bouvier_1839_vol_1",
+        "outputPath": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/multi_source_v3/alignment/bouvier_1839_vol_1.boundary_alignment.ndjson",
+        "alignmentRecordCount": 0,
+        "exactNormalizedMatchCount": 0,
+        "rejectedAliasSurfaceCount": 0,
+        "rejectedParseLowConfidenceCount": 0,
+        "uniqueExactBoundaryTerms": 0
+      },
+      {
+        "sourceId": "bouvier_1839_vol_2",
+        "outputPath": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/multi_source_v3/alignment/bouvier_1839_vol_2.boundary_alignment.ndjson",
+        "alignmentRecordCount": 0,
+        "exactNormalizedMatchCount": 0,
+        "rejectedAliasSurfaceCount": 0,
+        "rejectedParseLowConfidenceCount": 0,
+        "uniqueExactBoundaryTerms": 0
+      },
+      {
+        "sourceId": "wharton_1883",
+        "outputPath": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/multi_source_v3/alignment/wharton_1883.boundary_alignment.ndjson",
+        "alignmentRecordCount": 22,
+        "exactNormalizedMatchCount": 21,
+        "rejectedAliasSurfaceCount": 1,
+        "rejectedParseLowConfidenceCount": 0,
+        "uniqueExactBoundaryTerms": 13
+      },
+      {
+        "sourceId": "burrill_1860",
+        "outputPath": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/multi_source_v3/alignment/burrill_1860.boundary_alignment.ndjson",
+        "alignmentRecordCount": 0,
+        "exactNormalizedMatchCount": 0,
+        "rejectedAliasSurfaceCount": 0,
+        "rejectedParseLowConfidenceCount": 0,
+        "uniqueExactBoundaryTerms": 0
+      },
+      {
+        "sourceId": "stroud_1903",
+        "outputPath": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/multi_source_v3/alignment/stroud_1903.boundary_alignment.ndjson",
+        "alignmentRecordCount": 608,
+        "exactNormalizedMatchCount": 565,
+        "rejectedAliasSurfaceCount": 43,
+        "rejectedParseLowConfidenceCount": 0,
+        "uniqueExactBoundaryTerms": 521
+      },
+      {
+        "sourceId": "ballentine_1916",
+        "outputPath": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/multi_source_v3/alignment/ballentine_1916.boundary_alignment.ndjson",
+        "alignmentRecordCount": 0,
+        "exactNormalizedMatchCount": 0,
+        "rejectedAliasSurfaceCount": 0,
+        "rejectedParseLowConfidenceCount": 0,
+        "uniqueExactBoundaryTerms": 0
+      }
+    ]
+  },
+  "sourceReadinessCaveat": "Direct text extraction produced usable exact-term candidate lanes for Wharton 1883 and Stroud 1903. Bouvier volumes, Burrill, and Ballentine are inventoried and wired into the pipeline but require OCR or source-specific segmentation before they can contribute exact matches.",
+  "lanes": {
+    "directTextLane": {
+      "readySources": [
+        "wharton_1883",
+        "stroud_1903"
+      ],
+      "exactMatchCountsBySource": {
+        "bouvier_1839_vol_1": {
+          "exactMatchRecords": 0,
+          "uniqueExactBoundaryTerms": 0
+        },
+        "bouvier_1839_vol_2": {
+          "exactMatchRecords": 0,
+          "uniqueExactBoundaryTerms": 0
+        },
+        "wharton_1883": {
+          "exactMatchRecords": 21,
+          "uniqueExactBoundaryTerms": 13
+        },
+        "burrill_1860": {
+          "exactMatchRecords": 0,
+          "uniqueExactBoundaryTerms": 0
+        },
+        "stroud_1903": {
+          "exactMatchRecords": 565,
+          "uniqueExactBoundaryTerms": 521
+        },
+        "ballentine_1916": {
+          "exactMatchRecords": 0,
+          "uniqueExactBoundaryTerms": 0
+        }
+      }
+    },
+    "ocrRepairLane": {
+      "fullOcrCanRunLocallyNow": false,
+      "missingTools": [
+        "tesseract",
+        "pdftoppm",
+        "convert",
+        "magick",
+        "pytesseract",
+        "pdf2image"
+      ],
+      "sourceStatuses": [
+        {
+          "sourceId": "bouvier_1839_vol_1",
+          "status": "blocked_pending_ocr_tooling",
+          "pagesOcred": 0,
+          "candidateCount": 0,
+          "exactMatchCount": 0,
+          "uniqueExactTermCount": 0,
+          "blocker": "embedded_text_unusable_control_characters"
+        },
+        {
+          "sourceId": "bouvier_1839_vol_2",
+          "status": "blocked_pending_ocr_tooling",
+          "pagesOcred": 0,
+          "candidateCount": 0,
+          "exactMatchCount": 0,
+          "uniqueExactTermCount": 0,
+          "blocker": "embedded_text_unusable_control_characters"
+        },
+        {
+          "sourceId": "burrill_1860",
+          "status": "blocked_pending_ocr_tooling",
+          "pagesOcred": 0,
+          "candidateCount": 0,
+          "exactMatchCount": 0,
+          "uniqueExactTermCount": 0,
+          "blocker": "no_embedded_text_or_blank_text_layer"
+        },
+        {
+          "sourceId": "ballentine_1916",
+          "status": "blocked_pending_ocr_tooling",
+          "pagesOcred": 0,
+          "candidateCount": 0,
+          "exactMatchCount": 0,
+          "uniqueExactTermCount": 0,
+          "blocker": "no_embedded_text_or_blank_text_layer"
+        }
+      ]
+    }
+  },
+  "finalSourceClassification": {
+    "wharton_1883": "direct_text_ready",
+    "stroud_1903": "direct_text_ready",
+    "bouvier_1839_vol_1": "blocked_pending_ocr_tooling",
+    "bouvier_1839_vol_2": "blocked_pending_ocr_tooling",
+    "burrill_1860": "blocked_pending_ocr_tooling",
+    "ballentine_1916": "blocked_pending_ocr_tooling"
+  },
+  "ocrRepairSummary": "OCR repair lane is scaffolded and text-quality blockers are documented, but local OCR tooling is missing. No OCR pages, OCR candidates, or OCR alignments were fabricated.",
+  "ocrRepairValidationResults": [
+    {
+      "command": "node --check backend/scripts/lexicon/comparator-v3/*.js",
+      "result": "pass"
+    },
+    {
+      "command": "node --test backend/tests/vocabulary/vocabulary-boundary.test.js backend/tests/vocabulary/vocabulary-boundary-anti-leak.test.js backend/tests/vocabulary/vocabulary-classification.freeze.test.js backend/tests/vocabulary/vocabulary-classifier.test.js",
+      "result": "pass_18_tests"
+    },
+    {
+      "command": "node backend/scripts/verify-vocabulary-boundary-contract.js",
+      "result": "pass"
+    },
+    {
+      "command": "node backend/scripts/verify-legal-vocabulary-recognition.js",
+      "result": "pass"
+    },
+    {
+      "command": "node backend/scripts/verify-resolver.js",
+      "result": "pass_65_cases"
+    },
+    {
+      "command": "node backend/scripts/verify-admission-boundary.js",
+      "result": "pass"
+    },
+    {
+      "command": "node backend/scripts/verify-blocked-concept-admission.js",
+      "result": "pass"
+    },
+    {
+      "command": "node backend/scripts/verify-pre-admission-contract-path.js",
+      "result": "pass"
+    },
+    {
+      "command": "node backend/scripts/verify-public-resolver-regression.js",
+      "result": "pass"
+    },
+    {
+      "command": "git diff -- backend/src/modules/legal-vocabulary/vocabulary-meaning-sources.generated.json",
+      "result": "empty"
+    },
+    {
+      "command": "git diff -- data/concepts",
+      "result": "empty"
+    },
+    {
+      "command": "git diff -- backend/src/modules/concepts",
+      "result": "empty"
+    },
+    {
+      "command": "find ... -path *batch_007*",
+      "result": "empty"
+    }
+  ]
+}

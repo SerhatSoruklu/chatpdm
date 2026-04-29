@@ -1,0 +1,254 @@
+{
+  "generatedAt": "2026-04-29T18:39:29.460Z",
+  "mode": "comparator_v3_ocr_text_quality_inspection",
+  "comparatorRole": "assistive_v3_only",
+  "mayCreateMeaning": false,
+  "mayOverrideBlack": false,
+  "mayAdmitRuntimeOntology": false,
+  "records": [
+    {
+      "sourceId": "bouvier_1839_vol_1",
+      "sourceTitle": "Bouvier's Law Dictionary",
+      "year": 1839,
+      "volume": "1",
+      "pdfPath": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/bouviers_law_dictionary_1839_vol_1/bouvierlawdictionary01.pdf",
+      "pageCount": 573,
+      "embeddedTextCharacterCount": 3155474,
+      "readableLetterCount": 0,
+      "controlCharacterCount": 1577762,
+      "controlCharacterRatio": 0.5000079227399751,
+      "blankPageCount": 12,
+      "blankPageRatio": 0.020942408376963352,
+      "directTextUsable": false,
+      "ocrRequired": true,
+      "extractionBlockerReason": "embedded_text_unusable_control_characters",
+      "sampleExtractedText": [
+        {
+          "page": 1,
+          "textLength": 0,
+          "readableLetterCount": 0,
+          "controlCharacterCount": 0,
+          "sampleText": ""
+        },
+        {
+          "page": 11,
+          "textLength": 4848,
+          "readableLetterCount": 0,
+          "controlCharacterCount": 2424,
+          "sampleText": "\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001\n\u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 "
+        },
+        {
+          "page": 21,
+          "textLength": 6906,
+          "readableLetterCount": 0,
+          "controlCharacterCount": 3453,
+          "sampleText": "\u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 "
+        },
+        {
+          "page": 51,
+          "textLength": 5838,
+          "readableLetterCount": 0,
+          "controlCharacterCount": 2919,
+          "sampleText": "\u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001\n\u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001\n\u0001 \u0001\n\u0001\n\u0001 \u0001 \u0001\n\u0001\n\u0001\n\u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001\n\u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 "
+        },
+        {
+          "page": 101,
+          "textLength": 5636,
+          "readableLetterCount": 0,
+          "controlCharacterCount": 2818,
+          "sampleText": "\u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 "
+        },
+        {
+          "page": 201,
+          "textLength": 5282,
+          "readableLetterCount": 0,
+          "controlCharacterCount": 2641,
+          "sampleText": "\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001\n\u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001\n\u0001 \u0001 \u0001\n\u0001\n\u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001\n\u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001\n\u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 "
+        }
+      ]
+    },
+    {
+      "sourceId": "bouvier_1839_vol_2",
+      "sourceTitle": "Bouvier's Law Dictionary",
+      "year": 1839,
+      "volume": "2",
+      "pdfPath": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/bouviers_law_dictionary_1839_vol_2/bouvierlawdictionary02.pdf",
+      "pageCount": 639,
+      "embeddedTextCharacterCount": 3514491,
+      "readableLetterCount": 0,
+      "controlCharacterCount": 1757310,
+      "controlCharacterRatio": 0.500018352586477,
+      "blankPageCount": 9,
+      "blankPageRatio": 0.014084507042253521,
+      "directTextUsable": false,
+      "ocrRequired": true,
+      "extractionBlockerReason": "embedded_text_unusable_control_characters",
+      "sampleExtractedText": [
+        {
+          "page": 1,
+          "textLength": 0,
+          "readableLetterCount": 0,
+          "controlCharacterCount": 0,
+          "sampleText": ""
+        },
+        {
+          "page": 11,
+          "textLength": 5828,
+          "readableLetterCount": 0,
+          "controlCharacterCount": 2914,
+          "sampleText": "\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 "
+        },
+        {
+          "page": 21,
+          "textLength": 5650,
+          "readableLetterCount": 0,
+          "controlCharacterCount": 2825,
+          "sampleText": "\u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n"
+        },
+        {
+          "page": 51,
+          "textLength": 5648,
+          "readableLetterCount": 0,
+          "controlCharacterCount": 2824,
+          "sampleText": "\u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001\n\u0001\n\u0001 \u0001\n\u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001\n\u0001\n\u0001 \u0001\n\u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 "
+        },
+        {
+          "page": 101,
+          "textLength": 5810,
+          "readableLetterCount": 0,
+          "controlCharacterCount": 2905,
+          "sampleText": "\u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001\n\u0001 "
+        },
+        {
+          "page": 201,
+          "textLength": 5712,
+          "readableLetterCount": 0,
+          "controlCharacterCount": 2856,
+          "sampleText": "\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001\n\u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001\n\u0001 \u0001 \u0001\n\u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 \u0001 "
+        }
+      ]
+    },
+    {
+      "sourceId": "burrill_1860",
+      "sourceTitle": "Burrill, A Law Dictionary and Glossary",
+      "year": 1860,
+      "volume": null,
+      "pdfPath": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/burrill_a_law_dictionary_and_glossary_1860/lawdictionar_burr_1860_00.pdf",
+      "pageCount": 1404,
+      "embeddedTextCharacterCount": 0,
+      "readableLetterCount": 0,
+      "controlCharacterCount": 0,
+      "controlCharacterRatio": 0,
+      "blankPageCount": 1404,
+      "blankPageRatio": 1,
+      "directTextUsable": false,
+      "ocrRequired": true,
+      "extractionBlockerReason": "no_embedded_text_or_blank_text_layer",
+      "sampleExtractedText": [
+        {
+          "page": 1,
+          "textLength": 0,
+          "readableLetterCount": 0,
+          "controlCharacterCount": 0,
+          "sampleText": ""
+        },
+        {
+          "page": 11,
+          "textLength": 0,
+          "readableLetterCount": 0,
+          "controlCharacterCount": 0,
+          "sampleText": ""
+        },
+        {
+          "page": 21,
+          "textLength": 0,
+          "readableLetterCount": 0,
+          "controlCharacterCount": 0,
+          "sampleText": ""
+        },
+        {
+          "page": 51,
+          "textLength": 0,
+          "readableLetterCount": 0,
+          "controlCharacterCount": 0,
+          "sampleText": ""
+        },
+        {
+          "page": 101,
+          "textLength": 0,
+          "readableLetterCount": 0,
+          "controlCharacterCount": 0,
+          "sampleText": ""
+        },
+        {
+          "page": 201,
+          "textLength": 0,
+          "readableLetterCount": 0,
+          "controlCharacterCount": 0,
+          "sampleText": ""
+        }
+      ]
+    },
+    {
+      "sourceId": "ballentine_1916",
+      "sourceTitle": "Ballentine's Law Dictionary",
+      "year": 1916,
+      "volume": null,
+      "pdfPath": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/ballentines_law_dictionary_1916_first_edition/lawdictionar_ball_1916_00.pdf",
+      "pageCount": 646,
+      "embeddedTextCharacterCount": 0,
+      "readableLetterCount": 0,
+      "controlCharacterCount": 0,
+      "controlCharacterRatio": 0,
+      "blankPageCount": 646,
+      "blankPageRatio": 1,
+      "directTextUsable": false,
+      "ocrRequired": true,
+      "extractionBlockerReason": "no_embedded_text_or_blank_text_layer",
+      "sampleExtractedText": [
+        {
+          "page": 1,
+          "textLength": 0,
+          "readableLetterCount": 0,
+          "controlCharacterCount": 0,
+          "sampleText": ""
+        },
+        {
+          "page": 11,
+          "textLength": 0,
+          "readableLetterCount": 0,
+          "controlCharacterCount": 0,
+          "sampleText": ""
+        },
+        {
+          "page": 21,
+          "textLength": 0,
+          "readableLetterCount": 0,
+          "controlCharacterCount": 0,
+          "sampleText": ""
+        },
+        {
+          "page": 51,
+          "textLength": 0,
+          "readableLetterCount": 0,
+          "controlCharacterCount": 0,
+          "sampleText": ""
+        },
+        {
+          "page": 101,
+          "textLength": 0,
+          "readableLetterCount": 0,
+          "controlCharacterCount": 0,
+          "sampleText": ""
+        },
+        {
+          "page": 201,
+          "textLength": 0,
+          "readableLetterCount": 0,
+          "controlCharacterCount": 0,
+          "sampleText": ""
+        }
+      ]
+    }
+  ]
+}

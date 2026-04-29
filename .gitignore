@@ -72,6 +72,8 @@ web_modules/
 .vscode/
 .vscode-test
 scripts/__pycache__/
+__pycache__/
+*.pyc
 
 # Windows metadata artifacts
 *:Zone.Identifier

@@ -103,6 +103,29 @@
   letter-spacing: 0.12em;
 }
 
+.pdm-inspectable-disclosure[data-item-type='registry_term'] .pdm-inspectable-disclosure__row:first-child {
+  border-color: rgba(20, 184, 166, 0.22);
+  border-left-color: rgba(20, 184, 166, 0.72);
+  background:
+    linear-gradient(180deg, rgba(240, 253, 250, 0.98), rgba(236, 253, 245, 0.9)),
+    rgba(240, 253, 250, 0.94);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.86),
+    0 14px 30px rgba(20, 184, 166, 0.1);
+}
+
+.pdm-inspectable-disclosure[data-item-type='registry_term'] .pdm-inspectable-disclosure__row:first-child::before {
+  color: #0f766e;
+}
+
+.pdm-inspectable-disclosure[data-item-type='registry_term'] .pdm-inspectable-disclosure__row:first-child .pdm-inspectable-disclosure__label {
+  border-color: rgba(20, 184, 166, 0.24);
+  background:
+    linear-gradient(180deg, rgba(204, 251, 241, 0.96), rgba(153, 246, 228, 0.72)),
+    rgba(204, 251, 241, 0.88);
+  color: #0f766e;
+}
+
 .pdm-inspectable-disclosure__label,
 .pdm-inspectable-disclosure__value {
   margin: 0;

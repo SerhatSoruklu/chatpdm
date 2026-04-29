@@ -1,0 +1,350 @@
+{
+  "generatedAt": "2026-04-24T14:32:48.837Z",
+  "status": "REPORT_ONLY",
+  "scope": "Comparator v2 post-apply stabilization checkpoint and batch 006 readiness",
+  "boundaryDiscipline": {
+    "vocabularyMeaningsModified": false,
+    "liveVocabularyDatasetModified": false,
+    "runtimeOntologyChanged": false,
+    "conceptPacketsChanged": false,
+    "generatedProvenanceModified": false,
+    "writebackAppliedByThisReport": false,
+    "aliasFanOutPerformed": false
+  },
+  "currentSystemState": {
+    "authoredMeanings": 244,
+    "missingMeanings": 3341,
+    "provenanceCoverageComplete": true,
+    "comparatorLanesActive": [
+      "Black",
+      "Anderson",
+      "Osborn"
+    ]
+  },
+  "comparatorApplyState": {
+    "candidateCount": 63,
+    "appliedRows": 63,
+    "rowsChanged": 58,
+    "noOpRows": 5,
+    "byChangeType": {
+      "revise_existing": 61,
+      "new_fill": 2
+    },
+    "bySourceBasis": {
+      "black_plus_anderson_plus_osborn": 49,
+      "black_plus_osborn": 8,
+      "black_plus_anderson": 6
+    }
+  },
+  "highRiskSanity": {
+    "status": "pass",
+    "rows": [
+      {
+        "term": "probation",
+        "status": "pass",
+        "risk": "modern expansion from a narrow probation-of-offenders comparator sense",
+        "currentMeaningInLaw": "In criminal procedure, conditional release or discharge of an offender subject to recognizance, good behavior, or other legal terms.",
+        "requiredMatches": [
+          {
+            "phrase": "criminal procedure",
+            "present": true
+          },
+          {
+            "phrase": "conditional release",
+            "present": true
+          },
+          {
+            "phrase": "offender",
+            "present": true
+          }
+        ],
+        "missingRequired": [],
+        "forbiddenHits": [],
+        "sourceBasis": "black_plus_osborn",
+        "changeType": "new_fill",
+        "operation": "inserted",
+        "reviewDecisionSource": "revised",
+        "osbornNoisySnippetCount": 0,
+        "osbornComparisonFlags": [
+          "osborn_adds_support_not_found_in_anderson_alignment",
+          "osborn_may_narrow_or_correct_anderson_or_black_scope",
+          "osborn_prefix_headword_match_requires_exact-scope_review"
+        ]
+      },
+      {
+        "term": "condonation",
+        "status": "pass",
+        "risk": "loss of historically narrow matrimonial scope",
+        "currentMeaningInLaw": "Conditional forgiveness or remission of a matrimonial offense, with knowledge, treating the marriage as continuing.",
+        "requiredMatches": [
+          {
+            "phrase": "matrimonial",
+            "present": true
+          },
+          {
+            "phrase": "forgiveness",
+            "present": true
+          },
+          {
+            "phrase": "marriage",
+            "present": true
+          }
+        ],
+        "missingRequired": [],
+        "forbiddenHits": [],
+        "sourceBasis": "black_plus_anderson",
+        "changeType": "revise_existing",
+        "operation": "updated",
+        "reviewDecisionSource": "approved",
+        "osbornNoisySnippetCount": 0,
+        "osbornComparisonFlags": []
+      },
+      {
+        "term": "sanctuary",
+        "status": "pass",
+        "risk": "modern policy drift from historical asylum/process-immunity sense",
+        "currentMeaningInLaw": "In old law, a privileged or consecrated place of asylum where ordinary process could not be executed.",
+        "requiredMatches": [
+          {
+            "phrase": "old law",
+            "present": true
+          },
+          {
+            "phrase": "asylum",
+            "present": true
+          },
+          {
+            "phrase": "process",
+            "present": true
+          }
+        ],
+        "missingRequired": [],
+        "forbiddenHits": [],
+        "sourceBasis": "black_plus_osborn",
+        "changeType": "revise_existing",
+        "operation": "updated",
+        "reviewDecisionSource": "approved",
+        "osbornNoisySnippetCount": 0,
+        "osbornComparisonFlags": [
+          "osborn_adds_support_not_found_in_anderson_alignment"
+        ]
+      },
+      {
+        "term": "servitude",
+        "status": "pass",
+        "risk": "collapse into non-property service language",
+        "currentMeaningInLaw": "In property or civil-law usage, a burden or easement attached to property for another estate or person.",
+        "requiredMatches": [
+          {
+            "phrase": "property",
+            "present": true
+          },
+          {
+            "phrase": "civil-law",
+            "present": true
+          },
+          {
+            "phrase": "burden",
+            "present": true
+          }
+        ],
+        "missingRequired": [],
+        "forbiddenHits": [],
+        "sourceBasis": "black_plus_osborn",
+        "changeType": "revise_existing",
+        "operation": "updated",
+        "reviewDecisionSource": "approved",
+        "osbornNoisySnippetCount": 0,
+        "osbornComparisonFlags": [
+          "osborn_adds_support_not_found_in_anderson_alignment"
+        ]
+      },
+      {
+        "term": "submission",
+        "status": "pass",
+        "risk": "collapse into generic yielding instead of procedural submission",
+        "currentMeaningInLaw": "The placing of a dispute, question, or matter before another for decision, especially by agreement to arbitration.",
+        "requiredMatches": [
+          {
+            "phrase": "dispute",
+            "present": true
+          },
+          {
+            "phrase": "decision",
+            "present": true
+          },
+          {
+            "phrase": "arbitration",
+            "present": true
+          }
+        ],
+        "missingRequired": [],
+        "forbiddenHits": [],
+        "sourceBasis": "black_plus_osborn",
+        "changeType": "revise_existing",
+        "operation": "updated",
+        "reviewDecisionSource": "revised",
+        "osbornNoisySnippetCount": 0,
+        "osbornComparisonFlags": [
+          "osborn_adds_support_not_found_in_anderson_alignment"
+        ]
+      },
+      {
+        "term": "process",
+        "status": "pass",
+        "risk": "modern generic-process drift",
+        "currentMeaningInLaw": "A writ or other court proceeding used to compel appearance, action, or response in a legal cause.",
+        "requiredMatches": [
+          {
+            "phrase": "writ",
+            "present": true
+          },
+          {
+            "phrase": "court",
+            "present": true
+          },
+          {
+            "phrase": "compel",
+            "present": true
+          }
+        ],
+        "missingRequired": [],
+        "forbiddenHits": [],
+        "sourceBasis": "black_plus_anderson_plus_osborn",
+        "changeType": "revise_existing",
+        "operation": "updated",
+        "reviewDecisionSource": "approved",
+        "osbornNoisySnippetCount": 1,
+        "osbornComparisonFlags": []
+      },
+      {
+        "term": "marriage",
+        "status": "pass",
+        "risk": "sociological or ceremonial broadening",
+        "currentMeaningInLaw": "A legally recognized marital relation founded on consent and treated as a civil status or contract.",
+        "requiredMatches": [
+          {
+            "phrase": "legally recognized",
+            "present": true
+          },
+          {
+            "phrase": "consent",
+            "present": true
+          },
+          {
+            "phrase": "civil status",
+            "present": true
+          }
+        ],
+        "missingRequired": [],
+        "forbiddenHits": [],
+        "sourceBasis": "black_plus_anderson_plus_osborn",
+        "changeType": "revise_existing",
+        "operation": "updated",
+        "reviewDecisionSource": "approved",
+        "osbornNoisySnippetCount": 1,
+        "osbornComparisonFlags": [
+          "anderson_osborn_scope_differs_review_required",
+          "osborn_prefix_headword_match_requires_exact-scope_review"
+        ]
+      },
+      {
+        "term": "succession",
+        "status": "pass",
+        "risk": "generic sequence drift",
+        "currentMeaningInLaw": "The transmission or taking of property, rights, duties, or legal position from one person to another.",
+        "requiredMatches": [
+          {
+            "phrase": "transmission",
+            "present": true
+          },
+          {
+            "phrase": "property",
+            "present": true
+          },
+          {
+            "phrase": "rights",
+            "present": true
+          }
+        ],
+        "missingRequired": [],
+        "forbiddenHits": [],
+        "sourceBasis": "black_plus_anderson_plus_osborn",
+        "changeType": "revise_existing",
+        "operation": "updated",
+        "reviewDecisionSource": "approved",
+        "osbornNoisySnippetCount": 1,
+        "osbornComparisonFlags": []
+      }
+    ]
+  },
+  "comparatorFeedback": {
+    "sourceBasisCounts": {
+      "black_plus_anderson_plus_osborn": 49,
+      "black_plus_osborn": 8,
+      "black_plus_anderson": 6
+    },
+    "operationCounts": {
+      "updated": 56,
+      "already_current": 5,
+      "inserted": 2
+    },
+    "changeTypeCounts": {
+      "revise_existing": 61,
+      "new_fill": 2
+    },
+    "osborn": {
+      "appliedRowsUsingOsborn": 57,
+      "osbornOnlyRows": 8,
+      "osbornWithAndersonRows": 49,
+      "narrowingOrContradictionRows": 37,
+      "scopeReviewFlagRows": 40,
+      "noisySnippetCandidateRows": 4,
+      "appliedSharePercent": 90.48
+    },
+    "anderson": {
+      "appliedRowsUsingAnderson": 55,
+      "andersonOnlyRows": 6,
+      "andersonWithOsbornRows": 49,
+      "appliedSharePercent": 87.3
+    },
+    "growthBias": {
+      "newFillRows": 2,
+      "revisionRows": 61,
+      "revisionBiasPercent": 96.83
+    }
+  },
+  "guardrails": {
+    "upstreamExactTargetGuard": "implemented_in_prepare_comparator_draft_revision_candidates_v2",
+    "rejectedOrDeferredRowsIncluded": 0,
+    "aliasFanOutCount": 0,
+    "runtimeCoreCollisionCount": 0,
+    "targetMappingFailures": 0,
+    "provenanceGaps": 0
+  },
+  "batch006Readiness": {
+    "status": "ready_for_batch_006_draft_only",
+    "ready": true,
+    "recommendedBatchSize": 50,
+    "escalationAllowed": false,
+    "highRiskBlockingFailures": 0,
+    "highRiskReviewWarnings": 0,
+    "hardGateClean": true,
+    "provenanceClean": true,
+    "batchSizeClean": true,
+    "nextBatchShouldWaitForAnotherSource": false,
+    "exactNextPrompt": "Task: Prepare batch 006 draft-only meaning candidates using the current Black lane plus Anderson and Osborn comparator context where available, with a target batch size of 50. Do not modify the live vocabulary dataset, runtime ontology, concept packets, or existing meaning text; preserve exact-term provenance only and keep this as draft-only preparation. Deliver batch_006_sixth_50_drafts.json, batch_006_review.md, batch_006_skipped.json, and batch_006_writeback_NOT_APPLIED.json."
+  },
+  "inputFiles": {
+    "appliedDiff": "C:\\Users\\coupy\\Desktop\\vocabulary-reference-lexicons\\vocabulary_reference_lexicons\\multi_source\\reports\\comparator_v2_writeback_applied_diff.json",
+    "preview": "C:\\Users\\coupy\\Desktop\\vocabulary-reference-lexicons\\vocabulary_reference_lexicons\\multi_source\\reports\\comparator_v2_writeback_preview_NOT_APPLIED.json",
+    "validationReport": "C:\\Users\\coupy\\Desktop\\vocabulary-reference-lexicons\\vocabulary_reference_lexicons\\multi_source\\reports\\comparator_v2_writeback_validation_report.json",
+    "provenanceReport": "/home/serhat/code/chatpdm/docs/boundary/meaning-source-provenance-report.json",
+    "coverageAudit": "/home/serhat/code/chatpdm/docs/boundary/meaning-coverage-audit.json",
+    "pipelineController": "/home/serhat/code/chatpdm/docs/boundary/lexicon-pipeline-controller-report.json"
+  },
+  "outputFiles": {
+    "json": "/home/serhat/code/chatpdm/docs/boundary/comparator-v2-stabilization-readiness-report.json",
+    "markdown": "/home/serhat/code/chatpdm/docs/boundary/comparator-v2-stabilization-readiness-report.md"
+  }
+}

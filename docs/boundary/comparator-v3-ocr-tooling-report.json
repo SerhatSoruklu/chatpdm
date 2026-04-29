@@ -1,0 +1,38 @@
+{
+  "generatedAt": "2026-04-29T18:37:07.998Z",
+  "mode": "comparator_v3_ocr_tooling_detection",
+  "cliTools": {
+    "tesseract": {
+      "available": false,
+      "path": null
+    },
+    "pdftoppm": {
+      "available": false,
+      "path": null
+    },
+    "convert": {
+      "available": false,
+      "path": null
+    },
+    "magick": {
+      "available": false,
+      "path": null
+    }
+  },
+  "pythonLibraries": {
+    "fitz": true,
+    "PIL": true,
+    "pytesseract": false,
+    "pdf2image": false
+  },
+  "missingTools": [
+    "tesseract",
+    "pdftoppm",
+    "convert",
+    "magick",
+    "pytesseract",
+    "pdf2image"
+  ],
+  "recommendedOcrPath": "install_or_enable_tesseract_plus_pdf_rendering_before_ocr_repair_lane",
+  "fullOcrCanRunLocallyNow": false
+}

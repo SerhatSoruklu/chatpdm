@@ -1,0 +1,294 @@
+{
+  "generatedAt": "2026-04-29",
+  "scope": "ChatPDM legal vocabulary pipeline current state audit",
+  "repoRoot": "/home/serhat/code/chatpdm",
+  "externalLexiconWorkspace": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons",
+  "executiveSummary": {
+    "sourceBackedMeaningCount": 242,
+    "boundaryResponseMeaningCount": 244,
+    "totalRegistryEntries": 3585,
+    "batch006LiveGeneratedMeaningCount": 0,
+    "batch006WritebackApplied": false,
+    "finding": "Batch 006 has draft and wording-review artifacts, but no writeback preview or applied writeback artifact."
+  },
+  "currentMeaningCounts": {
+    "totalBoundaryRegistryEntries": 3585,
+    "entriesWithMeaningInLaw": 244,
+    "entriesWithoutMeaningInLaw": 3341,
+    "entriesWithDisplayedSourceProvenance": 242,
+    "generatedSourceTermCount": 242,
+    "generatedSourceTermsMissingAnyProvenance": 0,
+    "generatedSourceTermsMissingBlackPrimaryProvenance": 1,
+    "generatedSourceTermsMissingBlackPrimaryProvenanceTerms": [
+      "debenture"
+    ],
+    "meaningInLawEntriesWithoutLexiconSourceProvenance": 2,
+    "meaningInLawEntriesWithoutLexiconSourceProvenanceTerms": [
+      "breach",
+      "commitment"
+    ],
+    "interpretation": "The exact source-backed legal vocabulary meaning count is 242. The boundary response exposes 244 meaningInLaw entries because breach and commitment are packet-backed concept entries."
+  },
+  "batchStates": [
+    {
+      "batch": "001",
+      "draftArtifactExists": true,
+      "reviewArtifactExists": true,
+      "writebackPreviewExists": true,
+      "writebackAppliedReportExists": true,
+      "draftCandidateCount": 50,
+      "skippedOrRejectedCount": 5,
+      "liveGeneratedMeaningCountFromReviewedEligibleCandidates": 45,
+      "state": "applied"
+    },
+    {
+      "batch": "002",
+      "draftArtifactExists": true,
+      "reviewArtifactExists": true,
+      "writebackPreviewExists": true,
+      "writebackAppliedReportExists": true,
+      "draftCandidateCount": 50,
+      "skippedOrRejectedCount": 5,
+      "liveGeneratedMeaningCountFromReviewedEligibleCandidates": 45,
+      "state": "applied"
+    },
+    {
+      "batch": "003",
+      "draftArtifactExists": true,
+      "reviewArtifactExists": true,
+      "writebackPreviewExists": true,
+      "writebackAppliedReportExists": true,
+      "draftCandidateCount": 50,
+      "skippedOrRejectedCount": 2,
+      "liveGeneratedMeaningCountFromReviewedEligibleCandidates": 48,
+      "state": "applied"
+    },
+    {
+      "batch": "004",
+      "draftArtifactExists": true,
+      "reviewArtifactExists": true,
+      "writebackPreviewExists": true,
+      "writebackAppliedReportExists": true,
+      "draftCandidateCount": 50,
+      "skippedOrRejectedCount": 5,
+      "liveGeneratedMeaningCountFromReviewedEligibleCandidates": 45,
+      "state": "applied"
+    },
+    {
+      "batch": "005",
+      "draftArtifactExists": true,
+      "reviewArtifactExists": true,
+      "writebackPreviewExists": true,
+      "writebackAppliedReportExists": true,
+      "draftCandidateCount": 50,
+      "skippedOrRejectedCount": 2,
+      "liveGeneratedMeaningCountFromReviewedEligibleCandidates": 48,
+      "state": "applied"
+    },
+    {
+      "batch": "006",
+      "draftArtifactExists": true,
+      "reviewArtifactExists": true,
+      "writebackPreviewExists": false,
+      "writebackAppliedReportExists": false,
+      "draftCandidateCount": 48,
+      "skippedOrRejectedCount": 2,
+      "liveGeneratedMeaningCountFromReviewedEligibleCandidates": 0,
+      "state": "reviewed_not_previewed_not_applied"
+    }
+  ],
+  "batch006Status": {
+    "draftOnlyRunComplete": true,
+    "wordingReviewRun": true,
+    "writebackPreviewRun": false,
+    "writebackApplied": false,
+    "liveGeneratedMeaningCount": 0,
+    "wordingReviewSummary": {
+      "totalReviewed": 48,
+      "approvedCount": 37,
+      "revisedCount": 11,
+      "rejectedCount": 0,
+      "writebackEligibleCount": 48,
+      "skippedTermsLeftUnchanged": 2
+    },
+    "skippedTerms": [
+      {
+        "term": "provision",
+        "reason": "Exact Black support concerns commercial funds or ecclesiastical provision, not the queued Law / Rule / Sources sense."
+      },
+      {
+        "term": "accord_and_satisfaction",
+        "reason": "Duplicate alias surface of accord and satisfaction; skipped to avoid alias fan-out."
+      }
+    ],
+    "runtimeOntologyChangesDetected": false,
+    "conceptPacketChangesDetected": false,
+    "resolverBehaviorChangesDetected": false
+  },
+  "artifactPaths": {
+    "batch006Drafts": {
+      "exists": true,
+      "path": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/draft_meanings/batch_006_sixth_50_drafts.json"
+    },
+    "batch006DraftReviewMarkdown": {
+      "exists": true,
+      "path": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/draft_meanings/reports/batch_006_review.md"
+    },
+    "batch006SkippedJson": {
+      "exists": true,
+      "path": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/draft_meanings/reports/batch_006_skipped.json"
+    },
+    "batch006WritebackNotAppliedPlaceholder": {
+      "exists": true,
+      "path": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/draft_meanings/batch_006_writeback_NOT_APPLIED.json"
+    },
+    "batch006WordingReviewMarkdown": {
+      "exists": true,
+      "path": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/draft_meanings/review/batch_006_wording_review.md"
+    },
+    "batch006WordingReviewJson": {
+      "exists": true,
+      "path": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/draft_meanings/review/batch_006_wording_review.json"
+    },
+    "batch006RevisedDraftsPreWriteback": {
+      "exists": true,
+      "path": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/draft_meanings/review/batch_006_revised_drafts_PRE_WRITEBACK.json"
+    },
+    "batch006WritebackPreviewJson": {
+      "exists": false,
+      "path": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/draft_meanings/writeback_preview/batch_006_writeback_preview_NOT_APPLIED.json"
+    },
+    "batch006WritebackDiffPreviewMarkdown": {
+      "exists": false,
+      "path": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/draft_meanings/writeback_preview/batch_006_writeback_diff_preview.md"
+    },
+    "batch006WritebackValidationReport": {
+      "exists": false,
+      "path": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/draft_meanings/writeback_preview/batch_006_writeback_validation_report.json"
+    },
+    "batch006AppliedWritebackReport": {
+      "exists": false,
+      "path": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/draft_meanings/writeback_applied/batch_006_applied_writeback_report.md"
+    },
+    "batch006AppliedDiff": {
+      "exists": false,
+      "path": "/mnt/c/Users/coupy/Desktop/vocabulary-reference-lexicons/vocabulary_reference_lexicons/draft_meanings/writeback_applied/batch_006_applied_diff.json"
+    }
+  },
+  "dirtyWorkingTreeSummary": {
+    "trackedModifiedBeforeAuditReport": [
+      ".gitignore",
+      "backend/src/modules/legal-vocabulary/vocabulary-boundary.js",
+      "backend/tests/vocabulary/vocabulary-boundary.test.js",
+      "frontend/src/app/core/vocabulary/vocabulary-boundary.types.ts",
+      "frontend/src/app/pages/vocabulary-page/vocabulary-page.component.css",
+      "frontend/src/app/pages/vocabulary-page/vocabulary-page.component.html",
+      "frontend/src/app/pages/vocabulary-page/vocabulary-page.component.spec.ts",
+      "frontend/src/app/pages/vocabulary-page/vocabulary-page.component.ts",
+      "frontend/src/app/pages/vocabulary-page/vocabulary-page.model.ts"
+    ],
+    "untrackedLexiconScriptDirectories": [
+      "backend/scripts/lexicon/alignment",
+      "backend/scripts/lexicon/architecture",
+      "backend/scripts/lexicon/audit",
+      "backend/scripts/lexicon/comparator",
+      "backend/scripts/lexicon/draft",
+      "backend/scripts/lexicon/extraction",
+      "backend/scripts/lexicon/pipeline",
+      "backend/scripts/lexicon/proof",
+      "backend/scripts/lexicon/provenance",
+      "backend/scripts/lexicon/reports",
+      "backend/scripts/lexicon/review",
+      "backend/scripts/lexicon/writeback"
+    ],
+    "untrackedGeneratedOrReportArtifacts": [
+      "backend/src/modules/legal-vocabulary/vocabulary-meaning-sources.generated.json",
+      "docs/boundary/comparator-v2-stabilization-readiness-report.json",
+      "docs/boundary/comparator-v2-stabilization-readiness-report.md",
+      "docs/boundary/duplicate-term-groups.json",
+      "docs/boundary/high-risk-meaning-queue.json",
+      "docs/boundary/lexicon-pipeline-controller-report.json",
+      "docs/boundary/lexicon-pipeline-controller-report.md",
+      "docs/boundary/meaning-coverage-audit.json",
+      "docs/boundary/meaning-coverage-summary.md",
+      "docs/boundary/meaning-source-provenance-report.json",
+      "docs/boundary/meaning-source-provenance-report.md",
+      "docs/boundary/safe-batch-candidates.json",
+      "docs/boundary/vocabulary-display-cleanup-report.json",
+      "docs/boundary/vocabulary-display-cleanup-report.md"
+    ],
+    "runtimeConceptPacketFilesModified": false,
+    "conceptResolverFilesModified": false,
+    "classification": "docs/scripts/tests/frontend-display/legal-vocabulary-boundary-display only; no concept packet or resolver diff detected"
+  },
+  "safetyConfirmations": {
+    "noAliasFanOutForBatch006": true,
+    "noConceptPacketChangesDetected": true,
+    "noRuntimeOntologyAdmissionChangesDetected": true,
+    "noResolverBehaviorChangesDetected": true,
+    "noProductionVocabularyDatasetMutationByThisAudit": true,
+    "noBatch006Writeback": true,
+    "noSilentMeaningModificationByThisAudit": true
+  },
+  "validationResults": [
+    {
+      "command": "git status --short",
+      "result": "completed_dirty_tree_present"
+    },
+    {
+      "command": "git diff --stat",
+      "result": "completed_before_report_9_files_1326_insertions_20_deletions"
+    },
+    {
+      "command": "node --check backend/scripts/lexicon/draft/draft-lexicon-meaning-batch-006.js",
+      "result": "pass"
+    },
+    {
+      "command": "node --test backend/tests/vocabulary/vocabulary-boundary.test.js backend/tests/vocabulary/vocabulary-boundary-anti-leak.test.js backend/tests/vocabulary/vocabulary-classification.freeze.test.js backend/tests/vocabulary/vocabulary-classifier.test.js",
+      "result": "pass_18_tests"
+    },
+    {
+      "command": "node backend/scripts/verify-vocabulary-boundary-contract.js",
+      "result": "pass"
+    },
+    {
+      "command": "node backend/scripts/verify-legal-vocabulary-recognition.js",
+      "result": "pass"
+    },
+    {
+      "command": "node backend/scripts/verify-resolver.js",
+      "result": "pass_65_cases"
+    },
+    {
+      "command": "node backend/scripts/verify-admission-boundary.js",
+      "result": "pass"
+    },
+    {
+      "command": "node backend/scripts/verify-blocked-concept-admission.js",
+      "result": "pass"
+    },
+    {
+      "command": "node backend/scripts/verify-pre-admission-contract-path.js",
+      "result": "pass"
+    },
+    {
+      "command": "node backend/scripts/verify-public-resolver-regression.js",
+      "result": "pass"
+    },
+    {
+      "command": "npm --prefix frontend run typecheck",
+      "result": "pass"
+    }
+  ],
+  "nextRecommendedStep": {
+    "summary": "Human-review the existing Batch 006 wording review artifacts, keep the two skipped terms out, then generate a Batch 006 writeback preview only if accepted.",
+    "doNotDoYet": [
+      "Do not apply Batch 006 writeback.",
+      "Do not modify runtime ontology.",
+      "Do not modify concept packets.",
+      "Do not change resolver behavior.",
+      "Do not alias-fan-out accord_and_satisfaction."
+    ],
+    "evidenceBasis": "Batch 006 wording review artifacts already exist; writeback preview and applied report do not."
+  }
+}
