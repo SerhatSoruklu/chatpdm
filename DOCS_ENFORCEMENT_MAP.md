@@ -28,9 +28,9 @@ For repo-wide document authority, see [docs/meta/document-authority-index.md](./
 | Category | Count |
 | --- | ---: |
 | `ENFORCED` | 27 |
-| `MAPPABLE` | 31 |
+| `MAPPABLE` | 32 |
 | `DECORATIVE` | 17 |
-| Total | 75 |
+| Total | 76 |
 
 ## Classification Legend
 
@@ -102,6 +102,7 @@ For repo-wide document authority, see [docs/meta/document-authority-index.md](./
 | [docs/product/legal-argument-validator-phase-controls.md](./docs/product/legal-argument-validator-phase-controls.md) | `medium` | `pipeline` | Enforce allowed phase/wave execution in CI/runtime flags. | Phase authorization is documented but not globally gated. |
 | [docs/product/legal-validator.failure-ownership.md](./docs/product/legal-validator.failure-ownership.md) | `medium` | `other` | Require ownership tagging and escalation on failing validator paths. | Ownership rules are process law, not system-enforced. |
 | [docs/product/version-bump-policy.md](./docs/product/version-bump-policy.md) | `high` | `pipeline` | Fail when response/schema/contract changes lack the required version bump. | Version-bump policy is still manual and can drift behind contract changes. |
+| [docs/product/WHO_IS_IT_FOR.md](./docs/product/WHO_IS_IT_FOR.md) | `medium` | `pipeline` | Require Phase 6 feature and validation work to name a primary profile, document workflow, and operational wording risk. | It defines the first-user hypothesis and product boundary, but enforcement is currently review-based. |
 | [docs/public/change-transparency.md](./docs/public/change-transparency.md) | `medium` | `pipeline` | Enforce change-classification metadata in PR/commit flow. | Change-prefix and transparency rules are not automatically checked. |
 | [docs/public/review-law.md](./docs/public/review-law.md) | `high` | `pipeline` | Require review-state and change-type gating before promotion/publish. | Review law is strong but not universally wired into publish flow. |
 | [docs/seo-policy.md](./docs/seo-policy.md) | `high` | `pipeline` | Add route/meta verification against SEO policy. | SEO rules exist, but there is no global validator ensuring route/title/description compliance. |
